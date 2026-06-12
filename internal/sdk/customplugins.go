@@ -31,9 +31,6 @@ func newCustomPlugins(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks
 }
 
 // CreateCustomPlugin - Create a new CustomPlugin
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Create a new CustomPlugin
 func (s *CustomPlugins) CreateCustomPlugin(ctx context.Context, request operations.CreateCustomPluginRequest, opts ...operations.Option) (*operations.CreateCustomPluginResponse, error) {
 	o := operations.Options{}
@@ -261,9 +258,6 @@ func (s *CustomPlugins) CreateCustomPlugin(ctx context.Context, request operatio
 }
 
 // DeleteCustomPlugin - Delete a CustomPlugin
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Delete a CustomPlugin
 func (s *CustomPlugins) DeleteCustomPlugin(ctx context.Context, request operations.DeleteCustomPluginRequest, opts ...operations.Option) (*operations.DeleteCustomPluginResponse, error) {
 	o := operations.Options{}
@@ -467,9 +461,6 @@ func (s *CustomPlugins) DeleteCustomPlugin(ctx context.Context, request operatio
 }
 
 // GetCustomPlugin - Get a CustomPlugin
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Get a CustomPlugin using ID or name.
 func (s *CustomPlugins) GetCustomPlugin(ctx context.Context, request operations.GetCustomPluginRequest, opts ...operations.Option) (*operations.GetCustomPluginResponse, error) {
 	o := operations.Options{}
@@ -692,9 +683,6 @@ func (s *CustomPlugins) GetCustomPlugin(ctx context.Context, request operations.
 }
 
 // UpsertCustomPlugin - Upsert a CustomPlugin
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Create or Update CustomPlugin using ID or name.
 func (s *CustomPlugins) UpsertCustomPlugin(ctx context.Context, request operations.UpsertCustomPluginRequest, opts ...operations.Option) (*operations.UpsertCustomPluginResponse, error) {
 	o := operations.Options{}

@@ -26,6 +26,29 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 			} else {
 				r.Config.Authentication.Mechanism = types.StringNull()
 			}
+			if resp.Config.Authentication.Oauthbearer == nil {
+				r.Config.Authentication.Oauthbearer = nil
+			} else {
+				r.Config.Authentication.Oauthbearer = &tfTypes.Oauthbearer{}
+				r.Config.Authentication.Oauthbearer.ClientID = types.StringPointerValue(resp.Config.Authentication.Oauthbearer.ClientID)
+				r.Config.Authentication.Oauthbearer.ClientSecret = types.StringPointerValue(resp.Config.Authentication.Oauthbearer.ClientSecret)
+				if resp.Config.Authentication.Oauthbearer.Extensions != nil {
+					r.Config.Authentication.Oauthbearer.Extensions = make(map[string]types.String, len(resp.Config.Authentication.Oauthbearer.Extensions))
+					for key, value := range resp.Config.Authentication.Oauthbearer.Extensions {
+						r.Config.Authentication.Oauthbearer.Extensions[key] = types.StringValue(value)
+					}
+				}
+				if resp.Config.Authentication.Oauthbearer.Scopes != nil {
+					r.Config.Authentication.Oauthbearer.Scopes = make([]types.String, 0, len(resp.Config.Authentication.Oauthbearer.Scopes))
+					for _, v := range resp.Config.Authentication.Oauthbearer.Scopes {
+						r.Config.Authentication.Oauthbearer.Scopes = append(r.Config.Authentication.Oauthbearer.Scopes, types.StringValue(v))
+					}
+				} else {
+					r.Config.Authentication.Oauthbearer.Scopes = nil
+				}
+				r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify = types.BoolPointerValue(resp.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify)
+				r.Config.Authentication.Oauthbearer.TokenEndpointURL = types.StringPointerValue(resp.Config.Authentication.Oauthbearer.TokenEndpointURL)
+			}
 			r.Config.Authentication.Password = types.StringPointerValue(resp.Config.Authentication.Password)
 			if resp.Config.Authentication.Strategy != nil {
 				r.Config.Authentication.Strategy = types.StringValue(string(*resp.Config.Authentication.Strategy))
@@ -56,9 +79,26 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 		} else {
 			r.Config.CommitStrategy = types.StringNull()
 		}
+		if resp.Config.ConsumerGroup == nil {
+			r.Config.ConsumerGroup = nil
+		} else {
+			r.Config.ConsumerGroup = &tfTypes.ConfluentConsumePluginConsumerGroup{}
+			r.Config.ConsumerGroup.ConsumerGroupID = types.StringPointerValue(resp.Config.ConsumerGroup.ConsumerGroupID)
+			if resp.Config.ConsumerGroup.Mode != nil {
+				r.Config.ConsumerGroup.Mode = types.StringValue(string(*resp.Config.ConsumerGroup.Mode))
+			} else {
+				r.Config.ConsumerGroup.Mode = types.StringNull()
+			}
+		}
 		r.Config.DlqTopic = types.StringPointerValue(resp.Config.DlqTopic)
 		r.Config.EnableDlq = types.BoolPointerValue(resp.Config.EnableDlq)
 		r.Config.EnforceLatestOffsetReset = types.BoolPointerValue(resp.Config.EnforceLatestOffsetReset)
+		if resp.Config.ErrorHandling == nil {
+			r.Config.ErrorHandling = nil
+		} else {
+			r.Config.ErrorHandling = &tfTypes.ErrorHandling{}
+			r.Config.ErrorHandling.ReturnErrorMessage = types.BoolPointerValue(resp.Config.ErrorHandling.ReturnErrorMessage)
+		}
 		if resp.Config.MessageByLuaFunctions != nil {
 			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
 			for _, v := range resp.Config.MessageByLuaFunctions {
@@ -124,14 +164,14 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
-							for key, value := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = types.StringValue(value)
+							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key1] = types.StringValue(value1)
 							}
 						}
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
-							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = types.StringValue(value1)
+							for key2, value2 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key2] = types.StringValue(value2)
 							}
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -227,14 +267,14 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 							topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
 								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
-								for key2, value2 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = types.StringValue(value2)
+								for key3, value3 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key3] = types.StringValue(value3)
 								}
 							}
 							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
 								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
-								for key3, value3 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key3] = types.StringValue(value3)
+								for key4, value4 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key4] = types.StringValue(value4)
 								}
 							}
 							topics.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -531,6 +571,58 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 		} else {
 			mechanism = nil
 		}
+		var oauthbearer *shared.KafkaConsumePluginOauthbearer
+		if r.Config.Authentication.Oauthbearer != nil {
+			clientID := new(string)
+			if !r.Config.Authentication.Oauthbearer.ClientID.IsUnknown() && !r.Config.Authentication.Oauthbearer.ClientID.IsNull() {
+				*clientID = r.Config.Authentication.Oauthbearer.ClientID.ValueString()
+			} else {
+				clientID = nil
+			}
+			clientSecret := new(string)
+			if !r.Config.Authentication.Oauthbearer.ClientSecret.IsUnknown() && !r.Config.Authentication.Oauthbearer.ClientSecret.IsNull() {
+				*clientSecret = r.Config.Authentication.Oauthbearer.ClientSecret.ValueString()
+			} else {
+				clientSecret = nil
+			}
+			var extensions map[string]string
+			if r.Config.Authentication.Oauthbearer.Extensions != nil {
+				extensions = make(map[string]string)
+				for extensionsKey := range r.Config.Authentication.Oauthbearer.Extensions {
+					var extensionsInst string
+					extensionsInst = r.Config.Authentication.Oauthbearer.Extensions[extensionsKey].ValueString()
+
+					extensions[extensionsKey] = extensionsInst
+				}
+			}
+			var scopes []string
+			if r.Config.Authentication.Oauthbearer.Scopes != nil {
+				scopes = make([]string, 0, len(r.Config.Authentication.Oauthbearer.Scopes))
+				for scopesIndex := range r.Config.Authentication.Oauthbearer.Scopes {
+					scopes = append(scopes, r.Config.Authentication.Oauthbearer.Scopes[scopesIndex].ValueString())
+				}
+			}
+			tokenEndpointTLSVerify := new(bool)
+			if !r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify.IsUnknown() && !r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify.IsNull() {
+				*tokenEndpointTLSVerify = r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify.ValueBool()
+			} else {
+				tokenEndpointTLSVerify = nil
+			}
+			tokenEndpointURL := new(string)
+			if !r.Config.Authentication.Oauthbearer.TokenEndpointURL.IsUnknown() && !r.Config.Authentication.Oauthbearer.TokenEndpointURL.IsNull() {
+				*tokenEndpointURL = r.Config.Authentication.Oauthbearer.TokenEndpointURL.ValueString()
+			} else {
+				tokenEndpointURL = nil
+			}
+			oauthbearer = &shared.KafkaConsumePluginOauthbearer{
+				ClientID:               clientID,
+				ClientSecret:           clientSecret,
+				Extensions:             extensions,
+				Scopes:                 scopes,
+				TokenEndpointTLSVerify: tokenEndpointTLSVerify,
+				TokenEndpointURL:       tokenEndpointURL,
+			}
+		}
 		password := new(string)
 		if !r.Config.Authentication.Password.IsUnknown() && !r.Config.Authentication.Password.IsNull() {
 			*password = r.Config.Authentication.Password.ValueString()
@@ -556,11 +648,12 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 			user = nil
 		}
 		authentication = &shared.Authentication{
-			Mechanism: mechanism,
-			Password:  password,
-			Strategy:  strategy,
-			Tokenauth: tokenauth,
-			User:      user,
+			Mechanism:   mechanism,
+			Oauthbearer: oauthbearer,
+			Password:    password,
+			Strategy:    strategy,
+			Tokenauth:   tokenauth,
+			User:        user,
 		}
 	}
 	autoOffsetReset := new(shared.KafkaConsumePluginAutoOffsetReset)
@@ -594,6 +687,25 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 	} else {
 		commitStrategy = nil
 	}
+	var consumerGroup *shared.KafkaConsumePluginConsumerGroup
+	if r.Config.ConsumerGroup != nil {
+		consumerGroupID := new(string)
+		if !r.Config.ConsumerGroup.ConsumerGroupID.IsUnknown() && !r.Config.ConsumerGroup.ConsumerGroupID.IsNull() {
+			*consumerGroupID = r.Config.ConsumerGroup.ConsumerGroupID.ValueString()
+		} else {
+			consumerGroupID = nil
+		}
+		mode := new(shared.KafkaConsumePluginConfigMode)
+		if !r.Config.ConsumerGroup.Mode.IsUnknown() && !r.Config.ConsumerGroup.Mode.IsNull() {
+			*mode = shared.KafkaConsumePluginConfigMode(r.Config.ConsumerGroup.Mode.ValueString())
+		} else {
+			mode = nil
+		}
+		consumerGroup = &shared.KafkaConsumePluginConsumerGroup{
+			ConsumerGroupID: consumerGroupID,
+			Mode:            mode,
+		}
+	}
 	dlqTopic := new(string)
 	if !r.Config.DlqTopic.IsUnknown() && !r.Config.DlqTopic.IsNull() {
 		*dlqTopic = r.Config.DlqTopic.ValueString()
@@ -612,6 +724,18 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 	} else {
 		enforceLatestOffsetReset = nil
 	}
+	var errorHandling *shared.KafkaConsumePluginErrorHandling
+	if r.Config.ErrorHandling != nil {
+		returnErrorMessage := new(bool)
+		if !r.Config.ErrorHandling.ReturnErrorMessage.IsUnknown() && !r.Config.ErrorHandling.ReturnErrorMessage.IsNull() {
+			*returnErrorMessage = r.Config.ErrorHandling.ReturnErrorMessage.ValueBool()
+		} else {
+			returnErrorMessage = nil
+		}
+		errorHandling = &shared.KafkaConsumePluginErrorHandling{
+			ReturnErrorMessage: returnErrorMessage,
+		}
+	}
 	var messageByLuaFunctions []string
 	if r.Config.MessageByLuaFunctions != nil {
 		messageByLuaFunctions = make([]string, 0, len(r.Config.MessageByLuaFunctions))
@@ -625,11 +749,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 	} else {
 		messageDeserializer = nil
 	}
-	mode := new(shared.KafkaConsumePluginMode)
+	mode1 := new(shared.KafkaConsumePluginMode)
 	if !r.Config.Mode.IsUnknown() && !r.Config.Mode.IsNull() {
-		*mode = shared.KafkaConsumePluginMode(r.Config.Mode.ValueString())
+		*mode1 = shared.KafkaConsumePluginMode(r.Config.Mode.ValueString())
 	} else {
-		mode = nil
+		mode1 = nil
 	}
 	var schemaRegistry *shared.KafkaConsumePluginSchemaRegistry
 	if r.Config.SchemaRegistry != nil {
@@ -650,11 +774,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 						Username: username,
 					}
 				}
-				mode1 := new(shared.KafkaConsumePluginConfigMode)
+				mode2 := new(shared.KafkaConsumePluginConfigSchemaRegistryMode)
 				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-					*mode1 = shared.KafkaConsumePluginConfigMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+					*mode2 = shared.KafkaConsumePluginConfigSchemaRegistryMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
 				} else {
-					mode1 = nil
+					mode2 = nil
 				}
 				var oauth2 *shared.KafkaConsumePluginOauth2
 				if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2 != nil {
@@ -662,17 +786,17 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 					for audienceIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
 						audience = append(audience, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience[audienceIndex].ValueString())
 					}
-					clientID := new(string)
+					clientId1 := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
-						*clientID = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
+						*clientId1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
 					} else {
-						clientID = nil
+						clientId1 = nil
 					}
-					clientSecret := new(string)
+					clientSecret1 := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsNull() {
-						*clientSecret = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
+						*clientSecret1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
 					} else {
-						clientSecret = nil
+						clientSecret1 = nil
 					}
 					grantType := new(shared.KafkaConsumePluginGrantType)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsNull() {
@@ -686,9 +810,9 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 					} else {
 						password2 = nil
 					}
-					scopes := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
-					for scopesIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
-						scopes = append(scopes, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex].ValueString())
+					scopes1 := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
+					for scopesIndex1 := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+						scopes1 = append(scopes1, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex1].ValueString())
 					}
 					var tokenEndpoint string
 					tokenEndpoint = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
@@ -721,11 +845,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 					}
 					oauth2 = &shared.KafkaConsumePluginOauth2{
 						Audience:      audience,
-						ClientID:      clientID,
-						ClientSecret:  clientSecret,
+						ClientID:      clientId1,
+						ClientSecret:  clientSecret1,
 						GrantType:     grantType,
 						Password:      password2,
-						Scopes:        scopes,
+						Scopes:        scopes1,
 						TokenEndpoint: tokenEndpoint,
 						TokenHeaders:  tokenHeaders,
 						TokenPostArgs: tokenPostArgs,
@@ -816,7 +940,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 				}
 				authentication1 = &shared.KafkaConsumePluginAuthentication{
 					Basic:        basic,
-					Mode:         mode1,
+					Mode:         mode2,
 					Oauth2:       oauth2,
 					Oauth2Client: oauth2Client,
 				}
@@ -900,11 +1024,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 							Username: username2,
 						}
 					}
-					mode2 := new(shared.KafkaConsumePluginConfigTopicsMode)
+					mode3 := new(shared.KafkaConsumePluginConfigTopicsMode)
 					if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-						*mode2 = shared.KafkaConsumePluginConfigTopicsMode(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+						*mode3 = shared.KafkaConsumePluginConfigTopicsMode(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Mode.ValueString())
 					} else {
-						mode2 = nil
+						mode3 = nil
 					}
 					var oauth21 *shared.KafkaConsumePluginConfigOauth2
 					if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2 != nil {
@@ -912,17 +1036,17 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 						for audienceIndex1 := range r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
 							audience1 = append(audience1, r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Audience[audienceIndex1].ValueString())
 						}
-						clientId1 := new(string)
+						clientId2 := new(string)
 						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
-							*clientId1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
+							*clientId2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
 						} else {
-							clientId1 = nil
+							clientId2 = nil
 						}
-						clientSecret1 := new(string)
+						clientSecret2 := new(string)
 						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsNull() {
-							*clientSecret1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
+							*clientSecret2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
 						} else {
-							clientSecret1 = nil
+							clientSecret2 = nil
 						}
 						grantType1 := new(shared.KafkaConsumePluginConfigGrantType)
 						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsNull() {
@@ -936,9 +1060,9 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 						} else {
 							password4 = nil
 						}
-						scopes1 := make([]string, 0, len(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
-						for scopesIndex1 := range r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
-							scopes1 = append(scopes1, r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex1].ValueString())
+						scopes2 := make([]string, 0, len(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
+						for scopesIndex2 := range r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+							scopes2 = append(scopes2, r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex2].ValueString())
 						}
 						var tokenEndpoint1 string
 						tokenEndpoint1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
@@ -971,11 +1095,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 						}
 						oauth21 = &shared.KafkaConsumePluginConfigOauth2{
 							Audience:      audience1,
-							ClientID:      clientId1,
-							ClientSecret:  clientSecret1,
+							ClientID:      clientId2,
+							ClientSecret:  clientSecret2,
 							GrantType:     grantType1,
 							Password:      password4,
-							Scopes:        scopes1,
+							Scopes:        scopes2,
 							TokenEndpoint: tokenEndpoint1,
 							TokenHeaders:  tokenHeaders1,
 							TokenPostArgs: tokenPostArgs1,
@@ -1066,7 +1190,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 					}
 					authentication2 = &shared.KafkaConsumePluginConfigAuthentication{
 						Basic:        basic1,
-						Mode:         mode2,
+						Mode:         mode3,
 						Oauth2:       oauth21,
 						Oauth2Client: oauth2Client1,
 					}
@@ -1111,12 +1235,14 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 		BootstrapServers:         bootstrapServers,
 		ClusterName:              clusterName,
 		CommitStrategy:           commitStrategy,
+		ConsumerGroup:            consumerGroup,
 		DlqTopic:                 dlqTopic,
 		EnableDlq:                enableDlq,
 		EnforceLatestOffsetReset: enforceLatestOffsetReset,
+		ErrorHandling:            errorHandling,
 		MessageByLuaFunctions:    messageByLuaFunctions,
 		MessageDeserializer:      messageDeserializer,
-		Mode:                     mode,
+		Mode:                     mode1,
 		SchemaRegistry:           schemaRegistry,
 		Security:                 security,
 		Topics:                   topics,

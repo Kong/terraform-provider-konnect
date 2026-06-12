@@ -5199,7 +5199,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Certificate'
+              $ref: '#/components/schemas/CertificateRequest'
       responses:
         '201':
           description: Successfully created Certificate
@@ -5264,7 +5264,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Certificate'
+              $ref: '#/components/schemas/CertificateRequest'
       responses:
         '200':
           description: Successfully upserted Certificate
@@ -5276,6 +5276,99 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Certificates
+  '/v2/control-planes/{controlPlaneId}/core-entities/cloned-plugins':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayClonedPlugin#create
+      operationId: create-cloned-plugin
+      summary: Create a new Cloned Plugin
+      description: Create a new Cloned Plugin
+      requestBody:
+        description: Description of the new Cloned Plugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClonedPlugin'
+      responses:
+        '201':
+          description: Successfully created Cloned Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClonedPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Cloned Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/cloned-plugins/{ClonedPluginId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayClonedPlugin#delete
+      operationId: delete-cloned-plugin
+      summary: Delete a Cloned Plugin
+      description: Delete a Cloned Plugin
+      parameters:
+        - $ref: '#/components/parameters/ClonedPluginId'
+      responses:
+        '204':
+          description: Successfully deleted Cloned Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Cloned Plugins
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayClonedPlugin#read
+      operationId: get-cloned-plugin
+      summary: Get a Cloned Plugin
+      description: Get a Cloned Plugin using ID or name.
+      responses:
+        '200':
+          description: Successfully fetched Cloned Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClonedPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Cloned Plugins
+    parameters:
+      - $ref: '#/components/parameters/ClonedPluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayClonedPlugin#update
+      operationId: upsert-cloned-plugin
+      summary: Upsert a Cloned Plugin
+      description: Create or Update Cloned Plugin using ID or name.
+      requestBody:
+        description: Description of the Cloned Plugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClonedPlugin'
+      responses:
+        '200':
+          description: Successfully upserted Cloned Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClonedPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Cloned Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -5920,11 +6013,7 @@ paths:
         terraform-resource: GatewayCustomPluginStreaming#create
       operationId: create-custom-plugin
       summary: Create a new CustomPlugin
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Create a new CustomPlugin
+      description: Create a new CustomPlugin
       requestBody:
         description: Description of the new CustomPlugin for creation
         required: true
@@ -5950,11 +6039,7 @@ paths:
         terraform-resource: GatewayCustomPluginStreaming#delete
       operationId: delete-custom-plugin
       summary: Delete a CustomPlugin
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Delete a CustomPlugin
+      description: Delete a CustomPlugin
       parameters:
         - $ref: '#/components/parameters/CustomPluginId'
       responses:
@@ -5970,11 +6055,7 @@ paths:
         terraform-resource: GatewayCustomPluginStreaming#read
       operationId: get-custom-plugin
       summary: Get a CustomPlugin
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Get a CustomPlugin using ID or name.
+      description: Get a CustomPlugin using ID or name.
       responses:
         '200':
           description: Successfully fetched CustomPlugin
@@ -5997,11 +6078,7 @@ paths:
         terraform-resource: GatewayCustomPluginStreaming#update
       operationId: upsert-custom-plugin
       summary: Upsert a CustomPlugin
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Create or Update CustomPlugin using ID or name.
+      description: Create or Update CustomPlugin using ID or name.
       requestBody:
         description: Description of the CustomPlugin
         required: true
@@ -20082,6 +20159,15 @@ components:
       required: true
       description: The OAuth 2.0 client ID
       x-speakeasy-match: id
+    ClonedPluginId:
+      description: ID of the Cloned Plugin to lookup
+      example: ''
+      in: path
+      name: ClonedPluginId
+      required: true
+      schema:
+        type: string
+      x-speakeasy-match: id
     cmekId:
       name: cmekId
       in: path
@@ -29702,6 +29788,7 @@ components:
 
             **Requires a minimum runtime version of `1.2`**.
           type: array
+          nullable: true
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
           x-speakeasy-terraform-ignore: true
@@ -44746,6 +44833,10 @@ components:
               default: 443
               maximum: 65535
               minimum: 0
+            preserve_lambda_api_error_code:
+              description: 'When enabled, the HTTP status code returned by the AWS Lambda API is forwarded to the client instead of mapping all errors to HTTP 500. Applies to 4xx and 5xx responses from the Lambda API.'
+              type: boolean
+              default: false
             proxy_url:
               description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
               type: string
@@ -45004,7 +45095,7 @@ components:
           nullable: true
           properties:
             anonymous:
-              description: 'An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.'
+              description: 'An optional string (Consumer UUID or username) value to use as an "anonymous" consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.'
               type: string
               default: null
               nullable: true
@@ -45184,6 +45275,24 @@ components:
               description: 'An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.'
               type: boolean
               default: false
+            principals:
+              type: object
+              default: null
+              nullable: true
+              properties:
+                directory:
+                  description: The Kong Identity directory instance to authenticate against.
+                  type: string
+                  default: default
+                enabled:
+                  description: 'When true, authenticate against Kong Identity instead of local credentials.'
+                  type: boolean
+                  default: false
+                error_on_miss:
+                  description: 'When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead.'
+                  type: boolean
+                  default: true
+              x-speakeasy-param-computed: false
             realm:
               description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
               type: string
@@ -45352,6 +45461,7 @@ components:
         cert:
           description: PEM-encoded public certificate of the CA.
           type: string
+          x-referenceable: true
         cert_digest:
           description: 'SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.'
           type: string
@@ -45609,6 +45719,159 @@ components:
       required:
         - cert
         - key
+    CertificateRequest:
+      description: 'A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service. Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames. If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string according to the following order: main certificate on the top, followed by any intermediates.'
+      example:
+        cert: |-
+          -----BEGIN CERTIFICATE-----
+          certificate-content
+          -----END CERTIFICATE-----
+        id: b2f34145-0343-41a4-9602-4c69dec2f269
+        key: |-
+          -----BEGIN PRIVATE KEY-----
+          private-key-content
+          -----END PRIVATE KEY-----
+      allOf:
+        - additionalProperties: false
+          properties:
+            cert:
+              description: 'PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+              type: string
+              default: null
+              nullable: true
+              x-referenceable: true
+              x-speakeasy-param-computed: false
+            cert_alt:
+              description: 'PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+              type: string
+              default: null
+              nullable: true
+              x-referenceable: true
+              x-speakeasy-param-computed: false
+            created_at:
+              description: Unix epoch when the resource was created.
+              type: integer
+              nullable: true
+            description:
+              description: 'User-defined entity description. Konnect only field, not synced to the Gateway.'
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            id:
+              description: A string representing a UUID (universally unique identifier).
+              type: string
+              nullable: true
+            key:
+              description: 'PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+              type: string
+              default: null
+              nullable: true
+              x-encrypted: true
+              x-referenceable: true
+              x-speakeasy-param-computed: false
+            key_alt:
+              description: 'PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+              type: string
+              default: null
+              nullable: true
+              x-encrypted: true
+              x-referenceable: true
+              x-speakeasy-param-computed: false
+            managed_by:
+              description: 'Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.'
+              type: object
+              default: null
+              additionalProperties: true
+              nullable: true
+              x-speakeasy-param-computed: false
+            snis:
+              type: array
+              items:
+                description: 'A string representing a wildcard host name, such as *.example.com.'
+                type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            tags:
+              description: An optional set of strings associated with the Certificate for grouping and filtering.
+              type: array
+              items:
+                description: A string representing a tag.
+                type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            updated_at:
+              description: Unix epoch when the resource was last updated.
+              type: integer
+              nullable: true
+            vault:
+              description: 'Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.'
+              type: string
+              default: null
+              nullable: true
+              writeOnly: true
+              x-speakeasy-param-computed: false
+            vault_alt:
+              description: 'Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.'
+              type: string
+              default: null
+              nullable: true
+              writeOnly: true
+              x-speakeasy-param-computed: false
+          type: object
+        - anyOf:
+            - required:
+                - vault
+            - required:
+                - cert
+                - key
+    ClonedPlugin:
+      x-speakeasy-entity: GatewayClonedPlugin
+      type: object
+      properties:
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          nullable: true
+        id:
+          description: A string representing a UUID (universally unique identifier).
+          type: string
+          nullable: true
+        name:
+          description: The name to associate with the cloned plugin. Consider using a distinct prefix for cloned plugins to avoid naming conflicts with new bundled plugins in future Kong releases.
+          type: string
+          maxLength: 4096
+          minLength: 1
+        priority:
+          description: 'The plugin execution priority. If not set, it will inherit the priority of the referenced plugin.'
+          type: integer
+          default: null
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          x-speakeasy-param-computed: false
+        ref:
+          description: The name of the base plugin that this cloned plugin references. This plugin must be cloneable.
+          type: string
+        tags:
+          description: A set of strings representing tags.
+          type: array
+          items:
+            description: A string representing a tag.
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          type: integer
+          nullable: true
+      additionalProperties: false
+      required:
+        - name
+        - ref
     ConfluentConsumePlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -45650,13 +45913,19 @@ components:
             cluster_api_key:
               description: Username/Apikey for SASL authentication.
               type: string
+              default: null
+              nullable: true
               x-encrypted: true
               x-referenceable: true
+              x-speakeasy-param-computed: false
             cluster_api_secret:
               description: Password/ApiSecret for SASL authentication.
               type: string
+              default: null
+              nullable: true
               x-encrypted: true
               x-referenceable: true
+              x-speakeasy-param-computed: false
             cluster_name:
               description: 'An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.'
               type: string
@@ -45687,6 +45956,28 @@ components:
               x-encrypted: true
               x-referenceable: true
               x-speakeasy-param-computed: false
+            consumer_group:
+              description: Configuration for the Kafka consumer group ID.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                consumer_group_id:
+                  description: 'The fixed consumer group ID to use when mode is set to `manual`. For SSE and WebSocket modes, a `.<node_id>` suffix is automatically appended.'
+                  type: string
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                mode:
+                  description: 'The strategy to determine the consumer group ID. `random`: a hash `com.konghq.kafka.<md5>` over the plugin ID (plus consumer identifier/IP and node ID for SSE/WebSocket). `kong_consumer`: uses the authenticated consumer''s `username`, `custom_id`, then `id`, directly; falls back to `random` if no consumer is authenticated. `manual`: uses `consumer_group_id` directly. For SSE/WebSocket, `manual` and `kong_consumer` group IDs get a `.<node_id>` suffix.'
+                  type: string
+                  default: random
+                  enum:
+                    - kong_consumer
+                    - manual
+                    - random
+                  x-speakeasy-unknown-values: allow
+              x-speakeasy-param-computed: false
             dlq_topic:
               description: The topic to use for the Dead Letter Queue.
               type: string
@@ -45703,6 +45994,16 @@ components:
               description: 'When true, ''latest'' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where ''latest'' acts like ''earliest''.'
               type: boolean
               default: false
+            error_handling:
+              type: object
+              default: null
+              nullable: true
+              properties:
+                return_error_message:
+                  description: 'When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.'
+                  type: boolean
+                  default: false
+              x-speakeasy-param-computed: false
             keepalive:
               description: Keepalive timeout in milliseconds.
               type: integer
@@ -45735,6 +46036,55 @@ components:
                 - server-sent-events
                 - websocket
               x-speakeasy-unknown-values: allow
+            oauthbearer:
+              description: 'Options for SASL OAUTHBEARER authentication. When set, takes precedence over `cluster_api_key`/`cluster_api_secret`.'
+              type: object
+              default: null
+              nullable: true
+              properties:
+                client_id:
+                  description: The OAuth2 client ID.
+                  type: string
+                  default: null
+                  nullable: true
+                  x-referenceable: true
+                  x-speakeasy-param-computed: false
+                client_secret:
+                  description: The OAuth2 client secret.
+                  type: string
+                  default: null
+                  nullable: true
+                  x-encrypted: true
+                  x-referenceable: true
+                  x-speakeasy-param-computed: false
+                extensions:
+                  description: 'Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).'
+                  type: object
+                  default: null
+                  additionalProperties:
+                    type: string
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                scopes:
+                  description: List of OAuth2 scopes to request.
+                  type: array
+                  items:
+                    type: string
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                token_endpoint_tls_verify:
+                  description: Whether to verify the TLS certificate of the token endpoint.
+                  type: boolean
+                  default: true
+                token_endpoint_url:
+                  description: The URL of the OAuth2 token endpoint.
+                  type: string
+                  default: null
+                  nullable: true
+                  x-referenceable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
             schema_registry:
               description: The plugin-global schema registry configuration.
               type: object
@@ -46195,8 +46545,6 @@ components:
                 type: object
               minLength: 1
           required:
-            - cluster_api_key
-            - cluster_api_secret
             - topics
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -46294,13 +46642,19 @@ components:
             cluster_api_key:
               description: Username/Apikey for SASL authentication.
               type: string
+              default: null
+              nullable: true
               x-encrypted: true
               x-referenceable: true
+              x-speakeasy-param-computed: false
             cluster_api_secret:
               description: Password/ApiSecret for SASL authentication.
               type: string
+              default: null
+              nullable: true
               x-encrypted: true
               x-referenceable: true
+              x-speakeasy-param-computed: false
             cluster_name:
               description: 'An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.'
               type: string
@@ -46321,6 +46675,16 @@ components:
               x-encrypted: true
               x-referenceable: true
               x-speakeasy-param-computed: false
+            error_handling:
+              type: object
+              default: null
+              nullable: true
+              properties:
+                return_error_message:
+                  description: 'When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.'
+                  type: boolean
+                  default: false
+              x-speakeasy-param-computed: false
             forward_body:
               description: 'Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.'
               type: boolean
@@ -46337,6 +46701,48 @@ components:
               description: 'Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.'
               type: boolean
               default: false
+            headers:
+              description: Configuration for forwarding HTTP headers as Kafka record headers.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                exclude_headers:
+                  description: Blocklist of HTTP header names to exclude from forwarding. Used when `forward_all_by_default` is `enabled`.
+                  type: array
+                  items:
+                    type: string
+                  default: []
+                forward_all_by_default:
+                  description: 'When `false`, only headers listed in `include_headers` are forwarded. When `true`, all headers except those in `exclude_headers` are forwarded.'
+                  type: boolean
+                  default: false
+                forward_http_headers_as_record_headers:
+                  description: Whether to forward HTTP headers as Kafka record headers.
+                  type: boolean
+                  default: true
+                include_headers:
+                  description: Allowlist of HTTP header names to forward as Kafka record headers. Used when `forward_all_by_default` is `disabled`.
+                  type: array
+                  items:
+                    type: string
+                  default: []
+                name_mappings:
+                  description: 'Map of HTTP header names to Kafka record header names. If an HTTP header name matches a key, the corresponding value is used as the Kafka record header name.'
+                  type: object
+                  default: {}
+                  additionalProperties:
+                    type: string
+                repeated_headers_behavior:
+                  description: 'How to handle repeated HTTP headers: `concatenate_by_comma` joins values with a comma, `take_first` uses only the first value, `retain_duplicates` creates separate Kafka record headers for each value.'
+                  type: string
+                  default: retain_duplicates
+                  enum:
+                    - concatenate_by_comma
+                    - retain_duplicates
+                    - take_first
+                  x-speakeasy-unknown-values: allow
+              x-speakeasy-param-computed: false
             keepalive:
               description: Keepalive timeout in milliseconds.
               type: integer
@@ -46357,6 +46763,55 @@ components:
                 type: string
               default: null
               nullable: true
+              x-speakeasy-param-computed: false
+            oauthbearer:
+              description: 'Options for SASL OAUTHBEARER authentication. When set, takes precedence over `cluster_api_key`/`cluster_api_secret`.'
+              type: object
+              default: null
+              nullable: true
+              properties:
+                client_id:
+                  description: The OAuth2 client ID.
+                  type: string
+                  default: null
+                  nullable: true
+                  x-referenceable: true
+                  x-speakeasy-param-computed: false
+                client_secret:
+                  description: The OAuth2 client secret.
+                  type: string
+                  default: null
+                  nullable: true
+                  x-encrypted: true
+                  x-referenceable: true
+                  x-speakeasy-param-computed: false
+                extensions:
+                  description: 'Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).'
+                  type: object
+                  default: null
+                  additionalProperties:
+                    type: string
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                scopes:
+                  description: List of OAuth2 scopes to request.
+                  type: array
+                  items:
+                    type: string
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                token_endpoint_tls_verify:
+                  description: Whether to verify the TLS certificate of the token endpoint.
+                  type: boolean
+                  default: true
+                token_endpoint_url:
+                  description: The URL of the OAuth2 token endpoint.
+                  type: string
+                  default: null
+                  nullable: true
+                  x-referenceable: true
+                  x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
             producer_async:
               description: Flag to enable asynchronous mode.
@@ -46672,8 +47127,6 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
           required:
-            - cluster_api_key
-            - cluster_api_secret
             - topic
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -47027,7 +47480,7 @@ components:
           type: string
           nullable: true
         name:
-          description: The name to associate with the given custom plugin.
+          description: The name to associate with the given custom plugin. Consider using a distinct prefix for custom plugins to avoid naming conflicts with new bundled plugins in future Kong releases.
           type: string
         schema:
           description: The schema for the given custom plugin.
@@ -48187,6 +48640,10 @@ components:
                         nullable: true
                         x-lua-required: true
                         x-speakeasy-param-computed: false
+                      non_nil:
+                        description: 'When true, the property value must exist: in SET mode, input must not be nil/null; in GET mode, output must not be nil/null.'
+                        type: boolean
+                        default: false
                       output:
                         description: Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
                         type: string
@@ -48927,6 +49384,14 @@ components:
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
+            ca_certificates:
+              description: 'Array of CA Certificate object UUIDs used to build the trust store for verifying the upstream server''s TLS certificate. When https_verify is enabled and this array is non-empty, those CAs override the global lua_ssl_trusted_certificate for requests proxied by this plugin. When unset or empty, verification falls back to the global lua_ssl_trusted_certificate. When https_verify is disabled, the value is retained in the configuration but ignored at request time.'
+              type: array
+              items:
+                type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
             http_proxy_host:
               description: 'A string representing a host name, such as example.com.'
               type: string
@@ -48956,7 +49421,7 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
             https_verify:
-              description: Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
+              description: 'Whether the server certificate will be verified. When ca_certificates is configured, those certificates are used for verification. Otherwise, verification uses the CA certificates specified in lua_ssl_trusted_certificate.'
               type: boolean
               default: false
             proxy_scheme:
@@ -50367,6 +50832,16 @@ components:
         config:
           type: object
           properties:
+            client_certificate:
+              description: Certificate to use as the mTLS client certificate when connecting to the configured HTTPS endpoint.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                id:
+                  type: string
+              x-foreign: true
+              x-speakeasy-param-computed: false
             content_type:
               description: Indicates the type of data sent. The only available option is `application/json`.
               type: string
@@ -52411,13 +52886,63 @@ components:
               type: object
               properties:
                 mechanism:
-                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.'
+                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`.'
                   type: string
                   enum:
+                    - OAUTHBEARER
                     - PLAIN
                     - SCRAM-SHA-256
                     - SCRAM-SHA-512
                   x-speakeasy-unknown-values: allow
+                oauthbearer:
+                  description: Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`.
+                  type: object
+                  default: null
+                  nullable: true
+                  properties:
+                    client_id:
+                      description: The OAuth2 client ID.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                    client_secret:
+                      description: The OAuth2 client secret.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-encrypted: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                    extensions:
+                      description: 'Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).'
+                      type: object
+                      default: null
+                      additionalProperties:
+                        type: string
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    scopes:
+                      description: List of OAuth2 scopes to request.
+                      type: array
+                      items:
+                        type: string
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    token_endpoint_tls_verify:
+                      description: Whether to verify the TLS certificate of the token endpoint.
+                      type: boolean
+                      default: true
+                    token_endpoint_url:
+                      description: The URL of the OAuth2 token endpoint.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
                 password:
                   description: Password for SASL authentication.
                   type: string
@@ -52485,6 +53010,28 @@ components:
                 - auto
                 - 'off'
               x-speakeasy-unknown-values: allow
+            consumer_group:
+              description: Configuration for the Kafka consumer group ID.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                consumer_group_id:
+                  description: 'The fixed consumer group ID to use when mode is set to `manual`. For SSE and WebSocket modes, a `.<node_id>` suffix is automatically appended.'
+                  type: string
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                mode:
+                  description: 'The strategy to determine the consumer group ID. `random`: a hash `com.konghq.kafka.<md5>` over the plugin ID (plus consumer identifier/IP and node ID for SSE/WebSocket). `kong_consumer`: uses the authenticated consumer''s `username`, `custom_id`, then `id`, directly; falls back to `random` if no consumer is authenticated. `manual`: uses `consumer_group_id` directly. For SSE/WebSocket, `manual` and `kong_consumer` group IDs get a `.<node_id>` suffix.'
+                  type: string
+                  default: random
+                  enum:
+                    - kong_consumer
+                    - manual
+                    - random
+                  x-speakeasy-unknown-values: allow
+              x-speakeasy-param-computed: false
             dlq_topic:
               description: The topic to use for the Dead Letter Queue.
               type: string
@@ -52501,6 +53048,16 @@ components:
               description: 'When true, ''latest'' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where ''latest'' acts like ''earliest''.'
               type: boolean
               default: false
+            error_handling:
+              type: object
+              default: null
+              nullable: true
+              properties:
+                return_error_message:
+                  description: 'When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.'
+                  type: boolean
+                  default: false
+              x-speakeasy-param-computed: false
             message_by_lua_functions:
               description: The Lua functions that manipulates the message being sent to the client.
               type: array
@@ -53051,13 +53608,63 @@ components:
               nullable: true
               properties:
                 mechanism:
-                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256` or `SCRAM-SHA-512`.'
+                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`.'
                   type: string
                   enum:
+                    - OAUTHBEARER
                     - PLAIN
                     - SCRAM-SHA-256
                     - SCRAM-SHA-512
                   x-speakeasy-unknown-values: allow
+                oauthbearer:
+                  description: Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`.
+                  type: object
+                  default: null
+                  nullable: true
+                  properties:
+                    client_id:
+                      description: The OAuth2 client ID.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                    client_secret:
+                      description: The OAuth2 client secret.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-encrypted: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                    extensions:
+                      description: 'Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).'
+                      type: object
+                      default: null
+                      additionalProperties:
+                        type: string
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    scopes:
+                      description: List of OAuth2 scopes to request.
+                      type: array
+                      items:
+                        type: string
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    token_endpoint_tls_verify:
+                      description: Whether to verify the TLS certificate of the token endpoint.
+                      type: boolean
+                      default: true
+                    token_endpoint_url:
+                      description: The URL of the OAuth2 token endpoint.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
                 password:
                   description: Password for SASL authentication.
                   type: string
@@ -53534,13 +54141,63 @@ components:
               type: object
               properties:
                 mechanism:
-                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.'
+                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`.'
                   type: string
                   enum:
+                    - OAUTHBEARER
                     - PLAIN
                     - SCRAM-SHA-256
                     - SCRAM-SHA-512
                   x-speakeasy-unknown-values: allow
+                oauthbearer:
+                  description: Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`.
+                  type: object
+                  default: null
+                  nullable: true
+                  properties:
+                    client_id:
+                      description: The OAuth2 client ID.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                    client_secret:
+                      description: The OAuth2 client secret.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-encrypted: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                    extensions:
+                      description: 'Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).'
+                      type: object
+                      default: null
+                      additionalProperties:
+                        type: string
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    scopes:
+                      description: List of OAuth2 scopes to request.
+                      type: array
+                      items:
+                        type: string
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    token_endpoint_tls_verify:
+                      description: Whether to verify the TLS certificate of the token endpoint.
+                      type: boolean
+                      default: true
+                    token_endpoint_url:
+                      description: The URL of the OAuth2 token endpoint.
+                      type: string
+                      default: null
+                      nullable: true
+                      x-referenceable: true
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
                 password:
                   description: Password for SASL authentication.
                   type: string
@@ -53593,6 +54250,16 @@ components:
               description: 'An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.'
               type: string
               x-speakeasy-param-computed: true
+            error_handling:
+              type: object
+              default: null
+              nullable: true
+              properties:
+                return_error_message:
+                  description: 'When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.'
+                  type: boolean
+                  default: false
+              x-speakeasy-param-computed: false
             forward_body:
               description: 'Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.'
               type: boolean
@@ -53609,6 +54276,48 @@ components:
               description: 'Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.'
               type: boolean
               default: false
+            headers:
+              description: Configuration for forwarding HTTP headers as Kafka record headers.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                exclude_headers:
+                  description: Blocklist of HTTP header names to exclude from forwarding. Used when `forward_all_by_default` is `enabled`.
+                  type: array
+                  items:
+                    type: string
+                  default: []
+                forward_all_by_default:
+                  description: 'When `false`, only headers listed in `include_headers` are forwarded. When `true`, all headers except those in `exclude_headers` are forwarded.'
+                  type: boolean
+                  default: false
+                forward_http_headers_as_record_headers:
+                  description: Whether to forward HTTP headers as Kafka record headers.
+                  type: boolean
+                  default: true
+                include_headers:
+                  description: Allowlist of HTTP header names to forward as Kafka record headers. Used when `forward_all_by_default` is `disabled`.
+                  type: array
+                  items:
+                    type: string
+                  default: []
+                name_mappings:
+                  description: 'Map of HTTP header names to Kafka record header names. If an HTTP header name matches a key, the corresponding value is used as the Kafka record header name.'
+                  type: object
+                  default: {}
+                  additionalProperties:
+                    type: string
+                repeated_headers_behavior:
+                  description: 'How to handle repeated HTTP headers: `concatenate_by_comma` joins values with a comma, `take_first` uses only the first value, `retain_duplicates` creates separate Kafka record headers for each value.'
+                  type: string
+                  default: retain_duplicates
+                  enum:
+                    - concatenate_by_comma
+                    - retain_duplicates
+                    - take_first
+                  x-speakeasy-unknown-values: allow
+              x-speakeasy-param-computed: false
             keepalive:
               description: Keepalive timeout in milliseconds.
               type: integer
@@ -54207,6 +54916,24 @@ components:
                 type: string
               default:
                 - apikey
+            principals:
+              type: object
+              default: null
+              nullable: true
+              properties:
+                directory:
+                  description: The Kong Identity directory instance to authenticate against.
+                  type: string
+                  default: default
+                enabled:
+                  description: 'When true, authenticate against Kong Identity instead of local credentials.'
+                  type: boolean
+                  default: false
+                error_on_miss:
+                  description: 'When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead.'
+                  type: boolean
+                  default: true
+              x-speakeasy-param-computed: false
             realm:
               description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
               type: string
@@ -55374,7 +56101,7 @@ components:
               type: boolean
               default: true
             collect_all_errors:
-              description: 'If set to true, collects all validation errors instead of stopping at the first error. Note: Enabling this option with OpenAPI 3.0 will affect performance.'
+              description: 'If set to true, collects all schema validation errors instead of stopping at the first. Applies only to JSON Schema validation (parameter values, request/response body); pre-validation checks such as path-not-found, unsupported content-type, and unknown parameters are fail-fast and always stop at the first error regardless of this setting. Only takes effect when `structured_errors` is set to `false`. Note: Enabling this option will affect performance.'
               type: boolean
               default: false
             custom_base_path:
@@ -55391,6 +56118,12 @@ components:
               description: Indicates whether to include the base path when performing path match evaluation.
               type: boolean
               default: false
+            max_structured_errors:
+              description: 'When set, caps the number of structured errors returned in the `errors` array to the specified value (must be greater than 0). Applies only to JSON Schema validation errors; pre-validation failures such as path-not-found, unsupported content-type, and unknown parameters always produce a single error entry. When not set, no cap is applied. Requires `structured_errors` to be enabled.'
+              type: integer
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
             notify_only_request_validation_failure:
               description: 'If set to true, notifications via event hooks are enabled, but request based validation failures don''t affect the request flow.'
               type: boolean
@@ -55401,6 +56134,10 @@ components:
               default: false
             query_parameter_check:
               description: 'If set to true, checks if query parameters in the request exist in the API specification.'
+              type: boolean
+              default: false
+            structured_errors:
+              description: 'If set to true, schema validation failures are returned as a structured `errors` array, where each entry contains `instanceLocation`, `keywordLocation`, and `error`. Pre-validation failures such as path-not-found or unsupported content-type also return an `errors` array, but entries contain only an `error` field. Requires `verbose_response` to be enabled. Use `max_structured_errors` to cap the response size.'
               type: boolean
               default: false
             validate_request_body:
@@ -55844,6 +56581,13 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
+            bearer_token_header_name:
+              description: 'The name of the HTTP header from which the bearer token is retrieved. When configured, only this header is checked for the bearer token. '
+              type: string
+              default: null
+              minLength: 1
+              nullable: true
+              x-speakeasy-param-computed: false
             bearer_token_param_type:
               description: 'Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL''s query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.'
               type: array
@@ -56155,6 +56899,17 @@ components:
               nullable: true
               x-encrypted: true
               x-speakeasy-param-computed: false
+            cluster_cache_items:
+              description: 'Specifies which items are stored in the cluster cache backend configured via `cluster_cache_strategy`. Allowed values are `"introspection"` and `"tokens"`. When `"tokens"` is included, access and refresh token material is AES-encrypted before being written to the cache; enable only when your Redis deployment meets your compliance requirements. Defaults to `["introspection"]`. An empty set disables all cluster caching regardless of `cluster_cache_strategy`.'
+              type: array
+              items:
+                enum:
+                  - introspection
+                  - tokens
+                type: string
+                x-speakeasy-unknown-values: allow
+              default:
+                - introspection
             cluster_cache_redis:
               type: object
               properties:
@@ -56413,7 +57168,7 @@ components:
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: true
             cluster_cache_strategy:
-              description: 'The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.'
+              description: 'The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.'
               type: string
               default: 'off'
               enum:
@@ -57046,6 +57801,50 @@ components:
               description: 'With this parameter, you can preserve request query arguments even when doing authorization code flow.'
               type: boolean
               default: false
+            principals:
+              description: Configuration for Kong Identity principal hydration after token verification.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                directory:
+                  description: The Kong Identity directory instance to look up against.
+                  type: string
+                  default: default
+                enabled:
+                  description: 'When true, query Kong Identity to map a Principal after token verification.'
+                  type: boolean
+                  default: false
+                error_on_miss:
+                  description: 'When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set.'
+                  type: boolean
+                  default: true
+                match_consumer:
+                  description: 'If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by.'
+                  type: boolean
+                  default: true
+                match_consumer_groups:
+                  description: 'If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim.'
+                  type: boolean
+                  default: true
+                principal_by:
+                  description: 'Custom identity name for a type=custom Kong Identity lookup. When absent and principal_claim is set, an OIDC lookup is performed using principal_claim as the claim name instead of ''sub''.'
+                  type: string
+                  default: null
+                  minLength: 1
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                principal_claim:
+                  description: 'Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default ''sub''.'
+                  type: array
+                  items:
+                    minLength: 1
+                    type: string
+                  default: null
+                  minLength: 1
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
             proof_of_possession_auth_methods_validation:
               description: 'If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.'
               type: boolean
@@ -57068,6 +57867,89 @@ components:
                 - optional
                 - strict
               x-speakeasy-unknown-values: allow
+            proof_of_possession_mtls_from_header:
+              description: 'Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.'
+              type: object
+              default: null
+              nullable: true
+              properties:
+                allow_partial_chain:
+                  description: 'Allow certificate verification with only an intermediate certificate. When enabled, a full chain to the root CA is not required.'
+                  type: boolean
+                  default: false
+                ca_certificates:
+                  description: List of CA Certificate UUIDs to use when validating the client certificate chain. At least one is required.
+                  type: array
+                  items:
+                    type: string
+                cert_cache_ttl:
+                  description: Time in milliseconds to cache the revocation check result for a given certificate.
+                  type: number
+                  default: 60000
+                certificate_header_format:
+                  description: 'Encoding format of the certificate in the header. Supported formats: `url_encoded`, `base64_encoded`.'
+                  type: string
+                  default: url_encoded
+                  enum:
+                    - base64_encoded
+                    - url_encoded
+                  x-speakeasy-unknown-values: allow
+                certificate_header_name:
+                  description: Name of the HTTP header that contains the injected client certificate
+                  type: string
+                http_proxy_host:
+                  description: 'A string representing a host name, such as example.com.'
+                  type: string
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                http_proxy_port:
+                  description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                  type: integer
+                  default: null
+                  maximum: 65535
+                  minimum: 0
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                http_timeout:
+                  description: HTTP timeout in milliseconds when communicating with the OCSP server or downloading CRL.
+                  type: number
+                  default: 30000
+                https_proxy_host:
+                  description: 'A string representing a host name, such as example.com.'
+                  type: string
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                https_proxy_port:
+                  description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                  type: integer
+                  default: null
+                  maximum: 65535
+                  minimum: 0
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                revocation_check_mode:
+                  description: Controls client certificate revocation check behavior. `SKIP` disables revocation checking. `IGNORE_CA_ERROR` respects revocation status when reachable but ignores network errors. `STRICT` requires a successful revocation check.
+                  type: string
+                  default: IGNORE_CA_ERROR
+                  enum:
+                    - IGNORE_CA_ERROR
+                    - SKIP
+                    - STRICT
+                  x-speakeasy-unknown-values: allow
+                secure_source:
+                  description: 'When set to `true`, only requests from trusted IP addresses (configured in `trusted_ips` in kong.conf) are allowed to use the certificate header. This prevents direct header injection from untrusted clients.'
+                  type: boolean
+                  default: true
+                ssl_verify:
+                  description: Verify the TLS certificate of the OCSP responder or CRL distribution point server.
+                  type: boolean
+                  default: true
+              required:
+                - ca_certificates
+                - certificate_header_name
+              x-speakeasy-param-computed: false
             pushed_authorization_request_endpoint:
               description: The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
               type: string
@@ -57761,11 +58643,11 @@ components:
                       nullable: true
                       x-speakeasy-param-computed: false
                     empty_audience:
-                      description: Use empty audiences. Use this field to override audiences defined in `config.audience`.
+                      description: Use empty audiences. Use this field to remove audiences defined in `config.audience`.
                       type: boolean
                       default: false
                     empty_scopes:
-                      description: Use empty scopes. Use this field to override scopes defined in `config.scopes`.
+                      description: Use empty scopes. Use this field to remove scopes defined in `config.scopes`.
                       type: boolean
                       default: false
                     scopes:
@@ -57783,7 +58665,7 @@ components:
                   items:
                     properties:
                       conditions:
-                        description: 'A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.'
+                        description: 'A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.'
                         type: object
                         default: null
                         nullable: true
@@ -57820,6 +58702,16 @@ components:
                       issuer:
                         description: Tokens of whose iss claim matches this value will be exchanged.
                         type: string
+                      jwks_uri:
+                        description: 'An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.'
+                        type: string
+                        default: null
+                        nullable: true
+                        x-speakeasy-param-computed: false
+                      verify_signature:
+                        description: 'When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.'
+                        type: boolean
+                        default: false
                     required:
                       - issuer
                     type: object
@@ -58178,6 +59070,7 @@ components:
           type: object
           properties:
             access_logs:
+              description: 'Configuration for exporting access logs to an OTLP/HTTP endpoint. If `endpoint` is set, Kong will export access logs (e.g. request/response, route/service, latency, etc.) to the specified endpoint.'
               type: object
               properties:
                 custom_attributes_by_lua:
@@ -58252,6 +59145,7 @@ components:
               x-referenceable: true
               x-speakeasy-param-computed: false
             metrics:
+              description: 'Configuration for exporting metrics to an OTLP/HTTP endpoint. If `endpoint` is set, Kong will export metrics to the specified endpoint at the interval defined by `push_interval`.'
               type: object
               properties:
                 enable_ai_metrics:
@@ -58416,6 +59310,7 @@ components:
               maximum: 2147483646
               minimum: 0
             resource_attributes:
+              description: 'A key-value map of resource attributes to be sent with the telemetry data. The keys and values can be either static or dynamic using Kong variables (e.g. `${kong.service.name}`) for the values. For dynamic values, Lua string template syntax is used and the values will be rendered at runtime.'
               type: object
               additionalProperties:
                 type: string
@@ -61516,6 +62411,14 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
+            counter_key:
+              description: 'The key used to identify the counter for rate limiting. This can be based on consumer attributes such as `consumer.id`, `consumer.username`, or `consumer.custom_id`. Only applicable when `identifier` is set to `consumer`.'
+              type: string
+              enum:
+                - consumer.custom_id
+                - consumer.id
+                - consumer.username
+              x-speakeasy-unknown-values: allow
             dictionary_name:
               description: 'The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn''t `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.'
               type: string
@@ -63699,6 +64602,10 @@ components:
                 type: string
               default:
                 - application/json
+            array_length_compat:
+              description: 'If true, `minLength`/`maxLength` also apply to arrays using item count. Compatibility option for legacy schemas that use these keywords instead of `minItems`/`maxItems`.'
+              type: boolean
+              default: true
             body_schema:
               description: The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
               type: string
@@ -65871,7 +66778,7 @@ components:
               type: string
               default: kong_locks
             namespace:
-              description: 'The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.'
+              description: 'The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. Counters are scoped per Service, so plugin instances configured on different Services maintain independent counters even when using the same namespace. NOTE: For plugin instances sharing the same namespace, all configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.'
               type: string
               default: null
               nullable: true
@@ -66559,6 +67466,46 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
+                    client_credentials:
+                      description: 'Client credentials used to automatically obtain and renew OAuth2 access tokens from an IdP for the `CLIENT_CREDENTIALS` authentication scheme. When set, Kong fetches tokens from `token_endpoint` using `client_id` and `client_secret`, caches them until expiry, and retries with a fresh token whenever Solace returns an unauthenticated response.'
+                      type: object
+                      default: null
+                      nullable: true
+                      properties:
+                        client_id:
+                          description: The OAuth2 client ID used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                          x-encrypted: true
+                          x-referenceable: true
+                        client_secret:
+                          description: The OAuth2 client secret used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                          x-encrypted: true
+                          x-referenceable: true
+                        eagerly_expire:
+                          description: 'Number of seconds before actual expiry when cached access tokens should be considered expired and proactively renewed. This helps prevent edge cases where tokens are rejected by Solace just as they expire, but setting this too high may lead to unnecessary token refreshes.'
+                          type: integer
+                          default: 5
+                        scopes:
+                          description: The OAuth2 scopes to request when retrieving access tokens for the `CLIENT_CREDENTIALS` authentication scheme.
+                          type: array
+                          items:
+                            type: string
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        ssl_verify:
+                          description: Controls TLS certificate verification for HTTPS token endpoint requests.
+                          type: boolean
+                          default: true
+                        token_endpoint:
+                          description: The OAuth2 token endpoint URL used to retrieve access tokens for the `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                      required:
+                        - client_id
+                        - client_secret
+                        - token_endpoint
+                      x-speakeasy-param-computed: false
                     id_token:
                       description: The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
                       type: string
@@ -66588,6 +67535,7 @@ components:
                       default: BASIC
                       enum:
                         - BASIC
+                        - CLIENT_CREDENTIALS
                         - NONE
                         - OAUTH2
                       x-speakeasy-unknown-values: allow
@@ -66833,6 +67781,46 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
+                    client_credentials:
+                      description: 'Client credentials used to automatically obtain and renew OAuth2 access tokens from an IdP for the `CLIENT_CREDENTIALS` authentication scheme. When set, Kong fetches tokens from `token_endpoint` using `client_id` and `client_secret`, caches them until expiry, and retries with a fresh token whenever Solace returns an unauthenticated response.'
+                      type: object
+                      default: null
+                      nullable: true
+                      properties:
+                        client_id:
+                          description: The OAuth2 client ID used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                          x-encrypted: true
+                          x-referenceable: true
+                        client_secret:
+                          description: The OAuth2 client secret used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                          x-encrypted: true
+                          x-referenceable: true
+                        eagerly_expire:
+                          description: 'Number of seconds before actual expiry when cached access tokens should be considered expired and proactively renewed. This helps prevent edge cases where tokens are rejected by Solace just as they expire, but setting this too high may lead to unnecessary token refreshes.'
+                          type: integer
+                          default: 5
+                        scopes:
+                          description: The OAuth2 scopes to request when retrieving access tokens for the `CLIENT_CREDENTIALS` authentication scheme.
+                          type: array
+                          items:
+                            type: string
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        ssl_verify:
+                          description: Controls TLS certificate verification for HTTPS token endpoint requests.
+                          type: boolean
+                          default: true
+                        token_endpoint:
+                          description: The OAuth2 token endpoint URL used to retrieve access tokens for the `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                      required:
+                        - client_id
+                        - client_secret
+                        - token_endpoint
+                      x-speakeasy-param-computed: false
                     id_token:
                       description: The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
                       type: string
@@ -66862,6 +67850,7 @@ components:
                       default: BASIC
                       enum:
                         - BASIC
+                        - CLIENT_CREDENTIALS
                         - NONE
                         - OAUTH2
                       x-speakeasy-unknown-values: allow
@@ -67178,6 +68167,46 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
+                    client_credentials:
+                      description: 'Client credentials used to automatically obtain and renew OAuth2 access tokens from an IdP for the `CLIENT_CREDENTIALS` authentication scheme. When set, Kong fetches tokens from `token_endpoint` using `client_id` and `client_secret`, caches them until expiry, and retries with a fresh token whenever Solace returns an unauthenticated response.'
+                      type: object
+                      default: null
+                      nullable: true
+                      properties:
+                        client_id:
+                          description: The OAuth2 client ID used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                          x-encrypted: true
+                          x-referenceable: true
+                        client_secret:
+                          description: The OAuth2 client secret used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                          x-encrypted: true
+                          x-referenceable: true
+                        eagerly_expire:
+                          description: 'Number of seconds before actual expiry when cached access tokens should be considered expired and proactively renewed. This helps prevent edge cases where tokens are rejected by Solace just as they expire, but setting this too high may lead to unnecessary token refreshes.'
+                          type: integer
+                          default: 5
+                        scopes:
+                          description: The OAuth2 scopes to request when retrieving access tokens for the `CLIENT_CREDENTIALS` authentication scheme.
+                          type: array
+                          items:
+                            type: string
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        ssl_verify:
+                          description: Controls TLS certificate verification for HTTPS token endpoint requests.
+                          type: boolean
+                          default: true
+                        token_endpoint:
+                          description: The OAuth2 token endpoint URL used to retrieve access tokens for the `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+                          type: string
+                      required:
+                        - client_id
+                        - client_secret
+                        - token_endpoint
+                      x-speakeasy-param-computed: false
                     id_token:
                       description: The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
                       type: string
@@ -67207,6 +68236,7 @@ components:
                       default: BASIC
                       enum:
                         - BASIC
+                        - CLIENT_CREDENTIALS
                         - NONE
                         - OAUTH2
                       x-speakeasy-unknown-values: allow
@@ -72092,6 +73122,7 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 type: array
+                nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
                 x-speakeasy-terraform-ignore: true
@@ -72137,6 +73168,7 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 type: array
+                nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
                 x-speakeasy-terraform-ignore: true
@@ -74467,6 +75499,7 @@ tags:
       <br><br>
       If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string.
     name: Certificates
+  - name: Cloned Plugins
   - description: |-
       Consumer groups enable the organization and categorization of consumers (users or applications) within an API ecosystem.
       By grouping consumers together, you eliminate the need to manage them individually, providing a scalable, efficient approach to managing configurations.

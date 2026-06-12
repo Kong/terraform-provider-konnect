@@ -629,7 +629,7 @@ type ServiceProtectionPluginConfig struct {
 	Limit []float64 `json:"limit"`
 	// The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declared in nginx-kong.conf.
 	LockDictionaryName *string `default:"kong_locks" json:"lock_dictionary_name"`
-	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
+	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. Counters are scoped per Service, so plugin instances configured on different Services maintain independent counters even when using the same namespace. NOTE: For plugin instances sharing the same namespace, all configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 	Namespace *string                       `default:"null" json:"namespace"`
 	Redis     *ServiceProtectionPluginRedis `json:"redis"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.

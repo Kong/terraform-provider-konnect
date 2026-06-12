@@ -88,6 +88,20 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 						Optional: true,
 						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 							"mechanism": types.StringType,
+							"oauthbearer": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`client_id`:     types.StringType,
+									`client_secret`: types.StringType,
+									`extensions`: types.MapType{
+										ElemType: types.StringType,
+									},
+									`scopes`: types.ListType{
+										ElemType: types.StringType,
+									},
+									`token_endpoint_tls_verify`: types.BoolType,
+									`token_endpoint_url`:        types.StringType,
+								},
+							},
 							"password":  types.StringType,
 							"strategy":  types.StringType,
 							"tokenauth": types.BoolType,
@@ -97,7 +111,54 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 							"mechanism": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The SASL authentication mechanism.  Supported options: ` + "`" + `PLAIN` + "`" + `, ` + "`" + `SCRAM-SHA-256` + "`" + ` or ` + "`" + `SCRAM-SHA-512` + "`" + `. possible known values include one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]`,
+								Description: `The SASL authentication mechanism.  Supported options: ` + "`" + `PLAIN` + "`" + `, ` + "`" + `SCRAM-SHA-256` + "`" + `, ` + "`" + `SCRAM-SHA-512` + "`" + `, or ` + "`" + `OAUTHBEARER` + "`" + `. possible known values include one of ["OAUTHBEARER", "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]`,
+							},
+							"oauthbearer": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"client_id":     types.StringType,
+									"client_secret": types.StringType,
+									"extensions": types.MapType{
+										ElemType: types.StringType,
+									},
+									"scopes": types.ListType{
+										ElemType: types.StringType,
+									},
+									"token_endpoint_tls_verify": types.BoolType,
+									"token_endpoint_url":        types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"client_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `The OAuth2 client ID.`,
+									},
+									"client_secret": schema.StringAttribute{
+										Optional:    true,
+										Description: `The OAuth2 client secret.`,
+									},
+									"extensions": schema.MapAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).`,
+									},
+									"scopes": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `List of OAuth2 scopes to request.`,
+									},
+									"token_endpoint_tls_verify": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `Whether to verify the TLS certificate of the token endpoint. Default: true`,
+									},
+									"token_endpoint_url": schema.StringAttribute{
+										Optional:    true,
+										Description: `The URL of the OAuth2 token endpoint.`,
+									},
+								},
+								Description: `Options for SASL OAUTHBEARER authentication. Required when ` + "`" + `mechanism` + "`" + ` is ` + "`" + `OAUTHBEARER` + "`" + `.`,
 							},
 							"password": schema.StringAttribute{
 								Optional:    true,

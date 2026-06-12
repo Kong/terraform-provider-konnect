@@ -200,7 +200,8 @@ type Konnect struct {
 	// <br><br>
 	// If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string.
 	//
-	Certificates *Certificates
+	Certificates  *Certificates
+	ClonedPlugins *ClonedPlugins
 	// Consumer groups enable the organization and categorization of consumers (users or applications) within an API ecosystem.
 	// By grouping consumers together, you eliminate the need to manage them individually, providing a scalable, efficient approach to managing configurations.
 	ConsumerGroups *ConsumerGroups
@@ -468,6 +469,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ConfigStoreSecrets = newConfigStoreSecrets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Certificates = newCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ClonedPlugins = newClonedPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConsumerGroups = newConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Consumers = newConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ACLs = newACLs(sdk, sdk.sdkConfiguration, sdk.hooks)

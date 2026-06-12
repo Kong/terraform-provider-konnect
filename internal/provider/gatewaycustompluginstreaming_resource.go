@@ -74,7 +74,7 @@ func (r *GatewayCustomPluginStreamingResource) Schema(ctx context.Context, req r
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
-				Description: `The name to associate with the given custom plugin.`,
+				Description: `The name to associate with the given custom plugin. Consider using a distinct prefix for custom plugins to avoid naming conflicts with new bundled plugins in future Kong releases.`,
 			},
 			"schema": schema.StringAttribute{
 				Required:    true,

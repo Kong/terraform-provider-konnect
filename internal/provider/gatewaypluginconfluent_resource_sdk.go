@@ -39,15 +39,47 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 		} else {
 			r.Config.BootstrapServers = nil
 		}
-		r.Config.ClusterAPIKey = types.StringValue(resp.Config.ClusterAPIKey)
-		r.Config.ClusterAPISecret = types.StringValue(resp.Config.ClusterAPISecret)
+		r.Config.ClusterAPIKey = types.StringPointerValue(resp.Config.ClusterAPIKey)
+		r.Config.ClusterAPISecret = types.StringPointerValue(resp.Config.ClusterAPISecret)
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
 		r.Config.ConfluentCloudAPIKey = types.StringPointerValue(resp.Config.ConfluentCloudAPIKey)
 		r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
+		if resp.Config.ErrorHandling == nil {
+			r.Config.ErrorHandling = nil
+		} else {
+			r.Config.ErrorHandling = &tfTypes.ErrorHandling{}
+			r.Config.ErrorHandling.ReturnErrorMessage = types.BoolPointerValue(resp.Config.ErrorHandling.ReturnErrorMessage)
+		}
 		r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
 		r.Config.ForwardHeaders = types.BoolPointerValue(resp.Config.ForwardHeaders)
 		r.Config.ForwardMethod = types.BoolPointerValue(resp.Config.ForwardMethod)
 		r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
+		if resp.Config.Headers == nil {
+			r.Config.Headers = nil
+		} else {
+			r.Config.Headers = &tfTypes.ConfluentPluginHeaders{}
+			r.Config.Headers.ExcludeHeaders = make([]types.String, 0, len(resp.Config.Headers.ExcludeHeaders))
+			for _, v := range resp.Config.Headers.ExcludeHeaders {
+				r.Config.Headers.ExcludeHeaders = append(r.Config.Headers.ExcludeHeaders, types.StringValue(v))
+			}
+			r.Config.Headers.ForwardAllByDefault = types.BoolPointerValue(resp.Config.Headers.ForwardAllByDefault)
+			r.Config.Headers.ForwardHTTPHeadersAsRecordHeaders = types.BoolPointerValue(resp.Config.Headers.ForwardHTTPHeadersAsRecordHeaders)
+			r.Config.Headers.IncludeHeaders = make([]types.String, 0, len(resp.Config.Headers.IncludeHeaders))
+			for _, v := range resp.Config.Headers.IncludeHeaders {
+				r.Config.Headers.IncludeHeaders = append(r.Config.Headers.IncludeHeaders, types.StringValue(v))
+			}
+			if len(resp.Config.Headers.NameMappings) > 0 {
+				r.Config.Headers.NameMappings = make(map[string]types.String, len(resp.Config.Headers.NameMappings))
+				for key, value := range resp.Config.Headers.NameMappings {
+					r.Config.Headers.NameMappings[key] = types.StringValue(value)
+				}
+			}
+			if resp.Config.Headers.RepeatedHeadersBehavior != nil {
+				r.Config.Headers.RepeatedHeadersBehavior = types.StringValue(string(*resp.Config.Headers.RepeatedHeadersBehavior))
+			} else {
+				r.Config.Headers.RepeatedHeadersBehavior = types.StringNull()
+			}
+		}
 		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
 		r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
 		r.Config.KeyQueryArg = types.StringPointerValue(resp.Config.KeyQueryArg)
@@ -58,6 +90,29 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 			}
 		} else {
 			r.Config.MessageByLuaFunctions = nil
+		}
+		if resp.Config.Oauthbearer == nil {
+			r.Config.Oauthbearer = nil
+		} else {
+			r.Config.Oauthbearer = &tfTypes.Oauthbearer{}
+			r.Config.Oauthbearer.ClientID = types.StringPointerValue(resp.Config.Oauthbearer.ClientID)
+			r.Config.Oauthbearer.ClientSecret = types.StringPointerValue(resp.Config.Oauthbearer.ClientSecret)
+			if resp.Config.Oauthbearer.Extensions != nil {
+				r.Config.Oauthbearer.Extensions = make(map[string]types.String, len(resp.Config.Oauthbearer.Extensions))
+				for key1, value1 := range resp.Config.Oauthbearer.Extensions {
+					r.Config.Oauthbearer.Extensions[key1] = types.StringValue(value1)
+				}
+			}
+			if resp.Config.Oauthbearer.Scopes != nil {
+				r.Config.Oauthbearer.Scopes = make([]types.String, 0, len(resp.Config.Oauthbearer.Scopes))
+				for _, v := range resp.Config.Oauthbearer.Scopes {
+					r.Config.Oauthbearer.Scopes = append(r.Config.Oauthbearer.Scopes, types.StringValue(v))
+				}
+			} else {
+				r.Config.Oauthbearer.Scopes = nil
+			}
+			r.Config.Oauthbearer.TokenEndpointTLSVerify = types.BoolPointerValue(resp.Config.Oauthbearer.TokenEndpointTLSVerify)
+			r.Config.Oauthbearer.TokenEndpointURL = types.StringPointerValue(resp.Config.Oauthbearer.TokenEndpointURL)
 		}
 		r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
 		r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
@@ -119,14 +174,14 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
-							for key, value := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = types.StringValue(value)
+							for key2, value2 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = types.StringValue(value2)
 							}
 						}
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
-							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = types.StringValue(value1)
+							for key3, value3 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key3] = types.StringValue(value3)
 							}
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -464,12 +519,18 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 			})
 		}
 	}
-	var clusterAPIKey string
-	clusterAPIKey = r.Config.ClusterAPIKey.ValueString()
-
-	var clusterAPISecret string
-	clusterAPISecret = r.Config.ClusterAPISecret.ValueString()
-
+	clusterAPIKey := new(string)
+	if !r.Config.ClusterAPIKey.IsUnknown() && !r.Config.ClusterAPIKey.IsNull() {
+		*clusterAPIKey = r.Config.ClusterAPIKey.ValueString()
+	} else {
+		clusterAPIKey = nil
+	}
+	clusterAPISecret := new(string)
+	if !r.Config.ClusterAPISecret.IsUnknown() && !r.Config.ClusterAPISecret.IsNull() {
+		*clusterAPISecret = r.Config.ClusterAPISecret.ValueString()
+	} else {
+		clusterAPISecret = nil
+	}
 	clusterName := new(string)
 	if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {
 		*clusterName = r.Config.ClusterName.ValueString()
@@ -487,6 +548,18 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		*confluentCloudAPISecret = r.Config.ConfluentCloudAPISecret.ValueString()
 	} else {
 		confluentCloudAPISecret = nil
+	}
+	var errorHandling *shared.ErrorHandling
+	if r.Config.ErrorHandling != nil {
+		returnErrorMessage := new(bool)
+		if !r.Config.ErrorHandling.ReturnErrorMessage.IsUnknown() && !r.Config.ErrorHandling.ReturnErrorMessage.IsNull() {
+			*returnErrorMessage = r.Config.ErrorHandling.ReturnErrorMessage.ValueBool()
+		} else {
+			returnErrorMessage = nil
+		}
+		errorHandling = &shared.ErrorHandling{
+			ReturnErrorMessage: returnErrorMessage,
+		}
 	}
 	forwardBody := new(bool)
 	if !r.Config.ForwardBody.IsUnknown() && !r.Config.ForwardBody.IsNull() {
@@ -512,6 +585,50 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	} else {
 		forwardURI = nil
 	}
+	var headers *shared.ConfluentPluginHeaders
+	if r.Config.Headers != nil {
+		excludeHeaders := make([]string, 0, len(r.Config.Headers.ExcludeHeaders))
+		for excludeHeadersIndex := range r.Config.Headers.ExcludeHeaders {
+			excludeHeaders = append(excludeHeaders, r.Config.Headers.ExcludeHeaders[excludeHeadersIndex].ValueString())
+		}
+		forwardAllByDefault := new(bool)
+		if !r.Config.Headers.ForwardAllByDefault.IsUnknown() && !r.Config.Headers.ForwardAllByDefault.IsNull() {
+			*forwardAllByDefault = r.Config.Headers.ForwardAllByDefault.ValueBool()
+		} else {
+			forwardAllByDefault = nil
+		}
+		forwardHTTPHeadersAsRecordHeaders := new(bool)
+		if !r.Config.Headers.ForwardHTTPHeadersAsRecordHeaders.IsUnknown() && !r.Config.Headers.ForwardHTTPHeadersAsRecordHeaders.IsNull() {
+			*forwardHTTPHeadersAsRecordHeaders = r.Config.Headers.ForwardHTTPHeadersAsRecordHeaders.ValueBool()
+		} else {
+			forwardHTTPHeadersAsRecordHeaders = nil
+		}
+		includeHeaders := make([]string, 0, len(r.Config.Headers.IncludeHeaders))
+		for includeHeadersIndex := range r.Config.Headers.IncludeHeaders {
+			includeHeaders = append(includeHeaders, r.Config.Headers.IncludeHeaders[includeHeadersIndex].ValueString())
+		}
+		nameMappings := make(map[string]string)
+		for nameMappingsKey := range r.Config.Headers.NameMappings {
+			var nameMappingsInst string
+			nameMappingsInst = r.Config.Headers.NameMappings[nameMappingsKey].ValueString()
+
+			nameMappings[nameMappingsKey] = nameMappingsInst
+		}
+		repeatedHeadersBehavior := new(shared.RepeatedHeadersBehavior)
+		if !r.Config.Headers.RepeatedHeadersBehavior.IsUnknown() && !r.Config.Headers.RepeatedHeadersBehavior.IsNull() {
+			*repeatedHeadersBehavior = shared.RepeatedHeadersBehavior(r.Config.Headers.RepeatedHeadersBehavior.ValueString())
+		} else {
+			repeatedHeadersBehavior = nil
+		}
+		headers = &shared.ConfluentPluginHeaders{
+			ExcludeHeaders:                    excludeHeaders,
+			ForwardAllByDefault:               forwardAllByDefault,
+			ForwardHTTPHeadersAsRecordHeaders: forwardHTTPHeadersAsRecordHeaders,
+			IncludeHeaders:                    includeHeaders,
+			NameMappings:                      nameMappings,
+			RepeatedHeadersBehavior:           repeatedHeadersBehavior,
+		}
+	}
 	keepalive := new(int64)
 	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
 		*keepalive = r.Config.Keepalive.ValueInt64()
@@ -535,6 +652,58 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		messageByLuaFunctions = make([]string, 0, len(r.Config.MessageByLuaFunctions))
 		for messageByLuaFunctionsIndex := range r.Config.MessageByLuaFunctions {
 			messageByLuaFunctions = append(messageByLuaFunctions, r.Config.MessageByLuaFunctions[messageByLuaFunctionsIndex].ValueString())
+		}
+	}
+	var oauthbearer *shared.Oauthbearer
+	if r.Config.Oauthbearer != nil {
+		clientID := new(string)
+		if !r.Config.Oauthbearer.ClientID.IsUnknown() && !r.Config.Oauthbearer.ClientID.IsNull() {
+			*clientID = r.Config.Oauthbearer.ClientID.ValueString()
+		} else {
+			clientID = nil
+		}
+		clientSecret := new(string)
+		if !r.Config.Oauthbearer.ClientSecret.IsUnknown() && !r.Config.Oauthbearer.ClientSecret.IsNull() {
+			*clientSecret = r.Config.Oauthbearer.ClientSecret.ValueString()
+		} else {
+			clientSecret = nil
+		}
+		var extensions map[string]string
+		if r.Config.Oauthbearer.Extensions != nil {
+			extensions = make(map[string]string)
+			for extensionsKey := range r.Config.Oauthbearer.Extensions {
+				var extensionsInst string
+				extensionsInst = r.Config.Oauthbearer.Extensions[extensionsKey].ValueString()
+
+				extensions[extensionsKey] = extensionsInst
+			}
+		}
+		var scopes []string
+		if r.Config.Oauthbearer.Scopes != nil {
+			scopes = make([]string, 0, len(r.Config.Oauthbearer.Scopes))
+			for scopesIndex := range r.Config.Oauthbearer.Scopes {
+				scopes = append(scopes, r.Config.Oauthbearer.Scopes[scopesIndex].ValueString())
+			}
+		}
+		tokenEndpointTLSVerify := new(bool)
+		if !r.Config.Oauthbearer.TokenEndpointTLSVerify.IsUnknown() && !r.Config.Oauthbearer.TokenEndpointTLSVerify.IsNull() {
+			*tokenEndpointTLSVerify = r.Config.Oauthbearer.TokenEndpointTLSVerify.ValueBool()
+		} else {
+			tokenEndpointTLSVerify = nil
+		}
+		tokenEndpointURL := new(string)
+		if !r.Config.Oauthbearer.TokenEndpointURL.IsUnknown() && !r.Config.Oauthbearer.TokenEndpointURL.IsNull() {
+			*tokenEndpointURL = r.Config.Oauthbearer.TokenEndpointURL.ValueString()
+		} else {
+			tokenEndpointURL = nil
+		}
+		oauthbearer = &shared.Oauthbearer{
+			ClientID:               clientID,
+			ClientSecret:           clientSecret,
+			Extensions:             extensions,
+			Scopes:                 scopes,
+			TokenEndpointTLSVerify: tokenEndpointTLSVerify,
+			TokenEndpointURL:       tokenEndpointURL,
 		}
 	}
 	producerAsync := new(bool)
@@ -622,17 +791,17 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 					for audienceIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
 						audience = append(audience, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience[audienceIndex].ValueString())
 					}
-					clientID := new(string)
+					clientId1 := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
-						*clientID = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
+						*clientId1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
 					} else {
-						clientID = nil
+						clientId1 = nil
 					}
-					clientSecret := new(string)
+					clientSecret1 := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsNull() {
-						*clientSecret = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
+						*clientSecret1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
 					} else {
-						clientSecret = nil
+						clientSecret1 = nil
 					}
 					grantType := new(shared.ConfluentPluginGrantType)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsNull() {
@@ -646,9 +815,9 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 					} else {
 						password1 = nil
 					}
-					scopes := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
-					for scopesIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
-						scopes = append(scopes, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex].ValueString())
+					scopes1 := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
+					for scopesIndex1 := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+						scopes1 = append(scopes1, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex1].ValueString())
 					}
 					var tokenEndpoint string
 					tokenEndpoint = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
@@ -681,11 +850,11 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 					}
 					oauth2 = &shared.Oauth2{
 						Audience:      audience,
-						ClientID:      clientID,
-						ClientSecret:  clientSecret,
+						ClientID:      clientId1,
+						ClientSecret:  clientSecret1,
 						GrantType:     grantType,
 						Password:      password1,
-						Scopes:        scopes,
+						Scopes:        scopes1,
 						TokenEndpoint: tokenEndpoint,
 						TokenHeaders:  tokenHeaders,
 						TokenPostArgs: tokenPostArgs,
@@ -885,14 +1054,17 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		ClusterName:             clusterName,
 		ConfluentCloudAPIKey:    confluentCloudAPIKey,
 		ConfluentCloudAPISecret: confluentCloudAPISecret,
+		ErrorHandling:           errorHandling,
 		ForwardBody:             forwardBody,
 		ForwardHeaders:          forwardHeaders,
 		ForwardMethod:           forwardMethod,
 		ForwardURI:              forwardURI,
+		Headers:                 headers,
 		Keepalive:               keepalive,
 		KeepaliveEnabled:        keepaliveEnabled,
 		KeyQueryArg:             keyQueryArg,
 		MessageByLuaFunctions:   messageByLuaFunctions,
+		Oauthbearer:             oauthbearer,
 		ProducerAsync:           producerAsync,
 		ProducerAsyncBufferingLimitsMessagesInMemory: producerAsyncBufferingLimitsMessagesInMemory,
 		ProducerAsyncFlushTimeout:                    producerAsyncFlushTimeout,

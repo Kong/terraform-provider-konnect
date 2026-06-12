@@ -10,6 +10,7 @@ type Property struct {
 	ContentType types.String `tfsdk:"content_type"`
 	Input       types.String `tfsdk:"input"`
 	Name        types.String `tfsdk:"name"`
+	NonNil      types.Bool   `tfsdk:"non_nil"`
 	Output      types.String `tfsdk:"output"`
 	Property    types.String `tfsdk:"property"`
 }

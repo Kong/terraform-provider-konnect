@@ -87,6 +87,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		}
 		r.Config.AuthorizationRollingTimeout = types.Float64PointerValue(resp.Config.AuthorizationRollingTimeout)
 		r.Config.BearerTokenCookieName = types.StringPointerValue(resp.Config.BearerTokenCookieName)
+		r.Config.BearerTokenHeaderName = types.StringPointerValue(resp.Config.BearerTokenHeaderName)
 		r.Config.BearerTokenParamType = make([]types.String, 0, len(resp.Config.BearerTokenParamType))
 		for _, v := range resp.Config.BearerTokenParamType {
 			r.Config.BearerTokenParamType = append(r.Config.BearerTokenParamType, types.StringValue(string(v)))
@@ -197,6 +198,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			}
 		} else {
 			r.Config.ClientSecret = nil
+		}
+		r.Config.ClusterCacheItems = make([]types.String, 0, len(resp.Config.ClusterCacheItems))
+		for _, v := range resp.Config.ClusterCacheItems {
+			r.Config.ClusterCacheItems = append(r.Config.ClusterCacheItems, types.StringValue(string(v)))
 		}
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
@@ -580,6 +585,25 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.PasswordParamType = append(r.Config.PasswordParamType, types.StringValue(string(v)))
 		}
 		r.Config.PreserveQueryArgs = types.BoolPointerValue(resp.Config.PreserveQueryArgs)
+		if resp.Config.Principals == nil {
+			r.Config.Principals = nil
+		} else {
+			r.Config.Principals = &tfTypes.OpenidConnectPluginPrincipals{}
+			r.Config.Principals.Directory = types.StringPointerValue(resp.Config.Principals.Directory)
+			r.Config.Principals.Enabled = types.BoolPointerValue(resp.Config.Principals.Enabled)
+			r.Config.Principals.ErrorOnMiss = types.BoolPointerValue(resp.Config.Principals.ErrorOnMiss)
+			r.Config.Principals.MatchConsumer = types.BoolPointerValue(resp.Config.Principals.MatchConsumer)
+			r.Config.Principals.MatchConsumerGroups = types.BoolPointerValue(resp.Config.Principals.MatchConsumerGroups)
+			r.Config.Principals.PrincipalBy = types.StringPointerValue(resp.Config.Principals.PrincipalBy)
+			if resp.Config.Principals.PrincipalClaim != nil {
+				r.Config.Principals.PrincipalClaim = make([]types.String, 0, len(resp.Config.Principals.PrincipalClaim))
+				for _, v := range resp.Config.Principals.PrincipalClaim {
+					r.Config.Principals.PrincipalClaim = append(r.Config.Principals.PrincipalClaim, types.StringValue(v))
+				}
+			} else {
+				r.Config.Principals.PrincipalClaim = nil
+			}
+		}
 		r.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(resp.Config.ProofOfPossessionAuthMethodsValidation)
 		if resp.Config.ProofOfPossessionDpop != nil {
 			r.Config.ProofOfPossessionDpop = types.StringValue(string(*resp.Config.ProofOfPossessionDpop))
@@ -590,6 +614,35 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ProofOfPossessionMtls = types.StringValue(string(*resp.Config.ProofOfPossessionMtls))
 		} else {
 			r.Config.ProofOfPossessionMtls = types.StringNull()
+		}
+		if resp.Config.ProofOfPossessionMtlsFromHeader == nil {
+			r.Config.ProofOfPossessionMtlsFromHeader = nil
+		} else {
+			r.Config.ProofOfPossessionMtlsFromHeader = &tfTypes.ProofOfPossessionMtlsFromHeader{}
+			r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain = types.BoolPointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain)
+			r.Config.ProofOfPossessionMtlsFromHeader.CaCertificates = make([]types.String, 0, len(resp.Config.ProofOfPossessionMtlsFromHeader.CaCertificates))
+			for _, v := range resp.Config.ProofOfPossessionMtlsFromHeader.CaCertificates {
+				r.Config.ProofOfPossessionMtlsFromHeader.CaCertificates = append(r.Config.ProofOfPossessionMtlsFromHeader.CaCertificates, types.StringValue(v))
+			}
+			r.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL = types.Float64PointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL)
+			if resp.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat != nil {
+				r.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat = types.StringValue(string(*resp.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat))
+			} else {
+				r.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat = types.StringNull()
+			}
+			r.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderName = types.StringValue(resp.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderName)
+			r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost = types.StringPointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost)
+			r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort = types.Int64PointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort)
+			r.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout = types.Float64PointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout)
+			r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost = types.StringPointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost)
+			r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort = types.Int64PointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort)
+			if resp.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode != nil {
+				r.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode = types.StringValue(string(*resp.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode))
+			} else {
+				r.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode = types.StringNull()
+			}
+			r.Config.ProofOfPossessionMtlsFromHeader.SecureSource = types.BoolPointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.SecureSource)
+			r.Config.ProofOfPossessionMtlsFromHeader.SslVerify = types.BoolPointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.SslVerify)
 		}
 		r.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(resp.Config.PushedAuthorizationRequestEndpoint)
 		if resp.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
@@ -892,6 +945,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 					}
 				}
 				subjectTokenIssuers.Issuer = types.StringValue(subjectTokenIssuersItem.Issuer)
+				subjectTokenIssuers.JwksURI = types.StringPointerValue(subjectTokenIssuersItem.JwksURI)
+				subjectTokenIssuers.VerifySignature = types.BoolPointerValue(subjectTokenIssuersItem.VerifySignature)
 
 				r.Config.TokenExchange.SubjectTokenIssuers = append(r.Config.TokenExchange.SubjectTokenIssuers, subjectTokenIssuers)
 			}
@@ -1443,6 +1498,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		bearerTokenCookieName = nil
 	}
+	bearerTokenHeaderName := new(string)
+	if !r.Config.BearerTokenHeaderName.IsUnknown() && !r.Config.BearerTokenHeaderName.IsNull() {
+		*bearerTokenHeaderName = r.Config.BearerTokenHeaderName.ValueString()
+	} else {
+		bearerTokenHeaderName = nil
+	}
 	bearerTokenParamType := make([]shared.BearerTokenParamType, 0, len(r.Config.BearerTokenParamType))
 	for _, bearerTokenParamTypeItem := range r.Config.BearerTokenParamType {
 		bearerTokenParamType = append(bearerTokenParamType, shared.BearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
@@ -1742,6 +1803,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		for clientSecretIndex := range r.Config.ClientSecret {
 			clientSecret = append(clientSecret, r.Config.ClientSecret[clientSecretIndex].ValueString())
 		}
+	}
+	clusterCacheItems := make([]shared.ClusterCacheItems, 0, len(r.Config.ClusterCacheItems))
+	for _, clusterCacheItemsItem := range r.Config.ClusterCacheItems {
+		clusterCacheItems = append(clusterCacheItems, shared.ClusterCacheItems(clusterCacheItemsItem.ValueString()))
 	}
 	var clusterCacheRedis *shared.ClusterCacheRedis
 	if r.Config.ClusterCacheRedis != nil {
@@ -2548,6 +2613,61 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		preserveQueryArgs = nil
 	}
+	var principals *shared.OpenidConnectPluginPrincipals
+	if r.Config.Principals != nil {
+		directory := new(string)
+		if !r.Config.Principals.Directory.IsUnknown() && !r.Config.Principals.Directory.IsNull() {
+			*directory = r.Config.Principals.Directory.ValueString()
+		} else {
+			directory = nil
+		}
+		enabled1 := new(bool)
+		if !r.Config.Principals.Enabled.IsUnknown() && !r.Config.Principals.Enabled.IsNull() {
+			*enabled1 = r.Config.Principals.Enabled.ValueBool()
+		} else {
+			enabled1 = nil
+		}
+		errorOnMiss := new(bool)
+		if !r.Config.Principals.ErrorOnMiss.IsUnknown() && !r.Config.Principals.ErrorOnMiss.IsNull() {
+			*errorOnMiss = r.Config.Principals.ErrorOnMiss.ValueBool()
+		} else {
+			errorOnMiss = nil
+		}
+		matchConsumer := new(bool)
+		if !r.Config.Principals.MatchConsumer.IsUnknown() && !r.Config.Principals.MatchConsumer.IsNull() {
+			*matchConsumer = r.Config.Principals.MatchConsumer.ValueBool()
+		} else {
+			matchConsumer = nil
+		}
+		matchConsumerGroups := new(bool)
+		if !r.Config.Principals.MatchConsumerGroups.IsUnknown() && !r.Config.Principals.MatchConsumerGroups.IsNull() {
+			*matchConsumerGroups = r.Config.Principals.MatchConsumerGroups.ValueBool()
+		} else {
+			matchConsumerGroups = nil
+		}
+		principalBy := new(string)
+		if !r.Config.Principals.PrincipalBy.IsUnknown() && !r.Config.Principals.PrincipalBy.IsNull() {
+			*principalBy = r.Config.Principals.PrincipalBy.ValueString()
+		} else {
+			principalBy = nil
+		}
+		var principalClaim []string
+		if r.Config.Principals.PrincipalClaim != nil {
+			principalClaim = make([]string, 0, len(r.Config.Principals.PrincipalClaim))
+			for principalClaimIndex := range r.Config.Principals.PrincipalClaim {
+				principalClaim = append(principalClaim, r.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
+			}
+		}
+		principals = &shared.OpenidConnectPluginPrincipals{
+			Directory:           directory,
+			Enabled:             enabled1,
+			ErrorOnMiss:         errorOnMiss,
+			MatchConsumer:       matchConsumer,
+			MatchConsumerGroups: matchConsumerGroups,
+			PrincipalBy:         principalBy,
+			PrincipalClaim:      principalClaim,
+		}
+	}
 	proofOfPossessionAuthMethodsValidation := new(bool)
 	if !r.Config.ProofOfPossessionAuthMethodsValidation.IsUnknown() && !r.Config.ProofOfPossessionAuthMethodsValidation.IsNull() {
 		*proofOfPossessionAuthMethodsValidation = r.Config.ProofOfPossessionAuthMethodsValidation.ValueBool()
@@ -2565,6 +2685,97 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		*proofOfPossessionMtls = shared.ProofOfPossessionMtls(r.Config.ProofOfPossessionMtls.ValueString())
 	} else {
 		proofOfPossessionMtls = nil
+	}
+	var proofOfPossessionMtlsFromHeader *shared.ProofOfPossessionMtlsFromHeader
+	if r.Config.ProofOfPossessionMtlsFromHeader != nil {
+		allowPartialChain := new(bool)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsNull() {
+			*allowPartialChain = r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.ValueBool()
+		} else {
+			allowPartialChain = nil
+		}
+		caCertificates := make([]string, 0, len(r.Config.ProofOfPossessionMtlsFromHeader.CaCertificates))
+		for caCertificatesIndex := range r.Config.ProofOfPossessionMtlsFromHeader.CaCertificates {
+			caCertificates = append(caCertificates, r.Config.ProofOfPossessionMtlsFromHeader.CaCertificates[caCertificatesIndex].ValueString())
+		}
+		certCacheTTL := new(float64)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.IsNull() {
+			*certCacheTTL = r.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.ValueFloat64()
+		} else {
+			certCacheTTL = nil
+		}
+		certificateHeaderFormat := new(shared.OpenidConnectPluginCertificateHeaderFormat)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.IsNull() {
+			*certificateHeaderFormat = shared.OpenidConnectPluginCertificateHeaderFormat(r.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.ValueString())
+		} else {
+			certificateHeaderFormat = nil
+		}
+		var certificateHeaderName string
+		certificateHeaderName = r.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderName.ValueString()
+
+		httpProxyHost := new(string)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.IsNull() {
+			*httpProxyHost = r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.ValueString()
+		} else {
+			httpProxyHost = nil
+		}
+		httpProxyPort := new(int64)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.IsNull() {
+			*httpProxyPort = r.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.ValueInt64()
+		} else {
+			httpProxyPort = nil
+		}
+		httpTimeout := new(float64)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.IsNull() {
+			*httpTimeout = r.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.ValueFloat64()
+		} else {
+			httpTimeout = nil
+		}
+		httpsProxyHost := new(string)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.IsNull() {
+			*httpsProxyHost = r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.ValueString()
+		} else {
+			httpsProxyHost = nil
+		}
+		httpsProxyPort := new(int64)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.IsNull() {
+			*httpsProxyPort = r.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.ValueInt64()
+		} else {
+			httpsProxyPort = nil
+		}
+		revocationCheckMode := new(shared.OpenidConnectPluginRevocationCheckMode)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.IsNull() {
+			*revocationCheckMode = shared.OpenidConnectPluginRevocationCheckMode(r.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.ValueString())
+		} else {
+			revocationCheckMode = nil
+		}
+		secureSource := new(bool)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.SecureSource.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.SecureSource.IsNull() {
+			*secureSource = r.Config.ProofOfPossessionMtlsFromHeader.SecureSource.ValueBool()
+		} else {
+			secureSource = nil
+		}
+		sslVerify1 := new(bool)
+		if !r.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsNull() {
+			*sslVerify1 = r.Config.ProofOfPossessionMtlsFromHeader.SslVerify.ValueBool()
+		} else {
+			sslVerify1 = nil
+		}
+		proofOfPossessionMtlsFromHeader = &shared.ProofOfPossessionMtlsFromHeader{
+			AllowPartialChain:       allowPartialChain,
+			CaCertificates:          caCertificates,
+			CertCacheTTL:            certCacheTTL,
+			CertificateHeaderFormat: certificateHeaderFormat,
+			CertificateHeaderName:   certificateHeaderName,
+			HTTPProxyHost:           httpProxyHost,
+			HTTPProxyPort:           httpProxyPort,
+			HTTPTimeout:             httpTimeout,
+			HTTPSProxyHost:          httpsProxyHost,
+			HTTPSProxyPort:          httpsProxyPort,
+			RevocationCheckMode:     revocationCheckMode,
+			SecureSource:            secureSource,
+			SslVerify:               sslVerify1,
+		}
 	}
 	pushedAuthorizationRequestEndpoint := new(string)
 	if !r.Config.PushedAuthorizationRequestEndpoint.IsUnknown() && !r.Config.PushedAuthorizationRequestEndpoint.IsNull() {
@@ -2834,11 +3045,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			ssl1 = nil
 		}
-		sslVerify1 := new(bool)
+		sslVerify2 := new(bool)
 		if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
-			*sslVerify1 = r.Config.Redis.SslVerify.ValueBool()
+			*sslVerify2 = r.Config.Redis.SslVerify.ValueBool()
 		} else {
-			sslVerify1 = nil
+			sslVerify2 = nil
 		}
 		username1 := new(string)
 		if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
@@ -2869,7 +3080,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			ServerName:             serverName1,
 			Socket:                 socket,
 			Ssl:                    ssl1,
-			SslVerify:              sslVerify1,
+			SslVerify:              sslVerify2,
 			Username:               username1,
 		}
 	}
@@ -3171,11 +3382,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionStoreMetadata = nil
 	}
-	sslVerify2 := new(bool)
+	sslVerify3 := new(bool)
 	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
-		*sslVerify2 = r.Config.SslVerify.ValueBool()
+		*sslVerify3 = r.Config.SslVerify.ValueBool()
 	} else {
-		sslVerify2 = nil
+		sslVerify3 = nil
 	}
 	timeout := new(float64)
 	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
@@ -3217,11 +3428,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	if r.Config.TokenExchange != nil {
 		var cache *shared.OpenidConnectPluginCache
 		if r.Config.TokenExchange.Cache != nil {
-			enabled1 := new(bool)
+			enabled2 := new(bool)
 			if !r.Config.TokenExchange.Cache.Enabled.IsUnknown() && !r.Config.TokenExchange.Cache.Enabled.IsNull() {
-				*enabled1 = r.Config.TokenExchange.Cache.Enabled.ValueBool()
+				*enabled2 = r.Config.TokenExchange.Cache.Enabled.ValueBool()
 			} else {
-				enabled1 = nil
+				enabled2 = nil
 			}
 			ttl := new(int64)
 			if !r.Config.TokenExchange.Cache.TTL.IsUnknown() && !r.Config.TokenExchange.Cache.TTL.IsNull() {
@@ -3230,7 +3441,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 				ttl = nil
 			}
 			cache = &shared.OpenidConnectPluginCache{
-				Enabled: enabled1,
+				Enabled: enabled2,
 				TTL:     ttl,
 			}
 		}
@@ -3311,9 +3522,23 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			var issuer2 string
 			issuer2 = r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Issuer.ValueString()
 
+			jwksURI := new(string)
+			if !r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.IsUnknown() && !r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.IsNull() {
+				*jwksURI = r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.ValueString()
+			} else {
+				jwksURI = nil
+			}
+			verifySignature := new(bool)
+			if !r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.IsUnknown() && !r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.IsNull() {
+				*verifySignature = r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.ValueBool()
+			} else {
+				verifySignature = nil
+			}
 			subjectTokenIssuers = append(subjectTokenIssuers, shared.SubjectTokenIssuers{
-				Conditions: conditions,
-				Issuer:     issuer2,
+				Conditions:      conditions,
+				Issuer:          issuer2,
+				JwksURI:         jwksURI,
+				VerifySignature: verifySignature,
 			})
 		}
 		tokenExchange = &shared.OpenidConnectPluginTokenExchange{
@@ -3585,11 +3810,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		verifyParameters = nil
 	}
-	verifySignature := new(bool)
+	verifySignature1 := new(bool)
 	if !r.Config.VerifySignature.IsUnknown() && !r.Config.VerifySignature.IsNull() {
-		*verifySignature = r.Config.VerifySignature.ValueBool()
+		*verifySignature1 = r.Config.VerifySignature.ValueBool()
 	} else {
-		verifySignature = nil
+		verifySignature1 = nil
 	}
 	consumerClaim := make([]string, 0, len(r.Config.ConsumerClaim))
 	for consumerClaimIndex := range r.Config.ConsumerClaim {
@@ -3614,6 +3839,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
 		AuthorizationRollingTimeout:            authorizationRollingTimeout,
 		BearerTokenCookieName:                  bearerTokenCookieName,
+		BearerTokenHeaderName:                  bearerTokenHeaderName,
 		BearerTokenParamType:                   bearerTokenParamType,
 		ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
 		CacheIntrospection:                     cacheIntrospection,
@@ -3634,6 +3860,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		ClientID:                               clientID,
 		ClientJwk:                              clientJwk,
 		ClientSecret:                           clientSecret,
+		ClusterCacheItems:                      clusterCacheItems,
 		ClusterCacheRedis:                      clusterCacheRedis,
 		ClusterCacheStrategy:                   clusterCacheStrategy,
 		ConsumerBy:                             consumerBy,
@@ -3721,9 +3948,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		NoProxy:                                noProxy,
 		PasswordParamType:                      passwordParamType,
 		PreserveQueryArgs:                      preserveQueryArgs,
+		Principals:                             principals,
 		ProofOfPossessionAuthMethodsValidation: proofOfPossessionAuthMethodsValidation,
 		ProofOfPossessionDpop:                  proofOfPossessionDpop,
 		ProofOfPossessionMtls:                  proofOfPossessionMtls,
+		ProofOfPossessionMtlsFromHeader:        proofOfPossessionMtlsFromHeader,
 		PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
 		PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
 		RedirectURI:                        redirectURI,
@@ -3778,7 +4007,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		SessionSecret:                      sessionSecret,
 		SessionStorage:                     sessionStorage,
 		SessionStoreMetadata:               sessionStoreMetadata,
-		SslVerify:                          sslVerify2,
+		SslVerify:                          sslVerify3,
 		Timeout:                            timeout,
 		TLSClientAuthCertID:                tlsClientAuthCertID,
 		TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
@@ -3825,7 +4054,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		VerifyClaims:                       verifyClaims,
 		VerifyNonce:                        verifyNonce,
 		VerifyParameters:                   verifyParameters,
-		VerifySignature:                    verifySignature,
+		VerifySignature:                    verifySignature1,
 		ConsumerClaim:                      consumerClaim,
 	}
 	protocols := make([]shared.OpenidConnectPluginProtocols, 0, len(r.Protocols))

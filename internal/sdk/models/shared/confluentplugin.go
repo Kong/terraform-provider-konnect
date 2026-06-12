@@ -152,6 +152,191 @@ func (b *BootstrapServers) GetPort() int64 {
 	return b.Port
 }
 
+type ErrorHandling struct {
+	// When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.
+	ReturnErrorMessage *bool `default:"false" json:"return_error_message"`
+}
+
+func (e ErrorHandling) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ErrorHandling) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *ErrorHandling) GetReturnErrorMessage() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.ReturnErrorMessage
+}
+
+// RepeatedHeadersBehavior - How to handle repeated HTTP headers: `concatenate_by_comma` joins values with a comma, `take_first` uses only the first value, `retain_duplicates` creates separate Kafka record headers for each value.
+type RepeatedHeadersBehavior string
+
+const (
+	RepeatedHeadersBehaviorConcatenateByComma RepeatedHeadersBehavior = "concatenate_by_comma"
+	RepeatedHeadersBehaviorRetainDuplicates   RepeatedHeadersBehavior = "retain_duplicates"
+	RepeatedHeadersBehaviorTakeFirst          RepeatedHeadersBehavior = "take_first"
+)
+
+func (e RepeatedHeadersBehavior) ToPointer() *RepeatedHeadersBehavior {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RepeatedHeadersBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_by_comma", "retain_duplicates", "take_first":
+			return true
+		}
+	}
+	return false
+}
+
+// ConfluentPluginHeaders - Configuration for forwarding HTTP headers as Kafka record headers.
+type ConfluentPluginHeaders struct {
+	// Blocklist of HTTP header names to exclude from forwarding. Used when `forward_all_by_default` is `enabled`.
+	ExcludeHeaders []string `json:"exclude_headers,omitempty"`
+	// When `false`, only headers listed in `include_headers` are forwarded. When `true`, all headers except those in `exclude_headers` are forwarded.
+	ForwardAllByDefault *bool `default:"false" json:"forward_all_by_default"`
+	// Whether to forward HTTP headers as Kafka record headers.
+	ForwardHTTPHeadersAsRecordHeaders *bool `default:"true" json:"forward_http_headers_as_record_headers"`
+	// Allowlist of HTTP header names to forward as Kafka record headers. Used when `forward_all_by_default` is `disabled`.
+	IncludeHeaders []string `json:"include_headers,omitempty"`
+	// Map of HTTP header names to Kafka record header names. If an HTTP header name matches a key, the corresponding value is used as the Kafka record header name.
+	NameMappings map[string]string `json:"name_mappings,omitempty"`
+	// How to handle repeated HTTP headers: `concatenate_by_comma` joins values with a comma, `take_first` uses only the first value, `retain_duplicates` creates separate Kafka record headers for each value.
+	RepeatedHeadersBehavior *RepeatedHeadersBehavior `default:"retain_duplicates" json:"repeated_headers_behavior"`
+}
+
+func (c ConfluentPluginHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfluentPluginHeaders) GetExcludeHeaders() []string {
+	if c == nil {
+		return nil
+	}
+	return c.ExcludeHeaders
+}
+
+func (c *ConfluentPluginHeaders) GetForwardAllByDefault() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ForwardAllByDefault
+}
+
+func (c *ConfluentPluginHeaders) GetForwardHTTPHeadersAsRecordHeaders() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ForwardHTTPHeadersAsRecordHeaders
+}
+
+func (c *ConfluentPluginHeaders) GetIncludeHeaders() []string {
+	if c == nil {
+		return nil
+	}
+	return c.IncludeHeaders
+}
+
+func (c *ConfluentPluginHeaders) GetNameMappings() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.NameMappings
+}
+
+func (c *ConfluentPluginHeaders) GetRepeatedHeadersBehavior() *RepeatedHeadersBehavior {
+	if c == nil {
+		return nil
+	}
+	return c.RepeatedHeadersBehavior
+}
+
+// Oauthbearer - Options for SASL OAUTHBEARER authentication. When set, takes precedence over `cluster_api_key`/`cluster_api_secret`.
+type Oauthbearer struct {
+	// The OAuth2 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// The OAuth2 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).
+	Extensions map[string]string `json:"extensions,omitempty"`
+	// List of OAuth2 scopes to request.
+	Scopes []string `json:"scopes"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	TokenEndpointTLSVerify *bool `default:"true" json:"token_endpoint_tls_verify"`
+	// The URL of the OAuth2 token endpoint.
+	TokenEndpointURL *string `default:"null" json:"token_endpoint_url"`
+}
+
+func (o Oauthbearer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauthbearer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Oauthbearer) GetClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientID
+}
+
+func (o *Oauthbearer) GetClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecret
+}
+
+func (o *Oauthbearer) GetExtensions() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Extensions
+}
+
+func (o *Oauthbearer) GetScopes() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Scopes
+}
+
+func (o *Oauthbearer) GetTokenEndpointTLSVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TokenEndpointTLSVerify
+}
+
+func (o *Oauthbearer) GetTokenEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenEndpointURL
+}
+
 // ProducerRequestAcks - The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
 type ProducerRequestAcks int64
 
@@ -752,15 +937,16 @@ type ConfluentPluginConfig struct {
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []BootstrapServers `json:"bootstrap_servers"`
 	// Username/Apikey for SASL authentication.
-	ClusterAPIKey string `json:"cluster_api_key"`
+	ClusterAPIKey *string `default:"null" json:"cluster_api_key"`
 	// Password/ApiSecret for SASL authentication.
-	ClusterAPISecret string `json:"cluster_api_secret"`
+	ClusterAPISecret *string `default:"null" json:"cluster_api_secret"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
 	ClusterName *string `json:"cluster_name,omitempty"`
 	// Apikey for authentication with Confluent Cloud. This allows for management tasks such as creating topics, ACLs, etc.
 	ConfluentCloudAPIKey *string `default:"null" json:"confluent_cloud_api_key"`
 	// The corresponding secret for the Confluent Cloud API key.
-	ConfluentCloudAPISecret *string `default:"null" json:"confluent_cloud_api_secret"`
+	ConfluentCloudAPISecret *string        `default:"null" json:"confluent_cloud_api_secret"`
+	ErrorHandling           *ErrorHandling `json:"error_handling"`
 	// Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardBody *bool `default:"true" json:"forward_body"`
 	// Include the request headers in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
@@ -769,6 +955,8 @@ type ConfluentPluginConfig struct {
 	ForwardMethod *bool `default:"false" json:"forward_method"`
 	// Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardURI *bool `default:"false" json:"forward_uri"`
+	// Configuration for forwarding HTTP headers as Kafka record headers.
+	Headers *ConfluentPluginHeaders `json:"headers"`
 	// Keepalive timeout in milliseconds.
 	Keepalive        *int64 `default:"60000" json:"keepalive"`
 	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`
@@ -776,6 +964,8 @@ type ConfluentPluginConfig struct {
 	KeyQueryArg *string `default:"null" json:"key_query_arg"`
 	// The Lua functions that manipulates the message being sent to the Kafka topic.
 	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
+	// Options for SASL OAUTHBEARER authentication. When set, takes precedence over `cluster_api_key`/`cluster_api_secret`.
+	Oauthbearer *Oauthbearer `json:"oauthbearer"`
 	// Flag to enable asynchronous mode.
 	ProducerAsync *bool `default:"true" json:"producer_async"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
@@ -810,7 +1000,7 @@ func (c ConfluentPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cluster_api_key", "cluster_api_secret", "topic"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"topic"}); err != nil {
 		return err
 	}
 	return nil
@@ -830,16 +1020,16 @@ func (c *ConfluentPluginConfig) GetBootstrapServers() []BootstrapServers {
 	return c.BootstrapServers
 }
 
-func (c *ConfluentPluginConfig) GetClusterAPIKey() string {
+func (c *ConfluentPluginConfig) GetClusterAPIKey() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ClusterAPIKey
 }
 
-func (c *ConfluentPluginConfig) GetClusterAPISecret() string {
+func (c *ConfluentPluginConfig) GetClusterAPISecret() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ClusterAPISecret
 }
@@ -863,6 +1053,13 @@ func (c *ConfluentPluginConfig) GetConfluentCloudAPISecret() *string {
 		return nil
 	}
 	return c.ConfluentCloudAPISecret
+}
+
+func (c *ConfluentPluginConfig) GetErrorHandling() *ErrorHandling {
+	if c == nil {
+		return nil
+	}
+	return c.ErrorHandling
 }
 
 func (c *ConfluentPluginConfig) GetForwardBody() *bool {
@@ -893,6 +1090,13 @@ func (c *ConfluentPluginConfig) GetForwardURI() *bool {
 	return c.ForwardURI
 }
 
+func (c *ConfluentPluginConfig) GetHeaders() *ConfluentPluginHeaders {
+	if c == nil {
+		return nil
+	}
+	return c.Headers
+}
+
 func (c *ConfluentPluginConfig) GetKeepalive() *int64 {
 	if c == nil {
 		return nil
@@ -919,6 +1123,13 @@ func (c *ConfluentPluginConfig) GetMessageByLuaFunctions() []string {
 		return nil
 	}
 	return c.MessageByLuaFunctions
+}
+
+func (c *ConfluentPluginConfig) GetOauthbearer() *Oauthbearer {
+	if c == nil {
+		return nil
+	}
+	return c.Oauthbearer
 }
 
 func (c *ConfluentPluginConfig) GetProducerAsync() *bool {

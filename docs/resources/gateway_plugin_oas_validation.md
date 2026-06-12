@@ -23,9 +23,11 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
     custom_base_path                             = "...my_custom_base_path..."
     header_parameter_check                       = false
     include_base_path                            = false
+    max_structured_errors                        = 0
     notify_only_request_validation_failure       = false
     notify_only_response_body_validation_failure = false
     query_parameter_check                        = false
+    structured_errors                            = false
     validate_request_body                        = true
     validate_request_header_params               = true
     validate_request_query_params                = true
@@ -111,13 +113,15 @@ Optional:
 
 - `allowed_header_parameters` (String) List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent. Default: "Host,Content-Type,User-Agent,Accept,Content-Length"
 - `api_spec_encoded` (Boolean) Indicates whether the api_spec is URI-Encoded. Default: true
-- `collect_all_errors` (Boolean) If set to true, collects all validation errors instead of stopping at the first error. Note: Enabling this option with OpenAPI 3.0 will affect performance. Default: false
+- `collect_all_errors` (Boolean) If set to true, collects all schema validation errors instead of stopping at the first. Applies only to JSON Schema validation (parameter values, request/response body); pre-validation checks such as path-not-found, unsupported content-type, and unknown parameters are fail-fast and always stop at the first error regardless of this setting. Only takes effect when `structured_errors` is set to `false`. Note: Enabling this option will affect performance. Default: false
 - `custom_base_path` (String) The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
 - `header_parameter_check` (Boolean) If set to true, checks if HTTP header parameters in the request exist in the API specification. Default: false
 - `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation. Default: false
+- `max_structured_errors` (Number) When set, caps the number of structured errors returned in the `errors` array to the specified value (must be greater than 0). Applies only to JSON Schema validation errors; pre-validation failures such as path-not-found, unsupported content-type, and unknown parameters always produce a single error entry. When not set, no cap is applied. Requires `structured_errors` to be enabled.
 - `notify_only_request_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow. Default: false
 - `notify_only_response_body_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow. Default: false
 - `query_parameter_check` (Boolean) If set to true, checks if query parameters in the request exist in the API specification. Default: false
+- `structured_errors` (Boolean) If set to true, schema validation failures are returned as a structured `errors` array, where each entry contains `instanceLocation`, `keywordLocation`, and `error`. Pre-validation failures such as path-not-found or unsupported content-type also return an `errors` array, but entries contain only an `error` field. Requires `verbose_response` to be enabled. Use `max_structured_errors` to cap the response size. Default: false
 - `validate_request_body` (Boolean) If set to true, validates the request body content against the API specification. Default: true
 - `validate_request_header_params` (Boolean) If set to true, validates HTTP header parameters against the API specification. Default: true
 - `validate_request_query_params` (Boolean) If set to true, validates query parameters against the API specification. Default: true

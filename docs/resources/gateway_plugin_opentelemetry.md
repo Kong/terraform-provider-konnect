@@ -145,7 +145,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 
 Optional:
 
-- `access_logs` (Attributes) (see [below for nested schema](#nestedatt--config--access_logs))
+- `access_logs` (Attributes) Configuration for exporting access logs to an OTLP/HTTP endpoint. If `endpoint` is set, Kong will export access logs (e.g. request/response, route/service, latency, etc.) to the specified endpoint. (see [below for nested schema](#nestedatt--config--access_logs))
 - `access_logs_endpoint` (String) An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
 - `batch_flush_delay` (Number) The delay, in seconds, between two consecutive batches.
 - `batch_span_count` (Number) The number of spans to be sent in a single batch.
@@ -154,11 +154,11 @@ Optional:
 - `headers` (Map of String) The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
 - `http_response_header_for_traceid` (String)
 - `logs_endpoint` (String) An HTTP URL endpoint where internal logs are exported.
-- `metrics` (Attributes) (see [below for nested schema](#nestedatt--config--metrics))
+- `metrics` (Attributes) Configuration for exporting metrics to an OTLP/HTTP endpoint. If `endpoint` is set, Kong will export metrics to the specified endpoint at the interval defined by `push_interval`. (see [below for nested schema](#nestedatt--config--metrics))
 - `propagation` (Attributes) (see [below for nested schema](#nestedatt--config--propagation))
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
-- `resource_attributes` (Map of String)
+- `resource_attributes` (Map of String) A key-value map of resource attributes to be sent with the telemetry data. The keys and values can be either static or dynamic using Kong variables (e.g. `${kong.service.name}`) for the values. For dynamic values, Lua string template syntax is used and the values will be rendered at runtime.
 - `sampling_rate` (Number) Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
 - `sampling_strategy` (String) The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise. possible known values include one of ["parent_drop_probability_fallback", "parent_probability_fallback"]; Default: "parent_drop_probability_fallback"
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000

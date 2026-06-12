@@ -12,9 +12,11 @@ type KafkaConsumePluginConfig struct {
 	BootstrapServers         []BootstrapServers                    `tfsdk:"bootstrap_servers"`
 	ClusterName              types.String                          `tfsdk:"cluster_name"`
 	CommitStrategy           types.String                          `tfsdk:"commit_strategy"`
+	ConsumerGroup            *ConfluentConsumePluginConsumerGroup  `tfsdk:"consumer_group"`
 	DlqTopic                 types.String                          `tfsdk:"dlq_topic"`
 	EnableDlq                types.Bool                            `tfsdk:"enable_dlq"`
 	EnforceLatestOffsetReset types.Bool                            `tfsdk:"enforce_latest_offset_reset"`
+	ErrorHandling            *ErrorHandling                        `tfsdk:"error_handling"`
 	MessageByLuaFunctions    []types.String                        `tfsdk:"message_by_lua_functions"`
 	MessageDeserializer      types.String                          `tfsdk:"message_deserializer"`
 	Mode                     types.String                          `tfsdk:"mode"`

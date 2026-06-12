@@ -117,11 +117,11 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 						Description: `Set of bootstrap brokers in a ` + "`" + `{host: host, port: port}` + "`" + ` list format.`,
 					},
 					"cluster_api_key": schema.StringAttribute{
-						Required:    true,
+						Optional:    true,
 						Description: `Username/Apikey for SASL authentication.`,
 					},
 					"cluster_api_secret": schema.StringAttribute{
-						Required:    true,
+						Optional:    true,
 						Description: `Password/ApiSecret for SASL authentication.`,
 					},
 					"cluster_name": schema.StringAttribute{
@@ -136,6 +136,21 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 					"confluent_cloud_api_secret": schema.StringAttribute{
 						Optional:    true,
 						Description: `The corresponding secret for the Confluent Cloud API key.`,
+					},
+					"error_handling": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"return_error_message": types.BoolType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"return_error_message": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production. Default: false`,
+							},
+						},
 					},
 					"forward_body": schema.BoolAttribute{
 						Computed:    true,
@@ -161,6 +176,65 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 						Default:     booldefault.StaticBool(false),
 						Description: `Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: ` + "`" + `forward_method` + "`" + `, ` + "`" + `forward_uri` + "`" + `, ` + "`" + `forward_headers` + "`" + `, ` + "`" + `forward_body` + "`" + `. Default: false`,
 					},
+					"headers": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"exclude_headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"forward_all_by_default":                 types.BoolType,
+							"forward_http_headers_as_record_headers": types.BoolType,
+							"include_headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"name_mappings": types.MapType{
+								ElemType: types.StringType,
+							},
+							"repeated_headers_behavior": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"exclude_headers": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+								ElementType: types.StringType,
+								Description: `Blocklist of HTTP header names to exclude from forwarding. Used when ` + "`" + `forward_all_by_default` + "`" + ` is ` + "`" + `enabled` + "`" + `. Default: []`,
+							},
+							"forward_all_by_default": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When ` + "`" + `false` + "`" + `, only headers listed in ` + "`" + `include_headers` + "`" + ` are forwarded. When ` + "`" + `true` + "`" + `, all headers except those in ` + "`" + `exclude_headers` + "`" + ` are forwarded. Default: false`,
+							},
+							"forward_http_headers_as_record_headers": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Whether to forward HTTP headers as Kafka record headers. Default: true`,
+							},
+							"include_headers": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+								ElementType: types.StringType,
+								Description: `Allowlist of HTTP header names to forward as Kafka record headers. Used when ` + "`" + `forward_all_by_default` + "`" + ` is ` + "`" + `disabled` + "`" + `. Default: []`,
+							},
+							"name_mappings": schema.MapAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Map of HTTP header names to Kafka record header names. If an HTTP header name matches a key, the corresponding value is used as the Kafka record header name.`,
+							},
+							"repeated_headers_behavior": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`retain_duplicates`),
+								Description: `How to handle repeated HTTP headers: ` + "`" + `concatenate_by_comma` + "`" + ` joins values with a comma, ` + "`" + `take_first` + "`" + ` uses only the first value, ` + "`" + `retain_duplicates` + "`" + ` creates separate Kafka record headers for each value. possible known values include one of ["concatenate_by_comma", "retain_duplicates", "take_first"]; Default: "retain_duplicates"`,
+							},
+						},
+						Description: `Configuration for forwarding HTTP headers as Kafka record headers.`,
+					},
 					"keepalive": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
@@ -181,6 +255,53 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The Lua functions that manipulates the message being sent to the Kafka topic.`,
+					},
+					"oauthbearer": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"client_id":     types.StringType,
+							"client_secret": types.StringType,
+							"extensions": types.MapType{
+								ElemType: types.StringType,
+							},
+							"scopes": types.ListType{
+								ElemType: types.StringType,
+							},
+							"token_endpoint_tls_verify": types.BoolType,
+							"token_endpoint_url":        types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"client_id": schema.StringAttribute{
+								Optional:    true,
+								Description: `The OAuth2 client ID.`,
+							},
+							"client_secret": schema.StringAttribute{
+								Optional:    true,
+								Description: `The OAuth2 client secret.`,
+							},
+							"extensions": schema.MapAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).`,
+							},
+							"scopes": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `List of OAuth2 scopes to request.`,
+							},
+							"token_endpoint_tls_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Whether to verify the TLS certificate of the token endpoint. Default: true`,
+							},
+							"token_endpoint_url": schema.StringAttribute{
+								Optional:    true,
+								Description: `The URL of the OAuth2 token endpoint.`,
+							},
+						},
+						Description: `Options for SASL OAUTHBEARER authentication. When set, takes precedence over ` + "`" + `cluster_api_key` + "`" + `/` + "`" + `cluster_api_secret` + "`" + `.`,
 					},
 					"producer_async": schema.BoolAttribute{
 						Computed:    true,

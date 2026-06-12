@@ -17,6 +17,12 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.HTTPLogPluginConfig{}
+		if resp.Config.ClientCertificate == nil {
+			r.Config.ClientCertificate = nil
+		} else {
+			r.Config.ClientCertificate = &tfTypes.Set{}
+			r.Config.ClientCertificate.ID = types.StringPointerValue(resp.Config.ClientCertificate.ID)
+		}
 		if resp.Config.ContentType != nil {
 			r.Config.ContentType = types.StringValue(string(*resp.Config.ContentType))
 		} else {
@@ -320,6 +326,18 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	} else {
 		updatedAt = nil
 	}
+	var clientCertificate *shared.HTTPLogPluginClientCertificate
+	if r.Config.ClientCertificate != nil {
+		id2 := new(string)
+		if !r.Config.ClientCertificate.ID.IsUnknown() && !r.Config.ClientCertificate.ID.IsNull() {
+			*id2 = r.Config.ClientCertificate.ID.ValueString()
+		} else {
+			id2 = nil
+		}
+		clientCertificate = &shared.HTTPLogPluginClientCertificate{
+			ID: id2,
+		}
+	}
 	contentType := new(shared.ContentType)
 	if !r.Config.ContentType.IsUnknown() && !r.Config.ContentType.IsNull() {
 		*contentType = shared.ContentType(r.Config.ContentType.ValueString())
@@ -453,6 +471,7 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 		timeout = nil
 	}
 	config := shared.HTTPLogPluginConfig{
+		ClientCertificate: clientCertificate,
 		ContentType:       contentType,
 		CustomFieldsByLua: customFieldsByLua,
 		FlushTimeout:      flushTimeout,
@@ -468,14 +487,14 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	}
 	var consumer *shared.HTTPLogPluginConsumer
 	if r.Consumer != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id2 = r.Consumer.ID.ValueString()
+			*id3 = r.Consumer.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		consumer = &shared.HTTPLogPluginConsumer{
-			ID: id2,
+			ID: id3,
 		}
 	}
 	protocols := make([]shared.HTTPLogPluginProtocols, 0, len(r.Protocols))
@@ -484,26 +503,26 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	}
 	var route *shared.HTTPLogPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id4 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id4 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id4 = nil
 		}
 		route = &shared.HTTPLogPluginRoute{
-			ID: id3,
+			ID: id4,
 		}
 	}
 	var service *shared.HTTPLogPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id5 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id5 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id5 = nil
 		}
 		service = &shared.HTTPLogPluginService{
-			ID: id4,
+			ID: id5,
 		}
 	}
 	out := shared.HTTPLogPlugin{
