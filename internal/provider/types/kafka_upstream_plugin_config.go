@@ -11,10 +11,12 @@ type KafkaUpstreamPluginConfig struct {
 	Authentication                               *Authentication                `tfsdk:"authentication"`
 	BootstrapServers                             []BootstrapServers             `tfsdk:"bootstrap_servers"`
 	ClusterName                                  types.String                   `tfsdk:"cluster_name"`
+	ErrorHandling                                *ErrorHandling                 `tfsdk:"error_handling"`
 	ForwardBody                                  types.Bool                     `tfsdk:"forward_body"`
 	ForwardHeaders                               types.Bool                     `tfsdk:"forward_headers"`
 	ForwardMethod                                types.Bool                     `tfsdk:"forward_method"`
 	ForwardURI                                   types.Bool                     `tfsdk:"forward_uri"`
+	Headers                                      *ConfluentPluginHeaders        `tfsdk:"headers"`
 	Keepalive                                    types.Int64                    `tfsdk:"keepalive"`
 	KeepaliveEnabled                             types.Bool                     `tfsdk:"keepalive_enabled"`
 	KeyQueryArg                                  types.String                   `tfsdk:"key_query_arg"`

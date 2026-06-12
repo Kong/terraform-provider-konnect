@@ -44,6 +44,14 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 			for _, v := range resp.Config.KeyNames {
 				r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
 			}
+			if resp.Config.Principals == nil {
+				r.Config.Principals = nil
+			} else {
+				r.Config.Principals = &tfTypes.Principals{}
+				r.Config.Principals.Directory = types.StringPointerValue(resp.Config.Principals.Directory)
+				r.Config.Principals.Enabled = types.BoolPointerValue(resp.Config.Principals.Enabled)
+				r.Config.Principals.ErrorOnMiss = types.BoolPointerValue(resp.Config.Principals.ErrorOnMiss)
+			}
 			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		}
@@ -360,6 +368,32 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 		for keyNamesIndex := range r.Config.KeyNames {
 			keyNames = append(keyNames, r.Config.KeyNames[keyNamesIndex].ValueString())
 		}
+		var principals *shared.KeyAuthPluginPrincipals
+		if r.Config.Principals != nil {
+			directory := new(string)
+			if !r.Config.Principals.Directory.IsUnknown() && !r.Config.Principals.Directory.IsNull() {
+				*directory = r.Config.Principals.Directory.ValueString()
+			} else {
+				directory = nil
+			}
+			enabled1 := new(bool)
+			if !r.Config.Principals.Enabled.IsUnknown() && !r.Config.Principals.Enabled.IsNull() {
+				*enabled1 = r.Config.Principals.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			errorOnMiss := new(bool)
+			if !r.Config.Principals.ErrorOnMiss.IsUnknown() && !r.Config.Principals.ErrorOnMiss.IsNull() {
+				*errorOnMiss = r.Config.Principals.ErrorOnMiss.ValueBool()
+			} else {
+				errorOnMiss = nil
+			}
+			principals = &shared.KeyAuthPluginPrincipals{
+				Directory:   directory,
+				Enabled:     enabled1,
+				ErrorOnMiss: errorOnMiss,
+			}
+		}
 		realm := new(string)
 		if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
 			*realm = r.Config.Realm.ValueString()
@@ -380,6 +414,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 			KeyInHeader:     keyInHeader,
 			KeyInQuery:      keyInQuery,
 			KeyNames:        keyNames,
+			Principals:      principals,
 			Realm:           realm,
 			RunOnPreflight:  runOnPreflight,
 		}

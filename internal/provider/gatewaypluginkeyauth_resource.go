@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -95,6 +96,13 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 					"key_names": types.ListType{
 						ElemType: types.StringType,
 					},
+					"principals": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`directory`:     types.StringType,
+							`enabled`:       types.BoolType,
+							`error_on_miss`: types.BoolType,
+						},
+					},
 					"realm":            types.StringType,
 					"run_on_preflight": types.BoolType,
 				})),
@@ -158,6 +166,35 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("apikey")})),
 						ElementType: types.StringType,
 						Description: `Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen. Default: ["apikey"]`,
+					},
+					"principals": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"directory":     types.StringType,
+							"enabled":       types.BoolType,
+							"error_on_miss": types.BoolType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"directory": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`default`),
+								Description: `The Kong Identity directory instance to authenticate against. Default: "default"`,
+							},
+							"enabled": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When true, authenticate against Kong Identity instead of local credentials. Default: false`,
+							},
+							"error_on_miss": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead. Default: true`,
+							},
+						},
 					},
 					"realm": schema.StringAttribute{
 						Optional:    true,

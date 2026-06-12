@@ -495,6 +495,28 @@ func (c *ClientJwk) GetY() *string {
 	return c.Y
 }
 
+type ClusterCacheItems string
+
+const (
+	ClusterCacheItemsIntrospection ClusterCacheItems = "introspection"
+	ClusterCacheItemsTokens        ClusterCacheItems = "tokens"
+)
+
+func (e ClusterCacheItems) ToPointer() *ClusterCacheItems {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClusterCacheItems) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "introspection", "tokens":
+			return true
+		}
+	}
+	return false
+}
+
 // OpenidConnectPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
 type OpenidConnectPluginAuthProvider string
 
@@ -942,7 +964,7 @@ func (c *ClusterCacheRedis) GetUsername() *string {
 	return c.Username
 }
 
-// ClusterCacheStrategy - The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
+// ClusterCacheStrategy - The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
 type ClusterCacheStrategy string
 
 const (
@@ -1298,6 +1320,84 @@ func (e *PasswordParamType) IsExact() bool {
 	return false
 }
 
+// OpenidConnectPluginPrincipals - Configuration for Kong Identity principal hydration after token verification.
+type OpenidConnectPluginPrincipals struct {
+	// The Kong Identity directory instance to look up against.
+	Directory *string `default:"default" json:"directory"`
+	// When true, query Kong Identity to map a Principal after token verification.
+	Enabled *bool `default:"false" json:"enabled"`
+	// When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set.
+	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
+	// If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by.
+	MatchConsumer *bool `default:"true" json:"match_consumer"`
+	// If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim.
+	MatchConsumerGroups *bool `default:"true" json:"match_consumer_groups"`
+	// Custom identity name for a type=custom Kong Identity lookup. When absent and principal_claim is set, an OIDC lookup is performed using principal_claim as the claim name instead of 'sub'.
+	PrincipalBy *string `default:"null" json:"principal_by"`
+	// Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.
+	PrincipalClaim []string `json:"principal_claim"`
+}
+
+func (o OpenidConnectPluginPrincipals) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginPrincipals) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginPrincipals) GetDirectory() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Directory
+}
+
+func (o *OpenidConnectPluginPrincipals) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *OpenidConnectPluginPrincipals) GetErrorOnMiss() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ErrorOnMiss
+}
+
+func (o *OpenidConnectPluginPrincipals) GetMatchConsumer() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.MatchConsumer
+}
+
+func (o *OpenidConnectPluginPrincipals) GetMatchConsumerGroups() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.MatchConsumerGroups
+}
+
+func (o *OpenidConnectPluginPrincipals) GetPrincipalBy() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PrincipalBy
+}
+
+func (o *OpenidConnectPluginPrincipals) GetPrincipalClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.PrincipalClaim
+}
+
 // ProofOfPossessionDpop - Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
 type ProofOfPossessionDpop string
 
@@ -1344,6 +1444,185 @@ func (e *ProofOfPossessionMtls) IsExact() bool {
 		}
 	}
 	return false
+}
+
+// OpenidConnectPluginCertificateHeaderFormat - Encoding format of the certificate in the header. Supported formats: `url_encoded`, `base64_encoded`.
+type OpenidConnectPluginCertificateHeaderFormat string
+
+const (
+	OpenidConnectPluginCertificateHeaderFormatBase64Encoded OpenidConnectPluginCertificateHeaderFormat = "base64_encoded"
+	OpenidConnectPluginCertificateHeaderFormatURLEncoded    OpenidConnectPluginCertificateHeaderFormat = "url_encoded"
+)
+
+func (e OpenidConnectPluginCertificateHeaderFormat) ToPointer() *OpenidConnectPluginCertificateHeaderFormat {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginCertificateHeaderFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "base64_encoded", "url_encoded":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginRevocationCheckMode - Controls client certificate revocation check behavior. `SKIP` disables revocation checking. `IGNORE_CA_ERROR` respects revocation status when reachable but ignores network errors. `STRICT` requires a successful revocation check.
+type OpenidConnectPluginRevocationCheckMode string
+
+const (
+	OpenidConnectPluginRevocationCheckModeIgnoreCaError OpenidConnectPluginRevocationCheckMode = "IGNORE_CA_ERROR"
+	OpenidConnectPluginRevocationCheckModeSkip          OpenidConnectPluginRevocationCheckMode = "SKIP"
+	OpenidConnectPluginRevocationCheckModeStrict        OpenidConnectPluginRevocationCheckMode = "STRICT"
+)
+
+func (e OpenidConnectPluginRevocationCheckMode) ToPointer() *OpenidConnectPluginRevocationCheckMode {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginRevocationCheckMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "IGNORE_CA_ERROR", "SKIP", "STRICT":
+			return true
+		}
+	}
+	return false
+}
+
+// ProofOfPossessionMtlsFromHeader - Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
+type ProofOfPossessionMtlsFromHeader struct {
+	// Allow certificate verification with only an intermediate certificate. When enabled, a full chain to the root CA is not required.
+	AllowPartialChain *bool `default:"false" json:"allow_partial_chain"`
+	// List of CA Certificate UUIDs to use when validating the client certificate chain. At least one is required.
+	CaCertificates []string `json:"ca_certificates"`
+	// Time in milliseconds to cache the revocation check result for a given certificate.
+	CertCacheTTL *float64 `default:"60000" json:"cert_cache_ttl"`
+	// Encoding format of the certificate in the header. Supported formats: `url_encoded`, `base64_encoded`.
+	CertificateHeaderFormat *OpenidConnectPluginCertificateHeaderFormat `default:"url_encoded" json:"certificate_header_format"`
+	// Name of the HTTP header that contains the injected client certificate
+	CertificateHeaderName string `json:"certificate_header_name"`
+	// A string representing a host name, such as example.com.
+	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	HTTPProxyPort *int64 `default:"null" json:"http_proxy_port"`
+	// HTTP timeout in milliseconds when communicating with the OCSP server or downloading CRL.
+	HTTPTimeout *float64 `default:"30000" json:"http_timeout"`
+	// A string representing a host name, such as example.com.
+	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
+	// Controls client certificate revocation check behavior. `SKIP` disables revocation checking. `IGNORE_CA_ERROR` respects revocation status when reachable but ignores network errors. `STRICT` requires a successful revocation check.
+	RevocationCheckMode *OpenidConnectPluginRevocationCheckMode `default:"IGNORE_CA_ERROR" json:"revocation_check_mode"`
+	// When set to `true`, only requests from trusted IP addresses (configured in `trusted_ips` in kong.conf) are allowed to use the certificate header. This prevents direct header injection from untrusted clients.
+	SecureSource *bool `default:"true" json:"secure_source"`
+	// Verify the TLS certificate of the OCSP responder or CRL distribution point server.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+}
+
+func (p ProofOfPossessionMtlsFromHeader) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ca_certificates", "certificate_header_name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetAllowPartialChain() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AllowPartialChain
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCaCertificates() []string {
+	if p == nil {
+		return []string{}
+	}
+	return p.CaCertificates
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCertCacheTTL() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.CertCacheTTL
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderFormat() *OpenidConnectPluginCertificateHeaderFormat {
+	if p == nil {
+		return nil
+	}
+	return p.CertificateHeaderFormat
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderName() string {
+	if p == nil {
+		return ""
+	}
+	return p.CertificateHeaderName
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyHost() *string {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPProxyHost
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyPort() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPProxyPort
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPTimeout() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPTimeout
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyHost() *string {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPSProxyHost
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyPort() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPSProxyPort
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetRevocationCheckMode() *OpenidConnectPluginRevocationCheckMode {
+	if p == nil {
+		return nil
+	}
+	return p.RevocationCheckMode
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetSecureSource() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.SecureSource
+}
+
+func (p *ProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.SslVerify
 }
 
 // PushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2110,9 +2389,9 @@ func (o *OpenidConnectPluginCache) GetTTL() *int64 {
 type OpenidConnectPluginRequest struct {
 	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
 	Audience []string `json:"audience"`
-	// Use empty audiences. Use this field to override audiences defined in `config.audience`.
+	// Use empty audiences. Use this field to remove audiences defined in `config.audience`.
 	EmptyAudience *bool `default:"false" json:"empty_audience"`
-	// Use empty scopes. Use this field to override scopes defined in `config.scopes`.
+	// Use empty scopes. Use this field to remove scopes defined in `config.scopes`.
 	EmptyScopes *bool `default:"false" json:"empty_scopes"`
 	// Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
 	Scopes []string `json:"scopes"`
@@ -2157,7 +2436,7 @@ func (o *OpenidConnectPluginRequest) GetScopes() []string {
 	return o.Scopes
 }
 
-// Conditions - A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+// Conditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
 type Conditions struct {
 	HasAudience     []string `json:"has_audience"`
 	HasScopes       []string `json:"has_scopes"`
@@ -2205,10 +2484,14 @@ func (c *Conditions) GetMissingScopes() []string {
 }
 
 type SubjectTokenIssuers struct {
-	// A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+	// A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
 	Conditions *Conditions `json:"conditions"`
 	// Tokens of whose iss claim matches this value will be exchanged.
 	Issuer string `json:"issuer"`
+	// An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
+	JwksURI *string `default:"null" json:"jwks_uri"`
+	// When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.
+	VerifySignature *bool `default:"false" json:"verify_signature"`
 }
 
 func (s SubjectTokenIssuers) MarshalJSON() ([]byte, error) {
@@ -2234,6 +2517,20 @@ func (s *SubjectTokenIssuers) GetIssuer() string {
 		return ""
 	}
 	return s.Issuer
+}
+
+func (s *SubjectTokenIssuers) GetJwksURI() *string {
+	if s == nil {
+		return nil
+	}
+	return s.JwksURI
+}
+
+func (s *SubjectTokenIssuers) GetVerifySignature() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.VerifySignature
 }
 
 // OpenidConnectPluginTokenExchange - Details on how to accept tokens from other identity providers.
@@ -2394,6 +2691,8 @@ type OpenidConnectPluginConfig struct {
 	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `default:"null" json:"bearer_token_cookie_name"`
+	// The name of the HTTP header from which the bearer token is retrieved. When configured, only this header is checked for the bearer token.
+	BearerTokenHeaderName *string `default:"null" json:"bearer_token_header_name"`
 	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
@@ -2433,9 +2732,11 @@ type OpenidConnectPluginConfig struct {
 	// The JWK used for the private_key_jwt authentication.
 	ClientJwk []ClientJwk `json:"client_jwk"`
 	// The client secret.
-	ClientSecret      []string           `json:"client_secret"`
-	ClusterCacheRedis *ClusterCacheRedis `json:"cluster_cache_redis,omitempty"`
-	// The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
+	ClientSecret []string `json:"client_secret"`
+	// Specifies which items are stored in the cluster cache backend configured via `cluster_cache_strategy`. Allowed values are `"introspection"` and `"tokens"`. When `"tokens"` is included, access and refresh token material is AES-encrypted before being written to the cache; enable only when your Redis deployment meets your compliance requirements. Defaults to `["introspection"]`. An empty set disables all cluster caching regardless of `cluster_cache_strategy`.
+	ClusterCacheItems []ClusterCacheItems `json:"cluster_cache_items,omitempty"`
+	ClusterCacheRedis *ClusterCacheRedis  `json:"cluster_cache_redis,omitempty"`
+	// The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
 	ClusterCacheStrategy *ClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
 	ConsumerBy []OpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
@@ -2609,12 +2910,16 @@ type OpenidConnectPluginConfig struct {
 	PasswordParamType []PasswordParamType `json:"password_param_type,omitempty"`
 	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
 	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
+	// Configuration for Kong Identity principal hydration after token verification.
+	Principals *OpenidConnectPluginPrincipals `json:"principals"`
 	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
 	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
 	// Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
 	ProofOfPossessionDpop *ProofOfPossessionDpop `default:"off" json:"proof_of_possession_dpop"`
 	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
 	ProofOfPossessionMtls *ProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	// Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
+	ProofOfPossessionMtlsFromHeader *ProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `default:"null" json:"pushed_authorization_request_endpoint"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2959,6 +3264,13 @@ func (o *OpenidConnectPluginConfig) GetBearerTokenCookieName() *string {
 	return o.BearerTokenCookieName
 }
 
+func (o *OpenidConnectPluginConfig) GetBearerTokenHeaderName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.BearerTokenHeaderName
+}
+
 func (o *OpenidConnectPluginConfig) GetBearerTokenParamType() []BearerTokenParamType {
 	if o == nil {
 		return nil
@@ -3097,6 +3409,13 @@ func (o *OpenidConnectPluginConfig) GetClientSecret() []string {
 		return nil
 	}
 	return o.ClientSecret
+}
+
+func (o *OpenidConnectPluginConfig) GetClusterCacheItems() []ClusterCacheItems {
+	if o == nil {
+		return nil
+	}
+	return o.ClusterCacheItems
 }
 
 func (o *OpenidConnectPluginConfig) GetClusterCacheRedis() *ClusterCacheRedis {
@@ -3708,6 +4027,13 @@ func (o *OpenidConnectPluginConfig) GetPreserveQueryArgs() *bool {
 	return o.PreserveQueryArgs
 }
 
+func (o *OpenidConnectPluginConfig) GetPrincipals() *OpenidConnectPluginPrincipals {
+	if o == nil {
+		return nil
+	}
+	return o.Principals
+}
+
 func (o *OpenidConnectPluginConfig) GetProofOfPossessionAuthMethodsValidation() *bool {
 	if o == nil {
 		return nil
@@ -3727,6 +4053,13 @@ func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtls() *ProofOfPossessio
 		return nil
 	}
 	return o.ProofOfPossessionMtls
+}
+
+func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtlsFromHeader() *ProofOfPossessionMtlsFromHeader {
+	if o == nil {
+		return nil
+	}
+	return o.ProofOfPossessionMtlsFromHeader
 }
 
 func (o *OpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpoint() *string {

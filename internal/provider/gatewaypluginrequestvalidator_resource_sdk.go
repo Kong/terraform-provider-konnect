@@ -24,6 +24,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 			for _, v := range resp.Config.AllowedContentTypes {
 				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
 			}
+			r.Config.ArrayLengthCompat = types.BoolPointerValue(resp.Config.ArrayLengthCompat)
 			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
 			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
 			if resp.Config.ParameterSchema != nil {
@@ -318,6 +319,12 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		for allowedContentTypesIndex := range r.Config.AllowedContentTypes {
 			allowedContentTypes = append(allowedContentTypes, r.Config.AllowedContentTypes[allowedContentTypesIndex].ValueString())
 		}
+		arrayLengthCompat := new(bool)
+		if !r.Config.ArrayLengthCompat.IsUnknown() && !r.Config.ArrayLengthCompat.IsNull() {
+			*arrayLengthCompat = r.Config.ArrayLengthCompat.ValueBool()
+		} else {
+			arrayLengthCompat = nil
+		}
 		bodySchema := new(string)
 		if !r.Config.BodySchema.IsUnknown() && !r.Config.BodySchema.IsNull() {
 			*bodySchema = r.Config.BodySchema.ValueString()
@@ -383,6 +390,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		}
 		config = &shared.RequestValidatorPluginConfig{
 			AllowedContentTypes:            allowedContentTypes,
+			ArrayLengthCompat:              arrayLengthCompat,
 			BodySchema:                     bodySchema,
 			ContentTypeParameterValidation: contentTypeParameterValidation,
 			ParameterSchema:                parameterSchema,

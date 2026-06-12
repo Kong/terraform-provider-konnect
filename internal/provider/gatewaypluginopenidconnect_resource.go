@@ -186,6 +186,13 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `The name of the cookie in which the bearer token is passed.`,
 					},
+					"bearer_token_header_name": schema.StringAttribute{
+						Optional:    true,
+						Description: `The name of the HTTP header from which the bearer token is retrieved. When configured, only this header is checked for the bearer token.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthAtLeast(1),
+						},
+					},
 					"bearer_token_param_type": schema.ListAttribute{
 						Computed: true,
 						Optional: true,
@@ -383,6 +390,13 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The client secret.`,
+					},
+					"cluster_cache_items": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("introspection")})),
+						ElementType: types.StringType,
+						Description: `Specifies which items are stored in the cluster cache backend configured via ` + "`" + `cluster_cache_strategy` + "`" + `. Allowed values are ` + "`" + `"introspection"` + "`" + ` and ` + "`" + `"tokens"` + "`" + `. When ` + "`" + `"tokens"` + "`" + ` is included, access and refresh token material is AES-encrypted before being written to the cache; enable only when your Redis deployment meets your compliance requirements. Defaults to ` + "`" + `["introspection"]` + "`" + `. An empty set disables all cluster caching regardless of ` + "`" + `cluster_cache_strategy` + "`" + `. Default: ["introspection"]`,
 					},
 					"cluster_cache_redis": schema.SingleNestedAttribute{
 						Computed: true,
@@ -635,7 +649,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`off`),
-						Description: `The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. possible known values include one of ["off", "redis"]; Default: "off"`,
+						Description: `The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend. possible known values include one of ["off", "redis"]; Default: "off"`,
 					},
 					"consumer_by": schema.ListAttribute{
 						Computed: true,
@@ -1124,6 +1138,66 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Default:     booldefault.StaticBool(false),
 						Description: `With this parameter, you can preserve request query arguments even when doing authorization code flow. Default: false`,
 					},
+					"principals": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"directory":             types.StringType,
+							"enabled":               types.BoolType,
+							"error_on_miss":         types.BoolType,
+							"match_consumer":        types.BoolType,
+							"match_consumer_groups": types.BoolType,
+							"principal_by":          types.StringType,
+							"principal_claim": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
+						Attributes: map[string]schema.Attribute{
+							"directory": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`default`),
+								Description: `The Kong Identity directory instance to look up against. Default: "default"`,
+							},
+							"enabled": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When true, query Kong Identity to map a Principal after token verification. Default: false`,
+							},
+							"error_on_miss": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set. Default: true`,
+							},
+							"match_consumer": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by. Default: true`,
+							},
+							"match_consumer_groups": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim. Default: true`,
+							},
+							"principal_by": schema.StringAttribute{
+								Optional:    true,
+								Description: `Custom identity name for a type=custom Kong Identity lookup. When absent and principal_claim is set, an OIDC lookup is performed using principal_claim as the claim name instead of 'sub'.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+							"principal_claim": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.`,
+							},
+						},
+						Description: `Configuration for Kong Identity principal hydration after token verification.`,
+					},
 					"proof_of_possession_auth_methods_validation": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1141,6 +1215,103 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Default:     stringdefault.StaticString(`off`),
 						Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. possible known values include one of ["off", "optional", "strict"]; Default: "off"`,
+					},
+					"proof_of_possession_mtls_from_header": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"allow_partial_chain": types.BoolType,
+							"ca_certificates": types.ListType{
+								ElemType: types.StringType,
+							},
+							"cert_cache_ttl":            types.Float64Type,
+							"certificate_header_format": types.StringType,
+							"certificate_header_name":   types.StringType,
+							"http_proxy_host":           types.StringType,
+							"http_proxy_port":           types.Int64Type,
+							"http_timeout":              types.Float64Type,
+							"https_proxy_host":          types.StringType,
+							"https_proxy_port":          types.Int64Type,
+							"revocation_check_mode":     types.StringType,
+							"secure_source":             types.BoolType,
+							"ssl_verify":                types.BoolType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"allow_partial_chain": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Allow certificate verification with only an intermediate certificate. When enabled, a full chain to the root CA is not required. Default: false`,
+							},
+							"ca_certificates": schema.ListAttribute{
+								Required:    true,
+								ElementType: types.StringType,
+								Description: `List of CA Certificate UUIDs to use when validating the client certificate chain. At least one is required.`,
+							},
+							"cert_cache_ttl": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(60000),
+								Description: `Time in milliseconds to cache the revocation check result for a given certificate. Default: 60000`,
+							},
+							"certificate_header_format": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`url_encoded`),
+								Description: `Encoding format of the certificate in the header. Supported formats: ` + "`" + `url_encoded` + "`" + `, ` + "`" + `base64_encoded` + "`" + `. possible known values include one of ["base64_encoded", "url_encoded"]; Default: "url_encoded"`,
+							},
+							"certificate_header_name": schema.StringAttribute{
+								Required:    true,
+								Description: `Name of the HTTP header that contains the injected client certificate`,
+							},
+							"http_proxy_host": schema.StringAttribute{
+								Optional:    true,
+								Description: `A string representing a host name, such as example.com.`,
+							},
+							"http_proxy_port": schema.Int64Attribute{
+								Optional:    true,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 65535),
+								},
+							},
+							"http_timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(30000),
+								Description: `HTTP timeout in milliseconds when communicating with the OCSP server or downloading CRL. Default: 30000`,
+							},
+							"https_proxy_host": schema.StringAttribute{
+								Optional:    true,
+								Description: `A string representing a host name, such as example.com.`,
+							},
+							"https_proxy_port": schema.Int64Attribute{
+								Optional:    true,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 65535),
+								},
+							},
+							"revocation_check_mode": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`IGNORE_CA_ERROR`),
+								Description: `Controls client certificate revocation check behavior. ` + "`" + `SKIP` + "`" + ` disables revocation checking. ` + "`" + `IGNORE_CA_ERROR` + "`" + ` respects revocation status when reachable but ignores network errors. ` + "`" + `STRICT` + "`" + ` requires a successful revocation check. possible known values include one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]; Default: "IGNORE_CA_ERROR"`,
+							},
+							"secure_source": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `When set to ` + "`" + `true` + "`" + `, only requests from trusted IP addresses (configured in ` + "`" + `trusted_ips` + "`" + ` in kong.conf) are allowed to use the certificate header. This prevents direct header injection from untrusted clients. Default: true`,
+							},
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Verify the TLS certificate of the OCSP responder or CRL distribution point server. Default: true`,
+							},
+						},
+						Description: `Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.`,
 					},
 					"pushed_authorization_request_endpoint": schema.StringAttribute{
 						Optional:    true,
@@ -1775,7 +1946,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 												},
 											},
 										},
-										`issuer`: types.StringType,
+										`issuer`:           types.StringType,
+										`jwks_uri`:         types.StringType,
+										`verify_signature`: types.BoolType,
 									},
 								},
 							},
@@ -1825,13 +1998,13 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 										Computed:    true,
 										Optional:    true,
 										Default:     booldefault.StaticBool(false),
-										Description: `Use empty audiences. Use this field to override audiences defined in ` + "`" + `config.audience` + "`" + `. Default: false`,
+										Description: `Use empty audiences. Use this field to remove audiences defined in ` + "`" + `config.audience` + "`" + `. Default: false`,
 									},
 									"empty_scopes": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     booldefault.StaticBool(false),
-										Description: `Use empty scopes. Use this field to override scopes defined in ` + "`" + `config.scopes` + "`" + `. Default: false`,
+										Description: `Use empty scopes. Use this field to remove scopes defined in ` + "`" + `config.scopes` + "`" + `. Default: false`,
 									},
 									"scopes": schema.ListAttribute{
 										Optional:    true,
@@ -1883,7 +2056,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 													ElementType: types.StringType,
 												},
 											},
-											Description: `A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.`,
+											Description: `A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, ` + "`" + `conditions` + "`" + ` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, ` + "`" + `conditions` + "`" + ` must be defined.`,
 										},
 										"issuer": schema.StringAttribute{
 											Computed:    true,
@@ -1892,6 +2065,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
 											},
+										},
+										"jwks_uri": schema.StringAttribute{
+											Optional:    true,
+											Description: `An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when ` + "`" + `verify_signature` + "`" + ` is ` + "`" + `true` + "`" + `. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.`,
+										},
+										"verify_signature": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to ` + "`" + `false` + "`" + ` when this issuer is the same as the target issuer. Defaults to ` + "`" + `false` + "`" + ` for backward compatibility. Default: false`,
 										},
 									},
 								},

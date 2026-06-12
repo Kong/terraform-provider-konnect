@@ -12,7 +12,7 @@ type CreateCertificateRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Certificate for creation
-	Certificate shared.CertificateInput `request:"mediaType=application/json"`
+	CertificateRequest shared.CertificateRequest `request:"mediaType=application/json"`
 }
 
 func (c CreateCertificateRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +20,7 @@ func (c CreateCertificateRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateCertificateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "Certificate"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "CertificateRequest"}); err != nil {
 		return err
 	}
 	return nil
@@ -33,11 +33,11 @@ func (c *CreateCertificateRequest) GetControlPlaneID() string {
 	return c.ControlPlaneID
 }
 
-func (c *CreateCertificateRequest) GetCertificate() shared.CertificateInput {
+func (c *CreateCertificateRequest) GetCertificateRequest() shared.CertificateRequest {
 	if c == nil {
-		return shared.CertificateInput{}
+		return shared.CertificateRequest{}
 	}
-	return c.Certificate
+	return c.CertificateRequest
 }
 
 type CreateCertificateResponse struct {

@@ -33,6 +33,11 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		} else {
 			r.Config.ConsumerGroups = nil
 		}
+		if resp.Config.CounterKey != nil {
+			r.Config.CounterKey = types.StringValue(string(*resp.Config.CounterKey))
+		} else {
+			r.Config.CounterKey = types.StringNull()
+		}
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
 		r.Config.EnforceConsumerGroups = types.BoolPointerValue(resp.Config.EnforceConsumerGroups)
@@ -435,6 +440,12 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		for consumerGroupsIndex := range r.Config.ConsumerGroups {
 			consumerGroups = append(consumerGroups, r.Config.ConsumerGroups[consumerGroupsIndex].ValueString())
 		}
+	}
+	counterKey := new(shared.CounterKey)
+	if !r.Config.CounterKey.IsUnknown() && !r.Config.CounterKey.IsNull() {
+		*counterKey = shared.CounterKey(r.Config.CounterKey.ValueString())
+	} else {
+		counterKey = nil
 	}
 	dictionaryName := new(string)
 	if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
@@ -851,6 +862,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 	config := shared.RateLimitingAdvancedPluginConfig{
 		CompoundIdentifier:    compoundIdentifier,
 		ConsumerGroups:        consumerGroups,
+		CounterKey:            counterKey,
 		DictionaryName:        dictionaryName,
 		DisablePenalty:        disablePenalty,
 		EnforceConsumerGroups: enforceConsumerGroups,

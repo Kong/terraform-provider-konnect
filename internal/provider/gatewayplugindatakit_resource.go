@@ -1055,6 +1055,12 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 												stringvalidator.UTF8LengthBetween(1, 255),
 											},
 										},
+										"non_nil": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `When true, the property value must exist: in SET mode, input must not be nil/null; in GET mode, output must not be nil/null. Default: false`,
+										},
 										"output": schema.StringAttribute{
 											Optional:    true,
 											Description: `Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.`,

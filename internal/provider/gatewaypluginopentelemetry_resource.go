@@ -97,6 +97,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
 							},
 						},
+						Description: `Configuration for exporting access logs to an OTLP/HTTP endpoint. If ` + "`" + `endpoint` + "`" + ` is set, Kong will export access logs (e.g. request/response, route/service, latency, etc.) to the specified endpoint.`,
 					},
 					"access_logs_endpoint": schema.StringAttribute{
 						Optional:    true,
@@ -188,6 +189,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Description: `The interval in seconds at which metrics are pushed to the OTLP server. This setting is only applicable when ` + "`" + `endpoint` + "`" + ` is set. Default: 60`,
 							},
 						},
+						Description: `Configuration for exporting metrics to an OTLP/HTTP endpoint. If ` + "`" + `endpoint` + "`" + ` is set, Kong will export metrics to the specified endpoint at the interval defined by ` + "`" + `push_interval` + "`" + `.`,
 					},
 					"propagation": schema.SingleNestedAttribute{
 						Computed: true,
@@ -295,6 +297,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
+						Description: `A key-value map of resource attributes to be sent with the telemetry data. The keys and values can be either static or dynamic using Kong variables (e.g. ` + "`" + `${kong.service.name}` + "`" + `) for the values. For dynamic values, Lua string template syntax is used and the values will be rendered at runtime.`,
 					},
 					"sampling_rate": schema.Float64Attribute{
 						Optional:    true,

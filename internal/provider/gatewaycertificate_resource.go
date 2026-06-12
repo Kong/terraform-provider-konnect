@@ -7,15 +7,21 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -41,8 +47,10 @@ type GatewayCertificateResourceModel struct {
 	ID             types.String   `tfsdk:"id"`
 	Key            types.String   `tfsdk:"key"`
 	KeyAlt         types.String   `tfsdk:"key_alt"`
+	One            *tfTypes.One   `queryParam:"inline" tfsdk:"one"`
 	Snis           []types.String `tfsdk:"snis"`
 	Tags           []types.String `tfsdk:"tags"`
+	Two            *tfTypes.One   `queryParam:"inline" tfsdk:"two"`
 	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
@@ -55,11 +63,11 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 		MarkdownDescription: "GatewayCertificate Resource",
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
 				Description: `PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
 			"cert_alt": schema.StringAttribute{
-				Optional:    true,
+				Computed:    true,
 				Description: `PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
 			"control_plane_id": schema.StringAttribute{
@@ -71,21 +79,86 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"key": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
 				Description: `PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
 			"key_alt": schema.StringAttribute{
-				Optional:    true,
+				Computed:    true,
 				Description: `PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+			},
+			"one": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"cert": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"cert_alt": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"created_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was created.`,
+					},
+					"description": schema.StringAttribute{
+						Optional:    true,
+						Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Optional:    true,
+						Description: `A string representing a UUID (universally unique identifier).`,
+					},
+					"key": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"key_alt": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"managed_by": schema.MapAttribute{
+						Optional:    true,
+						ElementType: jsontypes.NormalizedType{},
+						Description: `Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.`,
+						Validators: []validator.Map{
+							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+						},
+					},
+					"snis": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+					},
+					"tags": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `An optional set of strings associated with the Certificate for grouping and filtering.`,
+					},
+					"updated_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was last updated.`,
+					},
+					"vault": schema.StringAttribute{
+						Optional:    true,
+						Description: `Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.`,
+					},
+					"vault_alt": schema.StringAttribute{
+						Optional:    true,
+						Description: `Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.`,
+					},
+				},
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("two"),
+					}...),
+				},
 			},
 			"snis": schema.ListAttribute{
 				Computed: true,
@@ -95,13 +168,79 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 				ElementType: types.StringType,
 			},
 			"tags": schema.ListAttribute{
-				Optional:    true,
+				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Certificate for grouping and filtering.`,
 			},
+			"two": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"cert": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"cert_alt": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"created_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was created.`,
+					},
+					"description": schema.StringAttribute{
+						Optional:    true,
+						Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Optional:    true,
+						Description: `A string representing a UUID (universally unique identifier).`,
+					},
+					"key": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"key_alt": schema.StringAttribute{
+						Optional:    true,
+						Description: `PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
+					},
+					"managed_by": schema.MapAttribute{
+						Optional:    true,
+						ElementType: jsontypes.NormalizedType{},
+						Description: `Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.`,
+						Validators: []validator.Map{
+							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+						},
+					},
+					"snis": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+					},
+					"tags": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `An optional set of strings associated with the Certificate for grouping and filtering.`,
+					},
+					"updated_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was last updated.`,
+					},
+					"vault": schema.StringAttribute{
+						Optional:    true,
+						Description: `Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.`,
+					},
+					"vault_alt": schema.StringAttribute{
+						Optional:    true,
+						Description: `Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.`,
+					},
+				},
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("one"),
+					}...),
+				},
+			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},

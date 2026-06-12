@@ -14,7 +14,7 @@ type UpsertCertificateRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the Certificate
-	Certificate shared.CertificateInput `request:"mediaType=application/json"`
+	CertificateRequest shared.CertificateRequest `request:"mediaType=application/json"`
 }
 
 func (u UpsertCertificateRequest) MarshalJSON() ([]byte, error) {
@@ -22,7 +22,7 @@ func (u UpsertCertificateRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertCertificateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"CertificateId", "controlPlaneId", "Certificate"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"CertificateId", "controlPlaneId", "CertificateRequest"}); err != nil {
 		return err
 	}
 	return nil
@@ -42,11 +42,11 @@ func (u *UpsertCertificateRequest) GetControlPlaneID() string {
 	return u.ControlPlaneID
 }
 
-func (u *UpsertCertificateRequest) GetCertificate() shared.CertificateInput {
+func (u *UpsertCertificateRequest) GetCertificateRequest() shared.CertificateRequest {
 	if u == nil {
-		return shared.CertificateInput{}
+		return shared.CertificateRequest{}
 	}
-	return u.Certificate
+	return u.CertificateRequest
 }
 
 type UpsertCertificateResponse struct {

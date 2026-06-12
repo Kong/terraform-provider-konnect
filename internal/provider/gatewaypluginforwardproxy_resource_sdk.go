@@ -22,6 +22,14 @@ func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPl
 			r.Config = &tfTypes.ForwardProxyPluginConfig{}
 			r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
 			r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
+			if resp.Config.CaCertificates != nil {
+				r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
+				for _, v := range resp.Config.CaCertificates {
+					r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
+				}
+			} else {
+				r.Config.CaCertificates = nil
+			}
 			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
 			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
 			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
@@ -309,6 +317,13 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin(ctx 
 		} else {
 			authUsername = nil
 		}
+		var caCertificates []string
+		if r.Config.CaCertificates != nil {
+			caCertificates = make([]string, 0, len(r.Config.CaCertificates))
+			for caCertificatesIndex := range r.Config.CaCertificates {
+				caCertificates = append(caCertificates, r.Config.CaCertificates[caCertificatesIndex].ValueString())
+			}
+		}
 		httpProxyHost := new(string)
 		if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
 			*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
@@ -354,6 +369,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin(ctx 
 		config = &shared.ForwardProxyPluginConfig{
 			AuthPassword:   authPassword,
 			AuthUsername:   authUsername,
+			CaCertificates: caCertificates,
 			HTTPProxyHost:  httpProxyHost,
 			HTTPProxyPort:  httpProxyPort,
 			HTTPSProxyHost: httpsProxyHost,

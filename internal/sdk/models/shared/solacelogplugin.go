@@ -303,13 +303,83 @@ func (m *Message) GetTTL() *int64 {
 	return m.TTL
 }
 
+// SolaceLogPluginClientCredentials - Client credentials used to automatically obtain and renew OAuth2 access tokens from an IdP for the `CLIENT_CREDENTIALS` authentication scheme. When set, Kong fetches tokens from `token_endpoint` using `client_id` and `client_secret`, caches them until expiry, and retries with a fresh token whenever Solace returns an unauthenticated response.
+type SolaceLogPluginClientCredentials struct {
+	// The OAuth2 client ID used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+	ClientID string `json:"client_id"`
+	// The OAuth2 client secret used with `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+	ClientSecret string `json:"client_secret"`
+	// Number of seconds before actual expiry when cached access tokens should be considered expired and proactively renewed. This helps prevent edge cases where tokens are rejected by Solace just as they expire, but setting this too high may lead to unnecessary token refreshes.
+	EagerlyExpire *int64 `default:"5" json:"eagerly_expire"`
+	// The OAuth2 scopes to request when retrieving access tokens for the `CLIENT_CREDENTIALS` authentication scheme.
+	Scopes []string `json:"scopes"`
+	// Controls TLS certificate verification for HTTPS token endpoint requests.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// The OAuth2 token endpoint URL used to retrieve access tokens for the `CLIENT_CREDENTIALS` authentication scheme when connecting to an event broker.
+	TokenEndpoint string `json:"token_endpoint"`
+}
+
+func (s SolaceLogPluginClientCredentials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceLogPluginClientCredentials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"client_id", "client_secret", "token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SolaceLogPluginClientCredentials) GetClientID() string {
+	if s == nil {
+		return ""
+	}
+	return s.ClientID
+}
+
+func (s *SolaceLogPluginClientCredentials) GetClientSecret() string {
+	if s == nil {
+		return ""
+	}
+	return s.ClientSecret
+}
+
+func (s *SolaceLogPluginClientCredentials) GetEagerlyExpire() *int64 {
+	if s == nil {
+		return nil
+	}
+	return s.EagerlyExpire
+}
+
+func (s *SolaceLogPluginClientCredentials) GetScopes() []string {
+	if s == nil {
+		return nil
+	}
+	return s.Scopes
+}
+
+func (s *SolaceLogPluginClientCredentials) GetSslVerify() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SslVerify
+}
+
+func (s *SolaceLogPluginClientCredentials) GetTokenEndpoint() string {
+	if s == nil {
+		return ""
+	}
+	return s.TokenEndpoint
+}
+
 // SolaceLogPluginScheme - The client authentication scheme used when connection to an event broker.
 type SolaceLogPluginScheme string
 
 const (
-	SolaceLogPluginSchemeBasic  SolaceLogPluginScheme = "BASIC"
-	SolaceLogPluginSchemeNone   SolaceLogPluginScheme = "NONE"
-	SolaceLogPluginSchemeOauth2 SolaceLogPluginScheme = "OAUTH2"
+	SolaceLogPluginSchemeBasic             SolaceLogPluginScheme = "BASIC"
+	SolaceLogPluginSchemeClientCredentials SolaceLogPluginScheme = "CLIENT_CREDENTIALS"
+	SolaceLogPluginSchemeNone              SolaceLogPluginScheme = "NONE"
+	SolaceLogPluginSchemeOauth2            SolaceLogPluginScheme = "OAUTH2"
 )
 
 func (e SolaceLogPluginScheme) ToPointer() *SolaceLogPluginScheme {
@@ -320,7 +390,7 @@ func (e SolaceLogPluginScheme) ToPointer() *SolaceLogPluginScheme {
 func (e *SolaceLogPluginScheme) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "BASIC", "NONE", "OAUTH2":
+		case "BASIC", "CLIENT_CREDENTIALS", "NONE", "OAUTH2":
 			return true
 		}
 	}
@@ -335,6 +405,8 @@ type SolaceLogPluginAuthentication struct {
 	AccessTokenHeader *string `default:"null" json:"access_token_header"`
 	// Specifies the header that contains Basic Authentication credentials for the `BASIC` authentication scheme when connecting to an event broker. This header takes precedence over the `username` and `password` fields.
 	BasicAuthHeader *string `default:"null" json:"basic_auth_header"`
+	// Client credentials used to automatically obtain and renew OAuth2 access tokens from an IdP for the `CLIENT_CREDENTIALS` authentication scheme. When set, Kong fetches tokens from `token_endpoint` using `client_id` and `client_secret`, caches them until expiry, and retries with a fresh token whenever Solace returns an unauthenticated response.
+	ClientCredentials *SolaceLogPluginClientCredentials `json:"client_credentials"`
 	// The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
 	IDToken *string `default:"null" json:"id_token"`
 	// Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
@@ -377,6 +449,13 @@ func (s *SolaceLogPluginAuthentication) GetBasicAuthHeader() *string {
 		return nil
 	}
 	return s.BasicAuthHeader
+}
+
+func (s *SolaceLogPluginAuthentication) GetClientCredentials() *SolaceLogPluginClientCredentials {
+	if s == nil {
+		return nil
+	}
+	return s.ClientCredentials
 }
 
 func (s *SolaceLogPluginAuthentication) GetIDToken() *string {

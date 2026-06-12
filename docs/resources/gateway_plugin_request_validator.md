@@ -19,6 +19,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
     allowed_content_types = [
       "..."
     ]
+    array_length_compat               = true
     body_schema                       = "...my_body_schema..."
     content_type_parameter_validation = true
     parameter_schema = [
@@ -107,6 +108,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
 Optional:
 
 - `allowed_content_types` (List of String) List of allowed content types. The value can be configured with the `charset` parameter. For example, `application/json; charset=UTF-8`. Default: ["application/json"]
+- `array_length_compat` (Boolean) If true, `minLength`/`maxLength` also apply to arrays using item count. Compatibility option for legacy schemas that use these keywords instead of `minItems`/`maxItems`. Default: true
 - `body_schema` (String) The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
 - `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type. Default: true
 - `parameter_schema` (Attributes List) Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified. (see [below for nested schema](#nestedatt--config--parameter_schema))

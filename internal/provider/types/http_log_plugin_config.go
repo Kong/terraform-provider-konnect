@@ -7,6 +7,7 @@ import (
 )
 
 type HTTPLogPluginConfig struct {
+	ClientCertificate *Set                    `tfsdk:"client_certificate"`
 	ContentType       types.String            `tfsdk:"content_type"`
 	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`
 	FlushTimeout      types.Float64           `tfsdk:"flush_timeout"`

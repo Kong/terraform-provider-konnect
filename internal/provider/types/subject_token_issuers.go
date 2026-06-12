@@ -7,6 +7,8 @@ import (
 )
 
 type SubjectTokenIssuers struct {
-	Conditions *Conditions  `tfsdk:"conditions"`
-	Issuer     types.String `tfsdk:"issuer"`
+	Conditions      *Conditions  `tfsdk:"conditions"`
+	Issuer          types.String `tfsdk:"issuer"`
+	JwksURI         types.String `tfsdk:"jwks_uri"`
+	VerifySignature types.Bool   `tfsdk:"verify_signature"`
 }

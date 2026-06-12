@@ -308,6 +308,8 @@ type Property struct {
 	Input *string `default:"null" json:"input"`
 	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
 	Name *string `default:"null" json:"name"`
+	// When true, the property value must exist: in SET mode, input must not be nil/null; in GET mode, output must not be nil/null.
+	NonNil *bool `default:"false" json:"non_nil"`
 	// Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
 	Output *string `default:"null" json:"output"`
 	// The property name to get/set
@@ -346,6 +348,13 @@ func (p *Property) GetName() *string {
 		return nil
 	}
 	return p.Name
+}
+
+func (p *Property) GetNonNil() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.NonNil
 }
 
 func (p *Property) GetOutput() *string {
