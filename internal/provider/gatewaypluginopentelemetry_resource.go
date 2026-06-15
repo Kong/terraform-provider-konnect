@@ -25,6 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
@@ -99,8 +100,13 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"access_logs_endpoint": schema.StringAttribute{
-						Optional:    true,
-						Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						Description:        `Deprecated: Use ` + "`" + `access_logs.endpoint` + "`" + ` instead. An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
 					},
 					"batch_flush_delay": schema.Int64Attribute{
 						Optional:    true,
