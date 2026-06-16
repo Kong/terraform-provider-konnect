@@ -58454,6 +58454,7 @@ components:
             access_logs_endpoint:
               description: 'An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.'
               type: string
+              deprecated: true
               x-referenceable: true
               x-speakeasy-param-computed: true
           x-speakeasy-param-computed: true
