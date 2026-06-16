@@ -5,7 +5,7 @@ resource "konnect_gateway_control_plane" "tfdemo" {
 }
 
 resource "konnect_realm" "my_realm" {
-  name                     = "tf-test-centralized-consumers"
+  name                     = "Production"
   ttl                      = 60
   negative_ttl             = 10
   allow_all_control_planes = false
