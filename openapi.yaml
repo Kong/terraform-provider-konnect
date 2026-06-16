@@ -29702,6 +29702,7 @@ components:
 
             **Requires a minimum runtime version of `1.2`**.
           type: array
+          nullable: true
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
           x-speakeasy-terraform-ignore: true
@@ -58453,10 +58454,9 @@ components:
             access_logs_endpoint:
               description: 'An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.'
               type: string
-              default: null
-              nullable: true
+              deprecated: true
               x-referenceable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
           x-speakeasy-param-computed: true
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -72092,6 +72092,7 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 type: array
+                nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
                 x-speakeasy-terraform-ignore: true
@@ -72137,6 +72138,7 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 type: array
+                nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
                 x-speakeasy-terraform-ignore: true
