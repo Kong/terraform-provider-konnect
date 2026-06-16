@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 8e37a3d007773f93ab31b076d6472ac6
+  docChecksum: 33f6acaca94ce77cbf44abd80775388f
   docVersion: 2.0.0
   speakeasyVersion: 1.773.1
   generationVersion: 2.897.1
   releaseVersion: 3.18.1
   configChecksum: 7a82bd8e5bc99fa8bc9beaf575d80c0d
 persistentEdits:
-  generation_id: 18a67133-87e6-4433-8590-27f8dc63dbce
-  pristine_commit_hash: 2b2b9788c84f240b690e15f81ab5a86b10a793d9
-  pristine_tree_hash: 7cea8dc65c3e81a68a1bcffbda11d6b60ec2859d
+  generation_id: e45ea23a-8d94-4949-b82c-c58768052e9f
+  pristine_commit_hash: e780b067ee89eaeb0760b070fc963ff49c6c7fea
+  pristine_tree_hash: 3ef6ab75691cdcec0a9d79fbcc9ebc582129ffff
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3857,8 +3857,8 @@ trackedFiles:
     pristine_git_object: dfc7bb40f9bb5a27da2991a8b7158f120cab28c8
   internal/provider/gatewaypluginopentelemetry_resource.go:
     id: e7b731a65f7f
-    last_write_checksum: sha1:731507e2d47e5d86c80449d58df675c6abb1fb5f
-    pristine_git_object: 84d0ca48e2a358d82d8e449a2ea0807210d19807
+    last_write_checksum: sha1:0726b87b75eab6d708ecaf4e00e40c8241652582
+    pristine_git_object: a155c335e25a6aaa04dc82a6e069f1db1d184dd8
   internal/provider/gatewaypluginopentelemetry_resource_sdk.go:
     id: 0f863580197c
     last_write_checksum: sha1:150f2a1070324caf0c01142ccde0a91719d65ab2
@@ -11797,8 +11797,8 @@ trackedFiles:
     pristine_git_object: fece7e9163230c4e07c09e08f04d672d51f7126c
   internal/sdk/models/shared/opentelemetryplugin.go:
     id: 6e2a002108e9
-    last_write_checksum: sha1:b8a540b9be455805623778764e40c42f26679692
-    pristine_git_object: 0ee0737b805180c0cdeb4d186c68bdb2e74f650b
+    last_write_checksum: sha1:a0a59d18480b93ab541054b4679fbd71ab386b47
+    pristine_git_object: bc22879c8e57e0e823206d427569c91acdec50cd
   internal/sdk/models/shared/pagemeta.go:
     id: 27a382a7831b
     last_write_checksum: sha1:5f0bca68ca3c65f3492c2feb508ec6c93834b078

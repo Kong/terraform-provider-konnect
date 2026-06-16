@@ -146,7 +146,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 Optional:
 
 - `access_logs` (Attributes) (see [below for nested schema](#nestedatt--config--access_logs))
-- `access_logs_endpoint` (String, Deprecated) Deprecated: Use `access_logs.endpoint` instead. An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
+- `access_logs_endpoint` (String, Deprecated) An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
 - `batch_flush_delay` (Number) The delay, in seconds, between two consecutive batches.
 - `batch_span_count` (Number) The number of spans to be sent in a single batch.
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 1000
