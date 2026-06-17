@@ -5,6 +5,7 @@ go 1.25.10
 require (
 	github.com/Kong/shared-speakeasy/customtypes v0.3.0
 	github.com/Kong/shared-speakeasy/hclbuilder v0.0.1
+	github.com/dave/dst v0.27.4
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.25.0
 	github.com/hashicorp/terraform-plugin-framework v1.19.0
@@ -16,6 +17,7 @@ require (
 	github.com/itchyny/gojq v0.12.17
 	github.com/spyzhov/ajson v0.9.0
 	github.com/stretchr/testify v1.11.1
+	golang.org/x/tools v0.43.0
 )
 
 require (
@@ -86,7 +88,6 @@ require (
 	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/text v0.36.0 // indirect
-	golang.org/x/tools v0.43.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
 	google.golang.org/grpc v1.79.2 // indirect

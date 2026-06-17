@@ -4,11 +4,24 @@ all: speakeasy
 
 speakeasy: check-speakeasy
 	speakeasy run --skip-versioning --output console --minimal
+	go run ./tools/postprocess
 	@go mod tidy
 	@go generate .
 	@git clean -fd examples > /dev/null
 	@git checkout -- README.md examples/README.md
 	@rm USAGE.md
+
+# postprocess re-applies the deterministic dynamic-type transformations that
+# Speakeasy cannot emit. Run automatically by `speakeasy`; exposed here so it can
+# be run (and tested) standalone.
+postprocess:
+	go run ./tools/postprocess
+
+# postprocess-check asserts the post-processing layer is idempotent: re-running
+# it over already-generated code must not change the tree. A dirty diff means
+# generator drift or un-reapplied edits.
+postprocess-check: postprocess
+	@git diff --exit-code || { echo "postprocess produced a dirty tree; commit the regenerated files"; exit 1; }
 
 FILES=$(shell find internal/provider -type f | grep data_source | grep -v portallist | grep -v cloudgatewayprovideraccountlist)
 remove-data-sources:

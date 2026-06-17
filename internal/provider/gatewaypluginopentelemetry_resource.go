@@ -99,10 +99,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"access_logs_endpoint": schema.StringAttribute{
-						Computed:           true,
-						Optional:           true,
-						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-						Description:        `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
 					},
 					"batch_flush_delay": schema.Int64Attribute{
 						Optional:    true,

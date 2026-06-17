@@ -58454,7 +58454,6 @@ components:
             access_logs_endpoint:
               description: 'An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.'
               type: string
-              deprecated: true
               x-referenceable: true
               x-speakeasy-param-computed: true
           x-speakeasy-param-computed: true
@@ -61749,10 +61748,12 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
-                  maximum: 65535
-                  minimum: 0
+                  type: string
+                  x-speakeasy-terraform-custom-type:
+                    imports:
+                      - github.com/kong/terraform-provider-konnect/v3/internal/referenceabletypes
+                    schemaType: referenceabletypes.ReferenceableStringType{}
+                    valueType: referenceabletypes.ReferenceableString
                   x-referenceable: true
                 read_timeout:
                   description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
