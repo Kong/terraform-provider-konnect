@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// Customer - The customer to create the subscription for.
-type Customer struct {
+// BillingSubscriptionCreateCustomer - The customer to create the subscription for.
+type BillingSubscriptionCreateCustomer struct {
 	// The ID of the customer to create the subscription for.
 	//
 	// Either customer ID or customer key must be provided. If both are provided, the
@@ -21,29 +21,29 @@ type Customer struct {
 	Key *string `json:"key,omitempty"`
 }
 
-func (c Customer) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (b BillingSubscriptionCreateCustomer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
 }
 
-func (c *Customer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (b *BillingSubscriptionCreateCustomer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Customer) GetID() *string {
-	if c == nil {
+func (b *BillingSubscriptionCreateCustomer) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return c.ID
+	return b.ID
 }
 
-func (c *Customer) GetKey() *string {
-	if c == nil {
+func (b *BillingSubscriptionCreateCustomer) GetKey() *string {
+	if b == nil {
 		return nil
 	}
-	return c.Key
+	return b.Key
 }
 
 // Plan - The plan reference of the subscription.
@@ -61,7 +61,7 @@ type Plan struct {
 	Key *string `json:"key,omitempty"`
 	// The plan version of the subscription, if any. If not provided, the latest
 	// version of the plan will be used.
-	Version *int64 `default:"null" json:"version"`
+	Version *int64 `json:"version,omitempty"`
 }
 
 func (p Plan) MarshalJSON() ([]byte, error) {
@@ -102,9 +102,9 @@ type BillingSubscriptionCreate struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// The customer to create the subscription for.
-	Customer Customer `json:"customer"`
+	Customer BillingSubscriptionCreateCustomer `json:"customer"`
 	// The plan reference of the subscription.
 	Plan Plan `json:"plan"`
 	// A billing anchor is the fixed point in time that determines the subscription's
@@ -118,7 +118,6 @@ type BillingSubscriptionCreate struct {
 	// If not provided, the subscription will be created with the subscription's
 	// creation time as the billing anchor.
 	BillingAnchor *time.Time `json:"billing_anchor,omitempty"`
-	Timing        *string    `default:"null" json:"timing"`
 }
 
 func (b BillingSubscriptionCreate) MarshalJSON() ([]byte, error) {
@@ -132,16 +131,16 @@ func (b *BillingSubscriptionCreate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *BillingSubscriptionCreate) GetLabels() map[string]*string {
+func (b *BillingSubscriptionCreate) GetLabels() map[string]string {
 	if b == nil {
 		return nil
 	}
 	return b.Labels
 }
 
-func (b *BillingSubscriptionCreate) GetCustomer() Customer {
+func (b *BillingSubscriptionCreate) GetCustomer() BillingSubscriptionCreateCustomer {
 	if b == nil {
-		return Customer{}
+		return BillingSubscriptionCreateCustomer{}
 	}
 	return b.Customer
 }
@@ -158,11 +157,4 @@ func (b *BillingSubscriptionCreate) GetBillingAnchor() *time.Time {
 		return nil
 	}
 	return b.BillingAnchor
-}
-
-func (b *BillingSubscriptionCreate) GetTiming() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Timing
 }

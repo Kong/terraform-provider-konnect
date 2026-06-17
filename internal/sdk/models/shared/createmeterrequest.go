@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,16 +25,30 @@ const (
 func (e Aggregation) ToPointer() *Aggregation {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Aggregation) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "sum", "count", "unique_count", "avg", "min", "max", "latest":
-			return true
-		}
+func (e *Aggregation) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "sum":
+		fallthrough
+	case "count":
+		fallthrough
+	case "unique_count":
+		fallthrough
+	case "avg":
+		fallthrough
+	case "min":
+		fallthrough
+	case "max":
+		fallthrough
+	case "latest":
+		*e = Aggregation(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Aggregation: %v", v)
+	}
 }
 
 // CreateMeterRequest - Meter create request.
@@ -49,7 +65,7 @@ type CreateMeterRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// A key is a unique string that is used to identify a resource.
 	Key string `json:"key"`
 	// The aggregation type to use for the meter.
@@ -99,7 +115,7 @@ func (c *CreateMeterRequest) GetDescription() *string {
 	return c.Description
 }
 
-func (c *CreateMeterRequest) GetLabels() map[string]*string {
+func (c *CreateMeterRequest) GetLabels() map[string]string {
 	if c == nil {
 		return nil
 	}

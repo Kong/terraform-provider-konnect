@@ -18405,6 +18405,143 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - OpenMeter Customers
+  /v3/openmeter/features:
+    post:
+      x-speakeasy-entity-operation: MeteringFeature#create
+      operationId: create-feature
+      summary: Create feature
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Create a feature.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeatureRequest'
+      responses:
+        '201':
+          description: Feature created response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feature'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - OpenMeter Features
+  '/v3/openmeter/features/{featureId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeteringFeature#read
+        terraform-datasource: null
+      operationId: get-feature
+      summary: Get feature
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Get a feature by id.
+      parameters:
+        - name: featureId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '200':
+          description: Feature response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feature'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - OpenMeter Features
+    patch:
+      x-speakeasy-entity-operation: MeteringFeature#update
+      operationId: update-feature
+      summary: Update feature
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Update a feature by id. Currently only the unit_cost field can be updated.
+      parameters:
+        - name: featureId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFeatureRequest'
+      responses:
+        '200':
+          description: Feature updated response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feature'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Features
+    delete:
+      x-speakeasy-entity-operation: MeteringFeature#delete
+      operationId: delete-feature
+      summary: Delete feature
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Delete a feature by id.
+      parameters:
+        - name: featureId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '204':
+          description: Deleted response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Features
   /v3/openmeter/meters:
     post:
       x-speakeasy-entity-operation: MeteringMeter#create
@@ -34010,6 +34147,144 @@ components:
         - created_at
         - updated_at
         - key
+    BillingFeatureLLMUnitCost:
+      description: |-
+        LLM cost lookup configuration. Each dimension (provider, model, token type) can
+        be specified as either a static value or a meter group-by property name
+        (mutually exclusive).
+      type: object
+      properties:
+        type:
+          description: The type discriminator for LLM unit cost.
+          type: string
+          enum:
+            - llm
+        provider_property:
+          description: |-
+            Meter group-by property that holds the LLM provider. Use this when the meter has
+            a group-by dimension for provider. Mutually exclusive with `provider`.
+          type: string
+          default: null
+          nullable: true
+          title: Provider property
+          x-speakeasy-param-computed: false
+        provider:
+          description: |-
+            Static LLM provider value (e.g., "openai", "anthropic"). Use this when the
+            feature tracks a single provider. Mutually exclusive with `provider_property`.
+          type: string
+          default: null
+          nullable: true
+          title: Provider
+          x-speakeasy-param-computed: false
+        model_property:
+          description: |-
+            Meter group-by property that holds the model ID. Use this when the meter has a
+            group-by dimension for model. Mutually exclusive with `model`.
+          type: string
+          default: null
+          nullable: true
+          title: Model property
+          x-speakeasy-param-computed: false
+        model:
+          description: |-
+            Static model ID value (e.g., "gpt-4", "claude-3-5-sonnet"). Use this when the
+            feature tracks a single model. Mutually exclusive with `model_property`.
+          type: string
+          default: null
+          nullable: true
+          title: Model
+          x-speakeasy-param-computed: false
+        token_type_property:
+          description: |-
+            Meter group-by property that holds the token type. Use this when the meter has a
+            group-by dimension for token type. Mutually exclusive with `token_type`.
+          type: string
+          default: null
+          nullable: true
+          title: Token type property
+          x-speakeasy-param-computed: false
+        token_type:
+          description: |-
+            Static token type value. Use this when the feature tracks a single token type
+            (e.g., only input tokens). `request` is an alias for `input`, `response` is an
+            alias for `output`. Mutually exclusive with `token_type_property`.
+          type: string
+          enum:
+            - input
+            - output
+            - cache_read
+            - cache_write
+            - reasoning
+            - request
+            - response
+          title: Token type
+          x-speakeasy-unknown-values: allow
+        pricing:
+          description: |-
+            Resolved per-token pricing from the LLM cost database. Populated in responses
+            when the provider and model can be determined, either from static values or from
+            meter group-by filters with exact matches.
+          type: object
+          additionalProperties: false
+          properties:
+            input_per_token:
+              description: Cost per input token in USD.
+              type: string
+              nullable: false
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Input per token
+            output_per_token:
+              description: Cost per output token in USD.
+              type: string
+              nullable: false
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Output per token
+            cache_read_per_token:
+              description: Cost per cache read token in USD.
+              type: string
+              nullable: false
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Cache read per token
+            reasoning_per_token:
+              description: Cost per reasoning token in USD.
+              type: string
+              nullable: false
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Reasoning per token
+            cache_write_per_token:
+              description: Cost per cache write token in USD.
+              type: string
+              nullable: false
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Cache write per token
+          readOnly: true
+          required:
+            - input_per_token
+            - output_per_token
+          title: Resolved pricing
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - type
+    BillingFeatureManualUnitCost:
+      description: A fixed per-unit cost amount.
+      type: object
+      properties:
+        type:
+          description: The type discriminator for manual unit cost.
+          type: string
+          enum:
+            - manual
+        amount:
+          description: Fixed per-unit cost amount in USD.
+          type: string
+          nullable: false
+          pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+      additionalProperties: false
+      required:
+        - type
+        - amount
     BillingPlan:
       description: Plans provide a template for subscriptions.
       type: object
@@ -36026,6 +36301,81 @@ components:
       required:
         - name
         - key
+    CreateFeatureRequest:
+      description: Feature create request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        key:
+          $ref: '#/components/schemas/ResourceKey'
+        meter:
+          description: |-
+            The meter that the feature is associated with and based on which usage is
+            calculated. If not specified, the feature is static.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              description: The ID of the meter to associate with this feature.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              title: Meter ID
+            filters:
+              description: Filters to apply to the dimensions of the meter.
+              type: object
+              default: null
+              additionalProperties:
+                $ref: '#/components/schemas/QueryFilterStringMapItem'
+              maxProperties: 10
+              nullable: true
+              title: Meter dimensions filters
+              x-speakeasy-param-computed: false
+          required:
+            - id
+          title: Meter reference
+          x-speakeasy-param-computed: false
+        unit_cost:
+          description: |-
+            Optional per-unit cost configuration. Use "manual" for a fixed per-unit cost, or
+            "llm" to look up cost from the LLM cost database based on meter group-by
+            properties.
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              manual: '#/components/schemas/BillingFeatureManualUnitCost'
+              llm: '#/components/schemas/BillingFeatureLLMUnitCost'
+          oneOf:
+            - $ref: '#/components/schemas/BillingFeatureManualUnitCost'
+            - $ref: '#/components/schemas/BillingFeatureLLMUnitCost'
+          title: Unit cost
+      additionalProperties: false
+      required:
+        - name
+        - key
     CreateMeterRequest:
       description: Meter create request.
       type: object
@@ -36193,6 +36543,120 @@ components:
       minLength: 1
       nullable: false
       title: External Resource Key
+    Feature:
+      description: A capability or billable dimension offered by a provider.
+      type: object
+      properties:
+        id:
+          description: ULID (Universally Unique Lexicographically Sortable Identifier).
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: ULID
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8601 timestamp representation of entity creation date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          nullable: false
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An ISO-8601 timestamp representation of entity last update date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          nullable: false
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        deleted_at:
+          description: An ISO-8601 timestamp representation of entity deletion date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          nullable: false
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        key:
+          $ref: '#/components/schemas/ResourceKey'
+        meter:
+          description: |-
+            The meter that the feature is associated with and based on which usage is
+            calculated. If not specified, the feature is static.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              description: The ID of the meter to associate with this feature.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              title: Meter ID
+            filters:
+              description: Filters to apply to the dimensions of the meter.
+              type: object
+              default: null
+              additionalProperties:
+                $ref: '#/components/schemas/QueryFilterStringMapItem'
+              maxProperties: 10
+              nullable: true
+              title: Meter dimensions filters
+              x-speakeasy-param-computed: false
+          required:
+            - id
+          title: Meter reference
+          x-speakeasy-param-computed: false
+        unit_cost:
+          description: |-
+            Optional per-unit cost configuration. Use "manual" for a fixed per-unit cost, or
+            "llm" to look up cost from the LLM cost database based on meter group-by
+            properties.
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              manual: '#/components/schemas/BillingFeatureManualUnitCost'
+              llm: '#/components/schemas/BillingFeatureLLMUnitCost'
+          oneOf:
+            - $ref: '#/components/schemas/BillingFeatureManualUnitCost'
+            - $ref: '#/components/schemas/BillingFeatureLLMUnitCost'
+          title: Unit cost
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - key
     Meter:
       description: A meter is a configuration that defines how to match and aggregate events.
       type: object
@@ -36368,6 +36832,156 @@ components:
         - code
         - message
         - field
+    QueryFilterString:
+      description: |-
+        A query filter for a string attribute. Operators are mutually exclusive, only
+        one operator is allowed at a time.
+      type: object
+      properties:
+        eq:
+          description: The attribute equals the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        neq:
+          description: The attribute does not equal the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        in:
+          description: The attribute is one of the provided values.
+          type: array
+          items:
+            type: string
+          default: null
+          maxItems: 100
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        nin:
+          description: The attribute is not one of the provided values.
+          type: array
+          items:
+            type: string
+          default: null
+          maxItems: 100
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        contains:
+          description: The attribute contains the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        ncontains:
+          description: The attribute does not contain the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        and:
+          description: Combines the provided filters with a logical AND.
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryFilterString'
+          default: null
+          maxItems: 10
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        or:
+          description: Combines the provided filters with a logical OR.
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryFilterString'
+          default: null
+          maxItems: 10
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: Query String Filter
+    QueryFilterStringMapItem:
+      description: |-
+        A query filter for an item in a string map attribute. Operators are mutually
+        exclusive, only one operator is allowed at a time.
+      type: object
+      properties:
+        exists:
+          description: The attribute exists.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        eq:
+          description: The attribute equals the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        neq:
+          description: The attribute does not equal the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        in:
+          description: The attribute is one of the provided values.
+          type: array
+          items:
+            type: string
+          default: null
+          maxItems: 100
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        nin:
+          description: The attribute is not one of the provided values.
+          type: array
+          items:
+            type: string
+          default: null
+          maxItems: 100
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        contains:
+          description: The attribute contains the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        ncontains:
+          description: The attribute does not contain the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        and:
+          description: Combines the provided filters with a logical AND.
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryFilterString'
+          default: null
+          maxItems: 10
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        or:
+          description: Combines the provided filters with a logical OR.
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryFilterString'
+          default: null
+          maxItems: 10
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: Query String Map Item Filter
     ResourceKey:
       description: A key is a unique string that is used to identify a resource.
       type: string
@@ -36393,6 +37007,30 @@ components:
       nullable: false
       pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
       title: ULID
+    UpdateFeatureRequest:
+      description: |-
+        Request body for updating a feature. Currently only the unit_cost field can be
+        updated.
+      type: object
+      properties:
+        unit_cost:
+          description: |-
+            Optional per-unit cost configuration. Use "manual" for a fixed per-unit cost, or
+            "llm" to look up cost from the LLM cost database based on meter group-by
+            properties. Set to `null` to clear the existing unit cost; omit to leave it
+            unchanged.
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              manual: '#/components/schemas/BillingFeatureManualUnitCost'
+              llm: '#/components/schemas/BillingFeatureLLMUnitCost'
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/BillingFeatureManualUnitCost'
+            - $ref: '#/components/schemas/BillingFeatureLLMUnitCost'
+          title: Unit cost
+      additionalProperties: false
     UpsertBillingProfileRequest:
       description: BillingProfile upsert request.
       type: object
@@ -78136,6 +78774,8 @@ tags:
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
   - name: OpenMeter Product Catalog
     description: 'Product catalog manages plans, add-ons, and their associations for subscription-based billing.'
+  - name: OpenMeter Features
+    description: 'Features represent product capabilities backed by meters, with optional per-unit cost configuration.'
   - name: OpenMeter Billing
     description: 'Billing manages the billing profiles, currencies, cost bases, and invoices for customers.'
   - name: OpenMeter Subscriptions

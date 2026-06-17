@@ -36,7 +36,7 @@ func (b *BillingCustomerUsageAttribution) GetSubjectKeys() []string {
 type BillingCustomerBillingAddress struct {
 	// Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
 	// alpha-2 format.
-	Country string `json:"country"`
+	Country *string `json:"country,omitempty"`
 	// Postal code.
 	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
@@ -56,15 +56,15 @@ func (b BillingCustomerBillingAddress) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillingCustomerBillingAddress) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"country"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingCustomerBillingAddress) GetCountry() string {
+func (b *BillingCustomerBillingAddress) GetCountry() *string {
 	if b == nil {
-		return ""
+		return nil
 	}
 	return b.Country
 }
@@ -123,12 +123,12 @@ type BillingCustomer struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity last update date.
@@ -139,13 +139,13 @@ type BillingCustomer struct {
 	// external system.
 	Key string `json:"key"`
 	// Mapping to attribute metered usage to the customer by the event subject.
-	UsageAttribution *BillingCustomerUsageAttribution `json:"usage_attribution"`
+	UsageAttribution *BillingCustomerUsageAttribution `json:"usage_attribution,omitempty"`
 	// The primary email address of the customer.
-	PrimaryEmail *string `default:"null" json:"primary_email"`
+	PrimaryEmail *string `json:"primary_email,omitempty"`
 	// Currency of the customer. Used for billing, tax and invoicing.
-	Currency *string `default:"null" json:"currency"`
+	Currency *string `json:"currency,omitempty"`
 	// The billing address of the customer. Used for tax and invoicing.
-	BillingAddress *BillingCustomerBillingAddress `json:"billing_address"`
+	BillingAddress *BillingCustomerBillingAddress `json:"billing_address,omitempty"`
 }
 
 func (b BillingCustomer) MarshalJSON() ([]byte, error) {
@@ -180,7 +180,7 @@ func (b *BillingCustomer) GetDescription() *string {
 	return b.Description
 }
 
-func (b *BillingCustomer) GetLabels() map[string]*string {
+func (b *BillingCustomer) GetLabels() map[string]string {
 	if b == nil {
 		return nil
 	}

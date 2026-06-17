@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,16 +25,30 @@ const (
 func (e MeterAggregation) ToPointer() *MeterAggregation {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *MeterAggregation) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "sum", "count", "unique_count", "avg", "min", "max", "latest":
-			return true
-		}
+func (e *MeterAggregation) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "sum":
+		fallthrough
+	case "count":
+		fallthrough
+	case "unique_count":
+		fallthrough
+	case "avg":
+		fallthrough
+	case "min":
+		fallthrough
+	case "max":
+		fallthrough
+	case "latest":
+		*e = MeterAggregation(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MeterAggregation: %v", v)
+	}
 }
 
 // Meter - A meter is a configuration that defines how to match and aggregate events.
@@ -46,12 +62,12 @@ type Meter struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity last update date.
@@ -75,7 +91,7 @@ type Meter struct {
 	//
 	// For unique_count aggregation, the ingested value must be a string. For count
 	// aggregation the value_property is ignored.
-	ValueProperty *string `default:"null" json:"value_property"`
+	ValueProperty *string `json:"value_property,omitempty"`
 	// Named JSONPath expressions to extract the group by values from the event data.
 	//
 	// Keys must be unique and consist only alphanumeric and underscore characters.
@@ -114,7 +130,7 @@ func (m *Meter) GetDescription() *string {
 	return m.Description
 }
 
-func (m *Meter) GetLabels() map[string]*string {
+func (m *Meter) GetLabels() map[string]string {
 	if m == nil {
 		return nil
 	}

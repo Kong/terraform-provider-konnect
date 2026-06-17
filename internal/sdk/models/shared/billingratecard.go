@@ -212,16 +212,20 @@ const (
 func (e PaymentTerm) ToPointer() *PaymentTerm {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *PaymentTerm) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "in_advance", "in_arrears":
-			return true
-		}
+func (e *PaymentTerm) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "in_advance":
+		fallthrough
+	case "in_arrears":
+		*e = PaymentTerm(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for PaymentTerm: %v", v)
+	}
 }
 
 // Commitments - Spend commitments for this rate card. Only applicable to usage-based prices
@@ -261,7 +265,7 @@ func (c *Commitments) GetMaximumAmount() *string {
 // Discounts - The discounts of the rate card.
 type Discounts struct {
 	// Percentage discount applied to the price (0–100).
-	Percentage *float64 `default:"null" json:"percentage"`
+	Percentage *float64 `json:"percentage,omitempty"`
 	// Number of usage units granted free before billing starts. Only applies to
 	// usage-based lines (not flat fees). Usage is treated as zero until this amount is
 	// exhausted.
@@ -343,7 +347,7 @@ type BillingRateCard struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// A key is a unique string that is used to identify a resource.
 	Key string `json:"key"`
 	// The feature associated with the rate card.
@@ -390,7 +394,7 @@ func (b *BillingRateCard) GetDescription() *string {
 	return b.Description
 }
 
-func (b *BillingRateCard) GetLabels() map[string]*string {
+func (b *BillingRateCard) GetLabels() map[string]string {
 	if b == nil {
 		return nil
 	}

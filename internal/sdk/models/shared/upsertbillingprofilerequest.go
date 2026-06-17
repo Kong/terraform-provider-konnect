@@ -14,7 +14,7 @@ import (
 // numbers, but we're only interested in those valid for tax purposes.
 type UpsertBillingProfileRequestTaxID struct {
 	// Normalized tax identification code shown on the original identity document.
-	Code *string `default:"null" json:"code"`
+	Code *string `json:"code,omitempty"`
 }
 
 func (u UpsertBillingProfileRequestTaxID) MarshalJSON() ([]byte, error) {
@@ -39,7 +39,7 @@ func (u *UpsertBillingProfileRequestTaxID) GetCode() *string {
 type UpsertBillingProfileRequestBillingAddress struct {
 	// Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
 	// alpha-2 format.
-	Country string `json:"country"`
+	Country *string `json:"country,omitempty"`
 	// Postal code.
 	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
@@ -59,15 +59,15 @@ func (u UpsertBillingProfileRequestBillingAddress) MarshalJSON() ([]byte, error)
 }
 
 func (u *UpsertBillingProfileRequestBillingAddress) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"country"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpsertBillingProfileRequestBillingAddress) GetCountry() string {
+func (u *UpsertBillingProfileRequestBillingAddress) GetCountry() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.Country
 }
@@ -144,12 +144,12 @@ type UpsertBillingProfileRequestSupplier struct {
 	// An optional unique key of the party.
 	Key *string `json:"key,omitempty"`
 	// Legal name or representation of the party.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// The entity's legal identification used for tax purposes. They may have other
 	// numbers, but we're only interested in those valid for tax purposes.
 	TaxID *UpsertBillingProfileRequestTaxID `json:"tax_id,omitempty"`
 	// Address for where information should be sent if needed.
-	Addresses UpsertBillingProfileRequestAddresses `json:"addresses"`
+	Addresses *UpsertBillingProfileRequestAddresses `json:"addresses,omitempty"`
 }
 
 func (u UpsertBillingProfileRequestSupplier) MarshalJSON() ([]byte, error) {
@@ -157,7 +157,7 @@ func (u UpsertBillingProfileRequestSupplier) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertBillingProfileRequestSupplier) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"addresses"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -184,9 +184,9 @@ func (u *UpsertBillingProfileRequestSupplier) GetTaxID() *UpsertBillingProfileRe
 	return u.TaxID
 }
 
-func (u *UpsertBillingProfileRequestSupplier) GetAddresses() UpsertBillingProfileRequestAddresses {
+func (u *UpsertBillingProfileRequestSupplier) GetAddresses() *UpsertBillingProfileRequestAddresses {
 	if u == nil {
-		return UpsertBillingProfileRequestAddresses{}
+		return nil
 	}
 	return u.Addresses
 }
@@ -610,16 +610,20 @@ const (
 func (e UpsertBillingProfileRequestTaxBehavior) ToPointer() *UpsertBillingProfileRequestTaxBehavior {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *UpsertBillingProfileRequestTaxBehavior) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "inclusive", "exclusive":
-			return true
-		}
+func (e *UpsertBillingProfileRequestTaxBehavior) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "inclusive":
+		fallthrough
+	case "exclusive":
+		*e = UpsertBillingProfileRequestTaxBehavior(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpsertBillingProfileRequestTaxBehavior: %v", v)
+	}
 }
 
 // UpsertBillingProfileRequestStripeTaxConfig - Stripe tax config.
@@ -712,11 +716,11 @@ type UpsertBillingProfileRequestDefaultTaxConfig struct {
 	// Stripe tax config.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	Stripe *UpsertBillingProfileRequestStripeTaxConfig `json:"stripe"`
+	Stripe *UpsertBillingProfileRequestStripeTaxConfig `json:"stripe,omitempty"`
 	// External invoicing tax config.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	ExternalInvoicing *UpsertBillingProfileRequestExternalInvoicingTaxConfig `json:"external_invoicing"`
+	ExternalInvoicing *UpsertBillingProfileRequestExternalInvoicingTaxConfig `json:"external_invoicing,omitempty"`
 	// Tax code ID.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -726,7 +730,7 @@ type UpsertBillingProfileRequestDefaultTaxConfig struct {
 	// When both `tax_code` and `tax_code_id` are provided, `tax_code` takes
 	// precedence. When `stripe.code` is also provided, `tax_code` still wins and
 	// `stripe.code` is ignored.
-	TaxCode *UpsertBillingProfileRequestTaxCode `json:"tax_code"`
+	TaxCode *UpsertBillingProfileRequestTaxCode `json:"tax_code,omitempty"`
 }
 
 func (u UpsertBillingProfileRequestDefaultTaxConfig) MarshalJSON() ([]byte, error) {
@@ -786,7 +790,7 @@ type UpsertBillingProfileRequestWorkflowTaxSettings struct {
 	// have a tax location when starting a paid subscription.
 	Enforced *bool `default:"false" json:"enforced"`
 	// Default tax configuration to apply to the invoices for line items.
-	DefaultTaxConfig *UpsertBillingProfileRequestDefaultTaxConfig `json:"default_tax_config"`
+	DefaultTaxConfig *UpsertBillingProfileRequestDefaultTaxConfig `json:"default_tax_config,omitempty"`
 }
 
 func (u UpsertBillingProfileRequestWorkflowTaxSettings) MarshalJSON() ([]byte, error) {
@@ -824,7 +828,7 @@ func (u *UpsertBillingProfileRequestWorkflowTaxSettings) GetDefaultTaxConfig() *
 // UpsertBillingProfileRequestWorkflow - The billing workflow settings for this profile
 type UpsertBillingProfileRequestWorkflow struct {
 	// The collection settings for this workflow
-	Collection *UpsertBillingProfileRequestWorkflowCollectionSettings `json:"collection"`
+	Collection *UpsertBillingProfileRequestWorkflowCollectionSettings `json:"collection,omitempty"`
 	// The invoicing settings for this workflow
 	Invoicing *UpsertBillingProfileRequestWorkflowInvoiceSettings `json:"invoicing,omitempty"`
 	// The payment settings for this workflow
@@ -895,12 +899,12 @@ type UpsertBillingProfileRequest struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// The name and contact information for the supplier this billing profile
 	// represents
 	Supplier UpsertBillingProfileRequestSupplier `json:"supplier"`
@@ -935,7 +939,7 @@ func (u *UpsertBillingProfileRequest) GetDescription() *string {
 	return u.Description
 }
 
-func (u *UpsertBillingProfileRequest) GetLabels() map[string]*string {
+func (u *UpsertBillingProfileRequest) GetLabels() map[string]string {
 	if u == nil {
 		return nil
 	}

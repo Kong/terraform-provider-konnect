@@ -38,7 +38,7 @@ type InvalidParameterDependentItem struct {
 	Rule       *InvalidParameterDependentItemRule `json:"rule"`
 	Reason     string                             `json:"reason"`
 	Dependents []any                              `json:"dependents"`
-	Source     *string                            `default:"null" json:"source"`
+	Source     *string                            `json:"source,omitempty"`
 }
 
 func (i InvalidParameterDependentItem) MarshalJSON() ([]byte, error) {

@@ -10,36 +10,36 @@ import (
 	"time"
 )
 
-// BillingProfileTaxID - The entity's legal identification used for tax purposes. They may have other
+// TaxID - The entity's legal identification used for tax purposes. They may have other
 // numbers, but we're only interested in those valid for tax purposes.
-type BillingProfileTaxID struct {
+type TaxID struct {
 	// Normalized tax identification code shown on the original identity document.
-	Code *string `default:"null" json:"code"`
+	Code *string `json:"code,omitempty"`
 }
 
-func (b BillingProfileTaxID) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (t TaxID) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
 }
 
-func (b *BillingProfileTaxID) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+func (t *TaxID) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileTaxID) GetCode() *string {
-	if b == nil {
+func (t *TaxID) GetCode() *string {
+	if t == nil {
 		return nil
 	}
-	return b.Code
+	return t.Code
 }
 
 // BillingProfileBillingAddress - Billing address.
 type BillingProfileBillingAddress struct {
 	// Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
 	// alpha-2 format.
-	Country string `json:"country"`
+	Country *string `json:"country,omitempty"`
 	// Postal code.
 	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
@@ -59,15 +59,15 @@ func (b BillingProfileBillingAddress) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillingProfileBillingAddress) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"country"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileBillingAddress) GetCountry() string {
+func (b *BillingProfileBillingAddress) GetCountry() *string {
 	if b == nil {
-		return ""
+		return nil
 	}
 	return b.Country
 }
@@ -114,28 +114,28 @@ func (b *BillingProfileBillingAddress) GetPhoneNumber() *string {
 	return b.PhoneNumber
 }
 
-// BillingProfileAddresses - Address for where information should be sent if needed.
-type BillingProfileAddresses struct {
+// Addresses - Address for where information should be sent if needed.
+type Addresses struct {
 	// Billing address.
 	BillingAddress BillingProfileBillingAddress `json:"billing_address"`
 }
 
-func (b BillingProfileAddresses) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (a Addresses) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (b *BillingProfileAddresses) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"billing_address"}); err != nil {
+func (a *Addresses) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"billing_address"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileAddresses) GetBillingAddress() BillingProfileBillingAddress {
-	if b == nil {
+func (a *Addresses) GetBillingAddress() BillingProfileBillingAddress {
+	if a == nil {
 		return BillingProfileBillingAddress{}
 	}
-	return b.BillingAddress
+	return a.BillingAddress
 }
 
 // Supplier - The name and contact information for the supplier this billing profile
@@ -146,12 +146,12 @@ type Supplier struct {
 	// An optional unique key of the party.
 	Key *string `json:"key,omitempty"`
 	// Legal name or representation of the party.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// The entity's legal identification used for tax purposes. They may have other
 	// numbers, but we're only interested in those valid for tax purposes.
-	TaxID *BillingProfileTaxID `json:"tax_id,omitempty"`
+	TaxID *TaxID `json:"tax_id,omitempty"`
 	// Address for where information should be sent if needed.
-	Addresses BillingProfileAddresses `json:"addresses"`
+	Addresses *Addresses `json:"addresses,omitempty"`
 }
 
 func (s Supplier) MarshalJSON() ([]byte, error) {
@@ -159,7 +159,7 @@ func (s Supplier) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Supplier) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"addresses"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -186,200 +186,200 @@ func (s *Supplier) GetName() *string {
 	return s.Name
 }
 
-func (s *Supplier) GetTaxID() *BillingProfileTaxID {
+func (s *Supplier) GetTaxID() *TaxID {
 	if s == nil {
 		return nil
 	}
 	return s.TaxID
 }
 
-func (s *Supplier) GetAddresses() BillingProfileAddresses {
+func (s *Supplier) GetAddresses() *Addresses {
 	if s == nil {
-		return BillingProfileAddresses{}
+		return nil
 	}
 	return s.Addresses
 }
 
-// BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType - The type of alignment.
-type BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType string
+// BillingWorkflowCollectionAlignmentAnchoredAlignmentType - The type of alignment.
+type BillingWorkflowCollectionAlignmentAnchoredAlignmentType string
 
 const (
-	BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileTypeAnchored BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType = "anchored"
+	BillingWorkflowCollectionAlignmentAnchoredAlignmentTypeAnchored BillingWorkflowCollectionAlignmentAnchoredAlignmentType = "anchored"
 )
 
-func (e BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType) ToPointer() *BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType {
+func (e BillingWorkflowCollectionAlignmentAnchoredAlignmentType) ToPointer() *BillingWorkflowCollectionAlignmentAnchoredAlignmentType {
 	return &e
 }
-func (e *BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType) UnmarshalJSON(data []byte) error {
+func (e *BillingWorkflowCollectionAlignmentAnchoredAlignmentType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "anchored":
-		*e = BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType(v)
+		*e = BillingWorkflowCollectionAlignmentAnchoredAlignmentType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType: %v", v)
+		return fmt.Errorf("invalid value for BillingWorkflowCollectionAlignmentAnchoredAlignmentType: %v", v)
 	}
 }
 
-// AlignmentRecurringPeriod - The recurring period for the alignment.
-type AlignmentRecurringPeriod struct {
+// RecurringPeriod - The recurring period for the alignment.
+type RecurringPeriod struct {
 	// A date-time anchor to base the recurring period on.
 	Anchor time.Time `json:"anchor"`
 	// The interval duration in ISO 8601 format.
 	Interval string `json:"interval"`
 }
 
-func (a AlignmentRecurringPeriod) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (r RecurringPeriod) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
 }
 
-func (a *AlignmentRecurringPeriod) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"anchor", "interval"}); err != nil {
+func (r *RecurringPeriod) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"anchor", "interval"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AlignmentRecurringPeriod) GetAnchor() time.Time {
-	if a == nil {
+func (r *RecurringPeriod) GetAnchor() time.Time {
+	if r == nil {
 		return time.Time{}
 	}
-	return a.Anchor
+	return r.Anchor
 }
 
-func (a *AlignmentRecurringPeriod) GetInterval() string {
-	if a == nil {
+func (r *RecurringPeriod) GetInterval() string {
+	if r == nil {
 		return ""
 	}
-	return a.Interval
+	return r.Interval
 }
 
-// AlignmentBillingWorkflowCollectionAlignmentAnchored - BillingWorkflowCollectionAlignmentAnchored specifies the alignment for
+// BillingWorkflowCollectionAlignmentAnchored specifies the alignment for
 // collecting the pending line items into an invoice.
-type AlignmentBillingWorkflowCollectionAlignmentAnchored struct {
+type BillingWorkflowCollectionAlignmentAnchored struct {
 	// The type of alignment.
-	Type BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType `json:"type"`
+	Type BillingWorkflowCollectionAlignmentAnchoredAlignmentType `json:"type"`
 	// The recurring period for the alignment.
-	RecurringPeriod AlignmentRecurringPeriod `json:"recurring_period"`
+	RecurringPeriod RecurringPeriod `json:"recurring_period"`
 }
 
-func (a AlignmentBillingWorkflowCollectionAlignmentAnchored) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (b BillingWorkflowCollectionAlignmentAnchored) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
 }
 
-func (a *AlignmentBillingWorkflowCollectionAlignmentAnchored) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "recurring_period"}); err != nil {
+func (b *BillingWorkflowCollectionAlignmentAnchored) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type", "recurring_period"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AlignmentBillingWorkflowCollectionAlignmentAnchored) GetType() BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType {
-	if a == nil {
-		return BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType("")
+func (b *BillingWorkflowCollectionAlignmentAnchored) GetType() BillingWorkflowCollectionAlignmentAnchoredAlignmentType {
+	if b == nil {
+		return BillingWorkflowCollectionAlignmentAnchoredAlignmentType("")
 	}
-	return a.Type
+	return b.Type
 }
 
-func (a *AlignmentBillingWorkflowCollectionAlignmentAnchored) GetRecurringPeriod() AlignmentRecurringPeriod {
-	if a == nil {
-		return AlignmentRecurringPeriod{}
+func (b *BillingWorkflowCollectionAlignmentAnchored) GetRecurringPeriod() RecurringPeriod {
+	if b == nil {
+		return RecurringPeriod{}
 	}
-	return a.RecurringPeriod
+	return b.RecurringPeriod
 }
 
-// BillingWorkflowCollectionAlignmentSubscriptionAlignmentType - The type of alignment.
-type BillingWorkflowCollectionAlignmentSubscriptionAlignmentType string
+// AlignmentType - The type of alignment.
+type AlignmentType string
 
 const (
-	BillingWorkflowCollectionAlignmentSubscriptionAlignmentTypeSubscription BillingWorkflowCollectionAlignmentSubscriptionAlignmentType = "subscription"
+	AlignmentTypeSubscription AlignmentType = "subscription"
 )
 
-func (e BillingWorkflowCollectionAlignmentSubscriptionAlignmentType) ToPointer() *BillingWorkflowCollectionAlignmentSubscriptionAlignmentType {
+func (e AlignmentType) ToPointer() *AlignmentType {
 	return &e
 }
-func (e *BillingWorkflowCollectionAlignmentSubscriptionAlignmentType) UnmarshalJSON(data []byte) error {
+func (e *AlignmentType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "subscription":
-		*e = BillingWorkflowCollectionAlignmentSubscriptionAlignmentType(v)
+		*e = AlignmentType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for BillingWorkflowCollectionAlignmentSubscriptionAlignmentType: %v", v)
+		return fmt.Errorf("invalid value for AlignmentType: %v", v)
 	}
 }
 
-// AlignmentBillingWorkflowCollectionAlignmentSubscription - BillingWorkflowCollectionAlignmentSubscription specifies the alignment for
+// BillingWorkflowCollectionAlignmentSubscription specifies the alignment for
 // collecting the pending line items into an invoice.
-type AlignmentBillingWorkflowCollectionAlignmentSubscription struct {
+type BillingWorkflowCollectionAlignmentSubscription struct {
 	// The type of alignment.
-	Type BillingWorkflowCollectionAlignmentSubscriptionAlignmentType `json:"type"`
+	Type AlignmentType `json:"type"`
 }
 
-func (a AlignmentBillingWorkflowCollectionAlignmentSubscription) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (b BillingWorkflowCollectionAlignmentSubscription) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
 }
 
-func (a *AlignmentBillingWorkflowCollectionAlignmentSubscription) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type"}); err != nil {
+func (b *BillingWorkflowCollectionAlignmentSubscription) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AlignmentBillingWorkflowCollectionAlignmentSubscription) GetType() BillingWorkflowCollectionAlignmentSubscriptionAlignmentType {
-	if a == nil {
-		return BillingWorkflowCollectionAlignmentSubscriptionAlignmentType("")
+func (b *BillingWorkflowCollectionAlignmentSubscription) GetType() AlignmentType {
+	if b == nil {
+		return AlignmentType("")
 	}
-	return a.Type
+	return b.Type
 }
 
-type BillingProfileAlignmentType string
+type AlignmentUnionType string
 
 const (
-	BillingProfileAlignmentTypeSubscription BillingProfileAlignmentType = "subscription"
-	BillingProfileAlignmentTypeAnchored     BillingProfileAlignmentType = "anchored"
+	AlignmentUnionTypeSubscription AlignmentUnionType = "subscription"
+	AlignmentUnionTypeAnchored     AlignmentUnionType = "anchored"
 )
 
-// BillingProfileAlignment - The alignment for collecting the pending line items into an invoice.
-type BillingProfileAlignment struct {
-	AlignmentBillingWorkflowCollectionAlignmentSubscription *AlignmentBillingWorkflowCollectionAlignmentSubscription `queryParam:"inline" union:"member"`
-	AlignmentBillingWorkflowCollectionAlignmentAnchored     *AlignmentBillingWorkflowCollectionAlignmentAnchored     `queryParam:"inline" union:"member"`
+// Alignment - The alignment for collecting the pending line items into an invoice.
+type Alignment struct {
+	BillingWorkflowCollectionAlignmentSubscription *BillingWorkflowCollectionAlignmentSubscription `queryParam:"inline" union:"member"`
+	BillingWorkflowCollectionAlignmentAnchored     *BillingWorkflowCollectionAlignmentAnchored     `queryParam:"inline" union:"member"`
 
-	Type BillingProfileAlignmentType
+	Type AlignmentUnionType
 }
 
-func CreateBillingProfileAlignmentSubscription(subscription AlignmentBillingWorkflowCollectionAlignmentSubscription) BillingProfileAlignment {
-	typ := BillingProfileAlignmentTypeSubscription
+func CreateAlignmentSubscription(subscription BillingWorkflowCollectionAlignmentSubscription) Alignment {
+	typ := AlignmentUnionTypeSubscription
 
-	typStr := BillingWorkflowCollectionAlignmentSubscriptionAlignmentType(typ)
+	typStr := AlignmentType(typ)
 	subscription.Type = typStr
 
-	return BillingProfileAlignment{
-		AlignmentBillingWorkflowCollectionAlignmentSubscription: &subscription,
+	return Alignment{
+		BillingWorkflowCollectionAlignmentSubscription: &subscription,
 		Type: typ,
 	}
 }
 
-func CreateBillingProfileAlignmentAnchored(anchored AlignmentBillingWorkflowCollectionAlignmentAnchored) BillingProfileAlignment {
-	typ := BillingProfileAlignmentTypeAnchored
+func CreateAlignmentAnchored(anchored BillingWorkflowCollectionAlignmentAnchored) Alignment {
+	typ := AlignmentUnionTypeAnchored
 
-	typStr := BillingWorkflowCollectionAlignmentAnchoredAlignmentBillingProfileType(typ)
+	typStr := BillingWorkflowCollectionAlignmentAnchoredAlignmentType(typ)
 	anchored.Type = typStr
 
-	return BillingProfileAlignment{
-		AlignmentBillingWorkflowCollectionAlignmentAnchored: &anchored,
+	return Alignment{
+		BillingWorkflowCollectionAlignmentAnchored: &anchored,
 		Type: typ,
 	}
 }
 
-func (u *BillingProfileAlignment) UnmarshalJSON(data []byte) error {
+func (u *Alignment) UnmarshalJSON(data []byte) error {
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -392,44 +392,44 @@ func (u *BillingProfileAlignment) UnmarshalJSON(data []byte) error {
 
 	switch dis.Type {
 	case "subscription":
-		alignmentBillingWorkflowCollectionAlignmentSubscription := new(AlignmentBillingWorkflowCollectionAlignmentSubscription)
-		if err := utils.UnmarshalJSON(data, &alignmentBillingWorkflowCollectionAlignmentSubscription, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == subscription) type AlignmentBillingWorkflowCollectionAlignmentSubscription within BillingProfileAlignment: %w", string(data), err)
+		billingWorkflowCollectionAlignmentSubscription := new(BillingWorkflowCollectionAlignmentSubscription)
+		if err := utils.UnmarshalJSON(data, &billingWorkflowCollectionAlignmentSubscription, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == subscription) type BillingWorkflowCollectionAlignmentSubscription within Alignment: %w", string(data), err)
 		}
 
-		u.AlignmentBillingWorkflowCollectionAlignmentSubscription = alignmentBillingWorkflowCollectionAlignmentSubscription
-		u.Type = BillingProfileAlignmentTypeSubscription
+		u.BillingWorkflowCollectionAlignmentSubscription = billingWorkflowCollectionAlignmentSubscription
+		u.Type = AlignmentUnionTypeSubscription
 		return nil
 	case "anchored":
-		alignmentBillingWorkflowCollectionAlignmentAnchored := new(AlignmentBillingWorkflowCollectionAlignmentAnchored)
-		if err := utils.UnmarshalJSON(data, &alignmentBillingWorkflowCollectionAlignmentAnchored, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anchored) type AlignmentBillingWorkflowCollectionAlignmentAnchored within BillingProfileAlignment: %w", string(data), err)
+		billingWorkflowCollectionAlignmentAnchored := new(BillingWorkflowCollectionAlignmentAnchored)
+		if err := utils.UnmarshalJSON(data, &billingWorkflowCollectionAlignmentAnchored, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anchored) type BillingWorkflowCollectionAlignmentAnchored within Alignment: %w", string(data), err)
 		}
 
-		u.AlignmentBillingWorkflowCollectionAlignmentAnchored = alignmentBillingWorkflowCollectionAlignmentAnchored
-		u.Type = BillingProfileAlignmentTypeAnchored
+		u.BillingWorkflowCollectionAlignmentAnchored = billingWorkflowCollectionAlignmentAnchored
+		u.Type = AlignmentUnionTypeAnchored
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for BillingProfileAlignment", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Alignment", string(data))
 }
 
-func (u BillingProfileAlignment) MarshalJSON() ([]byte, error) {
-	if u.AlignmentBillingWorkflowCollectionAlignmentSubscription != nil {
-		return utils.MarshalJSON(u.AlignmentBillingWorkflowCollectionAlignmentSubscription, "", true)
+func (u Alignment) MarshalJSON() ([]byte, error) {
+	if u.BillingWorkflowCollectionAlignmentSubscription != nil {
+		return utils.MarshalJSON(u.BillingWorkflowCollectionAlignmentSubscription, "", true)
 	}
 
-	if u.AlignmentBillingWorkflowCollectionAlignmentAnchored != nil {
-		return utils.MarshalJSON(u.AlignmentBillingWorkflowCollectionAlignmentAnchored, "", true)
+	if u.BillingWorkflowCollectionAlignmentAnchored != nil {
+		return utils.MarshalJSON(u.BillingWorkflowCollectionAlignmentAnchored, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type BillingProfileAlignment: all fields are null")
+	return nil, errors.New("could not marshal union type Alignment: all fields are null")
 }
 
-// BillingProfileWorkflowCollectionSettings - The collection settings for this workflow
-type BillingProfileWorkflowCollectionSettings struct {
+// WorkflowCollectionSettings - The collection settings for this workflow
+type WorkflowCollectionSettings struct {
 	// The alignment for collecting the pending line items into an invoice.
-	Alignment *BillingProfileAlignment `json:"alignment,omitempty"`
+	Alignment *Alignment `json:"alignment,omitempty"`
 	// This grace period can be used to delay the collection of the pending line items
 	// specified in alignment.
 	//
@@ -438,47 +438,47 @@ type BillingProfileWorkflowCollectionSettings struct {
 	Interval *string `default:"PT1H" json:"interval"`
 }
 
-func (b BillingProfileWorkflowCollectionSettings) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (w WorkflowCollectionSettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
 }
 
-func (b *BillingProfileWorkflowCollectionSettings) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+func (w *WorkflowCollectionSettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflowCollectionSettings) GetAlignment() *BillingProfileAlignment {
-	if b == nil {
+func (w *WorkflowCollectionSettings) GetAlignment() *Alignment {
+	if w == nil {
 		return nil
 	}
-	return b.Alignment
+	return w.Alignment
 }
 
-func (b *BillingProfileWorkflowCollectionSettings) GetAlignmentSubscription() *AlignmentBillingWorkflowCollectionAlignmentSubscription {
-	if v := b.GetAlignment(); v != nil {
-		return v.AlignmentBillingWorkflowCollectionAlignmentSubscription
+func (w *WorkflowCollectionSettings) GetAlignmentSubscription() *BillingWorkflowCollectionAlignmentSubscription {
+	if v := w.GetAlignment(); v != nil {
+		return v.BillingWorkflowCollectionAlignmentSubscription
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflowCollectionSettings) GetAlignmentAnchored() *AlignmentBillingWorkflowCollectionAlignmentAnchored {
-	if v := b.GetAlignment(); v != nil {
-		return v.AlignmentBillingWorkflowCollectionAlignmentAnchored
+func (w *WorkflowCollectionSettings) GetAlignmentAnchored() *BillingWorkflowCollectionAlignmentAnchored {
+	if v := w.GetAlignment(); v != nil {
+		return v.BillingWorkflowCollectionAlignmentAnchored
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflowCollectionSettings) GetInterval() *string {
-	if b == nil {
+func (w *WorkflowCollectionSettings) GetInterval() *string {
+	if w == nil {
 		return nil
 	}
-	return b.Interval
+	return w.Interval
 }
 
-// BillingProfileWorkflowInvoiceSettings - The invoicing settings for this workflow
-type BillingProfileWorkflowInvoiceSettings struct {
+// WorkflowInvoiceSettings - The invoicing settings for this workflow
+type WorkflowInvoiceSettings struct {
 	// Whether to automatically issue the invoice after the draftPeriod has passed.
 	AutoAdvance *bool `default:"true" json:"auto_advance"`
 	// The period for the invoice to be kept in draft status for manual reviews.
@@ -487,78 +487,78 @@ type BillingProfileWorkflowInvoiceSettings struct {
 	ProgressiveBilling *bool `default:"true" json:"progressive_billing"`
 }
 
-func (b BillingProfileWorkflowInvoiceSettings) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (w WorkflowInvoiceSettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
 }
 
-func (b *BillingProfileWorkflowInvoiceSettings) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+func (w *WorkflowInvoiceSettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflowInvoiceSettings) GetAutoAdvance() *bool {
-	if b == nil {
+func (w *WorkflowInvoiceSettings) GetAutoAdvance() *bool {
+	if w == nil {
 		return nil
 	}
-	return b.AutoAdvance
+	return w.AutoAdvance
 }
 
-func (b *BillingProfileWorkflowInvoiceSettings) GetDraftPeriod() *string {
-	if b == nil {
+func (w *WorkflowInvoiceSettings) GetDraftPeriod() *string {
+	if w == nil {
 		return nil
 	}
-	return b.DraftPeriod
+	return w.DraftPeriod
 }
 
-func (b *BillingProfileWorkflowInvoiceSettings) GetProgressiveBilling() *bool {
-	if b == nil {
+func (w *WorkflowInvoiceSettings) GetProgressiveBilling() *bool {
+	if w == nil {
 		return nil
 	}
-	return b.ProgressiveBilling
+	return w.ProgressiveBilling
 }
 
-type BillingProfilePaymentType string
+type PaymentType string
 
 const (
-	BillingProfilePaymentTypeChargeAutomatically BillingProfilePaymentType = "charge_automatically"
-	BillingProfilePaymentTypeSendInvoice         BillingProfilePaymentType = "send_invoice"
+	PaymentTypeChargeAutomatically PaymentType = "charge_automatically"
+	PaymentTypeSendInvoice         PaymentType = "send_invoice"
 )
 
-// BillingProfilePayment - The payment settings for this workflow
-type BillingProfilePayment struct {
+// Payment - The payment settings for this workflow
+type Payment struct {
 	BillingWorkflowPaymentChargeAutomaticallySettings *BillingWorkflowPaymentChargeAutomaticallySettings `queryParam:"inline" union:"member"`
 	BillingWorkflowPaymentSendInvoiceSettings         *BillingWorkflowPaymentSendInvoiceSettings         `queryParam:"inline" union:"member"`
 
-	Type BillingProfilePaymentType
+	Type PaymentType
 }
 
-func CreateBillingProfilePaymentChargeAutomatically(chargeAutomatically BillingWorkflowPaymentChargeAutomaticallySettings) BillingProfilePayment {
-	typ := BillingProfilePaymentTypeChargeAutomatically
+func CreatePaymentChargeAutomatically(chargeAutomatically BillingWorkflowPaymentChargeAutomaticallySettings) Payment {
+	typ := PaymentTypeChargeAutomatically
 
 	typStr := CollectionMethod(typ)
 	chargeAutomatically.CollectionMethod = typStr
 
-	return BillingProfilePayment{
+	return Payment{
 		BillingWorkflowPaymentChargeAutomaticallySettings: &chargeAutomatically,
 		Type: typ,
 	}
 }
 
-func CreateBillingProfilePaymentSendInvoice(sendInvoice BillingWorkflowPaymentSendInvoiceSettings) BillingProfilePayment {
-	typ := BillingProfilePaymentTypeSendInvoice
+func CreatePaymentSendInvoice(sendInvoice BillingWorkflowPaymentSendInvoiceSettings) Payment {
+	typ := PaymentTypeSendInvoice
 
 	typStr := BillingWorkflowPaymentSendInvoiceSettingsCollectionMethod(typ)
 	sendInvoice.CollectionMethod = typStr
 
-	return BillingProfilePayment{
+	return Payment{
 		BillingWorkflowPaymentSendInvoiceSettings: &sendInvoice,
 		Type: typ,
 	}
 }
 
-func (u *BillingProfilePayment) UnmarshalJSON(data []byte) error {
+func (u *Payment) UnmarshalJSON(data []byte) error {
 
 	type discriminator struct {
 		CollectionMethod string `json:"collection_method"`
@@ -573,27 +573,27 @@ func (u *BillingProfilePayment) UnmarshalJSON(data []byte) error {
 	case "charge_automatically":
 		billingWorkflowPaymentChargeAutomaticallySettings := new(BillingWorkflowPaymentChargeAutomaticallySettings)
 		if err := utils.UnmarshalJSON(data, &billingWorkflowPaymentChargeAutomaticallySettings, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (CollectionMethod == charge_automatically) type BillingWorkflowPaymentChargeAutomaticallySettings within BillingProfilePayment: %w", string(data), err)
+			return fmt.Errorf("could not unmarshal `%s` into expected (CollectionMethod == charge_automatically) type BillingWorkflowPaymentChargeAutomaticallySettings within Payment: %w", string(data), err)
 		}
 
 		u.BillingWorkflowPaymentChargeAutomaticallySettings = billingWorkflowPaymentChargeAutomaticallySettings
-		u.Type = BillingProfilePaymentTypeChargeAutomatically
+		u.Type = PaymentTypeChargeAutomatically
 		return nil
 	case "send_invoice":
 		billingWorkflowPaymentSendInvoiceSettings := new(BillingWorkflowPaymentSendInvoiceSettings)
 		if err := utils.UnmarshalJSON(data, &billingWorkflowPaymentSendInvoiceSettings, "", true, nil); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (CollectionMethod == send_invoice) type BillingWorkflowPaymentSendInvoiceSettings within BillingProfilePayment: %w", string(data), err)
+			return fmt.Errorf("could not unmarshal `%s` into expected (CollectionMethod == send_invoice) type BillingWorkflowPaymentSendInvoiceSettings within Payment: %w", string(data), err)
 		}
 
 		u.BillingWorkflowPaymentSendInvoiceSettings = billingWorkflowPaymentSendInvoiceSettings
-		u.Type = BillingProfilePaymentTypeSendInvoice
+		u.Type = PaymentTypeSendInvoice
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for BillingProfilePayment", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Payment", string(data))
 }
 
-func (u BillingProfilePayment) MarshalJSON() ([]byte, error) {
+func (u Payment) MarshalJSON() ([]byte, error) {
 	if u.BillingWorkflowPaymentChargeAutomaticallySettings != nil {
 		return utils.MarshalJSON(u.BillingWorkflowPaymentChargeAutomaticallySettings, "", true)
 	}
@@ -602,130 +602,134 @@ func (u BillingProfilePayment) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.BillingWorkflowPaymentSendInvoiceSettings, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type BillingProfilePayment: all fields are null")
+	return nil, errors.New("could not marshal union type Payment: all fields are null")
 }
 
-// BillingProfileTaxBehavior - Tax behavior.
+// TaxBehavior - Tax behavior.
 //
 // If not specified the billing profile is used to determine the tax behavior. If
 // not specified in the billing profile, the provider's default behavior is used.
-type BillingProfileTaxBehavior string
+type TaxBehavior string
 
 const (
-	BillingProfileTaxBehaviorInclusive BillingProfileTaxBehavior = "inclusive"
-	BillingProfileTaxBehaviorExclusive BillingProfileTaxBehavior = "exclusive"
+	TaxBehaviorInclusive TaxBehavior = "inclusive"
+	TaxBehaviorExclusive TaxBehavior = "exclusive"
 )
 
-func (e BillingProfileTaxBehavior) ToPointer() *BillingProfileTaxBehavior {
+func (e TaxBehavior) ToPointer() *TaxBehavior {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *BillingProfileTaxBehavior) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "inclusive", "exclusive":
-			return true
-		}
+func (e *TaxBehavior) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "inclusive":
+		fallthrough
+	case "exclusive":
+		*e = TaxBehavior(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for TaxBehavior: %v", v)
+	}
 }
 
-// BillingProfileStripeTaxConfig - Stripe tax config.
+// StripeTaxConfig - Stripe tax config.
 //
 // Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-type BillingProfileStripeTaxConfig struct {
+type StripeTaxConfig struct {
 	// Product [tax code](https://docs.stripe.com/tax/tax-codes).
 	Code string `json:"code"`
 }
 
-func (b BillingProfileStripeTaxConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (s StripeTaxConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
 }
 
-func (b *BillingProfileStripeTaxConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"code"}); err != nil {
+func (s *StripeTaxConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"code"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileStripeTaxConfig) GetCode() string {
-	if b == nil {
+func (s *StripeTaxConfig) GetCode() string {
+	if s == nil {
 		return ""
 	}
-	return b.Code
+	return s.Code
 }
 
-// BillingProfileExternalInvoicingTaxConfig - External invoicing tax config.
+// ExternalInvoicingTaxConfig - External invoicing tax config.
 //
 // Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-type BillingProfileExternalInvoicingTaxConfig struct {
+type ExternalInvoicingTaxConfig struct {
 	// The tax code should be interpreted by the external invoicing provider.
 	Code string `json:"code"`
 }
 
-func (b BillingProfileExternalInvoicingTaxConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (e ExternalInvoicingTaxConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
 }
 
-func (b *BillingProfileExternalInvoicingTaxConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"code"}); err != nil {
+func (e *ExternalInvoicingTaxConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"code"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileExternalInvoicingTaxConfig) GetCode() string {
-	if b == nil {
+func (e *ExternalInvoicingTaxConfig) GetCode() string {
+	if e == nil {
 		return ""
 	}
-	return b.Code
+	return e.Code
 }
 
-// BillingProfileTaxCode - Tax code reference.
+// TaxCode - Tax code reference.
 //
 // When both `tax_code` and `tax_code_id` are provided, `tax_code` takes
 // precedence. When `stripe.code` is also provided, `tax_code` still wins and
 // `stripe.code` is ignored.
-type BillingProfileTaxCode struct {
+type TaxCode struct {
 	// ULID (Universally Unique Lexicographically Sortable Identifier).
 	ID string `json:"id"`
 }
 
-func (b BillingProfileTaxCode) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (t TaxCode) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
 }
 
-func (b *BillingProfileTaxCode) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id"}); err != nil {
+func (t *TaxCode) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileTaxCode) GetID() string {
-	if b == nil {
+func (t *TaxCode) GetID() string {
+	if t == nil {
 		return ""
 	}
-	return b.ID
+	return t.ID
 }
 
-// BillingProfileDefaultTaxConfig - Default tax configuration to apply to the invoices for line items.
-type BillingProfileDefaultTaxConfig struct {
+// DefaultTaxConfig - Default tax configuration to apply to the invoices for line items.
+type DefaultTaxConfig struct {
 	// Tax behavior.
 	//
 	// If not specified the billing profile is used to determine the tax behavior. If
 	// not specified in the billing profile, the provider's default behavior is used.
-	Behavior *BillingProfileTaxBehavior `json:"behavior,omitempty"`
+	Behavior *TaxBehavior `json:"behavior,omitempty"`
 	// Stripe tax config.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	Stripe *BillingProfileStripeTaxConfig `json:"stripe"`
+	Stripe *StripeTaxConfig `json:"stripe,omitempty"`
 	// External invoicing tax config.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	ExternalInvoicing *BillingProfileExternalInvoicingTaxConfig `json:"external_invoicing"`
+	ExternalInvoicing *ExternalInvoicingTaxConfig `json:"external_invoicing,omitempty"`
 	// Tax code ID.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -735,57 +739,57 @@ type BillingProfileDefaultTaxConfig struct {
 	// When both `tax_code` and `tax_code_id` are provided, `tax_code` takes
 	// precedence. When `stripe.code` is also provided, `tax_code` still wins and
 	// `stripe.code` is ignored.
-	TaxCode *BillingProfileTaxCode `json:"tax_code"`
+	TaxCode *TaxCode `json:"tax_code,omitempty"`
 }
 
-func (b BillingProfileDefaultTaxConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (d DefaultTaxConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
 }
 
-func (b *BillingProfileDefaultTaxConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+func (d *DefaultTaxConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileDefaultTaxConfig) GetBehavior() *BillingProfileTaxBehavior {
-	if b == nil {
+func (d *DefaultTaxConfig) GetBehavior() *TaxBehavior {
+	if d == nil {
 		return nil
 	}
-	return b.Behavior
+	return d.Behavior
 }
 
-func (b *BillingProfileDefaultTaxConfig) GetStripe() *BillingProfileStripeTaxConfig {
-	if b == nil {
+func (d *DefaultTaxConfig) GetStripe() *StripeTaxConfig {
+	if d == nil {
 		return nil
 	}
-	return b.Stripe
+	return d.Stripe
 }
 
-func (b *BillingProfileDefaultTaxConfig) GetExternalInvoicing() *BillingProfileExternalInvoicingTaxConfig {
-	if b == nil {
+func (d *DefaultTaxConfig) GetExternalInvoicing() *ExternalInvoicingTaxConfig {
+	if d == nil {
 		return nil
 	}
-	return b.ExternalInvoicing
+	return d.ExternalInvoicing
 }
 
-func (b *BillingProfileDefaultTaxConfig) GetTaxCodeID() *string {
-	if b == nil {
+func (d *DefaultTaxConfig) GetTaxCodeID() *string {
+	if d == nil {
 		return nil
 	}
-	return b.TaxCodeID
+	return d.TaxCodeID
 }
 
-func (b *BillingProfileDefaultTaxConfig) GetTaxCode() *BillingProfileTaxCode {
-	if b == nil {
+func (d *DefaultTaxConfig) GetTaxCode() *TaxCode {
+	if d == nil {
 		return nil
 	}
-	return b.TaxCode
+	return d.TaxCode
 }
 
-// BillingProfileWorkflowTaxSettings - The tax settings for this workflow
-type BillingProfileWorkflowTaxSettings struct {
+// WorkflowTaxSettings - The tax settings for this workflow
+type WorkflowTaxSettings struct {
 	// Enable automatic tax calculation when tax is supported by the app. For example,
 	// with Stripe Invoicing when enabled, tax is calculated via Stripe Tax.
 	Enabled *bool `default:"true" json:"enabled"`
@@ -795,218 +799,218 @@ type BillingProfileWorkflowTaxSettings struct {
 	// have a tax location when starting a paid subscription.
 	Enforced *bool `default:"false" json:"enforced"`
 	// Default tax configuration to apply to the invoices for line items.
-	DefaultTaxConfig *BillingProfileDefaultTaxConfig `json:"default_tax_config"`
+	DefaultTaxConfig *DefaultTaxConfig `json:"default_tax_config,omitempty"`
 }
 
-func (b BillingProfileWorkflowTaxSettings) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (w WorkflowTaxSettings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
 }
 
-func (b *BillingProfileWorkflowTaxSettings) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+func (w *WorkflowTaxSettings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflowTaxSettings) GetEnabled() *bool {
-	if b == nil {
+func (w *WorkflowTaxSettings) GetEnabled() *bool {
+	if w == nil {
 		return nil
 	}
-	return b.Enabled
+	return w.Enabled
 }
 
-func (b *BillingProfileWorkflowTaxSettings) GetEnforced() *bool {
-	if b == nil {
+func (w *WorkflowTaxSettings) GetEnforced() *bool {
+	if w == nil {
 		return nil
 	}
-	return b.Enforced
+	return w.Enforced
 }
 
-func (b *BillingProfileWorkflowTaxSettings) GetDefaultTaxConfig() *BillingProfileDefaultTaxConfig {
-	if b == nil {
+func (w *WorkflowTaxSettings) GetDefaultTaxConfig() *DefaultTaxConfig {
+	if w == nil {
 		return nil
 	}
-	return b.DefaultTaxConfig
+	return w.DefaultTaxConfig
 }
 
-// BillingProfileWorkflow - The billing workflow settings for this profile
-type BillingProfileWorkflow struct {
+// Workflow - The billing workflow settings for this profile
+type Workflow struct {
 	// The collection settings for this workflow
-	Collection *BillingProfileWorkflowCollectionSettings `json:"collection"`
+	Collection *WorkflowCollectionSettings `json:"collection,omitempty"`
 	// The invoicing settings for this workflow
-	Invoicing *BillingProfileWorkflowInvoiceSettings `json:"invoicing,omitempty"`
+	Invoicing *WorkflowInvoiceSettings `json:"invoicing,omitempty"`
 	// The payment settings for this workflow
-	Payment *BillingProfilePayment `json:"payment,omitempty"`
+	Payment *Payment `json:"payment,omitempty"`
 	// The tax settings for this workflow
-	Tax *BillingProfileWorkflowTaxSettings `json:"tax,omitempty"`
+	Tax *WorkflowTaxSettings `json:"tax,omitempty"`
 }
 
-func (b BillingProfileWorkflow) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (w Workflow) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
 }
 
-func (b *BillingProfileWorkflow) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+func (w *Workflow) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflow) GetCollection() *BillingProfileWorkflowCollectionSettings {
-	if b == nil {
+func (w *Workflow) GetCollection() *WorkflowCollectionSettings {
+	if w == nil {
 		return nil
 	}
-	return b.Collection
+	return w.Collection
 }
 
-func (b *BillingProfileWorkflow) GetInvoicing() *BillingProfileWorkflowInvoiceSettings {
-	if b == nil {
+func (w *Workflow) GetInvoicing() *WorkflowInvoiceSettings {
+	if w == nil {
 		return nil
 	}
-	return b.Invoicing
+	return w.Invoicing
 }
 
-func (b *BillingProfileWorkflow) GetPayment() *BillingProfilePayment {
-	if b == nil {
+func (w *Workflow) GetPayment() *Payment {
+	if w == nil {
 		return nil
 	}
-	return b.Payment
+	return w.Payment
 }
 
-func (b *BillingProfileWorkflow) GetPaymentChargeAutomatically() *BillingWorkflowPaymentChargeAutomaticallySettings {
-	if v := b.GetPayment(); v != nil {
+func (w *Workflow) GetPaymentChargeAutomatically() *BillingWorkflowPaymentChargeAutomaticallySettings {
+	if v := w.GetPayment(); v != nil {
 		return v.BillingWorkflowPaymentChargeAutomaticallySettings
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflow) GetPaymentSendInvoice() *BillingWorkflowPaymentSendInvoiceSettings {
-	if v := b.GetPayment(); v != nil {
+func (w *Workflow) GetPaymentSendInvoice() *BillingWorkflowPaymentSendInvoiceSettings {
+	if v := w.GetPayment(); v != nil {
 		return v.BillingWorkflowPaymentSendInvoiceSettings
 	}
 	return nil
 }
 
-func (b *BillingProfileWorkflow) GetTax() *BillingProfileWorkflowTaxSettings {
-	if b == nil {
+func (w *Workflow) GetTax() *WorkflowTaxSettings {
+	if w == nil {
 		return nil
 	}
-	return b.Tax
+	return w.Tax
 }
 
-// BillingProfileTax - The tax app used for this workflow.
-type BillingProfileTax struct {
+// Tax - The tax app used for this workflow.
+type Tax struct {
 	// The ID of the app.
 	ID string `json:"id"`
 }
 
-func (b BillingProfileTax) MarshalJSON() ([]byte, error) {
+func (t Tax) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Tax) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *Tax) GetID() string {
+	if t == nil {
+		return ""
+	}
+	return t.ID
+}
+
+// Invoicing - The invoicing app used for this workflow.
+type Invoicing struct {
+	// The ID of the app.
+	ID string `json:"id"`
+}
+
+func (i Invoicing) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Invoicing) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *Invoicing) GetID() string {
+	if i == nil {
+		return ""
+	}
+	return i.ID
+}
+
+// BillingProfilePayment - The payment app used for this workflow.
+type BillingProfilePayment struct {
+	// The ID of the app.
+	ID string `json:"id"`
+}
+
+func (b BillingProfilePayment) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(b, "", false)
 }
 
-func (b *BillingProfileTax) UnmarshalJSON(data []byte) error {
+func (b *BillingProfilePayment) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileTax) GetID() string {
+func (b *BillingProfilePayment) GetID() string {
 	if b == nil {
 		return ""
 	}
 	return b.ID
 }
 
-// BillingProfileInvoicing - The invoicing app used for this workflow.
-type BillingProfileInvoicing struct {
-	// The ID of the app.
-	ID string `json:"id"`
-}
-
-func (b BillingProfileInvoicing) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
-}
-
-func (b *BillingProfileInvoicing) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (b *BillingProfileInvoicing) GetID() string {
-	if b == nil {
-		return ""
-	}
-	return b.ID
-}
-
-// BillingProfileAppsPayment - The payment app used for this workflow.
-type BillingProfileAppsPayment struct {
-	// The ID of the app.
-	ID string `json:"id"`
-}
-
-func (b BillingProfileAppsPayment) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
-}
-
-func (b *BillingProfileAppsPayment) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (b *BillingProfileAppsPayment) GetID() string {
-	if b == nil {
-		return ""
-	}
-	return b.ID
-}
-
-// BillingProfileApps - The applications used by this billing profile.
-type BillingProfileApps struct {
+// Apps - The applications used by this billing profile.
+type Apps struct {
 	// The tax app used for this workflow.
-	Tax BillingProfileTax `json:"tax"`
+	Tax Tax `json:"tax"`
 	// The invoicing app used for this workflow.
-	Invoicing BillingProfileInvoicing `json:"invoicing"`
+	Invoicing Invoicing `json:"invoicing"`
 	// The payment app used for this workflow.
-	Payment BillingProfileAppsPayment `json:"payment"`
+	Payment BillingProfilePayment `json:"payment"`
 }
 
-func (b BillingProfileApps) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+func (a Apps) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (b *BillingProfileApps) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"tax", "invoicing", "payment"}); err != nil {
+func (a *Apps) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"tax", "invoicing", "payment"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingProfileApps) GetTax() BillingProfileTax {
-	if b == nil {
-		return BillingProfileTax{}
+func (a *Apps) GetTax() Tax {
+	if a == nil {
+		return Tax{}
 	}
-	return b.Tax
+	return a.Tax
 }
 
-func (b *BillingProfileApps) GetInvoicing() BillingProfileInvoicing {
-	if b == nil {
-		return BillingProfileInvoicing{}
+func (a *Apps) GetInvoicing() Invoicing {
+	if a == nil {
+		return Invoicing{}
 	}
-	return b.Invoicing
+	return a.Invoicing
 }
 
-func (b *BillingProfileApps) GetPayment() BillingProfileAppsPayment {
-	if b == nil {
-		return BillingProfileAppsPayment{}
+func (a *Apps) GetPayment() BillingProfilePayment {
+	if a == nil {
+		return BillingProfilePayment{}
 	}
-	return b.Payment
+	return a.Payment
 }
 
 // BillingProfile - Billing profiles contain the settings for billing and controls invoice
@@ -1021,12 +1025,12 @@ type BillingProfile struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity last update date.
@@ -1037,9 +1041,9 @@ type BillingProfile struct {
 	// represents
 	Supplier Supplier `json:"supplier"`
 	// The billing workflow settings for this profile
-	Workflow BillingProfileWorkflow `json:"workflow"`
+	Workflow Workflow `json:"workflow"`
 	// The applications used by this billing profile.
-	Apps BillingProfileApps `json:"apps"`
+	Apps Apps `json:"apps"`
 	// Whether this is the default profile.
 	Default bool `json:"default"`
 }
@@ -1076,7 +1080,7 @@ func (b *BillingProfile) GetDescription() *string {
 	return b.Description
 }
 
-func (b *BillingProfile) GetLabels() map[string]*string {
+func (b *BillingProfile) GetLabels() map[string]string {
 	if b == nil {
 		return nil
 	}
@@ -1111,16 +1115,16 @@ func (b *BillingProfile) GetSupplier() Supplier {
 	return b.Supplier
 }
 
-func (b *BillingProfile) GetWorkflow() BillingProfileWorkflow {
+func (b *BillingProfile) GetWorkflow() Workflow {
 	if b == nil {
-		return BillingProfileWorkflow{}
+		return Workflow{}
 	}
 	return b.Workflow
 }
 
-func (b *BillingProfile) GetApps() BillingProfileApps {
+func (b *BillingProfile) GetApps() Apps {
 	if b == nil {
-		return BillingProfileApps{}
+		return Apps{}
 	}
 	return b.Apps
 }

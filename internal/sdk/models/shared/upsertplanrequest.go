@@ -15,12 +15,12 @@ type UpsertPlanRequest struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// Whether pro-rating is enabled for this plan.
 	ProRatingEnabled *bool `default:"true" json:"pro_rating_enabled"`
 	// The plan phases define the pricing ramp for a subscription. A phase switch
@@ -53,7 +53,7 @@ func (u *UpsertPlanRequest) GetDescription() *string {
 	return u.Description
 }
 
-func (u *UpsertPlanRequest) GetLabels() map[string]*string {
+func (u *UpsertPlanRequest) GetLabels() map[string]string {
 	if u == nil {
 		return nil
 	}

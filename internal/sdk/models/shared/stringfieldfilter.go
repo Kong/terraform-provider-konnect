@@ -3,11 +3,13 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// StringFieldFilter - Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
-type StringFieldFilter struct {
+// FilterByOperator - Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
+type FilterByOperator struct {
 	// The field exactly matches the provided value.
 	Eq *string `queryParam:"name=eq"`
 	// The field contains the provided value.
@@ -20,48 +22,137 @@ type StringFieldFilter struct {
 	Neq *string `queryParam:"name=neq"`
 }
 
-func (s StringFieldFilter) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+func (f FilterByOperator) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
 }
 
-func (s *StringFieldFilter) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+func (f *FilterByOperator) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *StringFieldFilter) GetEq() *string {
-	if s == nil {
+func (f *FilterByOperator) GetEq() *string {
+	if f == nil {
 		return nil
 	}
-	return s.Eq
+	return f.Eq
 }
 
-func (s *StringFieldFilter) GetContains() *string {
-	if s == nil {
+func (f *FilterByOperator) GetContains() *string {
+	if f == nil {
 		return nil
 	}
-	return s.Contains
+	return f.Contains
 }
 
-func (s *StringFieldFilter) GetOcontains() *string {
-	if s == nil {
+func (f *FilterByOperator) GetOcontains() *string {
+	if f == nil {
 		return nil
 	}
-	return s.Ocontains
+	return f.Ocontains
 }
 
-func (s *StringFieldFilter) GetOeq() *string {
-	if s == nil {
+func (f *FilterByOperator) GetOeq() *string {
+	if f == nil {
 		return nil
 	}
-	return s.Oeq
+	return f.Oeq
 }
 
-func (s *StringFieldFilter) GetNeq() *string {
-	if s == nil {
+func (f *FilterByOperator) GetNeq() *string {
+	if f == nil {
 		return nil
 	}
-	return s.Neq
+	return f.Neq
+}
+
+type StringFieldFilterType string
+
+const (
+	StringFieldFilterTypeFilterByOperator StringFieldFilterType = "Filter by operator"
+	StringFieldFilterTypeStr              StringFieldFilterType = "str"
+)
+
+type StringFieldFilter struct {
+	FilterByOperator *FilterByOperator `queryParam:"inline" union:"member"`
+	Str              *string           `queryParam:"inline" union:"member"`
+
+	Type StringFieldFilterType
+}
+
+func CreateStringFieldFilterFilterByOperator(filterByOperator FilterByOperator) StringFieldFilter {
+	typ := StringFieldFilterTypeFilterByOperator
+
+	return StringFieldFilter{
+		FilterByOperator: &filterByOperator,
+		Type:             typ,
+	}
+}
+
+func CreateStringFieldFilterStr(str string) StringFieldFilter {
+	typ := StringFieldFilterTypeStr
+
+	return StringFieldFilter{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func (u *StringFieldFilter) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var filterByOperator FilterByOperator = FilterByOperator{}
+	if err := utils.UnmarshalJSON(data, &filterByOperator, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  StringFieldFilterTypeFilterByOperator,
+			Value: &filterByOperator,
+		})
+	}
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  StringFieldFilterTypeStr,
+			Value: &str,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for StringFieldFilter", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for StringFieldFilter", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(StringFieldFilterType)
+	switch best.Type {
+	case StringFieldFilterTypeFilterByOperator:
+		u.FilterByOperator = best.Value.(*FilterByOperator)
+		return nil
+	case StringFieldFilterTypeStr:
+		u.Str = best.Value.(*string)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for StringFieldFilter", string(data))
+}
+
+func (u StringFieldFilter) MarshalJSON() ([]byte, error) {
+	if u.FilterByOperator != nil {
+		return utils.MarshalJSON(u.FilterByOperator, "", true)
+	}
+
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type StringFieldFilter: all fields are null")
 }

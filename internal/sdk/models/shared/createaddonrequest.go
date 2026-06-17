@@ -3,47 +3,121 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// CreateAddOnRequest - Request schema for creating an add-on.
-type CreateAddOnRequest struct {
-	// Unique human-readable name of the add-on.
-	Name string `json:"name"`
-	// Owner for the add-on.
-	Owner AddOnOwner `json:"owner"`
-	// Configuration for creating different types of add-ons.
-	Config CreateAddOnConfig `json:"config"`
+// CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple - The InstanceType of the add-ons. Can be "single" or "multiple".
+type CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple string
+
+const (
+	CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultipleSingle   CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple = "single"
+	CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultipleMultiple CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple = "multiple"
+)
+
+func (e CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple) ToPointer() *CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple {
+	return &e
+}
+func (e *CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "single":
+		fallthrough
+	case "multiple":
+		*e = CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple: %v", v)
+	}
 }
 
-func (c CreateAddOnRequest) MarshalJSON() ([]byte, error) {
+// CreateAddonRequest - Addon create request.
+type CreateAddonRequest struct {
+	// Display name of the resource.
+	//
+	// Between 1 and 256 characters.
+	Name string `json:"name"`
+	// Optional description of the resource.
+	//
+	// Maximum 1024 characters.
+	Description *string `json:"description,omitempty"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// A key is a semi-unique string that is used to identify the add-on. It is used to
+	// reference the latest `active` version of the add-on and is unique with the
+	// version number.
+	Key string `json:"key"`
+	// The InstanceType of the add-ons. Can be "single" or "multiple".
+	InstanceType CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple `json:"instance_type"`
+	// The currency code of the add-on.
+	Currency string `json:"currency"`
+	// The rate cards of the add-on.
+	RateCards []BillingRateCard `json:"rate_cards"`
+}
+
+func (c CreateAddonRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CreateAddOnRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "owner", "config"}); err != nil {
+func (c *CreateAddonRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "key", "instance_type", "currency", "rate_cards"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreateAddOnRequest) GetName() string {
+func (c *CreateAddonRequest) GetName() string {
 	if c == nil {
 		return ""
 	}
 	return c.Name
 }
 
-func (c *CreateAddOnRequest) GetOwner() AddOnOwner {
+func (c *CreateAddonRequest) GetDescription() *string {
 	if c == nil {
-		return AddOnOwner{}
+		return nil
 	}
-	return c.Owner
+	return c.Description
 }
 
-func (c *CreateAddOnRequest) GetConfig() CreateAddOnConfig {
+func (c *CreateAddonRequest) GetLabels() map[string]string {
 	if c == nil {
-		return CreateAddOnConfig{}
+		return nil
 	}
-	return c.Config
+	return c.Labels
+}
+
+func (c *CreateAddonRequest) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+func (c *CreateAddonRequest) GetInstanceType() CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple {
+	if c == nil {
+		return CreateAddonRequestTheInstanceTypeOfTheAddOnsCanBeSingleOrMultiple("")
+	}
+	return c.InstanceType
+}
+
+func (c *CreateAddonRequest) GetCurrency() string {
+	if c == nil {
+		return ""
+	}
+	return c.Currency
+}
+
+func (c *CreateAddonRequest) GetRateCards() []BillingRateCard {
+	if c == nil {
+		return []BillingRateCard{}
+	}
+	return c.RateCards
 }

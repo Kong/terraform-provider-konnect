@@ -132,9 +132,9 @@ type BillingPriceTier struct {
 	// the tier is open-ended (the last tier).
 	UpToAmount *string `json:"up_to_amount,omitempty"`
 	// The flat price component of the tier. Charged once when the tier is entered.
-	FlatPrice *FlatPriceComponent `json:"flat_price"`
+	FlatPrice *FlatPriceComponent `json:"flat_price,omitempty"`
 	// The unit price component of the tier. Charged per billing unit within the tier.
-	UnitPrice *UnitPriceComponent `json:"unit_price"`
+	UnitPrice *UnitPriceComponent `json:"unit_price,omitempty"`
 }
 
 func (b BillingPriceTier) MarshalJSON() ([]byte, error) {

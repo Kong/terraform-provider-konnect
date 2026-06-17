@@ -10,7 +10,7 @@ type InvalidParameterStandard struct {
 	Field string `json:"field"`
 	// invalid parameters rules
 	Rule   *InvalidRules `json:"rule,omitempty"`
-	Source *string       `default:"null" json:"source"`
+	Source *string       `json:"source,omitempty"`
 	Reason string        `json:"reason"`
 }
 

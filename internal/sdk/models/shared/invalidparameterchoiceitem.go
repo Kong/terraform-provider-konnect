@@ -38,7 +38,7 @@ type InvalidParameterChoiceItem struct {
 	Rule    InvalidParameterChoiceItemRule `json:"rule"`
 	Reason  string                         `json:"reason"`
 	Choices []any                          `json:"choices"`
-	Source  *string                        `default:"null" json:"source"`
+	Source  *string                        `json:"source,omitempty"`
 }
 
 func (i InvalidParameterChoiceItem) MarshalJSON() ([]byte, error) {

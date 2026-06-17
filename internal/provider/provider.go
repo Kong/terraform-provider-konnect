@@ -37,7 +37,6 @@ type KonnectProviderModel struct {
 	KonnectAccessToken       types.String `tfsdk:"konnect_access_token"`
 	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
 	ServerURL                types.String `tfsdk:"server_url"`
-	ServiceAccessToken       types.String `tfsdk:"service_access_token"`
 	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 }
 
@@ -50,24 +49,23 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"konnect_access_token": schema.StringAttribute{
-				MarkdownDescription: `The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to authenticate with..`,
-				Optional:            true,
-				Sensitive:           true,
-			},
-			"personal_access_token": schema.StringAttribute{
-				MarkdownDescription: `The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs. You can generate a Personal Access Token (PAT) from the personal access token page in the Konnect dashboard.. Configurable via environment variable ` + "`" + `KONNECT_TOKEN` + "`" + `.`,
-				Optional:            true,
-				Sensitive:           true,
-			},
-			"server_url": schema.StringAttribute{
-				Description: `Server URL (defaults to https://global.api.konghq.com)`,
-				Optional:    true,
-			},
-			"service_access_token": schema.StringAttribute{
-				MarkdownDescription: `The Service access token is meant to be used between internal services.` + "\n" +
+				MarkdownDescription: `The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.` + "\n" +
 					`.`,
 				Optional:  true,
 				Sensitive: true,
+			},
+			"personal_access_token": schema.StringAttribute{
+				MarkdownDescription: `The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.` + "\n" +
+					`You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/account/tokens/) in the Konnect dashboard.` + "\n" +
+					`The PAT token must be passed in the header of a request, for example:` + "\n" +
+					`` + "`" + `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'` + "`" + `` + "\n" +
+					`. Configurable via environment variable ` + "`" + `KONNECT_TOKEN` + "`" + `.`,
+				Optional:  true,
+				Sensitive: true,
+			},
+			"server_url": schema.StringAttribute{
+				Description: `Server URL (defaults to https://us.api.konghq.com/v3)`,
+				Optional:    true,
 			},
 			"system_account_access_token": schema.StringAttribute{
 				MarkdownDescription: `The system account access token is meant for automations and integrations that are not directly associated with a human identity.` + "\n" +
@@ -79,7 +77,7 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 				Sensitive: true,
 			},
 		},
-		MarkdownDescription: `Konnect API: The Konnect platform API`,
+		MarkdownDescription: `Konnect Metering & Billing: Konnect Metering & Billing API.`,
 	}
 }
 
@@ -99,18 +97,10 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	}
 
 	if serverUrl == "" {
-		serverUrl = "https://global.api.konghq.com"
+		serverUrl = "https://us.api.konghq.com/v3"
 	}
 
 	security := shared.Security{}
-
-	if !data.PersonalAccessToken.IsUnknown() {
-		security.PersonalAccessToken = data.PersonalAccessToken.ValueStringPointer()
-	}
-
-	if personalAccessTokenEnvVar := os.Getenv("KONNECT_TOKEN"); security.PersonalAccessToken == nil && personalAccessTokenEnvVar != "" {
-		security.PersonalAccessToken = &personalAccessTokenEnvVar
-	}
 
 	if !data.SystemAccountAccessToken.IsUnknown() {
 		security.SystemAccountAccessToken = data.SystemAccountAccessToken.ValueStringPointer()
@@ -120,12 +110,16 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		security.SystemAccountAccessToken = &systemAccountAccessTokenEnvVar
 	}
 
-	if !data.KonnectAccessToken.IsUnknown() {
-		security.KonnectAccessToken = data.KonnectAccessToken.ValueStringPointer()
+	if !data.PersonalAccessToken.IsUnknown() {
+		security.PersonalAccessToken = data.PersonalAccessToken.ValueStringPointer()
 	}
 
-	if !data.ServiceAccessToken.IsUnknown() {
-		security.ServiceAccessToken = data.ServiceAccessToken.ValueStringPointer()
+	if personalAccessTokenEnvVar := os.Getenv("KONNECT_TOKEN"); security.PersonalAccessToken == nil && personalAccessTokenEnvVar != "" {
+		security.PersonalAccessToken = &personalAccessTokenEnvVar
+	}
+
+	if !data.KonnectAccessToken.IsUnknown() {
+		security.KonnectAccessToken = data.KonnectAccessToken.ValueStringPointer()
 	}
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
@@ -160,245 +154,12 @@ func (p *KonnectProvider) Actions(_ context.Context) []func() action.Action {
 
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewAPIProductDocumentResource,
-		NewAPIProductSpecificationResource,
-		NewAPIResource,
-		NewAPIDocumentResource,
-		NewAPIImplementationResource,
-		NewAPIProductResource,
-		NewAPIProductVersionResource,
-		NewAPIPublicationResource,
-		NewAPISpecificationResource,
-		NewAPIVersionResource,
-		NewApplicationAuthStrategyResource,
-		NewAuditLogResource,
-		NewAuditLogDestinationResource,
-		NewAuthenticationSettingsResource,
-		NewCmekResource,
-		NewCatalogServiceResource,
-		NewCentralizedConsumerResource,
-		NewCentralizedConsumerKeyResource,
-		NewCloudGatewayAddonResource,
-		NewCloudGatewayConfigurationResource,
-		NewCloudGatewayCustomDomainResource,
-		NewCloudGatewayNetworkResource,
-		NewCloudGatewayPrivateDNSResource,
-		NewCloudGatewayTransitGatewayResource,
-		NewEventGatewayResource,
-		NewEventGatewayBackendClusterResource,
-		NewEventGatewayClusterPolicyAclsResource,
-		NewEventGatewayConsumePolicyDecryptResource,
-		NewEventGatewayConsumePolicyModifyHeadersResource,
-		NewEventGatewayConsumePolicySchemaValidationResource,
-		NewEventGatewayConsumePolicySkipRecordResource,
-		NewEventGatewayDataPlaneCertificateResource,
-		NewEventGatewayListenerResource,
-		NewEventGatewayListenerPolicyForwardToVirtualClusterResource,
-		NewEventGatewayListenerPolicyTLSServerResource,
-		NewEventGatewayProducePolicyEncryptResource,
-		NewEventGatewayProducePolicyModifyHeadersResource,
-		NewEventGatewayProducePolicySchemaValidationResource,
-		NewEventGatewaySchemaRegistryResource,
-		NewEventGatewayStaticKeyResource,
-		NewEventGatewayTLSTrustBundleResource,
-		NewEventGatewayVirtualClusterResource,
-		NewGatewayACLResource,
-		NewGatewayBasicAuthResource,
-		NewGatewayCACertificateResource,
-		NewGatewayCertificateResource,
-		NewGatewayConfigStoreResource,
-		NewGatewayConfigStoreSecretResource,
-		NewGatewayConsumerResource,
-		NewGatewayConsumerGroupResource,
-		NewGatewayConsumerGroupMemberResource,
-		NewGatewayControlPlaneResource,
-		NewGatewayControlPlaneMembershipResource,
-		NewGatewayCustomPluginSchemaResource,
-		NewGatewayCustomPluginStreamingResource,
-		NewGatewayDataPlaneClientCertificateResource,
-		NewGatewayHMACAuthResource,
-		NewGatewayJWTResource,
-		NewGatewayKeyResource,
-		NewGatewayKeyAuthResource,
-		NewGatewayKeySetResource,
-		NewGatewayMTLSAuthResource,
-		NewGatewayPartialResource,
-		NewGatewayPluginACLResource,
-		NewGatewayPluginAceResource,
-		NewGatewayPluginAcmeResource,
-		NewGatewayPluginAiA2aProxyResource,
-		NewGatewayPluginAiAwsGuardrailsResource,
-		NewGatewayPluginAiAzureContentSafetyResource,
-		NewGatewayPluginAiCustomGuardrailResource,
-		NewGatewayPluginAiGcpModelArmorResource,
-		NewGatewayPluginAiLakeraGuardResource,
-		NewGatewayPluginAiLlmAsJudgeResource,
-		NewGatewayPluginAiMcpOauth2Resource,
-		NewGatewayPluginAiMcpProxyResource,
-		NewGatewayPluginAiPromptCompressorResource,
-		NewGatewayPluginAiPromptDecoratorResource,
-		NewGatewayPluginAiPromptGuardResource,
-		NewGatewayPluginAiPromptTemplateResource,
-		NewGatewayPluginAiProxyResource,
-		NewGatewayPluginAiProxyAdvancedResource,
-		NewGatewayPluginAiRagInjectorResource,
-		NewGatewayPluginAiRateLimitingAdvancedResource,
-		NewGatewayPluginAiRequestTransformerResource,
-		NewGatewayPluginAiResponseTransformerResource,
-		NewGatewayPluginAiSanitizerResource,
-		NewGatewayPluginAiSemanticCacheResource,
-		NewGatewayPluginAiSemanticPromptGuardResource,
-		NewGatewayPluginAiSemanticResponseGuardResource,
-		NewGatewayPluginAppDynamicsResource,
-		NewGatewayPluginAwsLambdaResource,
-		NewGatewayPluginAzureFunctionsResource,
-		NewGatewayPluginBasicAuthResource,
-		NewGatewayPluginBotDetectionResource,
-		NewGatewayPluginCanaryResource,
-		NewGatewayPluginConfluentResource,
-		NewGatewayPluginConfluentConsumeResource,
-		NewGatewayPluginCorrelationIDResource,
-		NewGatewayPluginCorsResource,
-		NewGatewayPluginDatadogResource,
-		NewGatewayPluginDatakitResource,
-		NewGatewayPluginDegraphqlResource,
-		NewGatewayPluginExitTransformerResource,
-		NewGatewayPluginFileLogResource,
-		NewGatewayPluginForwardProxyResource,
-		NewGatewayPluginGraphqlProxyCacheAdvancedResource,
-		NewGatewayPluginGraphqlRateLimitingAdvancedResource,
-		NewGatewayPluginGrpcGatewayResource,
-		NewGatewayPluginGrpcWebResource,
-		NewGatewayPluginHeaderCertAuthResource,
-		NewGatewayPluginHmacAuthResource,
-		NewGatewayPluginHTTPLogResource,
-		NewGatewayPluginInjectionProtectionResource,
-		NewGatewayPluginIPRestrictionResource,
-		NewGatewayPluginJqResource,
-		NewGatewayPluginJSONThreatProtectionResource,
-		NewGatewayPluginJweDecryptResource,
-		NewGatewayPluginJwtResource,
-		NewGatewayPluginJwtSignerResource,
-		NewGatewayPluginKafkaConsumeResource,
-		NewGatewayPluginKafkaLogResource,
-		NewGatewayPluginKafkaUpstreamResource,
-		NewGatewayPluginKeyAuthResource,
-		NewGatewayPluginLdapAuthResource,
-		NewGatewayPluginLdapAuthAdvancedResource,
-		NewGatewayPluginLogglyResource,
-		NewGatewayPluginMeteringAndBillingResource,
-		NewGatewayPluginMockingResource,
-		NewGatewayPluginMtlsAuthResource,
-		NewGatewayPluginOasValidationResource,
-		NewGatewayPluginOauth2IntrospectionResource,
-		NewGatewayPluginOpaResource,
-		NewGatewayPluginOpenidConnectResource,
-		NewGatewayPluginOpentelemetryResource,
-		NewGatewayPluginPostFunctionResource,
-		NewGatewayPluginPreFunctionResource,
-		NewGatewayPluginPrometheusResource,
-		NewGatewayPluginProxyCacheResource,
-		NewGatewayPluginProxyCacheAdvancedResource,
-		NewGatewayPluginRateLimitingResource,
-		NewGatewayPluginRateLimitingAdvancedResource,
-		NewGatewayPluginRedirectResource,
-		NewGatewayPluginRequestCalloutResource,
-		NewGatewayPluginRequestSizeLimitingResource,
-		NewGatewayPluginRequestTerminationResource,
-		NewGatewayPluginRequestTransformerResource,
-		NewGatewayPluginRequestTransformerAdvancedResource,
-		NewGatewayPluginRequestValidatorResource,
-		NewGatewayPluginResponseRatelimitingResource,
-		NewGatewayPluginResponseTransformerResource,
-		NewGatewayPluginResponseTransformerAdvancedResource,
-		NewGatewayPluginRouteByHeaderResource,
-		NewGatewayPluginRouteTransformerAdvancedResource,
-		NewGatewayPluginSamlResource,
-		NewGatewayPluginServiceProtectionResource,
-		NewGatewayPluginSessionResource,
-		NewGatewayPluginSolaceConsumeResource,
-		NewGatewayPluginSolaceLogResource,
-		NewGatewayPluginSolaceUpstreamResource,
-		NewGatewayPluginStandardWebhooksResource,
-		NewGatewayPluginStatsdResource,
-		NewGatewayPluginStatsdAdvancedResource,
-		NewGatewayPluginSyslogResource,
-		NewGatewayPluginTCPLogResource,
-		NewGatewayPluginTLSHandshakeModifierResource,
-		NewGatewayPluginTLSMetadataHeadersResource,
-		NewGatewayPluginUDPLogResource,
-		NewGatewayPluginUpstreamOauthResource,
-		NewGatewayPluginUpstreamTimeoutResource,
-		NewGatewayPluginVaultAuthResource,
-		NewGatewayPluginWebsocketSizeLimitResource,
-		NewGatewayPluginWebsocketValidatorResource,
-		NewGatewayPluginXMLThreatProtectionResource,
-		NewGatewayPluginZipkinResource,
-		NewGatewayRouteResource,
-		NewGatewayRouteExpressionResource,
-		NewGatewaySNIResource,
-		NewGatewayServiceResource,
-		NewGatewayTargetResource,
-		NewGatewayUpstreamResource,
-		NewGatewayVaultResource,
-		NewIdentityAuthServerResource,
-		NewIdentityAuthServerClaimResource,
-		NewIdentityAuthServerClientResource,
-		NewIdentityAuthServerScopeResource,
-		NewIdentityProviderResource,
-		NewIdentityProviderTeamGroupMappingResource,
-		NewIntegrationInstanceResource,
-		NewIntegrationInstanceAuthConfigResource,
-		NewIntegrationInstanceAuthCredentialResource,
-		NewMeshControlPlaneResource,
-		NewMeteringBillingProfileResource,
-		NewMeteringCustomerResource,
-		NewMeteringMeterResource,
-		NewMeteringPlanResource,
-		NewMeteringSubscriptionResource,
-		NewPortalResource,
-		NewPortalAppearanceResource,
-		NewPortalAuditLogWebhookResource,
-		NewPortalAuthResource,
-		NewPortalClassicResource,
-		NewPortalCustomDomainResource,
-		NewPortalCustomizationResource,
-		NewPortalFaviconResource,
-		NewPortalIPAllowListResource,
-		NewPortalLogoResource,
-		NewPortalPageResource,
-		NewPortalProductVersionResource,
-		NewPortalSnippetResource,
-		NewPortalTeamResource,
-		NewRealmResource,
-		NewServerlessCloudGatewayResource,
-		NewSystemAccountResource,
-		NewSystemAccountAccessTokenResource,
-		NewSystemAccountRoleResource,
-		NewSystemAccountTeamResource,
-		NewTeamResource,
-		NewTeamRoleResource,
-		NewTeamUserResource,
 		custom.NewCustomPluginResource,
 	}
 }
 
 func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{
-		NewCloudGatewayNetworkDataSource,
-		NewCloudGatewayProviderAccountListDataSource,
-		NewGatewayControlPlaneDataSource,
-		NewGatewayControlPlaneListDataSource,
-		NewMeshControlPlanesDataSource,
-		NewMeteringBillingProfileDataSource,
-		NewPlatformIPAddressesDataSource,
-		NewPortalDataSource,
-		NewPortalClassicListDataSource,
-		NewSystemAccountDataSource,
-		NewSystemAccountListDataSource,
-		NewTeamDataSource,
-		NewTeamListDataSource,
-	}
+	return []func() datasource.DataSource{}
 }
 
 func (p *KonnectProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {

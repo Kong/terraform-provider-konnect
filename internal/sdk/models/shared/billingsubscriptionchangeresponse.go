@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -20,16 +22,24 @@ const (
 func (e BillingSubscriptionChangeResponseStatus) ToPointer() *BillingSubscriptionChangeResponseStatus {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *BillingSubscriptionChangeResponseStatus) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "active", "inactive", "canceled", "scheduled":
-			return true
-		}
+func (e *BillingSubscriptionChangeResponseStatus) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "active":
+		fallthrough
+	case "inactive":
+		fallthrough
+	case "canceled":
+		fallthrough
+	case "scheduled":
+		*e = BillingSubscriptionChangeResponseStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for BillingSubscriptionChangeResponseStatus: %v", v)
+	}
 }
 
 // Current - The current subscription before the change.
@@ -40,7 +50,7 @@ type Current struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity last update date.
@@ -81,7 +91,7 @@ func (c *Current) GetID() string {
 	return c.ID
 }
 
-func (c *Current) GetLabels() map[string]*string {
+func (c *Current) GetLabels() map[string]string {
 	if c == nil {
 		return nil
 	}
@@ -150,16 +160,24 @@ const (
 func (e BillingSubscriptionChangeResponseNextStatus) ToPointer() *BillingSubscriptionChangeResponseNextStatus {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *BillingSubscriptionChangeResponseNextStatus) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "active", "inactive", "canceled", "scheduled":
-			return true
-		}
+func (e *BillingSubscriptionChangeResponseNextStatus) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "active":
+		fallthrough
+	case "inactive":
+		fallthrough
+	case "canceled":
+		fallthrough
+	case "scheduled":
+		*e = BillingSubscriptionChangeResponseNextStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for BillingSubscriptionChangeResponseNextStatus: %v", v)
+	}
 }
 
 // Next - The new state of the subscription after the change.
@@ -170,7 +188,7 @@ type Next struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity last update date.
@@ -211,7 +229,7 @@ func (n *Next) GetID() string {
 	return n.ID
 }
 
-func (n *Next) GetLabels() map[string]*string {
+func (n *Next) GetLabels() map[string]string {
 	if n == nil {
 		return nil
 	}

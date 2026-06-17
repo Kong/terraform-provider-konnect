@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -20,16 +22,24 @@ const (
 func (e BillingSubscriptionStatus) ToPointer() *BillingSubscriptionStatus {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *BillingSubscriptionStatus) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "active", "inactive", "canceled", "scheduled":
-			return true
-		}
+func (e *BillingSubscriptionStatus) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "active":
+		fallthrough
+	case "inactive":
+		fallthrough
+	case "canceled":
+		fallthrough
+	case "scheduled":
+		*e = BillingSubscriptionStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for BillingSubscriptionStatus: %v", v)
+	}
 }
 
 // BillingSubscription - Subscription.
@@ -40,7 +50,7 @@ type BillingSubscription struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity last update date.
@@ -81,7 +91,7 @@ func (b *BillingSubscription) GetID() string {
 	return b.ID
 }
 
-func (b *BillingSubscription) GetLabels() map[string]*string {
+func (b *BillingSubscription) GetLabels() map[string]string {
 	if b == nil {
 		return nil
 	}

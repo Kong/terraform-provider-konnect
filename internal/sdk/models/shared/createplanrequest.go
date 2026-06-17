@@ -15,12 +15,12 @@ type CreatePlanRequest struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// A key is a semi-unique string that is used to identify the plan. It is used to
 	// reference the latest `active` version of the plan and is unique with the version
 	// number.
@@ -61,7 +61,7 @@ func (c *CreatePlanRequest) GetDescription() *string {
 	return c.Description
 }
 
-func (c *CreatePlanRequest) GetLabels() map[string]*string {
+func (c *CreatePlanRequest) GetLabels() map[string]string {
 	if c == nil {
 		return nil
 	}

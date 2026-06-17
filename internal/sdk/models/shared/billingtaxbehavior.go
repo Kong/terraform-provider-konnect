@@ -2,6 +2,11 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 // BillingTaxBehavior - Tax behavior.
 //
 // This enum is used to specify whether tax is included in the price or excluded
@@ -16,14 +21,18 @@ const (
 func (e BillingTaxBehavior) ToPointer() *BillingTaxBehavior {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *BillingTaxBehavior) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "inclusive", "exclusive":
-			return true
-		}
+func (e *BillingTaxBehavior) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "inclusive":
+		fallthrough
+	case "exclusive":
+		*e = BillingTaxBehavior(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for BillingTaxBehavior: %v", v)
+	}
 }

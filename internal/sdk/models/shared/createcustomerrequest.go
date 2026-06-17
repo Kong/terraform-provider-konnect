@@ -35,7 +35,7 @@ func (u *UsageAttribution) GetSubjectKeys() []string {
 type BillingAddress struct {
 	// Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
 	// alpha-2 format.
-	Country string `json:"country"`
+	Country *string `json:"country,omitempty"`
 	// Postal code.
 	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
@@ -55,15 +55,15 @@ func (b BillingAddress) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillingAddress) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"country"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BillingAddress) GetCountry() string {
+func (b *BillingAddress) GetCountry() *string {
 	if b == nil {
-		return ""
+		return nil
 	}
 	return b.Country
 }
@@ -119,23 +119,23 @@ type CreateCustomerRequest struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// ExternalResourceKey is a unique string that is used to identify a resource in an
 	// external system.
 	Key string `json:"key"`
 	// Mapping to attribute metered usage to the customer by the event subject.
-	UsageAttribution *UsageAttribution `json:"usage_attribution"`
+	UsageAttribution *UsageAttribution `json:"usage_attribution,omitempty"`
 	// The primary email address of the customer.
-	PrimaryEmail *string `default:"null" json:"primary_email"`
+	PrimaryEmail *string `json:"primary_email,omitempty"`
 	// Currency of the customer. Used for billing, tax and invoicing.
-	Currency *string `default:"null" json:"currency"`
+	Currency *string `json:"currency,omitempty"`
 	// The billing address of the customer. Used for tax and invoicing.
-	BillingAddress *BillingAddress `json:"billing_address"`
+	BillingAddress *BillingAddress `json:"billing_address,omitempty"`
 }
 
 func (c CreateCustomerRequest) MarshalJSON() ([]byte, error) {
@@ -163,7 +163,7 @@ func (c *CreateCustomerRequest) GetDescription() *string {
 	return c.Description
 }
 
-func (c *CreateCustomerRequest) GetLabels() map[string]*string {
+func (c *CreateCustomerRequest) GetLabels() map[string]string {
 	if c == nil {
 		return nil
 	}

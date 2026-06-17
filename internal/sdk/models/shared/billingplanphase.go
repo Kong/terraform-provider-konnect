@@ -21,7 +21,7 @@ type BillingPlanPhase struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// A key is a unique string that is used to identify a resource.
 	Key string `json:"key"`
 	// The duration of the phase. When not specified, the phase runs indefinitely. Only
@@ -56,7 +56,7 @@ func (b *BillingPlanPhase) GetDescription() *string {
 	return b.Description
 }
 
-func (b *BillingPlanPhase) GetLabels() map[string]*string {
+func (b *BillingPlanPhase) GetLabels() map[string]string {
 	if b == nil {
 		return nil
 	}

@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -61,7 +63,7 @@ type BillingSubscriptionChangePlan struct {
 	Key *string `json:"key,omitempty"`
 	// The plan version of the subscription, if any. If not provided, the latest
 	// version of the plan will be used.
-	Version *int64 `default:"null" json:"version"`
+	Version *int64 `json:"version,omitempty"`
 }
 
 func (b BillingSubscriptionChangePlan) MarshalJSON() ([]byte, error) {
@@ -96,13 +98,105 @@ func (b *BillingSubscriptionChangePlan) GetVersion() *int64 {
 	return b.Version
 }
 
+type BillingSubscriptionChangeTimingType string
+
+const (
+	BillingSubscriptionChangeTimingTypeBillingSubscriptionEditTimingEnum BillingSubscriptionChangeTimingType = "BillingSubscriptionEditTimingEnum"
+	BillingSubscriptionChangeTimingTypeDateTime                          BillingSubscriptionChangeTimingType = "date-time"
+)
+
+// BillingSubscriptionChangeTiming - Timing configuration for the change, when the change should take effect. For
+// changing a subscription, the accepted values depend on the subscription
+// configuration.
+type BillingSubscriptionChangeTiming struct {
+	BillingSubscriptionEditTimingEnum *BillingSubscriptionEditTimingEnum `queryParam:"inline" union:"member"`
+	DateTime                          *time.Time                         `queryParam:"inline" union:"member"`
+
+	Type BillingSubscriptionChangeTimingType
+}
+
+func CreateBillingSubscriptionChangeTimingBillingSubscriptionEditTimingEnum(billingSubscriptionEditTimingEnum BillingSubscriptionEditTimingEnum) BillingSubscriptionChangeTiming {
+	typ := BillingSubscriptionChangeTimingTypeBillingSubscriptionEditTimingEnum
+
+	return BillingSubscriptionChangeTiming{
+		BillingSubscriptionEditTimingEnum: &billingSubscriptionEditTimingEnum,
+		Type:                              typ,
+	}
+}
+
+func CreateBillingSubscriptionChangeTimingDateTime(dateTime time.Time) BillingSubscriptionChangeTiming {
+	typ := BillingSubscriptionChangeTimingTypeDateTime
+
+	return BillingSubscriptionChangeTiming{
+		DateTime: &dateTime,
+		Type:     typ,
+	}
+}
+
+func (u *BillingSubscriptionChangeTiming) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var billingSubscriptionEditTimingEnum BillingSubscriptionEditTimingEnum = BillingSubscriptionEditTimingEnum("")
+	if err := utils.UnmarshalJSON(data, &billingSubscriptionEditTimingEnum, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  BillingSubscriptionChangeTimingTypeBillingSubscriptionEditTimingEnum,
+			Value: &billingSubscriptionEditTimingEnum,
+		})
+	}
+
+	var dateTime time.Time = time.Time{}
+	if err := utils.UnmarshalJSON(data, &dateTime, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  BillingSubscriptionChangeTimingTypeDateTime,
+			Value: &dateTime,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for BillingSubscriptionChangeTiming", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for BillingSubscriptionChangeTiming", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(BillingSubscriptionChangeTimingType)
+	switch best.Type {
+	case BillingSubscriptionChangeTimingTypeBillingSubscriptionEditTimingEnum:
+		u.BillingSubscriptionEditTimingEnum = best.Value.(*BillingSubscriptionEditTimingEnum)
+		return nil
+	case BillingSubscriptionChangeTimingTypeDateTime:
+		u.DateTime = best.Value.(*time.Time)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for BillingSubscriptionChangeTiming", string(data))
+}
+
+func (u BillingSubscriptionChangeTiming) MarshalJSON() ([]byte, error) {
+	if u.BillingSubscriptionEditTimingEnum != nil {
+		return utils.MarshalJSON(u.BillingSubscriptionEditTimingEnum, "", true)
+	}
+
+	if u.DateTime != nil {
+		return utils.MarshalJSON(u.DateTime, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type BillingSubscriptionChangeTiming: all fields are null")
+}
+
 // BillingSubscriptionChange - Request for changing a subscription.
 type BillingSubscriptionChange struct {
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	// The customer to create the subscription for.
 	Customer BillingSubscriptionChangeCustomer `json:"customer"`
 	// The plan reference of the subscription.
@@ -118,11 +212,10 @@ type BillingSubscriptionChange struct {
 	// If not provided, the subscription will be created with the subscription's
 	// creation time as the billing anchor.
 	BillingAnchor *time.Time `json:"billing_anchor,omitempty"`
-	// Subscription edit timing. Use `immediate` to apply changes right away, or
-	// `next_billing_cycle` to apply them at the start of the next billing cycle.
-	// Alternatively, provide an ISO 8601 date-time string (e.g.
-	// `2025-01-15T00:00:00Z`) to schedule the changes for a specific date and time.
-	Timing string `json:"timing"`
+	// Timing configuration for the change, when the change should take effect. For
+	// changing a subscription, the accepted values depend on the subscription
+	// configuration.
+	Timing BillingSubscriptionChangeTiming `json:"timing"`
 }
 
 func (b BillingSubscriptionChange) MarshalJSON() ([]byte, error) {
@@ -136,7 +229,7 @@ func (b *BillingSubscriptionChange) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *BillingSubscriptionChange) GetLabels() map[string]*string {
+func (b *BillingSubscriptionChange) GetLabels() map[string]string {
 	if b == nil {
 		return nil
 	}
@@ -164,9 +257,9 @@ func (b *BillingSubscriptionChange) GetBillingAnchor() *time.Time {
 	return b.BillingAnchor
 }
 
-func (b *BillingSubscriptionChange) GetTiming() string {
+func (b *BillingSubscriptionChange) GetTiming() BillingSubscriptionChangeTiming {
 	if b == nil {
-		return ""
+		return BillingSubscriptionChangeTiming{}
 	}
 	return b.Timing
 }
