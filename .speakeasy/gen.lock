@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 33f6acaca94ce77cbf44abd80775388f
+  docChecksum: d21eece98098971daa162ad72f2b0578
   docVersion: 2.0.0
   speakeasyVersion: 1.773.1
   generationVersion: 2.897.1
   releaseVersion: 3.18.1
   configChecksum: 7a82bd8e5bc99fa8bc9beaf575d80c0d
 persistentEdits:
-  generation_id: e45ea23a-8d94-4949-b82c-c58768052e9f
-  pristine_commit_hash: e780b067ee89eaeb0760b070fc963ff49c6c7fea
-  pristine_tree_hash: 3ef6ab75691cdcec0a9d79fbcc9ebc582129ffff
+  generation_id: faab6701-5aad-4f04-95fd-fcaa0744b775
+  pristine_commit_hash: ff61d51dadf27d5bb394e9cdacd342ced04de78b
+  pristine_tree_hash: d2290cc3cc31a7a46c3541f3d875f390c1892249
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -63,6 +63,10 @@ trackedFiles:
     id: ebdf6311bbc5
     last_write_checksum: sha1:169cc70cc8d9519e22e5e34cf7dd1cdc662759b6
     pristine_git_object: 592a70632f7a6bb19083e2d8532bf66d5603bd0d
+  examples/data-sources/konnect_metering_billing_profile/data-source.tf:
+    id: 99aecdb51a92
+    last_write_checksum: sha1:30a22c518a5065339d950789903ad2c7b8e8e35f
+    pristine_git_object: 45c48c757fe12d761af53b69dec3dae9ab268749
   examples/data-sources/konnect_platform_ip_addresses/data-source.tf:
     id: 630f56046694
     last_write_checksum: sha1:1c29d8af77985da68bbb843b8b778a60378b3d5c
@@ -437,8 +441,8 @@ trackedFiles:
     pristine_git_object: 35a7f14ade90681995a66bd6beaba9be1e8e0c92
   examples/resources/konnect_event_gateway_consume_policy_schema_validation/resource.tf:
     id: 748359c7e049
-    last_write_checksum: sha1:c49f15584f5db75d04b9d84f9c726229b6bec891
-    pristine_git_object: 5ebc17b10a8308ef4555c418ef1b829ab79f8e1e
+    last_write_checksum: sha1:6e59cf1b062923b85c9758e5fad9482183bfe6f9
+    pristine_git_object: deeaa61875508aff1fafe9a85df936080c0c56fe
   examples/resources/konnect_event_gateway_consume_policy_skip_record/import-by-string-id.tf:
     id: c2c1f35d473c
     last_write_checksum: sha1:d9cfb524678fabbc4a73c4ce2d0f453b0be0fd27
@@ -2355,6 +2359,66 @@ trackedFiles:
     id: 5dfa58686a1a
     last_write_checksum: sha1:33048c3d82ba18005acb141ccd97a508d6d2a47a
     pristine_git_object: 2ac31f55856be7ad0e1b1e3f8e9ca186d38759ae
+  examples/resources/konnect_metering_billing_profile/import-by-string-id.tf:
+    id: 914c9d876563
+    last_write_checksum: sha1:2ae97cc079290eaa15033c56ff7a66f9b830e63f
+    pristine_git_object: 0af0a122b2932e7197a5d48e8b79ac2221eefc13
+  examples/resources/konnect_metering_billing_profile/import.sh:
+    id: b3a62949295d
+    last_write_checksum: sha1:bc8362092fed0b1d0e735cb816a5ca59f325acde
+    pristine_git_object: ef1368d31aaaaa39db92604ae687845b6070848e
+  examples/resources/konnect_metering_billing_profile/resource.tf:
+    id: 0f303783a8ea
+    last_write_checksum: sha1:92168f2794135e23a74afe9dbd2a0c90b367b620
+    pristine_git_object: 3a75c881f056be7b45cef1612a50d65a13475710
+  examples/resources/konnect_metering_customer/import-by-string-id.tf:
+    id: 432c80bc60dd
+    last_write_checksum: sha1:da8b74a3ea9a4898f7991f199de71d22ac45e145
+    pristine_git_object: 60a8fe10aa961e4b250b49fbd70e67a9d23a3ac2
+  examples/resources/konnect_metering_customer/import.sh:
+    id: 21af35875c8b
+    last_write_checksum: sha1:22f4221078861fe49caea2ab3592c56796a57547
+    pristine_git_object: 919d31f68220204808a1bdbb8faec6565a589598
+  examples/resources/konnect_metering_customer/resource.tf:
+    id: 3cbb9752b6a9
+    last_write_checksum: sha1:14d74b103154394267213b36d0934ce8a156ade5
+    pristine_git_object: e293a789f797fbb99dc1ae198d10bc9a266bbd15
+  examples/resources/konnect_metering_meter/import-by-string-id.tf:
+    id: 5e32a6efa8ed
+    last_write_checksum: sha1:6c6036df9903c791766add76754a281fb1824a41
+    pristine_git_object: 6bd5137675cf32267f5bca1269bfe610cfb0ef57
+  examples/resources/konnect_metering_meter/import.sh:
+    id: e2df48e2b9b1
+    last_write_checksum: sha1:beab99f93caba50047eb5c2faa0d5987267b8def
+    pristine_git_object: 9a87f97445dbc093a8e7bbab613d3f00c06f5d81
+  examples/resources/konnect_metering_meter/resource.tf:
+    id: 1dcfc23f2c22
+    last_write_checksum: sha1:c6ed534b76e305ca5c8bedeb2135da4df447b315
+    pristine_git_object: 80b7ca92d8cbeb30b4198c0364a8fbfff835aa6b
+  examples/resources/konnect_metering_plan/import-by-string-id.tf:
+    id: 45ac7105d51d
+    last_write_checksum: sha1:047cf394309ced2bea87f347668a398bd6f357f8
+    pristine_git_object: a776bed513b4d9eada48cdf573281688063b3453
+  examples/resources/konnect_metering_plan/import.sh:
+    id: ee6509b5e989
+    last_write_checksum: sha1:058d1642d2a6d13d3256c5de5d5597ca4363b0bb
+    pristine_git_object: 6c3ea7a6b63d930fefa8a3dbac0bb58b5901bb40
+  examples/resources/konnect_metering_plan/resource.tf:
+    id: 9b873c74f478
+    last_write_checksum: sha1:80218020639c8ec2b46f37b60943e47bfb4d583a
+    pristine_git_object: 9c84e87438ca1b482ef1135e38976ab40b5d2919
+  examples/resources/konnect_metering_subscription/import-by-string-id.tf:
+    id: 7cdbcfa6386a
+    last_write_checksum: sha1:72bc892d45c9b89c72490ee5039329a74a946d05
+    pristine_git_object: d58d5aac5a0a0b0c2f92f6c55e39b934cfee2d66
+  examples/resources/konnect_metering_subscription/import.sh:
+    id: a202f64d5bdb
+    last_write_checksum: sha1:7129921f624b559a042ba2475b8461214cb75452
+    pristine_git_object: 369fbfc7f1773ec9b447841d98a675c6227623bc
+  examples/resources/konnect_metering_subscription/resource.tf:
+    id: ef382432cbdf
+    last_write_checksum: sha1:d3daf0084e4e04b9ef7e1a522ac06a674e608629
+    pristine_git_object: 552567163948c101fabff668ae7abd985b2d40b2
   examples/resources/konnect_portal/import-by-string-id.tf:
     id: fc49197d7bb4
     last_write_checksum: sha1:f7d0c4a0dccaf524383460d2f879c44562123b0d
@@ -2365,8 +2429,8 @@ trackedFiles:
     pristine_git_object: 1233fb40cbb325d011e429e63c3eb4bccbecba81
   examples/resources/konnect_portal/resource.tf:
     id: 92dd0b6c75f6
-    last_write_checksum: sha1:163e81a66a019b8750bd37968abd6211a8621696
-    pristine_git_object: 40516a0421802cf4f82d825cb4451b8172f63198
+    last_write_checksum: sha1:e90b5a3c3265e1637971b56df95de718b33085b8
+    pristine_git_object: 6478d1540b956df9e4ab81013e4ebcca2dfe9533
   examples/resources/konnect_portal_appearance/import-by-string-id.tf:
     id: 2ec3dccc5590
     last_write_checksum: sha1:e274d4dba2bfff53608884e895bf6d2f4bba8dbe
@@ -3009,12 +3073,12 @@ trackedFiles:
     pristine_git_object: b7313a7597cc2452e82191436118e13aab77de9d
   internal/provider/eventgatewayconsumepolicyschemavalidation_resource.go:
     id: c4eddaff3ee3
-    last_write_checksum: sha1:d98879a7e11ceadec23ec55fe3232e82b5931f45
-    pristine_git_object: 32b4cef5a6528cd80a5b4b92703a20c64497df51
+    last_write_checksum: sha1:ffbc6cfc70fca98fca52801bf1472180b5362e64
+    pristine_git_object: 80b7db972bbc513297243cbcf4a68da39b7b4ac4
   internal/provider/eventgatewayconsumepolicyschemavalidation_resource_sdk.go:
     id: 7eabb92c2874
-    last_write_checksum: sha1:0bd99d6b1957b5b6ba0cc7b026add5e508050068
-    pristine_git_object: 824b2b7bc4451764b1541b5c3e3e2aecda8a9173
+    last_write_checksum: sha1:e579a162a68846f11ed5eeb03e5ebc5de76512d4
+    pristine_git_object: 9c04b7940e9d72602d3f470109e8758d54bf8f27
   internal/provider/eventgatewayconsumepolicyskiprecord_resource.go:
     id: bb800e741a9a
     last_write_checksum: sha1:fa835c28a56575b7b1b62a7aec36488f8313ef61
@@ -3073,12 +3137,12 @@ trackedFiles:
     pristine_git_object: 84772590160a4fe1ca2a1b635a39f60cfa73a8ba
   internal/provider/eventgatewayproducepolicyschemavalidation_resource.go:
     id: 91c3b216a135
-    last_write_checksum: sha1:b3c637d28d64289b5f9863ca55d1c89caad6879d
-    pristine_git_object: bf950244ed308f00e6cc0170d5fb2d82b9755835
+    last_write_checksum: sha1:456a6dcf482108e2a92a4743ca33525fc2577a2a
+    pristine_git_object: 5693a012e433decdba2aaf45ab660a02d3b10aad
   internal/provider/eventgatewayproducepolicyschemavalidation_resource_sdk.go:
     id: 60a8b01272d3
-    last_write_checksum: sha1:59502b219ce0d16100e37b30176f7c923a6606fb
-    pristine_git_object: db17af7330ca0ba9f5d53105b2842a09010ae064
+    last_write_checksum: sha1:6e6f8d49f5307ce828bd0cbccc2d52bfef0610bb
+    pristine_git_object: 78edce9791e8b2026e6d4c17e20f900655a2638f
   internal/provider/eventgatewayschemaregistry_resource.go:
     id: e5a89583fd6f
     last_write_checksum: sha1:71064cda90ce9d7c59c9a79deb2a4620660265f3
@@ -4327,6 +4391,54 @@ trackedFiles:
     id: 48cd696e6882
     last_write_checksum: sha1:a403ca590c49cb2fed3c67a2c49950583109ab85
     pristine_git_object: b5b1bcbcb628fb5c7bb86f6a01500a46cc1a4e0f
+  internal/provider/meteringbillingprofile_data_source.go:
+    id: d2ce6e07824c
+    last_write_checksum: sha1:c463bca24795262a184b079e11ea43ef23a93d7a
+    pristine_git_object: 1f4096cea50d2fd89731f58cbad219650257d782
+  internal/provider/meteringbillingprofile_data_source_sdk.go:
+    id: 4219bcc3d697
+    last_write_checksum: sha1:930871d97df71b925147d9949e8c34dab21adbbf
+    pristine_git_object: 905689664df907a0aa57a746d97b7aeb500e3773
+  internal/provider/meteringbillingprofile_resource.go:
+    id: bd5d209a8b84
+    last_write_checksum: sha1:b904e86c136fd5862964532997315679bc22be4a
+    pristine_git_object: 18f007b87efe79039c34b57eb0f8af753231c18d
+  internal/provider/meteringbillingprofile_resource_sdk.go:
+    id: 62a861f81971
+    last_write_checksum: sha1:017405dd2d166e0050ab8489f402a3d9a0e8732e
+    pristine_git_object: 68f69a9e30aceef449c0e9831aa24669f435108c
+  internal/provider/meteringcustomer_resource.go:
+    id: f3bf3e08e7cf
+    last_write_checksum: sha1:b2e8fb6e7af4443e07441d2274c69fc9488fe730
+    pristine_git_object: 884cc4e196e55c4e7fb5c5b3ea1f56308c25fc8b
+  internal/provider/meteringcustomer_resource_sdk.go:
+    id: 72f16b934c2b
+    last_write_checksum: sha1:5bb09566a8bc54ee12973c80cfb64d197470192d
+    pristine_git_object: 1992be3b780eea3139cc4e463665252c15c27940
+  internal/provider/meteringmeter_resource.go:
+    id: 166464daa694
+    last_write_checksum: sha1:571dff912ef5d481ce1c6b35a4a0716991e67ab6
+    pristine_git_object: 781a4ef04470bc501e13dafe977a0c1eba316442
+  internal/provider/meteringmeter_resource_sdk.go:
+    id: 7b5d84f510e5
+    last_write_checksum: sha1:b731e85347c7ea740e9f646488c038d4fd57055d
+    pristine_git_object: 9ae9df63ef692c1e3e990fc426da19d6839d8870
+  internal/provider/meteringplan_resource.go:
+    id: 1d7bf45a4f77
+    last_write_checksum: sha1:a054f513806862eb8b93fa0ffc81e950612ddba0
+    pristine_git_object: b4b4bb9224cf102c7905e064e7c0efb802144614
+  internal/provider/meteringplan_resource_sdk.go:
+    id: 85b37a084a8f
+    last_write_checksum: sha1:13839076e089b5955d802d728022c76a8c32b914
+    pristine_git_object: f937c69209a4035b3e13476e7311216c0254b437
+  internal/provider/meteringsubscription_resource.go:
+    id: aaa3fb216403
+    last_write_checksum: sha1:ecc395edaec74694d3cfda4e25cae27c194d36e2
+    pristine_git_object: 78975e475bbc9ef8e99c7a1f3c667288a94813bb
+  internal/provider/meteringsubscription_resource_sdk.go:
+    id: 9aebce5b9cd9
+    last_write_checksum: sha1:8d131ad8c9ec5ef9c1f61329b14bf7a767bc6ac8
+    pristine_git_object: 22e5a941929c8c7da652f6cd75b1a867b088a039
   internal/provider/platformipaddresses_data_source.go:
     id: be358e1fd745
     last_write_checksum: sha1:4045b79dedf1d0c4f6f458113c6f34c8f3f39e11
@@ -4337,20 +4449,20 @@ trackedFiles:
     pristine_git_object: 7ce5861fb0f79eb0262c0498ef1414681f82fea4
   internal/provider/portal_data_source.go:
     id: f657a6b78738
-    last_write_checksum: sha1:56c1b1f7aa72bd7105bdfd8dab3d2892b5f2f3bc
-    pristine_git_object: 6139ee8276e47399ffb907fcf5e5b12b875fd185
+    last_write_checksum: sha1:c249841bad74fdca1923193b8e597156dacdac9e
+    pristine_git_object: 069fc940177343544c7bd991493268b088d97bb9
   internal/provider/portal_data_source_sdk.go:
     id: f58c406cdd45
-    last_write_checksum: sha1:c16820d4e4f31d843d2c77e61e8d00e821a83e1f
-    pristine_git_object: f605e1e4aa06147c0c7733452b1c21ed2a3c3b8f
+    last_write_checksum: sha1:3e76aaaa15815f224708dc34a7c939852bea01f5
+    pristine_git_object: 83412aa58a0124b6c29fdea692e3715c01ea5bde
   internal/provider/portal_resource.go:
     id: a15e85b54f08
-    last_write_checksum: sha1:69e2a805f487a795444dea024ac5b912c5794d0f
-    pristine_git_object: 81cb511d10077cafc18809fc437106e1a1a967b3
+    last_write_checksum: sha1:2bff4859c16de631689da9d8e9efd1f729fb8f7c
+    pristine_git_object: f4e78bbca51d3eff52ab01d224ffbb47e8849d26
   internal/provider/portal_resource_sdk.go:
     id: 6dd876308f89
-    last_write_checksum: sha1:8df98fdb3155060284437718ffbef8298e3e4a75
-    pristine_git_object: ec3a21735031d184d2609cfd6cc1bcda556a1d01
+    last_write_checksum: sha1:5283857c39d0daf2bd52cebcf54148e99464eb08
+    pristine_git_object: cb4bad84c0c3de277b3d193ab447934466bcdf34
   internal/provider/portalappearance_resource.go:
     id: b2b030386ed0
     last_write_checksum: sha1:816043b5f04a00c180c111704304f466716f3a0f
@@ -4465,8 +4577,8 @@ trackedFiles:
     pristine_git_object: 4d96a0bfdc21e90f6daf60bacd8327a609b249f7
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:005669f6c1b55af3707f5224a9edcf1c19c3fa94
-    pristine_git_object: f3285f2a899034a2dd6681577c1a6af03fc90205
+    last_write_checksum: sha1:807f46b684b15073553989723ebf589db6ed4ad8
+    pristine_git_object: f594ffda7efe558caac90f1c76e33ccda7d3fd53
   internal/provider/realm_resource.go:
     id: 288745fe66d4
     last_write_checksum: sha1:84cfafee418c410926378f7ecbd147dd45e933e8
@@ -4695,6 +4807,10 @@ trackedFiles:
     id: 244580eacbc2
     last_write_checksum: sha1:10caa305920565bdb6a31b5c2b8f4c0c9ee037c3
     pristine_git_object: 9f236a3ba0dff65dc1cdb507f7309cfc493832af
+  internal/provider/types/addresses.go:
+    id: a88057fbd7fa
+    last_write_checksum: sha1:884e0edf85c7130cb5490ffa227bae60b2961cc6
+    pristine_git_object: 748e6ef14c76f015aca4c7a9440d63d892a88b29
   internal/provider/types/ai_a2a_proxy_plugin_config.go:
     id: 30e065331c05
     last_write_checksum: sha1:25ff38317933399513dcb59b38e815e9a46e849f
@@ -4839,6 +4955,10 @@ trackedFiles:
     id: 75dca013da93
     last_write_checksum: sha1:3adf7ed121a03ade7027fded404b6c3b02e2476f
     pristine_git_object: 7f817f3baeb9d61a1e4c5c9c4140d346af0853e1
+  internal/provider/types/alignment.go:
+    id: 363752592ed6
+    last_write_checksum: sha1:1c7b9acda04d772249bbaf9fe4291fe853f7f9db
+    pristine_git_object: a080cd69bfdc7c594c56c2742d403697b12ed010
   internal/provider/types/allow.go:
     id: d10ea6b5dfd5
     last_write_checksum: sha1:a7a5c5d97ab414d037bc585f864c5bb7c0702dd3
@@ -4891,6 +5011,10 @@ trackedFiles:
     id: b6a16be78dbc
     last_write_checksum: sha1:dd22a156c55b1071dc7aa93b6b8fe5258ecfaf3c
     pristine_git_object: d204ad56db6630a2bb520487c8911bda00245ee7
+  internal/provider/types/apps.go:
+    id: 3a39c0370f87
+    last_write_checksum: sha1:ad1cedf75ba7fe7bcee5595e631f678dc5265552
+    pristine_git_object: add39d7a35d7779371600ee438717217de4867c5
   internal/provider/types/attributes.go:
     id: ab3edd2f3dc8
     last_write_checksum: sha1:ae44a168e0f2e9a25cae6e8b3cd49672be2ee8c0
@@ -5063,6 +5187,42 @@ trackedFiles:
     id: cd29755d21e7
     last_write_checksum: sha1:81d9f89e9ab269055f9c8b48bbf3d0592b7f5b97
     pristine_git_object: bfced047e696f7f2e4b3f61adcc4db035c439d6e
+  internal/provider/types/billing_plan_phase.go:
+    id: 0c95c34490cf
+    last_write_checksum: sha1:0594ef48864f6067019f2695ee225548132f15e6
+    pristine_git_object: ced0688e5e7cce7eb50cd3bb82f41fc1d3797dc4
+  internal/provider/types/billing_price_flat.go:
+    id: 87fc5c2c6741
+    last_write_checksum: sha1:90f25a730a3382e06a0bf98dbb973f09c37ea62d
+    pristine_git_object: 99525e9f470e6dd4e1224768ae2d9b454aacb94b
+  internal/provider/types/billing_price_graduated.go:
+    id: b25931235734
+    last_write_checksum: sha1:9b068df54e8844efa388b9b32915ab3285e36d2c
+    pristine_git_object: e3c37d6f4e5b71365d19546740afe74f57360600
+  internal/provider/types/billing_price_tier.go:
+    id: e28038538ea8
+    last_write_checksum: sha1:8aa17410a80016516fe92f7d1d9e11d62adf029d
+    pristine_git_object: 1b4ba3dc837d8ee9c64ddb263a7a9d8097c42cb2
+  internal/provider/types/billing_rate_card.go:
+    id: 5d1806263087
+    last_write_checksum: sha1:70fce48b768f0387e987efb7b4eca4c43628a8c6
+    pristine_git_object: 424a5e63970d4d343d3d80b700847d40932a83a7
+  internal/provider/types/billing_workflow_collection_alignment_anchored.go:
+    id: d4651f50d96d
+    last_write_checksum: sha1:7f848ae3a2a20966ee4273592958a23fa53abbc0
+    pristine_git_object: a7f4e9dcd561974e325302bf3596aa78e3862f6f
+  internal/provider/types/billing_workflow_collection_alignment_subscription.go:
+    id: fca5e8dc7458
+    last_write_checksum: sha1:d7944deb9367e996ab1a3e0b8b8b5f9aba242480
+    pristine_git_object: 9c70f96d68a03e7359ce19d6c6074d33c4b3df69
+  internal/provider/types/billing_workflow_payment_charge_automatically_settings.go:
+    id: 3ff37a13b1a7
+    last_write_checksum: sha1:38f477eda9c7c32f576136474b4e1991a66f6d65
+    pristine_git_object: 737c855cf5c672cd82a2f6ee395063c36cc42862
+  internal/provider/types/billing_workflow_payment_send_invoice_settings.go:
+    id: 485af4bc1333
+    last_write_checksum: sha1:abefbb1b0d5f1ce9d8654a00e22014252673209e
+    pristine_git_object: 4c8fd346db5bea57dd9db0979c161742c050eecf
   internal/provider/types/binary.go:
     id: 54bba35e83be
     last_write_checksum: sha1:ec215c6ea151700f2dd353f2f17ea4734c5c5c08
@@ -5151,6 +5311,10 @@ trackedFiles:
     id: d6ab41970cc5
     last_write_checksum: sha1:2e894e7eb4892331588623e5c815dd652c2a5ea9
     pristine_git_object: 897d9604af66fdc99389b2229e3bf813ec8c344e
+  internal/provider/types/commitments.go:
+    id: 25719fbd830a
+    last_write_checksum: sha1:e2ac17158130d42a4d09dc660eb2446128d67e8e
+    pristine_git_object: 1520ba8db06eb065646d49de010c431a5685ae6e
   internal/provider/types/compression_ranges.go:
     id: 4a095eae233d
     last_write_checksum: sha1:4be399a24ae2a72939be9b16674d78870481f027
@@ -5259,6 +5423,14 @@ trackedFiles:
     id: c133e5763764
     last_write_checksum: sha1:7f46f6c7bdb126c7da49ad185c137a1c0843f6f2
     pristine_git_object: 98f61053edefb944441429584638047e7135d6d3
+  internal/provider/types/create_billing_profile_request_billing_address.go:
+    id: ca81ad08102d
+    last_write_checksum: sha1:50b7d0a597eab368233c41f40220075c84282bcc
+    pristine_git_object: 52822ef39fbc55b8e027bafe0351c2b5051cb625
+  internal/provider/types/create_billing_profile_request_supplier.go:
+    id: a797ce2ef0d9
+    last_write_checksum: sha1:dd107be9aa91e5eecf421f6653079ced569d7741
+    pristine_git_object: c44b1ee7a42f6000f84a193831a80eff984c0a9d
   internal/provider/types/create_identity_provider_config.go:
     id: f6befe0ed2df
     last_write_checksum: sha1:cb90eb0ab39eb86457573adcc1bbfc9ab81356cb
@@ -5283,6 +5455,10 @@ trackedFiles:
     id: 1924309afa74
     last_write_checksum: sha1:030cfc078f8e041500d187efe359b92138088fb3
     pristine_git_object: b614676e66f82ca60c3c78d83d4d74beeb46422b
+  internal/provider/types/customer.go:
+    id: ef8eeccd57c7
+    last_write_checksum: sha1:6af49401f8844e067db8d0712bb8d76d663307a5
+    pristine_git_object: c49372f04251f5801ea8c6a97964d0baffac0333
   internal/provider/types/datadog_plugin_config.go:
     id: 6bb4b38d2805
     last_write_checksum: sha1:7b892b99f5ea4486c4f47583ae03e4fe873c00ab
@@ -5339,6 +5515,10 @@ trackedFiles:
     id: 2c9071bae6a7
     last_write_checksum: sha1:07e161132149b61616f4074221572ecea8d4ff3e
     pristine_git_object: 66c11713275077aa837cfd49d8e4bfdb77c2662b
+  internal/provider/types/default_tax_config.go:
+    id: e92b6466c0a4
+    last_write_checksum: sha1:43c9b37a5a2d1b9fd8f8c562e3925356c166d4f9
+    pristine_git_object: b682da43a1b89589f2a8d4512660eaa1c711058d
   internal/provider/types/degraphql_plugin_config.go:
     id: e50fd7a888bb
     last_write_checksum: sha1:c9b8d5b820f996e4c846bfcefc0c33b60e1bede7
@@ -5347,6 +5527,10 @@ trackedFiles:
     id: a316e43b724a
     last_write_checksum: sha1:bf60a4def42cb3a1e703dd0e58cc3a25aeed62ad
     pristine_git_object: fd75c1a202dbe6cdb66e5c04b039ffa9822fe84c
+  internal/provider/types/discounts.go:
+    id: 607f781ff112
+    last_write_checksum: sha1:0422b0f4901114fbe591f58ff96cb0be6550a0ae
+    pristine_git_object: d4fd34fccdbe63add8702c35c7c24cf0957f2f49
   internal/provider/types/encryption_key.go:
     id: 999a0c17c763
     last_write_checksum: sha1:fd2f3734bd122725afc80cd55871f727bf9ad150
@@ -5381,8 +5565,12 @@ trackedFiles:
     pristine_git_object: 8ca5fa228a4f444366b0d13c93dbcfe662282dd4
   internal/provider/types/event_gateway_consume_schema_validation_policy_config.go:
     id: fc17bc036d75
-    last_write_checksum: sha1:48f959b5b737933a0793786750e885d6cdaaffd8
-    pristine_git_object: 262c1a9b4da78d2b64070b005a1d8a32097b9496
+    last_write_checksum: sha1:9ec14d58dad9db0f96e682513a37e0c030ba4593
+    pristine_git_object: fce475f6b73bf6e15405f966f3c8372200b0b6aa
+  internal/provider/types/event_gateway_consume_schema_validation_policy_json_config.go:
+    id: 9b5acc616303
+    last_write_checksum: sha1:1c32effe3d44c2a44281e0165f6fd83fa187c0a2
+    pristine_git_object: 5d0cd9fab6aed5b2fa2f3c7f0a9fa82a86001fd9
   internal/provider/types/event_gateway_decrypt_policy_config.go:
     id: 85f1079dc366
     last_write_checksum: sha1:19ad847857857c0e8811e0ae5c8434333174d974
@@ -5411,14 +5599,6 @@ trackedFiles:
     id: d9f31f690117
     last_write_checksum: sha1:293d867ab716bb3a9974ab5e9cc89e217e1c3b70
     pristine_git_object: bc67c9b1d6eb7062bec5d3cd5c63b0b8af41eec6
-  internal/provider/types/event_gateway_produce_schema_validation_policy_config.go:
-    id: f63519f5813a
-    last_write_checksum: sha1:30a02927f9429bba17ca33e535bca7031908a35a
-    pristine_git_object: 12b14df3b43c7291b1d72aece5117f715f555e54
-  internal/provider/types/event_gateway_produce_schema_validation_policy_json_config.go:
-    id: 5488dcfa6078
-    last_write_checksum: sha1:ab3307a37369b9e72e2777420c6d6659061cb4ad
-    pristine_git_object: 254b3d4e97886f414e4c9ed931a0f50a8b2424b5
   internal/provider/types/event_gateway_tls_listener_policy_config.go:
     id: 9a82025056a7
     last_write_checksum: sha1:70e591e95e84e0813a056a91183bb3209979e700
@@ -5439,6 +5619,10 @@ trackedFiles:
     id: 7c425b664327
     last_write_checksum: sha1:626938971d2cd21238d867a7df6823b93dca3570
     pristine_git_object: 1e8c86e04eb1097cf941de501cdd0280dacb0856
+  internal/provider/types/external_invoicing_tax_config.go:
+    id: c0e9309b017e
+    last_write_checksum: sha1:7035e360e7389226c532d73e947720677248f587
+    pristine_git_object: a6d3b261e768d08cac868929a88174f8c0aba957
   internal/provider/types/extra_options.go:
     id: 6f8ab12efacc
     last_write_checksum: sha1:2bf5a350f17e0f21120ff4cc4109839731f53c68
@@ -5971,10 +6155,18 @@ trackedFiles:
     id: f5066edf1162
     last_write_checksum: sha1:a504e089f501d69f55ac37b19378444644a633d8
     pristine_git_object: 6c615acf0d326c9aa26967ee381f3b1ec811eda4
+  internal/provider/types/payment.go:
+    id: 27404940822c
+    last_write_checksum: sha1:3b98703a169ae24c15fc12a50e6e1051e3f0c8ee
+    pristine_git_object: 77afeecc3dee36ea0590bf7a7d9087cadab7bb31
   internal/provider/types/pem.go:
     id: a843b5faf158
     last_write_checksum: sha1:3d9d08c1716a4f53f7e25057598d7b9f2c7f0405
     pristine_git_object: f662af1aeda6e493ee36c5a77686c0d539314230
+  internal/provider/types/plan.go:
+    id: 22b7f665aada
+    last_write_checksum: sha1:8e4e2f5fe26b111350b6b578fb56e5ac93a25f54
+    pristine_git_object: 4fe231f2ed072a4065a06bbfab4c6ef4b48b9b5f
   internal/provider/types/policies.go:
     id: ae53c684c52e
     last_write_checksum: sha1:1ffafd0d932ac309a3783d30931befd9eb5a5d2f
@@ -6007,6 +6199,10 @@ trackedFiles:
     id: 584c9d72f4c0
     last_write_checksum: sha1:d0291542d843723c92210bc5ea5b99041b81d70b
     pristine_git_object: 4f3d75bbb7a5669407b9f7436bda161d30901623
+  internal/provider/types/price.go:
+    id: 80e784efa745
+    last_write_checksum: sha1:8d245f1fde0f70270d33fe57d6b4c23aed247e96
+    pristine_git_object: 831bcc62169adc7eb1250d5725546163093f9bbe
   internal/provider/types/private_dns_attachment_config.go:
     id: 6d7db5b0974d
     last_write_checksum: sha1:177143da003380210608dc5f98f43d472859eeb8
@@ -6015,6 +6211,10 @@ trackedFiles:
     id: 1c3eb977ef8d
     last_write_checksum: sha1:97c210d912bce47e382d302c9e35a74b3766646b
     pristine_git_object: 18cb55bb080e005223c9856f623435c94df5cdaa
+  internal/provider/types/product_catalog_validation_error.go:
+    id: 45b464d316b9
+    last_write_checksum: sha1:f1893ab85a061dd84cb3f6658f15af2a8b3eb31b
+    pristine_git_object: b01933b01b5f0773a57a60e6d7c8a39fcbf87a6e
   internal/provider/types/prometheus_plugin_config.go:
     id: 07c50e99d09d
     last_write_checksum: sha1:0e4467eb15ffcc316c07e09874b37014287dc56c
@@ -6075,6 +6275,10 @@ trackedFiles:
     id: 2a2f52db44d4
     last_write_checksum: sha1:b54e63c0670d533445c1f247fbaabba67dfb64ca
     pristine_git_object: ec76b48068e374dda0a6906c7de41c8520aa1134
+  internal/provider/types/recurring_period.go:
+    id: 2b185390796f
+    last_write_checksum: sha1:8536290066761b10ae7489b8c09dd28ae5dbe737
+    pristine_git_object: b30df7860442d67e71348bece818e14871b0ece8
   internal/provider/types/redirect_plugin_config.go:
     id: d8faac669ca8
     last_write_checksum: sha1:fd50584cbdd6c73282b9a1c0607ef4a30b1bbc2d
@@ -6367,6 +6571,14 @@ trackedFiles:
     id: e5c96ad82aa8
     last_write_checksum: sha1:ae4a6df4200fd1890f093359d9dc19eb29ecaa8c
     pristine_git_object: 6f2910458f54469e6f82fc3147a8731999d0a038
+  internal/provider/types/tax_config.go:
+    id: be685f55e4c7
+    last_write_checksum: sha1:1a63f7b3cab4f933f371a78a9071ea45ee7fa4f3
+    pristine_git_object: 898f2194ef075e621a446fd5f4270dce65000106
+  internal/provider/types/tax_id.go:
+    id: 9adb59256725
+    last_write_checksum: sha1:d3b6b7d41b8f7b11da190463d0cac773a783ae7d
+    pristine_git_object: a2c92fbc6c0354818d71a0db16e87ceb0de1ef41
   internal/provider/types/tcp_log_plugin_config.go:
     id: 5a3e637663f4
     last_write_checksum: sha1:864f999fbda819c8eb1c8f2735d579f9f8455fb1
@@ -6475,6 +6687,10 @@ trackedFiles:
     id: e39461453a56
     last_write_checksum: sha1:6705911cb4acb03fb581a2aedc8cbd4b947b1ecc
     pristine_git_object: 3a5fcaba6c11dbf67a6e71280ffee4c2253de2ec
+  internal/provider/types/usage_attribution.go:
+    id: 710000fe2907
+    last_write_checksum: sha1:4096f657d6ab7f436aa2d102cd811d3796001982
+    pristine_git_object: 00a10cb7e41ef0934878487080efd03bc2c6f03f
   internal/provider/types/user_properties.go:
     id: 3257bc258b2e
     last_write_checksum: sha1:0ed5b2d1d5e03a2415c58eae20ac420ef32d9fe0
@@ -6595,6 +6811,22 @@ trackedFiles:
     id: 2f24d15f9ee0
     last_write_checksum: sha1:4cb1c7d6ea30059950231ac13301f5b5aa527809
     pristine_git_object: 95e14e0c5fb6eec0a119b4b5dd9cdf315dab6996
+  internal/provider/types/workflow.go:
+    id: f22317b56fc1
+    last_write_checksum: sha1:1508be82eaa687c2b0eb89cd0609a6189ca31abc
+    pristine_git_object: 753aa9f049c268f4ec9b1900a412dacd72bd2bed
+  internal/provider/types/workflow_collection_settings.go:
+    id: edec198ce204
+    last_write_checksum: sha1:1a9b37521c670a3bdebe89b89315654cb8d8043b
+    pristine_git_object: d4a2973522afa8828a60dac90104af2a48e72bc3
+  internal/provider/types/workflow_invoice_settings.go:
+    id: d0a7d9ea9a79
+    last_write_checksum: sha1:60502bc8f98fda6a7da7671692c445ca2e634453
+    pristine_git_object: cc911ea8aaff17154b3c78122d6eed96e9f636a3
+  internal/provider/types/workflow_tax_settings.go:
+    id: 1587bc8380c1
+    last_write_checksum: sha1:a367462e05e7175d5dd0bfecdb4db61312310e56
+    pristine_git_object: be01a9a67732f7714e022b09e902c91a5e4ca9e0
   internal/provider/types/xml_threat_protection_plugin_config.go:
     id: 70f2b8ca787a
     last_write_checksum: sha1:625dd0c8696a619554bd1404238c5838cc12eaa4
@@ -6913,12 +7145,16 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:ecbdca44974d233ac92225c6bce9f2acd547d1a0
-    pristine_git_object: 552c078612b6cf0103addc59f5107d8d50d4abce
+    last_write_checksum: sha1:aa6a4b3fa6621a4d3487cb374d62b8696f486d23
+    pristine_git_object: 0f9fbb4ff70a88f7b7e44c8bc88c2337ce60cd19
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
     pristine_git_object: 28363bf6946cf5a7b616518f1f97d8a225f05c15
+  internal/sdk/meters.go:
+    id: c942eb525ae3
+    last_write_checksum: sha1:5ed4d84ff4efc7fb855859aad8174560d2e7da29
+    pristine_git_object: 62311077ff75dc08cc50b5a2d808c38a7edbef2f
   internal/sdk/models/errors/sdkerror.go:
     id: 19b5a8d3586b
     last_write_checksum: sha1:5d65fce5049df7c5113e11c9ccb1e4c46b91901c
@@ -6931,6 +7167,10 @@ trackedFiles:
     id: 7ba869b946d3
     last_write_checksum: sha1:51a15186a38011023bab783e2990f0038e4ec7ee
     pristine_git_object: 252a6c2e4cfd49ced99c704dccb6f3f6e557a9d6
+  internal/sdk/models/operations/changesubscription.go:
+    id: 73f9b2f6adac
+    last_write_checksum: sha1:aa73464854af64c33f90afc3efdf41b435907760
+    pristine_git_object: 654197c0bfc5659f4b55826f340d7ed0d2ef78e5
   internal/sdk/models/operations/createaceplugin.go:
     id: 6d4190be1c31
     last_write_checksum: sha1:041afd365786fc778f181a575ddf368b8ff2e375
@@ -7123,6 +7363,10 @@ trackedFiles:
     id: 428a72655b39
     last_write_checksum: sha1:f7d86de918af814a576d7e845462700673020fbd
     pristine_git_object: 354d610e520dc09c076acda34841bd0ad6cfb5c0
+  internal/sdk/models/operations/createbillingprofile.go:
+    id: 8f4fdad60e4f
+    last_write_checksum: sha1:e9f49a34ceb3b4ba1715e30b2667a2c19a2e46e2
+    pristine_git_object: 73b6b8b4fdb329577a582120132d43f076fe9a16
   internal/sdk/models/operations/createbotdetectionplugin.go:
     id: 414865b6a9d5
     last_write_checksum: sha1:363227dd76d3939415fd0e09a62c5f4a89471c58
@@ -7199,6 +7443,10 @@ trackedFiles:
     id: 545446342d20
     last_write_checksum: sha1:05fbae117df1b36c612554168eea52e8ef1eaf68
     pristine_git_object: 3cdadc2431c6b198efebfd32feb1ce50fc9cfed7
+  internal/sdk/models/operations/createcustomer.go:
+    id: 3b91d2bdeeab
+    last_write_checksum: sha1:2de549370d54292367ec86d5e2478edef6fce063
+    pristine_git_object: 85500d95a44d0c61901bddfea70e0c05c0885254
   internal/sdk/models/operations/createcustomplugin.go:
     id: 2c9020f45869
     last_write_checksum: sha1:54450b746e777d9d2874f6cb4777498f535f8782
@@ -7423,6 +7671,10 @@ trackedFiles:
     id: 3a3df621ca63
     last_write_checksum: sha1:abd13c1572d38bffe251f5ebecf86c74c2b79669
     pristine_git_object: 68c5e2ea11d82362d7856884244aebf7ceba4148
+  internal/sdk/models/operations/createmeter.go:
+    id: 994c0bfdab09
+    last_write_checksum: sha1:131b21006b2cda2e813eb169923b7184c90b1194
+    pristine_git_object: 1b6f61a10cf45256f439262d85e40a982df86e6c
   internal/sdk/models/operations/createmeteringandbillingplugin.go:
     id: 39a1bb776856
     last_write_checksum: sha1:ed7e99883833dd8392d5aa1093cd41e527743b15
@@ -7467,6 +7719,10 @@ trackedFiles:
     id: d88e56931109
     last_write_checksum: sha1:c1dc139c3dac0bdbf6b326afb36921c30c09a227
     pristine_git_object: d9a5f39d724d3947987adce1a410953cc4486efc
+  internal/sdk/models/operations/createplan.go:
+    id: 48948f90ca27
+    last_write_checksum: sha1:a7b0849ccac13bbbd2f11e6fee133a471d78a6ab
+    pristine_git_object: 0d8ec11c8055e6bc7349b82d1c3a5d8cffd331a5
   internal/sdk/models/operations/createplugin.go:
     id: f9d2639be298
     last_write_checksum: sha1:9423b85c15af5b1c18930092a9725e91a164c95b
@@ -7643,6 +7899,10 @@ trackedFiles:
     id: 78c393565e11
     last_write_checksum: sha1:6a55e975982762728678bcc16351b7983f83f894
     pristine_git_object: f8a62a18d1c1fabacc3b6fe4260046721be980aa
+  internal/sdk/models/operations/createsubscription.go:
+    id: 9f7279202099
+    last_write_checksum: sha1:3c63eef41d8915914d08ec22fa04ef7a85f6783f
+    pristine_git_object: 83371c2778310dd768c996ff6e6f8822cb3d04c2
   internal/sdk/models/operations/createsyslogplugin.go:
     id: 537ec5970c74
     last_write_checksum: sha1:b6093888ce3f5d9f28c5fb65354fedac90b878e2
@@ -7907,6 +8167,10 @@ trackedFiles:
     id: e5b25d3df3f9
     last_write_checksum: sha1:d78897755db98dc461c9c4c39b31b68e74285ef6
     pristine_git_object: 3cd95ae4258aa98fe3bbf5aeabac4e421965cdc6
+  internal/sdk/models/operations/deletebillingprofile.go:
+    id: 1db143d7194a
+    last_write_checksum: sha1:ecc7cf9645115399b9c434982a542447fe6f9621
+    pristine_git_object: bc9e8a3abdb80569083602f8fd4c9637dd15ead7
   internal/sdk/models/operations/deletebotdetectionplugin.go:
     id: 102b6429dacd
     last_write_checksum: sha1:cdb503233bf2f4cd92841641c4c9eee7aa5ab50f
@@ -7979,6 +8243,10 @@ trackedFiles:
     id: 1844c2462863
     last_write_checksum: sha1:b54a2c9c75efe6f4ea7363f3ed8fa1805d93140a
     pristine_git_object: 29129b505f1aeb2693303306ff57df2fef27ee58
+  internal/sdk/models/operations/deletecustomer.go:
+    id: e614758515ce
+    last_write_checksum: sha1:99454cbd425baf9d701ca70c0052ecd2b5b66b7d
+    pristine_git_object: 3d23a1885fea2ab1d621da1107fad8acd3390abd
   internal/sdk/models/operations/deletecustomplugin.go:
     id: f7ad2450955c
     last_write_checksum: sha1:9c9f01f5db6889e83a055aff93b3216480fcefdc
@@ -8211,6 +8479,10 @@ trackedFiles:
     id: 961da2809d91
     last_write_checksum: sha1:ec0e77412ee907b992d7549c149f4d479f2aad86
     pristine_git_object: 416f0ad5f95274eb445ba0a4d8180a72f3946c5a
+  internal/sdk/models/operations/deletemeter.go:
+    id: 1fa0274e07b5
+    last_write_checksum: sha1:ad2ea56ce672e930a2cf6ec6df3f759643643dbf
+    pristine_git_object: 01606fb8bfefe22be1c1f3f1b9f8f2e8a73b1ebb
   internal/sdk/models/operations/deletemeteringandbillingplugin.go:
     id: c8ed30e9c7d6
     last_write_checksum: sha1:6f4238cd4f1141a8b674dc1a022f82bc4ffd4175
@@ -8255,6 +8527,10 @@ trackedFiles:
     id: 289630fd5bd5
     last_write_checksum: sha1:27e0b92fb99afada8c7e8f91f49fafec2c7fa345
     pristine_git_object: 1671178c67d858c8f1efa018d03979e6f8dee599
+  internal/sdk/models/operations/deleteplan.go:
+    id: 4ba2fa094f27
+    last_write_checksum: sha1:518bff8ae6f7338f47b9e8cd9a0c5be0e5a2ee8d
+    pristine_git_object: e6062e513881547227dfaede3be708a9b202a540
   internal/sdk/models/operations/deleteplugin.go:
     id: fbc0fd9b8661
     last_write_checksum: sha1:7acdffacbaa14dbd233436983f5f7ca62b2bb494
@@ -8743,6 +9019,10 @@ trackedFiles:
     id: 70a6a2497588
     last_write_checksum: sha1:b42260dafb2f091fb90aaa4f33ee26c0c3e50b37
     pristine_git_object: c119f9a8d774319037f0f8e6c912db43f838d8b9
+  internal/sdk/models/operations/getbillingprofile.go:
+    id: dc925594630f
+    last_write_checksum: sha1:b3c8b5cb360751fe3c1d346b8865cf623bc67db1
+    pristine_git_object: f351b5cf2b8bfbf2aef7278a0365cb15451e225e
   internal/sdk/models/operations/getbotdetectionplugin.go:
     id: 3027d92f8be6
     last_write_checksum: sha1:3de8aedeba023435c88c588dd70a8dabab2124f3
@@ -8815,6 +9095,10 @@ trackedFiles:
     id: 08df42b9586c
     last_write_checksum: sha1:57fbf90ce314259de1eec5239f911d368b110773
     pristine_git_object: a99766cf4839567c3062935ad4f6c9a708e39791
+  internal/sdk/models/operations/getcustomer.go:
+    id: a157f7653ed4
+    last_write_checksum: sha1:fcf8a06d511dab74a28c128dc79e9b562012aeb4
+    pristine_git_object: 4ec08f098372eafe08788ee15e9c4d6d8b1d92a9
   internal/sdk/models/operations/getcustomplugin.go:
     id: bc22f4a94c40
     last_write_checksum: sha1:02bc936f50400c6e22605f52a3da83227abcdff1
@@ -9047,6 +9331,10 @@ trackedFiles:
     id: 31cd40b27507
     last_write_checksum: sha1:a4fa6e7fe9a2526997cffd4c1a12dd1d6e6f3843
     pristine_git_object: 462eff11dc87682b16b958cbb56448d5066829fc
+  internal/sdk/models/operations/getmeter.go:
+    id: 473c965aeb4f
+    last_write_checksum: sha1:90a8f630ab394ed8cb531225dca3fa4026084db6
+    pristine_git_object: 1cacc57f2d2b8099ca24c6706656846aa91aa454
   internal/sdk/models/operations/getmeteringandbillingplugin.go:
     id: fb0542c9af14
     last_write_checksum: sha1:de218cb04471e4e776a3eab878b85050b34ee500
@@ -9091,6 +9379,10 @@ trackedFiles:
     id: 0425d2fd28cd
     last_write_checksum: sha1:2c5ae97537ab151f76b99351f89159bb32ebe3dc
     pristine_git_object: 824b0dbc5eb713594d60358fc87fddbd7818d9af
+  internal/sdk/models/operations/getplan.go:
+    id: 6655946c4fdf
+    last_write_checksum: sha1:6882699af0218c04591d461d1ce23ea0d7b81bf4
+    pristine_git_object: e5e8526ec982dd5c84f72d30cf1098154922d05d
   internal/sdk/models/operations/getplugin.go:
     id: e6859157f899
     last_write_checksum: sha1:14b4ff4c8662c820057ec5da366dfe276fb67509
@@ -9295,6 +9587,10 @@ trackedFiles:
     id: f4d08010f2dc
     last_write_checksum: sha1:6e3dfd9f006e57dccb69c73852d6acac632bf508
     pristine_git_object: 38f043c606e92649ead70c5a103d8aa92097c148
+  internal/sdk/models/operations/getsubscription.go:
+    id: f1e2d10c8e9b
+    last_write_checksum: sha1:56ae8defefd3b60b49080ebdb84661304e722b3e
+    pristine_git_object: a42e666c79cc41bea8bfb2f4468f4b37eee3271c
   internal/sdk/models/operations/getsyslogplugin.go:
     id: 0b55a9efcc20
     last_write_checksum: sha1:8de590c330335f201e39f419961e31562f4274ca
@@ -9691,6 +9987,10 @@ trackedFiles:
     id: 04fdc6f1a1e4
     last_write_checksum: sha1:497ca8a765d1420b5fa220d37fdbcc1ab907a986
     pristine_git_object: 22f3e21ed25977620354bfb69dee2eaafb480a9f
+  internal/sdk/models/operations/updatebillingprofile.go:
+    id: d06d068cb968
+    last_write_checksum: sha1:068d40dcb24d2193d17347ad0efb8d94ba3a0385
+    pristine_git_object: 250b372d046f932b1877ffc3db0b05827be29bb5
   internal/sdk/models/operations/updatebotdetectionplugin.go:
     id: e88f11778a0c
     last_write_checksum: sha1:5448562a772826b13b7c087c089fea35dba7ee55
@@ -9963,6 +10263,10 @@ trackedFiles:
     id: 96dd97b5f36b
     last_write_checksum: sha1:1d50b15a8702d8b6fa06109e2a61c5a293e5aad0
     pristine_git_object: df0e9dae8be8fd660a2477fa899c65a298ff3587
+  internal/sdk/models/operations/updateplan.go:
+    id: 189511088a72
+    last_write_checksum: sha1:28bb94c0a92aa8080bc2c75ee2ffbf3e6e0ad2f7
+    pristine_git_object: 056611d4bb20a73b196f16071cbbc26072129bbd
   internal/sdk/models/operations/updatepluginschemas.go:
     id: 53c901cad529
     last_write_checksum: sha1:0ed690bffade4faf32ade7b912f3c04743b4aa5e
@@ -10191,6 +10495,10 @@ trackedFiles:
     id: ee56d8ede390
     last_write_checksum: sha1:7a2e2899c332d83f6835c2b22bb4bc8aa08bb354
     pristine_git_object: 2d0809d238d44941729a2562fbde4f661de2cd6c
+  internal/sdk/models/operations/upsertcustomer.go:
+    id: 80f47e050988
+    last_write_checksum: sha1:3cd50c2941a54ab1cfbe597867ffe3e39af2e817
+    pristine_git_object: 1d75c5b09f77d21298307fc8a8bf6587b59d831d
   internal/sdk/models/operations/upsertcustomplugin.go:
     id: e772f9f24145
     last_write_checksum: sha1:caa3acfb8affd04622108169804958df7568d538
@@ -10735,6 +11043,78 @@ trackedFiles:
     id: c9ce9212a36d
     last_write_checksum: sha1:deb9cc87961ac29decfb0e6a50c46a5cc2871111
     pristine_git_object: b8885b6a607e990c6e3a41686d2ee9abf8df4cff
+  internal/sdk/models/shared/billingcustomer.go:
+    id: d1871af6f3af
+    last_write_checksum: sha1:8a521c8e14d9fcf684df208d2bf6cac8b385a1d6
+    pristine_git_object: 6614f486fc8a91939248d61ddd475d817221b0bd
+  internal/sdk/models/shared/billingplan.go:
+    id: d10da7372a87
+    last_write_checksum: sha1:95355c0cf3cf2beb97116c25d4d7d459a08987fd
+    pristine_git_object: 3f3f159722651352895936dccbfa036e4cda4b30
+  internal/sdk/models/shared/billingplanphase.go:
+    id: 56a1c7f07475
+    last_write_checksum: sha1:4c27d033fa302f4c9d2bf5bc405f80729a0becd3
+    pristine_git_object: 7552b98dc04a2a476d7079ac33635e82d5d39a77
+  internal/sdk/models/shared/billingpriceflat.go:
+    id: c2b7f29616a7
+    last_write_checksum: sha1:097b416668b2841e581de2247b422eab24a511e0
+    pristine_git_object: 262e6cf5c46864012622d96bd7eef29eb8415afa
+  internal/sdk/models/shared/billingpricefree.go:
+    id: 1eecec7d2e2d
+    last_write_checksum: sha1:0e7ccf11ac7c4566b96f997dd3909d917fae714b
+    pristine_git_object: 34846a771a6e4c6c4dfdc0100f72eb36ed59694f
+  internal/sdk/models/shared/billingpricegraduated.go:
+    id: f1836bc0aa78
+    last_write_checksum: sha1:ad36cfdc8f33eaf244b634467452f80352baf5f7
+    pristine_git_object: 6fa25e0d6cb0abc2e640168f7ec42be4571c1604
+  internal/sdk/models/shared/billingpricetier.go:
+    id: 82a30b1fd98a
+    last_write_checksum: sha1:fac9ad49a52c6d5677a3450339e208a697af03eb
+    pristine_git_object: 91dc82c0187f1f7042d18914fd479fb61afd9b53
+  internal/sdk/models/shared/billingpriceunit.go:
+    id: 5f0ef5780907
+    last_write_checksum: sha1:d8bfc3a01494b63b654ab2786b3fa4e0dc458afb
+    pristine_git_object: df8d948368d3fa911640583c53b29f130e67e2f3
+  internal/sdk/models/shared/billingpricevolume.go:
+    id: 884ba66371d6
+    last_write_checksum: sha1:633998b1dd2b9e64304efff201ab27a070cc037d
+    pristine_git_object: 135636cfa823a1e54e9d5a628bf5c1241ec3be5b
+  internal/sdk/models/shared/billingprofile.go:
+    id: 42b729d4520a
+    last_write_checksum: sha1:1e82fb1add581ffa41dadfb748c8f240967f5136
+    pristine_git_object: 864a08d3f145246c77362240a782c433e7211125
+  internal/sdk/models/shared/billingratecard.go:
+    id: 61d0bd85b63c
+    last_write_checksum: sha1:6a21f477bd65bfd98cee1b8ddb4a686efca65764
+    pristine_git_object: 540fdee566a9c114a35bc074383213a9c5856955
+  internal/sdk/models/shared/billingsubscription.go:
+    id: 5107220b1f92
+    last_write_checksum: sha1:ce36c1f14d744209a3c1ce4fb6234ecd75294771
+    pristine_git_object: 22e6c310305ce9eaf5a2cbdfafb71c3b428c78db
+  internal/sdk/models/shared/billingsubscriptionchange.go:
+    id: 529cb34d37df
+    last_write_checksum: sha1:b16e3beede097ac9caff3371f3a4bbf71c96470e
+    pristine_git_object: 328b4edb0cf6cf8a989543d11a964b5451319444
+  internal/sdk/models/shared/billingsubscriptionchangeresponse.go:
+    id: 7fc03e64c2f0
+    last_write_checksum: sha1:8038ebb851973e819394dbc7d75f556da6cdecd4
+    pristine_git_object: 6710b6bbccf51c9416c8b89e2d651338d8650389
+  internal/sdk/models/shared/billingsubscriptioncreate.go:
+    id: 10b826919eca
+    last_write_checksum: sha1:41423dbe137c4b5c9d93f907736be6d2b4e0eb80
+    pristine_git_object: 05af011ef784abe04ee13de776a8366142249352
+  internal/sdk/models/shared/billingtaxbehavior.go:
+    id: 5b8edded6508
+    last_write_checksum: sha1:e2ffc98160601374c00e9c77c467351ce0c21717
+    pristine_git_object: 6ad85f145fcbdc049be638aa700768ce3759f271
+  internal/sdk/models/shared/billingworkflowpaymentchargeautomaticallysettings.go:
+    id: 0088de0201c4
+    last_write_checksum: sha1:6c597dab32537d62d30151a26ed9ebd07999d56f
+    pristine_git_object: af204c4350449a77aa959a6a685a61e145dc102f
+  internal/sdk/models/shared/billingworkflowpaymentsendinvoicesettings.go:
+    id: d1e9a0b7a2df
+    last_write_checksum: sha1:e9af541eac79a9df256e5f2839eb6a14852f4b5f
+    pristine_git_object: 5dda0c4ebae69fd407e3d9c7c77faa5d6c2f84e3
   internal/sdk/models/shared/botdetectionplugin.go:
     id: 9c9976d97ad5
     last_write_checksum: sha1:45bfcfc9dc8ee90e4ddb7d0cbcb42e8a48e92bd7
@@ -10991,6 +11371,10 @@ trackedFiles:
     id: 2ddf802cbb5d
     last_write_checksum: sha1:a835b1a0d019921cbd754df57e0e76a46d82f2e3
     pristine_git_object: 2e5d810d1e30a759389dc7f952c8e1a41f66d032
+  internal/sdk/models/shared/createbillingprofilerequest.go:
+    id: 9948f373d4ff
+    last_write_checksum: sha1:cb742a537c421cabae30c2a0c364a0bf63cc875e
+    pristine_git_object: 5a1d9153c2122dcfdf5300c1866fac06c58eb230
   internal/sdk/models/shared/createcatalogservice.go:
     id: e689c238a7b8
     last_write_checksum: sha1:201b0c08be0ef7abf6b239d0489fc50660801418
@@ -11027,6 +11411,10 @@ trackedFiles:
     id: ba40e0b672f8
     last_write_checksum: sha1:b2c0574a59f290f2dcd652e6e16c76f56daaa315
     pristine_git_object: 3dbdc47e75a8603d5ce7d09028b0fd17002c7493
+  internal/sdk/models/shared/createcustomerrequest.go:
+    id: ee07e49827b8
+    last_write_checksum: sha1:ca6271389add0dd820021305ac7610b0bd4a598d
+    pristine_git_object: b0da75294d8a69a918164c9cf320509eb109d266
   internal/sdk/models/shared/createdclient.go:
     id: 7b57a38b5bdf
     last_write_checksum: sha1:c594d211c310cfe85dc1b55dcb914e76ca86b9d0
@@ -11063,18 +11451,26 @@ trackedFiles:
     id: ff4b62815da9
     last_write_checksum: sha1:a011a3067f5a8f626b364a9239029b8c55ca5e40
     pristine_git_object: 98ae10b9072fe96a595560221e3abeb19ecfbb7a
+  internal/sdk/models/shared/createmeterrequest.go:
+    id: 97b5ca0a0e2c
+    last_write_checksum: sha1:91bf95a0b57fc625bd4e3cc11a574e6e6429f3d7
+    pristine_git_object: 9f84b4a4f9b291be1bf6d1ab4d98827af12645e8
   internal/sdk/models/shared/createnetworkrequest.go:
     id: dd82eeab45c4
     last_write_checksum: sha1:ad50e2cb8e8fe7c70fcc21cf804921d5b1f3a1f1
     pristine_git_object: 6e2c5bcf7ed139ad591904b0c3b8947d0d7a0103
+  internal/sdk/models/shared/createplanrequest.go:
+    id: 91fbc89bd36b
+    last_write_checksum: sha1:4d0b77285240dbde4ef3db2f8e97c8101b40c4d0
+    pristine_git_object: ec3f7cac74f4d36686f741a8042192bb8e45dbfb
   internal/sdk/models/shared/createpluginschemas.go:
     id: 205e31d12950
     last_write_checksum: sha1:513bccae8d1c28f978845939014c90a9b47c7e85
     pristine_git_object: 9444be85eb36b9402cb4f9afbc8a5ad3425a8a05
   internal/sdk/models/shared/createportal.go:
     id: bf2eaac1fec1
-    last_write_checksum: sha1:014fde60a78f174fd372e6bb7d3f89a311062102
-    pristine_git_object: d397d14990a334dad5696903d9cc95da1bf83e88
+    last_write_checksum: sha1:3f9d074308a8fed2dfdd5ad15eafeee037b85c8d
+    pristine_git_object: fc1716ab59649205359ad1e58fec0387ed0596cc
   internal/sdk/models/shared/createportalcustomdomainrequest.go:
     id: 7ee9af576694
     last_write_checksum: sha1:3ed92763ea85a23f289ca6a9a5ffeb9cb855d4a9
@@ -11225,8 +11621,20 @@ trackedFiles:
     pristine_git_object: 88835dc74cc14ca7919345db43fa45d2caf3a4e6
   internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicy.go:
     id: 12b289092dda
-    last_write_checksum: sha1:32d85138ffc215a8a0cc8299a3a35116a289dec6
-    pristine_git_object: 23accf697a3aa84fd4239aaec480221e3a13294a
+    last_write_checksum: sha1:128c05860fb103da6f5f3254bd0dd6fb6cb1caa4
+    pristine_git_object: 9a35f77bef4d8569d936436be2eb2fdcf618c0dc
+  internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicyconfig.go:
+    id: bd2d5690cd1b
+    last_write_checksum: sha1:07363d4bffdb1f4da07fef4887b1f1b414c15e27
+    pristine_git_object: 076daeae5f1f50fb1b886947527cf420601ccb22
+  internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicyjsonconfig.go:
+    id: 86d317de9f65
+    last_write_checksum: sha1:5ccd8c79f32d056071a0a3753fd743c354de2a18
+    pristine_git_object: 126591fc3dd69fe5332f7ef8eb1fee35c20eca04
+  internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicyschemaregistryconfig.go:
+    id: e112fb39e2f1
+    last_write_checksum: sha1:5ab004097b1470b793f4112d865419fca290afbf
+    pristine_git_object: f85c6a5bd611dd2ec04cab8cb5106c0e6b52b2f7
   internal/sdk/models/shared/eventgatewaydataplanecertificate.go:
     id: d6c51d22803c
     last_write_checksum: sha1:458c6b234b85141508e367995f3780719a24756b
@@ -11403,6 +11811,10 @@ trackedFiles:
     id: b63db7e92e3e
     last_write_checksum: sha1:dbc1abdce3e2341fd784b0e809c9b650b187f843
     pristine_git_object: e6dacb9c047535922fd0b7d9c91df0c68627c091
+  internal/sdk/models/shared/goneerror.go:
+    id: 476bb22186c9
+    last_write_checksum: sha1:c12fa56379bd30dc5a144032bb350a4f8ec1e149
+    pristine_git_object: 865f4c59ba4cfbaf48bc28a1b4afef805b963507
   internal/sdk/models/shared/granttype.go:
     id: 18782ffd03f6
     last_write_checksum: sha1:1404a3a41fefd7c00f1dd0ca33e4d938a9718c01
@@ -11645,8 +12057,8 @@ trackedFiles:
     pristine_git_object: c06ff4b4925c354cdf250f6167ae52d0415b5e7e
   internal/sdk/models/shared/listportalsresponse.go:
     id: 5ad6d253b1a6
-    last_write_checksum: sha1:b048de0d345c18949937c91ba824f1f9b6301fc8
-    pristine_git_object: 3ba76d5d19ccd16df10d09a77720ebca950e8586
+    last_write_checksum: sha1:01926d8473ce8eb5ff5de00347135263b4fc86fd
+    pristine_git_object: 237942da47e65e26f58f6ad6d66860a66365815e
   internal/sdk/models/shared/listprovideraccountsresponse.go:
     id: 4e1613af1aa0
     last_write_checksum: sha1:a284a7234fa5ab2785b739a0ae5d9226f9d072df
@@ -11691,6 +12103,10 @@ trackedFiles:
     id: 98ed5de6ed7e
     last_write_checksum: sha1:acb8f9c6a09d55f60938ff61e7b97416a7ab1925
     pristine_git_object: 4d0c4f001ebf375ecd4cb11792629f9386933af4
+  internal/sdk/models/shared/meter.go:
+    id: 56b367420f05
+    last_write_checksum: sha1:df91844cf80245bff2fbf2e8e7df55f00629727e
+    pristine_git_object: 1f278f087c68bc514a66e09ee0b8c0ee5ccd8844
   internal/sdk/models/shared/meteringandbillingplugin.go:
     id: 76ace7edd934
     last_write_checksum: sha1:1d4df25eb1075e7a8fe4242bebb2593d40fb9c30
@@ -11909,8 +12325,8 @@ trackedFiles:
     pristine_git_object: fc0c7cb47f243981b2bd5f6b83c688eaf2d1d8a0
   internal/sdk/models/shared/portalresponse.go:
     id: e090da0c094a
-    last_write_checksum: sha1:0701ee9c61fc4cf863f1ba57bad0d122d7afb164
-    pristine_git_object: ceab65dbcb1e067296abbbd1442b9ed2241623e1
+    last_write_checksum: sha1:c125c3b2cec2860fbd44202359f38de83a0904ec
+    pristine_git_object: 952044529d6239fd2393be200febef506eeffcd7
   internal/sdk/models/shared/portalsnippetresponse.go:
     id: 8be74f97f95a
     last_write_checksum: sha1:d5724b4b78a322db7a1773454ef30a5dfd567431
@@ -11951,6 +12367,10 @@ trackedFiles:
     id: e0ba07894c9d
     last_write_checksum: sha1:f396d1d00d4cf46c8442b97a1b4b1dcd12a36a24
     pristine_git_object: 5a705d352fae91eaa5649e16d9dc40f231d49fed
+  internal/sdk/models/shared/productcatalogvalidationerror.go:
+    id: 16bab0c591ca
+    last_write_checksum: sha1:2d19be0800e4ccad689eceb1b240dbca8494256b
+    pristine_git_object: c0065e7ef1dcb23bfe8d4498ba267cadf3285de6
   internal/sdk/models/shared/prometheusplugin.go:
     id: b466b2c345cb
     last_write_checksum: sha1:0dc40ab1cadac87789cd8039725574ea8800b904
@@ -12127,10 +12547,6 @@ trackedFiles:
     id: 87e1dd9c8a3d
     last_write_checksum: sha1:c4218e78b32f109c054a7c634e19aa897f8747c0
     pristine_git_object: 9f9073343f6190d1768f783c3a33cdbc46239156
-  internal/sdk/models/shared/schemavalidationtype.go:
-    id: c93356428076
-    last_write_checksum: sha1:73ca35dc708968cff8332f8ed4e2ef0bb9aee52b
-    pristine_git_object: 23869a0fcbad67ddd9344868047dde468e939e1f
   internal/sdk/models/shared/scope.go:
     id: 5b195c7a9d19
     last_write_checksum: sha1:98d10192cd2c82e1f38eb391f408982e353a1e3e
@@ -12235,6 +12651,10 @@ trackedFiles:
     id: 65a597c6371a
     last_write_checksum: sha1:dccef14122d8d1874aec5a7c92471f54aac1b227
     pristine_git_object: a4b5b18c3141f00a60a414b7f77a9101bc84326d
+  internal/sdk/models/shared/taxcodereferenceitem.go:
+    id: 33ad1c7d27ce
+    last_write_checksum: sha1:2ee9f7eb098c2d8989888020892106d752035254
+    pristine_git_object: 628aedc16915bb6cd8365b45b813b5dc67d1fb84
   internal/sdk/models/shared/tcplogplugin.go:
     id: 9efd0943fe86
     last_write_checksum: sha1:07848c422ddeea67ceba128202ebfdb864040299
@@ -12421,8 +12841,8 @@ trackedFiles:
     pristine_git_object: 0dc67a77e033c081d90e9de2ce0ecd6b2f471da8
   internal/sdk/models/shared/updateportal.go:
     id: bee6d3f054a4
-    last_write_checksum: sha1:12f0479f9f6c5f7b435e613cb39f78fcf36d2642
-    pristine_git_object: 76c43d5d4d9e8b9e7fb23ec46ca23850b2b4502e
+    last_write_checksum: sha1:372384d90138bd8de7385b11c15f097a1da05e03
+    pristine_git_object: 553935d7b52a5aa1da306c9b23d0ebaecfef91ea
   internal/sdk/models/shared/updateportalauditlogwebhook.go:
     id: c08b2fe64c7c
     last_write_checksum: sha1:2d60f56f33a6cb68dd5303953d8406cc9a52d31a
@@ -12467,10 +12887,22 @@ trackedFiles:
     id: 1ad8a5bf531b
     last_write_checksum: sha1:d351fedd6a9a847a424b5018e089386d57043b1e
     pristine_git_object: d2cd88d427a0b13c4d1562b925ec69fea19bcee9
+  internal/sdk/models/shared/upsertbillingprofilerequest.go:
+    id: 9e226e90fbf0
+    last_write_checksum: sha1:6d1c4d9e58b407ffc47519976f56ffb1ac907a15
+    pristine_git_object: 689d9003abb8e4ad2ceeb9efbe3ea06149895bb4
+  internal/sdk/models/shared/upsertcustomerrequest.go:
+    id: d89e85299784
+    last_write_checksum: sha1:040f5c6e8da1ca186751136fe4f822c2ccd2c30a
+    pristine_git_object: 279f5a06a2f9a23125a09ca72bbb1dbf6e1c9eff
   internal/sdk/models/shared/upsertintegrationinstanceauthconfig.go:
     id: 8d0685147424
     last_write_checksum: sha1:109a918ae5592b2b407a295655bb02acfee855f1
     pristine_git_object: 2a780732e284adce377314af20ee20af4d19c611
+  internal/sdk/models/shared/upsertplanrequest.go:
+    id: 5aafea14c82a
+    last_write_checksum: sha1:6b6710d3abba54eb48b5b021464ba77b0c2e249b
+    pristine_git_object: 425e45f11a52cf23545c9b4c953b4c30c7906203
   internal/sdk/models/shared/upstream.go:
     id: 432d706f098e
     last_write_checksum: sha1:4e6044eabafba2a84d67a678a1a72acfcceade5f
@@ -12699,6 +13131,22 @@ trackedFiles:
     id: 94db4a00e464
     last_write_checksum: sha1:d2aa669b686c7cfb428bcb92f0d517c5b1a61c14
     pristine_git_object: 1763825f5ff9480c8a5b48874244c2fe1b5e81b8
+  internal/sdk/openmeterbilling.go:
+    id: df2ec011a9ac
+    last_write_checksum: sha1:8a3a5fa8353ee55523d714353d86d79e143b6bf3
+    pristine_git_object: 100580b97f5b817de6d48334b514a5f009f2a71f
+  internal/sdk/openmetercustomers.go:
+    id: cb2df4799d33
+    last_write_checksum: sha1:fceb327deb4d33f344027a2f513c6ab46363ab52
+    pristine_git_object: 17b3b78db99b51e23ae48539a3ad72f50cefe527
+  internal/sdk/openmeterproductcatalog.go:
+    id: c38aa52c15bd
+    last_write_checksum: sha1:ac0a43fdb1f41b81452aff5bd75471fefb387925
+    pristine_git_object: a4432a6e12700ce9e3cf28ff9a17d929f93dbd0e
+  internal/sdk/openmetersubscriptions.go:
+    id: 554b34a180de
+    last_write_checksum: sha1:7d1b7050c81bf7ab4117c30d6921437d4966410c
+    pristine_git_object: 90ced749f68005abbb3e8d943e98d2079eb64a0c
   internal/sdk/optionalnullable/optionalnullable.go:
     id: 4b83aa3f3df3
     last_write_checksum: sha1:d6aff1a420c31e025ea21d46cf056e305ae76fe8
@@ -22859,7 +23307,7 @@ examples:
           filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "description": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_api_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_page_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_application_auth_strategy_id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "canonical_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}}
       responses:
         "200":
-          application/json: {"data": [{"id": "8f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": true, "rbac_enabled": true, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "rapid-step.biz"}], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
+          application/json: {"data": [{"id": "8f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": true, "rbac_enabled": true, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "rapid-step.biz", "notifications_developer_pii_visibility_enabled": false}], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
         "400":
           application/problem+json: {"status": 55055, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>", "<value 3>"], "source": "body"}, {"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>", "<value 3>"], "source": "body"}]}
         "401":
@@ -22869,10 +23317,10 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "DevPortal", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
+        application/json: {"name": "DevPortal", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "insistent-elevator.org", "labels": {"env": "test"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "insistent-elevator.org", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
         "400":
           application/problem+json: {"status": 17949, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -22885,10 +23333,10 @@ examples:
         path:
           portalId: "efe853b6-a55c-4929-9b80-c39a22b01c7a"
       requestBody:
-        application/json: {"name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
+        application/json: {"name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "international-flight.biz", "labels": {"env": "test"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "international-flight.biz", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
         "400":
           application/problem+json: {"status": 7211, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "401":
@@ -23554,7 +24002,7 @@ examples:
           portalId: "1672e313-9f8e-4485-a62b-716aad351889"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "public", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "normal-reconsideration.name", "labels": {"env": "test"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "public", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "normal-reconsideration.name", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -27439,6 +27887,291 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-customer:
+    speakeasy-default-create-customer:
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "usage_attribution": null, "primary_email": null, "currency": "USD", "billing_address": null}
+      responses:
+        "201":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "usage_attribution": null, "primary_email": null, "currency": "USD", "billing_address": null}
+        "400":
+          application/problem+json: {"status": 368322, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-customer:
+    speakeasy-default-get-customer:
+      parameters:
+        path:
+          customerId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "usage_attribution": null, "primary_email": null, "currency": "USD", "billing_address": null}
+        "400":
+          application/problem+json: {"status": 316040, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  upsert-customer:
+    speakeasy-default-upsert-customer:
+      parameters:
+        path:
+          customerId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "usage_attribution": null, "primary_email": null, "currency": "USD", "billing_address": null}
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "usage_attribution": null, "primary_email": null, "currency": "USD", "billing_address": null}
+        "400":
+          application/problem+json: {"status": 730172, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "410":
+          application/problem+json: {"status": 410, "title": "Gone", "type": "https://httpstatuses.com/410", "instance": "kong:trace:1234567890", "detail": "Gone"}
+  delete-customer:
+    speakeasy-default-delete-customer:
+      parameters:
+        path:
+          customerId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "400":
+          application/problem+json: {"status": 167607, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-meter:
+    speakeasy-default-create-meter:
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "key": "resource_key", "aggregation": "sum", "event_type": "prompt", "events_from": "2023-01-01T01:01:01.001Z", "value_property": "$.tokens", "dimensions": {"type": "$.type"}}
+      responses:
+        "201":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "Tokens Total", "description": "AI Token Usage", "created_at": "2024-01-01T01:01:01.001Z", "updated_at": "2024-01-01T01:01:01.001Z", "key": "tokens_total", "aggregation": "sum", "event_type": "prompt", "events_from": "2023-01-01T01:01:01.001Z", "value_property": "$.tokens", "dimensions": {"model": "$.model", "type": "$.type"}}
+        "400":
+          application/problem+json: {"status": 599666, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-meter:
+    speakeasy-default-get-meter:
+      parameters:
+        path:
+          meterId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "Tokens Total", "description": "AI Token Usage", "created_at": "2024-01-01T01:01:01.001Z", "updated_at": "2024-01-01T01:01:01.001Z", "key": "tokens_total", "aggregation": "sum", "event_type": "prompt", "events_from": "2023-01-01T01:01:01.001Z", "value_property": "$.tokens", "dimensions": {"model": "$.model", "type": "$.type"}}
+        "400":
+          application/problem+json: {"status": 979727, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-meter:
+    speakeasy-default-delete-meter:
+      parameters:
+        path:
+          meterId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "400":
+          application/problem+json: {"status": 551530, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-plan:
+    speakeasy-default-create-plan:
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "key": "resource_key", "currency": "USD", "billing_cadence": "P1Y", "pro_rating_enabled": true, "phases": []}
+      responses:
+        "201":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "key": "resource_key", "version": 1, "currency": "USD", "billing_cadence": "P1Y", "pro_rating_enabled": true, "effective_from": "2023-01-01T01:01:01.001Z", "effective_to": "2023-01-01T01:01:01.001Z", "status": "scheduled", "phases": [{"name": "<value>", "description": null, "labels": {"env": "test"}, "key": "resource_key", "duration": "P1Y", "rate_cards": []}], "validation_errors": [{"code": "<value>", "message": "<value>", "field": "addons/pro/ratecards/token/featureKey"}]}
+        "400":
+          application/problem+json: {"status": 545303, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  update-plan:
+    speakeasy-default-update-plan:
+      parameters:
+        path:
+          planId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "pro_rating_enabled": true, "phases": []}
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "key": "resource_key", "version": 1, "currency": "USD", "billing_cadence": "P1Y", "pro_rating_enabled": true, "effective_from": "2023-01-01T01:01:01.001Z", "effective_to": "2023-01-01T01:01:01.001Z", "status": "archived", "phases": [], "validation_errors": [{"code": "<value>", "message": "<value>", "field": "addons/pro/ratecards/token/featureKey"}]}
+        "400":
+          application/problem+json: {"status": 471616, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "410":
+          application/problem+json: {"status": 410, "title": "Gone", "type": "https://httpstatuses.com/410", "instance": "kong:trace:1234567890", "detail": "Gone"}
+  get-plan:
+    speakeasy-default-get-plan:
+      parameters:
+        path:
+          planId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "key": "resource_key", "version": 1, "currency": "USD", "billing_cadence": "P1Y", "pro_rating_enabled": true, "effective_from": "2023-01-01T01:01:01.001Z", "effective_to": "2023-01-01T01:01:01.001Z", "status": "scheduled", "phases": [], "validation_errors": [{"code": "<value>", "message": "<value>", "field": "addons/pro/ratecards/token/featureKey"}]}
+        "400":
+          application/problem+json: {"status": 771337, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "410":
+          application/problem+json: {"status": 410, "title": "Gone", "type": "https://httpstatuses.com/410", "instance": "kong:trace:1234567890", "detail": "Gone"}
+  delete-plan:
+    speakeasy-default-delete-plan:
+      parameters:
+        path:
+          planId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "400":
+          application/problem+json: {"status": 723258, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-billing-profile:
+    speakeasy-default-create-billing-profile:
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": true}
+      responses:
+        "201":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": false}
+        "400":
+          application/problem+json: {"status": 690791, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-billing-profile:
+    speakeasy-default-get-billing-profile:
+      parameters:
+        path:
+          id: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": false}
+        "400":
+          application/problem+json: {"status": 753189, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-billing-profile:
+    speakeasy-default-update-billing-profile:
+      parameters:
+        path:
+          id: "01G65Z755AFWAKHE12NY0CQ9FH"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "default": true}
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": true}
+        "400":
+          application/problem+json: {"status": 352497, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-billing-profile:
+    speakeasy-default-delete-billing-profile:
+      parameters:
+        path:
+          id: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "400":
+          application/problem+json: {"status": 875041, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-subscription:
+    speakeasy-default-create-subscription:
+      requestBody:
+        application/json: {"labels": {"env": "test"}, "customer": {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "key": "019ae40f-4258-7f15-9491-842f42a7d6ac"}, "plan": {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "key": "resource_key", "version": null}, "billing_anchor": "2023-01-01T01:01:01.001Z", "timing": null}
+      responses:
+        "201":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "customer_id": "01G65Z755AFWAKHE12NY0CQ9FH", "plan_id": "01G65Z755AFWAKHE12NY0CQ9FH", "billing_anchor": "2023-01-01T01:01:01.001Z", "status": "scheduled"}
+        "400":
+          application/problem+json: {"status": 858147, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-subscription:
+    speakeasy-default-get-subscription:
+      parameters:
+        path:
+          subscriptionId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      responses:
+        "200":
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "customer_id": "01G65Z755AFWAKHE12NY0CQ9FH", "plan_id": "01G65Z755AFWAKHE12NY0CQ9FH", "billing_anchor": "2023-01-01T01:01:01.001Z", "status": "inactive"}
+        "400":
+          application/problem+json: {"status": 920239, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  change-subscription:
+    speakeasy-default-change-subscription:
+      parameters:
+        path:
+          subscriptionId: "01G65Z755AFWAKHE12NY0CQ9FH"
+      requestBody:
+        application/json: {"labels": {"env": "test"}, "customer": {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "key": "019ae40f-4258-7f15-9491-842f42a7d6ac"}, "plan": {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "key": "resource_key", "version": null}, "billing_anchor": "2023-01-01T01:01:01.001Z", "timing": "immediate"}
+      responses:
+        "200":
+          application/json: {"current": {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "customer_id": "01G65Z755AFWAKHE12NY0CQ9FH", "plan_id": "01G65Z755AFWAKHE12NY0CQ9FH", "billing_anchor": "2023-01-01T01:01:01.001Z", "status": "canceled"}, "next": {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "customer_id": "01G65Z755AFWAKHE12NY0CQ9FH", "plan_id": "01G65Z755AFWAKHE12NY0CQ9FH", "billing_anchor": "2023-01-01T01:01:01.001Z", "status": "active"}}
+        "400":
+          application/problem+json: {"status": 716192, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
 examplesVersion: 1.0.2
 generatedTests: {}
 generatedFiles:

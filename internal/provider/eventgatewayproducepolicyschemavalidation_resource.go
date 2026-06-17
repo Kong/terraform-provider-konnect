@@ -40,7 +40,7 @@ type EventGatewayProducePolicySchemaValidationResource struct {
 // EventGatewayProducePolicySchemaValidationResourceModel describes the resource data model.
 type EventGatewayProducePolicySchemaValidationResourceModel struct {
 	Condition        types.String                                             `tfsdk:"condition"`
-	Config           *tfTypes.EventGatewayProduceSchemaValidationPolicyConfig `tfsdk:"config"`
+	Config           *tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig `tfsdk:"config"`
 	CreatedAt        types.String                                             `tfsdk:"created_at"`
 	Description      types.String                                             `tfsdk:"description"`
 	Enabled          types.Bool                                               `tfsdk:"enabled"`

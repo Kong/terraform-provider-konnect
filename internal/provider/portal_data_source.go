@@ -29,25 +29,26 @@ type PortalDataSource struct {
 
 // PortalDataSourceModel describes the data model.
 type PortalDataSourceModel struct {
-	AuthenticationEnabled            types.Bool                      `tfsdk:"authentication_enabled"`
-	AutoApproveApplications          types.Bool                      `tfsdk:"auto_approve_applications"`
-	AutoApproveDevelopers            types.Bool                      `tfsdk:"auto_approve_developers"`
-	CanonicalDomain                  types.String                    `tfsdk:"canonical_domain"`
-	CreatedAt                        types.String                    `tfsdk:"created_at"`
-	DefaultAPIVisibility             types.String                    `tfsdk:"default_api_visibility"`
-	DefaultApplicationAuthStrategyID types.String                    `tfsdk:"default_application_auth_strategy_id"`
-	DefaultDomain                    types.String                    `tfsdk:"default_domain"`
-	DefaultPageVisibility            types.String                    `tfsdk:"default_page_visibility"`
-	Description                      types.String                    `tfsdk:"description"`
-	DisplayName                      types.String                    `tfsdk:"display_name"`
-	Filter                           *tfTypes.PortalFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
-	ID                               types.String                    `tfsdk:"id"`
-	Labels                           map[string]types.String         `tfsdk:"labels"`
-	Name                             types.String                    `tfsdk:"name"`
-	RbacEnabled                      types.Bool                      `tfsdk:"rbac_enabled"`
-	SiprEnabled                      types.Bool                      `tfsdk:"sipr_enabled"`
-	Sort                             types.String                    `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
-	UpdatedAt                        types.String                    `tfsdk:"updated_at"`
+	AuthenticationEnabled                      types.Bool                      `tfsdk:"authentication_enabled"`
+	AutoApproveApplications                    types.Bool                      `tfsdk:"auto_approve_applications"`
+	AutoApproveDevelopers                      types.Bool                      `tfsdk:"auto_approve_developers"`
+	CanonicalDomain                            types.String                    `tfsdk:"canonical_domain"`
+	CreatedAt                                  types.String                    `tfsdk:"created_at"`
+	DefaultAPIVisibility                       types.String                    `tfsdk:"default_api_visibility"`
+	DefaultApplicationAuthStrategyID           types.String                    `tfsdk:"default_application_auth_strategy_id"`
+	DefaultDomain                              types.String                    `tfsdk:"default_domain"`
+	DefaultPageVisibility                      types.String                    `tfsdk:"default_page_visibility"`
+	Description                                types.String                    `tfsdk:"description"`
+	DisplayName                                types.String                    `tfsdk:"display_name"`
+	Filter                                     *tfTypes.PortalFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
+	ID                                         types.String                    `tfsdk:"id"`
+	Labels                                     map[string]types.String         `tfsdk:"labels"`
+	Name                                       types.String                    `tfsdk:"name"`
+	NotificationsDeveloperPiiVisibilityEnabled types.Bool                      `tfsdk:"notifications_developer_pii_visibility_enabled"`
+	RbacEnabled                                types.Bool                      `tfsdk:"rbac_enabled"`
+	SiprEnabled                                types.Bool                      `tfsdk:"sipr_enabled"`
+	Sort                                       types.String                    `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
+	UpdatedAt                                  types.String                    `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -333,6 +334,10 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
+			},
+			"notifications_developer_pii_visibility_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `When enabled, portal registration notifications include the registering developer's identifying information (such as name and email).`,
 			},
 			"rbac_enabled": schema.BoolAttribute{
 				Computed:    true,
