@@ -41,17 +41,17 @@ type UpsertBillingProfileRequestBillingAddress struct {
 	// alpha-2 format.
 	Country *string `default:"null" json:"country"`
 	// Postal code.
-	PostalCode *string `default:"null" json:"postal_code"`
+	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
-	State *string `default:"null" json:"state"`
+	State *string `json:"state,omitempty"`
 	// City.
-	City *string `default:"null" json:"city"`
+	City *string `json:"city,omitempty"`
 	// First line of the address.
-	Line1 *string `default:"null" json:"line1"`
+	Line1 *string `json:"line1,omitempty"`
 	// Second line of the address.
-	Line2 *string `default:"null" json:"line2"`
+	Line2 *string `json:"line2,omitempty"`
 	// Phone number.
-	PhoneNumber *string `default:"null" json:"phone_number"`
+	PhoneNumber *string `json:"phone_number,omitempty"`
 }
 
 func (u UpsertBillingProfileRequestBillingAddress) MarshalJSON() ([]byte, error) {
@@ -142,14 +142,14 @@ func (u *UpsertBillingProfileRequestAddresses) GetBillingAddress() UpsertBilling
 // represents
 type UpsertBillingProfileRequestSupplier struct {
 	// An optional unique key of the party.
-	Key *string `default:"null" json:"key"`
+	Key *string `json:"key,omitempty"`
 	// Legal name or representation of the party.
 	Name *string `default:"null" json:"name"`
 	// The entity's legal identification used for tax purposes. They may have other
 	// numbers, but we're only interested in those valid for tax purposes.
-	TaxID *UpsertBillingProfileRequestTaxID `json:"tax_id"`
+	TaxID *UpsertBillingProfileRequestTaxID `json:"tax_id,omitempty"`
 	// Address for where information should be sent if needed.
-	Addresses *UpsertBillingProfileRequestAddresses `json:"addresses"`
+	Addresses UpsertBillingProfileRequestAddresses `json:"addresses"`
 }
 
 func (u UpsertBillingProfileRequestSupplier) MarshalJSON() ([]byte, error) {
@@ -157,7 +157,7 @@ func (u UpsertBillingProfileRequestSupplier) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertBillingProfileRequestSupplier) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"addresses"}); err != nil {
 		return err
 	}
 	return nil
@@ -184,9 +184,9 @@ func (u *UpsertBillingProfileRequestSupplier) GetTaxID() *UpsertBillingProfileRe
 	return u.TaxID
 }
 
-func (u *UpsertBillingProfileRequestSupplier) GetAddresses() *UpsertBillingProfileRequestAddresses {
+func (u *UpsertBillingProfileRequestSupplier) GetAddresses() UpsertBillingProfileRequestAddresses {
 	if u == nil {
-		return nil
+		return UpsertBillingProfileRequestAddresses{}
 	}
 	return u.Addresses
 }
@@ -826,11 +826,11 @@ type UpsertBillingProfileRequestWorkflow struct {
 	// The collection settings for this workflow
 	Collection *UpsertBillingProfileRequestWorkflowCollectionSettings `json:"collection"`
 	// The invoicing settings for this workflow
-	Invoicing *UpsertBillingProfileRequestWorkflowInvoiceSettings `json:"invoicing"`
+	Invoicing *UpsertBillingProfileRequestWorkflowInvoiceSettings `json:"invoicing,omitempty"`
 	// The payment settings for this workflow
 	Payment *UpsertBillingProfileRequestPayment `json:"payment,omitempty"`
 	// The tax settings for this workflow
-	Tax *UpsertBillingProfileRequestWorkflowTaxSettings `json:"tax"`
+	Tax *UpsertBillingProfileRequestWorkflowTaxSettings `json:"tax,omitempty"`
 }
 
 func (u UpsertBillingProfileRequestWorkflow) MarshalJSON() ([]byte, error) {

@@ -18,7 +18,7 @@ type BillingSubscriptionChangeCustomer struct {
 	//
 	// Either customer ID or customer key must be provided. If both are provided, the
 	// ID will be used.
-	Key *string `default:"null" json:"key"`
+	Key *string `json:"key,omitempty"`
 }
 
 func (b BillingSubscriptionChangeCustomer) MarshalJSON() ([]byte, error) {

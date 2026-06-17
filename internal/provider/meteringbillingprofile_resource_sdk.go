@@ -37,19 +37,15 @@ func (r *MeteringBillingProfileResourceModel) RefreshFromSharedBillingProfile(ct
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.Supplier = &tfTypes.CreateBillingProfileRequestSupplier{}
-		if resp.Supplier.Addresses == nil {
-			r.Supplier.Addresses = nil
-		} else {
-			r.Supplier.Addresses = &tfTypes.Addresses{}
-			r.Supplier.Addresses.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
-			r.Supplier.Addresses.BillingAddress.City = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.City)
-			r.Supplier.Addresses.BillingAddress.Country = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Country)
-			r.Supplier.Addresses.BillingAddress.Line1 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line1)
-			r.Supplier.Addresses.BillingAddress.Line2 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line2)
-			r.Supplier.Addresses.BillingAddress.PhoneNumber = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PhoneNumber)
-			r.Supplier.Addresses.BillingAddress.PostalCode = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PostalCode)
-			r.Supplier.Addresses.BillingAddress.State = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.State)
-		}
+		r.Supplier.Addresses = &tfTypes.Addresses{}
+		r.Supplier.Addresses.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
+		r.Supplier.Addresses.BillingAddress.City = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.City)
+		r.Supplier.Addresses.BillingAddress.Country = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Country)
+		r.Supplier.Addresses.BillingAddress.Line1 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line1)
+		r.Supplier.Addresses.BillingAddress.Line2 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line2)
+		r.Supplier.Addresses.BillingAddress.PhoneNumber = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PhoneNumber)
+		r.Supplier.Addresses.BillingAddress.PostalCode = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PostalCode)
+		r.Supplier.Addresses.BillingAddress.State = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.State)
 		r.Supplier.ID = types.StringPointerValue(resp.Supplier.ID)
 		r.Supplier.Key = types.StringPointerValue(resp.Supplier.Key)
 		r.Supplier.Name = types.StringPointerValue(resp.Supplier.Name)
@@ -195,12 +191,9 @@ func (r *MeteringBillingProfileResourceModel) ToSharedCreateBillingProfileReques
 	var name string
 	name = r.Name.ValueString()
 
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
+	var description string
+	description = r.Description.ValueString()
+
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {
 		labelsInst := new(string)
@@ -235,62 +228,59 @@ func (r *MeteringBillingProfileResourceModel) ToSharedCreateBillingProfileReques
 			Code: code,
 		}
 	}
-	var addresses *shared.Addresses
-	if r.Supplier.Addresses != nil {
-		country := new(string)
-		if !r.Supplier.Addresses.BillingAddress.Country.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Country.IsNull() {
-			*country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
-		} else {
-			country = nil
-		}
-		postalCode := new(string)
-		if !r.Supplier.Addresses.BillingAddress.PostalCode.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PostalCode.IsNull() {
-			*postalCode = r.Supplier.Addresses.BillingAddress.PostalCode.ValueString()
-		} else {
-			postalCode = nil
-		}
-		state := new(string)
-		if !r.Supplier.Addresses.BillingAddress.State.IsUnknown() && !r.Supplier.Addresses.BillingAddress.State.IsNull() {
-			*state = r.Supplier.Addresses.BillingAddress.State.ValueString()
-		} else {
-			state = nil
-		}
-		city := new(string)
-		if !r.Supplier.Addresses.BillingAddress.City.IsUnknown() && !r.Supplier.Addresses.BillingAddress.City.IsNull() {
-			*city = r.Supplier.Addresses.BillingAddress.City.ValueString()
-		} else {
-			city = nil
-		}
-		line1 := new(string)
-		if !r.Supplier.Addresses.BillingAddress.Line1.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line1.IsNull() {
-			*line1 = r.Supplier.Addresses.BillingAddress.Line1.ValueString()
-		} else {
-			line1 = nil
-		}
-		line2 := new(string)
-		if !r.Supplier.Addresses.BillingAddress.Line2.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line2.IsNull() {
-			*line2 = r.Supplier.Addresses.BillingAddress.Line2.ValueString()
-		} else {
-			line2 = nil
-		}
-		phoneNumber := new(string)
-		if !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsNull() {
-			*phoneNumber = r.Supplier.Addresses.BillingAddress.PhoneNumber.ValueString()
-		} else {
-			phoneNumber = nil
-		}
-		billingAddress := shared.CreateBillingProfileRequestBillingAddress{
-			Country:     country,
-			PostalCode:  postalCode,
-			State:       state,
-			City:        city,
-			Line1:       line1,
-			Line2:       line2,
-			PhoneNumber: phoneNumber,
-		}
-		addresses = &shared.Addresses{
-			BillingAddress: billingAddress,
-		}
+	country := new(string)
+	if !r.Supplier.Addresses.BillingAddress.Country.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Country.IsNull() {
+		*country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
+	} else {
+		country = nil
+	}
+	postalCode := new(string)
+	if !r.Supplier.Addresses.BillingAddress.PostalCode.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PostalCode.IsNull() {
+		*postalCode = r.Supplier.Addresses.BillingAddress.PostalCode.ValueString()
+	} else {
+		postalCode = nil
+	}
+	state := new(string)
+	if !r.Supplier.Addresses.BillingAddress.State.IsUnknown() && !r.Supplier.Addresses.BillingAddress.State.IsNull() {
+		*state = r.Supplier.Addresses.BillingAddress.State.ValueString()
+	} else {
+		state = nil
+	}
+	city := new(string)
+	if !r.Supplier.Addresses.BillingAddress.City.IsUnknown() && !r.Supplier.Addresses.BillingAddress.City.IsNull() {
+		*city = r.Supplier.Addresses.BillingAddress.City.ValueString()
+	} else {
+		city = nil
+	}
+	line1 := new(string)
+	if !r.Supplier.Addresses.BillingAddress.Line1.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line1.IsNull() {
+		*line1 = r.Supplier.Addresses.BillingAddress.Line1.ValueString()
+	} else {
+		line1 = nil
+	}
+	line2 := new(string)
+	if !r.Supplier.Addresses.BillingAddress.Line2.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line2.IsNull() {
+		*line2 = r.Supplier.Addresses.BillingAddress.Line2.ValueString()
+	} else {
+		line2 = nil
+	}
+	phoneNumber := new(string)
+	if !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsNull() {
+		*phoneNumber = r.Supplier.Addresses.BillingAddress.PhoneNumber.ValueString()
+	} else {
+		phoneNumber = nil
+	}
+	billingAddress := shared.CreateBillingProfileRequestBillingAddress{
+		Country:     country,
+		PostalCode:  postalCode,
+		State:       state,
+		City:        city,
+		Line1:       line1,
+		Line2:       line2,
+		PhoneNumber: phoneNumber,
+	}
+	addresses := shared.Addresses{
+		BillingAddress: billingAddress,
 	}
 	supplier := shared.CreateBillingProfileRequestSupplier{
 		Key:       key,
@@ -567,62 +557,59 @@ func (r *MeteringBillingProfileResourceModel) ToSharedUpsertBillingProfileReques
 			Code: code,
 		}
 	}
-	var addresses *shared.UpsertBillingProfileRequestAddresses
-	if r.Supplier.Addresses != nil {
-		country := new(string)
-		if !r.Supplier.Addresses.BillingAddress.Country.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Country.IsNull() {
-			*country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
-		} else {
-			country = nil
-		}
-		postalCode := new(string)
-		if !r.Supplier.Addresses.BillingAddress.PostalCode.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PostalCode.IsNull() {
-			*postalCode = r.Supplier.Addresses.BillingAddress.PostalCode.ValueString()
-		} else {
-			postalCode = nil
-		}
-		state := new(string)
-		if !r.Supplier.Addresses.BillingAddress.State.IsUnknown() && !r.Supplier.Addresses.BillingAddress.State.IsNull() {
-			*state = r.Supplier.Addresses.BillingAddress.State.ValueString()
-		} else {
-			state = nil
-		}
-		city := new(string)
-		if !r.Supplier.Addresses.BillingAddress.City.IsUnknown() && !r.Supplier.Addresses.BillingAddress.City.IsNull() {
-			*city = r.Supplier.Addresses.BillingAddress.City.ValueString()
-		} else {
-			city = nil
-		}
-		line1 := new(string)
-		if !r.Supplier.Addresses.BillingAddress.Line1.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line1.IsNull() {
-			*line1 = r.Supplier.Addresses.BillingAddress.Line1.ValueString()
-		} else {
-			line1 = nil
-		}
-		line2 := new(string)
-		if !r.Supplier.Addresses.BillingAddress.Line2.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line2.IsNull() {
-			*line2 = r.Supplier.Addresses.BillingAddress.Line2.ValueString()
-		} else {
-			line2 = nil
-		}
-		phoneNumber := new(string)
-		if !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsNull() {
-			*phoneNumber = r.Supplier.Addresses.BillingAddress.PhoneNumber.ValueString()
-		} else {
-			phoneNumber = nil
-		}
-		billingAddress := shared.UpsertBillingProfileRequestBillingAddress{
-			Country:     country,
-			PostalCode:  postalCode,
-			State:       state,
-			City:        city,
-			Line1:       line1,
-			Line2:       line2,
-			PhoneNumber: phoneNumber,
-		}
-		addresses = &shared.UpsertBillingProfileRequestAddresses{
-			BillingAddress: billingAddress,
-		}
+	country := new(string)
+	if !r.Supplier.Addresses.BillingAddress.Country.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Country.IsNull() {
+		*country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
+	} else {
+		country = nil
+	}
+	postalCode := new(string)
+	if !r.Supplier.Addresses.BillingAddress.PostalCode.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PostalCode.IsNull() {
+		*postalCode = r.Supplier.Addresses.BillingAddress.PostalCode.ValueString()
+	} else {
+		postalCode = nil
+	}
+	state := new(string)
+	if !r.Supplier.Addresses.BillingAddress.State.IsUnknown() && !r.Supplier.Addresses.BillingAddress.State.IsNull() {
+		*state = r.Supplier.Addresses.BillingAddress.State.ValueString()
+	} else {
+		state = nil
+	}
+	city := new(string)
+	if !r.Supplier.Addresses.BillingAddress.City.IsUnknown() && !r.Supplier.Addresses.BillingAddress.City.IsNull() {
+		*city = r.Supplier.Addresses.BillingAddress.City.ValueString()
+	} else {
+		city = nil
+	}
+	line1 := new(string)
+	if !r.Supplier.Addresses.BillingAddress.Line1.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line1.IsNull() {
+		*line1 = r.Supplier.Addresses.BillingAddress.Line1.ValueString()
+	} else {
+		line1 = nil
+	}
+	line2 := new(string)
+	if !r.Supplier.Addresses.BillingAddress.Line2.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Line2.IsNull() {
+		*line2 = r.Supplier.Addresses.BillingAddress.Line2.ValueString()
+	} else {
+		line2 = nil
+	}
+	phoneNumber := new(string)
+	if !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PhoneNumber.IsNull() {
+		*phoneNumber = r.Supplier.Addresses.BillingAddress.PhoneNumber.ValueString()
+	} else {
+		phoneNumber = nil
+	}
+	billingAddress := shared.UpsertBillingProfileRequestBillingAddress{
+		Country:     country,
+		PostalCode:  postalCode,
+		State:       state,
+		City:        city,
+		Line1:       line1,
+		Line2:       line2,
+		PhoneNumber: phoneNumber,
+	}
+	addresses := shared.UpsertBillingProfileRequestAddresses{
+		BillingAddress: billingAddress,
 	}
 	supplier := shared.UpsertBillingProfileRequestSupplier{
 		Key:       key,

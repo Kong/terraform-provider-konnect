@@ -19,7 +19,7 @@ func (r *MeteringCustomerResourceModel) RefreshFromSharedBillingCustomer(ctx con
 		if resp.BillingAddress == nil {
 			r.BillingAddress = nil
 		} else {
-			r.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
+			r.BillingAddress = &tfTypes.BillingAddress{}
 			r.BillingAddress.City = types.StringPointerValue(resp.BillingAddress.City)
 			r.BillingAddress.Country = types.StringPointerValue(resp.BillingAddress.Country)
 			r.BillingAddress.Line1 = types.StringPointerValue(resp.BillingAddress.Line1)

@@ -36,19 +36,15 @@ func (r *MeteringBillingProfileDataSourceModel) RefreshFromSharedBillingProfile(
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.Supplier = &tfTypes.CreateBillingProfileRequestSupplier{}
-		if resp.Supplier.Addresses == nil {
-			r.Supplier.Addresses = nil
-		} else {
-			r.Supplier.Addresses = &tfTypes.Addresses{}
-			r.Supplier.Addresses.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
-			r.Supplier.Addresses.BillingAddress.City = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.City)
-			r.Supplier.Addresses.BillingAddress.Country = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Country)
-			r.Supplier.Addresses.BillingAddress.Line1 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line1)
-			r.Supplier.Addresses.BillingAddress.Line2 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line2)
-			r.Supplier.Addresses.BillingAddress.PhoneNumber = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PhoneNumber)
-			r.Supplier.Addresses.BillingAddress.PostalCode = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PostalCode)
-			r.Supplier.Addresses.BillingAddress.State = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.State)
-		}
+		r.Supplier.Addresses = &tfTypes.Addresses{}
+		r.Supplier.Addresses.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
+		r.Supplier.Addresses.BillingAddress.City = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.City)
+		r.Supplier.Addresses.BillingAddress.Country = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Country)
+		r.Supplier.Addresses.BillingAddress.Line1 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line1)
+		r.Supplier.Addresses.BillingAddress.Line2 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line2)
+		r.Supplier.Addresses.BillingAddress.PhoneNumber = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PhoneNumber)
+		r.Supplier.Addresses.BillingAddress.PostalCode = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PostalCode)
+		r.Supplier.Addresses.BillingAddress.State = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.State)
 		r.Supplier.ID = types.StringPointerValue(resp.Supplier.ID)
 		r.Supplier.Key = types.StringPointerValue(resp.Supplier.Key)
 		r.Supplier.Name = types.StringPointerValue(resp.Supplier.Name)

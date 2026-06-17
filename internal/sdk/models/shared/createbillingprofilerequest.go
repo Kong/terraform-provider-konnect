@@ -41,17 +41,17 @@ type CreateBillingProfileRequestBillingAddress struct {
 	// alpha-2 format.
 	Country *string `default:"null" json:"country"`
 	// Postal code.
-	PostalCode *string `default:"null" json:"postal_code"`
+	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
-	State *string `default:"null" json:"state"`
+	State *string `json:"state,omitempty"`
 	// City.
-	City *string `default:"null" json:"city"`
+	City *string `json:"city,omitempty"`
 	// First line of the address.
-	Line1 *string `default:"null" json:"line1"`
+	Line1 *string `json:"line1,omitempty"`
 	// Second line of the address.
-	Line2 *string `default:"null" json:"line2"`
+	Line2 *string `json:"line2,omitempty"`
 	// Phone number.
-	PhoneNumber *string `default:"null" json:"phone_number"`
+	PhoneNumber *string `json:"phone_number,omitempty"`
 }
 
 func (c CreateBillingProfileRequestBillingAddress) MarshalJSON() ([]byte, error) {
@@ -142,14 +142,14 @@ func (a *Addresses) GetBillingAddress() CreateBillingProfileRequestBillingAddres
 // represents
 type CreateBillingProfileRequestSupplier struct {
 	// An optional unique key of the party.
-	Key *string `default:"null" json:"key"`
+	Key *string `json:"key,omitempty"`
 	// Legal name or representation of the party.
 	Name *string `default:"null" json:"name"`
 	// The entity's legal identification used for tax purposes. They may have other
 	// numbers, but we're only interested in those valid for tax purposes.
-	TaxID *TaxID `json:"tax_id"`
+	TaxID *TaxID `json:"tax_id,omitempty"`
 	// Address for where information should be sent if needed.
-	Addresses *Addresses `json:"addresses"`
+	Addresses Addresses `json:"addresses"`
 }
 
 func (c CreateBillingProfileRequestSupplier) MarshalJSON() ([]byte, error) {
@@ -157,7 +157,7 @@ func (c CreateBillingProfileRequestSupplier) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateBillingProfileRequestSupplier) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"addresses"}); err != nil {
 		return err
 	}
 	return nil
@@ -184,9 +184,9 @@ func (c *CreateBillingProfileRequestSupplier) GetTaxID() *TaxID {
 	return c.TaxID
 }
 
-func (c *CreateBillingProfileRequestSupplier) GetAddresses() *Addresses {
+func (c *CreateBillingProfileRequestSupplier) GetAddresses() Addresses {
 	if c == nil {
-		return nil
+		return Addresses{}
 	}
 	return c.Addresses
 }
@@ -826,11 +826,11 @@ type Workflow struct {
 	// The collection settings for this workflow
 	Collection *WorkflowCollectionSettings `json:"collection"`
 	// The invoicing settings for this workflow
-	Invoicing *WorkflowInvoiceSettings `json:"invoicing"`
+	Invoicing *WorkflowInvoiceSettings `json:"invoicing,omitempty"`
 	// The payment settings for this workflow
 	Payment *Payment `json:"payment,omitempty"`
 	// The tax settings for this workflow
-	Tax *WorkflowTaxSettings `json:"tax"`
+	Tax *WorkflowTaxSettings `json:"tax,omitempty"`
 }
 
 func (w Workflow) MarshalJSON() ([]byte, error) {
@@ -1009,7 +1009,7 @@ type CreateBillingProfileRequest struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description string `json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -1031,7 +1031,7 @@ func (c CreateBillingProfileRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateBillingProfileRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "supplier", "workflow", "apps", "default"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "description", "supplier", "workflow", "apps", "default"}); err != nil {
 		return err
 	}
 	return nil
@@ -1044,9 +1044,9 @@ func (c *CreateBillingProfileRequest) GetName() string {
 	return c.Name
 }
 
-func (c *CreateBillingProfileRequest) GetDescription() *string {
+func (c *CreateBillingProfileRequest) GetDescription() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Description
 }

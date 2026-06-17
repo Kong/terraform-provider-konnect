@@ -39,18 +39,18 @@ type MeteringCustomerResource struct {
 
 // MeteringCustomerResourceModel describes the resource data model.
 type MeteringCustomerResourceModel struct {
-	BillingAddress   *tfTypes.CreateBillingProfileRequestBillingAddress `tfsdk:"billing_address"`
-	CreatedAt        types.String                                       `tfsdk:"created_at"`
-	Currency         types.String                                       `tfsdk:"currency"`
-	DeletedAt        types.String                                       `tfsdk:"deleted_at"`
-	Description      types.String                                       `tfsdk:"description"`
-	ID               types.String                                       `tfsdk:"id"`
-	Key              types.String                                       `tfsdk:"key"`
-	Labels           map[string]types.String                            `tfsdk:"labels"`
-	Name             types.String                                       `tfsdk:"name"`
-	PrimaryEmail     types.String                                       `tfsdk:"primary_email"`
-	UpdatedAt        types.String                                       `tfsdk:"updated_at"`
-	UsageAttribution *tfTypes.UsageAttribution                          `tfsdk:"usage_attribution"`
+	BillingAddress   *tfTypes.BillingAddress   `tfsdk:"billing_address"`
+	CreatedAt        types.String              `tfsdk:"created_at"`
+	Currency         types.String              `tfsdk:"currency"`
+	DeletedAt        types.String              `tfsdk:"deleted_at"`
+	Description      types.String              `tfsdk:"description"`
+	ID               types.String              `tfsdk:"id"`
+	Key              types.String              `tfsdk:"key"`
+	Labels           map[string]types.String   `tfsdk:"labels"`
+	Name             types.String              `tfsdk:"name"`
+	PrimaryEmail     types.String              `tfsdk:"primary_email"`
+	UpdatedAt        types.String              `tfsdk:"updated_at"`
+	UsageAttribution *tfTypes.UsageAttribution `tfsdk:"usage_attribution"`
 }
 
 func (r *MeteringCustomerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

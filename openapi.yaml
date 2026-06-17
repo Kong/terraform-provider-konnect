@@ -34469,9 +34469,8 @@ components:
                 The entity's legal identification used for tax purposes. They may have other
                 numbers, but we're only interested in those valid for tax purposes.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 code:
                   description: Normalized tax identification code shown on the original identity document.
@@ -34481,13 +34480,11 @@ components:
                   minLength: 1
                   nullable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
             addresses:
               description: Address for where information should be sent if needed.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 billing_address:
                   description: Billing address.
@@ -34510,48 +34507,37 @@ components:
                     postal_code:
                       description: Postal code.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Postal Code
-                      x-speakeasy-param-computed: false
                     state:
                       description: State or province.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: State
-                      x-speakeasy-param-computed: false
                     city:
                       description: City.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: City
-                      x-speakeasy-param-computed: false
                     line1:
                       description: First line of the address.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Line 1
-                      x-speakeasy-param-computed: false
                     line2:
                       description: Second line of the address.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Line 2
-                      x-speakeasy-param-computed: false
                     phone_number:
                       description: Phone number.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Phone Number
-                      x-speakeasy-param-computed: false
               required:
                 - billing_address
-              x-speakeasy-param-computed: false
+          required:
+            - addresses
         workflow:
           description: The billing workflow settings for this profile
           type: object
@@ -34593,9 +34579,8 @@ components:
             invoicing:
               description: The invoicing settings for this workflow
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 auto_advance:
                   description: Whether to automatically issue the invoice after the draftPeriod has passed.
@@ -34612,7 +34597,6 @@ components:
                   type: boolean
                   default: true
               title: Workflow invoice settings
-              x-speakeasy-param-computed: false
             payment:
               description: The payment settings for this workflow
               type: object
@@ -34621,15 +34605,15 @@ components:
                 mapping:
                   charge_automatically: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
                   send_invoice: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+              nullable: false
               oneOf:
                 - $ref: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
                 - $ref: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
             tax:
               description: The tax settings for this workflow
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 enabled:
                   description: |-
@@ -34729,7 +34713,6 @@ components:
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
               title: Workflow tax settings
-              x-speakeasy-param-computed: false
         apps:
           description: The applications used by this billing profile.
           type: object
@@ -34739,6 +34722,7 @@ components:
               description: The tax app used for this workflow.
               type: object
               additionalProperties: false
+              nullable: false
               properties:
                 id:
                   description: The ID of the app.
@@ -34752,6 +34736,7 @@ components:
               description: The invoicing app used for this workflow.
               type: object
               additionalProperties: false
+              nullable: false
               properties:
                 id:
                   description: The ID of the app.
@@ -34765,6 +34750,7 @@ components:
               description: The payment app used for this workflow.
               type: object
               additionalProperties: false
+              nullable: false
               properties:
                 id:
                   description: The ID of the app.
@@ -35499,6 +35485,7 @@ components:
           enum:
             - charge_automatically
       additionalProperties: false
+      nullable: false
       required:
         - collection_method
     BillingWorkflowPaymentSendInvoiceSettings:
@@ -35521,6 +35508,7 @@ components:
           example: P30D
           default: P30D
       additionalProperties: false
+      nullable: false
       required:
         - collection_method
     CreateBillingProfileRequest:
@@ -35575,9 +35563,8 @@ components:
                 The entity's legal identification used for tax purposes. They may have other
                 numbers, but we're only interested in those valid for tax purposes.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 code:
                   description: Normalized tax identification code shown on the original identity document.
@@ -35587,13 +35574,11 @@ components:
                   minLength: 1
                   nullable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
             addresses:
               description: Address for where information should be sent if needed.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 billing_address:
                   description: Billing address.
@@ -35616,48 +35601,37 @@ components:
                     postal_code:
                       description: Postal code.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Postal Code
-                      x-speakeasy-param-computed: false
                     state:
                       description: State or province.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: State
-                      x-speakeasy-param-computed: false
                     city:
                       description: City.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: City
-                      x-speakeasy-param-computed: false
                     line1:
                       description: First line of the address.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Line 1
-                      x-speakeasy-param-computed: false
                     line2:
                       description: Second line of the address.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Line 2
-                      x-speakeasy-param-computed: false
                     phone_number:
                       description: Phone number.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Phone Number
-                      x-speakeasy-param-computed: false
               required:
                 - billing_address
-              x-speakeasy-param-computed: false
+          required:
+            - addresses
         workflow:
           description: The billing workflow settings for this profile
           type: object
@@ -35699,9 +35673,8 @@ components:
             invoicing:
               description: The invoicing settings for this workflow
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 auto_advance:
                   description: Whether to automatically issue the invoice after the draftPeriod has passed.
@@ -35718,7 +35691,6 @@ components:
                   type: boolean
                   default: true
               title: Workflow invoice settings
-              x-speakeasy-param-computed: false
             payment:
               description: The payment settings for this workflow
               type: object
@@ -35727,15 +35699,15 @@ components:
                 mapping:
                   charge_automatically: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
                   send_invoice: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+              nullable: false
               oneOf:
                 - $ref: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
                 - $ref: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
             tax:
               description: The tax settings for this workflow
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 enabled:
                   description: |-
@@ -35835,7 +35807,6 @@ components:
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
               title: Workflow tax settings
-              x-speakeasy-param-computed: false
         apps:
           description: The applications used by this billing profile.
           type: object
@@ -35845,6 +35816,7 @@ components:
               description: The tax app used for this workflow.
               type: object
               additionalProperties: false
+              nullable: false
               properties:
                 id:
                   description: The ID of the app.
@@ -35858,6 +35830,7 @@ components:
               description: The invoicing app used for this workflow.
               type: object
               additionalProperties: false
+              nullable: false
               properties:
                 id:
                   description: The ID of the app.
@@ -35871,6 +35844,7 @@ components:
               description: The payment app used for this workflow.
               type: object
               additionalProperties: false
+              nullable: false
               properties:
                 id:
                   description: The ID of the app.
@@ -36447,9 +36421,8 @@ components:
                 The entity's legal identification used for tax purposes. They may have other
                 numbers, but we're only interested in those valid for tax purposes.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 code:
                   description: Normalized tax identification code shown on the original identity document.
@@ -36459,13 +36432,11 @@ components:
                   minLength: 1
                   nullable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
             addresses:
               description: Address for where information should be sent if needed.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 billing_address:
                   description: Billing address.
@@ -36488,48 +36459,37 @@ components:
                     postal_code:
                       description: Postal code.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Postal Code
-                      x-speakeasy-param-computed: false
                     state:
                       description: State or province.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: State
-                      x-speakeasy-param-computed: false
                     city:
                       description: City.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: City
-                      x-speakeasy-param-computed: false
                     line1:
                       description: First line of the address.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Line 1
-                      x-speakeasy-param-computed: false
                     line2:
                       description: Second line of the address.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Line 2
-                      x-speakeasy-param-computed: false
                     phone_number:
                       description: Phone number.
                       type: string
-                      default: null
-                      nullable: true
+                      nullable: false
                       title: Phone Number
-                      x-speakeasy-param-computed: false
               required:
                 - billing_address
-              x-speakeasy-param-computed: false
+          required:
+            - addresses
         workflow:
           description: The billing workflow settings for this profile
           type: object
@@ -36571,9 +36531,8 @@ components:
             invoicing:
               description: The invoicing settings for this workflow
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 auto_advance:
                   description: Whether to automatically issue the invoice after the draftPeriod has passed.
@@ -36590,7 +36549,6 @@ components:
                   type: boolean
                   default: true
               title: Workflow invoice settings
-              x-speakeasy-param-computed: false
             payment:
               description: The payment settings for this workflow
               type: object
@@ -36599,15 +36557,15 @@ components:
                 mapping:
                   charge_automatically: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
                   send_invoice: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+              nullable: false
               oneOf:
                 - $ref: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
                 - $ref: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
             tax:
               description: The tax settings for this workflow
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 enabled:
                   description: |-
@@ -36707,7 +36665,6 @@ components:
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
               title: Workflow tax settings
-              x-speakeasy-param-computed: false
         default:
           description: Whether this is the default profile.
           type: boolean

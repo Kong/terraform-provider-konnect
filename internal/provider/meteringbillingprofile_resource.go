@@ -159,7 +159,7 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 				Description: `An ISO-8601 timestamp representation of entity deletion date.`,
 			},
 			"description": schema.StringAttribute{
-				Optional: true,
+				Required: true,
 				MarkdownDescription: `Optional description of the resource.` + "\n" +
 					`` + "\n" +
 					`Maximum 1024 characters.`,
@@ -195,26 +195,13 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"addresses": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"billing_address": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`city`:         types.StringType,
-									`country`:      types.StringType,
-									`line1`:        types.StringType,
-									`line2`:        types.StringType,
-									`phone_number`: types.StringType,
-									`postal_code`:  types.StringType,
-									`state`:        types.StringType,
-								},
-							},
-						})),
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"billing_address": schema.SingleNestedAttribute{
 								Required: true,
 								Attributes: map[string]schema.Attribute{
 									"city": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `City.`,
 									},
@@ -228,22 +215,27 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 										},
 									},
 									"line1": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `First line of the address.`,
 									},
 									"line2": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Second line of the address.`,
 									},
 									"phone_number": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Phone number.`,
 									},
 									"postal_code": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Postal code.`,
 									},
 									"state": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `State or province.`,
 									},
@@ -261,6 +253,7 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 						Description: `Unique identifier for the party.`,
 					},
 					"key": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `An optional unique key of the party.`,
 						Validators: []validator.String{
@@ -274,9 +267,6 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 					"tax_id": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"code": types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"code": schema.StringAttribute{
 								Optional:    true,
@@ -426,11 +416,6 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 					"invoicing": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"auto_advance":        types.BoolType,
-							"draft_period":        types.StringType,
-							"progressive_billing": types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"auto_advance": schema.BoolAttribute{
 								Computed:    true,
@@ -517,31 +502,6 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 					"tax": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"default_tax_config": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`behavior`: types.StringType,
-									`external_invoicing`: types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`code`: types.StringType,
-										},
-									},
-									`stripe`: types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`code`: types.StringType,
-										},
-									},
-									`tax_code`: types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`id`: types.StringType,
-										},
-									},
-									`tax_code_id`: types.StringType,
-								},
-							},
-							"enabled":  types.BoolType,
-							"enforced": types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"default_tax_config": schema.SingleNestedAttribute{
 								Computed: true,
@@ -583,9 +543,11 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 										})),
 										Attributes: map[string]schema.Attribute{
 											"code": schema.StringAttribute{
-												Required:    true,
-												Description: `The tax code should be interpreted by the external invoicing provider.`,
+												Computed:    true,
+												Optional:    true,
+												Description: `The tax code should be interpreted by the external invoicing provider. Not Null`,
 												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.UTF8LengthAtMost(64),
 												},
 											},
@@ -601,9 +563,11 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 										})),
 										Attributes: map[string]schema.Attribute{
 											"code": schema.StringAttribute{
-												Required:    true,
-												Description: `Product [tax code](https://docs.stripe.com/tax/tax-codes).`,
+												Computed:    true,
+												Optional:    true,
+												Description: `Product [tax code](https://docs.stripe.com/tax/tax-codes). Not Null`,
 												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.RegexMatches(regexp.MustCompile(`^txcd_\d{8}$`), "must match pattern "+regexp.MustCompile(`^txcd_\d{8}$`).String()),
 												},
 											},
@@ -619,9 +583,11 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 										})),
 										Attributes: map[string]schema.Attribute{
 											"id": schema.StringAttribute{
-												Required:    true,
-												Description: `ULID (Universally Unique Lexicographically Sortable Identifier).`,
+												Computed:    true,
+												Optional:    true,
+												Description: `ULID (Universally Unique Lexicographically Sortable Identifier). Not Null`,
 												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.RegexMatches(regexp.MustCompile(`^[0-7][0-9A-HJKMNP-TV-Z]{25}$`), "must match pattern "+regexp.MustCompile(`^[0-7][0-9A-HJKMNP-TV-Z]{25}$`).String()),
 												},
 											},

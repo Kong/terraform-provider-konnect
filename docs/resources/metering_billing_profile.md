@@ -96,6 +96,9 @@ resource "konnect_metering_billing_profile" "my_meteringbillingprofile" {
 
 - `apps` (Attributes) The applications used by this billing profile. Requires replacement if changed. (see [below for nested schema](#nestedatt--apps))
 - `default` (Boolean) Whether this is the default profile.
+- `description` (String) Optional description of the resource.
+
+Maximum 1024 characters.
 - `name` (String) Display name of the resource.
 
 Between 1 and 256 characters.
@@ -105,9 +108,6 @@ represents (see [below for nested schema](#nestedatt--supplier))
 
 ### Optional
 
-- `description` (String) Optional description of the resource.
-
-Maximum 1024 characters.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -156,9 +156,12 @@ Required:
 <a id="nestedatt--supplier"></a>
 ### Nested Schema for `supplier`
 
-Optional:
+Required:
 
 - `addresses` (Attributes) Address for where information should be sent if needed. (see [below for nested schema](#nestedatt--supplier--addresses))
+
+Optional:
+
 - `key` (String) An optional unique key of the party.
 - `name` (String) Legal name or representation of the party.
 - `tax_id` (Attributes) The entity's legal identification used for tax purposes. They may have other
@@ -338,25 +341,25 @@ precedence. When `stripe.code` is also provided, `tax_code` still wins and
 <a id="nestedatt--workflow--tax--default_tax_config--external_invoicing"></a>
 ### Nested Schema for `workflow.tax.default_tax_config.external_invoicing`
 
-Required:
+Optional:
 
-- `code` (String) The tax code should be interpreted by the external invoicing provider.
+- `code` (String) The tax code should be interpreted by the external invoicing provider. Not Null
 
 
 <a id="nestedatt--workflow--tax--default_tax_config--stripe"></a>
 ### Nested Schema for `workflow.tax.default_tax_config.stripe`
 
-Required:
+Optional:
 
-- `code` (String) Product [tax code](https://docs.stripe.com/tax/tax-codes).
+- `code` (String) Product [tax code](https://docs.stripe.com/tax/tax-codes). Not Null
 
 
 <a id="nestedatt--workflow--tax--default_tax_config--tax_code"></a>
 ### Nested Schema for `workflow.tax.default_tax_config.tax_code`
 
-Required:
+Optional:
 
-- `id` (String) ULID (Universally Unique Lexicographically Sortable Identifier).
+- `id` (String) ULID (Universally Unique Lexicographically Sortable Identifier). Not Null
 
 ## Import
 

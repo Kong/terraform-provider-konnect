@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: d21eece98098971daa162ad72f2b0578
+  docChecksum: 9201b4c69755faaa8c2875c4c818214d
   docVersion: 2.0.0
   speakeasyVersion: 1.773.1
   generationVersion: 2.897.1
   releaseVersion: 3.18.1
   configChecksum: 7a82bd8e5bc99fa8bc9beaf575d80c0d
 persistentEdits:
-  generation_id: faab6701-5aad-4f04-95fd-fcaa0744b775
-  pristine_commit_hash: ff61d51dadf27d5bb394e9cdacd342ced04de78b
-  pristine_tree_hash: d2290cc3cc31a7a46c3541f3d875f390c1892249
+  generation_id: 4a148222-44e8-4403-a375-03676b03b229
+  pristine_commit_hash: dd2ba1effee26c5d64d8cb5360486adc8220533a
+  pristine_tree_hash: 7f5c1b484c13ef45ac9d8125ec592a1c5c5e61c4
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4397,24 +4397,24 @@ trackedFiles:
     pristine_git_object: 1f4096cea50d2fd89731f58cbad219650257d782
   internal/provider/meteringbillingprofile_data_source_sdk.go:
     id: 4219bcc3d697
-    last_write_checksum: sha1:930871d97df71b925147d9949e8c34dab21adbbf
-    pristine_git_object: 905689664df907a0aa57a746d97b7aeb500e3773
+    last_write_checksum: sha1:96ceebe5e53612aa2a64e4d883c0f40b998eb5c7
+    pristine_git_object: 018a6da8c769f36c2df2013d580f6ce1da401ca5
   internal/provider/meteringbillingprofile_resource.go:
     id: bd5d209a8b84
-    last_write_checksum: sha1:b904e86c136fd5862964532997315679bc22be4a
-    pristine_git_object: 18f007b87efe79039c34b57eb0f8af753231c18d
+    last_write_checksum: sha1:c5b581c8d7108b624a58b31c407e3f2788f37f9f
+    pristine_git_object: b53d6af3402143d2e6d018fbe3469164bb76dcc5
   internal/provider/meteringbillingprofile_resource_sdk.go:
     id: 62a861f81971
-    last_write_checksum: sha1:017405dd2d166e0050ab8489f402a3d9a0e8732e
-    pristine_git_object: 68f69a9e30aceef449c0e9831aa24669f435108c
+    last_write_checksum: sha1:a699f420f504dca83697824a6ef487f57863a107
+    pristine_git_object: d52a19658dda7bf68703d30fbf61a93b225f6d32
   internal/provider/meteringcustomer_resource.go:
     id: f3bf3e08e7cf
-    last_write_checksum: sha1:b2e8fb6e7af4443e07441d2274c69fc9488fe730
-    pristine_git_object: 884cc4e196e55c4e7fb5c5b3ea1f56308c25fc8b
+    last_write_checksum: sha1:2ae58df06c003f36d31b69639b4c4f6caa86b2e6
+    pristine_git_object: ee8d68d99f9b27e1fdfa4f9e8ef75d58eae57767
   internal/provider/meteringcustomer_resource_sdk.go:
     id: 72f16b934c2b
-    last_write_checksum: sha1:5bb09566a8bc54ee12973c80cfb64d197470192d
-    pristine_git_object: 1992be3b780eea3139cc4e463665252c15c27940
+    last_write_checksum: sha1:467e1510fb8dab7fc50b300266b2c16e8a9ef689
+    pristine_git_object: 25594caf8c2a5aae62bddcbd28d1e4fd3ed32359
   internal/provider/meteringmeter_resource.go:
     id: 166464daa694
     last_write_checksum: sha1:571dff912ef5d481ce1c6b35a4a0716991e67ab6
@@ -5187,6 +5187,10 @@ trackedFiles:
     id: cd29755d21e7
     last_write_checksum: sha1:81d9f89e9ab269055f9c8b48bbf3d0592b7f5b97
     pristine_git_object: bfced047e696f7f2e4b3f61adcc4db035c439d6e
+  internal/provider/types/billing_address.go:
+    id: f2aa3d3127f1
+    last_write_checksum: sha1:a9369506816881e9b8a6adf3938279a1d5b9e9b1
+    pristine_git_object: a95ce4dc5de3ee5c1b2278a27672097ad77288f4
   internal/provider/types/billing_plan_phase.go:
     id: 0c95c34490cf
     last_write_checksum: sha1:0594ef48864f6067019f2695ee225548132f15e6
@@ -11081,8 +11085,8 @@ trackedFiles:
     pristine_git_object: 135636cfa823a1e54e9d5a628bf5c1241ec3be5b
   internal/sdk/models/shared/billingprofile.go:
     id: 42b729d4520a
-    last_write_checksum: sha1:1e82fb1add581ffa41dadfb748c8f240967f5136
-    pristine_git_object: 864a08d3f145246c77362240a782c433e7211125
+    last_write_checksum: sha1:ba863f2d3e23184f1a591b71010f559bc63f5d32
+    pristine_git_object: 87afde729e5a4cad47250a4608dbcd1ee9139041
   internal/sdk/models/shared/billingratecard.go:
     id: 61d0bd85b63c
     last_write_checksum: sha1:6a21f477bd65bfd98cee1b8ddb4a686efca65764
@@ -11093,16 +11097,16 @@ trackedFiles:
     pristine_git_object: 22e6c310305ce9eaf5a2cbdfafb71c3b428c78db
   internal/sdk/models/shared/billingsubscriptionchange.go:
     id: 529cb34d37df
-    last_write_checksum: sha1:b16e3beede097ac9caff3371f3a4bbf71c96470e
-    pristine_git_object: 328b4edb0cf6cf8a989543d11a964b5451319444
+    last_write_checksum: sha1:7465bc4ce9d3615c25e97e5b9ca63acdeb0efecd
+    pristine_git_object: 478e53cebcd2dda768f7d85ef3271242103c6888
   internal/sdk/models/shared/billingsubscriptionchangeresponse.go:
     id: 7fc03e64c2f0
     last_write_checksum: sha1:8038ebb851973e819394dbc7d75f556da6cdecd4
     pristine_git_object: 6710b6bbccf51c9416c8b89e2d651338d8650389
   internal/sdk/models/shared/billingsubscriptioncreate.go:
     id: 10b826919eca
-    last_write_checksum: sha1:41423dbe137c4b5c9d93f907736be6d2b4e0eb80
-    pristine_git_object: 05af011ef784abe04ee13de776a8366142249352
+    last_write_checksum: sha1:ee0d0e3756769722ec127b4119067cf4d9049bff
+    pristine_git_object: 9c7e08e84d13dca32a63217573538e6fff0eed7b
   internal/sdk/models/shared/billingtaxbehavior.go:
     id: 5b8edded6508
     last_write_checksum: sha1:e2ffc98160601374c00e9c77c467351ce0c21717
@@ -11373,8 +11377,8 @@ trackedFiles:
     pristine_git_object: 2e5d810d1e30a759389dc7f952c8e1a41f66d032
   internal/sdk/models/shared/createbillingprofilerequest.go:
     id: 9948f373d4ff
-    last_write_checksum: sha1:cb742a537c421cabae30c2a0c364a0bf63cc875e
-    pristine_git_object: 5a1d9153c2122dcfdf5300c1866fac06c58eb230
+    last_write_checksum: sha1:04f926183efd0e96d3287233c450a02e23845056
+    pristine_git_object: 52a6150acf70d986adce57a1e3b5d802da224631
   internal/sdk/models/shared/createcatalogservice.go:
     id: e689c238a7b8
     last_write_checksum: sha1:201b0c08be0ef7abf6b239d0489fc50660801418
@@ -12889,8 +12893,8 @@ trackedFiles:
     pristine_git_object: d2cd88d427a0b13c4d1562b925ec69fea19bcee9
   internal/sdk/models/shared/upsertbillingprofilerequest.go:
     id: 9e226e90fbf0
-    last_write_checksum: sha1:6d1c4d9e58b407ffc47519976f56ffb1ac907a15
-    pristine_git_object: 689d9003abb8e4ad2ceeb9efbe3ea06149895bb4
+    last_write_checksum: sha1:3bf1b069d99d8d453a9656de88c68acd3bdff3d2
+    pristine_git_object: 36213d97be423660656048b4d54dfe375c8e8da5
   internal/sdk/models/shared/upsertcustomerrequest.go:
     id: d89e85299784
     last_write_checksum: sha1:040f5c6e8da1ca186751136fe4f822c2ccd2c30a
@@ -28061,10 +28065,10 @@ examples:
   create-billing-profile:
     speakeasy-default-create-billing-profile:
       requestBody:
-        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": true}
+        application/json: {"name": "<value>", "description": "redraw victoriously sans march", "labels": {"env": "test"}, "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "addresses": {"billing_address": {"country": "US"}}}, "workflow": {"collection": null, "invoicing": {"auto_advance": true, "draft_period": "P1D", "progressive_billing": true}, "payment": {"collection_method": "charge_automatically"}, "tax": {"enabled": true, "enforced": false, "default_tax_config": null}}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": true}
       responses:
         "201":
-          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": false}
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "addresses": {"billing_address": {"country": "US"}}}, "workflow": {"collection": null, "invoicing": {"auto_advance": true, "draft_period": "P1D", "progressive_billing": true}, "payment": {"collection_method": "charge_automatically"}, "tax": {"enabled": true, "enforced": false, "default_tax_config": null}}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": false}
         "400":
           application/problem+json: {"status": 690791, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -28078,7 +28082,7 @@ examples:
           id: "01G65Z755AFWAKHE12NY0CQ9FH"
       responses:
         "200":
-          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": false}
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "addresses": {"billing_address": {"country": "US"}}}, "workflow": {"collection": null, "invoicing": {"auto_advance": true, "draft_period": "P1D", "progressive_billing": true}, "payment": {"collection_method": "charge_automatically"}, "tax": {"enabled": true, "enforced": false, "default_tax_config": null}}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": false}
         "400":
           application/problem+json: {"status": 753189, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -28093,10 +28097,10 @@ examples:
         path:
           id: "01G65Z755AFWAKHE12NY0CQ9FH"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "default": true}
+        application/json: {"name": "<value>", "description": null, "labels": {"env": "test"}, "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "addresses": {"billing_address": {"country": "US"}}}, "workflow": {"collection": null, "invoicing": {"auto_advance": true, "draft_period": "P1D", "progressive_billing": true}, "payment": {"collection_method": "charge_automatically"}, "tax": {"enabled": true, "enforced": false, "default_tax_config": null}}, "default": true}
       responses:
         "200":
-          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "tax_id": null, "addresses": null}, "workflow": {"collection": null, "invoicing": null, "payment": {"collection_method": "charge_automatically"}, "tax": null}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": true}
+          application/json: {"id": "01G65Z755AFWAKHE12NY0CQ9FH", "name": "<value>", "description": null, "labels": {"env": "test"}, "created_at": "2023-01-01T01:01:01.001Z", "updated_at": "2023-01-01T01:01:01.001Z", "deleted_at": "2023-01-01T01:01:01.001Z", "supplier": {"key": "019ae40f-4258-7f15-9491-842f42a7d6ac", "name": null, "addresses": {"billing_address": {"country": "US"}}}, "workflow": {"collection": null, "invoicing": {"auto_advance": true, "draft_period": "P1D", "progressive_billing": true}, "payment": {"collection_method": "charge_automatically"}, "tax": {"enabled": true, "enforced": false, "default_tax_config": null}}, "apps": {"tax": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "invoicing": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}, "payment": {"id": "01G65Z755AFWAKHE12NY0CQ9FH"}}, "default": true}
         "400":
           application/problem+json: {"status": 352497, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

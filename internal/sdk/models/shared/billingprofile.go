@@ -41,17 +41,17 @@ type BillingProfileBillingAddress struct {
 	// alpha-2 format.
 	Country *string `default:"null" json:"country"`
 	// Postal code.
-	PostalCode *string `default:"null" json:"postal_code"`
+	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
-	State *string `default:"null" json:"state"`
+	State *string `json:"state,omitempty"`
 	// City.
-	City *string `default:"null" json:"city"`
+	City *string `json:"city,omitempty"`
 	// First line of the address.
-	Line1 *string `default:"null" json:"line1"`
+	Line1 *string `json:"line1,omitempty"`
 	// Second line of the address.
-	Line2 *string `default:"null" json:"line2"`
+	Line2 *string `json:"line2,omitempty"`
 	// Phone number.
-	PhoneNumber *string `default:"null" json:"phone_number"`
+	PhoneNumber *string `json:"phone_number,omitempty"`
 }
 
 func (b BillingProfileBillingAddress) MarshalJSON() ([]byte, error) {
@@ -144,14 +144,14 @@ type Supplier struct {
 	// Unique identifier for the party.
 	ID *string `json:"id,omitempty"`
 	// An optional unique key of the party.
-	Key *string `default:"null" json:"key"`
+	Key *string `json:"key,omitempty"`
 	// Legal name or representation of the party.
 	Name *string `default:"null" json:"name"`
 	// The entity's legal identification used for tax purposes. They may have other
 	// numbers, but we're only interested in those valid for tax purposes.
-	TaxID *BillingProfileTaxID `json:"tax_id"`
+	TaxID *BillingProfileTaxID `json:"tax_id,omitempty"`
 	// Address for where information should be sent if needed.
-	Addresses *BillingProfileAddresses `json:"addresses"`
+	Addresses BillingProfileAddresses `json:"addresses"`
 }
 
 func (s Supplier) MarshalJSON() ([]byte, error) {
@@ -159,7 +159,7 @@ func (s Supplier) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Supplier) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"addresses"}); err != nil {
 		return err
 	}
 	return nil
@@ -193,9 +193,9 @@ func (s *Supplier) GetTaxID() *BillingProfileTaxID {
 	return s.TaxID
 }
 
-func (s *Supplier) GetAddresses() *BillingProfileAddresses {
+func (s *Supplier) GetAddresses() BillingProfileAddresses {
 	if s == nil {
-		return nil
+		return BillingProfileAddresses{}
 	}
 	return s.Addresses
 }
@@ -835,11 +835,11 @@ type BillingProfileWorkflow struct {
 	// The collection settings for this workflow
 	Collection *BillingProfileWorkflowCollectionSettings `json:"collection"`
 	// The invoicing settings for this workflow
-	Invoicing *BillingProfileWorkflowInvoiceSettings `json:"invoicing"`
+	Invoicing *BillingProfileWorkflowInvoiceSettings `json:"invoicing,omitempty"`
 	// The payment settings for this workflow
 	Payment *BillingProfilePayment `json:"payment,omitempty"`
 	// The tax settings for this workflow
-	Tax *BillingProfileWorkflowTaxSettings `json:"tax"`
+	Tax *BillingProfileWorkflowTaxSettings `json:"tax,omitempty"`
 }
 
 func (b BillingProfileWorkflow) MarshalJSON() ([]byte, error) {
