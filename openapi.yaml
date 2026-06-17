@@ -34454,12 +34454,10 @@ components:
               description: An optional unique key of the party.
               type: string
               example: 019ae40f-4258-7f15-9491-842f42a7d6ac
-              default: null
               maxLength: 256
               minLength: 1
-              nullable: true
+              nullable: false
               title: External Resource Key
-              x-speakeasy-param-computed: false
             name:
               description: Legal name or representation of the party.
               type: string
@@ -35065,12 +35063,10 @@ components:
                 ID will be used.
               type: string
               example: 019ae40f-4258-7f15-9491-842f42a7d6ac
-              default: null
               maxLength: 256
               minLength: 1
-              nullable: true
+              nullable: false
               title: Customer Key
-              x-speakeasy-param-computed: false
         plan:
           description: The plan reference of the subscription.
           type: object
@@ -35358,12 +35354,10 @@ components:
                 ID will be used.
               type: string
               example: 019ae40f-4258-7f15-9491-842f42a7d6ac
-              default: null
               maxLength: 256
               minLength: 1
-              nullable: true
+              nullable: false
               title: Customer Key
-              x-speakeasy-param-computed: false
         plan:
           description: The plan reference of the subscription.
           type: object
@@ -35547,10 +35541,7 @@ components:
 
             Maximum 1024 characters.
           type: string
-          default: null
           maxLength: 1024
-          nullable: true
-          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
         supplier:
@@ -35569,12 +35560,10 @@ components:
               description: An optional unique key of the party.
               type: string
               example: 019ae40f-4258-7f15-9491-842f42a7d6ac
-              default: null
               maxLength: 256
               minLength: 1
-              nullable: true
+              nullable: false
               title: External Resource Key
-              x-speakeasy-param-computed: false
             name:
               description: Legal name or representation of the party.
               type: string
@@ -35901,6 +35890,7 @@ components:
       additionalProperties: false
       required:
         - name
+        - description
         - supplier
         - workflow
         - apps
@@ -36205,6 +36195,7 @@ components:
       example: 019ae40f-4258-7f15-9491-842f42a7d6ac
       maxLength: 256
       minLength: 1
+      nullable: false
       title: External Resource Key
     Meter:
       description: A meter is a configuration that defines how to match and aggregate events.
@@ -36441,12 +36432,10 @@ components:
               description: An optional unique key of the party.
               type: string
               example: 019ae40f-4258-7f15-9491-842f42a7d6ac
-              default: null
               maxLength: 256
               minLength: 1
-              nullable: true
+              nullable: false
               title: External Resource Key
-              x-speakeasy-param-computed: false
             name:
               description: Legal name or representation of the party.
               type: string
