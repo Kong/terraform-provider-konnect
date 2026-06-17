@@ -73,11 +73,14 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 <a id="nestedatt--billing_address"></a>
 ### Nested Schema for `billing_address`
 
+Required:
+
+- `country` (String) Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+alpha-2 format.
+
 Optional:
 
 - `city` (String) City.
-- `country` (String) Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
-alpha-2 format.
 - `line1` (String) First line of the address.
 - `line2` (String) Second line of the address.
 - `phone_number` (String) Phone number.

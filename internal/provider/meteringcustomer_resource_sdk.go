@@ -19,9 +19,9 @@ func (r *MeteringCustomerResourceModel) RefreshFromSharedBillingCustomer(ctx con
 		if resp.BillingAddress == nil {
 			r.BillingAddress = nil
 		} else {
-			r.BillingAddress = &tfTypes.BillingAddress{}
+			r.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
 			r.BillingAddress.City = types.StringPointerValue(resp.BillingAddress.City)
-			r.BillingAddress.Country = types.StringPointerValue(resp.BillingAddress.Country)
+			r.BillingAddress.Country = types.StringValue(resp.BillingAddress.Country)
 			r.BillingAddress.Line1 = types.StringPointerValue(resp.BillingAddress.Line1)
 			r.BillingAddress.Line2 = types.StringPointerValue(resp.BillingAddress.Line2)
 			r.BillingAddress.PhoneNumber = types.StringPointerValue(resp.BillingAddress.PhoneNumber)
@@ -153,12 +153,9 @@ func (r *MeteringCustomerResourceModel) ToSharedCreateCustomerRequest(ctx contex
 	}
 	var billingAddress *shared.BillingAddress
 	if r.BillingAddress != nil {
-		country := new(string)
-		if !r.BillingAddress.Country.IsUnknown() && !r.BillingAddress.Country.IsNull() {
-			*country = r.BillingAddress.Country.ValueString()
-		} else {
-			country = nil
-		}
+		var country string
+		country = r.BillingAddress.Country.ValueString()
+
 		postalCode := new(string)
 		if !r.BillingAddress.PostalCode.IsUnknown() && !r.BillingAddress.PostalCode.IsNull() {
 			*postalCode = r.BillingAddress.PostalCode.ValueString()
@@ -265,12 +262,9 @@ func (r *MeteringCustomerResourceModel) ToSharedUpsertCustomerRequest(ctx contex
 	}
 	var billingAddress *shared.UpsertCustomerRequestBillingAddress
 	if r.BillingAddress != nil {
-		country := new(string)
-		if !r.BillingAddress.Country.IsUnknown() && !r.BillingAddress.Country.IsNull() {
-			*country = r.BillingAddress.Country.ValueString()
-		} else {
-			country = nil
-		}
+		var country string
+		country = r.BillingAddress.Country.ValueString()
+
 		postalCode := new(string)
 		if !r.BillingAddress.PostalCode.IsUnknown() && !r.BillingAddress.PostalCode.IsNull() {
 			*postalCode = r.BillingAddress.PostalCode.ValueString()

@@ -181,11 +181,14 @@ Required:
 <a id="nestedatt--supplier--addresses--billing_address"></a>
 ### Nested Schema for `supplier.addresses.billing_address`
 
+Required:
+
+- `country` (String) Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+alpha-2 format.
+
 Optional:
 
 - `city` (String) City.
-- `country` (String) Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
-alpha-2 format.
 - `line1` (String) First line of the address.
 - `line2` (String) Second line of the address.
 - `phone_number` (String) Phone number.

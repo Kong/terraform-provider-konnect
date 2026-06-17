@@ -18491,7 +18491,7 @@ paths:
         - Meters
   /v3/openmeter/plans:
     post:
-      x-speakeasy-entity-operation: MeteringPlan#create
+      x-speakeasy-entity-operation: MeteringPlan#create#1
       operationId: create-plan
       summary: Create plan
       description: |-
@@ -18618,6 +18618,40 @@ paths:
       responses:
         '204':
           description: Deleted response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Product Catalog
+  '/v3/openmeter/plans/{planId}/publish':
+    post:
+      x-speakeasy-entity-operation: MeteringPlan#create#2
+      operationId: publish-plan
+      summary: Publish plan version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Publish a plan version.
+      parameters:
+        - name: planId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '200':
+          description: Plan updated response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlan'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -33826,6 +33860,7 @@ components:
           description: ULID (Universally Unique Lexicographically Sortable Identifier).
           type: string
           example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
           pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
           readOnly: true
           title: ULID
@@ -33855,6 +33890,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -33863,6 +33899,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -33871,6 +33908,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -33927,55 +33965,42 @@ components:
                 alpha-2 format.
               type: string
               example: US
-              default: null
               maxLength: 2
               minLength: 2
-              nullable: true
               pattern: '^[A-Z]{2}$'
               title: Country
-              x-speakeasy-param-computed: false
             postal_code:
               description: Postal code.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Postal Code
-              x-speakeasy-param-computed: false
             state:
               description: State or province.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: State
-              x-speakeasy-param-computed: false
             city:
               description: City.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: City
-              x-speakeasy-param-computed: false
             line1:
               description: First line of the address.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Line 1
-              x-speakeasy-param-computed: false
             line2:
               description: Second line of the address.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Line 2
-              x-speakeasy-param-computed: false
             phone_number:
               description: Phone number.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Phone Number
-              x-speakeasy-param-computed: false
+          required:
+            - country
           title: Billing Address
           x-speakeasy-param-computed: false
       additionalProperties: false
@@ -33993,6 +34018,7 @@ components:
           description: ULID (Universally Unique Lexicographically Sortable Identifier).
           type: string
           example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
           pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
           readOnly: true
           title: ULID
@@ -34022,6 +34048,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34030,6 +34057,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34038,6 +34066,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34050,6 +34079,7 @@ components:
           example: resource_key
           maxLength: 64
           minLength: 1
+          nullable: false
           pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
           title: Key
         version:
@@ -34075,12 +34105,14 @@ components:
           type: string
           format: ISO8601
           example: P1Y
+          nullable: false
           pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
           title: Billing cadence
         pro_rating_enabled:
           description: Whether pro-rating is enabled for this plan.
           type: boolean
           default: true
+          nullable: false
           title: Pro-rating enabled
         effective_from:
           description: |-
@@ -34089,6 +34121,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: Effective start date
           x-speakeasy-param-suppress-computed-diff: true
@@ -34099,6 +34132,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: Effective end date
           x-speakeasy-param-suppress-computed-diff: true
@@ -34172,10 +34206,8 @@ components:
 
             Maximum 1024 characters.
           type: string
-          default: null
           maxLength: 1024
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         labels:
           $ref: '#/components/schemas/Labels'
         key:
@@ -34187,11 +34219,9 @@ components:
           type: string
           format: ISO8601
           example: P1Y
-          default: null
-          nullable: true
+          nullable: false
           pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
           title: Duration
-          x-speakeasy-param-computed: false
         rate_cards:
           description: The rate cards of the plan.
           type: array
@@ -34216,6 +34246,7 @@ components:
         amount:
           description: The amount of the flat price.
           type: string
+          nullable: false
           pattern: '^\-?[0-9]+(\.[0-9]+)?$'
           title: Amount
       additionalProperties: false
@@ -34277,11 +34308,9 @@ components:
             Up to and including this quantity will be contained in the tier. If undefined,
             the tier is open-ended (the last tier).
           type: string
-          default: null
-          nullable: true
+          nullable: false
           pattern: '^\-?[0-9]+(\.[0-9]+)?$'
           title: Up to quantity
-          x-speakeasy-param-computed: false
         flat_price:
           description: The flat price component of the tier. Charged once when the tier is entered.
           type: object
@@ -34298,6 +34327,7 @@ components:
             amount:
               description: The amount of the flat price.
               type: string
+              nullable: false
               pattern: '^\-?[0-9]+(\.[0-9]+)?$'
               title: Amount
           required:
@@ -34321,6 +34351,7 @@ components:
             amount:
               description: The amount of the unit price.
               type: string
+              nullable: false
               pattern: '^\-?[0-9]+(\.[0-9]+)?$'
               title: Amount
           required:
@@ -34346,6 +34377,7 @@ components:
         amount:
           description: The amount of the unit price.
           type: string
+          nullable: false
           pattern: '^\-?[0-9]+(\.[0-9]+)?$'
           title: Amount
       additionalProperties: false
@@ -34390,6 +34422,7 @@ components:
           description: ULID (Universally Unique Lexicographically Sortable Identifier).
           type: string
           example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
           pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
           readOnly: true
           title: ULID
@@ -34419,6 +34452,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34427,6 +34461,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34435,6 +34470,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34497,13 +34533,10 @@ components:
                         alpha-2 format.
                       type: string
                       example: US
-                      default: null
                       maxLength: 2
                       minLength: 2
-                      nullable: true
                       pattern: '^[A-Z]{2}$'
                       title: Country
-                      x-speakeasy-param-computed: false
                     postal_code:
                       description: Postal code.
                       type: string
@@ -34534,6 +34567,8 @@ components:
                       type: string
                       nullable: false
                       title: Phone Number
+                  required:
+                    - country
               required:
                 - billing_address
           required:
@@ -34687,12 +34722,10 @@ components:
                       description: Tax code ID.
                       type: string
                       example: 01G65Z755AFWAKHE12NY0CQ9FH
-                      default: null
                       deprecated: true
-                      nullable: true
+                      nullable: false
                       pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                       title: Tax code ID
-                      x-speakeasy-param-computed: false
                     tax_code:
                       description: |-
                         Tax code reference.
@@ -34728,6 +34761,7 @@ components:
                   description: The ID of the app.
                   type: string
                   example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  nullable: false
                   pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                   title: ULID
               required:
@@ -34742,6 +34776,7 @@ components:
                   description: The ID of the app.
                   type: string
                   example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  nullable: false
                   pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                   title: ULID
               required:
@@ -34756,6 +34791,7 @@ components:
                   description: The ID of the app.
                   type: string
                   example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  nullable: false
                   pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                   title: ULID
               required:
@@ -34795,10 +34831,8 @@ components:
 
             Maximum 1024 characters.
           type: string
-          default: null
           maxLength: 1024
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         labels:
           $ref: '#/components/schemas/Labels'
         key:
@@ -34806,16 +34840,14 @@ components:
         feature:
           description: The feature associated with the rate card.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             id:
               $ref: '#/components/schemas/ULID'
           required:
             - id
           title: Feature reference
-          x-speakeasy-param-computed: false
         billing_cadence:
           description: |-
             The billing cadence of the rate card. When null, the charge is one-time
@@ -34823,11 +34855,9 @@ components:
           type: string
           format: ISO8601
           example: P1Y
-          default: null
-          nullable: true
+          nullable: false
           pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
           title: Billing cadence
-          x-speakeasy-param-computed: false
         price:
           description: The price of the rate card.
           type: object
@@ -34855,6 +34885,7 @@ components:
           enum:
             - in_advance
             - in_arrears
+          nullable: false
           title: Payment term
           x-speakeasy-unknown-values: allow
         commitments:
@@ -34862,34 +34893,27 @@ components:
             Spend commitments for this rate card. Only applicable to usage-based prices
             (unit, graduated, volume).
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             minimum_amount:
               description: The customer is committed to spend at least the amount.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               pattern: '^\-?[0-9]+(\.[0-9]+)?$'
               title: Minimum amount
-              x-speakeasy-param-computed: false
             maximum_amount:
               description: The customer is limited to spend at most the amount.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               pattern: '^\-?[0-9]+(\.[0-9]+)?$'
               title: Maximum amount
-              x-speakeasy-param-computed: false
           title: Commitments
-          x-speakeasy-param-computed: false
         discounts:
           description: The discounts of the rate card.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             percentage:
               description: Percentage discount applied to the price (0–100).
@@ -34905,18 +34929,14 @@ components:
                 usage-based lines (not flat fees). Usage is treated as zero until this amount is
                 exhausted.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               pattern: '^\-?[0-9]+(\.[0-9]+)?$'
-              x-speakeasy-param-computed: false
           title: Discounts
-          x-speakeasy-param-computed: false
         tax_config:
           description: The tax config of the rate card.
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             behavior:
               $ref: '#/components/schemas/BillingTaxBehavior'
@@ -34925,7 +34945,6 @@ components:
           required:
             - code
           title: Tax config
-          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - name
@@ -34939,6 +34958,7 @@ components:
           description: ULID (Universally Unique Lexicographically Sortable Identifier).
           type: string
           example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
           pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
           readOnly: true
           title: ULID
@@ -34950,6 +34970,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34958,6 +34979,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34966,6 +34988,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -34973,6 +34996,7 @@ components:
           description: The customer ID of the subscription.
           type: string
           example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
           pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
           readOnly: true
           title: Customer ID
@@ -34981,6 +35005,7 @@ components:
           description: The plan ID of the subscription. Set if subscription is created from a plan.
           type: string
           example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
           pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
           readOnly: true
           title: Plan ID
@@ -34997,6 +35022,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: Billing anchor
           x-speakeasy-param-suppress-computed-diff: true
@@ -35039,6 +35065,7 @@ components:
                 ID will be used.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               title: Customer ID
             key:
@@ -35066,6 +35093,7 @@ components:
                 both are provided, the ID will be used.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               title: Plan ID
             key:
@@ -35077,13 +35105,11 @@ components:
                 both are provided, the ID will be used.
               type: string
               example: resource_key
-              default: null
               maxLength: 64
               minLength: 1
-              nullable: true
+              nullable: false
               pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
               title: Plan Key
-              x-speakeasy-param-computed: false
             version:
               description: |-
                 The plan version of the subscription, if any. If not provided, the latest
@@ -35108,10 +35134,8 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
-          default: null
-          nullable: true
+          nullable: false
           title: Billing anchor
-          x-speakeasy-param-computed: false
         timing:
           description: |-
             Subscription edit timing. Use `immediate` to apply changes right away, or
@@ -35138,6 +35162,7 @@ components:
               description: ULID (Universally Unique Lexicographically Sortable Identifier).
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               readOnly: true
               title: ULID
@@ -35149,6 +35174,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: RFC3339 Date-Time
               x-speakeasy-param-suppress-computed-diff: true
@@ -35157,6 +35183,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: RFC3339 Date-Time
               x-speakeasy-param-suppress-computed-diff: true
@@ -35165,6 +35192,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: RFC3339 Date-Time
               x-speakeasy-param-suppress-computed-diff: true
@@ -35172,6 +35200,7 @@ components:
               description: The customer ID of the subscription.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               readOnly: true
               title: Customer ID
@@ -35180,6 +35209,7 @@ components:
               description: The plan ID of the subscription. Set if subscription is created from a plan.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               readOnly: true
               title: Plan ID
@@ -35196,6 +35226,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: Billing anchor
               x-speakeasy-param-suppress-computed-diff: true
@@ -35227,6 +35258,7 @@ components:
               description: ULID (Universally Unique Lexicographically Sortable Identifier).
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               readOnly: true
               title: ULID
@@ -35238,6 +35270,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: RFC3339 Date-Time
               x-speakeasy-param-suppress-computed-diff: true
@@ -35246,6 +35279,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: RFC3339 Date-Time
               x-speakeasy-param-suppress-computed-diff: true
@@ -35254,6 +35288,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: RFC3339 Date-Time
               x-speakeasy-param-suppress-computed-diff: true
@@ -35261,6 +35296,7 @@ components:
               description: The customer ID of the subscription.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               readOnly: true
               title: Customer ID
@@ -35269,6 +35305,7 @@ components:
               description: The plan ID of the subscription. Set if subscription is created from a plan.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               readOnly: true
               title: Plan ID
@@ -35285,6 +35322,7 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               readOnly: true
               title: Billing anchor
               x-speakeasy-param-suppress-computed-diff: true
@@ -35330,6 +35368,7 @@ components:
                 ID will be used.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               title: Customer ID
             key:
@@ -35357,6 +35396,7 @@ components:
                 both are provided, the ID will be used.
               type: string
               example: 01G65Z755AFWAKHE12NY0CQ9FH
+              nullable: false
               pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
               title: Plan ID
             key:
@@ -35368,13 +35408,11 @@ components:
                 both are provided, the ID will be used.
               type: string
               example: resource_key
-              default: null
               maxLength: 64
               minLength: 1
-              nullable: true
+              nullable: false
               pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
               title: Plan Key
-              x-speakeasy-param-computed: false
             version:
               description: |-
                 The plan version of the subscription, if any. If not provided, the latest
@@ -35399,10 +35437,8 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
-          default: null
-          nullable: true
+          nullable: false
           title: Billing anchor
-          x-speakeasy-param-computed: false
         timing:
           type: string
           default: null
@@ -35444,12 +35480,14 @@ components:
               type: string
               format: date-time
               example: '2023-01-01T01:01:01.001Z'
+              nullable: false
               title: Anchor time
             interval:
               description: The interval duration in ISO 8601 format.
               type: string
               format: ISO8601
               example: P1M
+              nullable: false
               pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
               title: Interval in ISO 8601 duration format
           required:
@@ -35591,13 +35629,10 @@ components:
                         alpha-2 format.
                       type: string
                       example: US
-                      default: null
                       maxLength: 2
                       minLength: 2
-                      nullable: true
                       pattern: '^[A-Z]{2}$'
                       title: Country
-                      x-speakeasy-param-computed: false
                     postal_code:
                       description: Postal code.
                       type: string
@@ -35628,6 +35663,8 @@ components:
                       type: string
                       nullable: false
                       title: Phone Number
+                  required:
+                    - country
               required:
                 - billing_address
           required:
@@ -35781,12 +35818,10 @@ components:
                       description: Tax code ID.
                       type: string
                       example: 01G65Z755AFWAKHE12NY0CQ9FH
-                      default: null
                       deprecated: true
-                      nullable: true
+                      nullable: false
                       pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                       title: Tax code ID
-                      x-speakeasy-param-computed: false
                     tax_code:
                       description: |-
                         Tax code reference.
@@ -35822,6 +35857,7 @@ components:
                   description: The ID of the app.
                   type: string
                   example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  nullable: false
                   pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                   title: ULID
               required:
@@ -35836,6 +35872,7 @@ components:
                   description: The ID of the app.
                   type: string
                   example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  nullable: false
                   pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                   title: ULID
               required:
@@ -35850,6 +35887,7 @@ components:
                   description: The ID of the app.
                   type: string
                   example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  nullable: false
                   pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                   title: ULID
               required:
@@ -35946,55 +35984,42 @@ components:
                 alpha-2 format.
               type: string
               example: US
-              default: null
               maxLength: 2
               minLength: 2
-              nullable: true
               pattern: '^[A-Z]{2}$'
               title: Country
-              x-speakeasy-param-computed: false
             postal_code:
               description: Postal code.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Postal Code
-              x-speakeasy-param-computed: false
             state:
               description: State or province.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: State
-              x-speakeasy-param-computed: false
             city:
               description: City.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: City
-              x-speakeasy-param-computed: false
             line1:
               description: First line of the address.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Line 1
-              x-speakeasy-param-computed: false
             line2:
               description: Second line of the address.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Line 2
-              x-speakeasy-param-computed: false
             phone_number:
               description: Phone number.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Phone Number
-              x-speakeasy-param-computed: false
+          required:
+            - country
           title: Billing Address
           x-speakeasy-param-computed: false
       additionalProperties: false
@@ -36013,16 +36038,15 @@ components:
           type: string
           maxLength: 256
           minLength: 1
+          nullable: false
         description:
           description: |-
             Optional description of the resource.
 
             Maximum 1024 characters.
           type: string
-          default: null
           maxLength: 1024
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         labels:
           $ref: '#/components/schemas/Labels'
         key:
@@ -36038,12 +36062,14 @@ components:
             - min
             - max
             - latest
+          nullable: false
           x-speakeasy-unknown-values: allow
         event_type:
           description: The event type to include in the aggregation.
           type: string
           example: prompt
           minLength: 1
+          nullable: false
         events_from:
           description: |-
             The date since the meter should include events. Useful to skip old events. If
@@ -36051,10 +36077,8 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
-          default: null
-          nullable: true
+          nullable: false
           title: RFC3339 Date-Time
-          x-speakeasy-param-computed: false
         value_property:
           description: |-
             JSONPath expression to extract the value from the ingested event's data
@@ -36067,10 +36091,8 @@ components:
             aggregation the value_property is ignored.
           type: string
           example: $.tokens
-          default: null
           minLength: 1
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         dimensions:
           description: |-
             Named JSONPath expressions to extract the group by values from the event data.
@@ -36079,11 +36101,9 @@ components:
           type: object
           example:
             type: $.type
-          default: null
           additionalProperties:
             type: string
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
       additionalProperties: false
       required:
         - name
@@ -36123,6 +36143,7 @@ components:
           example: resource_key
           maxLength: 64
           minLength: 1
+          nullable: false
           pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
           title: Key
         currency:
@@ -36138,6 +36159,7 @@ components:
           type: string
           format: ISO8601
           example: P1Y
+          nullable: false
           pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
           title: Billing cadence
         pro_rating_enabled:
@@ -36179,6 +36201,7 @@ components:
           description: ULID (Universally Unique Lexicographically Sortable Identifier).
           type: string
           example: 01G65Z755AFWAKHE12NY0CQ9FH
+          nullable: false
           pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
           readOnly: true
           title: ULID
@@ -36208,6 +36231,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -36216,6 +36240,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -36224,6 +36249,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
+          nullable: false
           readOnly: true
           title: RFC3339 Date-Time
           x-speakeasy-param-suppress-computed-diff: true
@@ -36240,6 +36266,7 @@ components:
             - min
             - max
             - latest
+          nullable: false
           x-speakeasy-unknown-values: allow
         event_type:
           description: The event type to include in the aggregation.
@@ -36253,10 +36280,8 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T01:01:01.001Z'
-          default: null
-          nullable: true
+          nullable: false
           title: RFC3339 Date-Time
-          x-speakeasy-param-computed: false
         value_property:
           description: |-
             JSONPath expression to extract the value from the ingested event's data
@@ -36349,6 +36374,7 @@ components:
       example: resource_key
       maxLength: 64
       minLength: 1
+      nullable: false
       pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
       title: Resource Key
     TaxCodeReferenceItem:
@@ -36364,6 +36390,7 @@ components:
       description: ULID (Universally Unique Lexicographically Sortable Identifier).
       type: string
       example: 01G65Z755AFWAKHE12NY0CQ9FH
+      nullable: false
       pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
       title: ULID
     UpsertBillingProfileRequest:
@@ -36449,13 +36476,10 @@ components:
                         alpha-2 format.
                       type: string
                       example: US
-                      default: null
                       maxLength: 2
                       minLength: 2
-                      nullable: true
                       pattern: '^[A-Z]{2}$'
                       title: Country
-                      x-speakeasy-param-computed: false
                     postal_code:
                       description: Postal code.
                       type: string
@@ -36486,6 +36510,8 @@ components:
                       type: string
                       nullable: false
                       title: Phone Number
+                  required:
+                    - country
               required:
                 - billing_address
           required:
@@ -36639,12 +36665,10 @@ components:
                       description: Tax code ID.
                       type: string
                       example: 01G65Z755AFWAKHE12NY0CQ9FH
-                      default: null
                       deprecated: true
-                      nullable: true
+                      nullable: false
                       pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
                       title: Tax code ID
-                      x-speakeasy-param-computed: false
                     tax_code:
                       description: |-
                         Tax code reference.
@@ -36749,55 +36773,42 @@ components:
                 alpha-2 format.
               type: string
               example: US
-              default: null
               maxLength: 2
               minLength: 2
-              nullable: true
               pattern: '^[A-Z]{2}$'
               title: Country
-              x-speakeasy-param-computed: false
             postal_code:
               description: Postal code.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Postal Code
-              x-speakeasy-param-computed: false
             state:
               description: State or province.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: State
-              x-speakeasy-param-computed: false
             city:
               description: City.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: City
-              x-speakeasy-param-computed: false
             line1:
               description: First line of the address.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Line 1
-              x-speakeasy-param-computed: false
             line2:
               description: Second line of the address.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Line 2
-              x-speakeasy-param-computed: false
             phone_number:
               description: Phone number.
               type: string
-              default: null
-              nullable: true
+              nullable: false
               title: Phone Number
-              x-speakeasy-param-computed: false
+          required:
+            - country
           title: Billing Address
           x-speakeasy-param-computed: false
       additionalProperties: false

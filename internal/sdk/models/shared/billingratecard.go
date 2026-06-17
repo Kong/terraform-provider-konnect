@@ -228,9 +228,9 @@ func (e *PaymentTerm) IsExact() bool {
 // (unit, graduated, volume).
 type Commitments struct {
 	// The customer is committed to spend at least the amount.
-	MinimumAmount *string `default:"null" json:"minimum_amount"`
+	MinimumAmount *string `json:"minimum_amount,omitempty"`
 	// The customer is limited to spend at most the amount.
-	MaximumAmount *string `default:"null" json:"maximum_amount"`
+	MaximumAmount *string `json:"maximum_amount,omitempty"`
 }
 
 func (c Commitments) MarshalJSON() ([]byte, error) {
@@ -265,7 +265,7 @@ type Discounts struct {
 	// Number of usage units granted free before billing starts. Only applies to
 	// usage-based lines (not flat fees). Usage is treated as zero until this amount is
 	// exhausted.
-	Usage *string `default:"null" json:"usage"`
+	Usage *string `json:"usage,omitempty"`
 }
 
 func (d Discounts) MarshalJSON() ([]byte, error) {
@@ -338,7 +338,7 @@ type BillingRateCard struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -347,10 +347,10 @@ type BillingRateCard struct {
 	// A key is a unique string that is used to identify a resource.
 	Key string `json:"key"`
 	// The feature associated with the rate card.
-	Feature *FeatureReference `json:"feature"`
+	Feature *FeatureReference `json:"feature,omitempty"`
 	// The billing cadence of the rate card. When null, the charge is one-time
 	// (non-recurring). Only valid for flat prices.
-	BillingCadence *string `default:"null" json:"billing_cadence"`
+	BillingCadence *string `json:"billing_cadence,omitempty"`
 	// The price of the rate card.
 	Price Price `json:"price"`
 	// The payment term of the rate card. In advance payment term can only be used for
@@ -358,11 +358,11 @@ type BillingRateCard struct {
 	PaymentTerm *PaymentTerm `default:"in_arrears" json:"payment_term"`
 	// Spend commitments for this rate card. Only applicable to usage-based prices
 	// (unit, graduated, volume).
-	Commitments *Commitments `json:"commitments"`
+	Commitments *Commitments `json:"commitments,omitempty"`
 	// The discounts of the rate card.
-	Discounts *Discounts `json:"discounts"`
+	Discounts *Discounts `json:"discounts,omitempty"`
 	// The tax config of the rate card.
-	TaxConfig *TaxConfig `json:"tax_config"`
+	TaxConfig *TaxConfig `json:"tax_config,omitempty"`
 }
 
 func (b BillingRateCard) MarshalJSON() ([]byte, error) {

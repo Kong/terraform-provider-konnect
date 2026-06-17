@@ -20,7 +20,7 @@ func (r *MeteringMeterResourceModel) RefreshFromSharedMeter(ctx context.Context,
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
-		if resp.Dimensions != nil {
+		if len(resp.Dimensions) > 0 {
 			r.Dimensions = make(map[string]types.String, len(resp.Dimensions))
 			for key, value := range resp.Dimensions {
 				r.Dimensions[key] = types.StringValue(value)
@@ -111,15 +111,12 @@ func (r *MeteringMeterResourceModel) ToSharedCreateMeterRequest(ctx context.Cont
 	} else {
 		valueProperty = nil
 	}
-	var dimensions map[string]string
-	if r.Dimensions != nil {
-		dimensions = make(map[string]string)
-		for dimensionsKey := range r.Dimensions {
-			var dimensionsInst string
-			dimensionsInst = r.Dimensions[dimensionsKey].ValueString()
+	dimensions := make(map[string]string)
+	for dimensionsKey := range r.Dimensions {
+		var dimensionsInst string
+		dimensionsInst = r.Dimensions[dimensionsKey].ValueString()
 
-			dimensions[dimensionsKey] = dimensionsInst
-		}
+		dimensions[dimensionsKey] = dimensionsInst
 	}
 	out := shared.CreateMeterRequest{
 		Name:          name,

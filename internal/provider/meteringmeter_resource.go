@@ -119,9 +119,11 @@ func (r *MeteringMeterResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"events_from": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				MarkdownDescription: `The date since the meter should include events. Useful to skip old events. If` + "\n" +
 					`not specified, all historical events are included.` + "\n" +

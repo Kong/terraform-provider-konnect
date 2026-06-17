@@ -39,7 +39,7 @@ func (r *MeteringBillingProfileDataSourceModel) RefreshFromSharedBillingProfile(
 		r.Supplier.Addresses = &tfTypes.Addresses{}
 		r.Supplier.Addresses.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
 		r.Supplier.Addresses.BillingAddress.City = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.City)
-		r.Supplier.Addresses.BillingAddress.Country = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Country)
+		r.Supplier.Addresses.BillingAddress.Country = types.StringValue(resp.Supplier.Addresses.BillingAddress.Country)
 		r.Supplier.Addresses.BillingAddress.Line1 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line1)
 		r.Supplier.Addresses.BillingAddress.Line2 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line2)
 		r.Supplier.Addresses.BillingAddress.PhoneNumber = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PhoneNumber)

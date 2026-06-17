@@ -231,6 +231,19 @@ func (r *MeteringPlanResourceModel) ToOperationsGetPlanRequest(ctx context.Conte
 	return &out, diags
 }
 
+func (r *MeteringPlanResourceModel) ToOperationsPublishPlanRequest(ctx context.Context) (*operations.PublishPlanRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var planID string
+	planID = r.ID.ValueString()
+
+	out := operations.PublishPlanRequest{
+		PlanID: planID,
+	}
+
+	return &out, diags
+}
+
 func (r *MeteringPlanResourceModel) ToOperationsUpdatePlanRequest(ctx context.Context) (*operations.UpdatePlanRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

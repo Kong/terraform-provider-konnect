@@ -44,7 +44,7 @@ type CreateMeterRequest struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -58,7 +58,7 @@ type CreateMeterRequest struct {
 	EventType string `json:"event_type"`
 	// The date since the meter should include events. Useful to skip old events. If
 	// not specified, all historical events are included.
-	EventsFrom *time.Time `default:"null" json:"events_from"`
+	EventsFrom *time.Time `json:"events_from,omitempty"`
 	// JSONPath expression to extract the value from the ingested event's data
 	// property.
 	//
@@ -67,7 +67,7 @@ type CreateMeterRequest struct {
 	//
 	// For unique_count aggregation, the ingested value must be a string. For count
 	// aggregation the value_property is ignored.
-	ValueProperty *string `default:"null" json:"value_property"`
+	ValueProperty *string `json:"value_property,omitempty"`
 	// Named JSONPath expressions to extract the group by values from the event data.
 	//
 	// Keys must be unique and consist only alphanumeric and underscore characters.

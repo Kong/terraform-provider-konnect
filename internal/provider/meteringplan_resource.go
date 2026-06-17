@@ -188,6 +188,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					Attributes: map[string]schema.Attribute{
 						"description": schema.StringAttribute{
+							Computed: true,
 							Optional: true,
 							MarkdownDescription: `Optional description of the resource.` + "\n" +
 								`` + "\n" +
@@ -197,6 +198,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 							},
 						},
 						"duration": schema.StringAttribute{
+							Computed: true,
 							Optional: true,
 							MarkdownDescription: `The duration of the phase. When not specified, the phase runs indefinitely. Only` + "\n" +
 								`the last phase may omit the duration.`,
@@ -243,6 +245,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 								},
 								Attributes: map[string]schema.Attribute{
 									"billing_cadence": schema.StringAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `The billing cadence of the rate card. When null, the charge is one-time` + "\n" +
 											`(non-recurring). Only valid for flat prices.`,
@@ -253,12 +256,9 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 									"commitments": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"maximum_amount": types.StringType,
-											"minimum_amount": types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"maximum_amount": schema.StringAttribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `The customer is limited to spend at most the amount.`,
 												Validators: []validator.String{
@@ -266,6 +266,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 												},
 											},
 											"minimum_amount": schema.StringAttribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `The customer is committed to spend at least the amount.`,
 												Validators: []validator.String{
@@ -277,6 +278,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 											`(unit, graduated, volume).`,
 									},
 									"description": schema.StringAttribute{
+										Computed: true,
 										Optional: true,
 										MarkdownDescription: `Optional description of the resource.` + "\n" +
 											`` + "\n" +
@@ -288,10 +290,6 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 									"discounts": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"percentage": types.Float64Type,
-											"usage":      types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"percentage": schema.Float64Attribute{
 												Optional:    true,
@@ -301,6 +299,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 												},
 											},
 											"usage": schema.StringAttribute{
+												Computed: true,
 												Optional: true,
 												MarkdownDescription: `Number of usage units granted free before billing starts. Only applies to` + "\n" +
 													`usage-based lines (not flat fees). Usage is treated as zero until this amount is` + "\n" +
@@ -315,9 +314,6 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 									"feature": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"id": types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"id": schema.StringAttribute{
 												Computed:    true,
@@ -498,6 +494,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 																	Description: `The unit price component of the tier. Charged per billing unit within the tier.`,
 																},
 																"up_to_amount": schema.StringAttribute{
+																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `Up to and including this quantity will be contained in the tier. If undefined,` + "\n" +
 																		`the tier is open-ended (the last tier).`,
@@ -646,6 +643,7 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 																	Description: `The unit price component of the tier. Charged per billing unit within the tier.`,
 																},
 																"up_to_amount": schema.StringAttribute{
+																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `Up to and including this quantity will be contained in the tier. If undefined,` + "\n" +
 																		`the tier is open-ended (the last tier).`,
@@ -696,14 +694,6 @@ func (r *MeteringPlanResource) Schema(ctx context.Context, req resource.SchemaRe
 									"tax_config": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"behavior": types.StringType,
-											"code": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`id`: types.StringType,
-												},
-											},
-										})),
 										Attributes: map[string]schema.Attribute{
 											"behavior": schema.StringAttribute{
 												Computed: true,
@@ -900,6 +890,43 @@ func (r *MeteringPlanResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedBillingPlan(ctx, res.BillingPlan)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsPublishPlanRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.OpenMeterProductCatalog.PublishPlan(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.BillingPlan != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedBillingPlan(ctx, res1.BillingPlan)...)
 
 	if resp.Diagnostics.HasError() {
 		return

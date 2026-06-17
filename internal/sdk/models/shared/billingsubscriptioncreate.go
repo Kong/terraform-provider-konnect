@@ -58,7 +58,7 @@ type Plan struct {
 	//
 	// ID or Key of the plan is required if creating a subscription from a plan. If
 	// both are provided, the ID will be used.
-	Key *string `default:"null" json:"key"`
+	Key *string `json:"key,omitempty"`
 	// The plan version of the subscription, if any. If not provided, the latest
 	// version of the plan will be used.
 	Version *int64 `default:"null" json:"version"`
@@ -117,7 +117,7 @@ type BillingSubscriptionCreate struct {
 	//
 	// If not provided, the subscription will be created with the subscription's
 	// creation time as the billing anchor.
-	BillingAnchor *time.Time `default:"null" json:"billing_anchor"`
+	BillingAnchor *time.Time `json:"billing_anchor,omitempty"`
 	Timing        *string    `default:"null" json:"timing"`
 }
 

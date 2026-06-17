@@ -206,7 +206,7 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 										Description: `City.`,
 									},
 									"country": schema.StringAttribute{
-										Optional: true,
+										Required: true,
 										MarkdownDescription: `Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)` + "\n" +
 											`alpha-2 format.`,
 										Validators: []validator.String{
@@ -599,6 +599,7 @@ func (r *MeteringBillingProfileResource) Schema(ctx context.Context, req resourc
 											`` + "`" + `stripe.code` + "`" + ` is ignored.`,
 									},
 									"tax_code_id": schema.StringAttribute{
+										Computed:           true,
 										Optional:           true,
 										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 										Description:        `Tax code ID.`,

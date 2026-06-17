@@ -16,7 +16,7 @@ type BillingPlanPhase struct {
 	// Optional description of the resource.
 	//
 	// Maximum 1024 characters.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -26,7 +26,7 @@ type BillingPlanPhase struct {
 	Key string `json:"key"`
 	// The duration of the phase. When not specified, the phase runs indefinitely. Only
 	// the last phase may omit the duration.
-	Duration *string `default:"null" json:"duration"`
+	Duration *string `json:"duration,omitempty"`
 	// The rate cards of the plan.
 	RateCards []BillingRateCard `json:"rate_cards"`
 }

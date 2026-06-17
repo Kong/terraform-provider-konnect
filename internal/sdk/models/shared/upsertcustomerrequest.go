@@ -35,19 +35,19 @@ func (u *UpsertCustomerRequestUsageAttribution) GetSubjectKeys() []string {
 type UpsertCustomerRequestBillingAddress struct {
 	// Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
 	// alpha-2 format.
-	Country *string `default:"null" json:"country"`
+	Country string `json:"country"`
 	// Postal code.
-	PostalCode *string `default:"null" json:"postal_code"`
+	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
-	State *string `default:"null" json:"state"`
+	State *string `json:"state,omitempty"`
 	// City.
-	City *string `default:"null" json:"city"`
+	City *string `json:"city,omitempty"`
 	// First line of the address.
-	Line1 *string `default:"null" json:"line1"`
+	Line1 *string `json:"line1,omitempty"`
 	// Second line of the address.
-	Line2 *string `default:"null" json:"line2"`
+	Line2 *string `json:"line2,omitempty"`
 	// Phone number.
-	PhoneNumber *string `default:"null" json:"phone_number"`
+	PhoneNumber *string `json:"phone_number,omitempty"`
 }
 
 func (u UpsertCustomerRequestBillingAddress) MarshalJSON() ([]byte, error) {
@@ -55,15 +55,15 @@ func (u UpsertCustomerRequestBillingAddress) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertCustomerRequestBillingAddress) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"country"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpsertCustomerRequestBillingAddress) GetCountry() *string {
+func (u *UpsertCustomerRequestBillingAddress) GetCountry() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Country
 }

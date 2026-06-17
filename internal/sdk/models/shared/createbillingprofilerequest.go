@@ -39,7 +39,7 @@ func (t *TaxID) GetCode() *string {
 type CreateBillingProfileRequestBillingAddress struct {
 	// Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
 	// alpha-2 format.
-	Country *string `default:"null" json:"country"`
+	Country string `json:"country"`
 	// Postal code.
 	PostalCode *string `json:"postal_code,omitempty"`
 	// State or province.
@@ -59,15 +59,15 @@ func (c CreateBillingProfileRequestBillingAddress) MarshalJSON() ([]byte, error)
 }
 
 func (c *CreateBillingProfileRequestBillingAddress) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"country"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreateBillingProfileRequestBillingAddress) GetCountry() *string {
+func (c *CreateBillingProfileRequestBillingAddress) GetCountry() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Country
 }
@@ -720,7 +720,7 @@ type DefaultTaxConfig struct {
 	// Tax code ID.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	TaxCodeID *string `default:"null" json:"tax_code_id"`
+	TaxCodeID *string `json:"tax_code_id,omitempty"`
 	// Tax code reference.
 	//
 	// When both `tax_code` and `tax_code_id` are provided, `tax_code` takes

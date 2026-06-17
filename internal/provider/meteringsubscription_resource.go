@@ -59,7 +59,11 @@ func (r *MeteringSubscriptionResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "MeteringSubscription Resource",
 		Attributes: map[string]schema.Attribute{
 			"billing_anchor": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `A billing anchor is the fixed point in time that determines the subscription's` + "\n" +
 					`recurring billing cycle. It affects when charges occur and how prorations are` + "\n" +
 					`calculated. Common anchors:` + "\n" +

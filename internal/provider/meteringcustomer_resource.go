@@ -39,18 +39,18 @@ type MeteringCustomerResource struct {
 
 // MeteringCustomerResourceModel describes the resource data model.
 type MeteringCustomerResourceModel struct {
-	BillingAddress   *tfTypes.BillingAddress   `tfsdk:"billing_address"`
-	CreatedAt        types.String              `tfsdk:"created_at"`
-	Currency         types.String              `tfsdk:"currency"`
-	DeletedAt        types.String              `tfsdk:"deleted_at"`
-	Description      types.String              `tfsdk:"description"`
-	ID               types.String              `tfsdk:"id"`
-	Key              types.String              `tfsdk:"key"`
-	Labels           map[string]types.String   `tfsdk:"labels"`
-	Name             types.String              `tfsdk:"name"`
-	PrimaryEmail     types.String              `tfsdk:"primary_email"`
-	UpdatedAt        types.String              `tfsdk:"updated_at"`
-	UsageAttribution *tfTypes.UsageAttribution `tfsdk:"usage_attribution"`
+	BillingAddress   *tfTypes.CreateBillingProfileRequestBillingAddress `tfsdk:"billing_address"`
+	CreatedAt        types.String                                       `tfsdk:"created_at"`
+	Currency         types.String                                       `tfsdk:"currency"`
+	DeletedAt        types.String                                       `tfsdk:"deleted_at"`
+	Description      types.String                                       `tfsdk:"description"`
+	ID               types.String                                       `tfsdk:"id"`
+	Key              types.String                                       `tfsdk:"key"`
+	Labels           map[string]types.String                            `tfsdk:"labels"`
+	Name             types.String                                       `tfsdk:"name"`
+	PrimaryEmail     types.String                                       `tfsdk:"primary_email"`
+	UpdatedAt        types.String                                       `tfsdk:"updated_at"`
+	UsageAttribution *tfTypes.UsageAttribution                          `tfsdk:"usage_attribution"`
 }
 
 func (r *MeteringCustomerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -75,11 +75,12 @@ func (r *MeteringCustomerResource) Schema(ctx context.Context, req resource.Sche
 				})),
 				Attributes: map[string]schema.Attribute{
 					"city": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `City.`,
 					},
 					"country": schema.StringAttribute{
-						Optional: true,
+						Required: true,
 						MarkdownDescription: `Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)` + "\n" +
 							`alpha-2 format.`,
 						Validators: []validator.String{
@@ -88,22 +89,27 @@ func (r *MeteringCustomerResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 					"line1": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `First line of the address.`,
 					},
 					"line2": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `Second line of the address.`,
 					},
 					"phone_number": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `Phone number.`,
 					},
 					"postal_code": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `Postal code.`,
 					},
 					"state": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `State or province.`,
 					},

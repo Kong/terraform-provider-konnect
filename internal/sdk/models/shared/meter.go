@@ -66,7 +66,7 @@ type Meter struct {
 	EventType string `json:"event_type"`
 	// The date since the meter should include events. Useful to skip old events. If
 	// not specified, all historical events are included.
-	EventsFrom *time.Time `default:"null" json:"events_from"`
+	EventsFrom *time.Time `json:"events_from,omitempty"`
 	// JSONPath expression to extract the value from the ingested event's data
 	// property.
 	//

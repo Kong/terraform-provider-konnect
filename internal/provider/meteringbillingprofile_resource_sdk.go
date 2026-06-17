@@ -40,7 +40,7 @@ func (r *MeteringBillingProfileResourceModel) RefreshFromSharedBillingProfile(ct
 		r.Supplier.Addresses = &tfTypes.Addresses{}
 		r.Supplier.Addresses.BillingAddress = &tfTypes.CreateBillingProfileRequestBillingAddress{}
 		r.Supplier.Addresses.BillingAddress.City = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.City)
-		r.Supplier.Addresses.BillingAddress.Country = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Country)
+		r.Supplier.Addresses.BillingAddress.Country = types.StringValue(resp.Supplier.Addresses.BillingAddress.Country)
 		r.Supplier.Addresses.BillingAddress.Line1 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line1)
 		r.Supplier.Addresses.BillingAddress.Line2 = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.Line2)
 		r.Supplier.Addresses.BillingAddress.PhoneNumber = types.StringPointerValue(resp.Supplier.Addresses.BillingAddress.PhoneNumber)
@@ -228,12 +228,9 @@ func (r *MeteringBillingProfileResourceModel) ToSharedCreateBillingProfileReques
 			Code: code,
 		}
 	}
-	country := new(string)
-	if !r.Supplier.Addresses.BillingAddress.Country.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Country.IsNull() {
-		*country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
-	} else {
-		country = nil
-	}
+	var country string
+	country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
+
 	postalCode := new(string)
 	if !r.Supplier.Addresses.BillingAddress.PostalCode.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PostalCode.IsNull() {
 		*postalCode = r.Supplier.Addresses.BillingAddress.PostalCode.ValueString()
@@ -557,12 +554,9 @@ func (r *MeteringBillingProfileResourceModel) ToSharedUpsertBillingProfileReques
 			Code: code,
 		}
 	}
-	country := new(string)
-	if !r.Supplier.Addresses.BillingAddress.Country.IsUnknown() && !r.Supplier.Addresses.BillingAddress.Country.IsNull() {
-		*country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
-	} else {
-		country = nil
-	}
+	var country string
+	country = r.Supplier.Addresses.BillingAddress.Country.ValueString()
+
 	postalCode := new(string)
 	if !r.Supplier.Addresses.BillingAddress.PostalCode.IsUnknown() && !r.Supplier.Addresses.BillingAddress.PostalCode.IsNull() {
 		*postalCode = r.Supplier.Addresses.BillingAddress.PostalCode.ValueString()

@@ -130,7 +130,7 @@ func (u *UnitPriceComponent) GetAmount() string {
 type BillingPriceTier struct {
 	// Up to and including this quantity will be contained in the tier. If undefined,
 	// the tier is open-ended (the last tier).
-	UpToAmount *string `default:"null" json:"up_to_amount"`
+	UpToAmount *string `json:"up_to_amount,omitempty"`
 	// The flat price component of the tier. Charged once when the tier is entered.
 	FlatPrice *FlatPriceComponent `json:"flat_price"`
 	// The unit price component of the tier. Charged per billing unit within the tier.
