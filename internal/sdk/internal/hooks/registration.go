@@ -16,6 +16,9 @@ func initHooks(h *Hooks) {
 	// Remove fields covered by partials so the server uses the partial's values
 	h.registerBeforeRequestHook(&PluginWithPartialHook{})
 
+	// Remove timing field from metering subscription POST requests
+	h.registerBeforeRequestHook(&MeteringSubscriptionTimingHook{})
+
 	// Domain customization - enable usage with non-prod domains
 	h.registerBeforeRequestHook(&CustomizeKongDomainHook{
 		Enabled:           os.Getenv("KONG_CUSTOM_DOMAIN") != "",
