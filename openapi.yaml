@@ -18288,6 +18288,574 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Auth Settings
+  /v3/openmeter/customers:
+    post:
+      x-speakeasy-entity-operation: MeteringCustomer#create
+      operationId: create-customer
+      summary: Create customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+      responses:
+        '201':
+          description: Customer created response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingCustomer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - OpenMeter Customers
+  '/v3/openmeter/customers/{customerId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeteringCustomer#read
+        terraform-datasource: null
+      operationId: get-customer
+      summary: Get customer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '200':
+          description: Customer response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingCustomer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Customers
+    put:
+      x-speakeasy-entity-operation: MeteringCustomer#update
+      operationId: upsert-customer
+      summary: Upsert customer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertCustomerRequest'
+      responses:
+        '200':
+          description: Customer upsert response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingCustomer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - OpenMeter Customers
+    delete:
+      x-speakeasy-entity-operation: MeteringCustomer#delete
+      operationId: delete-customer
+      summary: Delete customer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '204':
+          description: Deleted response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Customers
+  /v3/openmeter/meters:
+    post:
+      x-speakeasy-entity-operation: MeteringMeter#create
+      operationId: create-meter
+      summary: Create meter
+      description: Create a meter.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeterRequest'
+      responses:
+        '201':
+          description: Meter created response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Meters
+  '/v3/openmeter/meters/{meterId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeteringMeter#read
+        terraform-datasource: null
+      operationId: get-meter
+      summary: Get meter
+      description: Get a meter by ID.
+      parameters:
+        - name: meterId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '200':
+          description: Meter response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Meters
+    delete:
+      x-speakeasy-entity-operation: MeteringMeter#delete
+      operationId: delete-meter
+      summary: Delete meter
+      description: Delete a meter.
+      parameters:
+        - name: meterId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '204':
+          description: Deleted response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Meters
+  /v3/openmeter/plans:
+    post:
+      x-speakeasy-entity-operation: MeteringPlan#create
+      operationId: create-plan
+      summary: Create plan
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Create a new plan.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlanRequest'
+      responses:
+        '201':
+          description: Plan created response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlan'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - OpenMeter Product Catalog
+  '/v3/openmeter/plans/{planId}':
+    put:
+      x-speakeasy-entity-operation: MeteringPlan#update
+      operationId: update-plan
+      summary: Update plan
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Update a plan by id.
+      parameters:
+        - name: planId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertPlanRequest'
+      responses:
+        '200':
+          description: Plan upsert response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlan'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - OpenMeter Product Catalog
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeteringPlan#read
+        terraform-datasource: null
+      operationId: get-plan
+      summary: Get plan
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Get a plan by id.
+      parameters:
+        - name: planId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '200':
+          description: Plan response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlan'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - OpenMeter Product Catalog
+    delete:
+      x-speakeasy-entity-operation: MeteringPlan#delete
+      operationId: delete-plan
+      summary: Delete plan
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Delete a plan by id.
+      parameters:
+        - name: planId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '204':
+          description: Deleted response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Product Catalog
+  /v3/openmeter/profiles:
+    post:
+      x-speakeasy-entity-operation: MeteringBillingProfile#create
+      operationId: create-billing-profile
+      summary: Create a new billing profile
+      description: |-
+        Create a new billing profile.
+
+        Billing profiles contain the settings for billing and controls invoice
+        generation. An organization can have multiple billing profiles defined. A
+        billing profile is linked to a specific app. This association is established
+        during the billing profile's creation and remains immutable.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBillingProfileRequest'
+      responses:
+        '201':
+          description: BillingProfile created response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - OpenMeter Billing
+  '/v3/openmeter/profiles/{id}':
+    get:
+      x-speakeasy-entity-operation: MeteringBillingProfile#read
+      operationId: get-billing-profile
+      summary: Get a billing profile
+      description: Get a billing profile.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+      responses:
+        '200':
+          description: BillingProfile response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Billing
+    put:
+      x-speakeasy-entity-operation: MeteringBillingProfile#update
+      operationId: update-billing-profile
+      summary: Update a billing profile
+      description: Update a billing profile.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertBillingProfileRequest'
+      responses:
+        '200':
+          description: BillingProfile updated response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Billing
+    delete:
+      x-speakeasy-entity-operation: MeteringBillingProfile#delete
+      operationId: delete-billing-profile
+      summary: Delete a billing profile
+      description: |-
+        Delete a billing profile.
+
+        Only such billing profiles can be deleted that are:
+
+        - not the default profile
+        - not pinned to any customer using customer overrides
+        - only have finalized invoices
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+      responses:
+        '204':
+          description: Deleted response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Billing
+  /v3/openmeter/subscriptions:
+    post:
+      x-speakeasy-entity-operation: MeteringSubscription#create
+      operationId: create-subscription
+      summary: Create subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingSubscriptionCreate'
+      responses:
+        '201':
+          description: Subscription created response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - OpenMeter Subscriptions
+  '/v3/openmeter/subscriptions/{subscriptionId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeteringSubscription#read
+        terraform-datasource: null
+      operationId: get-subscription
+      summary: Get subscription
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      responses:
+        '200':
+          description: Subscription response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - OpenMeter Subscriptions
+  '/v3/openmeter/subscriptions/{subscriptionId}/change':
+    post:
+      x-speakeasy-entity-operation: MeteringSubscription#update
+      operationId: change-subscription
+      summary: Change subscription
+      description: |-
+        Closes a running subscription and starts a new one according to the
+        specification. Can be used for upgrades, downgrades, and plan changes.
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ULID'
+          x-speakeasy-match: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingSubscriptionChange'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingSubscriptionChangeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - OpenMeter Subscriptions
   /v3/portals:
     get:
       x-speakeasy-entity-operation:
@@ -30570,16 +31138,6 @@ components:
           minLength: 1
       required:
         - id
-    SchemaValidationType:
-      description: |
-        How to validate the schema and parse the record.
-        * confluent_schema_registry - validates against confluent schema registry.
-        * json - simple JSON parsing without the schema.
-      type: string
-      enum:
-        - confluent_schema_registry
-        - json
-      x-speakeasy-unknown-values: allow
     SchemaRegistryCreate:
       description: The typed schema of the schema registry to create it.
       discriminator:
@@ -31886,37 +32444,9 @@ components:
         labels:
           $ref: '#/components/schemas/Labels'
         config:
-          description: The configuration of the schema validation policy.
+          description: The configuration of the policy.
           type: object
-          properties:
-            type:
-              $ref: '#/components/schemas/SchemaValidationType'
-            schema_registry:
-              $ref: '#/components/schemas/SchemaRegistryReference'
-            validate_key:
-              description: |-
-                If true, validate the record key.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
-            validate_value:
-              description: |-
-                If true, validate the record value.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
-            key_validation_action:
-              $ref: '#/components/schemas/ConsumeKeyValidationAction'
-            value_validation_action:
-              $ref: '#/components/schemas/ConsumeValueValidationAction'
-          required:
-            - type
+          $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyConfig'
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
@@ -31961,6 +32491,82 @@ components:
         - type
         - config
       title: Schema Validation
+    EventGatewayConsumeSchemaValidationPolicyConfig:
+      description: The configuration of the consume schema validation policy.
+      discriminator:
+        propertyName: type
+        mapping:
+          confluent_schema_registry: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+          json: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+    EventGatewayConsumeSchemaValidationPolicyJsonConfig:
+      description: The configuration of the consume schema validation policy when using JSON parsing without schema.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: json
+      required:
+        - type
+    EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig:
+      description: The configuration of the consume schema validation policy when using a schema registry.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: confluent_schema_registry
+      required:
+        - type
     EventGatewayProduceSchemaValidationPolicy:
       description: A policy that validates produce messages against a schema registry.
       type: object
@@ -33210,6 +33816,3108 @@ components:
               type: string
               example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
               x-speakeasy-param-computed: true
+    BillingCustomer:
+      description: |-
+        Customers can be individuals or organizations that can subscribe to plans and
+        have access to features.
+      type: object
+      properties:
+        id:
+          description: ULID (Universally Unique Lexicographically Sortable Identifier).
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: ULID
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8601 timestamp representation of entity creation date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An ISO-8601 timestamp representation of entity last update date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        deleted_at:
+          description: An ISO-8601 timestamp representation of entity deletion date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        key:
+          $ref: '#/components/schemas/ExternalResourceKey'
+        usage_attribution:
+          description: Mapping to attribute metered usage to the customer by the event subject.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            subject_keys:
+              description: |-
+                The subjects that are attributed to the customer. Can be empty when no usage
+                event subjects are associated with the customer.
+              type: array
+              items:
+                $ref: '#/components/schemas/UsageAttributionSubjectKey'
+              minItems: 0
+              title: Subject Keys
+          required:
+            - subject_keys
+          title: Usage Attribution
+          x-speakeasy-param-computed: false
+        primary_email:
+          description: The primary email address of the customer.
+          type: string
+          default: null
+          nullable: true
+          title: Primary Email
+          x-speakeasy-param-computed: false
+        currency:
+          description: 'Currency of the customer. Used for billing, tax and invoicing.'
+          type: string
+          example: USD
+          default: null
+          maxLength: 3
+          minLength: 3
+          nullable: true
+          pattern: '^[A-Z]{3}$'
+          title: Currency
+          x-speakeasy-param-computed: false
+        billing_address:
+          description: The billing address of the customer. Used for tax and invoicing.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            country:
+              description: |-
+                Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+                alpha-2 format.
+              type: string
+              example: US
+              default: null
+              maxLength: 2
+              minLength: 2
+              nullable: true
+              pattern: '^[A-Z]{2}$'
+              title: Country
+              x-speakeasy-param-computed: false
+            postal_code:
+              description: Postal code.
+              type: string
+              default: null
+              nullable: true
+              title: Postal Code
+              x-speakeasy-param-computed: false
+            state:
+              description: State or province.
+              type: string
+              default: null
+              nullable: true
+              title: State
+              x-speakeasy-param-computed: false
+            city:
+              description: City.
+              type: string
+              default: null
+              nullable: true
+              title: City
+              x-speakeasy-param-computed: false
+            line1:
+              description: First line of the address.
+              type: string
+              default: null
+              nullable: true
+              title: Line 1
+              x-speakeasy-param-computed: false
+            line2:
+              description: Second line of the address.
+              type: string
+              default: null
+              nullable: true
+              title: Line 2
+              x-speakeasy-param-computed: false
+            phone_number:
+              description: Phone number.
+              type: string
+              default: null
+              nullable: true
+              title: Phone Number
+              x-speakeasy-param-computed: false
+          title: Billing Address
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - key
+    BillingPlan:
+      description: Plans provide a template for subscriptions.
+      type: object
+      properties:
+        id:
+          description: ULID (Universally Unique Lexicographically Sortable Identifier).
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: ULID
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8601 timestamp representation of entity creation date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An ISO-8601 timestamp representation of entity last update date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        deleted_at:
+          description: An ISO-8601 timestamp representation of entity deletion date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        key:
+          description: |-
+            A key is a semi-unique string that is used to identify the plan. It is used to
+            reference the latest `active` version of the plan and is unique with the version
+            number.
+          type: string
+          example: resource_key
+          maxLength: 64
+          minLength: 1
+          pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
+          title: Key
+        version:
+          description: |-
+            Plans are versioned to allow you to make changes without affecting running
+            subscriptions.
+          type: integer
+          default: 1
+          minimum: 1
+          readOnly: true
+          title: Version
+          x-speakeasy-param-suppress-computed-diff: true
+        currency:
+          description: The currency code of the plan.
+          type: string
+          example: USD
+          maxLength: 3
+          minLength: 3
+          pattern: '^[A-Z]{3}$'
+          title: Currency
+        billing_cadence:
+          description: The billing cadence for subscriptions using this plan.
+          type: string
+          format: ISO8601
+          example: P1Y
+          pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
+          title: Billing cadence
+        pro_rating_enabled:
+          description: Whether pro-rating is enabled for this plan.
+          type: boolean
+          default: true
+          title: Pro-rating enabled
+        effective_from:
+          description: |-
+            The date and time when the plan becomes `active`. When not specified, the plan
+            is in `draft` status.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: Effective start date
+          x-speakeasy-param-suppress-computed-diff: true
+        effective_to:
+          description: |-
+            A scheduled date and time when the plan becomes `archived`. When not specified,
+            the plan is in `active` status indefinitely.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: Effective end date
+          x-speakeasy-param-suppress-computed-diff: true
+        status:
+          description: |-
+            The status of the plan. Computed based on the effective start and end dates:
+
+            - `draft`: `effective_from` is not set.
+            - `scheduled`: `now < effective_from`.
+            - `active`: `effective_from <= now` and (`effective_to` is not set or
+            `now < effective_to`).
+            - `archived`: `effective_to <= now`.
+          type: string
+          enum:
+            - draft
+            - active
+            - archived
+            - scheduled
+          readOnly: true
+          title: Status
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
+        phases:
+          description: |-
+            The plan phases define the pricing ramp for a subscription. A phase switch
+            occurs only at the end of a billing period. At least one phase is required.
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingPlanPhase'
+          minItems: 1
+          title: Plan phases
+        validation_errors:
+          description: |-
+            List of validation errors in `draft` state that prevent the plan from being
+            published.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCatalogValidationError'
+          readOnly: true
+          title: Validation errors
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - key
+        - version
+        - currency
+        - billing_cadence
+        - status
+        - phases
+    BillingPlanPhase:
+      description: |-
+        The plan phase or pricing ramp allows changing a plan's rate cards over time as
+        a subscription progresses.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        key:
+          $ref: '#/components/schemas/ResourceKey'
+        duration:
+          description: |-
+            The duration of the phase. When not specified, the phase runs indefinitely. Only
+            the last phase may omit the duration.
+          type: string
+          format: ISO8601
+          example: P1Y
+          default: null
+          nullable: true
+          pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
+          title: Duration
+          x-speakeasy-param-computed: false
+        rate_cards:
+          description: The rate cards of the plan.
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingRateCard'
+          title: Rate cards
+      additionalProperties: false
+      required:
+        - name
+        - key
+        - rate_cards
+    BillingPriceFlat:
+      description: Flat price.
+      type: object
+      properties:
+        type:
+          description: The type of the price.
+          type: string
+          enum:
+            - flat
+          title: Type
+        amount:
+          description: The amount of the flat price.
+          type: string
+          pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+          title: Amount
+      additionalProperties: false
+      required:
+        - type
+        - amount
+    BillingPriceFree:
+      description: Free price.
+      type: object
+      properties:
+        type:
+          description: The type of the price.
+          type: string
+          enum:
+            - free
+          title: Type
+      additionalProperties: false
+      required:
+        - type
+    BillingPriceGraduated:
+      description: |-
+        Graduated tiered price.
+
+        Each tier's rate applies only to the usage within that tier. Pricing can change
+        as cumulative usage crosses tier boundaries.
+
+        When UnitConfig is present on the rate card, tier boundaries (up_to_amount) are
+        expressed in converted billing units.
+      type: object
+      properties:
+        type:
+          description: The type of the price.
+          type: string
+          enum:
+            - graduated
+          title: Type
+        tiers:
+          description: The tiers of the graduated price. At least one tier is required.
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingPriceTier'
+          minItems: 1
+          title: Tiers
+      additionalProperties: false
+      required:
+        - type
+        - tiers
+    BillingPriceTier:
+      description: |-
+        A price tier used in graduated and volume pricing.
+
+        At least one price component (flat_price or unit_price) must be set. When
+        UnitConfig is present on the rate card, up_to_amount is expressed in converted
+        billing units.
+      type: object
+      properties:
+        up_to_amount:
+          description: |-
+            Up to and including this quantity will be contained in the tier. If undefined,
+            the tier is open-ended (the last tier).
+          type: string
+          default: null
+          nullable: true
+          pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+          title: Up to quantity
+          x-speakeasy-param-computed: false
+        flat_price:
+          description: The flat price component of the tier. Charged once when the tier is entered.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            type:
+              description: The type of the price.
+              type: string
+              enum:
+                - flat
+              title: Type
+            amount:
+              description: The amount of the flat price.
+              type: string
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Amount
+          required:
+            - type
+            - amount
+          title: Flat price component
+          x-speakeasy-param-computed: false
+        unit_price:
+          description: The unit price component of the tier. Charged per billing unit within the tier.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            type:
+              description: The type of the price.
+              type: string
+              enum:
+                - unit
+              title: Type
+            amount:
+              description: The amount of the unit price.
+              type: string
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Amount
+          required:
+            - type
+            - amount
+          title: Unit price component
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+    BillingPriceUnit:
+      description: |-
+        Unit price.
+
+        Charges a fixed rate per billing unit. When UnitConfig is present on the rate
+        card, billing units are the converted quantities (e.g. GB instead of bytes).
+      type: object
+      properties:
+        type:
+          description: The type of the price.
+          type: string
+          enum:
+            - unit
+          title: Type
+        amount:
+          description: The amount of the unit price.
+          type: string
+          pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+          title: Amount
+      additionalProperties: false
+      required:
+        - type
+        - amount
+    BillingPriceVolume:
+      description: |-
+        Volume tiered price.
+
+        The maximum quantity within a period determines the per-unit price for all units
+        in that period.
+
+        When UnitConfig is present on the rate card, tier boundaries (up_to_amount) are
+        expressed in converted billing units.
+      type: object
+      properties:
+        type:
+          description: The type of the price.
+          type: string
+          enum:
+            - volume
+          title: Type
+        tiers:
+          description: The tiers of the volume price. At least one tier is required.
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingPriceTier'
+          minItems: 1
+          title: Tiers
+      additionalProperties: false
+      required:
+        - type
+        - tiers
+    BillingProfile:
+      description: |-
+        Billing profiles contain the settings for billing and controls invoice
+        generation.
+      type: object
+      properties:
+        id:
+          description: ULID (Universally Unique Lexicographically Sortable Identifier).
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: ULID
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8601 timestamp representation of entity creation date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An ISO-8601 timestamp representation of entity last update date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        deleted_at:
+          description: An ISO-8601 timestamp representation of entity deletion date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        supplier:
+          description: |-
+            The name and contact information for the supplier this billing profile
+            represents
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: Unique identifier for the party.
+              type: string
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            key:
+              description: An optional unique key of the party.
+              type: string
+              example: 019ae40f-4258-7f15-9491-842f42a7d6ac
+              default: null
+              maxLength: 256
+              minLength: 1
+              nullable: true
+              title: External Resource Key
+              x-speakeasy-param-computed: false
+            name:
+              description: Legal name or representation of the party.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            tax_id:
+              description: |-
+                The entity's legal identification used for tax purposes. They may have other
+                numbers, but we're only interested in those valid for tax purposes.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                code:
+                  description: Normalized tax identification code shown on the original identity document.
+                  type: string
+                  default: null
+                  maxLength: 32
+                  minLength: 1
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+            addresses:
+              description: Address for where information should be sent if needed.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                billing_address:
+                  description: Billing address.
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    country:
+                      description: |-
+                        Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+                        alpha-2 format.
+                      type: string
+                      example: US
+                      default: null
+                      maxLength: 2
+                      minLength: 2
+                      nullable: true
+                      pattern: '^[A-Z]{2}$'
+                      title: Country
+                      x-speakeasy-param-computed: false
+                    postal_code:
+                      description: Postal code.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Postal Code
+                      x-speakeasy-param-computed: false
+                    state:
+                      description: State or province.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: State
+                      x-speakeasy-param-computed: false
+                    city:
+                      description: City.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: City
+                      x-speakeasy-param-computed: false
+                    line1:
+                      description: First line of the address.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Line 1
+                      x-speakeasy-param-computed: false
+                    line2:
+                      description: Second line of the address.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Line 2
+                      x-speakeasy-param-computed: false
+                    phone_number:
+                      description: Phone number.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Phone Number
+                      x-speakeasy-param-computed: false
+              required:
+                - billing_address
+              x-speakeasy-param-computed: false
+        workflow:
+          description: The billing workflow settings for this profile
+          type: object
+          additionalProperties: false
+          properties:
+            collection:
+              description: The collection settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                alignment:
+                  description: The alignment for collecting the pending line items into an invoice.
+                  type: object
+                  default:
+                    type: subscription
+                  discriminator:
+                    propertyName: type
+                    mapping:
+                      subscription: '#/components/schemas/BillingWorkflowCollectionAlignmentSubscription'
+                      anchored: '#/components/schemas/BillingWorkflowCollectionAlignmentAnchored'
+                  oneOf:
+                    - $ref: '#/components/schemas/BillingWorkflowCollectionAlignmentSubscription'
+                    - $ref: '#/components/schemas/BillingWorkflowCollectionAlignmentAnchored'
+                interval:
+                  description: |-
+                    This grace period can be used to delay the collection of the pending line items
+                    specified in alignment.
+
+                    This is useful, in case of multiple subscriptions having slightly different
+                    billing periods.
+                  type: string
+                  format: ISO8601
+                  example: P1D
+                  default: PT1H
+              title: Workflow collection settings
+              x-speakeasy-param-computed: false
+            invoicing:
+              description: The invoicing settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                auto_advance:
+                  description: Whether to automatically issue the invoice after the draftPeriod has passed.
+                  type: boolean
+                  default: true
+                draft_period:
+                  description: The period for the invoice to be kept in draft status for manual reviews.
+                  type: string
+                  format: ISO8601
+                  example: P1D
+                  default: P0D
+                progressive_billing:
+                  description: Should progressive billing be allowed for this workflow?
+                  type: boolean
+                  default: true
+              title: Workflow invoice settings
+              x-speakeasy-param-computed: false
+            payment:
+              description: The payment settings for this workflow
+              type: object
+              discriminator:
+                propertyName: collection_method
+                mapping:
+                  charge_automatically: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
+                  send_invoice: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+              oneOf:
+                - $ref: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
+                - $ref: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+            tax:
+              description: The tax settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                enabled:
+                  description: |-
+                    Enable automatic tax calculation when tax is supported by the app. For example,
+                    with Stripe Invoicing when enabled, tax is calculated via Stripe Tax.
+                  type: boolean
+                  default: true
+                enforced:
+                  description: |-
+                    Enforce tax calculation when tax is supported by the app. When enabled, the
+                    billing system will not allow to create an invoice without tax calculation.
+                    Enforcement is different per apps, for example, Stripe app requires customer to
+                    have a tax location when starting a paid subscription.
+                  type: boolean
+                  default: false
+                default_tax_config:
+                  description: Default tax configuration to apply to the invoices for line items.
+                  type: object
+                  default: null
+                  additionalProperties: false
+                  nullable: true
+                  properties:
+                    behavior:
+                      description: |-
+                        Tax behavior.
+
+                        If not specified the billing profile is used to determine the tax behavior. If
+                        not specified in the billing profile, the provider's default behavior is used.
+                      type: string
+                      enum:
+                        - inclusive
+                        - exclusive
+                      title: Tax behavior
+                      x-speakeasy-unknown-values: allow
+                    stripe:
+                      description: Stripe tax config.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      deprecated: true
+                      nullable: true
+                      properties:
+                        code:
+                          description: 'Product [tax code](https://docs.stripe.com/tax/tax-codes).'
+                          type: string
+                          example: txcd_10000000
+                          pattern: '^txcd_\d{8}$'
+                          title: Tax code
+                      required:
+                        - code
+                      title: Stripe tax config
+                      x-speakeasy-param-computed: false
+                    external_invoicing:
+                      description: External invoicing tax config.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      deprecated: true
+                      nullable: true
+                      properties:
+                        code:
+                          description: The tax code should be interpreted by the external invoicing provider.
+                          type: string
+                          maxLength: 64
+                          title: Tax code
+                      required:
+                        - code
+                      title: External invoicing tax config
+                      x-speakeasy-param-computed: false
+                    tax_code_id:
+                      description: Tax code ID.
+                      type: string
+                      example: 01G65Z755AFWAKHE12NY0CQ9FH
+                      default: null
+                      deprecated: true
+                      nullable: true
+                      pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                      title: Tax code ID
+                      x-speakeasy-param-computed: false
+                    tax_code:
+                      description: |-
+                        Tax code reference.
+
+                        When both `tax_code` and `tax_code_id` are provided, `tax_code` takes
+                        precedence. When `stripe.code` is also provided, `tax_code` still wins and
+                        `stripe.code` is ignored.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      nullable: true
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/ULID'
+                      required:
+                        - id
+                      title: Tax code
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
+              title: Workflow tax settings
+              x-speakeasy-param-computed: false
+        apps:
+          description: The applications used by this billing profile.
+          type: object
+          additionalProperties: false
+          properties:
+            tax:
+              description: The tax app used for this workflow.
+              type: object
+              additionalProperties: false
+              properties:
+                id:
+                  description: The ID of the app.
+                  type: string
+                  example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                  title: ULID
+              required:
+                - id
+            invoicing:
+              description: The invoicing app used for this workflow.
+              type: object
+              additionalProperties: false
+              properties:
+                id:
+                  description: The ID of the app.
+                  type: string
+                  example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                  title: ULID
+              required:
+                - id
+            payment:
+              description: The payment app used for this workflow.
+              type: object
+              additionalProperties: false
+              properties:
+                id:
+                  description: The ID of the app.
+                  type: string
+                  example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                  title: ULID
+              required:
+                - id
+          required:
+            - tax
+            - invoicing
+            - payment
+        default:
+          description: Whether this is the default profile.
+          type: boolean
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - supplier
+        - workflow
+        - apps
+        - default
+    BillingRateCard:
+      description: A rate card defines the pricing and entitlement of a feature or service.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        key:
+          $ref: '#/components/schemas/ResourceKey'
+        feature:
+          description: The feature associated with the rate card.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              $ref: '#/components/schemas/ULID'
+          required:
+            - id
+          title: Feature reference
+          x-speakeasy-param-computed: false
+        billing_cadence:
+          description: |-
+            The billing cadence of the rate card. When null, the charge is one-time
+            (non-recurring). Only valid for flat prices.
+          type: string
+          format: ISO8601
+          example: P1Y
+          default: null
+          nullable: true
+          pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
+          title: Billing cadence
+          x-speakeasy-param-computed: false
+        price:
+          description: The price of the rate card.
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              free: '#/components/schemas/BillingPriceFree'
+              flat: '#/components/schemas/BillingPriceFlat'
+              unit: '#/components/schemas/BillingPriceUnit'
+              graduated: '#/components/schemas/BillingPriceGraduated'
+              volume: '#/components/schemas/BillingPriceVolume'
+          oneOf:
+            - $ref: '#/components/schemas/BillingPriceFree'
+            - $ref: '#/components/schemas/BillingPriceFlat'
+            - $ref: '#/components/schemas/BillingPriceUnit'
+            - $ref: '#/components/schemas/BillingPriceGraduated'
+            - $ref: '#/components/schemas/BillingPriceVolume'
+          title: Price
+        payment_term:
+          description: |-
+            The payment term of the rate card. In advance payment term can only be used for
+            flat prices.
+          type: string
+          default: in_arrears
+          enum:
+            - in_advance
+            - in_arrears
+          title: Payment term
+          x-speakeasy-unknown-values: allow
+        commitments:
+          description: |-
+            Spend commitments for this rate card. Only applicable to usage-based prices
+            (unit, graduated, volume).
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            minimum_amount:
+              description: The customer is committed to spend at least the amount.
+              type: string
+              default: null
+              nullable: true
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Minimum amount
+              x-speakeasy-param-computed: false
+            maximum_amount:
+              description: The customer is limited to spend at most the amount.
+              type: string
+              default: null
+              nullable: true
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              title: Maximum amount
+              x-speakeasy-param-computed: false
+          title: Commitments
+          x-speakeasy-param-computed: false
+        discounts:
+          description: The discounts of the rate card.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            percentage:
+              description: Percentage discount applied to the price (0–100).
+              type: number
+              default: null
+              maximum: 100
+              minimum: 0
+              nullable: true
+              x-speakeasy-param-computed: false
+            usage:
+              description: |-
+                Number of usage units granted free before billing starts. Only applies to
+                usage-based lines (not flat fees). Usage is treated as zero until this amount is
+                exhausted.
+              type: string
+              default: null
+              nullable: true
+              pattern: '^\-?[0-9]+(\.[0-9]+)?$'
+              x-speakeasy-param-computed: false
+          title: Discounts
+          x-speakeasy-param-computed: false
+        tax_config:
+          description: The tax config of the rate card.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            behavior:
+              $ref: '#/components/schemas/BillingTaxBehavior'
+            code:
+              $ref: '#/components/schemas/TaxCodeReferenceItem'
+          required:
+            - code
+          title: Tax config
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - name
+        - key
+        - price
+    BillingSubscription:
+      description: Subscription.
+      type: object
+      properties:
+        id:
+          description: ULID (Universally Unique Lexicographically Sortable Identifier).
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: ULID
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8601 timestamp representation of entity creation date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An ISO-8601 timestamp representation of entity last update date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        deleted_at:
+          description: An ISO-8601 timestamp representation of entity deletion date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        customer_id:
+          description: The customer ID of the subscription.
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: Customer ID
+          x-speakeasy-param-suppress-computed-diff: true
+        plan_id:
+          description: The plan ID of the subscription. Set if subscription is created from a plan.
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: Plan ID
+          x-speakeasy-param-suppress-computed-diff: true
+        billing_anchor:
+          description: |-
+            A billing anchor is the fixed point in time that determines the subscription's
+            recurring billing cycle. It affects when charges occur and how prorations are
+            calculated. Common anchors:
+
+            - Calendar month (1st of each month): `2025-01-01T00:00:00Z`
+            - Subscription anniversary (day customer signed up)
+            - Custom date (customer-specified day)
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: Billing anchor
+          x-speakeasy-param-suppress-computed-diff: true
+        status:
+          description: The status of the subscription.
+          type: string
+          enum:
+            - active
+            - inactive
+            - canceled
+            - scheduled
+          readOnly: true
+          title: Status
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - customer_id
+        - billing_anchor
+        - status
+    BillingSubscriptionChange:
+      description: Request for changing a subscription.
+      type: object
+      properties:
+        labels:
+          $ref: '#/components/schemas/Labels'
+        customer:
+          description: The customer to create the subscription for.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: |-
+                The ID of the customer to create the subscription for.
+
+                Either customer ID or customer key must be provided. If both are provided, the
+                ID will be used.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              title: Customer ID
+            key:
+              description: |-
+                The key of the customer to create the subscription for.
+
+                Either customer ID or customer key must be provided. If both are provided, the
+                ID will be used.
+              type: string
+              example: 019ae40f-4258-7f15-9491-842f42a7d6ac
+              default: null
+              maxLength: 256
+              minLength: 1
+              nullable: true
+              title: Customer Key
+              x-speakeasy-param-computed: false
+        plan:
+          description: The plan reference of the subscription.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: |-
+                The plan ID of the subscription. Set if subscription is created from a plan.
+
+                ID or Key of the plan is required if creating a subscription from a plan. If
+                both are provided, the ID will be used.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              title: Plan ID
+            key:
+              description: |-
+                The plan Key of the subscription, if any. Set if subscription is created from a
+                plan.
+
+                ID or Key of the plan is required if creating a subscription from a plan. If
+                both are provided, the ID will be used.
+              type: string
+              example: resource_key
+              default: null
+              maxLength: 64
+              minLength: 1
+              nullable: true
+              pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
+              title: Plan Key
+              x-speakeasy-param-computed: false
+            version:
+              description: |-
+                The plan version of the subscription, if any. If not provided, the latest
+                version of the plan will be used.
+              type: integer
+              default: null
+              nullable: true
+              title: Plan Version
+              x-speakeasy-param-computed: false
+        billing_anchor:
+          description: |-
+            A billing anchor is the fixed point in time that determines the subscription's
+            recurring billing cycle. It affects when charges occur and how prorations are
+            calculated. Common anchors:
+
+            - Calendar month (1st of each month): `2025-01-01T00:00:00Z`
+            - Subscription anniversary (day customer signed up)
+            - Custom date (customer-specified day)
+
+            If not provided, the subscription will be created with the subscription's
+            creation time as the billing anchor.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          default: null
+          nullable: true
+          title: Billing anchor
+          x-speakeasy-param-computed: false
+        timing:
+          description: |-
+            Subscription edit timing. Use `immediate` to apply changes right away, or
+            `next_billing_cycle` to apply them at the start of the next billing cycle.
+            Alternatively, provide an ISO 8601 date-time string (e.g.
+            `2025-01-15T00:00:00Z`) to schedule the changes for a specific date and time.
+          type: string
+          example: immediate
+      additionalProperties: false
+      required:
+        - customer
+        - plan
+        - timing
+    BillingSubscriptionChangeResponse:
+      description: Response for changing a subscription.
+      type: object
+      properties:
+        current:
+          description: The current subscription before the change.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: ULID (Universally Unique Lexicographically Sortable Identifier).
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              readOnly: true
+              title: ULID
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              description: An ISO-8601 timestamp representation of entity creation date.
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: RFC3339 Date-Time
+              x-speakeasy-param-suppress-computed-diff: true
+            updated_at:
+              description: An ISO-8601 timestamp representation of entity last update date.
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: RFC3339 Date-Time
+              x-speakeasy-param-suppress-computed-diff: true
+            deleted_at:
+              description: An ISO-8601 timestamp representation of entity deletion date.
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: RFC3339 Date-Time
+              x-speakeasy-param-suppress-computed-diff: true
+            customer_id:
+              description: The customer ID of the subscription.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              readOnly: true
+              title: Customer ID
+              x-speakeasy-param-suppress-computed-diff: true
+            plan_id:
+              description: The plan ID of the subscription. Set if subscription is created from a plan.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              readOnly: true
+              title: Plan ID
+              x-speakeasy-param-suppress-computed-diff: true
+            billing_anchor:
+              description: |-
+                A billing anchor is the fixed point in time that determines the subscription's
+                recurring billing cycle. It affects when charges occur and how prorations are
+                calculated. Common anchors:
+
+                - Calendar month (1st of each month): `2025-01-01T00:00:00Z`
+                - Subscription anniversary (day customer signed up)
+                - Custom date (customer-specified day)
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: Billing anchor
+              x-speakeasy-param-suppress-computed-diff: true
+            status:
+              description: The status of the subscription.
+              type: string
+              enum:
+                - active
+                - inactive
+                - canceled
+                - scheduled
+              readOnly: true
+              title: Status
+              x-speakeasy-param-suppress-computed-diff: true
+              x-speakeasy-unknown-values: allow
+          required:
+            - id
+            - created_at
+            - updated_at
+            - customer_id
+            - billing_anchor
+            - status
+        next:
+          description: The new state of the subscription after the change.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: ULID (Universally Unique Lexicographically Sortable Identifier).
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              readOnly: true
+              title: ULID
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              description: An ISO-8601 timestamp representation of entity creation date.
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: RFC3339 Date-Time
+              x-speakeasy-param-suppress-computed-diff: true
+            updated_at:
+              description: An ISO-8601 timestamp representation of entity last update date.
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: RFC3339 Date-Time
+              x-speakeasy-param-suppress-computed-diff: true
+            deleted_at:
+              description: An ISO-8601 timestamp representation of entity deletion date.
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: RFC3339 Date-Time
+              x-speakeasy-param-suppress-computed-diff: true
+            customer_id:
+              description: The customer ID of the subscription.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              readOnly: true
+              title: Customer ID
+              x-speakeasy-param-suppress-computed-diff: true
+            plan_id:
+              description: The plan ID of the subscription. Set if subscription is created from a plan.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              readOnly: true
+              title: Plan ID
+              x-speakeasy-param-suppress-computed-diff: true
+            billing_anchor:
+              description: |-
+                A billing anchor is the fixed point in time that determines the subscription's
+                recurring billing cycle. It affects when charges occur and how prorations are
+                calculated. Common anchors:
+
+                - Calendar month (1st of each month): `2025-01-01T00:00:00Z`
+                - Subscription anniversary (day customer signed up)
+                - Custom date (customer-specified day)
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              readOnly: true
+              title: Billing anchor
+              x-speakeasy-param-suppress-computed-diff: true
+            status:
+              description: The status of the subscription.
+              type: string
+              enum:
+                - active
+                - inactive
+                - canceled
+                - scheduled
+              readOnly: true
+              title: Status
+              x-speakeasy-param-suppress-computed-diff: true
+              x-speakeasy-unknown-values: allow
+          required:
+            - id
+            - created_at
+            - updated_at
+            - customer_id
+            - billing_anchor
+            - status
+      additionalProperties: false
+      required:
+        - current
+        - next
+    BillingSubscriptionCreate:
+      description: Subscription create request.
+      type: object
+      properties:
+        labels:
+          $ref: '#/components/schemas/Labels'
+        customer:
+          description: The customer to create the subscription for.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: |-
+                The ID of the customer to create the subscription for.
+
+                Either customer ID or customer key must be provided. If both are provided, the
+                ID will be used.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              title: Customer ID
+            key:
+              description: |-
+                The key of the customer to create the subscription for.
+
+                Either customer ID or customer key must be provided. If both are provided, the
+                ID will be used.
+              type: string
+              example: 019ae40f-4258-7f15-9491-842f42a7d6ac
+              default: null
+              maxLength: 256
+              minLength: 1
+              nullable: true
+              title: Customer Key
+              x-speakeasy-param-computed: false
+        plan:
+          description: The plan reference of the subscription.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: |-
+                The plan ID of the subscription. Set if subscription is created from a plan.
+
+                ID or Key of the plan is required if creating a subscription from a plan. If
+                both are provided, the ID will be used.
+              type: string
+              example: 01G65Z755AFWAKHE12NY0CQ9FH
+              pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+              title: Plan ID
+            key:
+              description: |-
+                The plan Key of the subscription, if any. Set if subscription is created from a
+                plan.
+
+                ID or Key of the plan is required if creating a subscription from a plan. If
+                both are provided, the ID will be used.
+              type: string
+              example: resource_key
+              default: null
+              maxLength: 64
+              minLength: 1
+              nullable: true
+              pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
+              title: Plan Key
+              x-speakeasy-param-computed: false
+            version:
+              description: |-
+                The plan version of the subscription, if any. If not provided, the latest
+                version of the plan will be used.
+              type: integer
+              default: null
+              nullable: true
+              title: Plan Version
+              x-speakeasy-param-computed: false
+        billing_anchor:
+          description: |-
+            A billing anchor is the fixed point in time that determines the subscription's
+            recurring billing cycle. It affects when charges occur and how prorations are
+            calculated. Common anchors:
+
+            - Calendar month (1st of each month): `2025-01-01T00:00:00Z`
+            - Subscription anniversary (day customer signed up)
+            - Custom date (customer-specified day)
+
+            If not provided, the subscription will be created with the subscription's
+            creation time as the billing anchor.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          default: null
+          nullable: true
+          title: Billing anchor
+          x-speakeasy-param-computed: false
+        timing:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - customer
+        - plan
+    BillingTaxBehavior:
+      description: |-
+        Tax behavior.
+
+        This enum is used to specify whether tax is included in the price or excluded
+        from the price.
+      type: string
+      enum:
+        - inclusive
+        - exclusive
+      x-speakeasy-unknown-values: allow
+    BillingWorkflowCollectionAlignmentAnchored:
+      description: |-
+        BillingWorkflowCollectionAlignmentAnchored specifies the alignment for
+        collecting the pending line items into an invoice.
+      type: object
+      properties:
+        type:
+          description: The type of alignment.
+          type: string
+          enum:
+            - anchored
+        recurring_period:
+          description: The recurring period for the alignment.
+          type: object
+          additionalProperties: false
+          properties:
+            anchor:
+              description: A date-time anchor to base the recurring period on.
+              type: string
+              format: date-time
+              example: '2023-01-01T01:01:01.001Z'
+              title: Anchor time
+            interval:
+              description: The interval duration in ISO 8601 format.
+              type: string
+              format: ISO8601
+              example: P1M
+              pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
+              title: Interval in ISO 8601 duration format
+          required:
+            - anchor
+            - interval
+      additionalProperties: false
+      required:
+        - type
+        - recurring_period
+    BillingWorkflowCollectionAlignmentSubscription:
+      description: |-
+        BillingWorkflowCollectionAlignmentSubscription specifies the alignment for
+        collecting the pending line items into an invoice.
+      type: object
+      properties:
+        type:
+          description: The type of alignment.
+          type: string
+          enum:
+            - subscription
+      additionalProperties: false
+      required:
+        - type
+    BillingWorkflowPaymentChargeAutomaticallySettings:
+      description: |-
+        Payment settings for a billing workflow when the collection method is charge
+        automatically.
+      type: object
+      properties:
+        collection_method:
+          description: The collection method for the invoice.
+          type: string
+          enum:
+            - charge_automatically
+      additionalProperties: false
+      required:
+        - collection_method
+    BillingWorkflowPaymentSendInvoiceSettings:
+      description: |-
+        Payment settings for a billing workflow when the collection method is send
+        invoice.
+      type: object
+      properties:
+        collection_method:
+          description: The collection method for the invoice.
+          type: string
+          enum:
+            - send_invoice
+        due_after:
+          description: |-
+            The period after which the invoice is due. With some payment solutions it's only
+            applicable for manual collection method.
+          type: string
+          format: ISO8601
+          example: P30D
+          default: P30D
+      additionalProperties: false
+      required:
+        - collection_method
+    CreateBillingProfileRequest:
+      description: BillingProfile create request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        supplier:
+          description: |-
+            The name and contact information for the supplier this billing profile
+            represents
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: Unique identifier for the party.
+              type: string
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            key:
+              description: An optional unique key of the party.
+              type: string
+              example: 019ae40f-4258-7f15-9491-842f42a7d6ac
+              default: null
+              maxLength: 256
+              minLength: 1
+              nullable: true
+              title: External Resource Key
+              x-speakeasy-param-computed: false
+            name:
+              description: Legal name or representation of the party.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            tax_id:
+              description: |-
+                The entity's legal identification used for tax purposes. They may have other
+                numbers, but we're only interested in those valid for tax purposes.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                code:
+                  description: Normalized tax identification code shown on the original identity document.
+                  type: string
+                  default: null
+                  maxLength: 32
+                  minLength: 1
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+            addresses:
+              description: Address for where information should be sent if needed.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                billing_address:
+                  description: Billing address.
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    country:
+                      description: |-
+                        Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+                        alpha-2 format.
+                      type: string
+                      example: US
+                      default: null
+                      maxLength: 2
+                      minLength: 2
+                      nullable: true
+                      pattern: '^[A-Z]{2}$'
+                      title: Country
+                      x-speakeasy-param-computed: false
+                    postal_code:
+                      description: Postal code.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Postal Code
+                      x-speakeasy-param-computed: false
+                    state:
+                      description: State or province.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: State
+                      x-speakeasy-param-computed: false
+                    city:
+                      description: City.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: City
+                      x-speakeasy-param-computed: false
+                    line1:
+                      description: First line of the address.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Line 1
+                      x-speakeasy-param-computed: false
+                    line2:
+                      description: Second line of the address.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Line 2
+                      x-speakeasy-param-computed: false
+                    phone_number:
+                      description: Phone number.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Phone Number
+                      x-speakeasy-param-computed: false
+              required:
+                - billing_address
+              x-speakeasy-param-computed: false
+        workflow:
+          description: The billing workflow settings for this profile
+          type: object
+          additionalProperties: false
+          properties:
+            collection:
+              description: The collection settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                alignment:
+                  description: The alignment for collecting the pending line items into an invoice.
+                  type: object
+                  default:
+                    type: subscription
+                  discriminator:
+                    propertyName: type
+                    mapping:
+                      subscription: '#/components/schemas/BillingWorkflowCollectionAlignmentSubscription'
+                      anchored: '#/components/schemas/BillingWorkflowCollectionAlignmentAnchored'
+                  oneOf:
+                    - $ref: '#/components/schemas/BillingWorkflowCollectionAlignmentSubscription'
+                    - $ref: '#/components/schemas/BillingWorkflowCollectionAlignmentAnchored'
+                interval:
+                  description: |-
+                    This grace period can be used to delay the collection of the pending line items
+                    specified in alignment.
+
+                    This is useful, in case of multiple subscriptions having slightly different
+                    billing periods.
+                  type: string
+                  format: ISO8601
+                  example: P1D
+                  default: PT1H
+              title: Workflow collection settings
+              x-speakeasy-param-computed: false
+            invoicing:
+              description: The invoicing settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                auto_advance:
+                  description: Whether to automatically issue the invoice after the draftPeriod has passed.
+                  type: boolean
+                  default: true
+                draft_period:
+                  description: The period for the invoice to be kept in draft status for manual reviews.
+                  type: string
+                  format: ISO8601
+                  example: P1D
+                  default: P0D
+                progressive_billing:
+                  description: Should progressive billing be allowed for this workflow?
+                  type: boolean
+                  default: true
+              title: Workflow invoice settings
+              x-speakeasy-param-computed: false
+            payment:
+              description: The payment settings for this workflow
+              type: object
+              discriminator:
+                propertyName: collection_method
+                mapping:
+                  charge_automatically: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
+                  send_invoice: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+              oneOf:
+                - $ref: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
+                - $ref: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+            tax:
+              description: The tax settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                enabled:
+                  description: |-
+                    Enable automatic tax calculation when tax is supported by the app. For example,
+                    with Stripe Invoicing when enabled, tax is calculated via Stripe Tax.
+                  type: boolean
+                  default: true
+                enforced:
+                  description: |-
+                    Enforce tax calculation when tax is supported by the app. When enabled, the
+                    billing system will not allow to create an invoice without tax calculation.
+                    Enforcement is different per apps, for example, Stripe app requires customer to
+                    have a tax location when starting a paid subscription.
+                  type: boolean
+                  default: false
+                default_tax_config:
+                  description: Default tax configuration to apply to the invoices for line items.
+                  type: object
+                  default: null
+                  additionalProperties: false
+                  nullable: true
+                  properties:
+                    behavior:
+                      description: |-
+                        Tax behavior.
+
+                        If not specified the billing profile is used to determine the tax behavior. If
+                        not specified in the billing profile, the provider's default behavior is used.
+                      type: string
+                      enum:
+                        - inclusive
+                        - exclusive
+                      title: Tax behavior
+                      x-speakeasy-unknown-values: allow
+                    stripe:
+                      description: Stripe tax config.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      deprecated: true
+                      nullable: true
+                      properties:
+                        code:
+                          description: 'Product [tax code](https://docs.stripe.com/tax/tax-codes).'
+                          type: string
+                          example: txcd_10000000
+                          pattern: '^txcd_\d{8}$'
+                          title: Tax code
+                      required:
+                        - code
+                      title: Stripe tax config
+                      x-speakeasy-param-computed: false
+                    external_invoicing:
+                      description: External invoicing tax config.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      deprecated: true
+                      nullable: true
+                      properties:
+                        code:
+                          description: The tax code should be interpreted by the external invoicing provider.
+                          type: string
+                          maxLength: 64
+                          title: Tax code
+                      required:
+                        - code
+                      title: External invoicing tax config
+                      x-speakeasy-param-computed: false
+                    tax_code_id:
+                      description: Tax code ID.
+                      type: string
+                      example: 01G65Z755AFWAKHE12NY0CQ9FH
+                      default: null
+                      deprecated: true
+                      nullable: true
+                      pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                      title: Tax code ID
+                      x-speakeasy-param-computed: false
+                    tax_code:
+                      description: |-
+                        Tax code reference.
+
+                        When both `tax_code` and `tax_code_id` are provided, `tax_code` takes
+                        precedence. When `stripe.code` is also provided, `tax_code` still wins and
+                        `stripe.code` is ignored.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      nullable: true
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/ULID'
+                      required:
+                        - id
+                      title: Tax code
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
+              title: Workflow tax settings
+              x-speakeasy-param-computed: false
+        apps:
+          description: The applications used by this billing profile.
+          type: object
+          additionalProperties: false
+          properties:
+            tax:
+              description: The tax app used for this workflow.
+              type: object
+              additionalProperties: false
+              properties:
+                id:
+                  description: The ID of the app.
+                  type: string
+                  example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                  title: ULID
+              required:
+                - id
+            invoicing:
+              description: The invoicing app used for this workflow.
+              type: object
+              additionalProperties: false
+              properties:
+                id:
+                  description: The ID of the app.
+                  type: string
+                  example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                  title: ULID
+              required:
+                - id
+            payment:
+              description: The payment app used for this workflow.
+              type: object
+              additionalProperties: false
+              properties:
+                id:
+                  description: The ID of the app.
+                  type: string
+                  example: 01G65Z755AFWAKHE12NY0CQ9FH
+                  pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                  title: ULID
+              required:
+                - id
+          required:
+            - tax
+            - invoicing
+            - payment
+        default:
+          description: Whether this is the default profile.
+          type: boolean
+      additionalProperties: false
+      required:
+        - name
+        - supplier
+        - workflow
+        - apps
+        - default
+    CreateCustomerRequest:
+      description: Customer create request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        key:
+          $ref: '#/components/schemas/ExternalResourceKey'
+        usage_attribution:
+          description: Mapping to attribute metered usage to the customer by the event subject.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            subject_keys:
+              description: |-
+                The subjects that are attributed to the customer. Can be empty when no usage
+                event subjects are associated with the customer.
+              type: array
+              items:
+                $ref: '#/components/schemas/UsageAttributionSubjectKey'
+              minItems: 0
+              title: Subject Keys
+          required:
+            - subject_keys
+          title: Usage Attribution
+          x-speakeasy-param-computed: false
+        primary_email:
+          description: The primary email address of the customer.
+          type: string
+          default: null
+          nullable: true
+          title: Primary Email
+          x-speakeasy-param-computed: false
+        currency:
+          description: 'Currency of the customer. Used for billing, tax and invoicing.'
+          type: string
+          example: USD
+          default: null
+          maxLength: 3
+          minLength: 3
+          nullable: true
+          pattern: '^[A-Z]{3}$'
+          title: Currency
+          x-speakeasy-param-computed: false
+        billing_address:
+          description: The billing address of the customer. Used for tax and invoicing.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            country:
+              description: |-
+                Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+                alpha-2 format.
+              type: string
+              example: US
+              default: null
+              maxLength: 2
+              minLength: 2
+              nullable: true
+              pattern: '^[A-Z]{2}$'
+              title: Country
+              x-speakeasy-param-computed: false
+            postal_code:
+              description: Postal code.
+              type: string
+              default: null
+              nullable: true
+              title: Postal Code
+              x-speakeasy-param-computed: false
+            state:
+              description: State or province.
+              type: string
+              default: null
+              nullable: true
+              title: State
+              x-speakeasy-param-computed: false
+            city:
+              description: City.
+              type: string
+              default: null
+              nullable: true
+              title: City
+              x-speakeasy-param-computed: false
+            line1:
+              description: First line of the address.
+              type: string
+              default: null
+              nullable: true
+              title: Line 1
+              x-speakeasy-param-computed: false
+            line2:
+              description: Second line of the address.
+              type: string
+              default: null
+              nullable: true
+              title: Line 2
+              x-speakeasy-param-computed: false
+            phone_number:
+              description: Phone number.
+              type: string
+              default: null
+              nullable: true
+              title: Phone Number
+              x-speakeasy-param-computed: false
+          title: Billing Address
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - name
+        - key
+    CreateMeterRequest:
+      description: Meter create request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        key:
+          $ref: '#/components/schemas/ResourceKey'
+        aggregation:
+          description: The aggregation type to use for the meter.
+          type: string
+          enum:
+            - sum
+            - count
+            - unique_count
+            - avg
+            - min
+            - max
+            - latest
+          x-speakeasy-unknown-values: allow
+        event_type:
+          description: The event type to include in the aggregation.
+          type: string
+          example: prompt
+          minLength: 1
+        events_from:
+          description: |-
+            The date since the meter should include events. Useful to skip old events. If
+            not specified, all historical events are included.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          default: null
+          nullable: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-computed: false
+        value_property:
+          description: |-
+            JSONPath expression to extract the value from the ingested event's data
+            property.
+
+            The ingested value for sum, avg, min, and max aggregations is a number or a
+            string that can be parsed to a number.
+
+            For unique_count aggregation, the ingested value must be a string. For count
+            aggregation the value_property is ignored.
+          type: string
+          example: $.tokens
+          default: null
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        dimensions:
+          description: |-
+            Named JSONPath expressions to extract the group by values from the event data.
+
+            Keys must be unique and consist only alphanumeric and underscore characters.
+          type: object
+          example:
+            type: $.type
+          default: null
+          additionalProperties:
+            type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - name
+        - key
+        - aggregation
+        - event_type
+    CreatePlanRequest:
+      description: Plan create request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        key:
+          description: |-
+            A key is a semi-unique string that is used to identify the plan. It is used to
+            reference the latest `active` version of the plan and is unique with the version
+            number.
+          type: string
+          example: resource_key
+          maxLength: 64
+          minLength: 1
+          pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
+          title: Key
+        currency:
+          description: The currency code of the plan.
+          type: string
+          example: USD
+          maxLength: 3
+          minLength: 3
+          pattern: '^[A-Z]{3}$'
+          title: Currency
+        billing_cadence:
+          description: The billing cadence for subscriptions using this plan.
+          type: string
+          format: ISO8601
+          example: P1Y
+          pattern: '^P(?:\d+(?:\.\d+)?Y)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?W)?(?:\d+(?:\.\d+)?D)?(?:T(?:\d+(?:\.\d+)?H)?(?:\d+(?:\.\d+)?M)?(?:\d+(?:\.\d+)?S)?)?$'
+          title: Billing cadence
+        pro_rating_enabled:
+          description: Whether pro-rating is enabled for this plan.
+          type: boolean
+          default: true
+          title: Pro-rating enabled
+        phases:
+          description: |-
+            The plan phases define the pricing ramp for a subscription. A phase switch
+            occurs only at the end of a billing period. At least one phase is required.
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingPlanPhase'
+          minItems: 1
+          title: Plan phases
+      additionalProperties: false
+      required:
+        - name
+        - key
+        - currency
+        - billing_cadence
+        - phases
+    ExternalResourceKey:
+      description: |-
+        ExternalResourceKey is a unique string that is used to identify a resource in an
+        external system.
+      type: string
+      example: 019ae40f-4258-7f15-9491-842f42a7d6ac
+      maxLength: 256
+      minLength: 1
+      title: External Resource Key
+    Meter:
+      description: A meter is a configuration that defines how to match and aggregate events.
+      type: object
+      properties:
+        id:
+          description: ULID (Universally Unique Lexicographically Sortable Identifier).
+          type: string
+          example: 01G65Z755AFWAKHE12NY0CQ9FH
+          pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+          readOnly: true
+          title: ULID
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8601 timestamp representation of entity creation date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An ISO-8601 timestamp representation of entity last update date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        deleted_at:
+          description: An ISO-8601 timestamp representation of entity deletion date.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          readOnly: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-suppress-computed-diff: true
+        key:
+          $ref: '#/components/schemas/ResourceKey'
+        aggregation:
+          description: The aggregation type to use for the meter.
+          type: string
+          enum:
+            - sum
+            - count
+            - unique_count
+            - avg
+            - min
+            - max
+            - latest
+          x-speakeasy-unknown-values: allow
+        event_type:
+          description: The event type to include in the aggregation.
+          type: string
+          example: prompt
+          minLength: 1
+        events_from:
+          description: |-
+            The date since the meter should include events. Useful to skip old events. If
+            not specified, all historical events are included.
+          type: string
+          format: date-time
+          example: '2023-01-01T01:01:01.001Z'
+          default: null
+          nullable: true
+          title: RFC3339 Date-Time
+          x-speakeasy-param-computed: false
+        value_property:
+          description: |-
+            JSONPath expression to extract the value from the ingested event's data
+            property.
+
+            The ingested value for sum, avg, min, and max aggregations is a number or a
+            string that can be parsed to a number.
+
+            For unique_count aggregation, the ingested value must be a string. For count
+            aggregation the value_property is ignored.
+          type: string
+          example: $.tokens
+          default: null
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        dimensions:
+          description: |-
+            Named JSONPath expressions to extract the group by values from the event data.
+
+            Keys must be unique and consist only alphanumeric and underscore characters.
+          type: object
+          example:
+            type: $.type
+          default: null
+          additionalProperties:
+            type: string
+          nullable: true
+          x-speakeasy-param-computed: false
+      example:
+        id: 01G65Z755AFWAKHE12NY0CQ9FH
+        key: tokens_total
+        name: Tokens Total
+        description: AI Token Usage
+        aggregation: sum
+        event_type: prompt
+        value_property: $.tokens
+        dimensions:
+          model: $.model
+          type: $.type
+        created_at: '2024-01-01T01:01:01.001Z'
+        updated_at: '2024-01-01T01:01:01.001Z'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - key
+        - aggregation
+        - event_type
+    ProductCatalogValidationError:
+      description: Validation errors providing detailed description of the issue.
+      type: object
+      properties:
+        code:
+          description: Machine-readable error code.
+          type: string
+          readOnly: true
+          title: Code
+          x-speakeasy-param-suppress-computed-diff: true
+        message:
+          description: Human-readable description of the error.
+          type: string
+          readOnly: true
+          title: Message
+          x-speakeasy-param-suppress-computed-diff: true
+        attributes:
+          description: Additional structured context.
+          type: object
+          additionalProperties: {}
+          readOnly: true
+          title: Attributes
+          x-speakeasy-param-suppress-computed-diff: true
+        field:
+          description: The path to the field.
+          type: string
+          example: addons/pro/ratecards/token/featureKey
+          readOnly: true
+          title: Field
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - field
+    ResourceKey:
+      description: A key is a unique string that is used to identify a resource.
+      type: string
+      example: resource_key
+      maxLength: 64
+      minLength: 1
+      pattern: '^[a-z0-9]+(?:_[a-z0-9]+)*$'
+      title: Resource Key
+    TaxCodeReferenceItem:
+      description: TaxCode reference.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ULID'
+      additionalProperties: false
+      required:
+        - id
+    ULID:
+      description: ULID (Universally Unique Lexicographically Sortable Identifier).
+      type: string
+      example: 01G65Z755AFWAKHE12NY0CQ9FH
+      pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+      title: ULID
+    UpsertBillingProfileRequest:
+      description: BillingProfile upsert request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        supplier:
+          description: |-
+            The name and contact information for the supplier this billing profile
+            represents
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: Unique identifier for the party.
+              type: string
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            key:
+              description: An optional unique key of the party.
+              type: string
+              example: 019ae40f-4258-7f15-9491-842f42a7d6ac
+              default: null
+              maxLength: 256
+              minLength: 1
+              nullable: true
+              title: External Resource Key
+              x-speakeasy-param-computed: false
+            name:
+              description: Legal name or representation of the party.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            tax_id:
+              description: |-
+                The entity's legal identification used for tax purposes. They may have other
+                numbers, but we're only interested in those valid for tax purposes.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                code:
+                  description: Normalized tax identification code shown on the original identity document.
+                  type: string
+                  default: null
+                  maxLength: 32
+                  minLength: 1
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+            addresses:
+              description: Address for where information should be sent if needed.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                billing_address:
+                  description: Billing address.
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    country:
+                      description: |-
+                        Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+                        alpha-2 format.
+                      type: string
+                      example: US
+                      default: null
+                      maxLength: 2
+                      minLength: 2
+                      nullable: true
+                      pattern: '^[A-Z]{2}$'
+                      title: Country
+                      x-speakeasy-param-computed: false
+                    postal_code:
+                      description: Postal code.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Postal Code
+                      x-speakeasy-param-computed: false
+                    state:
+                      description: State or province.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: State
+                      x-speakeasy-param-computed: false
+                    city:
+                      description: City.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: City
+                      x-speakeasy-param-computed: false
+                    line1:
+                      description: First line of the address.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Line 1
+                      x-speakeasy-param-computed: false
+                    line2:
+                      description: Second line of the address.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Line 2
+                      x-speakeasy-param-computed: false
+                    phone_number:
+                      description: Phone number.
+                      type: string
+                      default: null
+                      nullable: true
+                      title: Phone Number
+                      x-speakeasy-param-computed: false
+              required:
+                - billing_address
+              x-speakeasy-param-computed: false
+        workflow:
+          description: The billing workflow settings for this profile
+          type: object
+          additionalProperties: false
+          properties:
+            collection:
+              description: The collection settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                alignment:
+                  description: The alignment for collecting the pending line items into an invoice.
+                  type: object
+                  default:
+                    type: subscription
+                  discriminator:
+                    propertyName: type
+                    mapping:
+                      subscription: '#/components/schemas/BillingWorkflowCollectionAlignmentSubscription'
+                      anchored: '#/components/schemas/BillingWorkflowCollectionAlignmentAnchored'
+                  oneOf:
+                    - $ref: '#/components/schemas/BillingWorkflowCollectionAlignmentSubscription'
+                    - $ref: '#/components/schemas/BillingWorkflowCollectionAlignmentAnchored'
+                interval:
+                  description: |-
+                    This grace period can be used to delay the collection of the pending line items
+                    specified in alignment.
+
+                    This is useful, in case of multiple subscriptions having slightly different
+                    billing periods.
+                  type: string
+                  format: ISO8601
+                  example: P1D
+                  default: PT1H
+              title: Workflow collection settings
+              x-speakeasy-param-computed: false
+            invoicing:
+              description: The invoicing settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                auto_advance:
+                  description: Whether to automatically issue the invoice after the draftPeriod has passed.
+                  type: boolean
+                  default: true
+                draft_period:
+                  description: The period for the invoice to be kept in draft status for manual reviews.
+                  type: string
+                  format: ISO8601
+                  example: P1D
+                  default: P0D
+                progressive_billing:
+                  description: Should progressive billing be allowed for this workflow?
+                  type: boolean
+                  default: true
+              title: Workflow invoice settings
+              x-speakeasy-param-computed: false
+            payment:
+              description: The payment settings for this workflow
+              type: object
+              discriminator:
+                propertyName: collection_method
+                mapping:
+                  charge_automatically: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
+                  send_invoice: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+              oneOf:
+                - $ref: '#/components/schemas/BillingWorkflowPaymentChargeAutomaticallySettings'
+                - $ref: '#/components/schemas/BillingWorkflowPaymentSendInvoiceSettings'
+            tax:
+              description: The tax settings for this workflow
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                enabled:
+                  description: |-
+                    Enable automatic tax calculation when tax is supported by the app. For example,
+                    with Stripe Invoicing when enabled, tax is calculated via Stripe Tax.
+                  type: boolean
+                  default: true
+                enforced:
+                  description: |-
+                    Enforce tax calculation when tax is supported by the app. When enabled, the
+                    billing system will not allow to create an invoice without tax calculation.
+                    Enforcement is different per apps, for example, Stripe app requires customer to
+                    have a tax location when starting a paid subscription.
+                  type: boolean
+                  default: false
+                default_tax_config:
+                  description: Default tax configuration to apply to the invoices for line items.
+                  type: object
+                  default: null
+                  additionalProperties: false
+                  nullable: true
+                  properties:
+                    behavior:
+                      description: |-
+                        Tax behavior.
+
+                        If not specified the billing profile is used to determine the tax behavior. If
+                        not specified in the billing profile, the provider's default behavior is used.
+                      type: string
+                      enum:
+                        - inclusive
+                        - exclusive
+                      title: Tax behavior
+                      x-speakeasy-unknown-values: allow
+                    stripe:
+                      description: Stripe tax config.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      deprecated: true
+                      nullable: true
+                      properties:
+                        code:
+                          description: 'Product [tax code](https://docs.stripe.com/tax/tax-codes).'
+                          type: string
+                          example: txcd_10000000
+                          pattern: '^txcd_\d{8}$'
+                          title: Tax code
+                      required:
+                        - code
+                      title: Stripe tax config
+                      x-speakeasy-param-computed: false
+                    external_invoicing:
+                      description: External invoicing tax config.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      deprecated: true
+                      nullable: true
+                      properties:
+                        code:
+                          description: The tax code should be interpreted by the external invoicing provider.
+                          type: string
+                          maxLength: 64
+                          title: Tax code
+                      required:
+                        - code
+                      title: External invoicing tax config
+                      x-speakeasy-param-computed: false
+                    tax_code_id:
+                      description: Tax code ID.
+                      type: string
+                      example: 01G65Z755AFWAKHE12NY0CQ9FH
+                      default: null
+                      deprecated: true
+                      nullable: true
+                      pattern: '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'
+                      title: Tax code ID
+                      x-speakeasy-param-computed: false
+                    tax_code:
+                      description: |-
+                        Tax code reference.
+
+                        When both `tax_code` and `tax_code_id` are provided, `tax_code` takes
+                        precedence. When `stripe.code` is also provided, `tax_code` still wins and
+                        `stripe.code` is ignored.
+                      type: object
+                      default: null
+                      additionalProperties: false
+                      nullable: true
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/ULID'
+                      required:
+                        - id
+                      title: Tax code
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
+              title: Workflow tax settings
+              x-speakeasy-param-computed: false
+        default:
+          description: Whether this is the default profile.
+          type: boolean
+      additionalProperties: false
+      required:
+        - name
+        - supplier
+        - workflow
+        - default
+    UpsertCustomerRequest:
+      description: Customer upsert request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        usage_attribution:
+          description: Mapping to attribute metered usage to the customer by the event subject.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            subject_keys:
+              description: |-
+                The subjects that are attributed to the customer. Can be empty when no usage
+                event subjects are associated with the customer.
+              type: array
+              items:
+                $ref: '#/components/schemas/UsageAttributionSubjectKey'
+              minItems: 0
+              title: Subject Keys
+          required:
+            - subject_keys
+          title: Usage Attribution
+          x-speakeasy-param-computed: false
+        primary_email:
+          description: The primary email address of the customer.
+          type: string
+          default: null
+          nullable: true
+          title: Primary Email
+          x-speakeasy-param-computed: false
+        currency:
+          description: 'Currency of the customer. Used for billing, tax and invoicing.'
+          type: string
+          example: USD
+          default: null
+          maxLength: 3
+          minLength: 3
+          nullable: true
+          pattern: '^[A-Z]{3}$'
+          title: Currency
+          x-speakeasy-param-computed: false
+        billing_address:
+          description: The billing address of the customer. Used for tax and invoicing.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            country:
+              description: |-
+                Country code in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+                alpha-2 format.
+              type: string
+              example: US
+              default: null
+              maxLength: 2
+              minLength: 2
+              nullable: true
+              pattern: '^[A-Z]{2}$'
+              title: Country
+              x-speakeasy-param-computed: false
+            postal_code:
+              description: Postal code.
+              type: string
+              default: null
+              nullable: true
+              title: Postal Code
+              x-speakeasy-param-computed: false
+            state:
+              description: State or province.
+              type: string
+              default: null
+              nullable: true
+              title: State
+              x-speakeasy-param-computed: false
+            city:
+              description: City.
+              type: string
+              default: null
+              nullable: true
+              title: City
+              x-speakeasy-param-computed: false
+            line1:
+              description: First line of the address.
+              type: string
+              default: null
+              nullable: true
+              title: Line 1
+              x-speakeasy-param-computed: false
+            line2:
+              description: Second line of the address.
+              type: string
+              default: null
+              nullable: true
+              title: Line 2
+              x-speakeasy-param-computed: false
+            phone_number:
+              description: Phone number.
+              type: string
+              default: null
+              nullable: true
+              title: Phone Number
+              x-speakeasy-param-computed: false
+          title: Billing Address
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - name
+    UpsertPlanRequest:
+      description: Plan upsert request.
+      type: object
+      properties:
+        name:
+          description: |-
+            Display name of the resource.
+
+            Between 1 and 256 characters.
+          type: string
+          maxLength: 256
+          minLength: 1
+        description:
+          description: |-
+            Optional description of the resource.
+
+            Maximum 1024 characters.
+          type: string
+          default: null
+          maxLength: 1024
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        pro_rating_enabled:
+          description: Whether pro-rating is enabled for this plan.
+          type: boolean
+          default: true
+          title: Pro-rating enabled
+        phases:
+          description: |-
+            The plan phases define the pricing ramp for a subscription. A phase switch
+            occurs only at the end of a billing period. At least one phase is required.
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingPlanPhase'
+          minItems: 1
+          title: Plan phases
+      additionalProperties: false
+      required:
+        - name
+        - phases
+    UsageAttributionSubjectKey:
+      description: Subject key.
+      type: string
+      minLength: 1
+    GoneError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 410
+            title:
+              example: Gone
+            type:
+              example: 'https://httpstatuses.com/410'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Gone
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -71467,6 +75175,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             required:
               - name
@@ -71564,6 +75276,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             title: Portal
     ReplacePortalImageAsset:
@@ -73597,6 +77313,10 @@ components:
                       x-speakeasy-param-suppress-computed-diff: true
                     labels:
                       $ref: '#/components/schemas/Labels'
+                    notifications_developer_pii_visibility_enabled:
+                      description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                      type: boolean
+                      default: false
                   required:
                     - id
                     - name
@@ -73709,6 +77429,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/Labels'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             required:
               - id
@@ -74114,6 +77838,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    Gone:
+      description: Gone
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GoneError'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -74447,6 +78177,16 @@ tags:
     description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
   - name: Auth Server Scopes
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
+  - name: OpenMeter Product Catalog
+    description: 'Product catalog manages plans, add-ons, and their associations for subscription-based billing.'
+  - name: OpenMeter Billing
+    description: 'Billing manages the billing profiles, currencies, cost bases, and invoices for customers.'
+  - name: OpenMeter Subscriptions
+    description: Subscriptions are used to track usage of your product or service. Subscriptions can be individuals or organizations that can subscribe to plans and have access to features.
+  - name: OpenMeter Customers
+    description: Customers are used to track usage of your product or service. Customers can be individuals or organizations that can subscribe to plans and have access to features.
+  - name: Meters
+    description: 'Meters specify how to aggregate events for billing and analytics purposes. Meters can be configured with multiple aggregation methods and groupings. Multiple meters can be created for the same event type, enabling flexible metering scenarios.'
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
