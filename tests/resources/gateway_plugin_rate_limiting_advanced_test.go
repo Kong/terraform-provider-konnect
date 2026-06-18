@@ -33,6 +33,36 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 		})
 	})
 
+	t.Run("port-referenceable", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "6379"),
+					),
+				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "{vault://konnect/redis/portx}"),
+					),
+				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "6380"),
+					),
+				},
+			},
+		})
+	})
+
 	t.Run("CRUD-with-partial", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
