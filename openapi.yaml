@@ -65879,8 +65879,6 @@ components:
               x-speakeasy-param-computed: false
             redis:
               type: object
-              default: null
-              nullable: true
               properties:
                 cloud_authentication:
                   description: Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -66047,11 +66045,12 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
-                  maximum: 65535
-                  minimum: 0
-                  x-referenceable: true
+                  type: string
+                  x-speakeasy-terraform-custom-type:
+                    imports:
+                      - github.com/kong/terraform-provider-konnect/v3/internal/referenceabletypes
+                    schemaType: referenceabletypes.ReferenceableStringType{}
+                    valueType: referenceabletypes.ReferenceableString
                 read_timeout:
                   description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                   type: integer
