@@ -16,9 +16,16 @@ import (
 
 var update = flag.Bool("update", false, "update golden files")
 
-// loadFixture loads the testdata fixture package into a decorated tree with full
-// type information, the same way the engine loads the real provider packages.
-func loadFixture(t *testing.T) *decorator.Package {
+const (
+	fixtureProvider = "github.com/kong/terraform-provider-konnect/v3/tools/postprocess/passes/dynamictype/testdata/fixture/provider"
+	fixtureShared   = "github.com/kong/terraform-provider-konnect/v3/tools/postprocess/passes/dynamictype/testdata/fixture/shared"
+)
+
+// loadFixture loads the two fixture packages (provider + shared) into decorated
+// trees with full type information, the same way the engine loads the real
+// provider packages. The package separation matters: detectSDK must run only
+// over the shared package, exactly as in the real layout.
+func loadFixture(t *testing.T) (providerPkg, sharedPkg *decorator.Package) {
 	t.Helper()
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles |
@@ -27,48 +34,62 @@ func loadFixture(t *testing.T) *decorator.Package {
 		Dir:  ".",
 		Fset: token.NewFileSet(),
 	}
-	pkgs, err := decorator.Load(cfg, "./testdata/fixture")
+	pkgs, err := decorator.Load(cfg, "./testdata/fixture/provider", "./testdata/fixture/shared")
 	require.NoError(t, err)
-	require.Len(t, pkgs, 1)
-	require.Empty(t, pkgs[0].Errors, "fixture must type-check cleanly")
-	return pkgs[0]
+	for _, p := range pkgs {
+		require.Empty(t, p.Errors, "fixture %s must type-check cleanly", p.PkgPath)
+		switch p.PkgPath {
+		case fixtureProvider:
+			providerPkg = p
+		case fixtureShared:
+			sharedPkg = p
+		}
+	}
+	require.NotNil(t, providerPkg)
+	require.NotNil(t, sharedPkg)
+	return providerPkg, sharedPkg
 }
 
-// detectAll runs every detection stage over a single-package fixture, mirroring
-// Pass.Detect but without the engine's hardcoded multi-package layout.
-func detectAll(p *decorator.Package) []engine.Target {
+// detectAll runs every detection stage across the two fixture packages, mirroring
+// Pass.Detect but with the fixture's package paths instead of the engine's
+// hardcoded layout. Provider-side stages run over providerPkg; detectSDK runs
+// over sharedPkg only.
+func detectAll(providerPkg, sharedPkg *decorator.Package) []engine.Target {
 	var targets []engine.Target
 	marked := map[fieldRef]bool{}
 	sdkRefs := map[fieldRef]bool{}
+	buildNames := map[[2]string]bool{}
 
-	detectModel(p, &targets, marked)
-	detectSchema(p, &targets)
-	_ = detectRefresh(p, &targets, sdkRefs)
-	detectBuild(p, &targets, marked)
-	detectSDK(p, &targets, sdkRefs)
+	detectModel(providerPkg, &targets, marked)
+	detectSchema(providerPkg, &targets)
+	_ = detectRefresh(providerPkg, &targets, sdkRefs)
+	detectBuild(providerPkg, &targets, marked, buildNames)
+	detectSDK(sharedPkg, &targets, sdkRefs, buildNames)
 	return targets
 }
 
 func TestDetect(t *testing.T) {
-	p := loadFixture(t)
-	targets := detectAll(p)
+	providerPkg, sharedPkg := loadFixture(t)
+	targets := detectAll(providerPkg, sharedPkg)
 
 	counts := map[kind]int{}
 	for _, tg := range targets {
 		counts[tg.Data.(payload).kind]++
 	}
 
-	require.Equal(t, 1, counts[kindModel], "model field")
-	require.Equal(t, 1, counts[kindSchema], "schema attribute")
-	require.Equal(t, 1, counts[kindRefresh], "refresh site")
-	require.Equal(t, 1, counts[kindBuild], "build site")
-	require.Equal(t, 1, counts[kindSDKField], "sdk field")
-	require.Equal(t, 1, counts[kindSDKGetter], "sdk getter")
+	// Two marked fields: Redis.Port (pointer, refresh-linked) and
+	// ACLRule.ResourceNames (value, build-name-linked).
+	require.Equal(t, 2, counts[kindModel], "model fields")
+	require.Equal(t, 2, counts[kindSchema], "schema attributes")
+	require.Equal(t, 1, counts[kindRefresh], "refresh site (only Redis.Port has one)")
+	require.Equal(t, 2, counts[kindBuild], "build sites")
+	require.Equal(t, 2, counts[kindSDKField], "sdk fields")
+	require.Equal(t, 2, counts[kindSDKGetter], "sdk getters")
 }
 
 func TestApplyGolden(t *testing.T) {
-	p := loadFixture(t)
-	targets := detectAll(p)
+	providerPkg, sharedPkg := loadFixture(t)
+	targets := detectAll(providerPkg, sharedPkg)
 	require.NotEmpty(t, targets)
 
 	pass := New()
@@ -76,22 +97,30 @@ func TestApplyGolden(t *testing.T) {
 		require.NoError(t, pass.apply(tg), "apply %s", tg.Name)
 	}
 
-	var file *dst.File
-	for _, f := range p.Syntax {
-		file = f
-		break
-	}
-	require.NotNil(t, file)
+	for _, tc := range []struct {
+		pkg    *decorator.Package
+		golden string
+	}{
+		{providerPkg, "provider/expected.go.golden"},
+		{sharedPkg, "shared/expected.go.golden"},
+	} {
+		var file *dst.File
+		for _, f := range tc.pkg.Syntax {
+			file = f
+			break
+		}
+		require.NotNil(t, file)
 
-	got, err := engine.RenderFile(p, file)
-	require.NoError(t, err)
+		got, err := engine.RenderFile(tc.pkg, file)
+		require.NoError(t, err)
 
-	golden := filepath.Join("testdata", "fixture", "expected.go.golden")
-	if *update {
-		require.NoError(t, os.WriteFile(golden, got, 0o644))
-		return
+		golden := filepath.Join("testdata", "fixture", tc.golden)
+		if *update {
+			require.NoError(t, os.WriteFile(golden, got, 0o644))
+			continue
+		}
+		want, err := os.ReadFile(golden)
+		require.NoError(t, err, "run with -update to create %s", tc.golden)
+		require.Equal(t, string(want), string(got), tc.golden)
 	}
-	want, err := os.ReadFile(golden)
-	require.NoError(t, err, "run with -update to create the golden file")
-	require.Equal(t, string(want), string(got))
 }

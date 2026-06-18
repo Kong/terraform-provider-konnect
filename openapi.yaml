@@ -1850,6 +1850,86 @@ paths:
           format: uuid
           example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
         x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#DecryptFields':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Get a Consume Policy for Virtual Cluster
+      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Update Consume Policy for Virtual Cluster
+      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayParsedRecordDecryptFieldsPolicy'
+      responses:
+        '200':
+          description: Updated consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Delete Consume Policy for Virtual Cluster
+      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#ModifyHeaders':
     get:
       x-speakeasy-entity-operation:
@@ -2124,6 +2204,38 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
       - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#DecryptFields':
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Create Consume Policy for Virtual Cluster
+      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#ModifyHeaders':
     post:
       x-speakeasy-entity-operation:
@@ -2281,6 +2393,86 @@ paths:
         terraform-resource: EventGatewayProducePolicyEncrypt#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-produce-policy-encrypt
+      summary: Delete Produce Policy for Virtual Cluster
+      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#EncryptFields':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-produce-policy-encrypt-fields
+      summary: Get a Produce Policy for Virtual Cluster
+      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-produce-policy-encrypt-fields
+      summary: Update Produce Policy for Virtual Cluster
+      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayParsedRecordEncryptFieldsPolicy'
+      responses:
+        '200':
+          description: Updated produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-produce-policy-encrypt-fields
       summary: Delete Produce Policy for Virtual Cluster
       description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
       responses:
@@ -2482,6 +2674,38 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EventGatewayEncryptPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#EncryptFields':
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-produce-policy-encrypt-fields
+      summary: Create Produce Policy for Virtual Cluster
+      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
+      requestBody:
+        content:
+          application/json: {}
       responses:
         '201':
           description: Created
@@ -30570,16 +30794,6 @@ components:
           minLength: 1
       required:
         - id
-    SchemaValidationType:
-      description: |
-        How to validate the schema and parse the record.
-        * confluent_schema_registry - validates against confluent schema registry.
-        * json - simple JSON parsing without the schema.
-      type: string
-      enum:
-        - confluent_schema_registry
-        - json
-      x-speakeasy-unknown-values: allow
     SchemaRegistryCreate:
       description: The typed schema of the schema registry to create it.
       discriminator:
@@ -31272,6 +31486,165 @@ components:
         - failure_mode
         - part_of_record
         - encryption_key
+    EventGatewayParsedRecordEncryptFieldsPolicy:
+      description: |-
+        Encrypts fields of parsed Kafka records using AES_256_GCM. Keys are therefore 256 bits long.
+
+        Note this policy can only be used as a child of a `EventGatewayProduceSchemaValidationPolicy` policy.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: encrypt_fields
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayParsedRecordEncryptFieldsConfig'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+      required:
+        - type
+        - config
+      title: Encrypt Parsed Record
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    EventGatewayParsedRecordEncryptFieldsConfig:
+      description: The configuration of the encrypt parsed record policy.
+      type: object
+      properties:
+        encrypt_fields:
+          description: Selects which fields to encrypt and with what keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/EventGatewayParsedRecordEncryptionSelector'
+          maxItems: 256
+          minItems: 1
+      required:
+        - encrypt_fields
+    EventGatewayParsedRecordEncryptionSelector:
+      description: Selects fields of a parsed record for encryption and defines what key to encrypt them with.
+      type: object
+      properties:
+        encryption_key:
+          $ref: '#/components/schemas/EncryptionKey'
+        paths:
+          type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/kong/terraform-provider-konnect/v3/internal/referenceabletypes
+            schemaType: referenceabletypes.ReferenceableStringType{}
+            valueType: referenceabletypes.ReferenceableString
+      required:
+        - paths
+        - encryption_key
+    EventGatewayParsedRecordFieldPathsArray:
+      type: array
+      items:
+        type: object
+        required:
+          - match
+        properties:
+          match:
+            description: |
+              A field selector. It can select nested fields and array entries.
+
+              Currently supported are exact matches.
+            type: string
+            example: 'someObject.someArray[1].fieldName'
+      maxItems: 50
     EventGatewayDecryptPolicy:
       description: Decrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
       type: object
@@ -31369,6 +31742,149 @@ components:
         - failure_mode
         - key_sources
         - part_of_record
+    EventGatewayParsedRecordDecryptFieldsPolicy:
+      description: |-
+        Decrypts fields of parsed Kafka records using AES_256_GCM. Keys are therefore 256 bits long.
+
+        Note this policy can only be used as a child of a `EventGatewayConsumeSchemaValidationPolicy` policy.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: decrypt_fields
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayParsedRecordDecryptFieldsConfig'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+      required:
+        - type
+        - config
+      title: Decrypt Parsed Record Fields
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    EventGatewayParsedRecordDecryptFieldsConfig:
+      description: The configuration of the decrypt parsed record fields policy.
+      type: object
+      properties:
+        key_sources:
+          description: Describes how to find a symmetric key for decryption.
+          type: array
+          items:
+            $ref: '#/components/schemas/EventGatewayKeySource'
+          minItems: 1
+        decrypt_fields:
+          $ref: '#/components/schemas/EventGatewayParsedRecordDecryptionSelector'
+      required:
+        - key_sources
+        - decrypt_fields
+    EventGatewayParsedRecordDecryptionSelector:
+      description: Selects fields of a parsed record for decryption.
+      type: object
+      properties:
+        paths:
+          type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/kong/terraform-provider-konnect/v3/internal/referenceabletypes
+            schemaType: referenceabletypes.ReferenceableStringType{}
+            valueType: referenceabletypes.ReferenceableString
+      required:
+        - paths
     EventGatewayModifyHeadersPolicy:
       description: A policy that modifies headers for requests.
       type: object
@@ -31886,37 +32402,9 @@ components:
         labels:
           $ref: '#/components/schemas/Labels'
         config:
-          description: The configuration of the schema validation policy.
+          description: The configuration of the policy.
           type: object
-          properties:
-            type:
-              $ref: '#/components/schemas/SchemaValidationType'
-            schema_registry:
-              $ref: '#/components/schemas/SchemaRegistryReference'
-            validate_key:
-              description: |-
-                If true, validate the record key.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
-            validate_value:
-              description: |-
-                If true, validate the record value.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
-            key_validation_action:
-              $ref: '#/components/schemas/ConsumeKeyValidationAction'
-            value_validation_action:
-              $ref: '#/components/schemas/ConsumeValueValidationAction'
-          required:
-            - type
+          $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyConfig'
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
@@ -31961,6 +32449,82 @@ components:
         - type
         - config
       title: Schema Validation
+    EventGatewayConsumeSchemaValidationPolicyConfig:
+      description: The configuration of the consume schema validation policy.
+      discriminator:
+        propertyName: type
+        mapping:
+          confluent_schema_registry: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+          json: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+    EventGatewayConsumeSchemaValidationPolicyJsonConfig:
+      description: The configuration of the consume schema validation policy when using JSON parsing without schema.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: json
+      required:
+        - type
+    EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig:
+      description: The configuration of the consume schema validation policy when using a schema registry.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: confluent_schema_registry
+      required:
+        - type
     EventGatewayProduceSchemaValidationPolicy:
       description: A policy that validates produce messages against a schema registry.
       type: object
@@ -58454,6 +59018,7 @@ components:
             access_logs_endpoint:
               description: 'An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.'
               type: string
+              deprecated: true
               x-referenceable: true
               x-speakeasy-param-computed: true
           x-speakeasy-param-computed: true
@@ -65879,6 +66444,8 @@ components:
               x-speakeasy-param-computed: false
             redis:
               type: object
+              default: null
+              nullable: true
               properties:
                 cloud_authentication:
                   description: Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -71467,6 +72034,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             required:
               - name
@@ -71564,6 +72135,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             title: Portal
     ReplacePortalImageAsset:
@@ -73597,6 +74172,10 @@ components:
                       x-speakeasy-param-suppress-computed-diff: true
                     labels:
                       $ref: '#/components/schemas/Labels'
+                    notifications_developer_pii_visibility_enabled:
+                      description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                      type: boolean
+                      default: false
                   required:
                     - id
                     - name
@@ -73709,6 +74288,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/Labels'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             required:
               - id

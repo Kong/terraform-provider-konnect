@@ -28,17 +28,22 @@ func (*Pass) Detect(b *engine.Bundle) ([]engine.Target, error) {
 	marked := map[fieldRef]bool{}
 	detectModel(typesD, &targets, marked)
 
-	// 2. Provider schema + refresh + build. The refresh sites reveal which SDK
-	//    fields feed a dynamic value.
+	// 2. Provider schema + refresh + build. Both the refresh sites (SDK source
+	//    expr) and the build sites (model field that flows into the SDK struct)
+	//    reveal which SDK fields feed a dynamic value.
 	sdkRefs := map[fieldRef]bool{}
+	buildNames := map[[2]string]bool{}
 	detectSchema(providerD, &targets)
 	if err := detectRefresh(providerD, &targets, sdkRefs); err != nil {
 		return nil, err
 	}
-	detectBuild(providerD, &targets, marked)
+	detectBuild(providerD, &targets, marked, buildNames)
 
-	// 3. SDK struct fields + getters feeding a dynamic value.
-	detectSDK(sharedD, &targets, sdkRefs)
+	// 3. SDK struct fields + getters feeding a dynamic value. A field qualifies
+	//    if a refresh names it directly, or a build site flows a dynamic value
+	//    into the identically named SDK struct field (Speakeasy mirrors the
+	//    model and SDK struct/field names).
+	detectSDK(sharedD, &targets, sdkRefs, buildNames)
 
 	return targets, nil
 }
@@ -216,38 +221,36 @@ func refreshAssignment(p *decorator.Package, list []ast.Stmt, start int) (ast.Ex
 	return nil, 0
 }
 
-func detectBuild(p *decorator.Package, targets *[]engine.Target, marked map[fieldRef]bool) {
+// detectBuild locates the primitive-builder block for each marked model field.
+// Speakeasy emits one of two shapes depending on whether the SDK field is a
+// pointer or a value:
+//
+//	// pointer (e.g. redis.port -> *string)
+//	port1 := new(string)
+//	if !M.IsUnknown() && !M.IsNull() { *port1 = M.ValueString() } else { port1 = nil }
+//
+//	// value (e.g. acl rule resource_names -> string)
+//	var resourceNames string
+//	resourceNames = M.ValueString()
+//
+// Both are replaced by `<var> := dynamic.ToAny(M)`. Each matched site records
+// its (struct, field) name in buildNames so the SDK field can be retyped even
+// when there is no refresh site (nested slices refresh via a prior-state copy).
+func detectBuild(p *decorator.Package, targets *[]engine.Target, marked map[fieldRef]bool, buildNames map[[2]string]bool) {
 	forEachFile(p, func(af *ast.File, file *dst.File) {
 		ast.Inspect(af, func(n ast.Node) bool {
 			blk, ok := n.(*ast.BlockStmt)
 			if !ok {
 				return true
 			}
-			for i := 0; i+1 < len(blk.List); i++ {
-				as, ok := blk.List[i].(*ast.AssignStmt)
-				if !ok || as.Tok != token.DEFINE || len(as.Lhs) != 1 || len(as.Rhs) != 1 {
-					continue
-				}
-				varIdent, ok := as.Lhs[0].(*ast.Ident)
-				if !ok || !isNewCall(as.Rhs[0]) {
-					continue
-				}
-				ifs, ok := blk.List[i+1].(*ast.IfStmt)
-				if !ok {
-					continue
-				}
-				model := buildModelExpr(ifs, varIdent.Name)
+			for i := 0; i < len(blk.List); i++ {
+				varName, model, start, count := matchBuilder(p, blk.List, i, marked)
 				if model == nil {
 					continue
 				}
-				msel, ok := model.(*ast.SelectorExpr)
-				if !ok {
-					continue
-				}
-				ref, ok := fieldRefOf(p.TypesInfo, msel.X, msel.Sel.Name)
-				if !ok || !marked[ref] {
-					continue
-				}
+				msel := model.(*ast.SelectorExpr)
+				ref, _ := fieldRefOf(p.TypesInfo, msel.X, msel.Sel.Name)
+				buildNames[[2]string{ref.typ, ref.field}] = true
 
 				dstBlk, ok := engine.DstFor(p, blk).(*dst.BlockStmt)
 				if !ok {
@@ -255,17 +258,100 @@ func detectBuild(p *decorator.Package, targets *[]engine.Target, marked map[fiel
 				}
 				site := &buildSite{
 					block:   dstBlk,
-					varName: varIdent.Name,
+					varName: varName,
 					model:   dstExpr(p, model),
-					start:   i,
-					count:   2,
+					start:   start,
+					count:   count,
 				}
-				captureLeading(dstBlk, i, &site.leadingBefore, &site.leading)
+				captureLeading(dstBlk, start, &site.leadingBefore, &site.leading)
 				*targets = append(*targets, target("build:"+msel.Sel.Name, p, file, kindBuild, site))
 			}
 			return true
 		})
 	})
+}
+
+// matchBuilder tries to match a builder shape anchored at blk.List[i]. On a
+// match it returns the result variable name, the marked model expression, and
+// the [start,count) span of statements to replace; otherwise model is nil.
+func matchBuilder(p *decorator.Package, list []ast.Stmt, i int, marked map[fieldRef]bool) (varName string, model ast.Expr, start, count int) {
+	// Pointer shape: `X := new(T)` followed by an if writing `*X = M.ValueString()`.
+	if as, ok := list[i].(*ast.AssignStmt); ok && as.Tok == token.DEFINE &&
+		len(as.Lhs) == 1 && len(as.Rhs) == 1 && isNewCall(as.Rhs[0]) {
+		if id, ok := as.Lhs[0].(*ast.Ident); ok && i+1 < len(list) {
+			if ifs, ok := list[i+1].(*ast.IfStmt); ok {
+				if m := buildModelExpr(ifs, id.Name); m != nil && markedSelector(p, m, marked) {
+					return id.Name, m, i, 2
+				}
+			}
+		}
+	}
+
+	// Value shape: an assignment `X = M.ValueString()` (or `X := …`), optionally
+	// preceded by a `var X T` declaration.
+	if as, ok := list[i].(*ast.AssignStmt); ok && len(as.Lhs) == 1 && len(as.Rhs) == 1 {
+		id, ok := as.Lhs[0].(*ast.Ident)
+		if !ok {
+			return "", nil, 0, 0
+		}
+		m := valueStringReceiver(as.Rhs[0])
+		if m == nil || !markedSelector(p, m, marked) {
+			return "", nil, 0, 0
+		}
+		if i > 0 && declStmtDeclares(list[i-1], id.Name) {
+			return id.Name, m, i - 1, 2
+		}
+		return id.Name, m, i, 1
+	}
+
+	return "", nil, 0, 0
+}
+
+// markedSelector reports whether e is a selector on a marked model field.
+func markedSelector(p *decorator.Package, e ast.Expr, marked map[fieldRef]bool) bool {
+	sel, ok := e.(*ast.SelectorExpr)
+	if !ok {
+		return false
+	}
+	ref, ok := fieldRefOf(p.TypesInfo, sel.X, sel.Sel.Name)
+	return ok && marked[ref]
+}
+
+// valueStringReceiver returns M if e is `M.ValueString()`, else nil.
+func valueStringReceiver(e ast.Expr) ast.Expr {
+	c, ok := e.(*ast.CallExpr)
+	if !ok || len(c.Args) != 0 {
+		return nil
+	}
+	sel, ok := c.Fun.(*ast.SelectorExpr)
+	if !ok || sel.Sel.Name != "ValueString" {
+		return nil
+	}
+	return sel.X
+}
+
+// declStmtDeclares reports whether stmt is `var <name> T`.
+func declStmtDeclares(stmt ast.Stmt, name string) bool {
+	ds, ok := stmt.(*ast.DeclStmt)
+	if !ok {
+		return false
+	}
+	gd, ok := ds.Decl.(*ast.GenDecl)
+	if !ok || gd.Tok != token.VAR {
+		return false
+	}
+	for _, spec := range gd.Specs {
+		vs, ok := spec.(*ast.ValueSpec)
+		if !ok {
+			continue
+		}
+		for _, n := range vs.Names {
+			if n.Name == name {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // isNewCall reports whether e is `new(<type>)`.
@@ -309,9 +395,14 @@ func buildModelExpr(ifs *ast.IfStmt, varName string) ast.Expr {
 	return found
 }
 
-func detectSDK(p *decorator.Package, targets *[]engine.Target, sdkRefs map[fieldRef]bool) {
-	if len(sdkRefs) == 0 {
+func detectSDK(p *decorator.Package, targets *[]engine.Target, sdkRefs map[fieldRef]bool, buildNames map[[2]string]bool) {
+	if len(sdkRefs) == 0 && len(buildNames) == 0 {
 		return
+	}
+	// wants reports whether the SDK field (struct, name) feeds a dynamic value.
+	wants := func(structName, name string) bool {
+		return sdkRefs[fieldRef{pkgPath: p.PkgPath, typ: structName, field: name}] ||
+			buildNames[[2]string{structName, name}]
 	}
 	forEachFile(p, func(af *ast.File, file *dst.File) {
 		for _, decl := range af.Decls {
@@ -331,8 +422,7 @@ func detectSDK(p *decorator.Package, targets *[]engine.Target, sdkRefs map[field
 					}
 					for _, f := range st.Fields.List {
 						for _, nm := range f.Names {
-							ref := fieldRef{pkgPath: p.PkgPath, typ: ts.Name.Name, field: nm.Name}
-							if !sdkRefs[ref] {
+							if !wants(ts.Name.Name, nm.Name) {
 								continue
 							}
 							if df, ok := engine.DstFor(p, f).(*dst.Field); ok {
@@ -346,11 +436,13 @@ func detectSDK(p *decorator.Package, targets *[]engine.Target, sdkRefs map[field
 					continue
 				}
 				recv := recvTypeName(d.Recv.List[0].Type)
-				for ref := range sdkRefs {
-					if ref.typ == recv && d.Name.Name == "Get"+ref.field {
-						if fd, ok := engine.DstFor(p, d).(*dst.FuncDecl); ok {
-							*targets = append(*targets, target("sdkgetter:"+d.Name.Name, p, file, kindSDKGetter, &sdkGetterSite{fn: fd}))
-						}
+				const getterPrefix = "Get"
+				if recv == "" || len(d.Name.Name) <= len(getterPrefix) || d.Name.Name[:len(getterPrefix)] != getterPrefix {
+					continue
+				}
+				if wants(recv, d.Name.Name[len(getterPrefix):]) {
+					if fd, ok := engine.DstFor(p, d).(*dst.FuncDecl); ok {
+						*targets = append(*targets, target("sdkgetter:"+d.Name.Name, p, file, kindSDKGetter, &sdkGetterSite{fn: fd}))
 					}
 				}
 			}
