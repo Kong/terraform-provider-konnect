@@ -8,6 +8,37 @@ import (
 )
 
 func TestGatewayPluginServiceProtection(t *testing.T) {
+	t.Run("port-referenceable", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_service_protection.my_service_protection", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_service_protection.my_service_protection", "config.strategy", "redis"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_service_protection.my_service_protection", "config.redis.port", "6379"),
+					),
+				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_service_protection.my_service_protection", "config.redis.port", "{vault://konnect/redis/portx}"),
+					),
+				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_service_protection.my_service_protection", "config.redis.port", "6380"),
+					),
+				},
+			},
+		})
+	})
+
 	t.Run("CRUD-with-partial", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
