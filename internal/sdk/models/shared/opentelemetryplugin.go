@@ -568,6 +568,8 @@ type OpentelemetryPluginConfig struct {
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	TracesEndpoint *string `default:"null" json:"traces_endpoint"`
 	// An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	AccessLogsEndpoint *string `json:"access_logs_endpoint,omitempty"`
 }
 

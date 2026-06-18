@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -72,49 +73,144 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"key_validation_action": schema.StringAttribute{
-						Optional:           true,
-						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
-							`` + "\n" +
-							`Defines a behavior when record key is not valid.` + "\n" +
-							`* mark - marks a record with kong/server header and client ID value` + "\n" +
-							`  to help to identify the clients violating schema.` + "\n" +
-							`* skip - skips delivering a record.` + "\n" +
-							`possible known values include one of ["mark", "skip"]`,
-					},
-					"schema_registry": schema.SingleNestedAttribute{
+					"confluent_schema_registry": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								Required:    true,
-								Description: `The unique identifier of the schema registry.`,
-								Validators: []validator.String{
-									stringvalidator.UTF8LengthAtLeast(1),
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
+									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
+							},
+							"key_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record key is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+							"schema_registry": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										Required:    true,
+										Description: `The unique identifier of the schema registry.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
+									},
 								},
 							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"value_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record value is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+						},
+						Description: `The configuration of the consume schema validation policy when using a schema registry.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("json"),
+							}...),
 						},
 					},
-					"type": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `How to validate the schema and parse the record.` + "\n" +
-							`* confluent_schema_registry - validates against confluent schema registry.` + "\n" +
-							`* json - simple JSON parsing without the schema.` + "\n" +
-							`possible known values include one of ["confluent_schema_registry", "json"]`,
-					},
-					"value_validation_action": schema.StringAttribute{
-						Optional:           true,
-						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
-							`` + "\n" +
-							`Defines a behavior when record value is not valid.` + "\n" +
-							`* mark - marks a record with kong/server header and client ID value` + "\n" +
-							`  to help to identify the clients violating schema.` + "\n" +
-							`* skip - skips delivering a record.` + "\n" +
-							`possible known values include one of ["mark", "skip"]`,
+					"json": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
+									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
+							},
+							"key_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record key is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+							"schema_registry": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										Required:    true,
+										Description: `The unique identifier of the schema registry.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
+									},
+								},
+							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"value_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record value is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+						},
+						Description: `The configuration of the consume schema validation policy when using JSON parsing without schema.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("confluent_schema_registry"),
+							}...),
+						},
 					},
 				},
-				Description: `The configuration of the schema validation policy.`,
+				Description: `The configuration of the consume schema validation policy.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

@@ -53,6 +53,7 @@ type EventGatewayVirtualClusterResourceModel struct {
 	Labels         map[string]types.String                      `tfsdk:"labels"`
 	Name           types.String                                 `tfsdk:"name"`
 	Namespace      *tfTypes.VirtualClusterNamespace             `tfsdk:"namespace"`
+	TopicAliases   []tfTypes.VirtualClusterTopicAlias           `tfsdk:"topic_aliases"`
 	UpdatedAt      types.String                                 `tfsdk:"updated_at"`
 }
 
@@ -558,6 +559,53 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 				},
 				MarkdownDescription: `Namespace allows to implement multitenancy using a single backend cluster.` + "\n" +
 					`It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).`,
+			},
+			"topic_aliases": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"alias": schema.StringAttribute{
+							Required:    true,
+							Description: `The client-visible topic name.`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
+						},
+						"conflict": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							Default:  stringdefault.StaticString(`warn`),
+							MarkdownDescription: `How to handle conflicts where an alias shadows a physical topic.` + "\n" +
+								`* warn - activate the alias but log a warning and set the conflict metric to 1.` + "\n" +
+								`* ignore - activate the alias silently.` + "\n" +
+								`possible known values include one of ["warn", "ignore"]; Default: "warn"`,
+						},
+						"match": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							Default:  stringdefault.StaticString(``),
+							MarkdownDescription: `CEL expression evaluated against the connection's auth context.` + "\n" +
+								`If omitted or empty, the alias is active for all connections.` + "\n" +
+								`Default: ""`,
+						},
+						"topic": schema.StringAttribute{
+							Required:    true,
+							Description: `The namespace-visible topic name this alias resolves to.`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
+						},
+					},
+				},
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Topic aliases allow exposing backend topics under additional names.` + "\n" +
+					`An alias creates a new entry point to the same physical data.` + "\n" +
+					`The alias ` + "`" + `topic` + "`" + ` field references namespace-visible names (if namespace is configured).` + "\n" +
+					`Aliases are independent of namespace and can be used without it.` + "\n" +
+					`` + "\n" +
+					`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

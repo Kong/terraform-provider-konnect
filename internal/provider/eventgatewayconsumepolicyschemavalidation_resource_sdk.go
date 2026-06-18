@@ -18,14 +18,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config != nil {
-			configPriorData := r.Config
 			r.Config = &tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig{}
-			if configPriorData != nil {
-				r.Config.KeyValidationAction = configPriorData.KeyValidationAction
-				r.Config.SchemaRegistry = configPriorData.SchemaRegistry
-				r.Config.Type = configPriorData.Type
-				r.Config.ValueValidationAction = configPriorData.ValueValidationAction
-			}
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -172,33 +165,116 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 		}
 		labels[labelsKey] = labelsInst
 	}
-	typeVar := shared.SchemaValidationType(r.Config.Type.ValueString())
-	var schemaRegistry *shared.SchemaRegistryReference
-	if r.Config.SchemaRegistry != nil {
-		var id string
-		id = r.Config.SchemaRegistry.ID.ValueString()
+	var config shared.EventGatewayConsumeSchemaValidationPolicyConfig
+	var eventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig *shared.EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig
+	if r.Config.ConfluentSchemaRegistry != nil {
+		var schemaRegistry *shared.SchemaRegistryReference
+		if r.Config.ConfluentSchemaRegistry.SchemaRegistry != nil {
+			var id string
+			id = r.Config.ConfluentSchemaRegistry.SchemaRegistry.ID.ValueString()
 
-		schemaRegistry = &shared.SchemaRegistryReference{
-			ID: id,
+			schemaRegistry = &shared.SchemaRegistryReference{
+				ID: id,
+			}
+		}
+		failureMode := new(shared.ConsumeFailureMode)
+		if !r.Config.ConfluentSchemaRegistry.FailureMode.IsUnknown() && !r.Config.ConfluentSchemaRegistry.FailureMode.IsNull() {
+			*failureMode = shared.ConsumeFailureMode(r.Config.ConfluentSchemaRegistry.FailureMode.ValueString())
+		} else {
+			failureMode = nil
+		}
+		validateKey := new(bool)
+		if !r.Config.ConfluentSchemaRegistry.ValidateKey.IsUnknown() && !r.Config.ConfluentSchemaRegistry.ValidateKey.IsNull() {
+			*validateKey = r.Config.ConfluentSchemaRegistry.ValidateKey.ValueBool()
+		} else {
+			validateKey = nil
+		}
+		validateValue := new(bool)
+		if !r.Config.ConfluentSchemaRegistry.ValidateValue.IsUnknown() && !r.Config.ConfluentSchemaRegistry.ValidateValue.IsNull() {
+			*validateValue = r.Config.ConfluentSchemaRegistry.ValidateValue.ValueBool()
+		} else {
+			validateValue = nil
+		}
+		keyValidationAction := new(shared.ConsumeKeyValidationAction)
+		if !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsUnknown() && !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsNull() {
+			*keyValidationAction = shared.ConsumeKeyValidationAction(r.Config.ConfluentSchemaRegistry.KeyValidationAction.ValueString())
+		} else {
+			keyValidationAction = nil
+		}
+		valueValidationAction := new(shared.ConsumeValueValidationAction)
+		if !r.Config.ConfluentSchemaRegistry.ValueValidationAction.IsUnknown() && !r.Config.ConfluentSchemaRegistry.ValueValidationAction.IsNull() {
+			*valueValidationAction = shared.ConsumeValueValidationAction(r.Config.ConfluentSchemaRegistry.ValueValidationAction.ValueString())
+		} else {
+			valueValidationAction = nil
+		}
+		eventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig = &shared.EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig{
+			SchemaRegistry:        schemaRegistry,
+			FailureMode:           failureMode,
+			ValidateKey:           validateKey,
+			ValidateValue:         validateValue,
+			KeyValidationAction:   keyValidationAction,
+			ValueValidationAction: valueValidationAction,
 		}
 	}
-	keyValidationAction := new(shared.ConsumeKeyValidationAction)
-	if !r.Config.KeyValidationAction.IsUnknown() && !r.Config.KeyValidationAction.IsNull() {
-		*keyValidationAction = shared.ConsumeKeyValidationAction(r.Config.KeyValidationAction.ValueString())
-	} else {
-		keyValidationAction = nil
+	if eventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig != nil {
+		config = shared.EventGatewayConsumeSchemaValidationPolicyConfig{
+			EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig: eventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig,
+		}
 	}
-	valueValidationAction := new(shared.ConsumeValueValidationAction)
-	if !r.Config.ValueValidationAction.IsUnknown() && !r.Config.ValueValidationAction.IsNull() {
-		*valueValidationAction = shared.ConsumeValueValidationAction(r.Config.ValueValidationAction.ValueString())
-	} else {
-		valueValidationAction = nil
+	var eventGatewayConsumeSchemaValidationPolicyJSONConfig *shared.EventGatewayConsumeSchemaValidationPolicyJSONConfig
+	if r.Config.JSON != nil {
+		var schemaRegistry1 *shared.SchemaRegistryReference
+		if r.Config.JSON.SchemaRegistry != nil {
+			var id1 string
+			id1 = r.Config.JSON.SchemaRegistry.ID.ValueString()
+
+			schemaRegistry1 = &shared.SchemaRegistryReference{
+				ID: id1,
+			}
+		}
+		failureMode1 := new(shared.ConsumeFailureMode)
+		if !r.Config.JSON.FailureMode.IsUnknown() && !r.Config.JSON.FailureMode.IsNull() {
+			*failureMode1 = shared.ConsumeFailureMode(r.Config.JSON.FailureMode.ValueString())
+		} else {
+			failureMode1 = nil
+		}
+		validateKey1 := new(bool)
+		if !r.Config.JSON.ValidateKey.IsUnknown() && !r.Config.JSON.ValidateKey.IsNull() {
+			*validateKey1 = r.Config.JSON.ValidateKey.ValueBool()
+		} else {
+			validateKey1 = nil
+		}
+		validateValue1 := new(bool)
+		if !r.Config.JSON.ValidateValue.IsUnknown() && !r.Config.JSON.ValidateValue.IsNull() {
+			*validateValue1 = r.Config.JSON.ValidateValue.ValueBool()
+		} else {
+			validateValue1 = nil
+		}
+		keyValidationAction1 := new(shared.ConsumeKeyValidationAction)
+		if !r.Config.JSON.KeyValidationAction.IsUnknown() && !r.Config.JSON.KeyValidationAction.IsNull() {
+			*keyValidationAction1 = shared.ConsumeKeyValidationAction(r.Config.JSON.KeyValidationAction.ValueString())
+		} else {
+			keyValidationAction1 = nil
+		}
+		valueValidationAction1 := new(shared.ConsumeValueValidationAction)
+		if !r.Config.JSON.ValueValidationAction.IsUnknown() && !r.Config.JSON.ValueValidationAction.IsNull() {
+			*valueValidationAction1 = shared.ConsumeValueValidationAction(r.Config.JSON.ValueValidationAction.ValueString())
+		} else {
+			valueValidationAction1 = nil
+		}
+		eventGatewayConsumeSchemaValidationPolicyJSONConfig = &shared.EventGatewayConsumeSchemaValidationPolicyJSONConfig{
+			SchemaRegistry:        schemaRegistry1,
+			FailureMode:           failureMode1,
+			ValidateKey:           validateKey1,
+			ValidateValue:         validateValue1,
+			KeyValidationAction:   keyValidationAction1,
+			ValueValidationAction: valueValidationAction1,
+		}
 	}
-	config := shared.EventGatewayConsumeSchemaValidationPolicyConfig{
-		Type:                  typeVar,
-		SchemaRegistry:        schemaRegistry,
-		KeyValidationAction:   keyValidationAction,
-		ValueValidationAction: valueValidationAction,
+	if eventGatewayConsumeSchemaValidationPolicyJSONConfig != nil {
+		config = shared.EventGatewayConsumeSchemaValidationPolicyConfig{
+			EventGatewayConsumeSchemaValidationPolicyJSONConfig: eventGatewayConsumeSchemaValidationPolicyJSONConfig,
+		}
 	}
 	condition := new(string)
 	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {

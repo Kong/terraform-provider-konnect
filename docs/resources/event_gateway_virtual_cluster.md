@@ -63,6 +63,14 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
     mode   = "hide_prefix"
     prefix = "...my_prefix..."
   }
+  topic_aliases = [
+    {
+      alias    = "...my_alias..."
+      conflict = "warn"
+      match    = ""
+      topic    = "...my_topic..."
+    }
+  ]
 }
 ```
 
@@ -98,6 +106,15 @@ The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `namespace` (Attributes) Namespace allows to implement multitenancy using a single backend cluster.
 It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs). (see [below for nested schema](#nestedatt--namespace))
+- `topic_aliases` (Attributes List) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Topic aliases allow exposing backend topics under additional names.
+An alias creates a new entry point to the same physical data.
+The alias `topic` field references namespace-visible names (if namespace is configured).
+Aliases are independent of namespace and can be used without it.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--topic_aliases))
 
 ### Read-Only
 
@@ -324,6 +341,28 @@ Optional:
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
 possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `glob` (String) Expose any backend topic that matches this glob pattern (e.g., `operations_data_*`). Not Null
+
+
+
+
+
+<a id="nestedatt--topic_aliases"></a>
+### Nested Schema for `topic_aliases`
+
+Required:
+
+- `alias` (String) The client-visible topic name.
+- `topic` (String) The namespace-visible topic name this alias resolves to.
+
+Optional:
+
+- `conflict` (String) How to handle conflicts where an alias shadows a physical topic.
+* warn - activate the alias but log a warning and set the conflict metric to 1.
+* ignore - activate the alias silently.
+possible known values include one of ["warn", "ignore"]; Default: "warn"
+- `match` (String) CEL expression evaluated against the connection's auth context.
+If omitted or empty, the alias is active for all connections.
+Default: ""
 
 ## Import
 

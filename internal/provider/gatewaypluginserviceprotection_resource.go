@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -125,61 +126,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"redis": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"cloud_authentication": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`auth_provider`:            types.StringType,
-									`aws_access_key_id`:        types.StringType,
-									`aws_assume_role_arn`:      types.StringType,
-									`aws_cache_name`:           types.StringType,
-									`aws_is_serverless`:        types.BoolType,
-									`aws_region`:               types.StringType,
-									`aws_role_session_name`:    types.StringType,
-									`aws_secret_access_key`:    types.StringType,
-									`azure_client_id`:          types.StringType,
-									`azure_client_secret`:      types.StringType,
-									`azure_tenant_id`:          types.StringType,
-									`gcp_service_account_json`: types.StringType,
-								},
-							},
-							"cluster_max_redirections": types.Int64Type,
-							"cluster_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`ip`:   types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"connect_timeout":       types.Int64Type,
-							"connection_is_proxied": types.BoolType,
-							"database":              types.Int64Type,
-							"host":                  types.StringType,
-							"keepalive_backlog":     types.Int64Type,
-							"keepalive_pool_size":   types.Int64Type,
-							"password":              types.StringType,
-							"port":                  types.Int64Type,
-							"read_timeout":          types.Int64Type,
-							"send_timeout":          types.Int64Type,
-							"sentinel_master":       types.StringType,
-							"sentinel_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`host`: types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"sentinel_password": types.StringType,
-							"sentinel_role":     types.StringType,
-							"sentinel_username": types.StringType,
-							"server_name":       types.StringType,
-							"ssl":               types.BoolType,
-							"ssl_verify":        types.BoolType,
-							"username":          types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"cloud_authentication": schema.SingleNestedAttribute{
 								Computed: true,
@@ -332,14 +279,10 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
-							"port": schema.Int64Attribute{
+							"port": schema.DynamicAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(6379),
-								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
-								Validators: []validator.Int64{
-									int64validator.Between(0, 65535),
-								},
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							},
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,

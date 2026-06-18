@@ -9,6 +9,13 @@ import (
 // EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig - The configuration of the produce schema validation policy when using a schema registry.
 type EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig struct {
 	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
+	// Describes how to handle a failure in a policy applied to produced records.
+	// * `reject` - rejects the record batch.
+	// * `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
+	// * `mark` - passes the record to the backend cluster but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FailureMode *ProduceFailureMode `json:"failure_mode,omitempty"`
 	// If true, validate the record key.
 	//
 	// **Requires a minimum runtime version of `1.2`**.
@@ -49,6 +56,13 @@ func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetSchem
 		return nil
 	}
 	return e.SchemaRegistry
+}
+
+func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetFailureMode() *ProduceFailureMode {
+	if e == nil {
+		return nil
+	}
+	return e.FailureMode
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetValidateKey() *bool {

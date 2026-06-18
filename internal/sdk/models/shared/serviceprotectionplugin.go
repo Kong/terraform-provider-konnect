@@ -377,7 +377,7 @@ type ServiceProtectionPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port any `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -483,7 +483,7 @@ func (s *ServiceProtectionPluginRedis) GetPassword() *string {
 	return s.Password
 }
 
-func (s *ServiceProtectionPluginRedis) GetPort() *int64 {
+func (s *ServiceProtectionPluginRedis) GetPort() any {
 	if s == nil {
 		return nil
 	}
@@ -631,7 +631,7 @@ type ServiceProtectionPluginConfig struct {
 	LockDictionaryName *string `default:"kong_locks" json:"lock_dictionary_name"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 	Namespace *string                       `default:"null" json:"namespace"`
-	Redis     *ServiceProtectionPluginRedis `json:"redis"`
+	Redis     *ServiceProtectionPluginRedis `json:"redis,omitempty"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`.

@@ -40,7 +40,7 @@ type EventGatewayProducePolicySchemaValidationResource struct {
 // EventGatewayProducePolicySchemaValidationResourceModel describes the resource data model.
 type EventGatewayProducePolicySchemaValidationResourceModel struct {
 	Condition        types.String                                             `tfsdk:"condition"`
-	Config           *tfTypes.EventGatewayProduceSchemaValidationPolicyConfig `tfsdk:"config"`
+	Config           *tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig `tfsdk:"config"`
 	CreatedAt        types.String                                             `tfsdk:"created_at"`
 	Description      types.String                                             `tfsdk:"description"`
 	Enabled          types.Bool                                               `tfsdk:"enabled"`
@@ -76,6 +76,16 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 					"confluent_schema_registry": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to produced records.` + "\n" +
+									`* ` + "`" + `reject` + "`" + ` - rejects the record batch.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record silently to the backend cluster even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the backend cluster but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["reject", "passthrough", "mark"]`,
+							},
 							"key_validation_action": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
@@ -95,6 +105,18 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 										},
 									},
 								},
+							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 							},
 							"value_validation_action": schema.StringAttribute{
 								Optional: true,
@@ -115,6 +137,16 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 					"json": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to produced records.` + "\n" +
+									`* ` + "`" + `reject` + "`" + ` - rejects the record batch.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record silently to the backend cluster even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the backend cluster but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["reject", "passthrough", "mark"]`,
+							},
 							"key_validation_action": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
@@ -134,6 +166,18 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 										},
 									},
 								},
+							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 							},
 							"value_validation_action": schema.StringAttribute{
 								Optional: true,

@@ -18,7 +18,7 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromShar
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		if r.Config == nil {
-			r.Config = &tfTypes.EventGatewayProduceSchemaValidationPolicyConfig{}
+			r.Config = &tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig{}
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -177,6 +177,24 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 				ID: id,
 			}
 		}
+		failureMode := new(shared.ProduceFailureMode)
+		if !r.Config.ConfluentSchemaRegistry.FailureMode.IsUnknown() && !r.Config.ConfluentSchemaRegistry.FailureMode.IsNull() {
+			*failureMode = shared.ProduceFailureMode(r.Config.ConfluentSchemaRegistry.FailureMode.ValueString())
+		} else {
+			failureMode = nil
+		}
+		validateKey := new(bool)
+		if !r.Config.ConfluentSchemaRegistry.ValidateKey.IsUnknown() && !r.Config.ConfluentSchemaRegistry.ValidateKey.IsNull() {
+			*validateKey = r.Config.ConfluentSchemaRegistry.ValidateKey.ValueBool()
+		} else {
+			validateKey = nil
+		}
+		validateValue := new(bool)
+		if !r.Config.ConfluentSchemaRegistry.ValidateValue.IsUnknown() && !r.Config.ConfluentSchemaRegistry.ValidateValue.IsNull() {
+			*validateValue = r.Config.ConfluentSchemaRegistry.ValidateValue.ValueBool()
+		} else {
+			validateValue = nil
+		}
 		keyValidationAction := new(shared.ProduceKeyValidationAction)
 		if !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsUnknown() && !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsNull() {
 			*keyValidationAction = shared.ProduceKeyValidationAction(r.Config.ConfluentSchemaRegistry.KeyValidationAction.ValueString())
@@ -191,6 +209,9 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 		}
 		eventGatewayProduceSchemaValidationPolicySchemaRegistryConfig = &shared.EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig{
 			SchemaRegistry:        schemaRegistry,
+			FailureMode:           failureMode,
+			ValidateKey:           validateKey,
+			ValidateValue:         validateValue,
 			KeyValidationAction:   keyValidationAction,
 			ValueValidationAction: valueValidationAction,
 		}
@@ -211,6 +232,24 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 				ID: id1,
 			}
 		}
+		failureMode1 := new(shared.ProduceFailureMode)
+		if !r.Config.JSON.FailureMode.IsUnknown() && !r.Config.JSON.FailureMode.IsNull() {
+			*failureMode1 = shared.ProduceFailureMode(r.Config.JSON.FailureMode.ValueString())
+		} else {
+			failureMode1 = nil
+		}
+		validateKey1 := new(bool)
+		if !r.Config.JSON.ValidateKey.IsUnknown() && !r.Config.JSON.ValidateKey.IsNull() {
+			*validateKey1 = r.Config.JSON.ValidateKey.ValueBool()
+		} else {
+			validateKey1 = nil
+		}
+		validateValue1 := new(bool)
+		if !r.Config.JSON.ValidateValue.IsUnknown() && !r.Config.JSON.ValidateValue.IsNull() {
+			*validateValue1 = r.Config.JSON.ValidateValue.ValueBool()
+		} else {
+			validateValue1 = nil
+		}
 		keyValidationAction1 := new(shared.ProduceKeyValidationAction)
 		if !r.Config.JSON.KeyValidationAction.IsUnknown() && !r.Config.JSON.KeyValidationAction.IsNull() {
 			*keyValidationAction1 = shared.ProduceKeyValidationAction(r.Config.JSON.KeyValidationAction.ValueString())
@@ -225,6 +264,9 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 		}
 		eventGatewayProduceSchemaValidationPolicyJSONConfig = &shared.EventGatewayProduceSchemaValidationPolicyJSONConfig{
 			SchemaRegistry:        schemaRegistry1,
+			FailureMode:           failureMode1,
+			ValidateKey:           validateKey1,
+			ValidateValue:         validateValue1,
 			KeyValidationAction:   keyValidationAction1,
 			ValueValidationAction: valueValidationAction1,
 		}

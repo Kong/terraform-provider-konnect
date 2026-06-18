@@ -25,13 +25,16 @@ type VirtualCluster struct {
 	// It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).
 	//
 	Namespace *VirtualClusterNamespace `json:"namespace,omitempty"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
 	// Topic aliases allow exposing backend topics under additional names.
 	// An alias creates a new entry point to the same physical data.
 	// The alias `topic` field references namespace-visible names (if namespace is configured).
 	// Aliases are independent of namespace and can be used without it.
 	//
 	// **Requires a minimum runtime version of `1.2`**.
-	TopicAliases []any `json:"topic_aliases,omitempty"`
+	TopicAliases []VirtualClusterTopicAlias `json:"topic_aliases,omitempty"`
 	// The name of the virtual cluster.
 	Name string `json:"name"`
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
@@ -101,7 +104,7 @@ func (v *VirtualCluster) GetNamespace() *VirtualClusterNamespace {
 	return v.Namespace
 }
 
-func (v *VirtualCluster) GetTopicAliases() []any {
+func (v *VirtualCluster) GetTopicAliases() []VirtualClusterTopicAlias {
 	if v == nil {
 		return nil
 	}
