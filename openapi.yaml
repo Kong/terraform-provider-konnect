@@ -1944,7 +1944,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -1971,7 +1971,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -2180,7 +2180,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -70878,6 +70878,64 @@ components:
       additionalProperties: false
       required:
         - type
+    EventGatewayConsumePolicySchemaValidationTFOnly:
+      description: A policy associated with an Event Gateway.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields: []
+      required:
+        - type
+        - id
+        - created_at
+        - updated_at
+        - config
     EventGatewayProducePolicySchemaValidationTFOnly:
       description: A policy associated with an Event Gateway.
       type: object
