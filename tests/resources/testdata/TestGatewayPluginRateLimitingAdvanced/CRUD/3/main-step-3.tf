@@ -15,7 +15,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_rate_limiting_advan
     header_name = "X-RateLimit-Limit"
     redis = {
       host = "redis.example.com"
-      port = "{vault://konnect/redis/portx}"
+      port = 6380
     }
   }
 
