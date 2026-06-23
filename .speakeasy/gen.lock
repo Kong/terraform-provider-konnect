@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: b968779f9fa2ae4ab6fe1eaba7c7b458
+  docChecksum: c65d88292d53642b91ed4a1182a781a6
   docVersion: 2.0.0
   speakeasyVersion: 1.773.1
   generationVersion: 2.897.1
   releaseVersion: 3.18.1
   configChecksum: 7a82bd8e5bc99fa8bc9beaf575d80c0d
 persistentEdits:
-  generation_id: 998ab9cd-8d70-4130-8ff2-3a2f85a40b6d
-  pristine_commit_hash: 578552b230048dcb23f1c8a7d8246eda52c01b69
-  pristine_tree_hash: 359754929956865862f78f969b2ef0b7880eb83b
+  generation_id: a83832ad-7ac1-40e5-8030-cec8808b7b9b
+  pristine_commit_hash: 321d73a9f4621e516c94cdf10de274e4a105e5cd
+  pristine_tree_hash: 3ac8adb95bcb2ea42b3091a8856edbdf7d1376bc
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3009,12 +3009,12 @@ trackedFiles:
     pristine_git_object: b7313a7597cc2452e82191436118e13aab77de9d
   internal/provider/eventgatewayconsumepolicyschemavalidation_resource.go:
     id: c4eddaff3ee3
-    last_write_checksum: sha1:ffbc6cfc70fca98fca52801bf1472180b5362e64
-    pristine_git_object: 80b7db972bbc513297243cbcf4a68da39b7b4ac4
+    last_write_checksum: sha1:5c24fe3d571cee33b22b84cabc0f9a22bf05941b
+    pristine_git_object: 7feb2d0d9a6e6813d0f4958ca1aac279f0f571cd
   internal/provider/eventgatewayconsumepolicyschemavalidation_resource_sdk.go:
     id: 7eabb92c2874
-    last_write_checksum: sha1:e579a162a68846f11ed5eeb03e5ebc5de76512d4
-    pristine_git_object: 9c04b7940e9d72602d3f470109e8758d54bf8f27
+    last_write_checksum: sha1:4acfca9cbf02ef1bd53c1ff404e43f92fccf5d0f
+    pristine_git_object: f09297aaf1f214038e6de60bedb2bca37b1d04ef
   internal/provider/eventgatewayconsumepolicyskiprecord_resource.go:
     id: bb800e741a9a
     last_write_checksum: sha1:fa835c28a56575b7b1b62a7aec36488f8313ef61
@@ -6797,8 +6797,8 @@ trackedFiles:
     pristine_git_object: f1443e0e7ecad7bb0151cda70394b4e2d2f220e6
   internal/sdk/eventgatewayvirtualclusterconsumepolicies.go:
     id: b9491268ffc4
-    last_write_checksum: sha1:456312a5a0577695e6aa8761d038cc694a49c2b5
-    pristine_git_object: 3ed4ffcc9b77a4a52765969cc3d14655d73feaf8
+    last_write_checksum: sha1:94a43a37ef9c197c945996775bd577585ccfd515
+    pristine_git_object: 742695c272984c0a98e0310f095c137838754679
   internal/sdk/eventgatewayvirtualclusterpolicies.go:
     id: db0871c511f8
     last_write_checksum: sha1:04c5055930c2c6f988249a903e3cabd8b8e2d936
@@ -7269,8 +7269,8 @@ trackedFiles:
     pristine_git_object: 1081fb093cbc048a2e73bc04b60d4e3eb07283b1
   internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicyschemavalidation.go:
     id: 47fcf6eca30b
-    last_write_checksum: sha1:5d85e2aa98bb04509f37e91bd2206aec8a85d42b
-    pristine_git_object: d6a55ac149ca40fd098e3e757151e27b508a4556
+    last_write_checksum: sha1:9921678c45661d2bdccda0d039b1241d9c90b93d
+    pristine_git_object: b2c42202ea77e7951d083c6898e7cfefac526953
   internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicyskiprecord.go:
     id: 111e76a62c56
     last_write_checksum: sha1:522ed7998318b5be83b70fbf9af20c6cc06a828b
@@ -8885,8 +8885,8 @@ trackedFiles:
     pristine_git_object: 1c18d803c41aae3ad41ed910bd4f42a6d1164912
   internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicyschemavalidation.go:
     id: d340de023eb0
-    last_write_checksum: sha1:bc387fb1ff767e359464a05211ecb75a075eef6a
-    pristine_git_object: 2b400d0b6beb330fdd7a7818f0ee972a6cc4dcca
+    last_write_checksum: sha1:c9cc868d71bd78fba343519209dfcea31ac8ab0f
+    pristine_git_object: 80bf4f28e6f47d9f88931e9fd0194a370461db29
   internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicyskiprecord.go:
     id: 02f521d007f8
     last_write_checksum: sha1:14037aabdfbe4b6d2abfca95f0d0b79c2ed19aff
@@ -9801,8 +9801,8 @@ trackedFiles:
     pristine_git_object: 0995360d7677eaac919d90b852f8050c732f4121
   internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicyschemavalidation.go:
     id: 73e520cd3c64
-    last_write_checksum: sha1:dfb9d1f17b585fece1210e2ae56f7d5f55c841dc
-    pristine_git_object: c6ffbc53db8592fcf4747ee455aa39d4ad0452c0
+    last_write_checksum: sha1:dfc057785f6bdc0f6dc1be5444557cbe805c4505
+    pristine_git_object: e87eb13d0a04c4f9a037853adfa9a0c6c5fa2c6d
   internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicyskiprecord.go:
     id: c36c61f4592e
     last_write_checksum: sha1:96b4d4e3fcfa556c6a623144c2a15da61a8ff5a0
@@ -11219,6 +11219,10 @@ trackedFiles:
     id: fe6b54221a82
     last_write_checksum: sha1:cd075719c63627c998ad76d55f279fae88cfdc6b
     pristine_git_object: 88835dc74cc14ca7919345db43fa45d2caf3a4e6
+  internal/sdk/models/shared/eventgatewayconsumepolicyschemavalidationtfonly.go:
+    id: b29395ad707f
+    last_write_checksum: sha1:b2a2997a7ed32467ae53475c7735a232582923d2
+    pristine_git_object: 083428879c7297c749ca1c3999427445d69b14b5
   internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicy.go:
     id: 12b289092dda
     last_write_checksum: sha1:128c05860fb103da6f5f3254bd0dd6fb6cb1caa4
@@ -26128,7 +26132,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "34538704-755b-4b27-9f94-acccd39923d1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
+          application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "34538704-755b-4b27-9f94-acccd39923d1", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -26146,7 +26150,7 @@ examples:
         application/json: {"type": "schema_validation", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "confluent_schema_registry"}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "b2191fd2-23a4-4f7d-98bd-018a6e9ee5d4", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
+          application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "b2191fd2-23a4-4f7d-98bd-018a6e9ee5d4", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
         "400":
           application/problem+json: {"status": 600624, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -26259,7 +26263,7 @@ examples:
         application/json: {"type": "schema_validation", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "json"}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "4117cbb3-be10-4970-be4c-ff0af8e4d751", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
+          application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "4117cbb3-be10-4970-be4c-ff0af8e4d751", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
         "400":
           application/problem+json: {"status": 680057, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":

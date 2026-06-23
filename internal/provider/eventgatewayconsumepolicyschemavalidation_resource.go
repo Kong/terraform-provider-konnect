@@ -291,11 +291,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Create(ctx context.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicySchemaValidationTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicySchemaValidationTFOnly(ctx, res.EventGatewayConsumePolicySchemaValidationTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -355,11 +355,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Read(ctx context.Con
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicySchemaValidationTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicySchemaValidationTFOnly(ctx, res.EventGatewayConsumePolicySchemaValidationTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -405,11 +405,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Update(ctx context.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicySchemaValidationTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicySchemaValidationTFOnly(ctx, res.EventGatewayConsumePolicySchemaValidationTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
