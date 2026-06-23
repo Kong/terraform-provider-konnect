@@ -2094,7 +2094,7 @@ func (p PartialVectordbRedis) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
 	if err != nil {
 		return nil, err
 	}
@@ -2102,7 +2102,7 @@ func (p PartialVectordbRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialVectordbRedis) UnmarshalJSON(data []byte) error {
-	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
 		return err
 	} else {
 		data = out
@@ -2716,7 +2716,7 @@ func (p PartialRedisEeConfig) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
 	if err != nil {
 		return nil, err
 	}
@@ -2724,7 +2724,7 @@ func (p PartialRedisEeConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisEeConfig) UnmarshalJSON(data []byte) error {
-	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
 		return err
 	} else {
 		data = out
@@ -3137,7 +3137,7 @@ func (p PartialRedisCeConfig) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
 	if err != nil {
 		return nil, err
 	}
@@ -3145,7 +3145,7 @@ func (p PartialRedisCeConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisCeConfig) UnmarshalJSON(data []byte) error {
-	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
 		return err
 	} else {
 		data = out

@@ -752,7 +752,7 @@ func (r Redis) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
 	if err != nil {
 		return nil, err
 	}
@@ -760,7 +760,7 @@ func (r Redis) MarshalJSON() ([]byte, error) {
 }
 
 func (r *Redis) UnmarshalJSON(data []byte) error {
-	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
 		return err
 	} else {
 		data = out
