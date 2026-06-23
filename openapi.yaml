@@ -33835,10 +33835,10 @@ components:
                   x-speakeasy-param-computed: false
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 sync_rate:
                   description: 'How often to sync counter data to the central data store. A value of 0 results in synchronous behavior (counter synchronization happens in each request''s context and contributes directly to the latency of the request). A value greater than 0 results in asynchronous behavior and specifies the interval (in seconds) for synchronizing counters. The minimum allowed interval is 0.02 seconds (20ms). If omitted, the plugin ignores sync behavior entirely and only stores counters in node memory.'
                   type: number
@@ -34237,10 +34237,10 @@ components:
                   x-speakeasy-param-computed: false
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 shm:
                   type: object
                   default: null
@@ -36790,10 +36790,10 @@ components:
                       x-speakeasy-param-computed: false
                       x-speakeasy-transform-from-api:
                         jq: |
-                          .port   |= if type == "number" then tostring else . end
+                          if has("port") then .port |= if type == "number" then tostring else . end else . end
                       x-speakeasy-transform-to-api:
                         jq: |
-                          if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                          if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                     session_ttl:
                       description: The time-to-live (TTL) for each session in seconds.
                       type: number
@@ -38875,10 +38875,10 @@ components:
                   x-speakeasy-param-computed: false
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -40254,10 +40254,10 @@ components:
                   x-speakeasy-param-computed: false
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -40825,10 +40825,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             request_prompt_count_function:
               description: 'If defined, it use custom function to count requests for the request prompt provider'
               type: string
@@ -42974,10 +42974,10 @@ components:
                   x-speakeasy-param-computed: false
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -43772,10 +43772,10 @@ components:
                   x-speakeasy-param-computed: false
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -44554,10 +44554,10 @@ components:
                   x-speakeasy-param-computed: true
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -45276,10 +45276,10 @@ components:
                   x-speakeasy-param-computed: true
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: 'The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: `cluster`, `redis`, `memory`, and `off`.'
                   type: string
@@ -48706,10 +48706,10 @@ components:
                       x-speakeasy-param-computed: false
                       x-speakeasy-transform-from-api:
                         jq: |
-                          .port   |= if type == "number" then tostring else . end
+                          if has("port") then .port |= if type == "number" then tostring else . end else . end
                       x-speakeasy-transform-to-api:
                         jq: |
-                          if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                          if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                     strategy:
                       description: 'The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`.'
                       type: string
@@ -49488,10 +49488,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             strategy:
               description: The backing data store in which to hold cached entities. Accepted value is `memory`.
               type: string
@@ -49877,10 +49877,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             score_factor:
               description: A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0.
               type: number
@@ -56543,10 +56543,10 @@ components:
               x-speakeasy-param-computed: true
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             cluster_cache_strategy:
               description: 'The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.'
               type: string
@@ -57501,10 +57501,10 @@ components:
               x-speakeasy-param-computed: true
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             rediscovery_lifetime:
               description: Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
               type: number
@@ -59664,10 +59664,10 @@ components:
               x-referenceable: true
           x-speakeasy-transform-from-api:
             jq: |
-              .port   |= if type == "number" then tostring else . end
+              if has("port") then .port |= if type == "number" then tostring else . end else . end
           x-speakeasy-transform-to-api:
             jq: |
-              if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+              if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -59965,10 +59965,10 @@ components:
               x-speakeasy-param-computed: false
           x-speakeasy-transform-from-api:
             jq: |
-              .port   |= if type == "number" then tostring else . end
+              if has("port") then .port |= if type == "number" then tostring else . end else . end
           x-speakeasy-transform-to-api:
             jq: |
-              if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+              if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -60369,10 +60369,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             strategy:
               description: which vector database driver to use
               type: string
@@ -61326,10 +61326,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             request_method:
               description: 'Downstream request methods considered cacheable. Available options: `HEAD`, `GET`, `POST`, `PATCH`, `PUT`.'
               type: array
@@ -62009,10 +62009,10 @@ components:
               x-speakeasy-param-computed: true
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             retry_after_jitter_max:
               description: 'The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.'
               type: number
@@ -62386,10 +62386,10 @@ components:
               x-speakeasy-param-computed: true
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             second:
               description: The number of HTTP requests that can be made per second.
               type: number
@@ -62841,10 +62841,10 @@ components:
                   x-speakeasy-param-computed: true
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: 'The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.'
                   type: string
@@ -64255,10 +64255,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -65582,10 +65582,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             request_digest_algorithm:
               description: 'The digest algorithm for Authn requests: - `SHA256` - `SHA1`'
               type: string
@@ -66331,10 +66331,10 @@ components:
               x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
-                  .port   |= if type == "number" then tostring else . end
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
               x-speakeasy-transform-to-api:
                 jq: |
-                  if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             retry_after_jitter_max:
               description: 'The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.'
               type: number
@@ -69629,10 +69629,10 @@ components:
                   x-speakeasy-param-computed: true
                   x-speakeasy-transform-from-api:
                     jq: |
-                      .port   |= if type == "number" then tostring else . end
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
                   x-speakeasy-transform-to-api:
                     jq: |
-                      if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: The method Kong should use to cache tokens issued by the IdP.
                   type: string
