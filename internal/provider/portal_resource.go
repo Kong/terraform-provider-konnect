@@ -35,24 +35,25 @@ type PortalResource struct {
 
 // PortalResourceModel describes the resource data model.
 type PortalResourceModel struct {
-	AuthenticationEnabled            types.Bool              `tfsdk:"authentication_enabled"`
-	AutoApproveApplications          types.Bool              `tfsdk:"auto_approve_applications"`
-	AutoApproveDevelopers            types.Bool              `tfsdk:"auto_approve_developers"`
-	CanonicalDomain                  types.String            `tfsdk:"canonical_domain"`
-	CreatedAt                        types.String            `tfsdk:"created_at"`
-	DefaultAPIVisibility             types.String            `tfsdk:"default_api_visibility"`
-	DefaultApplicationAuthStrategyID types.String            `tfsdk:"default_application_auth_strategy_id"`
-	DefaultDomain                    types.String            `tfsdk:"default_domain"`
-	DefaultPageVisibility            types.String            `tfsdk:"default_page_visibility"`
-	Description                      types.String            `tfsdk:"description"`
-	DisplayName                      types.String            `tfsdk:"display_name"`
-	ForceDestroy                     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
-	ID                               types.String            `tfsdk:"id"`
-	Labels                           map[string]types.String `tfsdk:"labels"`
-	Name                             types.String            `tfsdk:"name"`
-	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
-	SiprEnabled                      types.Bool              `tfsdk:"sipr_enabled"`
-	UpdatedAt                        types.String            `tfsdk:"updated_at"`
+	AuthenticationEnabled                      types.Bool              `tfsdk:"authentication_enabled"`
+	AutoApproveApplications                    types.Bool              `tfsdk:"auto_approve_applications"`
+	AutoApproveDevelopers                      types.Bool              `tfsdk:"auto_approve_developers"`
+	CanonicalDomain                            types.String            `tfsdk:"canonical_domain"`
+	CreatedAt                                  types.String            `tfsdk:"created_at"`
+	DefaultAPIVisibility                       types.String            `tfsdk:"default_api_visibility"`
+	DefaultApplicationAuthStrategyID           types.String            `tfsdk:"default_application_auth_strategy_id"`
+	DefaultDomain                              types.String            `tfsdk:"default_domain"`
+	DefaultPageVisibility                      types.String            `tfsdk:"default_page_visibility"`
+	Description                                types.String            `tfsdk:"description"`
+	DisplayName                                types.String            `tfsdk:"display_name"`
+	ForceDestroy                               types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
+	ID                                         types.String            `tfsdk:"id"`
+	Labels                                     map[string]types.String `tfsdk:"labels"`
+	Name                                       types.String            `tfsdk:"name"`
+	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
+	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
+	SiprEnabled                                types.Bool              `tfsdk:"sipr_enabled"`
+	UpdatedAt                                  types.String            `tfsdk:"updated_at"`
 }
 
 func (r *PortalResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -169,6 +170,12 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 255),
 				},
+			},
+			"notifications_developer_pii_visibility_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     booldefault.StaticBool(false),
+				Description: `When enabled, portal registration notifications include the registering developer's identifying information (such as name and email). Default: false`,
 			},
 			"rbac_enabled": schema.BoolAttribute{
 				Computed:    true,

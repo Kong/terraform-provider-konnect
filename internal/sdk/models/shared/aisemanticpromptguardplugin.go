@@ -1228,7 +1228,7 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -1254,10 +1254,23 @@ type AiSemanticPromptGuardPluginRedis struct {
 }
 
 func (a AiSemanticPromptGuardPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AiSemanticPromptGuardPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
@@ -1334,7 +1347,7 @@ func (a *AiSemanticPromptGuardPluginRedis) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AiSemanticPromptGuardPluginRedis) GetPort() *int64 {
+func (a *AiSemanticPromptGuardPluginRedis) GetPort() *string {
 	if a == nil {
 		return nil
 	}

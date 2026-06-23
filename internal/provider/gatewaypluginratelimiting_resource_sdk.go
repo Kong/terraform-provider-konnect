@@ -68,7 +68,7 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				r.Config.Redis.Port = types.StringPointerValue(resp.Config.Redis.Port)
 				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
 				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
 				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
@@ -525,9 +525,9 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin(ctx 
 			} else {
 				password = nil
 			}
-			port := new(int64)
+			port := new(string)
 			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-				*port = r.Config.Redis.Port.ValueInt64()
+				*port = r.Config.Redis.Port.ValueString()
 			} else {
 				port = nil
 			}

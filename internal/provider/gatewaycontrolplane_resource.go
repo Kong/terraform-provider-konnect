@@ -5,12 +5,16 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
@@ -137,6 +141,9 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				Computed:    true,
 				Optional:    true,
 				Description: `The description of the control plane in Konnect.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(2048),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -156,6 +163,9 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 			"name": schema.StringAttribute{
 				Required:    true,
 				Description: `The name of the control plane.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(2, 256),
+				},
 			},
 			"proxy_urls": schema.SetNestedAttribute{
 				Optional: true,
@@ -164,18 +174,30 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 						"host": schema.StringAttribute{
 							Required:    true,
 							Description: `Hostname of the proxy URL.`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthBetween(1, 120),
+							},
 						},
 						"port": schema.Int64Attribute{
 							Required:    true,
 							Description: `Port of the proxy URL.`,
+							Validators: []validator.Int64{
+								int64validator.AtLeast(1),
+							},
 						},
 						"protocol": schema.StringAttribute{
 							Required:    true,
 							Description: `Protocol of the proxy URL.`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthBetween(1, 32),
+							},
 						},
 					},
 				},
 				Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
+				Validators: []validator.Set{
+					setvalidator.SizeAtMost(5),
+				},
 			},
 		},
 	}

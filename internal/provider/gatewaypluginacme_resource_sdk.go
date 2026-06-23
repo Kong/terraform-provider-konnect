@@ -115,7 +115,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				}
 				r.Config.StorageConfig.Redis.Host = types.StringPointerValue(resp.Config.StorageConfig.Redis.Host)
 				r.Config.StorageConfig.Redis.Password = types.StringPointerValue(resp.Config.StorageConfig.Redis.Password)
-				r.Config.StorageConfig.Redis.Port = types.Int64PointerValue(resp.Config.StorageConfig.Redis.Port)
+				r.Config.StorageConfig.Redis.Port = types.StringPointerValue(resp.Config.StorageConfig.Redis.Port)
 				r.Config.StorageConfig.Redis.ServerName = types.StringPointerValue(resp.Config.StorageConfig.Redis.ServerName)
 				r.Config.StorageConfig.Redis.Ssl = types.BoolPointerValue(resp.Config.StorageConfig.Redis.Ssl)
 				r.Config.StorageConfig.Redis.SslVerify = types.BoolPointerValue(resp.Config.StorageConfig.Redis.SslVerify)
@@ -668,9 +668,9 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 			} else {
 				password = nil
 			}
-			port1 := new(int64)
+			port1 := new(string)
 			if !r.Config.StorageConfig.Redis.Port.IsUnknown() && !r.Config.StorageConfig.Redis.Port.IsNull() {
-				*port1 = r.Config.StorageConfig.Redis.Port.ValueInt64()
+				*port1 = r.Config.StorageConfig.Redis.Port.ValueString()
 			} else {
 				port1 = nil
 			}

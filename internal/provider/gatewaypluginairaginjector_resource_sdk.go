@@ -216,7 +216,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 				r.Config.Vectordb.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepaliveBacklog)
 				r.Config.Vectordb.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepalivePoolSize)
 				r.Config.Vectordb.Redis.Password = types.StringPointerValue(resp.Config.Vectordb.Redis.Password)
-				r.Config.Vectordb.Redis.Port = types.Int64PointerValue(resp.Config.Vectordb.Redis.Port)
+				r.Config.Vectordb.Redis.Port = types.StringPointerValue(resp.Config.Vectordb.Redis.Port)
 				r.Config.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ReadTimeout)
 				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
@@ -1139,9 +1139,9 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 			} else {
 				password1 = nil
 			}
-			port2 := new(int64)
+			port2 := new(string)
 			if !r.Config.Vectordb.Redis.Port.IsUnknown() && !r.Config.Vectordb.Redis.Port.IsNull() {
-				*port2 = r.Config.Vectordb.Redis.Port.ValueInt64()
+				*port2 = r.Config.Vectordb.Redis.Port.ValueString()
 			} else {
 				port2 = nil
 			}

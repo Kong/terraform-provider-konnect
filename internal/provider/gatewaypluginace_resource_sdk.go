@@ -77,7 +77,7 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					r.Config.RateLimiting.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.RateLimiting.Redis.KeepaliveBacklog)
 					r.Config.RateLimiting.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.RateLimiting.Redis.KeepalivePoolSize)
 					r.Config.RateLimiting.Redis.Password = types.StringPointerValue(resp.Config.RateLimiting.Redis.Password)
-					r.Config.RateLimiting.Redis.Port = types.Int64PointerValue(resp.Config.RateLimiting.Redis.Port)
+					r.Config.RateLimiting.Redis.Port = types.StringPointerValue(resp.Config.RateLimiting.Redis.Port)
 					r.Config.RateLimiting.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.ReadTimeout)
 					r.Config.RateLimiting.Redis.SendTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.SendTimeout)
 					r.Config.RateLimiting.Redis.SentinelMaster = types.StringPointerValue(resp.Config.RateLimiting.Redis.SentinelMaster)
@@ -538,9 +538,9 @@ func (r *GatewayPluginAceResourceModel) ToSharedAcePlugin(ctx context.Context) (
 				} else {
 					password = nil
 				}
-				port1 := new(int64)
+				port1 := new(string)
 				if !r.Config.RateLimiting.Redis.Port.IsUnknown() && !r.Config.RateLimiting.Redis.Port.IsNull() {
-					*port1 = r.Config.RateLimiting.Redis.Port.ValueInt64()
+					*port1 = r.Config.RateLimiting.Redis.Port.ValueString()
 				} else {
 					port1 = nil
 				}

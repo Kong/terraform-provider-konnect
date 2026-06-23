@@ -26,9 +26,10 @@ resource "konnect_portal" "my_portal" {
   labels = {
     key = "value"
   }
-  name         = "...my_name..."
-  rbac_enabled = false
-  sipr_enabled = true
+  name                                           = "...my_name..."
+  notifications_developer_pii_visibility_enabled = false
+  rbac_enabled                                   = false
+  sipr_enabled                                   = true
 }
 ```
 
@@ -58,6 +59,7 @@ Default: "false"; must be one of ["true", "false"]
 Labels are intended to store **INTERNAL** metadata.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `notifications_developer_pii_visibility_enabled` (Boolean) When enabled, portal registration notifications include the registering developer's identifying information (such as name and email). Default: false
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
 - `sipr_enabled` (Boolean) Whether ip allow list is enabled for the portal. Default: false
 

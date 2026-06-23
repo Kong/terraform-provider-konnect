@@ -75,7 +75,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 			r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
 			r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
 			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+			r.Config.Redis.Port = types.StringPointerValue(resp.Config.Redis.Port)
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
@@ -573,9 +573,9 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 		} else {
 			password = nil
 		}
-		port1 := new(int64)
+		port1 := new(string)
 		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-			*port1 = r.Config.Redis.Port.ValueInt64()
+			*port1 = r.Config.Redis.Port.ValueString()
 		} else {
 			port1 = nil
 		}

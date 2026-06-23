@@ -53,6 +53,7 @@ func (r *PortalDataSourceModel) RefreshFromSharedPortal(ctx context.Context, res
 		}
 	}
 	r.Name = types.StringValue(resp.Name)
+	r.NotificationsDeveloperPiiVisibilityEnabled = types.BoolPointerValue(resp.NotificationsDeveloperPiiVisibilityEnabled)
 	r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
 	r.SiprEnabled = types.BoolPointerValue(resp.SiprEnabled)
 	r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))

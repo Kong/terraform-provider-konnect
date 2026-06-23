@@ -83,7 +83,7 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
           keepalive_backlog     = 1403771087
           keepalive_pool_size   = 256
           password              = "...my_password..."
-          port                  = 6379
+          port                  = "6379"
           read_timeout          = 2000
           send_timeout          = 2000
           sentinel_master       = "...my_sentinel_master..."
@@ -532,7 +532,7 @@ Optional:
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 - `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive. Default: "6379"
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.

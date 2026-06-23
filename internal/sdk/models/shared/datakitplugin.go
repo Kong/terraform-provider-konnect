@@ -2346,7 +2346,7 @@ type DatakitPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -2372,10 +2372,23 @@ type DatakitPluginRedis struct {
 }
 
 func (d DatakitPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
+	jsonBytes, err := utils.MarshalJSON(d, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (d *DatakitPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
@@ -2452,7 +2465,7 @@ func (d *DatakitPluginRedis) GetPassword() *string {
 	return d.Password
 }
 
-func (d *DatakitPluginRedis) GetPort() *int64 {
+func (d *DatakitPluginRedis) GetPort() *string {
 	if d == nil {
 		return nil
 	}

@@ -140,7 +140,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					r.Config.Server.Session.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Server.Session.Redis.KeepaliveBacklog)
 					r.Config.Server.Session.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Server.Session.Redis.KeepalivePoolSize)
 					r.Config.Server.Session.Redis.Password = types.StringPointerValue(resp.Config.Server.Session.Redis.Password)
-					r.Config.Server.Session.Redis.Port = types.Int64PointerValue(resp.Config.Server.Session.Redis.Port)
+					r.Config.Server.Session.Redis.Port = types.StringPointerValue(resp.Config.Server.Session.Redis.Port)
 					r.Config.Server.Session.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.ReadTimeout)
 					r.Config.Server.Session.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.SendTimeout)
 					r.Config.Server.Session.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Server.Session.Redis.SentinelMaster)
@@ -824,9 +824,9 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 				} else {
 					password = nil
 				}
-				port1 := new(int64)
+				port1 := new(string)
 				if !r.Config.Server.Session.Redis.Port.IsUnknown() && !r.Config.Server.Session.Redis.Port.IsNull() {
-					*port1 = r.Config.Server.Session.Redis.Port.ValueInt64()
+					*port1 = r.Config.Server.Session.Redis.Port.ValueString()
 				} else {
 					port1 = nil
 				}
