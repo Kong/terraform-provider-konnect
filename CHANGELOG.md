@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.19.0
+> Released 2026/06/??
+
+# Features
+* Vault reference is now supported for redis port in `konnect_gateway_plugin_*` resources
+
+# Bug Fixes
+* Fixed drift in `access_logs_endpoint` field for `konnect_gateway_plugin_opentelemetry` resource
+
+
 ## 3.18.1
 > Released 2026/06/10
 
