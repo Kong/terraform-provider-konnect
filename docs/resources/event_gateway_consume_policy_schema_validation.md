@@ -16,12 +16,13 @@ EventGatewayConsumePolicySchemaValidation Resource
 resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatewayconsumepolicyschemavalidation" {
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
-    key_validation_action = "mark"
-    schema_registry = {
-      id = "e1881384-290f-443c-a5bd-ed6f2e53d539"
+    json = {
+      key_validation_action = "skip"
+      schema_registry = {
+        id = "bd775494-cdf4-4d78-a6df-c21ccf6d9813"
+      }
+      value_validation_action = "skip"
     }
-    type                    = "json"
-    value_validation_action = "mark"
   }
   description = ""
   enabled     = true
@@ -39,7 +40,7 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
 
 ### Required
 
-- `config` (Attributes) The configuration of the schema validation policy. (see [below for nested schema](#nestedatt--config))
+- `config` (Attributes) The configuration of the consume schema validation policy. (see [below for nested schema](#nestedatt--config))
 - `gateway_id` (String) The UUID of your Gateway.
 - `virtual_cluster_id` (String) The ID of the Virtual Cluster.
 
@@ -63,12 +64,13 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
+Optional:
 
-- `type` (String) How to validate the schema and parse the record.
-* confluent_schema_registry - validates against confluent schema registry.
-* json - simple JSON parsing without the schema.
-possible known values include one of ["confluent_schema_registry", "json"]
+- `confluent_schema_registry` (Attributes) The configuration of the consume schema validation policy when using a schema registry. (see [below for nested schema](#nestedatt--config--confluent_schema_registry))
+- `json` (Attributes) The configuration of the consume schema validation policy when using JSON parsing without schema. (see [below for nested schema](#nestedatt--config--json))
+
+<a id="nestedatt--config--confluent_schema_registry"></a>
+### Nested Schema for `config.confluent_schema_registry`
 
 Optional:
 
@@ -79,7 +81,7 @@ Defines a behavior when record key is not valid.
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
 possible known values include one of ["mark", "skip"]
-- `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry))
+- `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
 - `value_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
 
 Defines a behavior when record value is not valid.
@@ -88,8 +90,38 @@ Defines a behavior when record value is not valid.
 * skip - skips delivering a record.
 possible known values include one of ["mark", "skip"]
 
-<a id="nestedatt--config--schema_registry"></a>
-### Nested Schema for `config.schema_registry`
+<a id="nestedatt--config--confluent_schema_registry--schema_registry"></a>
+### Nested Schema for `config.confluent_schema_registry.schema_registry`
+
+Required:
+
+- `id` (String) The unique identifier of the schema registry.
+
+
+
+<a id="nestedatt--config--json"></a>
+### Nested Schema for `config.json`
+
+Optional:
+
+- `key_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record key is not valid.
+* mark - marks a record with kong/server header and client ID value
+  to help to identify the clients violating schema.
+* skip - skips delivering a record.
+possible known values include one of ["mark", "skip"]
+- `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--json--schema_registry))
+- `value_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record value is not valid.
+* mark - marks a record with kong/server header and client ID value
+  to help to identify the clients violating schema.
+* skip - skips delivering a record.
+possible known values include one of ["mark", "skip"]
+
+<a id="nestedatt--config--json--schema_registry"></a>
+### Nested Schema for `config.json.schema_registry`
 
 Required:
 

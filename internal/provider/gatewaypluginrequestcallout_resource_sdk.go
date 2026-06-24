@@ -75,7 +75,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Cache.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Cache.Redis.KeepaliveBacklog)
 				r.Config.Cache.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Cache.Redis.KeepalivePoolSize)
 				r.Config.Cache.Redis.Password = types.StringPointerValue(resp.Config.Cache.Redis.Password)
-				r.Config.Cache.Redis.Port = types.Int64PointerValue(resp.Config.Cache.Redis.Port)
+				r.Config.Cache.Redis.Port = types.StringPointerValue(resp.Config.Cache.Redis.Port)
 				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
@@ -722,9 +722,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				password = nil
 			}
-			port1 := new(int64)
+			port1 := new(string)
 			if !r.Config.Cache.Redis.Port.IsUnknown() && !r.Config.Cache.Redis.Port.IsNull() {
-				*port1 = r.Config.Cache.Redis.Port.ValueInt64()
+				*port1 = r.Config.Cache.Redis.Port.ValueString()
 			} else {
 				port1 = nil
 			}

@@ -112,6 +112,7 @@ data "konnect_portal" "my_portal" {
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the portal, used to distinguish it from other portals. Name must be unique.
+- `notifications_developer_pii_visibility_enabled` (Boolean) When enabled, portal registration notifications include the registering developer's identifying information (such as name and email).
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.
 - `sipr_enabled` (Boolean) Whether ip allow list is enabled for the portal.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

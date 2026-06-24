@@ -1944,7 +1944,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -1971,7 +1971,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -2180,7 +2180,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -20665,10 +20665,13 @@ components:
           description: The name of the control plane.
           type: string
           example: Test Control Plane
+          maxLength: 256
+          minLength: 2
         description:
           description: The description of the control plane in Konnect.
           type: string
           example: A test control plane for exploration.
+          maxLength: 2048
           nullable: false
         cluster_type:
           description: The ClusterType value of the cluster associated with the Control Plane.
@@ -20712,12 +20715,15 @@ components:
           type: string
           example: Test Control Plane
           default: null
+          maxLength: 256
+          minLength: 2
           nullable: true
           x-speakeasy-param-computed: false
         description:
           description: The description of the control plane in Konnect.
           type: string
           example: A test control plane for exploration.
+          maxLength: 2048
           nullable: false
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -20862,12 +20868,17 @@ components:
         host:
           description: Hostname of the proxy URL.
           type: string
+          maxLength: 120
+          minLength: 1
         port:
           description: Port of the proxy URL.
           type: integer
+          minimum: 1
         protocol:
           description: Protocol of the proxy URL.
           type: string
+          maxLength: 32
+          minLength: 1
       example:
         host: example.com
         port: 443
@@ -20888,6 +20899,7 @@ components:
         - host: example.com
           port: 443
           protocol: https
+      maxItems: 5
       title: ProxyURLs
     ControlPlaneFilterParameters:
       type: object
@@ -30570,16 +30582,6 @@ components:
           minLength: 1
       required:
         - id
-    SchemaValidationType:
-      description: |
-        How to validate the schema and parse the record.
-        * confluent_schema_registry - validates against confluent schema registry.
-        * json - simple JSON parsing without the schema.
-      type: string
-      enum:
-        - confluent_schema_registry
-        - json
-      x-speakeasy-unknown-values: allow
     SchemaRegistryCreate:
       description: The typed schema of the schema registry to create it.
       discriminator:
@@ -31886,37 +31888,9 @@ components:
         labels:
           $ref: '#/components/schemas/Labels'
         config:
-          description: The configuration of the schema validation policy.
+          description: The configuration of the policy.
           type: object
-          properties:
-            type:
-              $ref: '#/components/schemas/SchemaValidationType'
-            schema_registry:
-              $ref: '#/components/schemas/SchemaRegistryReference'
-            validate_key:
-              description: |-
-                If true, validate the record key.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
-            validate_value:
-              description: |-
-                If true, validate the record value.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
-            key_validation_action:
-              $ref: '#/components/schemas/ConsumeKeyValidationAction'
-            value_validation_action:
-              $ref: '#/components/schemas/ConsumeValueValidationAction'
-          required:
-            - type
+          $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyConfig'
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
@@ -31961,6 +31935,82 @@ components:
         - type
         - config
       title: Schema Validation
+    EventGatewayConsumeSchemaValidationPolicyConfig:
+      description: The configuration of the consume schema validation policy.
+      discriminator:
+        propertyName: type
+        mapping:
+          confluent_schema_registry: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+          json: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+    EventGatewayConsumeSchemaValidationPolicyJsonConfig:
+      description: The configuration of the consume schema validation policy when using JSON parsing without schema.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: json
+      required:
+        - type
+    EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig:
+      description: The configuration of the consume schema validation policy when using a schema registry.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: confluent_schema_registry
+      required:
+        - type
     EventGatewayProduceSchemaValidationPolicy:
       description: A policy that validates produce messages against a schema registry.
       type: object
@@ -33694,8 +33744,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -33783,6 +33833,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 sync_rate:
                   description: 'How often to sync counter data to the central data store. A value of 0 results in synchronous behavior (counter synchronization happens in each request''s context and contributes directly to the latency of the request). A value greater than 0 results in asynchronous behavior and specifies the interval (in seconds) for synchronizing counters. The minimum allowed interval is 0.02 seconds (20ms). If omitted, the plugin ignores sync behavior entirely and only stores counters in node memory.'
                   type: number
@@ -34145,8 +34201,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -34179,6 +34235,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 shm:
                   type: object
                   default: null
@@ -36637,8 +36699,8 @@ components:
                           x-speakeasy-param-computed: false
                         port:
                           description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                          type: integer
-                          default: 6379
+                          type: string
+                          default: '6379'
                           maximum: 65535
                           minimum: 0
                           x-referenceable: true
@@ -36726,6 +36788,12 @@ components:
                           x-referenceable: true
                           x-speakeasy-param-computed: false
                       x-speakeasy-param-computed: false
+                      x-speakeasy-transform-from-api:
+                        jq: |
+                          if has("port") then .port |= if type == "number" then tostring else . end else . end
+                      x-speakeasy-transform-to-api:
+                        jq: |
+                          if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                     session_ttl:
                       description: The time-to-live (TTL) for each session in seconds.
                       type: number
@@ -38716,8 +38784,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -38805,6 +38873,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -40089,8 +40163,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -40178,6 +40252,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -40654,8 +40734,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -40743,6 +40823,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             request_prompt_count_function:
               description: 'If defined, it use custom function to count requests for the request prompt provider'
               type: string
@@ -42797,8 +42883,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -42886,6 +42972,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -43589,8 +43681,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -43678,6 +43770,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -44365,8 +44463,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -44454,6 +44552,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: true
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -45136,8 +45240,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -45170,6 +45274,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: true
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: 'The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: `cluster`, `redis`, `memory`, and `off`.'
                   type: string
@@ -48505,8 +48615,8 @@ components:
                           x-speakeasy-param-computed: false
                         port:
                           description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                          type: integer
-                          default: 6379
+                          type: string
+                          default: '6379'
                           maximum: 65535
                           minimum: 0
                           x-referenceable: true
@@ -48594,6 +48704,12 @@ components:
                           x-referenceable: true
                           x-speakeasy-param-computed: false
                       x-speakeasy-param-computed: false
+                      x-speakeasy-transform-from-api:
+                        jq: |
+                          if has("port") then .port |= if type == "number" then tostring else . end else . end
+                      x-speakeasy-transform-to-api:
+                        jq: |
+                          if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                     strategy:
                       description: 'The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`.'
                       type: string
@@ -49281,8 +49397,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -49370,6 +49486,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             strategy:
               description: The backing data store in which to hold cached entities. Accepted value is `memory`.
               type: string
@@ -49664,8 +49786,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -49753,6 +49875,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             score_factor:
               description: A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0.
               type: number
@@ -56324,8 +56452,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -56413,6 +56541,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: true
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             cluster_cache_strategy:
               description: 'The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.'
               type: string
@@ -57264,8 +57398,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -57365,6 +57499,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: true
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             rediscovery_lifetime:
               description: Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
               type: number
@@ -59493,8 +59633,8 @@ components:
               x-referenceable: true
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
-              type: integer
-              default: 6379
+              type: string
+              default: '6379'
               maximum: 65535
               minimum: 0
               x-referenceable: true
@@ -59522,6 +59662,12 @@ components:
               type: string
               nullable: false
               x-referenceable: true
+          x-speakeasy-transform-from-api:
+            jq: |
+              if has("port") then .port |= if type == "number" then tostring else . end else . end
+          x-speakeasy-transform-to-api:
+            jq: |
+              if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -59736,8 +59882,8 @@ components:
               x-referenceable: true
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
-              type: integer
-              default: 6379
+              type: string
+              default: '6379'
               maximum: 65535
               minimum: 0
               x-referenceable: true
@@ -59817,6 +59963,12 @@ components:
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
+          x-speakeasy-transform-from-api:
+            jq: |
+              if has("port") then .port |= if type == "number" then tostring else . end else . end
+          x-speakeasy-transform-to-api:
+            jq: |
+              if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -60126,8 +60278,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -60215,6 +60367,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             strategy:
               description: which vector database driver to use
               type: string
@@ -61077,8 +61235,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -61166,6 +61324,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             request_method:
               description: 'Downstream request methods considered cacheable. Available options: `HEAD`, `GET`, `POST`, `PATCH`, `PUT`.'
               type: array
@@ -61749,8 +61913,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -61843,6 +62007,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: true
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             retry_after_jitter_max:
               description: 'The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.'
               type: number
@@ -62180,8 +62350,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -62214,6 +62384,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: true
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             second:
               description: The number of HTTP requests that can be made per second.
               type: number
@@ -62574,8 +62750,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -62663,6 +62839,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: true
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: 'The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.'
                   type: string
@@ -64037,8 +64219,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -64071,6 +64253,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -65291,8 +65479,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -65392,6 +65580,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             request_digest_algorithm:
               description: 'The digest algorithm for Authn requests: - `SHA256` - `SHA1`'
               type: string
@@ -66046,8 +66240,8 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
+                  type: string
+                  default: '6379'
                   maximum: 65535
                   minimum: 0
                   x-referenceable: true
@@ -66135,6 +66329,12 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+              x-speakeasy-transform-from-api:
+                jq: |
+                  if has("port") then .port |= if type == "number" then tostring else . end else . end
+              x-speakeasy-transform-to-api:
+                jq: |
+                  if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
             retry_after_jitter_max:
               description: 'The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.'
               type: number
@@ -69338,8 +69538,8 @@ components:
                       x-speakeasy-param-computed: false
                     port:
                       description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                      type: integer
-                      default: 6379
+                      type: string
+                      default: '6379'
                       maximum: 65535
                       minimum: 0
                       x-referenceable: true
@@ -69427,6 +69627,12 @@ components:
                       x-referenceable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: true
+                  x-speakeasy-transform-from-api:
+                    jq: |
+                      if has("port") then .port |= if type == "number" then tostring else . end else . end
+                  x-speakeasy-transform-to-api:
+                    jq: |
+                      if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
                 strategy:
                   description: The method Kong should use to cache tokens issued by the IdP.
                   type: string
@@ -70672,6 +70878,64 @@ components:
       additionalProperties: false
       required:
         - type
+    EventGatewayConsumePolicySchemaValidationTFOnly:
+      description: A policy associated with an Event Gateway.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields: []
+      required:
+        - type
+        - id
+        - created_at
+        - updated_at
+        - config
     EventGatewayProducePolicySchemaValidationTFOnly:
       description: A policy associated with an Event Gateway.
       type: object
@@ -71467,6 +71731,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             required:
               - name
@@ -71564,6 +71832,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             title: Portal
     ReplacePortalImageAsset:
@@ -73597,6 +73869,10 @@ components:
                       x-speakeasy-param-suppress-computed-diff: true
                     labels:
                       $ref: '#/components/schemas/Labels'
+                    notifications_developer_pii_visibility_enabled:
+                      description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                      type: boolean
+                      default: false
                   required:
                     - id
                     - name
@@ -73709,6 +73985,10 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/Labels'
+              notifications_developer_pii_visibility_enabled:
+                description: 'When enabled, portal registration notifications include the registering developer''s identifying information (such as name and email).'
+                type: boolean
+                default: false
             additionalProperties: false
             required:
               - id

@@ -341,7 +341,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					r.Config.Resources.Cache.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.KeepaliveBacklog)
 					r.Config.Resources.Cache.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.KeepalivePoolSize)
 					r.Config.Resources.Cache.Redis.Password = types.StringPointerValue(resp.Config.Resources.Cache.Redis.Password)
-					r.Config.Resources.Cache.Redis.Port = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.Port)
+					r.Config.Resources.Cache.Redis.Port = types.StringPointerValue(resp.Config.Resources.Cache.Redis.Port)
 					r.Config.Resources.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ReadTimeout)
 					r.Config.Resources.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.SendTimeout)
 					r.Config.Resources.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Resources.Cache.Redis.SentinelMaster)
@@ -1745,9 +1745,9 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				} else {
 					password = nil
 				}
-				port1 := new(int64)
+				port1 := new(string)
 				if !r.Config.Resources.Cache.Redis.Port.IsUnknown() && !r.Config.Resources.Cache.Redis.Port.IsNull() {
-					*port1 = r.Config.Resources.Cache.Redis.Port.ValueInt64()
+					*port1 = r.Config.Resources.Cache.Redis.Port.ValueString()
 				} else {
 					port1 = nil
 				}

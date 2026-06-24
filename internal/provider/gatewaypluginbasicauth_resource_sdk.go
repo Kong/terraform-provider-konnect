@@ -53,7 +53,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 					r.Config.BruteForceProtection.Redis.Database = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Database)
 					r.Config.BruteForceProtection.Redis.Host = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Host)
 					r.Config.BruteForceProtection.Redis.Password = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Password)
-					r.Config.BruteForceProtection.Redis.Port = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Port)
+					r.Config.BruteForceProtection.Redis.Port = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Port)
 					r.Config.BruteForceProtection.Redis.ServerName = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.ServerName)
 					r.Config.BruteForceProtection.Redis.Ssl = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.Ssl)
 					r.Config.BruteForceProtection.Redis.SslVerify = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.SslVerify)
@@ -439,9 +439,9 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 				} else {
 					password = nil
 				}
-				port := new(int64)
+				port := new(string)
 				if !r.Config.BruteForceProtection.Redis.Port.IsUnknown() && !r.Config.BruteForceProtection.Redis.Port.IsNull() {
-					*port = r.Config.BruteForceProtection.Redis.Port.ValueInt64()
+					*port = r.Config.BruteForceProtection.Redis.Port.ValueString()
 				} else {
 					port = nil
 				}

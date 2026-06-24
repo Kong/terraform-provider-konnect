@@ -6,97 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// EventGatewayConsumeSchemaValidationPolicyConfig - The configuration of the schema validation policy.
-type EventGatewayConsumeSchemaValidationPolicyConfig struct {
-	// How to validate the schema and parse the record.
-	// * confluent_schema_registry - validates against confluent schema registry.
-	// * json - simple JSON parsing without the schema.
-	//
-	Type           SchemaValidationType     `json:"type"`
-	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
-	// If true, validate the record key.
-	//
-	// **Requires a minimum runtime version of `1.2`**.
-	ValidateKey *bool `json:"validate_key,omitempty"`
-	// If true, validate the record value.
-	//
-	// **Requires a minimum runtime version of `1.2`**.
-	ValidateValue *bool `json:"validate_value,omitempty"`
-	// Deprecated. Use `failure_mode`.
-	//
-	// Defines a behavior when record key is not valid.
-	// * mark - marks a record with kong/server header and client ID value
-	//   to help to identify the clients violating schema.
-	// * skip - skips delivering a record.
-	//
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	KeyValidationAction *ConsumeKeyValidationAction `json:"key_validation_action,omitempty"`
-	// Deprecated. Use `failure_mode`.
-	//
-	// Defines a behavior when record value is not valid.
-	// * mark - marks a record with kong/server header and client ID value
-	//   to help to identify the clients violating schema.
-	// * skip - skips delivering a record.
-	//
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	ValueValidationAction *ConsumeValueValidationAction `json:"value_validation_action,omitempty"`
-}
-
-func (e EventGatewayConsumeSchemaValidationPolicyConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetType() SchemaValidationType {
-	if e == nil {
-		return SchemaValidationType("")
-	}
-	return e.Type
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetSchemaRegistry() *SchemaRegistryReference {
-	if e == nil {
-		return nil
-	}
-	return e.SchemaRegistry
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetValidateKey() *bool {
-	if e == nil {
-		return nil
-	}
-	return e.ValidateKey
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetValidateValue() *bool {
-	if e == nil {
-		return nil
-	}
-	return e.ValidateValue
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetKeyValidationAction() *ConsumeKeyValidationAction {
-	if e == nil {
-		return nil
-	}
-	return e.KeyValidationAction
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetValueValidationAction() *ConsumeValueValidationAction {
-	if e == nil {
-		return nil
-	}
-	return e.ValueValidationAction
-}
-
 // EventGatewayConsumeSchemaValidationPolicy - A policy that validates consume messages against a schema registry.
 type EventGatewayConsumeSchemaValidationPolicy struct {
 	// The type name of the policy.
@@ -113,7 +22,7 @@ type EventGatewayConsumeSchemaValidationPolicy struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
-	// The configuration of the schema validation policy.
+	// The configuration of the consume schema validation policy.
 	Config EventGatewayConsumeSchemaValidationPolicyConfig `json:"config"`
 	// A string containing the boolean expression that determines whether the policy is applied.
 	Condition *string `default:"" json:"condition"`
@@ -167,6 +76,14 @@ func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfig() EventGatewayCons
 		return EventGatewayConsumeSchemaValidationPolicyConfig{}
 	}
 	return e.Config
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfigConfluentSchemaRegistry() *EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig {
+	return e.GetConfig().EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfigJSON() *EventGatewayConsumeSchemaValidationPolicyJSONConfig {
+	return e.GetConfig().EventGatewayConsumeSchemaValidationPolicyJSONConfig
 }
 
 func (e *EventGatewayConsumeSchemaValidationPolicy) GetCondition() *string {

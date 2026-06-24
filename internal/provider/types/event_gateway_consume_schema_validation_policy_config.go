@@ -2,13 +2,7 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type EventGatewayConsumeSchemaValidationPolicyConfig struct {
-	KeyValidationAction   types.String             `tfsdk:"key_validation_action"`
-	SchemaRegistry        *SchemaRegistryReference `tfsdk:"schema_registry"`
-	Type                  types.String             `tfsdk:"type"`
-	ValueValidationAction types.String             `tfsdk:"value_validation_action"`
+	JSON                    *EventGatewayConsumeSchemaValidationPolicyJSONConfig `queryParam:"inline" tfsdk:"json"`
+	ConfluentSchemaRegistry *EventGatewayConsumeSchemaValidationPolicyJSONConfig `queryParam:"inline" tfsdk:"confluent_schema_registry"`
 }
