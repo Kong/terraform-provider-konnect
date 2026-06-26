@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.19.0
-> Released 2026/06/??
+> Released 2026/06/26
 
 # Features
 * Vault reference is now supported for redis port in `konnect_gateway_plugin_*` resources
