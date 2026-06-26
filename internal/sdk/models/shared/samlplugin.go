@@ -402,7 +402,7 @@ type SamlPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `default:"6379" json:"port"`
 	// The Redis session key prefix.
 	Prefix *string `default:"null" json:"prefix"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -432,10 +432,23 @@ type SamlPluginRedis struct {
 }
 
 func (s SamlPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+	jsonBytes, err := utils.MarshalJSON(s, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (s *SamlPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
@@ -512,7 +525,7 @@ func (s *SamlPluginRedis) GetPassword() *string {
 	return s.Password
 }
 
-func (s *SamlPluginRedis) GetPort() *int64 {
+func (s *SamlPluginRedis) GetPort() *string {
 	if s == nil {
 		return nil
 	}

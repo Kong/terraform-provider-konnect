@@ -245,7 +245,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepaliveBacklog)
 			r.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepalivePoolSize)
 			r.Config.ClusterCacheRedis.Password = types.StringPointerValue(resp.Config.ClusterCacheRedis.Password)
-			r.Config.ClusterCacheRedis.Port = types.Int64PointerValue(resp.Config.ClusterCacheRedis.Port)
+			r.Config.ClusterCacheRedis.Port = types.StringPointerValue(resp.Config.ClusterCacheRedis.Port)
 			r.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ReadTimeout)
 			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
 			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
@@ -652,7 +652,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
 			r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
 			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+			r.Config.Redis.Port = types.StringPointerValue(resp.Config.Redis.Port)
 			r.Config.Redis.Prefix = types.StringPointerValue(resp.Config.Redis.Prefix)
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
@@ -1904,9 +1904,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			password = nil
 		}
-		port1 := new(int64)
+		port1 := new(string)
 		if !r.Config.ClusterCacheRedis.Port.IsUnknown() && !r.Config.ClusterCacheRedis.Port.IsNull() {
-			*port1 = r.Config.ClusterCacheRedis.Port.ValueInt64()
+			*port1 = r.Config.ClusterCacheRedis.Port.ValueString()
 		} else {
 			port1 = nil
 		}
@@ -2746,9 +2746,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			password1 = nil
 		}
-		port4 := new(int64)
+		port4 := new(string)
 		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-			*port4 = r.Config.Redis.Port.ValueInt64()
+			*port4 = r.Config.Redis.Port.ValueString()
 		} else {
 			port4 = nil
 		}

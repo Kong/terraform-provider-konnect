@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -72,49 +73,98 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"key_validation_action": schema.StringAttribute{
-						Optional:           true,
-						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
-							`` + "\n" +
-							`Defines a behavior when record key is not valid.` + "\n" +
-							`* mark - marks a record with kong/server header and client ID value` + "\n" +
-							`  to help to identify the clients violating schema.` + "\n" +
-							`* skip - skips delivering a record.` + "\n" +
-							`possible known values include one of ["mark", "skip"]`,
-					},
-					"schema_registry": schema.SingleNestedAttribute{
+					"confluent_schema_registry": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								Required:    true,
-								Description: `The unique identifier of the schema registry.`,
-								Validators: []validator.String{
-									stringvalidator.UTF8LengthAtLeast(1),
+							"key_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record key is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+							"schema_registry": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										Required:    true,
+										Description: `The unique identifier of the schema registry.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
+									},
 								},
 							},
+							"value_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record value is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+						},
+						Description: `The configuration of the consume schema validation policy when using a schema registry.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("json"),
+							}...),
 						},
 					},
-					"type": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `How to validate the schema and parse the record.` + "\n" +
-							`* confluent_schema_registry - validates against confluent schema registry.` + "\n" +
-							`* json - simple JSON parsing without the schema.` + "\n" +
-							`possible known values include one of ["confluent_schema_registry", "json"]`,
-					},
-					"value_validation_action": schema.StringAttribute{
-						Optional:           true,
-						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
-							`` + "\n" +
-							`Defines a behavior when record value is not valid.` + "\n" +
-							`* mark - marks a record with kong/server header and client ID value` + "\n" +
-							`  to help to identify the clients violating schema.` + "\n" +
-							`* skip - skips delivering a record.` + "\n" +
-							`possible known values include one of ["mark", "skip"]`,
+					"json": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"key_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record key is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+							"schema_registry": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										Required:    true,
+										Description: `The unique identifier of the schema registry.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
+									},
+								},
+							},
+							"value_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record value is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+						},
+						Description: `The configuration of the consume schema validation policy when using JSON parsing without schema.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("confluent_schema_registry"),
+							}...),
+						},
 					},
 				},
-				Description: `The configuration of the schema validation policy.`,
+				Description: `The configuration of the consume schema validation policy.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -241,11 +291,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Create(ctx context.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicySchemaValidationTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicySchemaValidationTFOnly(ctx, res.EventGatewayConsumePolicySchemaValidationTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -305,11 +355,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Read(ctx context.Con
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicySchemaValidationTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicySchemaValidationTFOnly(ctx, res.EventGatewayConsumePolicySchemaValidationTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -355,11 +405,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Update(ctx context.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayConsumePolicySchemaValidationTFOnly != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayConsumePolicySchemaValidationTFOnly(ctx, res.EventGatewayConsumePolicySchemaValidationTFOnly)...)
 
 	if resp.Diagnostics.HasError() {
 		return

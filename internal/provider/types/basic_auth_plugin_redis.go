@@ -11,7 +11,7 @@ type BasicAuthPluginRedis struct {
 	Database            types.Int64                        `tfsdk:"database"`
 	Host                types.String                       `tfsdk:"host"`
 	Password            types.String                       `tfsdk:"password"`
-	Port                types.Int64                        `tfsdk:"port"`
+	Port                types.String                       `tfsdk:"port"`
 	ServerName          types.String                       `tfsdk:"server_name"`
 	Ssl                 types.Bool                         `tfsdk:"ssl"`
 	SslVerify           types.Bool                         `tfsdk:"ssl_verify"`

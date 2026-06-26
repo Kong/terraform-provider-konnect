@@ -25,7 +25,7 @@ resource "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
   proxy_urls = [
     {
       host     = "...my_host..."
-      port     = 0
+      port     = 1
       protocol = "...my_protocol..."
     }
   ]

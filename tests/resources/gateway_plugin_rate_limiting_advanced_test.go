@@ -22,6 +22,22 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 					),
 				},
 				{
+					// Update redis port to a vault reference
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "{vault://konnect/redis/portx}"),
+					),
+				},
+				{
+					// Update redis port back to an integer
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.redis.port", "6380"),
+					),
+				},
+				{
 					// Update some fields to null
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
@@ -58,6 +74,16 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 					ConfigDirectory:    config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.namespace", "updated-namespace"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),
+					),
+				},
+				{
+					// Update partial redis port to a vault reference
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_partial.redis_ee_partial", "redis_ee.config.port", "{vault://konnect/redis/portx}"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),
 					),
 				},

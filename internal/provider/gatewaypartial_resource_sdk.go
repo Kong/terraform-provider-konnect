@@ -281,7 +281,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			r.RedisCe.Config.Database = types.Int64PointerValue(resp.PartialRedisCe.Config.Database)
 			r.RedisCe.Config.Host = types.StringPointerValue(resp.PartialRedisCe.Config.Host)
 			r.RedisCe.Config.Password = types.StringPointerValue(resp.PartialRedisCe.Config.Password)
-			r.RedisCe.Config.Port = types.Int64PointerValue(resp.PartialRedisCe.Config.Port)
+			r.RedisCe.Config.Port = types.StringPointerValue(resp.PartialRedisCe.Config.Port)
 			r.RedisCe.Config.ServerName = types.StringPointerValue(resp.PartialRedisCe.Config.ServerName)
 			r.RedisCe.Config.Ssl = types.BoolPointerValue(resp.PartialRedisCe.Config.Ssl)
 			r.RedisCe.Config.SslVerify = types.BoolPointerValue(resp.PartialRedisCe.Config.SslVerify)
@@ -350,7 +350,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			r.RedisEe.Config.KeepaliveBacklog = types.Int64PointerValue(resp.PartialRedisEe.Config.KeepaliveBacklog)
 			r.RedisEe.Config.KeepalivePoolSize = types.Int64PointerValue(resp.PartialRedisEe.Config.KeepalivePoolSize)
 			r.RedisEe.Config.Password = types.StringPointerValue(resp.PartialRedisEe.Config.Password)
-			r.RedisEe.Config.Port = types.Int64PointerValue(resp.PartialRedisEe.Config.Port)
+			r.RedisEe.Config.Port = types.StringPointerValue(resp.PartialRedisEe.Config.Port)
 			r.RedisEe.Config.ReadTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.ReadTimeout)
 			r.RedisEe.Config.SendTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.SendTimeout)
 			r.RedisEe.Config.SentinelMaster = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelMaster)
@@ -469,7 +469,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.Vectordb.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.KeepaliveBacklog)
 				r.Vectordb.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.KeepalivePoolSize)
 				r.Vectordb.Config.Redis.Password = types.StringPointerValue(resp.PartialVectordb.Config.Redis.Password)
-				r.Vectordb.Config.Redis.Port = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.Port)
+				r.Vectordb.Config.Redis.Port = types.StringPointerValue(resp.PartialVectordb.Config.Redis.Port)
 				r.Vectordb.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ReadTimeout)
 				r.Vectordb.Config.Redis.SendTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.SendTimeout)
 				r.Vectordb.Config.Redis.SentinelMaster = types.StringPointerValue(resp.PartialVectordb.Config.Redis.SentinelMaster)
@@ -716,9 +716,9 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			password = nil
 		}
-		port := new(int64)
+		port := new(string)
 		if !r.RedisCe.Config.Port.IsUnknown() && !r.RedisCe.Config.Port.IsNull() {
-			*port = r.RedisCe.Config.Port.ValueInt64()
+			*port = r.RedisCe.Config.Port.ValueString()
 		} else {
 			port = nil
 		}
@@ -970,9 +970,9 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			password1 = nil
 		}
-		port2 := new(int64)
+		port2 := new(string)
 		if !r.RedisEe.Config.Port.IsUnknown() && !r.RedisEe.Config.Port.IsNull() {
-			*port2 = r.RedisEe.Config.Port.ValueInt64()
+			*port2 = r.RedisEe.Config.Port.ValueString()
 		} else {
 			port2 = nil
 		}
@@ -1383,9 +1383,9 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				password3 = nil
 			}
-			port6 := new(int64)
+			port6 := new(string)
 			if !r.Vectordb.Config.Redis.Port.IsUnknown() && !r.Vectordb.Config.Redis.Port.IsNull() {
-				*port6 = r.Vectordb.Config.Redis.Port.ValueInt64()
+				*port6 = r.Vectordb.Config.Redis.Port.ValueString()
 			} else {
 				port6 = nil
 			}

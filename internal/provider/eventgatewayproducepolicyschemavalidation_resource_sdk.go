@@ -18,7 +18,7 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromShar
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		if r.Config == nil {
-			r.Config = &tfTypes.EventGatewayProduceSchemaValidationPolicyConfig{}
+			r.Config = &tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig{}
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)

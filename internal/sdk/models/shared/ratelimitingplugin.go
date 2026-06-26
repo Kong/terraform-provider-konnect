@@ -330,7 +330,7 @@ type RateLimitingPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `default:"6379" json:"port"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
@@ -344,10 +344,23 @@ type RateLimitingPluginRedis struct {
 }
 
 func (r RateLimitingPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+	jsonBytes, err := utils.MarshalJSON(r, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if has(\"port\") then if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (r *RateLimitingPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
@@ -382,7 +395,7 @@ func (r *RateLimitingPluginRedis) GetPassword() *string {
 	return r.Password
 }
 
-func (r *RateLimitingPluginRedis) GetPort() *int64 {
+func (r *RateLimitingPluginRedis) GetPort() *string {
 	if r == nil {
 		return nil
 	}

@@ -506,9 +506,10 @@ func TestEventGatewayReusable(t *testing.T) {
 				enabled     = true
 
 				config = {
-					type                     = "json"
-					key_validation_action    = "mark"
-					value_validation_action  = "skip"
+					json = {
+						key_validation_action    = "mark"
+						value_validation_action  = "skip"
+					}
 				}
 			}
 		`)
