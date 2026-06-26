@@ -77,6 +77,16 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),
 					),
 				},
+				{
+					// Update partial redis port to a vault reference
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_partial.redis_ee_partial", "redis_ee.config.port", "{vault://konnect/redis/portx}"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),
+					),
+				},
 			},
 		})
 	})
