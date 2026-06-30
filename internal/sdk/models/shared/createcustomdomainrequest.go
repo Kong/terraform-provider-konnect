@@ -8,8 +8,16 @@ import (
 
 // CreateCustomDomainRequest - Request schema for creating a custom domain in the global API.
 type CreateCustomDomainRequest struct {
+	// ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
 	ControlPlaneID string `json:"control_plane_id"`
-	// Set of control-plane geos supported for deploying cloud-gateways configurations.
+	// Geographic region of the control plane. Supported values:
+	// - `us` — United States
+	// - `eu` — Europe
+	// - `au` — Australia
+	// - `me` — Middle East
+	// - `in` — India
+	// - `sg` — Singapore
+	//
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
 	// Domain name of the custom domain.
 	Domain string `json:"domain"`

@@ -301,6 +301,7 @@ type Konnect struct {
 	PortalProductVersions *PortalProductVersions
 	// APIs related to configuration of Konnect Developer Portals.
 	Portals           *Portals
+	APIPackages       *APIPackages
 	API               *API
 	APIDocumentation  *APIDocumentation
 	APIImplementation *APIImplementation
@@ -494,6 +495,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalAppearance = newPortalAppearance(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalProductVersions = newPortalProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIPackages = newAPIPackages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)

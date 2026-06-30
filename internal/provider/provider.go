@@ -165,6 +165,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewAPIResource,
 		NewAPIDocumentResource,
 		NewAPIImplementationResource,
+		NewAPIPackageResource,
 		NewAPIProductResource,
 		NewAPIProductVersionResource,
 		NewAPIPublicationResource,

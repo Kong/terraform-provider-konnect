@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -62,16 +63,28 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "CloudGatewayConfiguration Resource",
 		Attributes: map[string]schema.Attribute{
 			"api_access": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Type of API access data-plane groups will support for a configuration. possible known values include one of ["private", "public", "private+public"]`,
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `Controls how data planes in a configuration are exposed. Supported values:` + "\n" +
+					`- ` + "`" + `private` + "`" + ` — data planes are accessible only within the VPC network; no public internet exposure` + "\n" +
+					`- ` + "`" + `public` + "`" + ` — data planes are accessible from the public internet` + "\n" +
+					`- ` + "`" + `private+public` + "`" + ` — equivalent to ` + "`" + `public` + "`" + `; data planes are accessible from the public internet (default)` + "\n" +
+					`possible known values include one of ["private", "public", "private+public"]`,
 			},
 			"control_plane_geo": schema.StringAttribute{
-				Required:    true,
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]`,
+				Required: true,
+				MarkdownDescription: `Geographic region of the control plane. Supported values:` + "\n" +
+					`- ` + "`" + `us` + "`" + ` — United States` + "\n" +
+					`- ` + "`" + `eu` + "`" + ` — Europe` + "\n" +
+					`- ` + "`" + `au` + "`" + ` — Australia` + "\n" +
+					`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
+					`- ` + "`" + `in` + "`" + ` — India` + "\n" +
+					`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
+					`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]`,
 			},
 			"control_plane_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -100,6 +113,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 											Description: `Base number of requests per second that the deployment target should support. Not Null`,
 											Validators: []validator.Int64{
 												speakeasy_int64validators.NotNull(),
+												int64validator.AtLeast(1),
 											},
 										},
 										"kind": schema.StringAttribute{
