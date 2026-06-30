@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.20.0
+> Released 2026/07/??
+
+# Features
+* Add support for `konnect_api_package` resource.
+
 ## 3.19.0
 > Released 2026/06/26
 
