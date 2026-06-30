@@ -2,7 +2,13 @@
 
 package shared
 
-// ControlPlaneGeo - Set of control-plane geos supported for deploying cloud-gateways configurations.
+// ControlPlaneGeo - Geographic region of the control plane. Supported values:
+// - `us` — United States
+// - `eu` — Europe
+// - `au` — Australia
+// - `me` — Middle East
+// - `in` — India
+// - `sg` — Singapore
 type ControlPlaneGeo string
 
 const (

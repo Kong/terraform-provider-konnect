@@ -76,7 +76,7 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `CIDR block configuration for the network. Requires replacement if changed.`,
+				Description: `CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider. Requires replacement if changed.`,
 			},
 			"cloud_gateway_provider_account_id": schema.StringAttribute{
 				Required: true,

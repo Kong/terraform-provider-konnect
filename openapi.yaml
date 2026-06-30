@@ -3924,8 +3924,10 @@ paths:
       operationId: create-add-on
       summary: Create Add-On
       description: |
-        Creates a new add-on. Specific add-on types (e.g., managed cache)
-        are defined by the sub-kind configuration.
+        Creates a new add-on for a control plane or control plane group. The add-on type is
+        determined by the `config.kind` field — currently only `managed-cache.v0` is supported,
+        which provisions a Redis-compatible cache co-located with your data planes. After it's created,
+        the add-on transitions through `initializing → ready` as it deploys across data plane groups.
       requestBody:
         required: true
         content:
@@ -3976,7 +3978,7 @@ paths:
         terraform-resource: CloudGatewayAddon#read
       operationId: get-add-on
       summary: Get Add-On
-      description: Retrieves an add-on by ID.
+      description: 'Retrieves a single add-on by ID, including its current lifecycle state and per data plane group deployment status.'
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       responses:
@@ -4012,7 +4014,8 @@ paths:
       operationId: delete-add-on
       summary: Delete Add-On
       description: |
-        Deletes an add-on by ID. The request will be rejected if the managed cache partial is still in use by some plugins.
+        Deletes an add-on by ID. The request is rejected if any Kong plugins are still referencing
+        the managed cache add-on — remove those plugin references before deleting.
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       responses:
@@ -4053,7 +4056,9 @@ paths:
         terraform-datasource: null
       operationId: update-add-on
       summary: Update Add-On
-      description: Updates the configuration of an existing add-on.
+      description: |
+        Updates the configuration of an existing add-on, such as changing the managed cache
+        capacity tier. Tier upgrades are supported; downgrades are not.
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       requestBody:
@@ -4102,12 +4107,14 @@ paths:
       operationId: create-configuration
       summary: Create Configuration
       description: |
-        Creates a new configuration for a control-plane (restricted by permitted control-plane permissions for
-        configurations). This request will replace any existing configuration for the requested control_plane_id and
-        control_plane_geo by performing a diff. From this diff, new resources detected in the requested configuration
-        will be added, resources not found in the request configuration but in the previous will be deleted, and
-        resources found in both will be updated to the requested configuration. Networks referenced in this request that
-        are in an offline state will automatically initialize (i.e. move to an initializing state).
+        Creates or replaces the Cloud Gateway configuration for a control plane and geo. The request fully describes
+        the desired state — Kong diffs it against the current configuration, then adds, removes, or updates data plane
+        groups to match. Any network referenced in the request that is currently `offline` automatically transitions
+        to `initializing`.
+
+        Use `kind: dedicated.v0` (default) for dedicated Cloud Gateways — `version`, `cloud_gateway_network_id`, and
+        `autoscale` are required. Use `kind: serverless.v1` for serverless Cloud Gateways — those three fields must
+        be omitted.
       requestBody:
         required: true
         content:
@@ -4139,7 +4146,9 @@ paths:
         terraform-datasource: null
       operationId: get-configuration
       summary: Get Configuration
-      description: Retrieves a configuration by ID (restricted by permitted control-plane read).
+      description: |
+        Retrieves a single Cloud Gateway configuration by ID, including the current state of each deployed
+        data plane group. Access is restricted to control planes the caller has permission to read.
       parameters:
         - $ref: '#/components/parameters/ConfigurationId'
       responses:
@@ -4164,8 +4173,12 @@ paths:
       operationId: create-custom-domains
       summary: Create Custom Domain
       description: |
-        Creates a new custom domain for a control-plane (restricted by permitted control-plane associate-custom-domain
-        action).
+        Registers a custom domain for a control plane. After creation, Konnect provisions a TLS
+        certificate and configures SNI routing, transitioning the domain through
+        `initializing → ready`. To complete setup, configure two CNAME records at your DNS
+        registrar: one pointing your domain to the Konnect gateway hostname, and one pointing
+        `_acme-challenge.<your-domain>` to the ACME challenge hostname provided by Konnect.
+        Use the online-status endpoint to verify both records are correctly configured.
       requestBody:
         required: true
         content:
@@ -4197,7 +4210,7 @@ paths:
         terraform-datasource: null
       operationId: get-custom-domain
       summary: Get Custom Domain
-      description: Retrieves a custom domain by ID (restricted by permitted control-plane reads).
+      description: 'Retrieves a single custom domain by ID, including its current lifecycle state and any error metadata.'
       parameters:
         - $ref: '#/components/parameters/CustomDomainId'
       responses:
@@ -4220,7 +4233,7 @@ paths:
         terraform-datasource: null
       operationId: delete-custom-domain
       summary: Delete Custom Domain
-      description: Deletes a custom domain by ID (restricted by permitted control-plane reads).
+      description: 'Deletes a custom domain by ID, removing the associated TLS certificate and SNI configuration from the control plane''s data planes.'
       parameters:
         - $ref: '#/components/parameters/CustomDomainId'
       responses:
@@ -4256,7 +4269,10 @@ paths:
         terraform-datasource: CloudGatewayNetwork#read
       operationId: list-networks
       summary: List Networks
-      description: Returns a paginated list of networks.
+      description: |
+        Returns a paginated list of Cloud Gateway networks visible to the caller. Filter by
+        `state` to narrow results — for example, poll for `state=ready` to find networks
+        available for data plane group configurations.
       parameters:
         - $ref: '#/components/parameters/NetworksFilter'
         - $ref: '#/components/parameters/PageSize'
@@ -4281,7 +4297,9 @@ paths:
         terraform-datasource: null
       operationId: create-network
       summary: Create Network
-      description: Creates a new network for a given provider account.
+      description: |
+        Creates a new Cloud Gateway network in the specified provider account and region. Network creation is
+        asynchronous — the network starts in `initializing` state and transitions to `ready` once provisioned.
       requestBody:
         required: true
         content:
@@ -4311,7 +4329,7 @@ paths:
         terraform-datasource: null
       operationId: get-network
       summary: Get Network
-      description: Retrieves a network by ID.
+      description: 'Retrieves a Cloud Gateway network by ID, including its current state and provider metadata.'
       parameters:
         - $ref: '#/components/parameters/NetworkId'
       responses:
@@ -4334,7 +4352,7 @@ paths:
         terraform-datasource: null
       operationId: update-network
       summary: Update Network
-      description: Updates a network by ID.
+      description: Updates a Cloud Gateway network by ID. You can also rename the network.
       parameters:
         - $ref: '#/components/parameters/NetworkId'
       requestBody:
@@ -4367,7 +4385,7 @@ paths:
         terraform-datasource: null
       operationId: delete-network
       summary: Delete Network
-      description: Deletes a network by ID.
+      description: Deletes a Cloud Gateway network by ID. The network cannot be referenced by any active configuration before it can be deleted.
       parameters:
         - $ref: '#/components/parameters/NetworkId'
       responses:
@@ -4403,7 +4421,11 @@ paths:
         terraform-datasource: null
       operationId: create-private-dns
       summary: Create Private DNS
-      description: Creates a new Private DNS for a given network.
+      description: |
+        Creates a new private DNS attachment for a given network. The attachment type is determined by
+        `private_dns_attachment_config.kind`. Supported types: `aws-private-hosted-zone-attachment`,
+        `aws-outbound-resolver`, `gcp-private-hosted-zone-attachment`, `azure-private-hosted-zone-attachment`,
+        and `azure-outbound-resolver`.
       parameters:
         - name: networkId
           in: path
@@ -4452,7 +4474,7 @@ paths:
         terraform-datasource: null
       operationId: get-private-dns
       summary: Get Private DNS
-      description: Retrieves a Private DNS by ID for a given network.
+      description: 'Retrieves a private DNS attachment by ID, including its current state and attachment configuration.'
       parameters:
         - name: networkId
           in: path
@@ -4481,7 +4503,10 @@ paths:
         terraform-datasource: null
       operationId: delete-private-dns
       summary: Delete Private DNS
-      description: Deletes a Private DNS by ID for a given network.
+      description: |
+        Deletes a Private DNS attachment by ID. The attachment must be in a stable state (`ready`
+        or `error`) before deletion — requests against attachments in a transitional state
+        (`initializing`, `terminating`) will be rejected.
       parameters:
         - name: networkId
           in: path
@@ -4523,7 +4548,12 @@ paths:
         terraform-datasource: null
       operationId: create-transit-gateway
       summary: Create Transit Gateway
-      description: Creates a new transit gateway for a given network.
+      description: |
+        Creates a new transit gateway attachment for a given network. The attachment type is determined by the
+        `transit_gateway_attachment_config.kind` field. Supported types: `aws-transit-gateway-attachment`,
+        `aws-vpc-peering-attachment`, `aws-resource-endpoint-attachment`, `azure-vnet-peering-attachment`,
+        `azure-vhub-peering-attachment`, and `gcp-vpc-peering-attachment`. Creation is asynchronous —
+        the transit gateway starts in `initializing` state and transitions to `ready` once provisioned.
       parameters:
         - name: networkId
           in: path
@@ -4572,7 +4602,7 @@ paths:
         terraform-datasource: null
       operationId: get-transit-gateway
       summary: Get Transit Gateway
-      description: Retrieves a transit gateway by ID for a given network.
+      description: 'Retrieves a transit gateway by ID, including its current state and attachment configuration.'
       parameters:
         - name: networkId
           in: path
@@ -4602,7 +4632,9 @@ paths:
         terraform-datasource: null
       operationId: update-transit-gateway
       summary: Update Transit Gateway
-      description: Updates a transit gateway by ID for a given network.
+      description: |
+        Updates a transit gateway by ID. Supports updating CIDR blocks on an AWS Transit Gateway, or updating
+        the resource endpoint configuration on an AWS Resource Endpoint gateway.
       parameters:
         - name: networkId
           in: path
@@ -4642,7 +4674,7 @@ paths:
         terraform-datasource: null
       operationId: delete-transit-gateway
       summary: Delete Transit Gateway
-      description: Deletes a transit gateway by ID for a given network.
+      description: Deletes a transit gateway by ID. The transit gateway must be in a non-transitional state before deletion.
       parameters:
         - name: networkId
           in: path
@@ -4683,7 +4715,7 @@ paths:
       x-speakeasy-entity-operation: CloudGatewayProviderAccountList#read
       operationId: list-provider-accounts
       summary: List Provider Accounts
-      description: Returns a a paginated collection of provider accounts for an organization.
+      description: Returns a paginated list of provider accounts linked to the organization. Filter by cloud provider to see accounts for a specific CSP.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -17441,6 +17473,102 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Portals
+  /v3/api-packages:
+    post:
+      x-speakeasy-entity-operation: ApiPackage#create
+      operationId: create-api-package
+      summary: Create API Package
+      description: |
+        Creates a package of APIs.
+        An API package is a collection of APIs that can be used to group related APIs together.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiPackageRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiPackageResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Packages
+  '/v3/api-packages/{packageId}':
+    parameters:
+      - name: packageId
+        in: path
+        description: The UUID API Package identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiPackage#read
+        terraform-datasource: null
+      operationId: get-api-package
+      summary: Get API Package
+      description: Get details of a specific API package.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPackageResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Packages
+    patch:
+      x-speakeasy-entity-operation: ApiPackage#update
+      operationId: patch-api-package
+      summary: Patch API Package
+      description: |
+        Updates an existing API package.
+        You can modify the name, description and version of the API Package.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiPackageRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPackageResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+      tags:
+        - API Packages
+    delete:
+      x-speakeasy-entity-operation: ApiPackage#delete
+      operationId: delete-api-package
+      summary: Delete API Package
+      description: Deletes an API package.
+      responses:
+        '204':
+          description: API package was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Packages
   /v3/apis:
     post:
       x-speakeasy-entity-operation:
@@ -21354,6 +21482,7 @@ components:
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
     ControlPlaneId:
+      description: ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
       type: string
       format: uuid
       example: 0949471e-b759-45ba-87ab-ee63fb781388
@@ -21397,7 +21526,14 @@ components:
       format: uuid
       example: 929b2449-c69f-44c4-b6ad-9ecec6f811ae
     ControlPlaneGeo:
-      description: Set of control-plane geos supported for deploying cloud-gateways configurations.
+      description: |
+        Geographic region of the control plane. Supported values:
+        - `us` — United States
+        - `eu` — Europe
+        - `au` — Australia
+        - `me` — Middle East
+        - `in` — India
+        - `sg` — Singapore
       type: string
       enum:
         - us
@@ -21411,7 +21547,7 @@ components:
     GatewayVersion:
       description: 'Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: string
-      example: '3.2'
+      example: '3.10'
       title: Gateway Version
     InstanceTypeName:
       description: Instance type name to indicate capacity.
@@ -21422,7 +21558,11 @@ components:
         - large
       x-speakeasy-unknown-values: allow
     ApiAccess:
-      description: Type of API access data-plane groups will support for a configuration.
+      description: |
+        Controls how data planes in a configuration are exposed. Supported values:
+        - `private` — data planes are accessible only within the VPC network; no public internet exposure
+        - `public` — data planes are accessible from the public internet
+        - `private+public` — equivalent to `public`; data planes are accessible from the public internet (default)
       type: string
       example: private+public
       enum:
@@ -21482,7 +21622,8 @@ components:
         base_rps:
           description: Base number of requests per second that the deployment target should support.
           type: integer
-          example: 1
+          example: 100
+          minimum: 1
         max_rps:
           description: 'Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn''t be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.'
           type: integer
@@ -21793,7 +21934,14 @@ components:
       title: Network Create State
       x-speakeasy-unknown-values: allow
     NetworkState:
-      description: State of the network.
+      description: |
+        The current state of the network. Possible values:
+        - `created`: The network was created, but provisioning hasn't started yet.
+        - `initializing`: The network is being provisioned in the cloud provider.
+        - `offline`: The network was created but isn't provisioned; no data planes can be deployed.
+        - `ready`: The network is fully provisioned and available for data plane groups.
+        - `terminating`: The network is being deleted and is no longer accepting new resources.
+        - `terminated`: The network has been fully deleted and is no longer available.
       enum:
         - created
         - initializing
@@ -21845,12 +21993,12 @@ components:
     NetworkName:
       description: Human-readable name of the network.
       type: string
-      example: us-east-2 network
+      example: us-east-2-network
       title: Network Name
     NetworkCIDRBlock:
-      description: CIDR block configuration for the network.
+      description: CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider.
       type: string
-      example: 10.0.0.0/8
+      example: 10.0.0.0/16
       title: Network CIDR Block
     NetworkAvailabilityZones:
       description: List of availability zones that the network is attached to.
@@ -22075,11 +22223,17 @@ components:
             - aws-vpc-peering-attachment
           title: AWS VPC Peering Attachment Config
         peer_account_id:
+          description: AWS account ID of the peer VPC owner.
           type: string
+          example: '123456789012'
         peer_vpc_id:
+          description: ID of the peer VPC to establish the peering connection with.
           type: string
+          example: vpc-0a1b2c3d4e5f67890
         peer_vpc_region:
+          description: AWS region where the peer VPC is located.
           type: string
+          example: us-east-2
       additionalProperties: false
       required:
         - kind
@@ -22095,13 +22249,21 @@ components:
             - aws-vpc-peering-attachment
           title: AWS VPC Peering Attachment Config
         peer_account_id:
+          description: AWS account ID of the peer VPC owner.
           type: string
+          example: '123456789012'
         peer_vpc_id:
+          description: ID of the peer VPC to establish the peering connection with.
           type: string
+          example: vpc-0a1b2c3d4e5f67890
         peer_vpc_region:
+          description: AWS region where the peer VPC is located.
           type: string
+          example: us-east-2
         peering_connection_id:
+          description: 'ID of the AWS VPC peering connection, assigned after the peering request is accepted.'
           type: string
+          example: pcx-0a1b2c3d4e5f67890
           default: null
           nullable: true
           x-speakeasy-param-computed: false
@@ -22766,12 +22928,12 @@ components:
       example:
         kind: azure-outbound-resolver
         dns_config:
-          global.api.konghq.com:
+          internal.example.com:
             remote_dns_server_ip_addresses:
-              - 10.0.0.2
-          us.api.konghq.dev:
+              - 10.0.1.100
+          db.corp.internal:
             remote_dns_server_ip_addresses:
-              - 10.0.0.8
+              - 10.0.2.100
       additionalProperties: false
       required:
         - kind
@@ -22782,12 +22944,12 @@ components:
         Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.
       type: object
       example:
-        global.api.konghq.com:
+        internal.example.com:
           remote_dns_server_ip_addresses:
-            - 10.0.0.2
-        us.api.konghq.dev:
+            - 10.0.1.100
+        db.corp.internal:
           remote_dns_server_ip_addresses:
-            - 10.0.0.8
+            - 10.0.2.100
       additionalProperties:
         $ref: '#/components/schemas/PrivateDnsResolverConfigObject'
       title: Private DNS Resolver Config Item
@@ -22806,7 +22968,7 @@ components:
     PrivateDnsName:
       description: Human-readable name of the Private DNS.
       type: string
-      example: us-east-2 private dns
+      example: us-east-2-private-dns
       title: Private DNS Name
     PrivateDnsState:
       description: |
@@ -23378,7 +23540,14 @@ components:
         - $ref: '#/components/schemas/PatchAwsTransitGateway'
       title: PatchTransitGatewayRequest
     CustomDomainState:
-      description: State of the custom domain.
+      description: |
+        The current state of the custom domain. Possible values:
+        - `created` — The domain has been registered but TLS provisioning has not yet started.
+        - `initializing` — Konnect is provisioning the TLS certificate and configuring SNI routing.
+        - `ready` — The domain is fully provisioned and serving traffic.
+        - `terminating` — The domain is being deleted and its TLS certificate is being removed.
+        - `terminated` — The domain has been fully deleted and is no longer available.
+        - `error` — Provisioning failed; check `state_metadata` for details.
       type: string
       enum:
         - created
@@ -23491,7 +23660,10 @@ components:
       title: Custom Domain
     CreateConfigurationRequest:
       description: |
-        Request schema for creating a configuration.
+        Describes the desired state of a control plane's Cloud Gateway deployment. Submitting
+        this request replaces the current configuration; Kong reconciles running data plane groups
+        to match. Use `kind: dedicated.v0` for Dedicated Cloud Gateways or `kind: serverless.v1`
+        for Serverless — the required fields differ by kind.
       type: object
       properties:
         control_plane_id:
@@ -28041,115 +28213,6 @@ components:
       required:
         - title
         - items
-    PortalCustomization:
-      description: The custom settings of this portal
-      type: object
-      properties:
-        theme:
-          type: object
-          additionalProperties: false
-          nullable: false
-          properties:
-            name:
-              type: string
-              nullable: false
-            mode:
-              type: string
-              enum:
-                - light
-                - dark
-                - system
-              x-speakeasy-unknown-values: allow
-            colors:
-              type: object
-              additionalProperties: false
-              nullable: false
-              properties:
-                primary:
-                  type: string
-                  example: '#000000'
-                  nullable: false
-                  pattern: '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
-                  x-validation-message: must be a valid hex color value
-              x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
-        layout:
-          type: string
-          nullable: false
-          x-speakeasy-param-computed: false
-        css:
-          type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        menu:
-          type: object
-          additionalProperties: false
-          nullable: false
-          properties:
-            main:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalMenuItem'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            footer_sections:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalFooterMenuSection'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            footer_bottom:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalMenuItem'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
-        spec_renderer:
-          type: object
-          additionalProperties: false
-          nullable: false
-          properties:
-            try_it_ui:
-              description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
-              type: boolean
-              default: true
-            try_it_insomnia:
-              description: Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
-              type: boolean
-              default: true
-            infinite_scroll:
-              description: 'Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.'
-              type: boolean
-              default: true
-            show_schemas:
-              description: 'Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.'
-              type: boolean
-              default: true
-            hide_internal:
-              description: Manage visibility of internal endpoints and models.
-              type: boolean
-              default: false
-            hide_deprecated:
-              description: Manage visibility of deprecated endpoints and models.
-              type: boolean
-              default: false
-            allow_custom_server_urls:
-              description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
-              type: boolean
-              default: true
-          x-speakeasy-param-computed: false
-        robots:
-          type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      title: PortalCustomization
     PortalImageDataUri:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       type: string
@@ -28205,12 +28268,6 @@ components:
       example: '# Welcome to My Page'
       maxLength: 1000000
       title: PageContent
-    SnippetName:
-      description: The unique name of a snippet in a portal.
-      type: string
-      example: my-snippet
-      maxLength: 512
-      title: SnippetName
     SnippetTitle:
       description: The display title of a snippet in a portal.
       type: string
@@ -28994,6 +29051,121 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
       title: PortalTeamResponse
+    SnippetName:
+      description: The unique name of a snippet in a portal.
+      type: string
+      example: my-snippet
+      maxLength: 512
+      title: SnippetName
+    PortalCustomizationV3:
+      description: The custom settings of this portal
+      type: object
+      properties:
+        theme:
+          type: object
+          additionalProperties: false
+          nullable: false
+          properties:
+            name:
+              type: string
+              nullable: false
+            mode:
+              type: string
+              enum:
+                - light
+                - dark
+                - system
+              x-speakeasy-unknown-values: allow
+            colors:
+              type: object
+              additionalProperties: false
+              nullable: false
+              properties:
+                primary:
+                  type: string
+                  example: '#000000'
+                  nullable: false
+                  pattern: '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
+                  x-validation-message: must be a valid hex color value
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+        layout:
+          type: string
+          nullable: false
+          x-speakeasy-param-computed: false
+        css:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        menu:
+          type: object
+          additionalProperties: false
+          nullable: false
+          properties:
+            main:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSection'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+        spec_renderer:
+          type: object
+          additionalProperties: false
+          nullable: false
+          properties:
+            try_it_ui:
+              description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
+              type: boolean
+              default: true
+            try_it_insomnia:
+              description: Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
+              type: boolean
+              default: true
+            infinite_scroll:
+              description: 'Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.'
+              type: boolean
+              default: true
+            show_schemas:
+              description: 'Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.'
+              type: boolean
+              default: true
+            hide_internal:
+              description: Manage visibility of internal endpoints and models.
+              type: boolean
+              default: false
+            hide_deprecated:
+              description: Manage visibility of deprecated endpoints and models.
+              type: boolean
+              default: false
+            allow_custom_server_urls:
+              description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
+              type: boolean
+              default: true
+          x-speakeasy-param-computed: false
+        robots:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: PortalCustomization
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -29497,7 +29669,92 @@ components:
           pattern: '^[^,<>]*$'
       nullable: false
       title: API Attributes
+      x-speakeasy-param-computed-diff: true
       x-speakeasy-type-override: any
+    ApiPackageResponseSchema:
+      type: object
+      properties:
+        id:
+          description: The API Package identifier.
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: |
+            The name of your API Package. The `name + version` combination must be unique for each API Package you publish.
+          type: string
+          example: MyAPIPackage
+          maxLength: 255
+          minLength: 1
+        description:
+          description: A description of your API Package. Will be visible on your live Portal.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        slug:
+          description: |
+            The unique slug for your API Package, It should be unique across all APIs and API Packages.
+          type: string
+          example: my-api-package-v1
+          nullable: true
+          pattern: '^[\w-]+$'
+          x-speakeasy-param-computed: true
+        version:
+          description: An optional version for your API Package. Leave this empty if your API Package is unversioned.
+          type: string
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: true
+        rate_limiting_config:
+          $ref: '#/components/schemas/RateLimitingConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        attributes:
+          $ref: '#/components/schemas/ApiAttributes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - slug
+        - version
+        - labels
+        - attributes
+        - created_at
+        - updated_at
+        - rate_limiting_config
+      title: API Package
+    RateLimitingConfig:
+      description: Rate limit configuration that can be applied to an API Package or an API Package Operation.
+      type: object
+      properties:
+        limit:
+          description: The amount of requests allowed for each operation within the specified duration.
+          type: integer
+          minimum: 0
+        duration:
+          description: The timeframe to ensure that an application does not exceed the request limit.
+          type: string
+          enum:
+            - seconds
+            - minutes
+            - hours
+          x-speakeasy-unknown-values: allow
+      default: null
+      additionalProperties: false
+      nullable: true
+      required:
+        - limit
+        - duration
+      title: Rate Limiting configuration
+      x-speakeasy-param-computed: false
     ApiSpecType:
       description: |
         The type of specification being stored. This allows us to render the specification correctly.
@@ -71849,7 +72106,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalCustomization'
+            $ref: '#/components/schemas/PortalCustomizationV3'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -72036,6 +72293,62 @@ components:
             required:
               - name
             title: API
+    CreateApiPackageRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API Package identifier.
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
+              name:
+                description: |
+                  The name of your API Package. The `name + version` combination must be unique for each API Package you publish.
+                type: string
+                example: MyAPIPackage
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of your API Package. Will be visible on your live Portal.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              slug:
+                description: |
+                  The unique slug for your API Package, It should be unique across all APIs and API Packages.
+                type: string
+                example: my-api-package-v1
+                nullable: true
+                pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: true
+              version:
+                description: An optional version for your API Package. Leave this empty if your API Package is unversioned.
+                type: string
+                maxLength: 255
+                minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: true
+              rate_limiting_config:
+                $ref: '#/components/schemas/RateLimitingConfig'
+              labels:
+                $ref: '#/components/schemas/Labels'
+              attributes:
+                $ref: '#/components/schemas/ApiAttributes'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - name
+            title: API Package
     CreateApiSpecRequest:
       required: true
       content:
@@ -72249,6 +72562,63 @@ components:
                 $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
             title: API
+    UpdateApiPackageRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API Package identifier.
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
+              name:
+                description: |
+                  The name of your API Package. The `name + version` combination must be unique for each API Package you publish.
+                type: string
+                example: MyAPIPackage
+                default: null
+                maxLength: 255
+                minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
+              description:
+                description: A description of your API Package. Will be visible on your live Portal.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              slug:
+                description: |
+                  The unique slug for your API Package, It should be unique across all APIs and API Packages.
+                type: string
+                example: my-api-package-v1
+                nullable: true
+                pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: true
+              version:
+                description: An optional version for your API Package. Leave this empty if your API Package is unversioned.
+                type: string
+                maxLength: 255
+                minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: true
+              rate_limiting_config:
+                $ref: '#/components/schemas/RateLimitingConfig'
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+              attributes:
+                $ref: '#/components/schemas/ApiAttributes'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            title: API Package
     UpdateApiDocumentRequest:
       required: true
       content:
@@ -74025,7 +74395,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalCustomization'
+            $ref: '#/components/schemas/PortalCustomizationV3'
     PortalPage:
       description: Details about a page in a portal.
       content:
@@ -74145,6 +74515,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiResponseSchema'
+    ApiPackageResponse:
+      description: API Package
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiPackageResponseSchema'
     ApiDocumentResponse:
       description: API document
       content:
@@ -74556,12 +74932,34 @@ tags:
   - name: Control Planes
   - name: Control Plane Groups
   - name: Data-Plane Group Configurations
+    description: |
+      A Cloud Gateway configuration declares the desired state of a control plane's data plane groups — where they run,
+      how many instances, the gateway version, and the autoscaling strategy. Apply a configuration with PUT, and Kong
+      reconciles the running data planes to match.
   - name: Networks
+    description: |
+      Networks are provider-backed VPC or VNet resources that host dedicated Cloud Gateway data plane groups.
+      Each network is tied to a specific cloud provider account, region, and CIDR block. A network must reach
+      the `ready` state before it can be referenced in a configuration.
   - name: Transit Gateways
+    description: |
+      Transit gateways connect a Cloud Gateway network to your cloud infrastructure. Supported attachment types
+      span all three major cloud providers: AWS Transit Gateway, AWS VPC Peering, AWS Resource Endpoint (PrivateLink),
+      Azure VNet Peering, Azure Virtual Hub Peering, and GCP VPC Peering.
   - name: Private DNS
+    description: |
+      Private DNS attachments enable a Cloud Gateway network to resolve private DNS zones hosted in your cloud
+      provider — AWS Private Hosted Zones, AWS Outbound Resolvers, Azure Private Hosted Zones, Azure Outbound
+      Resolvers, and GCP Private Hosted Zones.
   - name: Add-Ons
+    description: |
+      Optional services that extend the capabilities of a Cloud Gateway data plane group. The currently supported add-on type is managed cache (`managed-cache.v0`), which provisions a Redis-compatible in-memory cache co-located with your data planes. Each add-on is scoped to a control plane or control plane group, and is automatically deployed across all data plane groups that belong to that owner.
   - name: Provider Accounts
+    description: |
+      Provider Accounts link your Konnect organization to a cloud provider account (AWS, Azure, or GCP) so that Cloud Gateway networks can be provisioned in the dedicated cloud provider account. Each provider account maps a Konnect organization to a cloud provider account ID, which Konnect uses when creating network peering and hub-and-spoke attachments.
   - name: Custom Domains
+    description: |
+      Custom Domains let you assign bring-your-own hostnames to a Cloud Gateway control plane. After creation the domain moves through `initializing → ready` as Konnect provisions TLS certificates and configures SNI routing on the data planes. Use the online-status endpoint to confirm CNAME and SSL readiness before routing traffic.
   - name: Mesh
   - name: API Products
   - name: API Product Documentation
@@ -74667,6 +75065,7 @@ tags:
   - name: API Specification
   - name: API Publication
   - name: API Implementation
+  - name: API Packages
   - name: Platform IPs
     description: Konnect IP inventory
   - name: Event Gateways

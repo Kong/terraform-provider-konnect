@@ -39,7 +39,7 @@ data "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
 ### Read-Only
 
 - `availability_zones` (List of String) List of availability zones that the network is attached to.
-- `cidr_block` (String) CIDR block configuration for the network.
+- `cidr_block` (String) CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider.
 - `cloud_gateway_provider_account_id` (String)
 - `configuration_reference_count` (Number) The number of configurations that reference this network.
 - `created_at` (String) An RFC-3339 timestamp representation of network creation date.

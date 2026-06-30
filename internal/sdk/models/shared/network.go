@@ -22,9 +22,16 @@ type Network struct {
 	Region string `json:"region"`
 	// List of availability zones that the network is attached to.
 	AvailabilityZones []string `json:"availability_zones"`
-	// CIDR block configuration for the network.
+	// CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider.
 	CidrBlock string `json:"cidr_block"`
-	// State of the network.
+	// The current state of the network. Possible values:
+	// - `created`: The network was created, but provisioning hasn't started yet.
+	// - `initializing`: The network is being provisioned in the cloud provider.
+	// - `offline`: The network was created but isn't provisioned; no data planes can be deployed.
+	// - `ready`: The network is fully provisioned and available for data plane groups.
+	// - `terminating`: The network is being deleted and is no longer accepting new resources.
+	// - `terminated`: The network has been fully deleted and is no longer available.
+	//
 	State NetworkState `json:"state"`
 	// Metadata describing the backing state of the network and why it may be in an erroneous state.
 	//

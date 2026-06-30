@@ -15,7 +15,7 @@ type CreateNetworkRequest struct {
 	Region string `json:"region"`
 	// List of availability zones that the network is attached to.
 	AvailabilityZones []string `json:"availability_zones"`
-	// CIDR block configuration for the network.
+	// CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider.
 	CidrBlock string `json:"cidr_block"`
 	// Initial state for creating a network.
 	State *NetworkCreateState `default:"initializing" json:"state"`
