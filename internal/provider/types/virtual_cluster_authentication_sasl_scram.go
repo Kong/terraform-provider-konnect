@@ -7,5 +7,6 @@ import (
 )
 
 type VirtualClusterAuthenticationSaslScram struct {
-	Algorithm types.String `tfsdk:"algorithm"`
+	Algorithm                  types.String                `tfsdk:"algorithm"`
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipal `tfsdk:"fetch_kong_identity_principal"`
 }

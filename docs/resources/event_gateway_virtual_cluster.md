@@ -18,6 +18,13 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
   authentication = [
     {
       sasl_plain = {
+        fetch_kong_identity_principal = {
+          directory    = "...my_directory..."
+          failure_mode = "ignore"
+          fetch_by = {
+            key = "...my_key..."
+          }
+        }
         mediation = "passthrough"
         principals = [
           {
@@ -63,6 +70,14 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
     mode   = "hide_prefix"
     prefix = "...my_prefix..."
   }
+  topic_aliases = [
+    {
+      alias     = "...my_alias..."
+      condition = ""
+      conflict  = "warn"
+      topic     = "...my_topic..."
+    }
+  ]
 }
 ```
 
@@ -98,6 +113,12 @@ The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `namespace` (Attributes) Namespace allows to implement multitenancy using a single backend cluster.
 It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs). (see [below for nested schema](#nestedatt--namespace))
+- `topic_aliases` (Attributes List) Topic aliases allow exposing backend topics under additional names.
+An alias creates a new entry point to the same physical data.
+The alias `topic` field references namespace-visible names (if namespace is configured).
+Aliases are independent of namespace and can be used without it.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--topic_aliases))
 
 ### Read-Only
 
@@ -125,6 +146,42 @@ Optional:
 <a id="nestedatt--authentication--client_certificate"></a>
 ### Nested Schema for `authentication.client_certificate`
 
+Optional:
+
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful authentication.
+The principal is looked up by a custom key matched against the authenticated identity.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--client_certificate--fetch_kong_identity_principal))
+
+<a id="nestedatt--authentication--client_certificate--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.client_certificate.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
+- `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
+
+**Requires a minimum runtime version of `1.2`**.
+Not Null (see [below for nested schema](#nestedatt--authentication--client_certificate--fetch_kong_identity_principal--fetch_by))
+
+<a id="nestedatt--authentication--client_certificate--fetch_kong_identity_principal--fetch_by"></a>
+### Nested Schema for `authentication.client_certificate.fetch_kong_identity_principal.fetch_by`
+
+Optional:
+
+- `key` (String) The metadata key in Kong Identity to match the authenticated identity against.
+Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+Not Null
+
+
+
 
 <a id="nestedatt--authentication--oauth_bearer"></a>
 ### Nested Schema for `authentication.oauth_bearer`
@@ -132,6 +189,10 @@ Optional:
 Optional:
 
 - `claims_mapping` (Attributes) Maps JWT claims in the case when sub and scope are presented as different claims in your JWT token. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--claims_mapping))
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.
+The principal is looked up by the iss and sub claims from the JWT token.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--fetch_kong_identity_principal))
 - `jwks` (Attributes) JSON Web Key Set configuration for verifying token signatures. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--jwks))
 - `mediation` (String) Methods to mediate authentication:
 * passthrough - pass authentication from the client through proxy to the backend cluster without any kind of
@@ -151,6 +212,20 @@ Optional:
 
 - `scope` (String) Maps the scope claim.
 - `sub` (String) Maps the subject claim.
+
+
+<a id="nestedatt--authentication--oauth_bearer--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.oauth_bearer.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
 
 
 <a id="nestedatt--authentication--oauth_bearer--jwks"></a>
@@ -186,8 +261,41 @@ Optional:
 
 Optional:
 
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful authentication.
+The principal is looked up by a custom key matched against the authenticated identity.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--sasl_plain--fetch_kong_identity_principal))
 - `mediation` (String) The mediation type for SASL/PLAIN authentication. possible known values include one of ["passthrough", "terminate"]; Not Null
 - `principals` (Attributes List) List of principals to be able to authenticate with, used with `terminate` mediation. (see [below for nested schema](#nestedatt--authentication--sasl_plain--principals))
+
+<a id="nestedatt--authentication--sasl_plain--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.sasl_plain.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
+- `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
+
+**Requires a minimum runtime version of `1.2`**.
+Not Null (see [below for nested schema](#nestedatt--authentication--sasl_plain--fetch_kong_identity_principal--fetch_by))
+
+<a id="nestedatt--authentication--sasl_plain--fetch_kong_identity_principal--fetch_by"></a>
+### Nested Schema for `authentication.sasl_plain.fetch_kong_identity_principal.fetch_by`
+
+Optional:
+
+- `key` (String) The metadata key in Kong Identity to match the authenticated identity against.
+Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+Not Null
+
+
 
 <a id="nestedatt--authentication--sasl_plain--principals"></a>
 ### Nested Schema for `authentication.sasl_plain.principals`
@@ -210,6 +318,39 @@ Not Null
 Optional:
 
 - `algorithm` (String) The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful authentication.
+The principal is looked up by a custom key matched against the authenticated identity.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--sasl_scram--fetch_kong_identity_principal))
+
+<a id="nestedatt--authentication--sasl_scram--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.sasl_scram.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
+- `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
+
+**Requires a minimum runtime version of `1.2`**.
+Not Null (see [below for nested schema](#nestedatt--authentication--sasl_scram--fetch_kong_identity_principal--fetch_by))
+
+<a id="nestedatt--authentication--sasl_scram--fetch_kong_identity_principal--fetch_by"></a>
+### Nested Schema for `authentication.sasl_scram.fetch_kong_identity_principal.fetch_by`
+
+Optional:
+
+- `key` (String) The metadata key in Kong Identity to match the authenticated identity against.
+Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+Not Null
+
+
 
 
 
@@ -324,6 +465,28 @@ Optional:
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
 possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `glob` (String) Expose any backend topic that matches this glob pattern (e.g., `operations_data_*`). Not Null
+
+
+
+
+
+<a id="nestedatt--topic_aliases"></a>
+### Nested Schema for `topic_aliases`
+
+Required:
+
+- `alias` (String) The client-visible topic name.
+- `topic` (String) The namespace-visible topic name this alias resolves to.
+
+Optional:
+
+- `condition` (String) CEL expression evaluated against the connection's auth context.
+If omitted or empty, the alias is active for all connections.
+Default: ""
+- `conflict` (String) How to handle conflicts where an alias shadows a physical topic.
+* warn - activate the alias but log a warning and set the conflict metric to 1.
+* ignore - activate the alias silently.
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 
 ## Import
 

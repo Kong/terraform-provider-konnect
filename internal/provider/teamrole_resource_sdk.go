@@ -112,9 +112,9 @@ func (r *TeamRoleResourceModel) ToSharedAssignRole(ctx context.Context) (*shared
 	} else {
 		entityTypeName = nil
 	}
-	entityRegion := new(shared.EntityRegion)
+	entityRegion := new(shared.AssignRoleEntityRegion)
 	if !r.EntityRegion.IsUnknown() && !r.EntityRegion.IsNull() {
-		*entityRegion = shared.EntityRegion(r.EntityRegion.ValueString())
+		*entityRegion = shared.AssignRoleEntityRegion(r.EntityRegion.ValueString())
 	} else {
 		entityRegion = nil
 	}

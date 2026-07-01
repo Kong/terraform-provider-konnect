@@ -344,7 +344,14 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
+								MarkdownDescription: `Geographic region of the control plane. Supported values:` + "\n" +
+									`- ` + "`" + `us` + "`" + ` — United States` + "\n" +
+									`- ` + "`" + `eu` + "`" + ` — Europe` + "\n" +
+									`- ` + "`" + `au` + "`" + ` — Australia` + "\n" +
+									`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
+									`- ` + "`" + `in` + "`" + ` — India` + "\n" +
+									`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
+									`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
@@ -380,7 +387,14 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
+								MarkdownDescription: `Geographic region of the control plane. Supported values:` + "\n" +
+									`- ` + "`" + `us` + "`" + ` — United States` + "\n" +
+									`- ` + "`" + `eu` + "`" + ` — Europe` + "\n" +
+									`- ` + "`" + `au` + "`" + ` — Australia` + "\n" +
+									`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
+									`- ` + "`" + `in` + "`" + ` — India` + "\n" +
+									`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
+									`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},

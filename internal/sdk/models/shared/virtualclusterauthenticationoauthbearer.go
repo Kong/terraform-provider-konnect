@@ -57,6 +57,11 @@ type VirtualClusterAuthenticationOauthBearer struct {
 	Jwks *VirtualClusterAuthenticationJWKS `json:"jwks,omitempty"`
 	// Validation rules.
 	Validate *VirtualClusterAuthenticationValidate `json:"validate,omitempty"`
+	// Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.
+	// The principal is looked up by the iss and sub claims from the JWT token.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipalOauthBearer `json:"fetch_kong_identity_principal,omitempty"`
 }
 
 func (v VirtualClusterAuthenticationOauthBearer) MarshalJSON() ([]byte, error) {
@@ -100,4 +105,11 @@ func (v *VirtualClusterAuthenticationOauthBearer) GetValidate() *VirtualClusterA
 		return nil
 	}
 	return v.Validate
+}
+
+func (v *VirtualClusterAuthenticationOauthBearer) GetFetchKongIdentityPrincipal() *FetchKongIdentityPrincipalOauthBearer {
+	if v == nil {
+		return nil
+	}
+	return v.FetchKongIdentityPrincipal
 }

@@ -195,7 +195,14 @@ Optional:
 
 Optional:
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
+- `control_plane_geo` (String) Geographic region of the control plane. Supported values:
+- `us` — United States
+- `eu` — Europe
+- `au` — Australia
+- `me` — Middle East
+- `in` — India
+- `sg` — Singapore
+possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
 - `control_plane_id` (String) ID of the control-plane that owns this add-on. Not Null; Requires replacement if changed.
 
 
@@ -204,7 +211,14 @@ Optional:
 
 Optional:
 
-- `control_plane_group_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
+- `control_plane_group_geo` (String) Geographic region of the control plane. Supported values:
+- `us` — United States
+- `eu` — Europe
+- `au` — Australia
+- `me` — Middle East
+- `in` — India
+- `sg` — Singapore
+possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
 - `control_plane_group_id` (String) ID of the control-plane group that owns this add-on. Not Null; Requires replacement if changed.
 
 ## Import

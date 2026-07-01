@@ -7,6 +7,7 @@ import (
 )
 
 type VirtualClusterAuthenticationSaslPlain struct {
-	Mediation  types.String                            `tfsdk:"mediation"`
-	Principals []BackendClusterAuthenticationSaslPlain `tfsdk:"principals"`
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipal             `tfsdk:"fetch_kong_identity_principal"`
+	Mediation                  types.String                            `tfsdk:"mediation"`
+	Principals                 []BackendClusterAuthenticationSaslPlain `tfsdk:"principals"`
 }

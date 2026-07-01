@@ -79,9 +79,9 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
     name = "us-east-2 transit gateway"
     transit_gateway_attachment_config = {
       kind            = "aws-vpc-peering-attachment"
-      peer_account_id = "...my_peer_account_id..."
-      peer_vpc_id     = "...my_peer_vpc_id..."
-      peer_vpc_region = "...my_peer_vpc_region..."
+      peer_account_id = "123456789012"
+      peer_vpc_id     = "vpc-0a1b2c3d4e5f67890"
+      peer_vpc_region = "us-east-2"
     }
   }
   azure_transit_gateway = {
@@ -295,9 +295,9 @@ Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_
 Required:
 
 - `kind` (String) must be "aws-vpc-peering-attachment"; Requires replacement if changed.
-- `peer_account_id` (String) Requires replacement if changed.
-- `peer_vpc_id` (String) Requires replacement if changed.
-- `peer_vpc_region` (String) Requires replacement if changed.
+- `peer_account_id` (String) AWS account ID of the peer VPC owner. Requires replacement if changed.
+- `peer_vpc_id` (String) ID of the peer VPC to establish the peering connection with. Requires replacement if changed.
+- `peer_vpc_region` (String) AWS region where the peer VPC is located. Requires replacement if changed.
 
 
 <a id="nestedatt--aws_vpc_peering_gateway--dns_config"></a>
@@ -604,10 +604,10 @@ Read-Only:
 Read-Only:
 
 - `kind` (String)
-- `peer_account_id` (String)
-- `peer_vpc_id` (String)
-- `peer_vpc_region` (String)
-- `peering_connection_id` (String)
+- `peer_account_id` (String) AWS account ID of the peer VPC owner.
+- `peer_vpc_id` (String) ID of the peer VPC to establish the peering connection with.
+- `peer_vpc_region` (String) AWS region where the peer VPC is located.
+- `peering_connection_id` (String) ID of the AWS VPC peering connection, assigned after the peering request is accepted.
 
 
 

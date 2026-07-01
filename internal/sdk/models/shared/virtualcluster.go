@@ -31,7 +31,7 @@ type VirtualCluster struct {
 	// Aliases are independent of namespace and can be used without it.
 	//
 	// **Requires a minimum runtime version of `1.2`**.
-	TopicAliases []any `json:"topic_aliases,omitempty"`
+	TopicAliases []VirtualClusterTopicAlias `json:"topic_aliases,omitempty"`
 	// The name of the virtual cluster.
 	Name string `json:"name"`
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
@@ -101,7 +101,7 @@ func (v *VirtualCluster) GetNamespace() *VirtualClusterNamespace {
 	return v.Namespace
 }
 
-func (v *VirtualCluster) GetTopicAliases() []any {
+func (v *VirtualCluster) GetTopicAliases() []VirtualClusterTopicAlias {
 	if v == nil {
 		return nil
 	}

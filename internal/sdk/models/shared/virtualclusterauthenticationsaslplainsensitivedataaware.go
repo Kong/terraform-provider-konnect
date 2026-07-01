@@ -37,6 +37,11 @@ type VirtualClusterAuthenticationSaslPlainSensitiveDataAware struct {
 	Mediation VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation `json:"mediation"`
 	// List of principals to be able to authenticate with, used with `terminate` mediation.
 	Principals []VirtualClusterAuthenticationPrincipalSensitiveDataAware `json:"principals"`
+	// Fetches principal metadata from Kong Identity after successful authentication.
+	// The principal is looked up by a custom key matched against the authenticated identity.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipal `json:"fetch_kong_identity_principal,omitempty"`
 }
 
 func (v VirtualClusterAuthenticationSaslPlainSensitiveDataAware) MarshalJSON() ([]byte, error) {
@@ -66,4 +71,11 @@ func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetPrincipals(
 		return nil
 	}
 	return v.Principals
+}
+
+func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetFetchKongIdentityPrincipal() *FetchKongIdentityPrincipal {
+	if v == nil {
+		return nil
+	}
+	return v.FetchKongIdentityPrincipal
 }
