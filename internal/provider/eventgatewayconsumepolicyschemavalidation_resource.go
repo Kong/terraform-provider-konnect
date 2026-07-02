@@ -76,6 +76,17 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 					"confluent_schema_registry": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
+									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
+							},
 							"key_validation_action": schema.StringAttribute{
 								Optional:           true,
 								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
@@ -98,6 +109,18 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 										},
 									},
 								},
+							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 							},
 							"value_validation_action": schema.StringAttribute{
 								Optional:           true,
@@ -121,6 +144,17 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 					"json": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
+									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
+							},
 							"key_validation_action": schema.StringAttribute{
 								Optional:           true,
 								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
@@ -143,6 +177,18 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 										},
 									},
 								},
+							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 							},
 							"value_validation_action": schema.StringAttribute{
 								Optional:           true,

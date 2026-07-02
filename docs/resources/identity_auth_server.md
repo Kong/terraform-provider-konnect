@@ -51,6 +51,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The ID of the auth server
 - `issuer` (String) The complete URL for the custom authorization server. This becomes the 'iss' claim in an access token.
+- `jwks_uri` (String) The URI of the JWKS endpoint for the auth server
 - `metadata_uri` (String) The URI of the metadata document for the auth server
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

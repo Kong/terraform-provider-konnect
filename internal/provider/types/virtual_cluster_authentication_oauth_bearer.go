@@ -7,8 +7,9 @@ import (
 )
 
 type VirtualClusterAuthenticationOauthBearer struct {
-	ClaimsMapping *VirtualClusterAuthenticationClaimsMapping `tfsdk:"claims_mapping"`
-	Jwks          *VirtualClusterAuthenticationJWKS          `tfsdk:"jwks"`
-	Mediation     types.String                               `tfsdk:"mediation"`
-	Validate      *VirtualClusterAuthenticationValidate      `tfsdk:"validate"`
+	ClaimsMapping              *VirtualClusterAuthenticationClaimsMapping `tfsdk:"claims_mapping"`
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipalOauthBearer     `tfsdk:"fetch_kong_identity_principal"`
+	Jwks                       *VirtualClusterAuthenticationJWKS          `tfsdk:"jwks"`
+	Mediation                  types.String                               `tfsdk:"mediation"`
+	Validate                   *VirtualClusterAuthenticationValidate      `tfsdk:"validate"`
 }

@@ -12,6 +12,11 @@ import (
 type VirtualClusterAuthenticationClientCertificate struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"client_certificate" json:"type"`
+	// Fetches principal metadata from Kong Identity after successful authentication.
+	// The principal is looked up by a custom key matched against the authenticated identity.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipal `json:"fetch_kong_identity_principal,omitempty"`
 }
 
 func (v VirtualClusterAuthenticationClientCertificate) MarshalJSON() ([]byte, error) {
@@ -27,4 +32,11 @@ func (v *VirtualClusterAuthenticationClientCertificate) UnmarshalJSON(data []byt
 
 func (v *VirtualClusterAuthenticationClientCertificate) GetType() string {
 	return "client_certificate"
+}
+
+func (v *VirtualClusterAuthenticationClientCertificate) GetFetchKongIdentityPrincipal() *FetchKongIdentityPrincipal {
+	if v == nil {
+		return nil
+	}
+	return v.FetchKongIdentityPrincipal
 }

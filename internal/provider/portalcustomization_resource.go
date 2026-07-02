@@ -363,11 +363,11 @@ func (r *PortalCustomizationResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalCustomization != nil) {
+	if !(res.PortalCustomizationV3 != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomization(ctx, res.PortalCustomization)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomizationV3(ctx, res.PortalCustomizationV3)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -427,11 +427,11 @@ func (r *PortalCustomizationResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalCustomization != nil) {
+	if !(res.PortalCustomizationV3 != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomization(ctx, res.PortalCustomization)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomizationV3(ctx, res.PortalCustomizationV3)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -477,11 +477,11 @@ func (r *PortalCustomizationResource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalCustomization != nil) {
+	if !(res.PortalCustomizationV3 != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomization(ctx, res.PortalCustomization)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomizationV3(ctx, res.PortalCustomizationV3)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -47,4 +47,30 @@ func TestPortalV3(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("team-role/plan-diff", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_portal_team_role.my_portal_team_role", "role_name", "API Viewer"),
+						resource.TestCheckResourceAttr("konnect_portal_team_role.my_portal_team_role", "entity_type_name", "Services"),
+						resource.TestCheckResourceAttrSet("konnect_portal_team_role.my_portal_team_role", "entity_id"),
+					),
+				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+			},
+		})
+	})
 }

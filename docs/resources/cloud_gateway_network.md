@@ -19,9 +19,9 @@ resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
     "use2-az2",
     "use2-az3",
   ]
-  cidr_block                        = "10.0.0.0/8"
+  cidr_block                        = "10.0.0.0/16"
   cloud_gateway_provider_account_id = "929b2449-c69f-44c4-b6ad-9ecec6f811ae"
-  name                              = "us-east-2 network"
+  name                              = "us-east-2-network"
   region                            = "us-east-2"
 }
 ```
@@ -32,7 +32,7 @@ resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
 ### Required
 
 - `availability_zones` (List of String) List of availability zones that the network is attached to. Requires replacement if changed.
-- `cidr_block` (String) CIDR block configuration for the network. Requires replacement if changed.
+- `cidr_block` (String) CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider. Requires replacement if changed.
 - `cloud_gateway_provider_account_id` (String) Requires replacement if changed.
 - `name` (String) Human-readable name of the network.
 - `region` (String) Region ID for cloud provider region. Requires replacement if changed.

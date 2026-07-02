@@ -6,20 +6,20 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type PortalCustomizationMode string
+type PortalCustomizationV3Mode string
 
 const (
-	PortalCustomizationModeLight  PortalCustomizationMode = "light"
-	PortalCustomizationModeDark   PortalCustomizationMode = "dark"
-	PortalCustomizationModeSystem PortalCustomizationMode = "system"
+	PortalCustomizationV3ModeLight  PortalCustomizationV3Mode = "light"
+	PortalCustomizationV3ModeDark   PortalCustomizationV3Mode = "dark"
+	PortalCustomizationV3ModeSystem PortalCustomizationV3Mode = "system"
 )
 
-func (e PortalCustomizationMode) ToPointer() *PortalCustomizationMode {
+func (e PortalCustomizationV3Mode) ToPointer() *PortalCustomizationV3Mode {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *PortalCustomizationMode) IsExact() bool {
+func (e *PortalCustomizationV3Mode) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "light", "dark", "system":
@@ -52,9 +52,9 @@ func (c *Colors) GetPrimary() *string {
 }
 
 type Theme struct {
-	Name   *string                  `json:"name,omitempty"`
-	Mode   *PortalCustomizationMode `json:"mode,omitempty"`
-	Colors *Colors                  `json:"colors,omitempty"`
+	Name   *string                    `json:"name,omitempty"`
+	Mode   *PortalCustomizationV3Mode `json:"mode,omitempty"`
+	Colors *Colors                    `json:"colors,omitempty"`
 }
 
 func (t Theme) MarshalJSON() ([]byte, error) {
@@ -75,7 +75,7 @@ func (t *Theme) GetName() *string {
 	return t.Name
 }
 
-func (t *Theme) GetMode() *PortalCustomizationMode {
+func (t *Theme) GetMode() *PortalCustomizationV3Mode {
 	if t == nil {
 		return nil
 	}
@@ -204,8 +204,8 @@ func (s *SpecRenderer) GetAllowCustomServerUrls() *bool {
 	return s.AllowCustomServerUrls
 }
 
-// PortalCustomization - The custom settings of this portal
-type PortalCustomization struct {
+// PortalCustomizationV3 - The custom settings of this portal
+type PortalCustomizationV3 struct {
 	Theme        *Theme        `json:"theme,omitempty"`
 	Layout       *string       `json:"layout,omitempty"`
 	CSS          *string       `default:"null" json:"css"`
@@ -214,55 +214,58 @@ type PortalCustomization struct {
 	Robots       *string       `default:"null" json:"robots"`
 }
 
-func (p PortalCustomization) MarshalJSON() ([]byte, error) {
+func (p PortalCustomizationV3) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(p, "", false)
 }
 
-func (p *PortalCustomization) UnmarshalJSON(data []byte) error {
+func (p *PortalCustomizationV3) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalCustomization) GetTheme() *Theme {
+func (p *PortalCustomizationV3) GetTheme() *Theme {
 	if p == nil {
 		return nil
 	}
 	return p.Theme
 }
 
-func (p *PortalCustomization) GetLayout() *string {
+func (p *PortalCustomizationV3) GetLayout() *string {
 	if p == nil {
 		return nil
 	}
 	return p.Layout
 }
 
-func (p *PortalCustomization) GetCSS() *string {
+func (p *PortalCustomizationV3) GetCSS() *string {
 	if p == nil {
 		return nil
 	}
 	return p.CSS
 }
 
-func (p *PortalCustomization) GetMenu() *Menu {
+func (p *PortalCustomizationV3) GetMenu() *Menu {
 	if p == nil {
 		return nil
 	}
 	return p.Menu
 }
 
-func (p *PortalCustomization) GetSpecRenderer() *SpecRenderer {
+func (p *PortalCustomizationV3) GetSpecRenderer() *SpecRenderer {
 	if p == nil {
 		return nil
 	}
 	return p.SpecRenderer
 }
 
-func (p *PortalCustomization) GetRobots() *string {
+func (p *PortalCustomizationV3) GetRobots() *string {
 	if p == nil {
 		return nil
 	}
 	return p.Robots
 }
+
+// #region class-body-portalcustomizationv3
+// #endregion class-body-portalcustomizationv3

@@ -14,7 +14,7 @@ CloudGatewayPrivateDNS Resource
 
 ```terraform
 resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
-  name       = "us-east-2 private dns"
+  name       = "us-east-2-private-dns"
   network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
   private_dns_attachment_config = {
     aws_private_dns_resolver_attachment_config = {

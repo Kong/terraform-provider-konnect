@@ -65,11 +65,12 @@ func (a *AppAuthStrategyOpenIDConnectResponseConfigs) GetOpenidConnect() AppAuth
 type AppAuthStrategyOpenIDConnectResponseProviderType string
 
 const (
-	AppAuthStrategyOpenIDConnectResponseProviderTypeAuth0   AppAuthStrategyOpenIDConnectResponseProviderType = "auth0"
-	AppAuthStrategyOpenIDConnectResponseProviderTypeAzureAd AppAuthStrategyOpenIDConnectResponseProviderType = "azureAd"
-	AppAuthStrategyOpenIDConnectResponseProviderTypeCurity  AppAuthStrategyOpenIDConnectResponseProviderType = "curity"
-	AppAuthStrategyOpenIDConnectResponseProviderTypeOkta    AppAuthStrategyOpenIDConnectResponseProviderType = "okta"
-	AppAuthStrategyOpenIDConnectResponseProviderTypeHTTP    AppAuthStrategyOpenIDConnectResponseProviderType = "http"
+	AppAuthStrategyOpenIDConnectResponseProviderTypeAuth0        AppAuthStrategyOpenIDConnectResponseProviderType = "auth0"
+	AppAuthStrategyOpenIDConnectResponseProviderTypeAzureAd      AppAuthStrategyOpenIDConnectResponseProviderType = "azureAd"
+	AppAuthStrategyOpenIDConnectResponseProviderTypeCurity       AppAuthStrategyOpenIDConnectResponseProviderType = "curity"
+	AppAuthStrategyOpenIDConnectResponseProviderTypeOkta         AppAuthStrategyOpenIDConnectResponseProviderType = "okta"
+	AppAuthStrategyOpenIDConnectResponseProviderTypeHTTP         AppAuthStrategyOpenIDConnectResponseProviderType = "http"
+	AppAuthStrategyOpenIDConnectResponseProviderTypeKongIdentity AppAuthStrategyOpenIDConnectResponseProviderType = "kongIdentity"
 )
 
 func (e AppAuthStrategyOpenIDConnectResponseProviderType) ToPointer() *AppAuthStrategyOpenIDConnectResponseProviderType {
@@ -80,7 +81,7 @@ func (e AppAuthStrategyOpenIDConnectResponseProviderType) ToPointer() *AppAuthSt
 func (e *AppAuthStrategyOpenIDConnectResponseProviderType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "auth0", "azureAd", "curity", "okta", "http":
+		case "auth0", "azureAd", "curity", "okta", "http", "kongIdentity":
 			return true
 		}
 	}
@@ -311,11 +312,12 @@ func (a *AppAuthStrategyKeyAuthResponseConfigs) GetKeyAuth() AppAuthStrategyConf
 type ProviderType string
 
 const (
-	ProviderTypeAuth0   ProviderType = "auth0"
-	ProviderTypeAzureAd ProviderType = "azureAd"
-	ProviderTypeCurity  ProviderType = "curity"
-	ProviderTypeOkta    ProviderType = "okta"
-	ProviderTypeHTTP    ProviderType = "http"
+	ProviderTypeAuth0        ProviderType = "auth0"
+	ProviderTypeAzureAd      ProviderType = "azureAd"
+	ProviderTypeCurity       ProviderType = "curity"
+	ProviderTypeOkta         ProviderType = "okta"
+	ProviderTypeHTTP         ProviderType = "http"
+	ProviderTypeKongIdentity ProviderType = "kongIdentity"
 )
 
 func (e ProviderType) ToPointer() *ProviderType {
@@ -326,7 +328,7 @@ func (e ProviderType) ToPointer() *ProviderType {
 func (e *ProviderType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "auth0", "azureAd", "curity", "okta", "http":
+		case "auth0", "azureAd", "curity", "okta", "http", "kongIdentity":
 			return true
 		}
 	}

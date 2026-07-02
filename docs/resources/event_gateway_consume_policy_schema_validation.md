@@ -17,10 +17,13 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
     json = {
+      failure_mode          = "mark"
       key_validation_action = "skip"
       schema_registry = {
         id = "bd775494-cdf4-4d78-a6df-c21ccf6d9813"
       }
+      validate_key            = false
+      validate_value          = false
       value_validation_action = "skip"
     }
   }
@@ -74,6 +77,14 @@ Optional:
 
 Optional:
 
+- `failure_mode` (String) Describes how to handle a failure in a policy applied to consumed records.
+* `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+* `skip` - the record is not delivered to the client.
+* `passthrough` - passes the record to the client even though policy execution failed.
+* `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "skip", "passthrough", "mark"]
 - `key_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
 
 Defines a behavior when record key is not valid.
@@ -82,6 +93,12 @@ Defines a behavior when record key is not valid.
 * skip - skips delivering a record.
 possible known values include one of ["mark", "skip"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
+- `validate_key` (Boolean) If true, validate the record key.
+
+**Requires a minimum runtime version of `1.2`**.
+- `validate_value` (Boolean) If true, validate the record value.
+
+**Requires a minimum runtime version of `1.2`**.
 - `value_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
 
 Defines a behavior when record value is not valid.
@@ -104,6 +121,14 @@ Required:
 
 Optional:
 
+- `failure_mode` (String) Describes how to handle a failure in a policy applied to consumed records.
+* `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+* `skip` - the record is not delivered to the client.
+* `passthrough` - passes the record to the client even though policy execution failed.
+* `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "skip", "passthrough", "mark"]
 - `key_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
 
 Defines a behavior when record key is not valid.
@@ -112,6 +137,12 @@ Defines a behavior when record key is not valid.
 * skip - skips delivering a record.
 possible known values include one of ["mark", "skip"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--json--schema_registry))
+- `validate_key` (Boolean) If true, validate the record key.
+
+**Requires a minimum runtime version of `1.2`**.
+- `validate_value` (Boolean) If true, validate the record value.
+
+**Requires a minimum runtime version of `1.2`**.
 - `value_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
 
 Defines a behavior when record value is not valid.
