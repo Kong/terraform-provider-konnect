@@ -1,7 +1,7 @@
 resource "konnect_portal" "my_portal" {
   force_destroy = "true"
 
-  name                   = "My v3 portal for team role"
+  name                   = "My v3 portal for team role TF tests"
   authentication_enabled = true
   rbac_enabled           = true
   default_api_visibility = "public"

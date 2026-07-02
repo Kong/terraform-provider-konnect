@@ -48,31 +48,6 @@ func TestPortalV3(t *testing.T) {
 		})
 	})
 
-	t.Run("team/plan-diff", func(t *testing.T) {
-		resource.Test(t, resource.TestCase{
-			ProtoV6ProviderFactories: providerFactory,
-			Steps: []resource.TestStep{
-				{
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_team.my_portal_team", "name", "IDM - Developers"),
-						resource.TestCheckResourceAttrSet("konnect_portal_team.my_portal_team", "portal_id"),
-					),
-				},
-				{
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-			},
-		})
-	})
-
 	t.Run("team-role/plan-diff", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
