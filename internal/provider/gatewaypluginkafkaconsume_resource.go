@@ -207,10 +207,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"consumer_group": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"consumer_group_id": types.StringType,
-							"mode":              types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"consumer_group_id": schema.StringAttribute{
 								Optional:    true,
@@ -242,9 +238,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"error_handling": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"return_error_message": types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"return_error_message": schema.BoolAttribute{
 								Computed:    true,

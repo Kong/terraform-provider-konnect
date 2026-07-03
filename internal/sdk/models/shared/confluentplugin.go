@@ -946,7 +946,7 @@ type ConfluentPluginConfig struct {
 	ConfluentCloudAPIKey *string `default:"null" json:"confluent_cloud_api_key"`
 	// The corresponding secret for the Confluent Cloud API key.
 	ConfluentCloudAPISecret *string        `default:"null" json:"confluent_cloud_api_secret"`
-	ErrorHandling           *ErrorHandling `json:"error_handling"`
+	ErrorHandling           *ErrorHandling `json:"error_handling,omitempty"`
 	// Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardBody *bool `default:"true" json:"forward_body"`
 	// Include the request headers in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
@@ -956,7 +956,7 @@ type ConfluentPluginConfig struct {
 	// Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardURI *bool `default:"false" json:"forward_uri"`
 	// Configuration for forwarding HTTP headers as Kafka record headers.
-	Headers *ConfluentPluginHeaders `json:"headers"`
+	Headers *ConfluentPluginHeaders `json:"headers,omitempty"`
 	// Keepalive timeout in milliseconds.
 	Keepalive        *int64 `default:"60000" json:"keepalive"`
 	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`

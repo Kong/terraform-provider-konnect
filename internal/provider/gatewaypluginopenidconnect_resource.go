@@ -1138,17 +1138,6 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"principals": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"directory":             types.StringType,
-							"enabled":               types.BoolType,
-							"error_on_miss":         types.BoolType,
-							"match_consumer":        types.BoolType,
-							"match_consumer_groups": types.BoolType,
-							"principal_by":          types.StringType,
-							"principal_claim": types.ListType{
-								ElemType: types.StringType,
-							},
-						})),
 						Attributes: map[string]schema.Attribute{
 							"directory": schema.StringAttribute{
 								Computed:    true,

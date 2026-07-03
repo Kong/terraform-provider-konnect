@@ -126,218 +126,103 @@ func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(c
 func (r *GatewayCertificateResourceModel) ToSharedCertificateRequest(ctx context.Context) (*shared.CertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var out shared.CertificateRequest
-	var one *shared.One
-	if r.One != nil {
-		cert := new(string)
-		if !r.One.Cert.IsUnknown() && !r.One.Cert.IsNull() {
-			*cert = r.One.Cert.ValueString()
-		} else {
-			cert = nil
-		}
-		certAlt := new(string)
-		if !r.One.CertAlt.IsUnknown() && !r.One.CertAlt.IsNull() {
-			*certAlt = r.One.CertAlt.ValueString()
-		} else {
-			certAlt = nil
-		}
-		createdAt := new(int64)
-		if !r.One.CreatedAt.IsUnknown() && !r.One.CreatedAt.IsNull() {
-			*createdAt = r.One.CreatedAt.ValueInt64()
-		} else {
-			createdAt = nil
-		}
-		description := new(string)
-		if !r.One.Description.IsUnknown() && !r.One.Description.IsNull() {
-			*description = r.One.Description.ValueString()
-		} else {
-			description = nil
-		}
-		id := new(string)
-		if !r.One.ID.IsUnknown() && !r.One.ID.IsNull() {
-			*id = r.One.ID.ValueString()
-		} else {
-			id = nil
-		}
-		key := new(string)
-		if !r.One.Key.IsUnknown() && !r.One.Key.IsNull() {
-			*key = r.One.Key.ValueString()
-		} else {
-			key = nil
-		}
-		keyAlt := new(string)
-		if !r.One.KeyAlt.IsUnknown() && !r.One.KeyAlt.IsNull() {
-			*keyAlt = r.One.KeyAlt.ValueString()
-		} else {
-			keyAlt = nil
-		}
-		var managedBy map[string]interface{}
-		if r.One.ManagedBy != nil {
-			managedBy = make(map[string]interface{})
-			for managedByKey := range r.One.ManagedBy {
-				var managedByInst interface{}
-				_ = json.Unmarshal([]byte(r.One.ManagedBy[managedByKey].ValueString()), &managedByInst)
-				managedBy[managedByKey] = managedByInst
-			}
-		}
-		var snis []string
-		if r.One.Snis != nil {
-			snis = make([]string, 0, len(r.One.Snis))
-			for snisIndex := range r.One.Snis {
-				snis = append(snis, r.One.Snis[snisIndex].ValueString())
-			}
-		}
-		var tags []string
-		if r.One.Tags != nil {
-			tags = make([]string, 0, len(r.One.Tags))
-			for tagsIndex := range r.One.Tags {
-				tags = append(tags, r.One.Tags[tagsIndex].ValueString())
-			}
-		}
-		updatedAt := new(int64)
-		if !r.One.UpdatedAt.IsUnknown() && !r.One.UpdatedAt.IsNull() {
-			*updatedAt = r.One.UpdatedAt.ValueInt64()
-		} else {
-			updatedAt = nil
-		}
-		vault := new(string)
-		if !r.One.Vault.IsUnknown() && !r.One.Vault.IsNull() {
-			*vault = r.One.Vault.ValueString()
-		} else {
-			vault = nil
-		}
-		vaultAlt := new(string)
-		if !r.One.VaultAlt.IsUnknown() && !r.One.VaultAlt.IsNull() {
-			*vaultAlt = r.One.VaultAlt.ValueString()
-		} else {
-			vaultAlt = nil
-		}
-		one = &shared.One{
-			Cert:        cert,
-			CertAlt:     certAlt,
-			CreatedAt:   createdAt,
-			Description: description,
-			ID:          id,
-			Key:         key,
-			KeyAlt:      keyAlt,
-			ManagedBy:   managedBy,
-			Snis:        snis,
-			Tags:        tags,
-			UpdatedAt:   updatedAt,
-			Vault:       vault,
-			VaultAlt:    vaultAlt,
+	cert := new(string)
+	if !r.Cert.IsUnknown() && !r.Cert.IsNull() {
+		*cert = r.Cert.ValueString()
+	} else {
+		cert = nil
+	}
+	certAlt := new(string)
+	if !r.CertAlt.IsUnknown() && !r.CertAlt.IsNull() {
+		*certAlt = r.CertAlt.ValueString()
+	} else {
+		certAlt = nil
+	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	key := new(string)
+	if !r.Key.IsUnknown() && !r.Key.IsNull() {
+		*key = r.Key.ValueString()
+	} else {
+		key = nil
+	}
+	keyAlt := new(string)
+	if !r.KeyAlt.IsUnknown() && !r.KeyAlt.IsNull() {
+		*keyAlt = r.KeyAlt.ValueString()
+	} else {
+		keyAlt = nil
+	}
+	var managedBy map[string]interface{}
+	if r.ManagedBy != nil {
+		managedBy = make(map[string]interface{})
+		for managedByKey := range r.ManagedBy {
+			var managedByInst interface{}
+			_ = json.Unmarshal([]byte(r.ManagedBy[managedByKey].ValueString()), &managedByInst)
+			managedBy[managedByKey] = managedByInst
 		}
 	}
-	if one != nil {
-		out = shared.CertificateRequest{
-			One: one,
+	var snis []string
+	if r.Snis != nil {
+		snis = make([]string, 0, len(r.Snis))
+		for snisIndex := range r.Snis {
+			snis = append(snis, r.Snis[snisIndex].ValueString())
 		}
 	}
-	var two *shared.Two
-	if r.Two != nil {
-		cert1 := new(string)
-		if !r.Two.Cert.IsUnknown() && !r.Two.Cert.IsNull() {
-			*cert1 = r.Two.Cert.ValueString()
-		} else {
-			cert1 = nil
-		}
-		certAlt1 := new(string)
-		if !r.Two.CertAlt.IsUnknown() && !r.Two.CertAlt.IsNull() {
-			*certAlt1 = r.Two.CertAlt.ValueString()
-		} else {
-			certAlt1 = nil
-		}
-		createdAt1 := new(int64)
-		if !r.Two.CreatedAt.IsUnknown() && !r.Two.CreatedAt.IsNull() {
-			*createdAt1 = r.Two.CreatedAt.ValueInt64()
-		} else {
-			createdAt1 = nil
-		}
-		description1 := new(string)
-		if !r.Two.Description.IsUnknown() && !r.Two.Description.IsNull() {
-			*description1 = r.Two.Description.ValueString()
-		} else {
-			description1 = nil
-		}
-		id1 := new(string)
-		if !r.Two.ID.IsUnknown() && !r.Two.ID.IsNull() {
-			*id1 = r.Two.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		key1 := new(string)
-		if !r.Two.Key.IsUnknown() && !r.Two.Key.IsNull() {
-			*key1 = r.Two.Key.ValueString()
-		} else {
-			key1 = nil
-		}
-		keyAlt1 := new(string)
-		if !r.Two.KeyAlt.IsUnknown() && !r.Two.KeyAlt.IsNull() {
-			*keyAlt1 = r.Two.KeyAlt.ValueString()
-		} else {
-			keyAlt1 = nil
-		}
-		var managedBy1 map[string]interface{}
-		if r.Two.ManagedBy != nil {
-			managedBy1 = make(map[string]interface{})
-			for managedByKey1 := range r.Two.ManagedBy {
-				var managedByInst1 interface{}
-				_ = json.Unmarshal([]byte(r.Two.ManagedBy[managedByKey1].ValueString()), &managedByInst1)
-				managedBy1[managedByKey1] = managedByInst1
-			}
-		}
-		var snis1 []string
-		if r.Two.Snis != nil {
-			snis1 = make([]string, 0, len(r.Two.Snis))
-			for snisIndex1 := range r.Two.Snis {
-				snis1 = append(snis1, r.Two.Snis[snisIndex1].ValueString())
-			}
-		}
-		var tags1 []string
-		if r.Two.Tags != nil {
-			tags1 = make([]string, 0, len(r.Two.Tags))
-			for tagsIndex1 := range r.Two.Tags {
-				tags1 = append(tags1, r.Two.Tags[tagsIndex1].ValueString())
-			}
-		}
-		updatedAt1 := new(int64)
-		if !r.Two.UpdatedAt.IsUnknown() && !r.Two.UpdatedAt.IsNull() {
-			*updatedAt1 = r.Two.UpdatedAt.ValueInt64()
-		} else {
-			updatedAt1 = nil
-		}
-		vault1 := new(string)
-		if !r.Two.Vault.IsUnknown() && !r.Two.Vault.IsNull() {
-			*vault1 = r.Two.Vault.ValueString()
-		} else {
-			vault1 = nil
-		}
-		vaultAlt1 := new(string)
-		if !r.Two.VaultAlt.IsUnknown() && !r.Two.VaultAlt.IsNull() {
-			*vaultAlt1 = r.Two.VaultAlt.ValueString()
-		} else {
-			vaultAlt1 = nil
-		}
-		two = &shared.Two{
-			Cert:        cert1,
-			CertAlt:     certAlt1,
-			CreatedAt:   createdAt1,
-			Description: description1,
-			ID:          id1,
-			Key:         key1,
-			KeyAlt:      keyAlt1,
-			ManagedBy:   managedBy1,
-			Snis:        snis1,
-			Tags:        tags1,
-			UpdatedAt:   updatedAt1,
-			Vault:       vault1,
-			VaultAlt:    vaultAlt1,
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
-	if two != nil {
-		out = shared.CertificateRequest{
-			Two: two,
-		}
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	vault := new(string)
+	if !r.Vault.IsUnknown() && !r.Vault.IsNull() {
+		*vault = r.Vault.ValueString()
+	} else {
+		vault = nil
+	}
+	vaultAlt := new(string)
+	if !r.VaultAlt.IsUnknown() && !r.VaultAlt.IsNull() {
+		*vaultAlt = r.VaultAlt.ValueString()
+	} else {
+		vaultAlt = nil
+	}
+	out := shared.CertificateRequest{
+		Cert:        cert,
+		CertAlt:     certAlt,
+		CreatedAt:   createdAt,
+		Description: description,
+		ID:          id,
+		Key:         key,
+		KeyAlt:      keyAlt,
+		ManagedBy:   managedBy,
+		Snis:        snis,
+		Tags:        tags,
+		UpdatedAt:   updatedAt,
+		Vault:       vault,
+		VaultAlt:    vaultAlt,
 	}
 
 	return &out, diags

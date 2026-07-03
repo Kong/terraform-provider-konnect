@@ -2937,7 +2937,7 @@ type OpenidConnectPluginConfig struct {
 	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
 	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
 	// Configuration for Kong Identity principal hydration after token verification.
-	Principals *OpenidConnectPluginPrincipals `json:"principals"`
+	Principals *OpenidConnectPluginPrincipals `json:"principals,omitempty"`
 	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
 	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
 	// Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.

@@ -237,7 +237,7 @@ type KeyAuthPluginConfig struct {
 	KeyInQuery *bool `default:"true" json:"key_in_query"`
 	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
 	KeyNames   []string                 `json:"key_names,omitempty"`
-	Principals *KeyAuthPluginPrincipals `json:"principals"`
+	Principals *KeyAuthPluginPrincipals `json:"principals,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `default:"null" json:"realm"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.

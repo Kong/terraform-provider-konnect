@@ -1530,14 +1530,14 @@ type KafkaConsumePluginConfig struct {
 	// The strategy to use for committing offsets.
 	CommitStrategy *KafkaConsumePluginCommitStrategy `default:"auto" json:"commit_strategy"`
 	// Configuration for the Kafka consumer group ID.
-	ConsumerGroup *KafkaConsumePluginConsumerGroup `json:"consumer_group"`
+	ConsumerGroup *KafkaConsumePluginConsumerGroup `json:"consumer_group,omitempty"`
 	// The topic to use for the Dead Letter Queue.
 	DlqTopic *string `default:"null" json:"dlq_topic"`
 	// Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
 	EnableDlq *bool `default:"null" json:"enable_dlq"`
 	// When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'.
 	EnforceLatestOffsetReset *bool                            `default:"false" json:"enforce_latest_offset_reset"`
-	ErrorHandling            *KafkaConsumePluginErrorHandling `json:"error_handling"`
+	ErrorHandling            *KafkaConsumePluginErrorHandling `json:"error_handling,omitempty"`
 	// The Lua functions that manipulates the message being sent to the client.
 	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
 	// The deserializer to use for the consumed messages.

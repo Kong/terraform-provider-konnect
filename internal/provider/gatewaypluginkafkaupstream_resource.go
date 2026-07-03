@@ -202,9 +202,6 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 					"error_handling": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"return_error_message": types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"return_error_message": schema.BoolAttribute{
 								Computed:    true,
@@ -241,20 +238,6 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 					"headers": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"exclude_headers": types.ListType{
-								ElemType: types.StringType,
-							},
-							"forward_all_by_default":                 types.BoolType,
-							"forward_http_headers_as_record_headers": types.BoolType,
-							"include_headers": types.ListType{
-								ElemType: types.StringType,
-							},
-							"name_mappings": types.MapType{
-								ElemType: types.StringType,
-							},
-							"repeated_headers_behavior": types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"exclude_headers": schema.ListAttribute{
 								Computed:    true,

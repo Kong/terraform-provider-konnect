@@ -279,11 +279,6 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 					"principals": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"directory":     types.StringType,
-							"enabled":       types.BoolType,
-							"error_on_miss": types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"directory": schema.StringAttribute{
 								Computed:    true,
