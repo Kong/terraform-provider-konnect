@@ -270,6 +270,8 @@ func (e *Version) IsExact() bool {
 type RequestValidatorPluginConfig struct {
 	// List of allowed content types. The value can be configured with the `charset` parameter. For example, `application/json; charset=UTF-8`.
 	AllowedContentTypes []string `json:"allowed_content_types,omitempty"`
+	// If true, `minLength`/`maxLength` also apply to arrays using item count. Compatibility option for legacy schemas that use these keywords instead of `minItems`/`maxItems`.
+	ArrayLengthCompat *bool `default:"true" json:"array_length_compat"`
 	// The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
 	BodySchema *string `default:"null" json:"body_schema"`
 	// Determines whether to enable parameters validation of request content-type.
@@ -298,6 +300,13 @@ func (r *RequestValidatorPluginConfig) GetAllowedContentTypes() []string {
 		return nil
 	}
 	return r.AllowedContentTypes
+}
+
+func (r *RequestValidatorPluginConfig) GetArrayLengthCompat() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.ArrayLengthCompat
 }
 
 func (r *RequestValidatorPluginConfig) GetBodySchema() *string {

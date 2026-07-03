@@ -18,6 +18,18 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
   config = {
     authentication = {
       mechanism = "SCRAM-SHA-512"
+      oauthbearer = {
+        client_id     = "...my_client_id..."
+        client_secret = "...my_client_secret..."
+        extensions = {
+          key = "value"
+        }
+        scopes = [
+          "..."
+        ]
+        token_endpoint_tls_verify = true
+        token_endpoint_url        = "...my_token_endpoint_url..."
+      }
       password  = "...my_password..."
       strategy  = "sasl"
       tokenauth = true
@@ -30,11 +42,18 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
         port = 27325
       }
     ]
-    cluster_name                = "...my_cluster_name..."
-    commit_strategy             = "auto"
+    cluster_name    = "...my_cluster_name..."
+    commit_strategy = "auto"
+    consumer_group = {
+      consumer_group_id = "...my_consumer_group_id..."
+      mode              = "random"
+    }
     dlq_topic                   = "...my_dlq_topic..."
     enable_dlq                  = false
     enforce_latest_offset_reset = false
+    error_handling = {
+      return_error_message = false
+    }
     message_by_lua_functions = [
       "..."
     ]
@@ -222,9 +241,11 @@ Optional:
 - `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. possible known values include one of ["earliest", "latest"]; Default: "latest"
 - `cluster_name` (String) An identifier for the Kafka cluster.
 - `commit_strategy` (String) The strategy to use for committing offsets. possible known values include one of ["auto", "off"]; Default: "auto"
+- `consumer_group` (Attributes) Configuration for the Kafka consumer group ID. (see [below for nested schema](#nestedatt--config--consumer_group))
 - `dlq_topic` (String) The topic to use for the Dead Letter Queue.
 - `enable_dlq` (Boolean) Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
 - `enforce_latest_offset_reset` (Boolean) When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'. Default: false
+- `error_handling` (Attributes) (see [below for nested schema](#nestedatt--config--error_handling))
 - `message_by_lua_functions` (List of String) The Lua functions that manipulates the message being sent to the client.
 - `message_deserializer` (String) The deserializer to use for the consumed messages. possible known values include one of ["json", "noop"]; Default: "noop"
 - `mode` (String) The mode of operation for the plugin. possible known values include one of ["http-get", "server-sent-events", "websocket"]; Default: "http-get"
@@ -328,11 +349,42 @@ Optional:
 
 Optional:
 
-- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`. possible known values include one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
+- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`. possible known values include one of ["OAUTHBEARER", "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
+- `oauthbearer` (Attributes) Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`. (see [below for nested schema](#nestedatt--config--authentication--oauthbearer))
 - `password` (String) Password for SASL authentication.
 - `strategy` (String) The authentication strategy for the plugin, the only option for the value is `sasl`. must be "sasl"
 - `tokenauth` (Boolean) Enable this to indicate `DelegationToken` authentication
 - `user` (String) Username for SASL authentication.
+
+<a id="nestedatt--config--authentication--oauthbearer"></a>
+### Nested Schema for `config.authentication.oauthbearer`
+
+Optional:
+
+- `client_id` (String) The OAuth2 client ID.
+- `client_secret` (String) The OAuth2 client secret.
+- `extensions` (Map of String) Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).
+- `scopes` (List of String) List of OAuth2 scopes to request.
+- `token_endpoint_tls_verify` (Boolean) Whether to verify the TLS certificate of the token endpoint. Default: true
+- `token_endpoint_url` (String) The URL of the OAuth2 token endpoint.
+
+
+
+<a id="nestedatt--config--consumer_group"></a>
+### Nested Schema for `config.consumer_group`
+
+Optional:
+
+- `consumer_group_id` (String) The fixed consumer group ID to use when mode is set to `manual`. For SSE and WebSocket modes, a `.<node_id>` suffix is automatically appended.
+- `mode` (String) The strategy to determine the consumer group ID. `random`: a hash `com.konghq.kafka.<md5>` over the plugin ID (plus consumer identifier/IP and node ID for SSE/WebSocket). `kong_consumer`: uses the authenticated consumer's `username`, `custom_id`, then `id`, directly; falls back to `random` if no consumer is authenticated. `manual`: uses `consumer_group_id` directly. For SSE/WebSocket, `manual` and `kong_consumer` group IDs get a `.<node_id>` suffix. possible known values include one of ["kong_consumer", "manual", "random"]; Default: "random"
+
+
+<a id="nestedatt--config--error_handling"></a>
+### Nested Schema for `config.error_handling`
+
+Optional:
+
+- `return_error_message` (Boolean) When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production. Default: false
 
 
 <a id="nestedatt--config--schema_registry"></a>

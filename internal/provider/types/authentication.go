@@ -7,9 +7,10 @@ import (
 )
 
 type Authentication struct {
-	Mechanism types.String `tfsdk:"mechanism"`
-	Password  types.String `tfsdk:"password"`
-	Strategy  types.String `tfsdk:"strategy"`
-	Tokenauth types.Bool   `tfsdk:"tokenauth"`
-	User      types.String `tfsdk:"user"`
+	Mechanism   types.String `tfsdk:"mechanism"`
+	Oauthbearer *Oauthbearer `tfsdk:"oauthbearer"`
+	Password    types.String `tfsdk:"password"`
+	Strategy    types.String `tfsdk:"strategy"`
+	Tokenauth   types.Bool   `tfsdk:"tokenauth"`
+	User        types.String `tfsdk:"user"`
 }

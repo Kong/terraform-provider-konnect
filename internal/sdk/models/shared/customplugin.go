@@ -13,7 +13,7 @@ type CustomPlugin struct {
 	Handler string `json:"handler"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
-	// The name to associate with the given custom plugin.
+	// The name to associate with the given custom plugin. Consider using a distinct prefix for custom plugins to avoid naming conflicts with new bundled plugins in future Kong releases.
 	Name string `json:"name"`
 	// The schema for the given custom plugin.
 	Schema string `json:"schema"`

@@ -22,6 +22,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
     consumer_groups = [
       "..."
     ]
+    counter_key             = "consumer.custom_id"
     dictionary_name         = "kong_rate_limiting_counters"
     disable_penalty         = false
     enforce_consumer_groups = false
@@ -181,6 +182,7 @@ Optional:
 
 - `compound_identifier` (List of String) Similar to `identifer`, but supports combining multiple items. The priority of `compound_identifier` is higher than `identifier`, which means if `compound_identifer` is set, it will be used, otherwise `identifier` will be used.
 - `consumer_groups` (List of String) List of consumer groups allowed to override the rate limiting settings for the given Route or Service. Required if `enforce_consumer_groups` is set to `true`.
+- `counter_key` (String) The key used to identify the counter for rate limiting. This can be based on consumer attributes such as `consumer.id`, `consumer.username`, or `consumer.custom_id`. Only applicable when `identifier` is set to `consumer`. possible known values include one of ["consumer.custom_id", "consumer.id", "consumer.username"]
 - `dictionary_name` (String) The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle. Default: "kong_rate_limiting_counters"
 - `disable_penalty` (Boolean) If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type. Default: false
 - `enforce_consumer_groups` (Boolean) Determines if consumer groups are allowed to override the rate limiting settings for the given Route or Service. Flipping `enforce_consumer_groups` from `true` to `false` disables the group override, but does not clear the list of consumer groups. You can then flip `enforce_consumer_groups` to `true` to re-enforce the groups. Default: false

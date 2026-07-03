@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomizationV3(ctx context.Context, resp *shared.PortalCustomizationV3) diag.Diagnostics {
+func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(ctx context.Context, resp *shared.PortalCustomization) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -133,22 +133,22 @@ func (r *PortalCustomizationResourceModel) ToOperationsReplacePortalCustomizatio
 	var portalID string
 	portalID = r.PortalID.ValueString()
 
-	portalCustomizationV3, portalCustomizationV3Diags := r.ToSharedPortalCustomizationV3(ctx)
-	diags.Append(portalCustomizationV3Diags...)
+	portalCustomization, portalCustomizationDiags := r.ToSharedPortalCustomization(ctx)
+	diags.Append(portalCustomizationDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.ReplacePortalCustomizationRequest{
-		PortalID:              portalID,
-		PortalCustomizationV3: portalCustomizationV3,
+		PortalID:            portalID,
+		PortalCustomization: portalCustomization,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalCustomizationResourceModel) ToSharedPortalCustomizationV3(ctx context.Context) (*shared.PortalCustomizationV3, diag.Diagnostics) {
+func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx context.Context) (*shared.PortalCustomization, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var theme *shared.Theme
@@ -159,9 +159,9 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomizationV3(ctx con
 		} else {
 			name = nil
 		}
-		mode := new(shared.PortalCustomizationV3Mode)
+		mode := new(shared.PortalCustomizationMode)
 		if !r.Theme.Mode.IsUnknown() && !r.Theme.Mode.IsNull() {
-			*mode = shared.PortalCustomizationV3Mode(r.Theme.Mode.ValueString())
+			*mode = shared.PortalCustomizationMode(r.Theme.Mode.ValueString())
 		} else {
 			mode = nil
 		}
@@ -339,7 +339,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomizationV3(ctx con
 	} else {
 		robots = nil
 	}
-	out := shared.PortalCustomizationV3{
+	out := shared.PortalCustomization{
 		Theme:        theme,
 		Layout:       layout,
 		CSS:          css,

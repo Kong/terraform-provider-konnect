@@ -122,10 +122,11 @@ func (k *KafkaUpstreamPluginPartials) GetPath() string {
 	return k.Path
 }
 
-// KafkaUpstreamPluginMechanism - The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
+// KafkaUpstreamPluginMechanism - The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`.
 type KafkaUpstreamPluginMechanism string
 
 const (
+	KafkaUpstreamPluginMechanismOauthbearer KafkaUpstreamPluginMechanism = "OAUTHBEARER"
 	KafkaUpstreamPluginMechanismPlain       KafkaUpstreamPluginMechanism = "PLAIN"
 	KafkaUpstreamPluginMechanismScramSha256 KafkaUpstreamPluginMechanism = "SCRAM-SHA-256"
 	KafkaUpstreamPluginMechanismScramSha512 KafkaUpstreamPluginMechanism = "SCRAM-SHA-512"
@@ -139,11 +140,80 @@ func (e KafkaUpstreamPluginMechanism) ToPointer() *KafkaUpstreamPluginMechanism 
 func (e *KafkaUpstreamPluginMechanism) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512":
+		case "OAUTHBEARER", "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512":
 			return true
 		}
 	}
 	return false
+}
+
+// KafkaUpstreamPluginOauthbearer - Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`.
+type KafkaUpstreamPluginOauthbearer struct {
+	// The OAuth2 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// The OAuth2 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).
+	Extensions map[string]string `json:"extensions,omitempty"`
+	// List of OAuth2 scopes to request.
+	Scopes []string `json:"scopes"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	TokenEndpointTLSVerify *bool `default:"true" json:"token_endpoint_tls_verify"`
+	// The URL of the OAuth2 token endpoint.
+	TokenEndpointURL *string `default:"null" json:"token_endpoint_url"`
+}
+
+func (k KafkaUpstreamPluginOauthbearer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginOauthbearer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaUpstreamPluginOauthbearer) GetClientID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientID
+}
+
+func (k *KafkaUpstreamPluginOauthbearer) GetClientSecret() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecret
+}
+
+func (k *KafkaUpstreamPluginOauthbearer) GetExtensions() map[string]string {
+	if k == nil {
+		return nil
+	}
+	return k.Extensions
+}
+
+func (k *KafkaUpstreamPluginOauthbearer) GetScopes() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Scopes
+}
+
+func (k *KafkaUpstreamPluginOauthbearer) GetTokenEndpointTLSVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.TokenEndpointTLSVerify
+}
+
+func (k *KafkaUpstreamPluginOauthbearer) GetTokenEndpointURL() *string {
+	if k == nil {
+		return nil
+	}
+	return k.TokenEndpointURL
 }
 
 // KafkaUpstreamPluginStrategy - The authentication strategy for the plugin, the only option for the value is `sasl`.
@@ -171,8 +241,10 @@ func (e *KafkaUpstreamPluginStrategy) UnmarshalJSON(data []byte) error {
 }
 
 type KafkaUpstreamPluginAuthentication struct {
-	// The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
+	// The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`.
 	Mechanism *KafkaUpstreamPluginMechanism `json:"mechanism,omitempty"`
+	// Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`.
+	Oauthbearer *KafkaUpstreamPluginOauthbearer `json:"oauthbearer"`
 	// Password for SASL authentication.
 	Password *string `default:"null" json:"password"`
 	// The authentication strategy for the plugin, the only option for the value is `sasl`.
@@ -199,6 +271,13 @@ func (k *KafkaUpstreamPluginAuthentication) GetMechanism() *KafkaUpstreamPluginM
 		return nil
 	}
 	return k.Mechanism
+}
+
+func (k *KafkaUpstreamPluginAuthentication) GetOauthbearer() *KafkaUpstreamPluginOauthbearer {
+	if k == nil {
+		return nil
+	}
+	return k.Oauthbearer
 }
 
 func (k *KafkaUpstreamPluginAuthentication) GetPassword() *string {
@@ -259,6 +338,122 @@ func (k *KafkaUpstreamPluginBootstrapServers) GetPort() int64 {
 		return 0
 	}
 	return k.Port
+}
+
+type KafkaUpstreamPluginErrorHandling struct {
+	// When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.
+	ReturnErrorMessage *bool `default:"false" json:"return_error_message"`
+}
+
+func (k KafkaUpstreamPluginErrorHandling) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginErrorHandling) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaUpstreamPluginErrorHandling) GetReturnErrorMessage() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.ReturnErrorMessage
+}
+
+// KafkaUpstreamPluginRepeatedHeadersBehavior - How to handle repeated HTTP headers: `concatenate_by_comma` joins values with a comma, `take_first` uses only the first value, `retain_duplicates` creates separate Kafka record headers for each value.
+type KafkaUpstreamPluginRepeatedHeadersBehavior string
+
+const (
+	KafkaUpstreamPluginRepeatedHeadersBehaviorConcatenateByComma KafkaUpstreamPluginRepeatedHeadersBehavior = "concatenate_by_comma"
+	KafkaUpstreamPluginRepeatedHeadersBehaviorRetainDuplicates   KafkaUpstreamPluginRepeatedHeadersBehavior = "retain_duplicates"
+	KafkaUpstreamPluginRepeatedHeadersBehaviorTakeFirst          KafkaUpstreamPluginRepeatedHeadersBehavior = "take_first"
+)
+
+func (e KafkaUpstreamPluginRepeatedHeadersBehavior) ToPointer() *KafkaUpstreamPluginRepeatedHeadersBehavior {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginRepeatedHeadersBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_by_comma", "retain_duplicates", "take_first":
+			return true
+		}
+	}
+	return false
+}
+
+// KafkaUpstreamPluginHeaders - Configuration for forwarding HTTP headers as Kafka record headers.
+type KafkaUpstreamPluginHeaders struct {
+	// Blocklist of HTTP header names to exclude from forwarding. Used when `forward_all_by_default` is `enabled`.
+	ExcludeHeaders []string `json:"exclude_headers,omitempty"`
+	// When `false`, only headers listed in `include_headers` are forwarded. When `true`, all headers except those in `exclude_headers` are forwarded.
+	ForwardAllByDefault *bool `default:"false" json:"forward_all_by_default"`
+	// Whether to forward HTTP headers as Kafka record headers.
+	ForwardHTTPHeadersAsRecordHeaders *bool `default:"true" json:"forward_http_headers_as_record_headers"`
+	// Allowlist of HTTP header names to forward as Kafka record headers. Used when `forward_all_by_default` is `disabled`.
+	IncludeHeaders []string `json:"include_headers,omitempty"`
+	// Map of HTTP header names to Kafka record header names. If an HTTP header name matches a key, the corresponding value is used as the Kafka record header name.
+	NameMappings map[string]string `json:"name_mappings,omitempty"`
+	// How to handle repeated HTTP headers: `concatenate_by_comma` joins values with a comma, `take_first` uses only the first value, `retain_duplicates` creates separate Kafka record headers for each value.
+	RepeatedHeadersBehavior *KafkaUpstreamPluginRepeatedHeadersBehavior `default:"retain_duplicates" json:"repeated_headers_behavior"`
+}
+
+func (k KafkaUpstreamPluginHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaUpstreamPluginHeaders) GetExcludeHeaders() []string {
+	if k == nil {
+		return nil
+	}
+	return k.ExcludeHeaders
+}
+
+func (k *KafkaUpstreamPluginHeaders) GetForwardAllByDefault() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.ForwardAllByDefault
+}
+
+func (k *KafkaUpstreamPluginHeaders) GetForwardHTTPHeadersAsRecordHeaders() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.ForwardHTTPHeadersAsRecordHeaders
+}
+
+func (k *KafkaUpstreamPluginHeaders) GetIncludeHeaders() []string {
+	if k == nil {
+		return nil
+	}
+	return k.IncludeHeaders
+}
+
+func (k *KafkaUpstreamPluginHeaders) GetNameMappings() map[string]string {
+	if k == nil {
+		return nil
+	}
+	return k.NameMappings
+}
+
+func (k *KafkaUpstreamPluginHeaders) GetRepeatedHeadersBehavior() *KafkaUpstreamPluginRepeatedHeadersBehavior {
+	if k == nil {
+		return nil
+	}
+	return k.RepeatedHeadersBehavior
 }
 
 // KafkaUpstreamPluginProducerRequestAcks - The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
@@ -880,7 +1075,8 @@ type KafkaUpstreamPluginConfig struct {
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []KafkaUpstreamPluginBootstrapServers `json:"bootstrap_servers"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
-	ClusterName *string `json:"cluster_name,omitempty"`
+	ClusterName   *string                           `json:"cluster_name,omitempty"`
+	ErrorHandling *KafkaUpstreamPluginErrorHandling `json:"error_handling"`
 	// Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardBody *bool `default:"true" json:"forward_body"`
 	// Include the request headers in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
@@ -889,6 +1085,8 @@ type KafkaUpstreamPluginConfig struct {
 	ForwardMethod *bool `default:"false" json:"forward_method"`
 	// Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardURI *bool `default:"false" json:"forward_uri"`
+	// Configuration for forwarding HTTP headers as Kafka record headers.
+	Headers *KafkaUpstreamPluginHeaders `json:"headers"`
 	// Keepalive timeout in milliseconds.
 	Keepalive        *int64 `default:"60000" json:"keepalive"`
 	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`
@@ -964,6 +1162,13 @@ func (k *KafkaUpstreamPluginConfig) GetClusterName() *string {
 	return k.ClusterName
 }
 
+func (k *KafkaUpstreamPluginConfig) GetErrorHandling() *KafkaUpstreamPluginErrorHandling {
+	if k == nil {
+		return nil
+	}
+	return k.ErrorHandling
+}
+
 func (k *KafkaUpstreamPluginConfig) GetForwardBody() *bool {
 	if k == nil {
 		return nil
@@ -990,6 +1195,13 @@ func (k *KafkaUpstreamPluginConfig) GetForwardURI() *bool {
 		return nil
 	}
 	return k.ForwardURI
+}
+
+func (k *KafkaUpstreamPluginConfig) GetHeaders() *KafkaUpstreamPluginHeaders {
+	if k == nil {
+		return nil
+	}
+	return k.Headers
 }
 
 func (k *KafkaUpstreamPluginConfig) GetKeepalive() *int64 {

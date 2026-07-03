@@ -122,10 +122,11 @@ func (k *KafkaConsumePluginPartials) GetPath() string {
 	return k.Path
 }
 
-// Mechanism - The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.
+// Mechanism - The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`.
 type Mechanism string
 
 const (
+	MechanismOauthbearer Mechanism = "OAUTHBEARER"
 	MechanismPlain       Mechanism = "PLAIN"
 	MechanismScramSha256 Mechanism = "SCRAM-SHA-256"
 	MechanismScramSha512 Mechanism = "SCRAM-SHA-512"
@@ -139,11 +140,80 @@ func (e Mechanism) ToPointer() *Mechanism {
 func (e *Mechanism) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512":
+		case "OAUTHBEARER", "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512":
 			return true
 		}
 	}
 	return false
+}
+
+// KafkaConsumePluginOauthbearer - Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`.
+type KafkaConsumePluginOauthbearer struct {
+	// The OAuth2 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// The OAuth2 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Key-value pairs sent as extensions in the OAUTHBEARER SASL handshake (e.g. logicalCluster, identityPoolId).
+	Extensions map[string]string `json:"extensions,omitempty"`
+	// List of OAuth2 scopes to request.
+	Scopes []string `json:"scopes"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	TokenEndpointTLSVerify *bool `default:"true" json:"token_endpoint_tls_verify"`
+	// The URL of the OAuth2 token endpoint.
+	TokenEndpointURL *string `default:"null" json:"token_endpoint_url"`
+}
+
+func (k KafkaConsumePluginOauthbearer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginOauthbearer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaConsumePluginOauthbearer) GetClientID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientID
+}
+
+func (k *KafkaConsumePluginOauthbearer) GetClientSecret() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecret
+}
+
+func (k *KafkaConsumePluginOauthbearer) GetExtensions() map[string]string {
+	if k == nil {
+		return nil
+	}
+	return k.Extensions
+}
+
+func (k *KafkaConsumePluginOauthbearer) GetScopes() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Scopes
+}
+
+func (k *KafkaConsumePluginOauthbearer) GetTokenEndpointTLSVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.TokenEndpointTLSVerify
+}
+
+func (k *KafkaConsumePluginOauthbearer) GetTokenEndpointURL() *string {
+	if k == nil {
+		return nil
+	}
+	return k.TokenEndpointURL
 }
 
 // KafkaConsumePluginStrategy - The authentication strategy for the plugin, the only option for the value is `sasl`.
@@ -171,8 +241,10 @@ func (e *KafkaConsumePluginStrategy) UnmarshalJSON(data []byte) error {
 }
 
 type Authentication struct {
-	// The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.
+	// The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, or `OAUTHBEARER`.
 	Mechanism *Mechanism `json:"mechanism,omitempty"`
+	// Options for SASL OAUTHBEARER authentication. Required when `mechanism` is `OAUTHBEARER`.
+	Oauthbearer *KafkaConsumePluginOauthbearer `json:"oauthbearer"`
 	// Password for SASL authentication.
 	Password *string `default:"null" json:"password"`
 	// The authentication strategy for the plugin, the only option for the value is `sasl`.
@@ -199,6 +271,13 @@ func (a *Authentication) GetMechanism() *Mechanism {
 		return nil
 	}
 	return a.Mechanism
+}
+
+func (a *Authentication) GetOauthbearer() *KafkaConsumePluginOauthbearer {
+	if a == nil {
+		return nil
+	}
+	return a.Oauthbearer
 }
 
 func (a *Authentication) GetPassword() *string {
@@ -307,6 +386,86 @@ func (e *KafkaConsumePluginCommitStrategy) IsExact() bool {
 	return false
 }
 
+// KafkaConsumePluginConfigMode - The strategy to determine the consumer group ID. `random`: a hash `com.konghq.kafka.<md5>` over the plugin ID (plus consumer identifier/IP and node ID for SSE/WebSocket). `kong_consumer`: uses the authenticated consumer's `username`, `custom_id`, then `id`, directly; falls back to `random` if no consumer is authenticated. `manual`: uses `consumer_group_id` directly. For SSE/WebSocket, `manual` and `kong_consumer` group IDs get a `.<node_id>` suffix.
+type KafkaConsumePluginConfigMode string
+
+const (
+	KafkaConsumePluginConfigModeKongConsumer KafkaConsumePluginConfigMode = "kong_consumer"
+	KafkaConsumePluginConfigModeManual       KafkaConsumePluginConfigMode = "manual"
+	KafkaConsumePluginConfigModeRandom       KafkaConsumePluginConfigMode = "random"
+)
+
+func (e KafkaConsumePluginConfigMode) ToPointer() *KafkaConsumePluginConfigMode {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginConfigMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "kong_consumer", "manual", "random":
+			return true
+		}
+	}
+	return false
+}
+
+// KafkaConsumePluginConsumerGroup - Configuration for the Kafka consumer group ID.
+type KafkaConsumePluginConsumerGroup struct {
+	// The fixed consumer group ID to use when mode is set to `manual`. For SSE and WebSocket modes, a `.<node_id>` suffix is automatically appended.
+	ConsumerGroupID *string `default:"null" json:"consumer_group_id"`
+	// The strategy to determine the consumer group ID. `random`: a hash `com.konghq.kafka.<md5>` over the plugin ID (plus consumer identifier/IP and node ID for SSE/WebSocket). `kong_consumer`: uses the authenticated consumer's `username`, `custom_id`, then `id`, directly; falls back to `random` if no consumer is authenticated. `manual`: uses `consumer_group_id` directly. For SSE/WebSocket, `manual` and `kong_consumer` group IDs get a `.<node_id>` suffix.
+	Mode *KafkaConsumePluginConfigMode `default:"random" json:"mode"`
+}
+
+func (k KafkaConsumePluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaConsumePluginConsumerGroup) GetConsumerGroupID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ConsumerGroupID
+}
+
+func (k *KafkaConsumePluginConsumerGroup) GetMode() *KafkaConsumePluginConfigMode {
+	if k == nil {
+		return nil
+	}
+	return k.Mode
+}
+
+type KafkaConsumePluginErrorHandling struct {
+	// When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.
+	ReturnErrorMessage *bool `default:"false" json:"return_error_message"`
+}
+
+func (k KafkaConsumePluginErrorHandling) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginErrorHandling) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaConsumePluginErrorHandling) GetReturnErrorMessage() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.ReturnErrorMessage
+}
+
 // KafkaConsumePluginMessageDeserializer - The deserializer to use for the consumed messages.
 type KafkaConsumePluginMessageDeserializer string
 
@@ -384,21 +543,21 @@ func (k *KafkaConsumePluginBasic) GetUsername() string {
 	return k.Username
 }
 
-// KafkaConsumePluginConfigMode - Authentication mode to use with the schema registry.
-type KafkaConsumePluginConfigMode string
+// KafkaConsumePluginConfigSchemaRegistryMode - Authentication mode to use with the schema registry.
+type KafkaConsumePluginConfigSchemaRegistryMode string
 
 const (
-	KafkaConsumePluginConfigModeBasic  KafkaConsumePluginConfigMode = "basic"
-	KafkaConsumePluginConfigModeNone   KafkaConsumePluginConfigMode = "none"
-	KafkaConsumePluginConfigModeOauth2 KafkaConsumePluginConfigMode = "oauth2"
+	KafkaConsumePluginConfigSchemaRegistryModeBasic  KafkaConsumePluginConfigSchemaRegistryMode = "basic"
+	KafkaConsumePluginConfigSchemaRegistryModeNone   KafkaConsumePluginConfigSchemaRegistryMode = "none"
+	KafkaConsumePluginConfigSchemaRegistryModeOauth2 KafkaConsumePluginConfigSchemaRegistryMode = "oauth2"
 )
 
-func (e KafkaConsumePluginConfigMode) ToPointer() *KafkaConsumePluginConfigMode {
+func (e KafkaConsumePluginConfigSchemaRegistryMode) ToPointer() *KafkaConsumePluginConfigSchemaRegistryMode {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *KafkaConsumePluginConfigMode) IsExact() bool {
+func (e *KafkaConsumePluginConfigSchemaRegistryMode) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "basic", "none", "oauth2":
@@ -705,9 +864,9 @@ func (k *KafkaConsumePluginOauth2Client) GetTimeout() *int64 {
 type KafkaConsumePluginAuthentication struct {
 	Basic *KafkaConsumePluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode         *KafkaConsumePluginConfigMode   `default:"none" json:"mode"`
-	Oauth2       *KafkaConsumePluginOauth2       `json:"oauth2"`
-	Oauth2Client *KafkaConsumePluginOauth2Client `json:"oauth2_client"`
+	Mode         *KafkaConsumePluginConfigSchemaRegistryMode `default:"none" json:"mode"`
+	Oauth2       *KafkaConsumePluginOauth2                   `json:"oauth2"`
+	Oauth2Client *KafkaConsumePluginOauth2Client             `json:"oauth2_client"`
 }
 
 func (k KafkaConsumePluginAuthentication) MarshalJSON() ([]byte, error) {
@@ -728,7 +887,7 @@ func (k *KafkaConsumePluginAuthentication) GetBasic() *KafkaConsumePluginBasic {
 	return k.Basic
 }
 
-func (k *KafkaConsumePluginAuthentication) GetMode() *KafkaConsumePluginConfigMode {
+func (k *KafkaConsumePluginAuthentication) GetMode() *KafkaConsumePluginConfigSchemaRegistryMode {
 	if k == nil {
 		return nil
 	}
@@ -1370,12 +1529,15 @@ type KafkaConsumePluginConfig struct {
 	ClusterName *string `default:"null" json:"cluster_name"`
 	// The strategy to use for committing offsets.
 	CommitStrategy *KafkaConsumePluginCommitStrategy `default:"auto" json:"commit_strategy"`
+	// Configuration for the Kafka consumer group ID.
+	ConsumerGroup *KafkaConsumePluginConsumerGroup `json:"consumer_group"`
 	// The topic to use for the Dead Letter Queue.
 	DlqTopic *string `default:"null" json:"dlq_topic"`
 	// Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
 	EnableDlq *bool `default:"null" json:"enable_dlq"`
 	// When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'.
-	EnforceLatestOffsetReset *bool `default:"false" json:"enforce_latest_offset_reset"`
+	EnforceLatestOffsetReset *bool                            `default:"false" json:"enforce_latest_offset_reset"`
+	ErrorHandling            *KafkaConsumePluginErrorHandling `json:"error_handling"`
 	// The Lua functions that manipulates the message being sent to the client.
 	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
 	// The deserializer to use for the consumed messages.
@@ -1435,6 +1597,13 @@ func (k *KafkaConsumePluginConfig) GetCommitStrategy() *KafkaConsumePluginCommit
 	return k.CommitStrategy
 }
 
+func (k *KafkaConsumePluginConfig) GetConsumerGroup() *KafkaConsumePluginConsumerGroup {
+	if k == nil {
+		return nil
+	}
+	return k.ConsumerGroup
+}
+
 func (k *KafkaConsumePluginConfig) GetDlqTopic() *string {
 	if k == nil {
 		return nil
@@ -1454,6 +1623,13 @@ func (k *KafkaConsumePluginConfig) GetEnforceLatestOffsetReset() *bool {
 		return nil
 	}
 	return k.EnforceLatestOffsetReset
+}
+
+func (k *KafkaConsumePluginConfig) GetErrorHandling() *KafkaConsumePluginErrorHandling {
+	if k == nil {
+		return nil
+	}
+	return k.ErrorHandling
 }
 
 func (k *KafkaConsumePluginConfig) GetMessageByLuaFunctions() []string {

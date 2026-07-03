@@ -181,6 +181,47 @@ func (i *IdentityRealms) GetScope() *KeyAuthPluginScope {
 	return i.Scope
 }
 
+type KeyAuthPluginPrincipals struct {
+	// The Kong Identity directory instance to authenticate against.
+	Directory *string `default:"default" json:"directory"`
+	// When true, authenticate against Kong Identity instead of local credentials.
+	Enabled *bool `default:"false" json:"enabled"`
+	// When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead.
+	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
+}
+
+func (k KeyAuthPluginPrincipals) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuthPluginPrincipals) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KeyAuthPluginPrincipals) GetDirectory() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Directory
+}
+
+func (k *KeyAuthPluginPrincipals) GetEnabled() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.Enabled
+}
+
+func (k *KeyAuthPluginPrincipals) GetErrorOnMiss() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.ErrorOnMiss
+}
+
 type KeyAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
 	Anonymous *string `default:"null" json:"anonymous"`
@@ -195,7 +236,8 @@ type KeyAuthPluginConfig struct {
 	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
 	KeyInQuery *bool `default:"true" json:"key_in_query"`
 	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
-	KeyNames []string `json:"key_names,omitempty"`
+	KeyNames   []string                 `json:"key_names,omitempty"`
+	Principals *KeyAuthPluginPrincipals `json:"principals"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `default:"null" json:"realm"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
@@ -260,6 +302,13 @@ func (k *KeyAuthPluginConfig) GetKeyNames() []string {
 		return nil
 	}
 	return k.KeyNames
+}
+
+func (k *KeyAuthPluginConfig) GetPrincipals() *KeyAuthPluginPrincipals {
+	if k == nil {
+		return nil
+	}
+	return k.Principals
 }
 
 func (k *KeyAuthPluginConfig) GetRealm() *string {

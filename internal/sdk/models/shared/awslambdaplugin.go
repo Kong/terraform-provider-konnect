@@ -282,6 +282,8 @@ type AwsLambdaPluginConfig struct {
 	LogType *LogType `default:"Tail" json:"log_type"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"443" json:"port"`
+	// When enabled, the HTTP status code returned by the AWS Lambda API is forwarded to the client instead of mapping all errors to HTTP 500. Applies to 4xx and 5xx responses from the Lambda API.
+	PreserveLambdaAPIErrorCode *bool `default:"false" json:"preserve_lambda_api_error_code"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	ProxyURL *string `default:"null" json:"proxy_url"`
 	// The qualifier to use when invoking the function.
@@ -466,6 +468,13 @@ func (a *AwsLambdaPluginConfig) GetPort() *int64 {
 		return nil
 	}
 	return a.Port
+}
+
+func (a *AwsLambdaPluginConfig) GetPreserveLambdaAPIErrorCode() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.PreserveLambdaAPIErrorCode
 }
 
 func (a *AwsLambdaPluginConfig) GetProxyURL() *string {
