@@ -3,20 +3,20 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: 3549d91ea6788bef1a0b0e2d9da315b5
   docVersion: 2.0.0
-  speakeasyVersion: 1.773.1
-  generationVersion: 2.897.1
+  speakeasyVersion: 1.788.0
+  generationVersion: 2.915.0
   releaseVersion: 3.19.0
   configChecksum: a58d633d620d56f3bfe149870cef7453
 persistentEdits:
-  generation_id: 21937f53-2d2d-421b-8e59-c68cffec6147
-  pristine_commit_hash: 378a759985c92ce700d2966d8b4fa5e22c743f77
-  pristine_tree_hash: 1e13c6dc7341197ee1b0d00ecf543445cc86484d
+  generation_id: 1e7dca8c-d799-4f06-8642-8172e690270f
+  pristine_commit_hash: cb85f8f4479dfcc4ee6aa7da8a1765b386d7a23d
+  pristine_tree_hash: 0015beb18a735748b82b08b7d2ccf6f8cb861c5d
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.4
     constsAndDefaults: 0.3.2
-    core: 3.47.9
+    core: 3.47.10
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.3
@@ -29,7 +29,7 @@ features:
     nullables: 0.0.0
     openEnums: 0.1.0
     pagination: 2.83.6
-    retries: 2.81.4
+    retries: 2.81.5
     sets: 0.1.2
     transformJq: 0.0.1
     typeOverrides: 2.81.1
@@ -6993,8 +6993,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:eae91d739f5652a3303eab75e99f9da3a9264665
-    pristine_git_object: f72a237370c70240bac84e6467adcd4bfd068eed
+    last_write_checksum: sha1:2bfb7e1965efff2ff206ff32f8daa700cff4af0b
+    pristine_git_object: 5c2120821d046519144f1805be197d0ee70d7dd8
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
@@ -12977,8 +12977,8 @@ trackedFiles:
     pristine_git_object: 3aff59eb421ba2282c78f812b167930848c009ef
   internal/sdk/retry/config.go:
     id: 7ea5fa9128b6
-    last_write_checksum: sha1:7f7d96b59a18e95bac847ae09c63bbd911ee8432
-    pristine_git_object: 5b3dc7c122d8ab08905485342d7474f8f163888d
+    last_write_checksum: sha1:102d1953fbd7e9f312c4442c71ccca2eaaeaa27d
+    pristine_git_object: 767002c7898128324d8741ce9c534bd466492169
   internal/sdk/roles.go:
     id: 5b6a722e8819
     last_write_checksum: sha1:20a356363aae97bf5345484532d3e8a3adfa6b05
