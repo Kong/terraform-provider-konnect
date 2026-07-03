@@ -20,7 +20,9 @@ info:
 
     `x-min-runtime-version` indicates the minimum Event Gateway runtime version required to use a certain policy or
     policy feature. The runtime version can be configured at the Event Gateway entity level. It must be a string
-    containing a semantic version in the `MAJOR.MINOR` format, e.g., `"1.1"`.
+    containing a semantic version in the `MAJOR.MINOR` format, e.g., `"1.1"`. info.[x-latest-public-runtime-version]
+    indicates the latest public runtime version of Event Gateway. When
+    `x-min-runtime-version > x-latest-public-runtime-version`, the property or schema will only appear in dev schemas.
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
@@ -1850,6 +1852,86 @@ paths:
           format: uuid
           example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
         x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#DecryptFields':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Get a Consume Policy for Virtual Cluster
+      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Update Consume Policy for Virtual Cluster
+      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayParsedRecordDecryptFieldsPolicy'
+      responses:
+        '200':
+          description: Updated consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Delete Consume Policy for Virtual Cluster
+      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#ModifyHeaders':
     get:
       x-speakeasy-entity-operation:
@@ -2124,6 +2206,40 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
       - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#DecryptFields':
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecryptFields#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-consume-policy-decrypt-fields
+      summary: Create Consume Policy for Virtual Cluster
+      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayParsedRecordDecryptFieldsPolicyCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#ModifyHeaders':
     post:
       x-speakeasy-entity-operation:
@@ -2281,6 +2397,86 @@ paths:
         terraform-resource: EventGatewayProducePolicyEncrypt#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-produce-policy-encrypt
+      summary: Delete Produce Policy for Virtual Cluster
+      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#EncryptFields':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-produce-policy-encrypt-fields
+      summary: Get a Produce Policy for Virtual Cluster
+      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-produce-policy-encrypt-fields
+      summary: Update Produce Policy for Virtual Cluster
+      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayParsedRecordEncryptFieldsPolicy'
+      responses:
+        '200':
+          description: Updated produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-produce-policy-encrypt-fields
       summary: Delete Produce Policy for Virtual Cluster
       description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
       responses:
@@ -2482,6 +2678,40 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EventGatewayEncryptPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#EncryptFields':
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncryptFields#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-produce-policy-encrypt-fields
+      summary: Create Produce Policy for Virtual Cluster
+      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayParsedRecordEncryptFieldsPolicyCreate'
       responses:
         '201':
           description: Created
@@ -3924,8 +4154,10 @@ paths:
       operationId: create-add-on
       summary: Create Add-On
       description: |
-        Creates a new add-on. Specific add-on types (e.g., managed cache)
-        are defined by the sub-kind configuration.
+        Creates a new add-on for a control plane or control plane group. The add-on type is
+        determined by the `config.kind` field — currently only `managed-cache.v0` is supported,
+        which provisions a Redis-compatible cache co-located with your data planes. After it's created,
+        the add-on transitions through `initializing → ready` as it deploys across data plane groups.
       requestBody:
         required: true
         content:
@@ -3976,7 +4208,7 @@ paths:
         terraform-resource: CloudGatewayAddon#read
       operationId: get-add-on
       summary: Get Add-On
-      description: Retrieves an add-on by ID.
+      description: 'Retrieves a single add-on by ID, including its current lifecycle state and per data plane group deployment status.'
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       responses:
@@ -4012,7 +4244,8 @@ paths:
       operationId: delete-add-on
       summary: Delete Add-On
       description: |
-        Deletes an add-on by ID. The request will be rejected if the managed cache partial is still in use by some plugins.
+        Deletes an add-on by ID. The request is rejected if any Kong plugins are still referencing
+        the managed cache add-on — remove those plugin references before deleting.
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       responses:
@@ -4053,7 +4286,9 @@ paths:
         terraform-datasource: null
       operationId: update-add-on
       summary: Update Add-On
-      description: Updates the configuration of an existing add-on.
+      description: |
+        Updates the configuration of an existing add-on, such as changing the managed cache
+        capacity tier. Tier upgrades are supported; downgrades are not.
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       requestBody:
@@ -4102,12 +4337,14 @@ paths:
       operationId: create-configuration
       summary: Create Configuration
       description: |
-        Creates a new configuration for a control-plane (restricted by permitted control-plane permissions for
-        configurations). This request will replace any existing configuration for the requested control_plane_id and
-        control_plane_geo by performing a diff. From this diff, new resources detected in the requested configuration
-        will be added, resources not found in the request configuration but in the previous will be deleted, and
-        resources found in both will be updated to the requested configuration. Networks referenced in this request that
-        are in an offline state will automatically initialize (i.e. move to an initializing state).
+        Creates or replaces the Cloud Gateway configuration for a control plane and geo. The request fully describes
+        the desired state — Kong diffs it against the current configuration, then adds, removes, or updates data plane
+        groups to match. Any network referenced in the request that is currently `offline` automatically transitions
+        to `initializing`.
+
+        Use `kind: dedicated.v0` (default) for dedicated Cloud Gateways — `version`, `cloud_gateway_network_id`, and
+        `autoscale` are required. Use `kind: serverless.v1` for serverless Cloud Gateways — those three fields must
+        be omitted.
       requestBody:
         required: true
         content:
@@ -4139,7 +4376,9 @@ paths:
         terraform-datasource: null
       operationId: get-configuration
       summary: Get Configuration
-      description: Retrieves a configuration by ID (restricted by permitted control-plane read).
+      description: |
+        Retrieves a single Cloud Gateway configuration by ID, including the current state of each deployed
+        data plane group. Access is restricted to control planes the caller has permission to read.
       parameters:
         - $ref: '#/components/parameters/ConfigurationId'
       responses:
@@ -4164,8 +4403,12 @@ paths:
       operationId: create-custom-domains
       summary: Create Custom Domain
       description: |
-        Creates a new custom domain for a control-plane (restricted by permitted control-plane associate-custom-domain
-        action).
+        Registers a custom domain for a control plane. After creation, Konnect provisions a TLS
+        certificate and configures SNI routing, transitioning the domain through
+        `initializing → ready`. To complete setup, configure two CNAME records at your DNS
+        registrar: one pointing your domain to the Konnect gateway hostname, and one pointing
+        `_acme-challenge.<your-domain>` to the ACME challenge hostname provided by Konnect.
+        Use the online-status endpoint to verify both records are correctly configured.
       requestBody:
         required: true
         content:
@@ -4197,7 +4440,7 @@ paths:
         terraform-datasource: null
       operationId: get-custom-domain
       summary: Get Custom Domain
-      description: Retrieves a custom domain by ID (restricted by permitted control-plane reads).
+      description: 'Retrieves a single custom domain by ID, including its current lifecycle state and any error metadata.'
       parameters:
         - $ref: '#/components/parameters/CustomDomainId'
       responses:
@@ -4220,7 +4463,7 @@ paths:
         terraform-datasource: null
       operationId: delete-custom-domain
       summary: Delete Custom Domain
-      description: Deletes a custom domain by ID (restricted by permitted control-plane reads).
+      description: 'Deletes a custom domain by ID, removing the associated TLS certificate and SNI configuration from the control plane''s data planes.'
       parameters:
         - $ref: '#/components/parameters/CustomDomainId'
       responses:
@@ -4256,7 +4499,10 @@ paths:
         terraform-datasource: CloudGatewayNetwork#read
       operationId: list-networks
       summary: List Networks
-      description: Returns a paginated list of networks.
+      description: |
+        Returns a paginated list of Cloud Gateway networks visible to the caller. Filter by
+        `state` to narrow results — for example, poll for `state=ready` to find networks
+        available for data plane group configurations.
       parameters:
         - $ref: '#/components/parameters/NetworksFilter'
         - $ref: '#/components/parameters/PageSize'
@@ -4281,7 +4527,9 @@ paths:
         terraform-datasource: null
       operationId: create-network
       summary: Create Network
-      description: Creates a new network for a given provider account.
+      description: |
+        Creates a new Cloud Gateway network in the specified provider account and region. Network creation is
+        asynchronous — the network starts in `initializing` state and transitions to `ready` once provisioned.
       requestBody:
         required: true
         content:
@@ -4311,7 +4559,7 @@ paths:
         terraform-datasource: null
       operationId: get-network
       summary: Get Network
-      description: Retrieves a network by ID.
+      description: 'Retrieves a Cloud Gateway network by ID, including its current state and provider metadata.'
       parameters:
         - $ref: '#/components/parameters/NetworkId'
       responses:
@@ -4334,7 +4582,7 @@ paths:
         terraform-datasource: null
       operationId: update-network
       summary: Update Network
-      description: Updates a network by ID.
+      description: Updates a Cloud Gateway network by ID. You can also rename the network.
       parameters:
         - $ref: '#/components/parameters/NetworkId'
       requestBody:
@@ -4367,7 +4615,7 @@ paths:
         terraform-datasource: null
       operationId: delete-network
       summary: Delete Network
-      description: Deletes a network by ID.
+      description: Deletes a Cloud Gateway network by ID. The network cannot be referenced by any active configuration before it can be deleted.
       parameters:
         - $ref: '#/components/parameters/NetworkId'
       responses:
@@ -4403,7 +4651,11 @@ paths:
         terraform-datasource: null
       operationId: create-private-dns
       summary: Create Private DNS
-      description: Creates a new Private DNS for a given network.
+      description: |
+        Creates a new private DNS attachment for a given network. The attachment type is determined by
+        `private_dns_attachment_config.kind`. Supported types: `aws-private-hosted-zone-attachment`,
+        `aws-outbound-resolver`, `gcp-private-hosted-zone-attachment`, `azure-private-hosted-zone-attachment`,
+        and `azure-outbound-resolver`.
       parameters:
         - name: networkId
           in: path
@@ -4452,7 +4704,7 @@ paths:
         terraform-datasource: null
       operationId: get-private-dns
       summary: Get Private DNS
-      description: Retrieves a Private DNS by ID for a given network.
+      description: 'Retrieves a private DNS attachment by ID, including its current state and attachment configuration.'
       parameters:
         - name: networkId
           in: path
@@ -4481,7 +4733,10 @@ paths:
         terraform-datasource: null
       operationId: delete-private-dns
       summary: Delete Private DNS
-      description: Deletes a Private DNS by ID for a given network.
+      description: |
+        Deletes a Private DNS attachment by ID. The attachment must be in a stable state (`ready`
+        or `error`) before deletion — requests against attachments in a transitional state
+        (`initializing`, `terminating`) will be rejected.
       parameters:
         - name: networkId
           in: path
@@ -4523,7 +4778,12 @@ paths:
         terraform-datasource: null
       operationId: create-transit-gateway
       summary: Create Transit Gateway
-      description: Creates a new transit gateway for a given network.
+      description: |
+        Creates a new transit gateway attachment for a given network. The attachment type is determined by the
+        `transit_gateway_attachment_config.kind` field. Supported types: `aws-transit-gateway-attachment`,
+        `aws-vpc-peering-attachment`, `aws-resource-endpoint-attachment`, `azure-vnet-peering-attachment`,
+        `azure-vhub-peering-attachment`, and `gcp-vpc-peering-attachment`. Creation is asynchronous —
+        the transit gateway starts in `initializing` state and transitions to `ready` once provisioned.
       parameters:
         - name: networkId
           in: path
@@ -4572,7 +4832,7 @@ paths:
         terraform-datasource: null
       operationId: get-transit-gateway
       summary: Get Transit Gateway
-      description: Retrieves a transit gateway by ID for a given network.
+      description: 'Retrieves a transit gateway by ID, including its current state and attachment configuration.'
       parameters:
         - name: networkId
           in: path
@@ -4602,7 +4862,9 @@ paths:
         terraform-datasource: null
       operationId: update-transit-gateway
       summary: Update Transit Gateway
-      description: Updates a transit gateway by ID for a given network.
+      description: |
+        Updates a transit gateway by ID. Supports updating CIDR blocks on an AWS Transit Gateway, or updating
+        the resource endpoint configuration on an AWS Resource Endpoint gateway.
       parameters:
         - name: networkId
           in: path
@@ -4642,7 +4904,7 @@ paths:
         terraform-datasource: null
       operationId: delete-transit-gateway
       summary: Delete Transit Gateway
-      description: Deletes a transit gateway by ID for a given network.
+      description: Deletes a transit gateway by ID. The transit gateway must be in a non-transitional state before deletion.
       parameters:
         - name: networkId
           in: path
@@ -4683,7 +4945,7 @@ paths:
       x-speakeasy-entity-operation: CloudGatewayProviderAccountList#read
       operationId: list-provider-accounts
       summary: List Provider Accounts
-      description: Returns a a paginated collection of provider accounts for an organization.
+      description: Returns a paginated list of provider accounts linked to the organization. Filter by cloud provider to see accounts for a specific CSP.
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -19089,7 +19351,15 @@ paths:
         - Portal Teams
   '/v3/portals/{portalId}/teams/{teamId}':
     parameters:
-      - $ref: '#/components/parameters/TeamId'
+      - name: teamId
+        in: path
+        description: ID of the team.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        x-speakeasy-match: id
       - $ref: '#/components/parameters/PortalId'
     get:
       x-speakeasy-entity-operation:
@@ -19147,6 +19417,71 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Teams
+  '/v3/portals/{portalId}/teams/{teamId}/assigned-roles':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageNumber'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeamRole#create
+        terraform-datasource: null
+      operationId: assign-role-to-portal-teams
+      summary: Assign Role
+      description: 'Assign a role to a developer team. This associates the set of permissions in a role with the team, so that they will be applied to any developer who is a member of the team.'
+      requestBody:
+        $ref: '#/components/requestBodies/PortalAssignRole'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalAssignedRole'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Team Roles
+  '/v3/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}':
+    parameters:
+      - name: roleId
+        in: path
+        description: ID of the assigned role.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 8350205f-a305-4e39-abe9-bc082a80091a
+        x-speakeasy-match: id
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeamRole#delete
+        terraform-datasource: null
+      operationId: remove-role-from-portal-team
+      summary: Remove Role
+      description: Removes an assigned role from a developer team. This deletes the association of the role with team and each of its members.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Team Roles
   /v3/system-accounts:
     get:
       x-speakeasy-entity-operation:
@@ -20552,7 +20887,6 @@ components:
         type: string
       x-speakeasy-match: id
     TeamId:
-      x-speakeasy-match: id
       schema:
         type: string
         format: uuid
@@ -21354,6 +21688,7 @@ components:
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
     ControlPlaneId:
+      description: ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
       type: string
       format: uuid
       example: 0949471e-b759-45ba-87ab-ee63fb781388
@@ -21397,7 +21732,14 @@ components:
       format: uuid
       example: 929b2449-c69f-44c4-b6ad-9ecec6f811ae
     ControlPlaneGeo:
-      description: Set of control-plane geos supported for deploying cloud-gateways configurations.
+      description: |
+        Geographic region of the control plane. Supported values:
+        - `us` — United States
+        - `eu` — Europe
+        - `au` — Australia
+        - `me` — Middle East
+        - `in` — India
+        - `sg` — Singapore
       type: string
       enum:
         - us
@@ -21411,7 +21753,7 @@ components:
     GatewayVersion:
       description: 'Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: string
-      example: '3.2'
+      example: '3.10'
       title: Gateway Version
     InstanceTypeName:
       description: Instance type name to indicate capacity.
@@ -21422,7 +21764,11 @@ components:
         - large
       x-speakeasy-unknown-values: allow
     ApiAccess:
-      description: Type of API access data-plane groups will support for a configuration.
+      description: |
+        Controls how data planes in a configuration are exposed. Supported values:
+        - `private` — data planes are accessible only within the VPC network; no public internet exposure
+        - `public` — data planes are accessible from the public internet
+        - `private+public` — equivalent to `public`; data planes are accessible from the public internet (default)
       type: string
       example: private+public
       enum:
@@ -21482,7 +21828,8 @@ components:
         base_rps:
           description: Base number of requests per second that the deployment target should support.
           type: integer
-          example: 1
+          example: 100
+          minimum: 1
         max_rps:
           description: 'Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn''t be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.'
           type: integer
@@ -21793,7 +22140,14 @@ components:
       title: Network Create State
       x-speakeasy-unknown-values: allow
     NetworkState:
-      description: State of the network.
+      description: |
+        The current state of the network. Possible values:
+        - `created`: The network was created, but provisioning hasn't started yet.
+        - `initializing`: The network is being provisioned in the cloud provider.
+        - `offline`: The network was created but isn't provisioned; no data planes can be deployed.
+        - `ready`: The network is fully provisioned and available for data plane groups.
+        - `terminating`: The network is being deleted and is no longer accepting new resources.
+        - `terminated`: The network has been fully deleted and is no longer available.
       enum:
         - created
         - initializing
@@ -21845,12 +22199,12 @@ components:
     NetworkName:
       description: Human-readable name of the network.
       type: string
-      example: us-east-2 network
+      example: us-east-2-network
       title: Network Name
     NetworkCIDRBlock:
-      description: CIDR block configuration for the network.
+      description: CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider.
       type: string
-      example: 10.0.0.0/8
+      example: 10.0.0.0/16
       title: Network CIDR Block
     NetworkAvailabilityZones:
       description: List of availability zones that the network is attached to.
@@ -22075,11 +22429,17 @@ components:
             - aws-vpc-peering-attachment
           title: AWS VPC Peering Attachment Config
         peer_account_id:
+          description: AWS account ID of the peer VPC owner.
           type: string
+          example: '123456789012'
         peer_vpc_id:
+          description: ID of the peer VPC to establish the peering connection with.
           type: string
+          example: vpc-0a1b2c3d4e5f67890
         peer_vpc_region:
+          description: AWS region where the peer VPC is located.
           type: string
+          example: us-east-2
       additionalProperties: false
       required:
         - kind
@@ -22095,13 +22455,21 @@ components:
             - aws-vpc-peering-attachment
           title: AWS VPC Peering Attachment Config
         peer_account_id:
+          description: AWS account ID of the peer VPC owner.
           type: string
+          example: '123456789012'
         peer_vpc_id:
+          description: ID of the peer VPC to establish the peering connection with.
           type: string
+          example: vpc-0a1b2c3d4e5f67890
         peer_vpc_region:
+          description: AWS region where the peer VPC is located.
           type: string
+          example: us-east-2
         peering_connection_id:
+          description: 'ID of the AWS VPC peering connection, assigned after the peering request is accepted.'
           type: string
+          example: pcx-0a1b2c3d4e5f67890
           default: null
           nullable: true
           x-speakeasy-param-computed: false
@@ -22766,12 +23134,12 @@ components:
       example:
         kind: azure-outbound-resolver
         dns_config:
-          global.api.konghq.com:
+          internal.example.com:
             remote_dns_server_ip_addresses:
-              - 10.0.0.2
-          us.api.konghq.dev:
+              - 10.0.1.100
+          db.corp.internal:
             remote_dns_server_ip_addresses:
-              - 10.0.0.8
+              - 10.0.2.100
       additionalProperties: false
       required:
         - kind
@@ -22782,12 +23150,12 @@ components:
         Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.
       type: object
       example:
-        global.api.konghq.com:
+        internal.example.com:
           remote_dns_server_ip_addresses:
-            - 10.0.0.2
-        us.api.konghq.dev:
+            - 10.0.1.100
+        db.corp.internal:
           remote_dns_server_ip_addresses:
-            - 10.0.0.8
+            - 10.0.2.100
       additionalProperties:
         $ref: '#/components/schemas/PrivateDnsResolverConfigObject'
       title: Private DNS Resolver Config Item
@@ -22806,7 +23174,7 @@ components:
     PrivateDnsName:
       description: Human-readable name of the Private DNS.
       type: string
-      example: us-east-2 private dns
+      example: us-east-2-private-dns
       title: Private DNS Name
     PrivateDnsState:
       description: |
@@ -23378,7 +23746,14 @@ components:
         - $ref: '#/components/schemas/PatchAwsTransitGateway'
       title: PatchTransitGatewayRequest
     CustomDomainState:
-      description: State of the custom domain.
+      description: |
+        The current state of the custom domain. Possible values:
+        - `created` — The domain has been registered but TLS provisioning has not yet started.
+        - `initializing` — Konnect is provisioning the TLS certificate and configuring SNI routing.
+        - `ready` — The domain is fully provisioned and serving traffic.
+        - `terminating` — The domain is being deleted and its TLS certificate is being removed.
+        - `terminated` — The domain has been fully deleted and is no longer available.
+        - `error` — Provisioning failed; check `state_metadata` for details.
       type: string
       enum:
         - created
@@ -23491,7 +23866,10 @@ components:
       title: Custom Domain
     CreateConfigurationRequest:
       description: |
-        Request schema for creating a configuration.
+        Describes the desired state of a control plane's Cloud Gateway deployment. Submitting
+        this request replaces the current configuration; Kong reconciles running data plane groups
+        to match. Use `kind: dedicated.v0` for Dedicated Cloud Gateways or `kind: serverless.v1`
+        for Serverless — the required fields differ by kind.
       type: object
       properties:
         control_plane_id:
@@ -25176,6 +25554,7 @@ components:
                 - curity
                 - okta
                 - http
+                - kongIdentity
               x-speakeasy-unknown-values: allow
           readOnly: true
           required:
@@ -25294,6 +25673,7 @@ components:
                 - curity
                 - okta
                 - http
+                - kongIdentity
               x-speakeasy-unknown-values: allow
           readOnly: true
           required:
@@ -28041,115 +28421,6 @@ components:
       required:
         - title
         - items
-    PortalCustomization:
-      description: The custom settings of this portal
-      type: object
-      properties:
-        theme:
-          type: object
-          additionalProperties: false
-          nullable: false
-          properties:
-            name:
-              type: string
-              nullable: false
-            mode:
-              type: string
-              enum:
-                - light
-                - dark
-                - system
-              x-speakeasy-unknown-values: allow
-            colors:
-              type: object
-              additionalProperties: false
-              nullable: false
-              properties:
-                primary:
-                  type: string
-                  example: '#000000'
-                  nullable: false
-                  pattern: '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
-                  x-validation-message: must be a valid hex color value
-              x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
-        layout:
-          type: string
-          nullable: false
-          x-speakeasy-param-computed: false
-        css:
-          type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        menu:
-          type: object
-          additionalProperties: false
-          nullable: false
-          properties:
-            main:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalMenuItem'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            footer_sections:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalFooterMenuSection'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            footer_bottom:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalMenuItem'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
-        spec_renderer:
-          type: object
-          additionalProperties: false
-          nullable: false
-          properties:
-            try_it_ui:
-              description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
-              type: boolean
-              default: true
-            try_it_insomnia:
-              description: Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
-              type: boolean
-              default: true
-            infinite_scroll:
-              description: 'Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.'
-              type: boolean
-              default: true
-            show_schemas:
-              description: 'Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.'
-              type: boolean
-              default: true
-            hide_internal:
-              description: Manage visibility of internal endpoints and models.
-              type: boolean
-              default: false
-            hide_deprecated:
-              description: Manage visibility of deprecated endpoints and models.
-              type: boolean
-              default: false
-            allow_custom_server_urls:
-              description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
-              type: boolean
-              default: true
-          x-speakeasy-param-computed: false
-        robots:
-          type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      title: PortalCustomization
     PortalImageDataUri:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       type: string
@@ -28205,12 +28476,6 @@ components:
       example: '# Welcome to My Page'
       maxLength: 1000000
       title: PageContent
-    SnippetName:
-      description: The unique name of a snippet in a portal.
-      type: string
-      example: my-snippet
-      maxLength: 512
-      title: SnippetName
     SnippetTitle:
       description: The display title of a snippet in a portal.
       type: string
@@ -28776,6 +29041,44 @@ components:
             oidc_scopes: .oidc_config.scopes
           }
           | del(.oidc_config)
+    PortalAssignRoleRequest:
+      description: An assigned role associates a service and an action to a team.
+      type: object
+      properties:
+        role_name:
+          type: string
+          example: API Viewer
+        entity_id:
+          type: string
+          format: uuid
+          example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+        entity_type_name:
+          type: string
+          example: Services
+        entity_region:
+          description: Region of the entity.
+          type: string
+          example: eu
+          enum:
+            - us
+            - eu
+            - au
+            - me
+            - in
+            - sg
+            - '*'
+          x-speakeasy-unknown-values: allow
+      example:
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+      required:
+        - role_name
+        - entity_id
+        - entity_type_name
+        - entity_region
+      title: PortalAssignRoleRequest
     PortalAuthenticationSettingsUpdateRequest:
       x-speakeasy-entity: PortalAuth
       description: Properties to update a portal's developer auth settings.
@@ -28994,6 +29297,165 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
       title: PortalTeamResponse
+    PortalAssignedRoleResponse:
+      description: An assigned role associates a service and an action to a team.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+        role_name:
+          type: string
+          example: API Viewer
+        entity_id:
+          type: string
+          format: uuid
+          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+        entity_type_name:
+          type: string
+          example: Services
+        entity_region:
+          description: Region of the entity.
+          type: string
+          example: eu
+          enum:
+            - us
+            - eu
+            - au
+            - me
+            - in
+            - sg
+            - '*'
+          x-speakeasy-unknown-values: allow
+      example:
+        id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+      required:
+        - id
+        - role_name
+        - entity_id
+        - entity_type_name
+        - entity_region
+      title: PortalAssignedRoleResponse
+    SnippetName:
+      description: The unique name of a snippet in a portal.
+      type: string
+      example: my-snippet
+      maxLength: 512
+      title: SnippetName
+    PortalCustomizationV3:
+      description: The custom settings of this portal
+      type: object
+      properties:
+        theme:
+          type: object
+          additionalProperties: false
+          nullable: false
+          properties:
+            name:
+              type: string
+              nullable: false
+            mode:
+              type: string
+              enum:
+                - light
+                - dark
+                - system
+              x-speakeasy-unknown-values: allow
+            colors:
+              type: object
+              additionalProperties: false
+              nullable: false
+              properties:
+                primary:
+                  type: string
+                  example: '#000000'
+                  nullable: false
+                  pattern: '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
+                  x-validation-message: must be a valid hex color value
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+        layout:
+          type: string
+          nullable: false
+          x-speakeasy-param-computed: false
+        css:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        menu:
+          type: object
+          additionalProperties: false
+          nullable: false
+          properties:
+            main:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSection'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+        spec_renderer:
+          type: object
+          additionalProperties: false
+          nullable: false
+          properties:
+            try_it_ui:
+              description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
+              type: boolean
+              default: true
+            try_it_insomnia:
+              description: Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
+              type: boolean
+              default: true
+            infinite_scroll:
+              description: 'Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.'
+              type: boolean
+              default: true
+            show_schemas:
+              description: 'Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.'
+              type: boolean
+              default: true
+            hide_internal:
+              description: Manage visibility of internal endpoints and models.
+              type: boolean
+              default: false
+            hide_deprecated:
+              description: Manage visibility of deprecated endpoints and models.
+              type: boolean
+              default: false
+            allow_custom_server_urls:
+              description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
+              type: boolean
+              default: true
+          x-speakeasy-param-computed: false
+        robots:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: PortalCustomization
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -29714,10 +30176,11 @@ components:
 
             **Requires a minimum runtime version of `1.2`**.
           type: array
+          items:
+            $ref: '#/components/schemas/VirtualClusterTopicAlias'
           nullable: true
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         name:
           $ref: '#/components/schemas/VirtualClusterName'
         dns_label:
@@ -29828,6 +30291,8 @@ components:
         type:
           type: string
           const: client_certificate
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       example:
         type: client_certificate
       additionalProperties: false
@@ -29934,6 +30399,8 @@ components:
           default: null
           nullable: true
           x-speakeasy-param-computed: false
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       additionalProperties: false
       required:
         - type
@@ -29962,6 +30429,8 @@ components:
           minItems: 1
           nullable: true
           x-speakeasy-param-computed: false
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       additionalProperties: false
       required:
         - type
@@ -30038,6 +30507,8 @@ components:
             - sha256
             - sha512
           x-speakeasy-unknown-values: allow
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       additionalProperties: false
       required:
         - type
@@ -30071,6 +30542,8 @@ components:
           $ref: '#/components/schemas/VirtualClusterAuthenticationJWKS'
         validate:
           $ref: '#/components/schemas/VirtualClusterAuthenticationValidate'
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalOauthBearer'
       additionalProperties: false
       required:
         - type
@@ -30103,6 +30576,79 @@ components:
           minLength: 1
       required:
         - name
+    FetchKongIdentityPrincipal:
+      description: |-
+        Fetches principal metadata from Kong Identity after successful authentication.
+        The principal is looked up by a custom key matched against the authenticated identity.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        directory:
+          description: Kong Identity directory to use for principal lookup.
+          type: string
+          minLength: 1
+        fetch_by:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalFetchBy'
+        failure_mode:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalFailureMode'
+      required:
+        - directory
+        - fetch_by
+        - failure_mode
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    FetchKongIdentityPrincipalOauthBearer:
+      description: |-
+        Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.
+        The principal is looked up by the iss and sub claims from the JWT token.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        directory:
+          description: Kong Identity directory to use for principal lookup.
+          type: string
+          minLength: 1
+        failure_mode:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalFailureMode'
+      required:
+        - directory
+        - failure_mode
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    FetchKongIdentityPrincipalFetchBy:
+      description: |-
+        Defines how to look up the principal in Kong Identity.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        key:
+          description: |
+            The metadata key in Kong Identity to match the authenticated identity against.
+            Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+            In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+          type: string
+          minLength: 1
+      required:
+        - key
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    FetchKongIdentityPrincipalFailureMode:
+      description: |-
+        Behavior when the Kong Identity principal lookup fails.
+        * `error` - fail the authentication if the principal lookup fails.
+        * `ignore` - proceed without principal metadata if the lookup fails.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: string
+      enum:
+        - error
+        - ignore
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+      x-speakeasy-unknown-values: allow
     VirtualClusterDNSLabel:
       description: |-
         The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
@@ -31231,7 +31777,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -31240,7 +31785,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -31274,6 +31818,275 @@ components:
         - failure_mode
         - part_of_record
         - encryption_key
+    EventGatewayParsedRecordEncryptFieldsPolicy:
+      description: |-
+        Encrypts fields of parsed Kafka records using AES_256_GCM. Keys are therefore 256 bits long.
+
+        Note this policy can only be used as a child of a `EventGatewayProduceSchemaValidationPolicy` policy.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: encrypt_fields
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayParsedRecordEncryptFieldsConfig'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+      required:
+        - type
+        - config
+      title: Encrypt Parsed Record
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    EventGatewayParsedRecordEncryptFieldsPolicyCreate:
+      description: |-
+        Encrypts fields of parsed Kafka records using AES_256_GCM. Keys are therefore 256 bits long.
+
+        Note this policy can only be used as a child of a `EventGatewayProduceSchemaValidationPolicy` policy.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: encrypt_fields
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayParsedRecordEncryptFieldsConfig'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+        parent_policy_id:
+          description: The unique identifier of the parent schema validation policy.
+          type: string
+          format: uuid
+      required:
+        - type
+        - config
+        - parent_policy_id
+      title: Encrypt Parsed Record Fields
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    EventGatewayParsedRecordEncryptFieldsConfig:
+      description: The configuration of the encrypt parsed record policy.
+      type: object
+      properties:
+        failure_mode:
+          $ref: '#/components/schemas/ProduceFailureMode'
+        encrypt_fields:
+          description: Selects which fields to encrypt and with what keys.
+          type: array
+          items:
+            $ref: '#/components/schemas/EventGatewayParsedRecordEncryptionSelector'
+          maxItems: 256
+          minItems: 1
+      required:
+        - failure_mode
+        - encrypt_fields
+    EventGatewayParsedRecordEncryptionSelector:
+      description: Selects fields of a parsed record for encryption and defines what key to encrypt them with.
+      type: object
+      properties:
+        encryption_key:
+          $ref: '#/components/schemas/EncryptionKey'
+        paths:
+          $ref: '#/components/schemas/EventGatewayParsedRecordFieldPathsArray'
+      required:
+        - paths
+        - encryption_key
+    EventGatewayParsedRecordFieldPathsArray:
+      type: array
+      items:
+        type: object
+        required:
+          - match
+        properties:
+          match:
+            description: |
+              A field selector. It can select nested fields and array entries.
+
+              Currently supported are exact matches.
+            type: string
+            example: 'someObject.someArray[1].fieldName'
+      maxItems: 50
     EventGatewayDecryptPolicy:
       description: Decrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
       type: object
@@ -31324,7 +32137,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -31333,7 +32145,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -31371,6 +32182,259 @@ components:
         - failure_mode
         - key_sources
         - part_of_record
+    EventGatewayParsedRecordDecryptFieldsPolicy:
+      description: |-
+        Decrypts fields of parsed Kafka records using AES_256_GCM. Keys are therefore 256 bits long.
+
+        Note this policy can only be used as a child of a `EventGatewayConsumeSchemaValidationPolicy` policy.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: decrypt_fields
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayParsedRecordDecryptFieldsConfig'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+      required:
+        - type
+        - config
+      title: Decrypt Parsed Record Fields
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    EventGatewayParsedRecordDecryptFieldsPolicyCreate:
+      description: |-
+        Decrypts fields of parsed Kafka records using AES_256_GCM. Keys are therefore 256 bits long.
+
+        Note this policy can only be used as a child of a `EventGatewayConsumeSchemaValidationPolicy` policy.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: decrypt_fields
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayParsedRecordDecryptFieldsConfig'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+        parent_policy_id:
+          description: The unique identifier of the parent schema validation policy.
+          type: string
+          format: uuid
+      required:
+        - type
+        - config
+        - parent_policy_id
+      title: Decrypt Parsed Record Fields
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    EventGatewayParsedRecordDecryptFieldsConfig:
+      description: The configuration of the decrypt parsed record fields policy.
+      type: object
+      properties:
+        failure_mode:
+          $ref: '#/components/schemas/ConsumeFailureMode'
+        key_sources:
+          description: Describes how to find a symmetric key for decryption.
+          type: array
+          items:
+            $ref: '#/components/schemas/EventGatewayKeySource'
+          minItems: 1
+        decrypt_fields:
+          $ref: '#/components/schemas/EventGatewayParsedRecordDecryptionSelector'
+      required:
+        - failure_mode
+        - key_sources
+        - decrypt_fields
+    EventGatewayParsedRecordDecryptionSelector:
+      description: Selects fields of a parsed record for decryption.
+      type: object
+      properties:
+        paths:
+          $ref: '#/components/schemas/EventGatewayParsedRecordFieldPathsArray'
+      required:
+        - paths
     EventGatewayModifyHeadersPolicy:
       description: A policy that modifies headers for requests.
       type: object
@@ -31434,7 +32498,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -31443,7 +32506,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -31472,7 +32534,6 @@ components:
                   applicable; use `has()` to test presence.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31482,7 +32543,6 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -31551,7 +32611,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -31560,7 +32619,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -31589,7 +32647,6 @@ components:
                   applicable; use `has()` to test presence.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31599,7 +32656,6 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -31660,7 +32716,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -31669,7 +32724,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -31698,7 +32752,6 @@ components:
                   applicable; use `has()` to test presence.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31708,7 +32761,6 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -31762,7 +32814,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -31771,7 +32822,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -31800,7 +32850,6 @@ components:
                   applicable; use `has()` to test presence.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31810,7 +32859,6 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -31910,7 +32958,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -31919,7 +32966,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -31951,6 +32997,8 @@ components:
       properties:
         schema_registry:
           $ref: '#/components/schemas/SchemaRegistryReference'
+        failure_mode:
+          $ref: '#/components/schemas/ConsumeFailureMode'
         validate_key:
           description: |-
             If true, validate the record key.
@@ -31959,7 +33007,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         validate_value:
           description: |-
             If true, validate the record value.
@@ -31968,7 +33015,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         key_validation_action:
           $ref: '#/components/schemas/ConsumeKeyValidationAction'
         value_validation_action:
@@ -31984,6 +33030,8 @@ components:
       properties:
         schema_registry:
           $ref: '#/components/schemas/SchemaRegistryReference'
+        failure_mode:
+          $ref: '#/components/schemas/ConsumeFailureMode'
         validate_key:
           description: |-
             If true, validate the record key.
@@ -31992,7 +33040,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         validate_value:
           description: |-
             If true, validate the record value.
@@ -32001,7 +33048,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         key_validation_action:
           $ref: '#/components/schemas/ConsumeKeyValidationAction'
         value_validation_action:
@@ -32061,7 +33107,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -32070,7 +33115,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -32102,6 +33146,8 @@ components:
       properties:
         schema_registry:
           $ref: '#/components/schemas/SchemaRegistryReference'
+        failure_mode:
+          $ref: '#/components/schemas/ProduceFailureMode'
         validate_key:
           description: |-
             If true, validate the record key.
@@ -32110,7 +33156,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         validate_value:
           description: |-
             If true, validate the record value.
@@ -32119,7 +33164,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         key_validation_action:
           $ref: '#/components/schemas/ProduceKeyValidationAction'
         value_validation_action:
@@ -32135,6 +33179,8 @@ components:
       properties:
         schema_registry:
           $ref: '#/components/schemas/SchemaRegistryReference'
+        failure_mode:
+          $ref: '#/components/schemas/ProduceFailureMode'
         validate_key:
           description: |-
             If true, validate the record key.
@@ -32143,7 +33189,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         validate_value:
           description: |-
             If true, validate the record value.
@@ -32152,7 +33197,6 @@ components:
           type: boolean
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
         key_validation_action:
           $ref: '#/components/schemas/ProduceKeyValidationAction'
         value_validation_action:
@@ -32212,7 +33256,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.principal.metadata
                 type: object
@@ -32221,7 +33264,6 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 x-min-runtime-version: '1.2'
-                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
@@ -32357,6 +33399,40 @@ components:
       enum:
         - error
         - passthrough
+      x-speakeasy-unknown-values: allow
+    ProduceFailureMode:
+      description: |-
+        Describes how to handle a failure in a policy applied to produced records.
+        * `reject` - rejects the record batch.
+        * `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
+        * `mark` - passes the record to the backend cluster but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: string
+      enum:
+        - reject
+        - passthrough
+        - mark
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+      x-speakeasy-unknown-values: allow
+    ConsumeFailureMode:
+      description: |-
+        Describes how to handle a failure in a policy applied to consumed records.
+        * `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+        * `skip` - the record is not delivered to the client.
+        * `passthrough` - passes the record to the client even though policy execution failed.
+        * `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: string
+      enum:
+        - error
+        - skip
+        - passthrough
+        - mark
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
       x-speakeasy-unknown-values: allow
     EncryptionRecordPart:
       description: |
@@ -32650,6 +33726,79 @@ components:
             $ref: '#/components/schemas/VirtualClusterNamespaceIdSelector'
           nullable: false
       x-speakeasy-param-computed: false
+    VirtualClusterTopicAlias:
+      description: |-
+        A topic alias maps an alias name to a namespace-visible topic name.
+        Clients can produce to, consume from, and discover the topic under the alias name.
+        The original topic name remains accessible.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        alias:
+          description: The client-visible topic name.
+          type: string
+          minLength: 1
+        topic:
+          description: The namespace-visible topic name this alias resolves to.
+          type: string
+          minLength: 1
+        condition:
+          description: |
+            CEL expression evaluated against the connection's auth context.
+            If omitted or empty, the alias is active for all connections.
+          type: string
+          default: ''
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.auth.token.claims
+                type: object
+                description: 'All claims from the JWT token. Only populated for sasl_oauth_bearer authentication. Claims can be strings, numbers, booleans, arrays or nested JSON objects.'
+        conflict:
+          $ref: '#/components/schemas/VirtualClusterTopicAliasConflict'
+      required:
+        - alias
+        - topic
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+    VirtualClusterTopicAliasConflict:
+      description: |
+        How to handle conflicts where an alias shadows a physical topic.
+        * warn - activate the alias but log a warning and set the conflict metric to 1.
+        * ignore - activate the alias silently.
+      type: string
+      default: warn
+      enum:
+        - warn
+        - ignore
+      x-enum-varnames:
+        - VirtualClusterTopicAliasConflictWarn
+        - VirtualClusterTopicAliasConflictIgnore
+      x-speakeasy-unknown-values: allow
     VirtualClusterNamespaceTopicSelector:
       type: object
       discriminator:
@@ -33056,6 +34205,12 @@ components:
           description: The URI of the metadata document for the auth server
           type: string
           format: uri
+        jwks_uri:
+          description: The URI of the JWKS endpoint for the auth server
+          type: string
+          format: uri
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/Labels'
         created_at:
@@ -71849,7 +73004,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalCustomization'
+            $ref: '#/components/schemas/PortalCustomizationV3'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -71915,6 +73070,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
+    PortalAssignRole:
+      description: Assign a role to a team.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAssignRoleRequest'
     CreatePortalSourceIPRestriction:
       content:
         application/json:
@@ -72364,10 +73525,11 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 type: array
+                items:
+                  $ref: '#/components/schemas/VirtualClusterTopicAlias'
                 nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
-                x-speakeasy-terraform-ignore: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -72410,10 +73572,11 @@ components:
 
                   **Requires a minimum runtime version of `1.2`**.
                 type: array
+                items:
+                  $ref: '#/components/schemas/VirtualClusterTopicAlias'
                 nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
-                x-speakeasy-terraform-ignore: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -73761,6 +74924,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+    PortalAssignedRole:
+      description: Details about the role assignment.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAssignedRoleResponse'
     PortalTeam:
       description: Details about a team of developers in a portal.
       content:
@@ -74025,7 +75194,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalCustomization'
+            $ref: '#/components/schemas/PortalCustomizationV3'
     PortalPage:
       description: Details about a page in a portal.
       content:
@@ -74556,12 +75725,34 @@ tags:
   - name: Control Planes
   - name: Control Plane Groups
   - name: Data-Plane Group Configurations
+    description: |
+      A Cloud Gateway configuration declares the desired state of a control plane's data plane groups — where they run,
+      how many instances, the gateway version, and the autoscaling strategy. Apply a configuration with PUT, and Kong
+      reconciles the running data planes to match.
   - name: Networks
+    description: |
+      Networks are provider-backed VPC or VNet resources that host dedicated Cloud Gateway data plane groups.
+      Each network is tied to a specific cloud provider account, region, and CIDR block. A network must reach
+      the `ready` state before it can be referenced in a configuration.
   - name: Transit Gateways
+    description: |
+      Transit gateways connect a Cloud Gateway network to your cloud infrastructure. Supported attachment types
+      span all three major cloud providers: AWS Transit Gateway, AWS VPC Peering, AWS Resource Endpoint (PrivateLink),
+      Azure VNet Peering, Azure Virtual Hub Peering, and GCP VPC Peering.
   - name: Private DNS
+    description: |
+      Private DNS attachments enable a Cloud Gateway network to resolve private DNS zones hosted in your cloud
+      provider — AWS Private Hosted Zones, AWS Outbound Resolvers, Azure Private Hosted Zones, Azure Outbound
+      Resolvers, and GCP Private Hosted Zones.
   - name: Add-Ons
+    description: |
+      Optional services that extend the capabilities of a Cloud Gateway data plane group. The currently supported add-on type is managed cache (`managed-cache.v0`), which provisions a Redis-compatible in-memory cache co-located with your data planes. Each add-on is scoped to a control plane or control plane group, and is automatically deployed across all data plane groups that belong to that owner.
   - name: Provider Accounts
+    description: |
+      Provider Accounts link your Konnect organization to a cloud provider account (AWS, Azure, or GCP) so that Cloud Gateway networks can be provisioned in the dedicated cloud provider account. Each provider account maps a Konnect organization to a cloud provider account ID, which Konnect uses when creating network peering and hub-and-spoke attachments.
   - name: Custom Domains
+    description: |
+      Custom Domains let you assign bring-your-own hostnames to a Cloud Gateway control plane. After creation the domain moves through `initializing → ready` as Konnect provisions TLS certificates and configures SNI routing on the data planes. Use the online-status endpoint to confirm CNAME and SSL readiness before routing traffic.
   - name: Mesh
   - name: API Products
   - name: API Product Documentation
@@ -74654,6 +75845,8 @@ tags:
     description: APIs related to configuration of Konnect Developer Portal auth settings.
   - name: Portal Teams
     description: APIs related to configuration of Konnect Developer Portal developer teams.
+  - name: Portal Team Roles
+    description: APIs related to Konnect Developer Portal developer team roles.
   - name: Assets
     description: APIs for managing static assets for Konnect Developer Portals.
   - name: Pages

@@ -23,6 +23,8 @@ type AuthServer struct {
 	Issuer string `json:"issuer"`
 	// The URI of the metadata document for the auth server
 	MetadataURI string `json:"metadata_uri"`
+	// The URI of the JWKS endpoint for the auth server
+	JwksURI *string `json:"jwks_uri,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -94,6 +96,13 @@ func (a *AuthServer) GetMetadataURI() string {
 		return ""
 	}
 	return a.MetadataURI
+}
+
+func (a *AuthServer) GetJwksURI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.JwksURI
 }
 
 func (a *AuthServer) GetLabels() map[string]*string {

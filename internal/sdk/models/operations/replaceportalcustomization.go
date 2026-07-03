@@ -10,8 +10,8 @@ import (
 
 type ReplacePortalCustomizationRequest struct {
 	// The Portal identifier
-	PortalID            string                      `pathParam:"style=simple,explode=false,name=portalId"`
-	PortalCustomization *shared.PortalCustomization `request:"mediaType=application/json"`
+	PortalID              string                        `pathParam:"style=simple,explode=false,name=portalId"`
+	PortalCustomizationV3 *shared.PortalCustomizationV3 `request:"mediaType=application/json"`
 }
 
 func (r ReplacePortalCustomizationRequest) MarshalJSON() ([]byte, error) {
@@ -32,11 +32,11 @@ func (r *ReplacePortalCustomizationRequest) GetPortalID() string {
 	return r.PortalID
 }
 
-func (r *ReplacePortalCustomizationRequest) GetPortalCustomization() *shared.PortalCustomization {
+func (r *ReplacePortalCustomizationRequest) GetPortalCustomizationV3() *shared.PortalCustomizationV3 {
 	if r == nil {
 		return nil
 	}
-	return r.PortalCustomization
+	return r.PortalCustomizationV3
 }
 
 type ReplacePortalCustomizationResponse struct {
@@ -47,7 +47,7 @@ type ReplacePortalCustomizationResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// The current customization options for a portal.
-	PortalCustomization *shared.PortalCustomization
+	PortalCustomizationV3 *shared.PortalCustomizationV3
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -90,11 +90,11 @@ func (r *ReplacePortalCustomizationResponse) GetRawResponse() *http.Response {
 	return r.RawResponse
 }
 
-func (r *ReplacePortalCustomizationResponse) GetPortalCustomization() *shared.PortalCustomization {
+func (r *ReplacePortalCustomizationResponse) GetPortalCustomizationV3() *shared.PortalCustomizationV3 {
 	if r == nil {
 		return nil
 	}
-	return r.PortalCustomization
+	return r.PortalCustomizationV3
 }
 
 func (r *ReplacePortalCustomizationResponse) GetBadRequestError() *shared.BadRequestError {

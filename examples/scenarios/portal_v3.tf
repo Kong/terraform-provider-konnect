@@ -52,3 +52,36 @@ resource "konnect_portal_custom_domain" "my_portal_custom_domain" {
     domain_verification_method = "http"
   }
 }
+
+resource "konnect_portal_team" "my_portal_team" {
+  portal_id            = konnect_portal.my_portal.id
+  name                 = "IDM - Developers"
+  description          = "Identity Management team"
+  can_own_applications = true
+}
+
+# The entity the role is scoped to: an API published to the portal.
+resource "konnect_api" "my_api" {
+  name        = "My Developer Portal API"
+  description = "API used as the entity for a portal team role assignment."
+  slug        = "my-developer-portal-api"
+  version     = "v1"
+}
+
+resource "konnect_api_publication" "my_publication" {
+  api_id                     = konnect_api.my_api.id
+  portal_id                  = konnect_portal.my_portal.id
+  auto_approve_registrations = false
+  visibility                 = "private"
+}
+
+resource "konnect_portal_team_role" "my_portal_team_role" {
+  portal_id        = konnect_portal.my_portal.id
+  team_id          = konnect_portal_team.my_portal_team.id
+  role_name        = "API Viewer"
+  entity_id        = konnect_api.my_api.id
+  entity_type_name = "Services"
+  entity_region    = "us"
+
+  depends_on = [konnect_api_publication.my_publication]
+}

@@ -13,7 +13,14 @@ type ControlPlaneGroup struct {
 	kind string `const:"control-plane-group" json:"kind"`
 	// ID of the control-plane group that owns this add-on.
 	ControlPlaneGroupID string `json:"control_plane_group_id"`
-	// Set of control-plane geos supported for deploying cloud-gateways configurations.
+	// Geographic region of the control plane. Supported values:
+	// - `us` — United States
+	// - `eu` — Europe
+	// - `au` — Australia
+	// - `me` — Middle East
+	// - `in` — India
+	// - `sg` — Singapore
+	//
 	ControlPlaneGroupGeo ControlPlaneGeo `json:"control_plane_group_geo"`
 }
 

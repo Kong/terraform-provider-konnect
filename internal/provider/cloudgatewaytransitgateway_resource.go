@@ -610,21 +610,21 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Description: `Requires replacement if changed.`,
+								Description: `AWS account ID of the peer VPC owner. Requires replacement if changed.`,
 							},
 							"peer_vpc_id": schema.StringAttribute{
 								Required: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Description: `Requires replacement if changed.`,
+								Description: `ID of the peer VPC to establish the peering connection with. Requires replacement if changed.`,
 							},
 							"peer_vpc_region": schema.StringAttribute{
 								Required: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Description: `Requires replacement if changed.`,
+								Description: `AWS region where the peer VPC is located. Requires replacement if changed.`,
 							},
 						},
 						Description: `Requires replacement if changed.`,
@@ -746,16 +746,20 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 								Computed: true,
 							},
 							"peer_account_id": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Description: `AWS account ID of the peer VPC owner.`,
 							},
 							"peer_vpc_id": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Description: `ID of the peer VPC to establish the peering connection with.`,
 							},
 							"peer_vpc_region": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Description: `AWS region where the peer VPC is located.`,
 							},
 							"peering_connection_id": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Description: `ID of the AWS VPC peering connection, assigned after the peering request is accepted.`,
 							},
 						},
 					},

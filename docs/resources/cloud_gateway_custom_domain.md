@@ -26,8 +26,15 @@ resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
 
 ### Required
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.
-- `control_plane_id` (String) Requires replacement if changed.
+- `control_plane_geo` (String) Geographic region of the control plane. Supported values:
+- `us` — United States
+- `eu` — Europe
+- `au` — Australia
+- `me` — Middle East
+- `in` — India
+- `sg` — Singapore
+possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.
+- `control_plane_id` (String) ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI. Requires replacement if changed.
 - `domain` (String) Domain name of the custom domain. Requires replacement if changed.
 
 ### Optional
@@ -48,7 +55,13 @@ domain.
 - `id` (String) The ID of this resource.
 - `sni_id` (String) Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved
 via the control-planes API for this custom domain's control-plane.
-- `state` (String) State of the custom domain.
+- `state` (String) The current state of the custom domain. Possible values:
+- `created` — The domain has been registered but TLS provisioning has not yet started.
+- `initializing` — Konnect is provisioning the TLS certificate and configuring SNI routing.
+- `ready` — The domain is fully provisioned and serving traffic.
+- `terminating` — The domain is being deleted and its TLS certificate is being removed.
+- `terminated` — The domain has been fully deleted and is no longer available.
+- `error` — Provisioning failed; check `state_metadata` for details.
 - `state_metadata` (Attributes) Metadata describing the backing state of the custom domain and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of custom domain update date.
 

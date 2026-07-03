@@ -41,6 +41,7 @@ type IdentityAuthServerResourceModel struct {
 	ForceDestroy     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID               types.String            `tfsdk:"id"`
 	Issuer           types.String            `tfsdk:"issuer"`
+	JwksURI          types.String            `tfsdk:"jwks_uri"`
 	Labels           map[string]types.String `tfsdk:"labels"`
 	MetadataURI      types.String            `tfsdk:"metadata_uri"`
 	Name             types.String            `tfsdk:"name"`
@@ -95,6 +96,13 @@ func (r *IdentityAuthServerResource) Schema(ctx context.Context, req resource.Sc
 			"issuer": schema.StringAttribute{
 				Computed:    true,
 				Description: `The complete URL for the custom authorization server. This becomes the 'iss' claim in an access token.`,
+			},
+			"jwks_uri": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The URI of the JWKS endpoint for the auth server`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

@@ -26,7 +26,16 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 				authentication.Anonymous = &tfTypes.Metadata{}
 			}
 			if authenticationItem.VirtualClusterAuthenticationClientCertificate != nil {
-				authentication.ClientCertificate = &tfTypes.Metadata{}
+				authentication.ClientCertificate = &tfTypes.VirtualClusterAuthenticationClientCertificate{}
+				if authenticationItem.VirtualClusterAuthenticationClientCertificate.FetchKongIdentityPrincipal == nil {
+					authentication.ClientCertificate.FetchKongIdentityPrincipal = nil
+				} else {
+					authentication.ClientCertificate.FetchKongIdentityPrincipal = &tfTypes.FetchKongIdentityPrincipal{}
+					authentication.ClientCertificate.FetchKongIdentityPrincipal.Directory = types.StringValue(authenticationItem.VirtualClusterAuthenticationClientCertificate.FetchKongIdentityPrincipal.Directory)
+					authentication.ClientCertificate.FetchKongIdentityPrincipal.FailureMode = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationClientCertificate.FetchKongIdentityPrincipal.FailureMode))
+					authentication.ClientCertificate.FetchKongIdentityPrincipal.FetchBy = &tfTypes.EventGatewayModifyHeaderRemoveAction{}
+					authentication.ClientCertificate.FetchKongIdentityPrincipal.FetchBy.Key = types.StringValue(authenticationItem.VirtualClusterAuthenticationClientCertificate.FetchKongIdentityPrincipal.FetchBy.Key)
+				}
 			}
 			if authenticationItem.VirtualClusterAuthenticationOauthBearer != nil {
 				authentication.OauthBearer = &tfTypes.VirtualClusterAuthenticationOauthBearer{}
@@ -36,6 +45,13 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 					authentication.OauthBearer.ClaimsMapping = &tfTypes.VirtualClusterAuthenticationClaimsMapping{}
 					authentication.OauthBearer.ClaimsMapping.Scope = types.StringPointerValue(authenticationItem.VirtualClusterAuthenticationOauthBearer.ClaimsMapping.Scope)
 					authentication.OauthBearer.ClaimsMapping.Sub = types.StringPointerValue(authenticationItem.VirtualClusterAuthenticationOauthBearer.ClaimsMapping.Sub)
+				}
+				if authenticationItem.VirtualClusterAuthenticationOauthBearer.FetchKongIdentityPrincipal == nil {
+					authentication.OauthBearer.FetchKongIdentityPrincipal = nil
+				} else {
+					authentication.OauthBearer.FetchKongIdentityPrincipal = &tfTypes.FetchKongIdentityPrincipalOauthBearer{}
+					authentication.OauthBearer.FetchKongIdentityPrincipal.Directory = types.StringValue(authenticationItem.VirtualClusterAuthenticationOauthBearer.FetchKongIdentityPrincipal.Directory)
+					authentication.OauthBearer.FetchKongIdentityPrincipal.FailureMode = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationOauthBearer.FetchKongIdentityPrincipal.FailureMode))
 				}
 				if authenticationItem.VirtualClusterAuthenticationOauthBearer.Jwks == nil {
 					authentication.OauthBearer.Jwks = nil
@@ -68,6 +84,15 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 			}
 			if authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware != nil {
 				authentication.SaslPlain = &tfTypes.VirtualClusterAuthenticationSaslPlain{}
+				if authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.FetchKongIdentityPrincipal == nil {
+					authentication.SaslPlain.FetchKongIdentityPrincipal = nil
+				} else {
+					authentication.SaslPlain.FetchKongIdentityPrincipal = &tfTypes.FetchKongIdentityPrincipal{}
+					authentication.SaslPlain.FetchKongIdentityPrincipal.Directory = types.StringValue(authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.FetchKongIdentityPrincipal.Directory)
+					authentication.SaslPlain.FetchKongIdentityPrincipal.FailureMode = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.FetchKongIdentityPrincipal.FailureMode))
+					authentication.SaslPlain.FetchKongIdentityPrincipal.FetchBy = &tfTypes.EventGatewayModifyHeaderRemoveAction{}
+					authentication.SaslPlain.FetchKongIdentityPrincipal.FetchBy.Key = types.StringValue(authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.FetchKongIdentityPrincipal.FetchBy.Key)
+				}
 				authentication.SaslPlain.Mediation = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.Mediation))
 				if authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.Principals != nil {
 					authentication.SaslPlain.Principals = []tfTypes.BackendClusterAuthenticationSaslPlain{}
@@ -87,6 +112,15 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 			if authenticationItem.VirtualClusterAuthenticationSaslScram != nil {
 				authentication.SaslScram = &tfTypes.VirtualClusterAuthenticationSaslScram{}
 				authentication.SaslScram.Algorithm = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationSaslScram.Algorithm))
+				if authenticationItem.VirtualClusterAuthenticationSaslScram.FetchKongIdentityPrincipal == nil {
+					authentication.SaslScram.FetchKongIdentityPrincipal = nil
+				} else {
+					authentication.SaslScram.FetchKongIdentityPrincipal = &tfTypes.FetchKongIdentityPrincipal{}
+					authentication.SaslScram.FetchKongIdentityPrincipal.Directory = types.StringValue(authenticationItem.VirtualClusterAuthenticationSaslScram.FetchKongIdentityPrincipal.Directory)
+					authentication.SaslScram.FetchKongIdentityPrincipal.FailureMode = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationSaslScram.FetchKongIdentityPrincipal.FailureMode))
+					authentication.SaslScram.FetchKongIdentityPrincipal.FetchBy = &tfTypes.EventGatewayModifyHeaderRemoveAction{}
+					authentication.SaslScram.FetchKongIdentityPrincipal.FetchBy.Key = types.StringValue(authenticationItem.VirtualClusterAuthenticationSaslScram.FetchKongIdentityPrincipal.FetchBy.Key)
+				}
 			}
 
 			r.Authentication = append(r.Authentication, authentication)
@@ -182,6 +216,26 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 			}
 			r.Namespace.Mode = types.StringValue(string(resp.Namespace.Mode))
 			r.Namespace.Prefix = types.StringValue(resp.Namespace.Prefix)
+		}
+		if resp.TopicAliases != nil {
+			r.TopicAliases = []tfTypes.VirtualClusterTopicAlias{}
+
+			for _, topicAliasesItem := range resp.TopicAliases {
+				var topicAliases tfTypes.VirtualClusterTopicAlias
+
+				topicAliases.Alias = types.StringValue(topicAliasesItem.Alias)
+				topicAliases.Condition = types.StringPointerValue(topicAliasesItem.Condition)
+				if topicAliasesItem.Conflict != nil {
+					topicAliases.Conflict = types.StringValue(string(*topicAliasesItem.Conflict))
+				} else {
+					topicAliases.Conflict = types.StringNull()
+				}
+				topicAliases.Topic = types.StringValue(topicAliasesItem.Topic)
+
+				r.TopicAliases = append(r.TopicAliases, topicAliases)
+			}
+		} else {
+			r.TopicAliases = nil
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
@@ -316,9 +370,28 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 					})
 				}
 			}
+			var fetchKongIdentityPrincipal *shared.FetchKongIdentityPrincipal
+			if r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal != nil {
+				var directory string
+				directory = r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				var key string
+				key = r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal.FetchBy.Key.ValueString()
+
+				fetchBy := shared.FetchKongIdentityPrincipalFetchBy{
+					Key: key,
+				}
+				failureMode := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal = &shared.FetchKongIdentityPrincipal{
+					Directory:   directory,
+					FetchBy:     fetchBy,
+					FailureMode: failureMode,
+				}
+			}
 			virtualClusterAuthenticationSaslPlain := shared.VirtualClusterAuthenticationSaslPlain{
-				Mediation:  mediation,
-				Principals: principals,
+				Mediation:                  mediation,
+				Principals:                 principals,
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal,
 			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
 				VirtualClusterAuthenticationSaslPlain: &virtualClusterAuthenticationSaslPlain,
@@ -326,8 +399,27 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 		}
 		if r.Authentication[authenticationItem].SaslScram != nil {
 			algorithm := shared.VirtualClusterAuthenticationSaslScramAlgorithm(r.Authentication[authenticationItem].SaslScram.Algorithm.ValueString())
+			var fetchKongIdentityPrincipal1 *shared.FetchKongIdentityPrincipal
+			if r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal != nil {
+				var directory1 string
+				directory1 = r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				var key1 string
+				key1 = r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal.FetchBy.Key.ValueString()
+
+				fetchBy1 := shared.FetchKongIdentityPrincipalFetchBy{
+					Key: key1,
+				}
+				failureMode1 := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal1 = &shared.FetchKongIdentityPrincipal{
+					Directory:   directory1,
+					FetchBy:     fetchBy1,
+					FailureMode: failureMode1,
+				}
+			}
 			virtualClusterAuthenticationSaslScram := shared.VirtualClusterAuthenticationSaslScram{
-				Algorithm: algorithm,
+				Algorithm:                  algorithm,
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal1,
 			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
 				VirtualClusterAuthenticationSaslScram: &virtualClusterAuthenticationSaslScram,
@@ -402,18 +494,50 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 					Issuer:    issuer,
 				}
 			}
+			var fetchKongIdentityPrincipal2 *shared.FetchKongIdentityPrincipalOauthBearer
+			if r.Authentication[authenticationItem].OauthBearer.FetchKongIdentityPrincipal != nil {
+				var directory2 string
+				directory2 = r.Authentication[authenticationItem].OauthBearer.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				failureMode2 := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].OauthBearer.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal2 = &shared.FetchKongIdentityPrincipalOauthBearer{
+					Directory:   directory2,
+					FailureMode: failureMode2,
+				}
+			}
 			virtualClusterAuthenticationOauthBearer := shared.VirtualClusterAuthenticationOauthBearer{
-				Mediation:     mediation1,
-				ClaimsMapping: claimsMapping,
-				Jwks:          jwks,
-				Validate:      validate,
+				Mediation:                  mediation1,
+				ClaimsMapping:              claimsMapping,
+				Jwks:                       jwks,
+				Validate:                   validate,
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal2,
 			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
 				VirtualClusterAuthenticationOauthBearer: &virtualClusterAuthenticationOauthBearer,
 			})
 		}
 		if r.Authentication[authenticationItem].ClientCertificate != nil {
-			virtualClusterAuthenticationClientCertificate := shared.VirtualClusterAuthenticationClientCertificate{}
+			var fetchKongIdentityPrincipal3 *shared.FetchKongIdentityPrincipal
+			if r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal != nil {
+				var directory3 string
+				directory3 = r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				var key2 string
+				key2 = r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal.FetchBy.Key.ValueString()
+
+				fetchBy2 := shared.FetchKongIdentityPrincipalFetchBy{
+					Key: key2,
+				}
+				failureMode3 := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal3 = &shared.FetchKongIdentityPrincipal{
+					Directory:   directory3,
+					FetchBy:     fetchBy2,
+					FailureMode: failureMode3,
+				}
+			}
+			virtualClusterAuthenticationClientCertificate := shared.VirtualClusterAuthenticationClientCertificate{
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal3,
+			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
 				VirtualClusterAuthenticationClientCertificate: &virtualClusterAuthenticationClientCertificate,
 			})
@@ -520,6 +644,36 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 			Additional: additional,
 		}
 	}
+	var topicAliases []shared.VirtualClusterTopicAlias
+	if r.TopicAliases != nil {
+		topicAliases = make([]shared.VirtualClusterTopicAlias, 0, len(r.TopicAliases))
+		for topicAliasesIndex := range r.TopicAliases {
+			var alias string
+			alias = r.TopicAliases[topicAliasesIndex].Alias.ValueString()
+
+			var topic string
+			topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
+
+			condition := new(string)
+			if !r.TopicAliases[topicAliasesIndex].Condition.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Condition.IsNull() {
+				*condition = r.TopicAliases[topicAliasesIndex].Condition.ValueString()
+			} else {
+				condition = nil
+			}
+			conflict2 := new(shared.VirtualClusterTopicAliasConflict)
+			if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
+				*conflict2 = shared.VirtualClusterTopicAliasConflict(r.TopicAliases[topicAliasesIndex].Conflict.ValueString())
+			} else {
+				conflict2 = nil
+			}
+			topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
+				Alias:     alias,
+				Topic:     topic,
+				Condition: condition,
+				Conflict:  conflict2,
+			})
+		}
+	}
 	aclMode := shared.VirtualClusterACLMode(r.ACLMode.ValueString())
 	var dnsLabel string
 	dnsLabel = r.DNSLabel.ValueString()
@@ -540,6 +694,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 		Destination:    destination,
 		Authentication: authentication,
 		Namespace:      namespace,
+		TopicAliases:   topicAliases,
 		ACLMode:        aclMode,
 		DNSLabel:       dnsLabel,
 		Labels:         labels,
@@ -598,9 +753,28 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 					})
 				}
 			}
+			var fetchKongIdentityPrincipal *shared.FetchKongIdentityPrincipal
+			if r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal != nil {
+				var directory string
+				directory = r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				var key string
+				key = r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal.FetchBy.Key.ValueString()
+
+				fetchBy := shared.FetchKongIdentityPrincipalFetchBy{
+					Key: key,
+				}
+				failureMode := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].SaslPlain.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal = &shared.FetchKongIdentityPrincipal{
+					Directory:   directory,
+					FetchBy:     fetchBy,
+					FailureMode: failureMode,
+				}
+			}
 			virtualClusterAuthenticationSaslPlainSensitiveDataAware := shared.VirtualClusterAuthenticationSaslPlainSensitiveDataAware{
-				Mediation:  mediation,
-				Principals: principals,
+				Mediation:                  mediation,
+				Principals:                 principals,
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal,
 			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationSaslPlainSensitiveDataAware: &virtualClusterAuthenticationSaslPlainSensitiveDataAware,
@@ -608,8 +782,27 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 		}
 		if r.Authentication[authenticationItem].SaslScram != nil {
 			algorithm := shared.VirtualClusterAuthenticationSaslScramAlgorithm(r.Authentication[authenticationItem].SaslScram.Algorithm.ValueString())
+			var fetchKongIdentityPrincipal1 *shared.FetchKongIdentityPrincipal
+			if r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal != nil {
+				var directory1 string
+				directory1 = r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				var key1 string
+				key1 = r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal.FetchBy.Key.ValueString()
+
+				fetchBy1 := shared.FetchKongIdentityPrincipalFetchBy{
+					Key: key1,
+				}
+				failureMode1 := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].SaslScram.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal1 = &shared.FetchKongIdentityPrincipal{
+					Directory:   directory1,
+					FetchBy:     fetchBy1,
+					FailureMode: failureMode1,
+				}
+			}
 			virtualClusterAuthenticationSaslScram := shared.VirtualClusterAuthenticationSaslScram{
-				Algorithm: algorithm,
+				Algorithm:                  algorithm,
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal1,
 			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationSaslScram: &virtualClusterAuthenticationSaslScram,
@@ -684,18 +877,50 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 					Issuer:    issuer,
 				}
 			}
+			var fetchKongIdentityPrincipal2 *shared.FetchKongIdentityPrincipalOauthBearer
+			if r.Authentication[authenticationItem].OauthBearer.FetchKongIdentityPrincipal != nil {
+				var directory2 string
+				directory2 = r.Authentication[authenticationItem].OauthBearer.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				failureMode2 := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].OauthBearer.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal2 = &shared.FetchKongIdentityPrincipalOauthBearer{
+					Directory:   directory2,
+					FailureMode: failureMode2,
+				}
+			}
 			virtualClusterAuthenticationOauthBearer := shared.VirtualClusterAuthenticationOauthBearer{
-				Mediation:     mediation1,
-				ClaimsMapping: claimsMapping,
-				Jwks:          jwks,
-				Validate:      validate,
+				Mediation:                  mediation1,
+				ClaimsMapping:              claimsMapping,
+				Jwks:                       jwks,
+				Validate:                   validate,
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal2,
 			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationOauthBearer: &virtualClusterAuthenticationOauthBearer,
 			})
 		}
 		if r.Authentication[authenticationItem].ClientCertificate != nil {
-			virtualClusterAuthenticationClientCertificate := shared.VirtualClusterAuthenticationClientCertificate{}
+			var fetchKongIdentityPrincipal3 *shared.FetchKongIdentityPrincipal
+			if r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal != nil {
+				var directory3 string
+				directory3 = r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal.Directory.ValueString()
+
+				var key2 string
+				key2 = r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal.FetchBy.Key.ValueString()
+
+				fetchBy2 := shared.FetchKongIdentityPrincipalFetchBy{
+					Key: key2,
+				}
+				failureMode3 := shared.FetchKongIdentityPrincipalFailureMode(r.Authentication[authenticationItem].ClientCertificate.FetchKongIdentityPrincipal.FailureMode.ValueString())
+				fetchKongIdentityPrincipal3 = &shared.FetchKongIdentityPrincipal{
+					Directory:   directory3,
+					FetchBy:     fetchBy2,
+					FailureMode: failureMode3,
+				}
+			}
+			virtualClusterAuthenticationClientCertificate := shared.VirtualClusterAuthenticationClientCertificate{
+				FetchKongIdentityPrincipal: fetchKongIdentityPrincipal3,
+			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationClientCertificate: &virtualClusterAuthenticationClientCertificate,
 			})
@@ -802,6 +1027,36 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 			Additional: additional,
 		}
 	}
+	var topicAliases []shared.VirtualClusterTopicAlias
+	if r.TopicAliases != nil {
+		topicAliases = make([]shared.VirtualClusterTopicAlias, 0, len(r.TopicAliases))
+		for topicAliasesIndex := range r.TopicAliases {
+			var alias string
+			alias = r.TopicAliases[topicAliasesIndex].Alias.ValueString()
+
+			var topic string
+			topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
+
+			condition := new(string)
+			if !r.TopicAliases[topicAliasesIndex].Condition.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Condition.IsNull() {
+				*condition = r.TopicAliases[topicAliasesIndex].Condition.ValueString()
+			} else {
+				condition = nil
+			}
+			conflict2 := new(shared.VirtualClusterTopicAliasConflict)
+			if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
+				*conflict2 = shared.VirtualClusterTopicAliasConflict(r.TopicAliases[topicAliasesIndex].Conflict.ValueString())
+			} else {
+				conflict2 = nil
+			}
+			topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
+				Alias:     alias,
+				Topic:     topic,
+				Condition: condition,
+				Conflict:  conflict2,
+			})
+		}
+	}
 	aclMode := shared.VirtualClusterACLMode(r.ACLMode.ValueString())
 	var dnsLabel string
 	dnsLabel = r.DNSLabel.ValueString()
@@ -822,6 +1077,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 		Destination:    destination,
 		Authentication: authentication,
 		Namespace:      namespace,
+		TopicAliases:   topicAliases,
 		ACLMode:        aclMode,
 		DNSLabel:       dnsLabel,
 		Labels:         labels,

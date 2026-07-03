@@ -17,10 +17,13 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
     json = {
+      failure_mode          = "passthrough"
       key_validation_action = "mark"
       schema_registry = {
         id = "74577697-03b2-4d40-bfe2-929c891c4254"
       }
+      validate_key            = true
+      validate_value          = false
       value_validation_action = "reject"
     }
   }
@@ -74,12 +77,25 @@ Optional:
 
 Optional:
 
+- `failure_mode` (String) Describes how to handle a failure in a policy applied to produced records.
+* `reject` - rejects the record batch.
+* `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
+* `mark` - passes the record to the backend cluster but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["reject", "passthrough", "mark"]
 - `key_validation_action` (String) Defines a behavior when record key is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 possible known values include one of ["reject", "mark"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
+- `validate_key` (Boolean) If true, validate the record key.
+
+**Requires a minimum runtime version of `1.2`**.
+- `validate_value` (Boolean) If true, validate the record value.
+
+**Requires a minimum runtime version of `1.2`**.
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
@@ -100,12 +116,25 @@ Required:
 
 Optional:
 
+- `failure_mode` (String) Describes how to handle a failure in a policy applied to produced records.
+* `reject` - rejects the record batch.
+* `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
+* `mark` - passes the record to the backend cluster but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["reject", "passthrough", "mark"]
 - `key_validation_action` (String) Defines a behavior when record key is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 possible known values include one of ["reject", "mark"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--json--schema_registry))
+- `validate_key` (Boolean) If true, validate the record key.
+
+**Requires a minimum runtime version of `1.2`**.
+- `validate_value` (Boolean) If true, validate the record value.
+
+**Requires a minimum runtime version of `1.2`**.
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value

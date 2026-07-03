@@ -2,7 +2,13 @@
 
 package shared
 
-// NetworkState - State of the network.
+// NetworkState - The current state of the network. Possible values:
+// - `created`: The network was created, but provisioning hasn't started yet.
+// - `initializing`: The network is being provisioned in the cloud provider.
+// - `offline`: The network was created but isn't provisioned; no data planes can be deployed.
+// - `ready`: The network is fully provisioned and available for data plane groups.
+// - `terminating`: The network is being deleted and is no longer accepting new resources.
+// - `terminated`: The network has been fully deleted and is no longer available.
 type NetworkState string
 
 const (

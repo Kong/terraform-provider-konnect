@@ -20,6 +20,7 @@ func (r *IdentityAuthServerResourceModel) RefreshFromSharedAuthServer(ctx contex
 		r.Description = types.StringValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		r.Issuer = types.StringValue(resp.Issuer)
+		r.JwksURI = types.StringPointerValue(resp.JwksURI)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {

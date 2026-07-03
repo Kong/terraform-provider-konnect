@@ -211,12 +211,12 @@ func (s *PortalCustomization) GetPortalCustomization(ctx context.Context, reques
 				return nil, err
 			}
 
-			var out shared.PortalCustomization
+			var out shared.PortalCustomizationV3
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalCustomization = &out
+			res.PortalCustomizationV3 = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -335,7 +335,7 @@ func (s *PortalCustomization) ReplacePortalCustomization(ctx context.Context, re
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalCustomization", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalCustomizationV3", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -486,12 +486,12 @@ func (s *PortalCustomization) ReplacePortalCustomization(ctx context.Context, re
 				return nil, err
 			}
 
-			var out shared.PortalCustomization
+			var out shared.PortalCustomizationV3
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalCustomization = &out
+			res.PortalCustomizationV3 = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

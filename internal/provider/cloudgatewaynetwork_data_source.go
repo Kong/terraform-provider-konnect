@@ -63,7 +63,7 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 			},
 			"cidr_block": schema.StringAttribute{
 				Computed:    true,
-				Description: `CIDR block configuration for the network.`,
+				Description: `CIDR block for the network. Must not overlap with reserved blocks for the target region. Query the Resource Availability endpoint for valid CIDR ranges per region and provider.`,
 			},
 			"cloud_gateway_provider_account_id": schema.StringAttribute{
 				Computed: true,

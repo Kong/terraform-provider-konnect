@@ -43,9 +43,17 @@ func (c *CustomDomainStateMetadata) GetReason() *string {
 
 // CustomDomain - Object containing information about a custom domain for a control-plane.
 type CustomDomain struct {
-	ID             string `json:"id"`
+	ID string `json:"id"`
+	// ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
 	ControlPlaneID string `json:"control_plane_id"`
-	// Set of control-plane geos supported for deploying cloud-gateways configurations.
+	// Geographic region of the control plane. Supported values:
+	// - `us` — United States
+	// - `eu` — Europe
+	// - `au` — Australia
+	// - `me` — Middle East
+	// - `in` — India
+	// - `sg` — Singapore
+	//
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
 	// Domain name of the custom domain.
 	Domain string `json:"domain"`
@@ -57,7 +65,14 @@ type CustomDomain struct {
 	// via the control-planes API for this custom domain's control-plane.
 	//
 	SniID *string `default:"null" json:"sni_id"`
-	// State of the custom domain.
+	// The current state of the custom domain. Possible values:
+	// - `created` — The domain has been registered but TLS provisioning has not yet started.
+	// - `initializing` — Konnect is provisioning the TLS certificate and configuring SNI routing.
+	// - `ready` — The domain is fully provisioned and serving traffic.
+	// - `terminating` — The domain is being deleted and its TLS certificate is being removed.
+	// - `terminated` — The domain has been fully deleted and is no longer available.
+	// - `error` — Provisioning failed; check `state_metadata` for details.
+	//
 	State CustomDomainState `json:"state"`
 	// Metadata describing the backing state of the custom domain and why it may be in an erroneous state.
 	//

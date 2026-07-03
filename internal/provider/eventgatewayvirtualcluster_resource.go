@@ -53,6 +53,7 @@ type EventGatewayVirtualClusterResourceModel struct {
 	Labels         map[string]types.String                      `tfsdk:"labels"`
 	Name           types.String                                 `tfsdk:"name"`
 	Namespace      *tfTypes.VirtualClusterNamespace             `tfsdk:"namespace"`
+	TopicAliases   []tfTypes.VirtualClusterTopicAlias           `tfsdk:"topic_aliases"`
 	UpdatedAt      types.String                                 `tfsdk:"updated_at"`
 }
 
@@ -93,6 +94,62 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 						},
 						"client_certificate": schema.SingleNestedAttribute{
 							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"fetch_kong_identity_principal": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"directory": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Kong Identity directory to use for principal lookup. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failure_mode": schema.StringAttribute{
+											Optional: true,
+											MarkdownDescription: `Behavior when the Kong Identity principal lookup fails.` + "\n" +
+												`* ` + "`" + `error` + "`" + ` - fail the authentication if the principal lookup fails.` + "\n" +
+												`* ` + "`" + `ignore` + "`" + ` - proceed without principal metadata if the lookup fails.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+												`possible known values include one of ["error", "ignore"]; Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+										"fetch_by": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `The metadata key in Kong Identity to match the authenticated identity against.` + "\n" +
+														`Value for the lookup is a ` + "`" + `username` + "`" + ` in case of ` + "`" + `sasl_plain` + "`" + ` or ` + "`" + `sasl_scram` + "`" + `.` + "\n" +
+														`In case of ` + "`" + `client_certificate` + "`" + ` it's a principal mapped by the listener TLSServer policy.` + "\n" +
+														`Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
+													},
+												},
+											},
+											MarkdownDescription: `Defines how to look up the principal in Kong Identity.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+												`Not Null`,
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+										},
+									},
+									MarkdownDescription: `Fetches principal metadata from Kong Identity after successful authentication.` + "\n" +
+										`The principal is looked up by a custom key matched against the authenticated identity.` + "\n" +
+										`` + "\n" +
+										`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+								},
+							},
 							MarkdownDescription: `Client certificate (mTLS) authentication scheme for the virtual cluster.` + "\n" +
 								`` + "\n" +
 								`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
@@ -128,6 +185,36 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 										},
 									},
 									Description: `Maps JWT claims in the case when sub and scope are presented as different claims in your JWT token.`,
+								},
+								"fetch_kong_identity_principal": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"directory": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Kong Identity directory to use for principal lookup. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failure_mode": schema.StringAttribute{
+											Optional: true,
+											MarkdownDescription: `Behavior when the Kong Identity principal lookup fails.` + "\n" +
+												`* ` + "`" + `error` + "`" + ` - fail the authentication if the principal lookup fails.` + "\n" +
+												`* ` + "`" + `ignore` + "`" + ` - proceed without principal metadata if the lookup fails.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+												`possible known values include one of ["error", "ignore"]; Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+									},
+									MarkdownDescription: `Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.` + "\n" +
+										`The principal is looked up by the iss and sub claims from the JWT token.` + "\n" +
+										`` + "\n" +
+										`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 								},
 								"jwks": schema.SingleNestedAttribute{
 									Computed: true,
@@ -224,6 +311,60 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 						"sasl_plain": schema.SingleNestedAttribute{
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
+								"fetch_kong_identity_principal": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"directory": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Kong Identity directory to use for principal lookup. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failure_mode": schema.StringAttribute{
+											Optional: true,
+											MarkdownDescription: `Behavior when the Kong Identity principal lookup fails.` + "\n" +
+												`* ` + "`" + `error` + "`" + ` - fail the authentication if the principal lookup fails.` + "\n" +
+												`* ` + "`" + `ignore` + "`" + ` - proceed without principal metadata if the lookup fails.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+												`possible known values include one of ["error", "ignore"]; Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+										"fetch_by": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `The metadata key in Kong Identity to match the authenticated identity against.` + "\n" +
+														`Value for the lookup is a ` + "`" + `username` + "`" + ` in case of ` + "`" + `sasl_plain` + "`" + ` or ` + "`" + `sasl_scram` + "`" + `.` + "\n" +
+														`In case of ` + "`" + `client_certificate` + "`" + ` it's a principal mapped by the listener TLSServer policy.` + "\n" +
+														`Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
+													},
+												},
+											},
+											MarkdownDescription: `Defines how to look up the principal in Kong Identity.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+												`Not Null`,
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+										},
+									},
+									MarkdownDescription: `Fetches principal metadata from Kong Identity after successful authentication.` + "\n" +
+										`The principal is looked up by a custom key matched against the authenticated identity.` + "\n" +
+										`` + "\n" +
+										`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+								},
 								"mediation": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -290,6 +431,60 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
+								},
+								"fetch_kong_identity_principal": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"directory": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Kong Identity directory to use for principal lookup. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failure_mode": schema.StringAttribute{
+											Optional: true,
+											MarkdownDescription: `Behavior when the Kong Identity principal lookup fails.` + "\n" +
+												`* ` + "`" + `error` + "`" + ` - fail the authentication if the principal lookup fails.` + "\n" +
+												`* ` + "`" + `ignore` + "`" + ` - proceed without principal metadata if the lookup fails.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+												`possible known values include one of ["error", "ignore"]; Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+										"fetch_by": schema.SingleNestedAttribute{
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `The metadata key in Kong Identity to match the authenticated identity against.` + "\n" +
+														`Value for the lookup is a ` + "`" + `username` + "`" + ` in case of ` + "`" + `sasl_plain` + "`" + ` or ` + "`" + `sasl_scram` + "`" + `.` + "\n" +
+														`In case of ` + "`" + `client_certificate` + "`" + ` it's a principal mapped by the listener TLSServer policy.` + "\n" +
+														`Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+														stringvalidator.UTF8LengthAtLeast(1),
+													},
+												},
+											},
+											MarkdownDescription: `Defines how to look up the principal in Kong Identity.` + "\n" +
+												`` + "\n" +
+												`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+												`Not Null`,
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+										},
+									},
+									MarkdownDescription: `Fetches principal metadata from Kong Identity after successful authentication.` + "\n" +
+										`The principal is looked up by a custom key matched against the authenticated identity.` + "\n" +
+										`` + "\n" +
+										`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 								},
 							},
 							Description: `SASL/SCRAM authentication scheme for the virtual cluster.`,
@@ -558,6 +753,50 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 				},
 				MarkdownDescription: `Namespace allows to implement multitenancy using a single backend cluster.` + "\n" +
 					`It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).`,
+			},
+			"topic_aliases": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"alias": schema.StringAttribute{
+							Required:    true,
+							Description: `The client-visible topic name.`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
+						},
+						"condition": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							Default:  stringdefault.StaticString(``),
+							MarkdownDescription: `CEL expression evaluated against the connection's auth context.` + "\n" +
+								`If omitted or empty, the alias is active for all connections.` + "\n" +
+								`Default: ""`,
+						},
+						"conflict": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							Default:  stringdefault.StaticString(`warn`),
+							MarkdownDescription: `How to handle conflicts where an alias shadows a physical topic.` + "\n" +
+								`* warn - activate the alias but log a warning and set the conflict metric to 1.` + "\n" +
+								`* ignore - activate the alias silently.` + "\n" +
+								`possible known values include one of ["warn", "ignore"]; Default: "warn"`,
+						},
+						"topic": schema.StringAttribute{
+							Required:    true,
+							Description: `The namespace-visible topic name this alias resolves to.`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
+						},
+					},
+				},
+				MarkdownDescription: `Topic aliases allow exposing backend topics under additional names.` + "\n" +
+					`An alias creates a new entry point to the same physical data.` + "\n" +
+					`The alias ` + "`" + `topic` + "`" + ` field references namespace-visible names (if namespace is configured).` + "\n" +
+					`Aliases are independent of namespace and can be used without it.` + "\n" +
+					`` + "\n" +
+					`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

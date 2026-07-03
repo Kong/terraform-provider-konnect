@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.20.0
+> Released 2026/07/03
+
+# Features
+* Add support for `konnect_portal_team_role` resource
+* Add support for `konnect_event_gateway_consume_policy_decrypt_fields` resource
+* Add support for `konnect_event_gateway_produce_policy_encrypt_fields` resource
+
 ## 3.19.0
 > Released 2026/06/26
 
