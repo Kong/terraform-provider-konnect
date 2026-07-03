@@ -46543,8 +46543,6 @@ components:
               default: false
             principals:
               type: object
-              default: null
-              nullable: true
               properties:
                 directory:
                   description: The Kong Identity directory instance to authenticate against.
@@ -46558,7 +46556,7 @@ components:
                   description: 'When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead.'
                   type: boolean
                   default: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             realm:
               description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
               type: string
@@ -46986,113 +46984,95 @@ components:
         - cert
         - key
     CertificateRequest:
-      description: 'A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service. Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames. If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string according to the following order: main certificate on the top, followed by any intermediates.'
-      example:
-        cert: |-
-          -----BEGIN CERTIFICATE-----
-          certificate-content
-          -----END CERTIFICATE-----
-        id: b2f34145-0343-41a4-9602-4c69dec2f269
-        key: |-
-          -----BEGIN PRIVATE KEY-----
-          private-key-content
-          -----END PRIVATE KEY-----
-      allOf:
-        - additionalProperties: false
-          properties:
-            cert:
-              description: 'PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
-              type: string
-              default: null
-              nullable: true
-              x-referenceable: true
-              x-speakeasy-param-computed: false
-            cert_alt:
-              description: 'PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
-              type: string
-              default: null
-              nullable: true
-              x-referenceable: true
-              x-speakeasy-param-computed: false
-            created_at:
-              description: Unix epoch when the resource was created.
-              type: integer
-              nullable: true
-            description:
-              description: 'User-defined entity description. Konnect only field, not synced to the Gateway.'
-              type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            id:
-              description: A string representing a UUID (universally unique identifier).
-              type: string
-              nullable: true
-            key:
-              description: 'PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
-              type: string
-              default: null
-              nullable: true
-              x-encrypted: true
-              x-referenceable: true
-              x-speakeasy-param-computed: false
-            key_alt:
-              description: 'PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
-              type: string
-              default: null
-              nullable: true
-              x-encrypted: true
-              x-referenceable: true
-              x-speakeasy-param-computed: false
-            managed_by:
-              description: 'Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.'
-              type: object
-              default: null
-              additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
-            snis:
-              type: array
-              items:
-                description: 'A string representing a wildcard host name, such as *.example.com.'
-                type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            tags:
-              description: An optional set of strings associated with the Certificate for grouping and filtering.
-              type: array
-              items:
-                description: A string representing a tag.
-                type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            updated_at:
-              description: Unix epoch when the resource was last updated.
-              type: integer
-              nullable: true
-            vault:
-              description: 'Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.'
-              type: string
-              default: null
-              nullable: true
-              writeOnly: true
-              x-speakeasy-param-computed: false
-            vault_alt:
-              description: 'Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.'
-              type: string
-              default: null
-              nullable: true
-              writeOnly: true
-              x-speakeasy-param-computed: false
+      type: object
+      properties:
+        cert:
+          description: 'PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+          type: string
+          default: null
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        cert_alt:
+          description: 'PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+          type: string
+          default: null
+          nullable: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          nullable: true
+        description:
+          description: 'User-defined entity description. Konnect only field, not synced to the Gateway.'
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        id:
+          description: A string representing a UUID (universally unique identifier).
+          type: string
+          nullable: true
+        key:
+          description: 'PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+          type: string
+          default: null
+          nullable: true
+          x-encrypted: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        key_alt:
+          description: 'PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).'
+          type: string
+          default: null
+          nullable: true
+          x-encrypted: true
+          x-referenceable: true
+          x-speakeasy-param-computed: false
+        managed_by:
+          description: 'Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.'
           type: object
-        - anyOf:
-            - required:
-                - vault
-            - required:
-                - cert
-                - key
+          default: null
+          additionalProperties: true
+          nullable: true
+          x-speakeasy-param-computed: false
+        snis:
+          type: array
+          items:
+            description: 'A string representing a wildcard host name, such as *.example.com.'
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        tags:
+          description: An optional set of strings associated with the Certificate for grouping and filtering.
+          type: array
+          items:
+            description: A string representing a tag.
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          type: integer
+          nullable: true
+        vault:
+          description: 'Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.'
+          type: string
+          default: null
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        vault_alt:
+          description: 'Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.'
+          type: string
+          default: null
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
     ClonedPlugin:
       x-speakeasy-entity: GatewayClonedPlugin
       type: object
@@ -47943,14 +47923,12 @@ components:
               x-speakeasy-param-computed: false
             error_handling:
               type: object
-              default: null
-              nullable: true
               properties:
                 return_error_message:
                   description: 'When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             forward_body:
               description: 'Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.'
               type: boolean
@@ -47970,8 +47948,6 @@ components:
             headers:
               description: Configuration for forwarding HTTP headers as Kafka record headers.
               type: object
-              default: null
-              nullable: true
               properties:
                 exclude_headers:
                   description: Blocklist of HTTP header names to exclude from forwarding. Used when `forward_all_by_default` is `enabled`.
@@ -48008,7 +47984,7 @@ components:
                     - retain_duplicates
                     - take_first
                   x-speakeasy-unknown-values: allow
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             keepalive:
               description: Keepalive timeout in milliseconds.
               type: integer
@@ -54297,8 +54273,6 @@ components:
             consumer_group:
               description: Configuration for the Kafka consumer group ID.
               type: object
-              default: null
-              nullable: true
               properties:
                 consumer_group_id:
                   description: 'The fixed consumer group ID to use when mode is set to `manual`. For SSE and WebSocket modes, a `.<node_id>` suffix is automatically appended.'
@@ -54315,7 +54289,7 @@ components:
                     - manual
                     - random
                   x-speakeasy-unknown-values: allow
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             dlq_topic:
               description: The topic to use for the Dead Letter Queue.
               type: string
@@ -54334,14 +54308,12 @@ components:
               default: false
             error_handling:
               type: object
-              default: null
-              nullable: true
               properties:
                 return_error_message:
                   description: 'When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             message_by_lua_functions:
               description: The Lua functions that manipulates the message being sent to the client.
               type: array
@@ -55536,14 +55508,12 @@ components:
               x-speakeasy-param-computed: true
             error_handling:
               type: object
-              default: null
-              nullable: true
               properties:
                 return_error_message:
                   description: 'When enabled, the Kafka client error message is returned to the HTTP client. Useful for debugging but may expose internal details, so should be disabled in production.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             forward_body:
               description: 'Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.'
               type: boolean
@@ -55563,8 +55533,6 @@ components:
             headers:
               description: Configuration for forwarding HTTP headers as Kafka record headers.
               type: object
-              default: null
-              nullable: true
               properties:
                 exclude_headers:
                   description: Blocklist of HTTP header names to exclude from forwarding. Used when `forward_all_by_default` is `enabled`.
@@ -55601,7 +55569,7 @@ components:
                     - retain_duplicates
                     - take_first
                   x-speakeasy-unknown-values: allow
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             keepalive:
               description: Keepalive timeout in milliseconds.
               type: integer
@@ -56202,8 +56170,6 @@ components:
                 - apikey
             principals:
               type: object
-              default: null
-              nullable: true
               properties:
                 directory:
                   description: The Kong Identity directory instance to authenticate against.
@@ -56217,7 +56183,7 @@ components:
                   description: 'When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead.'
                   type: boolean
                   default: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             realm:
               description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
               type: string
@@ -59094,8 +59060,6 @@ components:
             principals:
               description: Configuration for Kong Identity principal hydration after token verification.
               type: object
-              default: null
-              nullable: true
               properties:
                 directory:
                   description: The Kong Identity directory instance to look up against.
@@ -59134,7 +59098,7 @@ components:
                   minLength: 1
                   nullable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             proof_of_possession_auth_methods_validation:
               description: 'If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.'
               type: boolean
