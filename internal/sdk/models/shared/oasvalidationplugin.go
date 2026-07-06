@@ -127,7 +127,7 @@ type OasValidationPluginConfig struct {
 	APISpec string `json:"api_spec"`
 	// Indicates whether the api_spec is URI-Encoded.
 	APISpecEncoded *bool `default:"true" json:"api_spec_encoded"`
-	// If set to true, collects all validation errors instead of stopping at the first error. Note: Enabling this option with OpenAPI 3.0 will affect performance.
+	// If set to true, collects all schema validation errors instead of stopping at the first. Applies only to JSON Schema validation (parameter values, request/response body); pre-validation checks such as path-not-found, unsupported content-type, and unknown parameters are fail-fast and always stop at the first error regardless of this setting. Only takes effect when `structured_errors` is set to `false`. Note: Enabling this option will affect performance.
 	CollectAllErrors *bool `default:"false" json:"collect_all_errors"`
 	// The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
 	CustomBasePath *string `default:"null" json:"custom_base_path"`
@@ -135,12 +135,16 @@ type OasValidationPluginConfig struct {
 	HeaderParameterCheck *bool `default:"false" json:"header_parameter_check"`
 	// Indicates whether to include the base path when performing path match evaluation.
 	IncludeBasePath *bool `default:"false" json:"include_base_path"`
+	// When set, caps the number of structured errors returned in the `errors` array to the specified value (must be greater than 0). Applies only to JSON Schema validation errors; pre-validation failures such as path-not-found, unsupported content-type, and unknown parameters always produce a single error entry. When not set, no cap is applied. Requires `structured_errors` to be enabled.
+	MaxStructuredErrors *int64 `default:"null" json:"max_structured_errors"`
 	// If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow.
 	NotifyOnlyRequestValidationFailure *bool `default:"false" json:"notify_only_request_validation_failure"`
 	// If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow.
 	NotifyOnlyResponseBodyValidationFailure *bool `default:"false" json:"notify_only_response_body_validation_failure"`
 	// If set to true, checks if query parameters in the request exist in the API specification.
 	QueryParameterCheck *bool `default:"false" json:"query_parameter_check"`
+	// If set to true, schema validation failures are returned as a structured `errors` array, where each entry contains `instanceLocation`, `keywordLocation`, and `error`. Pre-validation failures such as path-not-found or unsupported content-type also return an `errors` array, but entries contain only an `error` field. Requires `verbose_response` to be enabled. Use `max_structured_errors` to cap the response size.
+	StructuredErrors *bool `default:"false" json:"structured_errors"`
 	// If set to true, validates the request body content against the API specification.
 	ValidateRequestBody *bool `default:"true" json:"validate_request_body"`
 	// If set to true, validates HTTP header parameters against the API specification.
@@ -215,6 +219,13 @@ func (o *OasValidationPluginConfig) GetIncludeBasePath() *bool {
 	return o.IncludeBasePath
 }
 
+func (o *OasValidationPluginConfig) GetMaxStructuredErrors() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.MaxStructuredErrors
+}
+
 func (o *OasValidationPluginConfig) GetNotifyOnlyRequestValidationFailure() *bool {
 	if o == nil {
 		return nil
@@ -234,6 +245,13 @@ func (o *OasValidationPluginConfig) GetQueryParameterCheck() *bool {
 		return nil
 	}
 	return o.QueryParameterCheck
+}
+
+func (o *OasValidationPluginConfig) GetStructuredErrors() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.StructuredErrors
 }
 
 func (o *OasValidationPluginConfig) GetValidateRequestBody() *bool {

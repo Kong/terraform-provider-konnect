@@ -10,5 +10,6 @@ type BasicAuthPluginConfig struct {
 	Anonymous            types.String          `tfsdk:"anonymous"`
 	BruteForceProtection *BruteForceProtection `tfsdk:"brute_force_protection"`
 	HideCredentials      types.Bool            `tfsdk:"hide_credentials"`
+	Principals           *Principals           `tfsdk:"principals"`
 	Realm                types.String          `tfsdk:"realm"`
 }

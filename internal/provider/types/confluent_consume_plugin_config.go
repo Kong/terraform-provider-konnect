@@ -15,14 +15,17 @@ type ConfluentConsumePluginConfig struct {
 	CommitStrategy           types.String                          `tfsdk:"commit_strategy"`
 	ConfluentCloudAPIKey     types.String                          `tfsdk:"confluent_cloud_api_key"`
 	ConfluentCloudAPISecret  types.String                          `tfsdk:"confluent_cloud_api_secret"`
+	ConsumerGroup            *ConfluentConsumePluginConsumerGroup  `tfsdk:"consumer_group"`
 	DlqTopic                 types.String                          `tfsdk:"dlq_topic"`
 	EnableDlq                types.Bool                            `tfsdk:"enable_dlq"`
 	EnforceLatestOffsetReset types.Bool                            `tfsdk:"enforce_latest_offset_reset"`
+	ErrorHandling            *ErrorHandling                        `tfsdk:"error_handling"`
 	Keepalive                types.Int64                           `tfsdk:"keepalive"`
 	KeepaliveEnabled         types.Bool                            `tfsdk:"keepalive_enabled"`
 	MessageByLuaFunctions    []types.String                        `tfsdk:"message_by_lua_functions"`
 	MessageDeserializer      types.String                          `tfsdk:"message_deserializer"`
 	Mode                     types.String                          `tfsdk:"mode"`
+	Oauthbearer              *Oauthbearer                          `tfsdk:"oauthbearer"`
 	SchemaRegistry           *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
 	Security                 *ConfluentPluginSecurity              `tfsdk:"security"`
 	Timeout                  types.Int64                           `tfsdk:"timeout"`

@@ -9,6 +9,14 @@ import (
 // EventGatewayConsumeSchemaValidationPolicyJSONConfig - The configuration of the consume schema validation policy when using JSON parsing without schema.
 type EventGatewayConsumeSchemaValidationPolicyJSONConfig struct {
 	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
+	// Describes how to handle a failure in a policy applied to consumed records.
+	// * `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+	// * `skip` - the record is not delivered to the client.
+	// * `passthrough` - passes the record to the client even though policy execution failed.
+	// * `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FailureMode *ConsumeFailureMode `json:"failure_mode,omitempty"`
 	// If true, validate the record key.
 	//
 	// **Requires a minimum runtime version of `1.2`**.
@@ -57,6 +65,13 @@ func (e *EventGatewayConsumeSchemaValidationPolicyJSONConfig) GetSchemaRegistry(
 		return nil
 	}
 	return e.SchemaRegistry
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyJSONConfig) GetFailureMode() *ConsumeFailureMode {
+	if e == nil {
+		return nil
+	}
+	return e.FailureMode
 }
 
 func (e *EventGatewayConsumeSchemaValidationPolicyJSONConfig) GetValidateKey() *bool {

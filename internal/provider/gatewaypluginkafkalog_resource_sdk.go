@@ -26,6 +26,29 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			} else {
 				r.Config.Authentication.Mechanism = types.StringNull()
 			}
+			if resp.Config.Authentication.Oauthbearer == nil {
+				r.Config.Authentication.Oauthbearer = nil
+			} else {
+				r.Config.Authentication.Oauthbearer = &tfTypes.Oauthbearer{}
+				r.Config.Authentication.Oauthbearer.ClientID = types.StringPointerValue(resp.Config.Authentication.Oauthbearer.ClientID)
+				r.Config.Authentication.Oauthbearer.ClientSecret = types.StringPointerValue(resp.Config.Authentication.Oauthbearer.ClientSecret)
+				if resp.Config.Authentication.Oauthbearer.Extensions != nil {
+					r.Config.Authentication.Oauthbearer.Extensions = make(map[string]types.String, len(resp.Config.Authentication.Oauthbearer.Extensions))
+					for key, value := range resp.Config.Authentication.Oauthbearer.Extensions {
+						r.Config.Authentication.Oauthbearer.Extensions[key] = types.StringValue(value)
+					}
+				}
+				if resp.Config.Authentication.Oauthbearer.Scopes != nil {
+					r.Config.Authentication.Oauthbearer.Scopes = make([]types.String, 0, len(resp.Config.Authentication.Oauthbearer.Scopes))
+					for _, v := range resp.Config.Authentication.Oauthbearer.Scopes {
+						r.Config.Authentication.Oauthbearer.Scopes = append(r.Config.Authentication.Oauthbearer.Scopes, types.StringValue(v))
+					}
+				} else {
+					r.Config.Authentication.Oauthbearer.Scopes = nil
+				}
+				r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify = types.BoolPointerValue(resp.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify)
+				r.Config.Authentication.Oauthbearer.TokenEndpointURL = types.StringPointerValue(resp.Config.Authentication.Oauthbearer.TokenEndpointURL)
+			}
 			r.Config.Authentication.Password = types.StringPointerValue(resp.Config.Authentication.Password)
 			if resp.Config.Authentication.Strategy != nil {
 				r.Config.Authentication.Strategy = types.StringValue(string(*resp.Config.Authentication.Strategy))
@@ -52,8 +75,8 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
 		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				r.Config.CustomFieldsByLua[key] = types.StringValue(value)
+			for key1, value1 := range resp.Config.CustomFieldsByLua {
+				r.Config.CustomFieldsByLua[key1] = types.StringValue(value1)
 			}
 		}
 		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
@@ -119,14 +142,14 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
-							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key1] = types.StringValue(value1)
+							for key2, value2 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = types.StringValue(value2)
 							}
 						}
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
-							for key2, value2 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key2] = types.StringValue(value2)
+							for key3, value3 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key3] = types.StringValue(value3)
 							}
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -450,6 +473,58 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 		} else {
 			mechanism = nil
 		}
+		var oauthbearer *shared.KafkaLogPluginOauthbearer
+		if r.Config.Authentication.Oauthbearer != nil {
+			clientID := new(string)
+			if !r.Config.Authentication.Oauthbearer.ClientID.IsUnknown() && !r.Config.Authentication.Oauthbearer.ClientID.IsNull() {
+				*clientID = r.Config.Authentication.Oauthbearer.ClientID.ValueString()
+			} else {
+				clientID = nil
+			}
+			clientSecret := new(string)
+			if !r.Config.Authentication.Oauthbearer.ClientSecret.IsUnknown() && !r.Config.Authentication.Oauthbearer.ClientSecret.IsNull() {
+				*clientSecret = r.Config.Authentication.Oauthbearer.ClientSecret.ValueString()
+			} else {
+				clientSecret = nil
+			}
+			var extensions map[string]string
+			if r.Config.Authentication.Oauthbearer.Extensions != nil {
+				extensions = make(map[string]string)
+				for extensionsKey := range r.Config.Authentication.Oauthbearer.Extensions {
+					var extensionsInst string
+					extensionsInst = r.Config.Authentication.Oauthbearer.Extensions[extensionsKey].ValueString()
+
+					extensions[extensionsKey] = extensionsInst
+				}
+			}
+			var scopes []string
+			if r.Config.Authentication.Oauthbearer.Scopes != nil {
+				scopes = make([]string, 0, len(r.Config.Authentication.Oauthbearer.Scopes))
+				for scopesIndex := range r.Config.Authentication.Oauthbearer.Scopes {
+					scopes = append(scopes, r.Config.Authentication.Oauthbearer.Scopes[scopesIndex].ValueString())
+				}
+			}
+			tokenEndpointTLSVerify := new(bool)
+			if !r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify.IsUnknown() && !r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify.IsNull() {
+				*tokenEndpointTLSVerify = r.Config.Authentication.Oauthbearer.TokenEndpointTLSVerify.ValueBool()
+			} else {
+				tokenEndpointTLSVerify = nil
+			}
+			tokenEndpointURL := new(string)
+			if !r.Config.Authentication.Oauthbearer.TokenEndpointURL.IsUnknown() && !r.Config.Authentication.Oauthbearer.TokenEndpointURL.IsNull() {
+				*tokenEndpointURL = r.Config.Authentication.Oauthbearer.TokenEndpointURL.ValueString()
+			} else {
+				tokenEndpointURL = nil
+			}
+			oauthbearer = &shared.KafkaLogPluginOauthbearer{
+				ClientID:               clientID,
+				ClientSecret:           clientSecret,
+				Extensions:             extensions,
+				Scopes:                 scopes,
+				TokenEndpointTLSVerify: tokenEndpointTLSVerify,
+				TokenEndpointURL:       tokenEndpointURL,
+			}
+		}
 		password := new(string)
 		if !r.Config.Authentication.Password.IsUnknown() && !r.Config.Authentication.Password.IsNull() {
 			*password = r.Config.Authentication.Password.ValueString()
@@ -475,11 +550,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 			user = nil
 		}
 		authentication = &shared.KafkaLogPluginAuthentication{
-			Mechanism: mechanism,
-			Password:  password,
-			Strategy:  strategy,
-			Tokenauth: tokenauth,
-			User:      user,
+			Mechanism:   mechanism,
+			Oauthbearer: oauthbearer,
+			Password:    password,
+			Strategy:    strategy,
+			Tokenauth:   tokenauth,
+			User:        user,
 		}
 	}
 	var bootstrapServers []shared.KafkaLogPluginBootstrapServers
@@ -617,17 +693,17 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 					for audienceIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
 						audience = append(audience, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience[audienceIndex].ValueString())
 					}
-					clientID := new(string)
+					clientId1 := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
-						*clientID = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
+						*clientId1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
 					} else {
-						clientID = nil
+						clientId1 = nil
 					}
-					clientSecret := new(string)
+					clientSecret1 := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsNull() {
-						*clientSecret = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
+						*clientSecret1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
 					} else {
-						clientSecret = nil
+						clientSecret1 = nil
 					}
 					grantType := new(shared.KafkaLogPluginGrantType)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsNull() {
@@ -641,9 +717,9 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 					} else {
 						password2 = nil
 					}
-					scopes := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
-					for scopesIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
-						scopes = append(scopes, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex].ValueString())
+					scopes1 := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
+					for scopesIndex1 := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+						scopes1 = append(scopes1, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex1].ValueString())
 					}
 					var tokenEndpoint string
 					tokenEndpoint = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
@@ -676,11 +752,11 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 					}
 					oauth2 = &shared.KafkaLogPluginOauth2{
 						Audience:      audience,
-						ClientID:      clientID,
-						ClientSecret:  clientSecret,
+						ClientID:      clientId1,
+						ClientSecret:  clientSecret1,
 						GrantType:     grantType,
 						Password:      password2,
-						Scopes:        scopes,
+						Scopes:        scopes1,
 						TokenEndpoint: tokenEndpoint,
 						TokenHeaders:  tokenHeaders,
 						TokenPostArgs: tokenPostArgs,

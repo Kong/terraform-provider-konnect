@@ -6,89 +6,132 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// CertificateInput - A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service. Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames. If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string according to the following order: main certificate on the top, followed by any intermediates.
-type CertificateInput struct {
+type CertificateRequest struct {
 	// PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
-	Cert string `json:"cert"`
+	Cert *string `default:"null" json:"cert"`
 	// PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
 	CertAlt *string `default:"null" json:"cert_alt"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
+	// User-defined entity description. Konnect only field, not synced to the Gateway.
+	Description *string `default:"null" json:"description"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
-	Key string `json:"key"`
+	Key *string `default:"null" json:"key"`
 	// PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
 	KeyAlt *string `default:"null" json:"key_alt"`
+	// Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.
+	ManagedBy map[string]any `json:"managed_by,omitempty"`
+	Snis      []string       `json:"snis"`
 	// An optional set of strings associated with the Certificate for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	// Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.
+	Vault *string `default:"null" json:"vault"`
+	// Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.
+	VaultAlt *string `default:"null" json:"vault_alt"`
 }
 
-func (c CertificateInput) MarshalJSON() ([]byte, error) {
+func (c CertificateRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *CertificateInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cert", "key"}); err != nil {
+func (c *CertificateRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertificateInput) GetCert() string {
+func (c *CertificateRequest) GetCert() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Cert
 }
 
-func (c *CertificateInput) GetCertAlt() *string {
+func (c *CertificateRequest) GetCertAlt() *string {
 	if c == nil {
 		return nil
 	}
 	return c.CertAlt
 }
 
-func (c *CertificateInput) GetCreatedAt() *int64 {
+func (c *CertificateRequest) GetCreatedAt() *int64 {
 	if c == nil {
 		return nil
 	}
 	return c.CreatedAt
 }
 
-func (c *CertificateInput) GetID() *string {
+func (c *CertificateRequest) GetDescription() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Description
+}
+
+func (c *CertificateRequest) GetID() *string {
 	if c == nil {
 		return nil
 	}
 	return c.ID
 }
 
-func (c *CertificateInput) GetKey() string {
+func (c *CertificateRequest) GetKey() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Key
 }
 
-func (c *CertificateInput) GetKeyAlt() *string {
+func (c *CertificateRequest) GetKeyAlt() *string {
 	if c == nil {
 		return nil
 	}
 	return c.KeyAlt
 }
 
-func (c *CertificateInput) GetTags() []string {
+func (c *CertificateRequest) GetManagedBy() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.ManagedBy
+}
+
+func (c *CertificateRequest) GetSnis() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Snis
+}
+
+func (c *CertificateRequest) GetTags() []string {
 	if c == nil {
 		return nil
 	}
 	return c.Tags
 }
 
-func (c *CertificateInput) GetUpdatedAt() *int64 {
+func (c *CertificateRequest) GetUpdatedAt() *int64 {
 	if c == nil {
 		return nil
 	}
 	return c.UpdatedAt
+}
+
+func (c *CertificateRequest) GetVault() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Vault
+}
+
+func (c *CertificateRequest) GetVaultAlt() *string {
+	if c == nil {
+		return nil
+	}
+	return c.VaultAlt
 }

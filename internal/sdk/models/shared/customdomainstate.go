@@ -2,7 +2,13 @@
 
 package shared
 
-// CustomDomainState - State of the custom domain.
+// CustomDomainState - The current state of the custom domain. Possible values:
+// - `created` — The domain has been registered but TLS provisioning has not yet started.
+// - `initializing` — Konnect is provisioning the TLS certificate and configuring SNI routing.
+// - `ready` — The domain is fully provisioned and serving traffic.
+// - `terminating` — The domain is being deleted and its TLS certificate is being removed.
+// - `terminated` — The domain has been fully deleted and is no longer available.
+// - `error` — Provisioning failed; check `state_metadata` for details.
 type CustomDomainState string
 
 const (

@@ -35,6 +35,11 @@ type VirtualClusterAuthenticationSaslScram struct {
 	type_ string `const:"sasl_scram" json:"type"`
 	// The algorithm used for SASL/SCRAM authentication.
 	Algorithm VirtualClusterAuthenticationSaslScramAlgorithm `json:"algorithm"`
+	// Fetches principal metadata from Kong Identity after successful authentication.
+	// The principal is looked up by a custom key matched against the authenticated identity.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipal `json:"fetch_kong_identity_principal,omitempty"`
 }
 
 func (v VirtualClusterAuthenticationSaslScram) MarshalJSON() ([]byte, error) {
@@ -57,4 +62,11 @@ func (v *VirtualClusterAuthenticationSaslScram) GetAlgorithm() VirtualClusterAut
 		return VirtualClusterAuthenticationSaslScramAlgorithm("")
 	}
 	return v.Algorithm
+}
+
+func (v *VirtualClusterAuthenticationSaslScram) GetFetchKongIdentityPrincipal() *FetchKongIdentityPrincipal {
+	if v == nil {
+		return nil
+	}
+	return v.FetchKongIdentityPrincipal
 }

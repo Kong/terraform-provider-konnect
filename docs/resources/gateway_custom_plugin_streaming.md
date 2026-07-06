@@ -34,7 +34,7 @@ resource "konnect_gateway_custom_plugin_streaming" "my_gatewaycustompluginstream
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 - `handler` (String) The handler for the given custom plugin.
-- `name` (String) The name to associate with the given custom plugin.
+- `name` (String) The name to associate with the given custom plugin. Consider using a distinct prefix for custom plugins to avoid naming conflicts with new bundled plugins in future Kong releases.
 - `schema` (String) The schema for the given custom plugin.
 
 ### Optional

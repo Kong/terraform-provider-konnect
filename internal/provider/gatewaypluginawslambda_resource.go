@@ -105,6 +105,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"keepalive":                             types.Float64Type,
 					"log_type":                              types.StringType,
 					"port":                                  types.Int64Type,
+					"preserve_lambda_api_error_code":        types.BoolType,
 					"proxy_url":                             types.StringType,
 					"qualifier":                             types.StringType,
 					"skip_large_bodies":                     types.BoolType,
@@ -239,6 +240,12 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.Int64{
 							int64validator.Between(0, 65535),
 						},
+					},
+					"preserve_lambda_api_error_code": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `When enabled, the HTTP status code returned by the AWS Lambda API is forwarded to the client instead of mapping all errors to HTTP 500. Applies to 4xx and 5xx responses from the Lambda API. Default: false`,
 					},
 					"proxy_url": schema.StringAttribute{
 						Optional:    true,

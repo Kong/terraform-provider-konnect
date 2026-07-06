@@ -177,11 +177,23 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 									"access_token":        types.StringType,
 									"access_token_header": types.StringType,
 									"basic_auth_header":   types.StringType,
-									"id_token":            types.StringType,
-									"id_token_header":     types.StringType,
-									"password":            types.StringType,
-									"scheme":              types.StringType,
-									"username":            types.StringType,
+									"client_credentials": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`client_id`:      types.StringType,
+											`client_secret`:  types.StringType,
+											`eagerly_expire`: types.Int64Type,
+											`scopes`: types.ListType{
+												ElemType: types.StringType,
+											},
+											`ssl_verify`:     types.BoolType,
+											`token_endpoint`: types.StringType,
+										},
+									},
+									"id_token":        types.StringType,
+									"id_token_header": types.StringType,
+									"password":        types.StringType,
+									"scheme":          types.StringType,
+									"username":        types.StringType,
 								})),
 								Attributes: map[string]schema.Attribute{
 									"access_token": schema.StringAttribute{
@@ -195,6 +207,52 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 									"basic_auth_header": schema.StringAttribute{
 										Optional:    true,
 										Description: `Specifies the header that contains Basic Authentication credentials for the ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker. This header takes precedence over the ` + "`" + `username` + "`" + ` and ` + "`" + `password` + "`" + ` fields.`,
+									},
+									"client_credentials": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"client_id":      types.StringType,
+											"client_secret":  types.StringType,
+											"eagerly_expire": types.Int64Type,
+											"scopes": types.ListType{
+												ElemType: types.StringType,
+											},
+											"ssl_verify":     types.BoolType,
+											"token_endpoint": types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"client_id": schema.StringAttribute{
+												Required:    true,
+												Description: `The OAuth2 client ID used with ` + "`" + `CLIENT_CREDENTIALS` + "`" + ` authentication scheme when connecting to an event broker.`,
+											},
+											"client_secret": schema.StringAttribute{
+												Required:    true,
+												Description: `The OAuth2 client secret used with ` + "`" + `CLIENT_CREDENTIALS` + "`" + ` authentication scheme when connecting to an event broker.`,
+											},
+											"eagerly_expire": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(5),
+												Description: `Number of seconds before actual expiry when cached access tokens should be considered expired and proactively renewed. This helps prevent edge cases where tokens are rejected by Solace just as they expire, but setting this too high may lead to unnecessary token refreshes. Default: 5`,
+											},
+											"scopes": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `The OAuth2 scopes to request when retrieving access tokens for the ` + "`" + `CLIENT_CREDENTIALS` + "`" + ` authentication scheme.`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `Controls TLS certificate verification for HTTPS token endpoint requests. Default: true`,
+											},
+											"token_endpoint": schema.StringAttribute{
+												Required:    true,
+												Description: `The OAuth2 token endpoint URL used to retrieve access tokens for the ` + "`" + `CLIENT_CREDENTIALS` + "`" + ` authentication scheme when connecting to an event broker.`,
+											},
+										},
+										Description: `Client credentials used to automatically obtain and renew OAuth2 access tokens from an IdP for the ` + "`" + `CLIENT_CREDENTIALS` + "`" + ` authentication scheme. When set, Kong fetches tokens from ` + "`" + `token_endpoint` + "`" + ` using ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + `, caches them until expiry, and retries with a fresh token whenever Solace returns an unauthenticated response.`,
 									},
 									"id_token": schema.StringAttribute{
 										Optional:    true,
@@ -215,7 +273,7 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`BASIC`),
-										Description: `The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"`,
+										Description: `The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "CLIENT_CREDENTIALS", "NONE", "OAUTH2"]; Default: "BASIC"`,
 									},
 									"username": schema.StringAttribute{
 										Optional:    true,

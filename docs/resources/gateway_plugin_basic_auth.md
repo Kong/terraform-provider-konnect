@@ -46,7 +46,12 @@ resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
       strategy = "off"
     }
     hide_credentials = false
-    realm            = "service"
+    principals = {
+      directory     = "default"
+      enabled       = false
+      error_on_miss = true
+    }
+    realm = "service"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 6
@@ -116,9 +121,10 @@ resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
 
 Optional:
 
-- `anonymous` (String) An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
+- `anonymous` (String) An optional string (Consumer UUID or username) value to use as an "anonymous" consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
 - `brute_force_protection` (Attributes) (see [below for nested schema](#nestedatt--config--brute_force_protection))
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it. Default: false
+- `principals` (Attributes) (see [below for nested schema](#nestedatt--config--principals))
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value. Default: "service"
 
 <a id="nestedatt--config--brute_force_protection"></a>
@@ -164,6 +170,16 @@ Optional:
 - `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 
 
+
+
+<a id="nestedatt--config--principals"></a>
+### Nested Schema for `config.principals`
+
+Optional:
+
+- `directory` (String) The Kong Identity directory instance to authenticate against. Default: "default"
+- `enabled` (Boolean) When true, authenticate against Kong Identity instead of local credentials. Default: false
+- `error_on_miss` (Boolean) When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead. Default: true
 
 
 

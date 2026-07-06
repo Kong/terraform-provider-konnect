@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.897.1
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.915.0
 
 import (
 	"bytes"
@@ -200,7 +200,8 @@ type Konnect struct {
 	// <br><br>
 	// If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string.
 	//
-	Certificates *Certificates
+	Certificates  *Certificates
+	ClonedPlugins *ClonedPlugins
 	// Consumer groups enable the organization and categorization of consumers (users or applications) within an API ecosystem.
 	// By grouping consumers together, you eliminate the need to manage them individually, providing a scalable, efficient approach to managing configurations.
 	ConsumerGroups *ConsumerGroups
@@ -323,7 +324,9 @@ type Konnect struct {
 	// APIs related to Konnect Developer Portal Custom Snippets.
 	Snippets *Snippets
 	// APIs related to configuration of Konnect Developer Portal developer teams.
-	PortalTeams                  *PortalTeams
+	PortalTeams *PortalTeams
+	// APIs related to Konnect Developer Portal developer team roles.
+	PortalTeamRoles              *PortalTeamRoles
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
@@ -406,9 +409,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.19.0",
+		SDKVersion: "3.20.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.19.0 2.897.1 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.20.0 2.915.0 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -468,6 +471,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ConfigStoreSecrets = newConfigStoreSecrets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Certificates = newCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ClonedPlugins = newClonedPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConsumerGroups = newConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Consumers = newConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ACLs = newACLs(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -510,6 +514,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -460,6 +460,7 @@ Optional:
 - `content_type` (String) The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect. possible known values include one of ["application/json", "application/octet-stream", "text/plain"]
 - `input` (String) Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.
 - `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `non_nil` (Boolean) When true, the property value must exist: in SET mode, input must not be nil/null; in GET mode, output must not be nil/null. Default: false
 - `output` (String) Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
 - `property` (String) The property name to get/set. Not Null
 

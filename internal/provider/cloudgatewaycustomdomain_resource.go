@@ -69,7 +69,14 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
+				MarkdownDescription: `Geographic region of the control plane. Supported values:` + "\n" +
+					`- ` + "`" + `us` + "`" + ` — United States` + "\n" +
+					`- ` + "`" + `eu` + "`" + ` — Europe` + "\n" +
+					`- ` + "`" + `au` + "`" + ` — Australia` + "\n" +
+					`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
+					`- ` + "`" + `in` + "`" + ` — India` + "\n" +
+					`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
+					`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -77,7 +84,7 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI. Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -132,7 +139,13 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `State of the custom domain.`,
+				MarkdownDescription: `The current state of the custom domain. Possible values:` + "\n" +
+					`- ` + "`" + `created` + "`" + ` — The domain has been registered but TLS provisioning has not yet started.` + "\n" +
+					`- ` + "`" + `initializing` + "`" + ` — Konnect is provisioning the TLS certificate and configuring SNI routing.` + "\n" +
+					`- ` + "`" + `ready` + "`" + ` — The domain is fully provisioned and serving traffic.` + "\n" +
+					`- ` + "`" + `terminating` + "`" + ` — The domain is being deleted and its TLS certificate is being removed.` + "\n" +
+					`- ` + "`" + `terminated` + "`" + ` — The domain has been fully deleted and is no longer available.` + "\n" +
+					`- ` + "`" + `error` + "`" + ` — Provisioning failed; check ` + "`" + `state_metadata` + "`" + ` for details.`,
 			},
 			"state_metadata": schema.SingleNestedAttribute{
 				Computed: true,

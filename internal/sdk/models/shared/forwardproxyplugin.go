@@ -177,6 +177,8 @@ type ForwardProxyPluginConfig struct {
 	// The username to authenticate with, if the forward proxy is protected
 	// by basic authentication.
 	AuthUsername *string `default:"null" json:"auth_username"`
+	// Array of CA Certificate object UUIDs used to build the trust store for verifying the upstream server's TLS certificate. When https_verify is enabled and this array is non-empty, those CAs override the global lua_ssl_trusted_certificate for requests proxied by this plugin. When unset or empty, verification falls back to the global lua_ssl_trusted_certificate. When https_verify is disabled, the value is retained in the configuration but ignored at request time.
+	CaCertificates []string `json:"ca_certificates"`
 	// A string representing a host name, such as example.com.
 	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
@@ -185,7 +187,7 @@ type ForwardProxyPluginConfig struct {
 	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
-	// Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
+	// Whether the server certificate will be verified. When ca_certificates is configured, those certificates are used for verification. Otherwise, verification uses the CA certificates specified in lua_ssl_trusted_certificate.
 	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// The proxy scheme to use when connecting. Only `http` is supported.
 	ProxyScheme *ProxyScheme `default:"http" json:"proxy_scheme"`
@@ -216,6 +218,13 @@ func (f *ForwardProxyPluginConfig) GetAuthUsername() *string {
 		return nil
 	}
 	return f.AuthUsername
+}
+
+func (f *ForwardProxyPluginConfig) GetCaCertificates() []string {
+	if f == nil {
+		return nil
+	}
+	return f.CaCertificates
 }
 
 func (f *ForwardProxyPluginConfig) GetHTTPProxyHost() *string {

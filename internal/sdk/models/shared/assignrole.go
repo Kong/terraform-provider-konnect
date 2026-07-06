@@ -102,25 +102,25 @@ func (e *EntityTypeName) IsExact() bool {
 	return false
 }
 
-// EntityRegion - Region of the team.
-type EntityRegion string
+// AssignRoleEntityRegion - Region of the team.
+type AssignRoleEntityRegion string
 
 const (
-	EntityRegionUs       EntityRegion = "us"
-	EntityRegionEu       EntityRegion = "eu"
-	EntityRegionAu       EntityRegion = "au"
-	EntityRegionMe       EntityRegion = "me"
-	EntityRegionIn       EntityRegion = "in"
-	EntityRegionSg       EntityRegion = "sg"
-	EntityRegionWildcard EntityRegion = "*"
+	AssignRoleEntityRegionUs       AssignRoleEntityRegion = "us"
+	AssignRoleEntityRegionEu       AssignRoleEntityRegion = "eu"
+	AssignRoleEntityRegionAu       AssignRoleEntityRegion = "au"
+	AssignRoleEntityRegionMe       AssignRoleEntityRegion = "me"
+	AssignRoleEntityRegionIn       AssignRoleEntityRegion = "in"
+	AssignRoleEntityRegionSg       AssignRoleEntityRegion = "sg"
+	AssignRoleEntityRegionWildcard AssignRoleEntityRegion = "*"
 )
 
-func (e EntityRegion) ToPointer() *EntityRegion {
+func (e AssignRoleEntityRegion) ToPointer() *AssignRoleEntityRegion {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *EntityRegion) IsExact() bool {
+func (e *AssignRoleEntityRegion) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "us", "eu", "au", "me", "in", "sg", "*":
@@ -139,7 +139,7 @@ type AssignRole struct {
 	// The type of entity.
 	EntityTypeName *EntityTypeName `json:"entity_type_name,omitempty"`
 	// Region of the team.
-	EntityRegion *EntityRegion `json:"entity_region,omitempty"`
+	EntityRegion *AssignRoleEntityRegion `json:"entity_region,omitempty"`
 }
 
 func (a AssignRole) MarshalJSON() ([]byte, error) {
@@ -174,7 +174,7 @@ func (a *AssignRole) GetEntityTypeName() *EntityTypeName {
 	return a.EntityTypeName
 }
 
-func (a *AssignRole) GetEntityRegion() *EntityRegion {
+func (a *AssignRole) GetEntityRegion() *AssignRoleEntityRegion {
 	if a == nil {
 		return nil
 	}

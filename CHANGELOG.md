@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.20.0
+> Released 2026/07/06
+
+# Features
+* Add support for Kong Gateway v3.15 - including `konnect_gateway_cloned_plugin` resource.
+* Add support for `konnect_portal_team_role` resource
+* Add support for `konnect_event_gateway_consume_policy_decrypt_fields` and `konnect_event_gateway_produce_policy_encrypt_fields` resources
+
 ## 3.19.0
 > Released 2026/06/26
 

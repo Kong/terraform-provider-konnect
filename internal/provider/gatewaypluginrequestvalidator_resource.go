@@ -84,6 +84,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"allowed_content_types": types.ListType{
 						ElemType: types.StringType,
 					},
+					"array_length_compat":               types.BoolType,
 					"body_schema":                       types.StringType,
 					"content_type_parameter_validation": types.BoolType,
 					"parameter_schema": types.ListType{
@@ -108,6 +109,12 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("application/json")})),
 						ElementType: types.StringType,
 						Description: `List of allowed content types. The value can be configured with the ` + "`" + `charset` + "`" + ` parameter. For example, ` + "`" + `application/json; charset=UTF-8` + "`" + `. Default: ["application/json"]`,
+					},
+					"array_length_compat": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `If true, ` + "`" + `minLength` + "`" + `/` + "`" + `maxLength` + "`" + ` also apply to arrays using item count. Compatibility option for legacy schemas that use these keywords instead of ` + "`" + `minItems` + "`" + `/` + "`" + `maxItems` + "`" + `. Default: true`,
 					},
 					"body_schema": schema.StringAttribute{
 						Optional:    true,

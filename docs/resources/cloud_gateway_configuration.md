@@ -38,7 +38,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
     }
   ]
   kind    = "dedicated.v0"
-  version = "3.2"
+  version = "3.10"
 }
 ```
 
@@ -47,13 +47,24 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 ### Required
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]
-- `control_plane_id` (String)
+- `control_plane_geo` (String) Geographic region of the control plane. Supported values:
+- `us` — United States
+- `eu` — Europe
+- `au` — Australia
+- `me` — Middle East
+- `in` — India
+- `sg` — Singapore
+possible known values include one of ["us", "eu", "au", "me", "in", "sg"]
+- `control_plane_id` (String) ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
 - `dataplane_groups` (Attributes Set) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
 
 ### Optional
 
-- `api_access` (String) Type of API access data-plane groups will support for a configuration. possible known values include one of ["private", "public", "private+public"]
+- `api_access` (String) Controls how data planes in a configuration are exposed. Supported values:
+- `private` — data planes are accessible only within the VPC network; no public internet exposure
+- `public` — data planes are accessible from the public internet
+- `private+public` — equivalent to `public`; data planes are accessible from the public internet (default)
+possible known values include one of ["private", "public", "private+public"]
 - `kind` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 

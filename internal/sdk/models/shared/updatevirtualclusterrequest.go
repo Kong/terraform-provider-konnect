@@ -34,7 +34,7 @@ type UpdateVirtualClusterRequest struct {
 	// Aliases are independent of namespace and can be used without it.
 	//
 	// **Requires a minimum runtime version of `1.2`**.
-	TopicAliases []any `json:"topic_aliases,omitempty"`
+	TopicAliases []VirtualClusterTopicAlias `json:"topic_aliases,omitempty"`
 	// Configures whether or not ACL policies are enforced on the gateway.
 	// - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
 	//   and does not forward ACL-related commands to the backend cluster.
@@ -98,7 +98,7 @@ func (u *UpdateVirtualClusterRequest) GetNamespace() *VirtualClusterNamespace {
 	return u.Namespace
 }
 
-func (u *UpdateVirtualClusterRequest) GetTopicAliases() []any {
+func (u *UpdateVirtualClusterRequest) GetTopicAliases() []VirtualClusterTopicAlias {
 	if u == nil {
 		return nil
 	}

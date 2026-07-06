@@ -7,15 +7,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,16 +37,20 @@ type GatewayCertificateResource struct {
 
 // GatewayCertificateResourceModel describes the resource data model.
 type GatewayCertificateResourceModel struct {
-	Cert           types.String   `tfsdk:"cert"`
-	CertAlt        types.String   `tfsdk:"cert_alt"`
-	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64    `tfsdk:"created_at"`
-	ID             types.String   `tfsdk:"id"`
-	Key            types.String   `tfsdk:"key"`
-	KeyAlt         types.String   `tfsdk:"key_alt"`
-	Snis           []types.String `tfsdk:"snis"`
-	Tags           []types.String `tfsdk:"tags"`
-	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
+	Cert           types.String                    `tfsdk:"cert"`
+	CertAlt        types.String                    `tfsdk:"cert_alt"`
+	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                     `tfsdk:"created_at"`
+	Description    types.String                    `tfsdk:"description"`
+	ID             types.String                    `tfsdk:"id"`
+	Key            types.String                    `tfsdk:"key"`
+	KeyAlt         types.String                    `tfsdk:"key_alt"`
+	ManagedBy      map[string]jsontypes.Normalized `tfsdk:"managed_by"`
+	Snis           []types.String                  `tfsdk:"snis"`
+	Tags           []types.String                  `tfsdk:"tags"`
+	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
+	Vault          types.String                    `tfsdk:"vault"`
+	VaultAlt       types.String                    `tfsdk:"vault_alt"`
 }
 
 func (r *GatewayCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -55,7 +62,7 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 		MarkdownDescription: "GatewayCertificate Resource",
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
-				Required:    true,
+				Optional:    true,
 				Description: `PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
 			"cert_alt": schema.StringAttribute{
@@ -74,24 +81,33 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
+			"description": schema.StringAttribute{
+				Optional:    true,
+				Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
+			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"key": schema.StringAttribute{
-				Required:    true,
+				Optional:    true,
 				Description: `PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
 			"key_alt": schema.StringAttribute{
 				Optional:    true,
 				Description: `PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).`,
 			},
-			"snis": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+			"managed_by": schema.MapAttribute{
+				Optional:    true,
+				ElementType: jsontypes.NormalizedType{},
+				Description: `Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.`,
+				Validators: []validator.Map{
+					mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 				},
+			},
+			"snis": schema.ListAttribute{
+				Optional:    true,
 				ElementType: types.StringType,
 			},
 			"tags": schema.ListAttribute{
@@ -103,6 +119,14 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 				Computed:    true,
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"vault": schema.StringAttribute{
+				Optional:    true,
+				Description: `Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.`,
+			},
+			"vault_alt": schema.StringAttribute{
+				Optional:    true,
+				Description: `Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.`,
 			},
 		},
 	}
