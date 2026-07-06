@@ -8,6 +8,9 @@
 * Add support for `konnect_event_gateway_consume_policy_decrypt_fields` resource
 * Add support for `konnect_event_gateway_produce_policy_encrypt_fields` resource
 
+# Bug Fixes
+* Fixed drift in `konnect_portal_snippet` resource.
+
 ## 3.19.0
 > Released 2026/06/26
 
