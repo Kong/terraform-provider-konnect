@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.20.0
-> Released 2026/07/03
+> Released 2026/07/06
 
 # Features
 * Add support for Kong Gateway v3.15 - including `konnect_gateway_cloned_plugin` resource.
