@@ -208,6 +208,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayBasicAuthResource,
 		NewGatewayCACertificateResource,
 		NewGatewayCertificateResource,
+		NewGatewayClonedPluginResource,
 		NewGatewayConfigStoreResource,
 		NewGatewayConfigStoreSecretResource,
 		NewGatewayConsumerResource,

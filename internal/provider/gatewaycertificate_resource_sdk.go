@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
@@ -48,16 +49,16 @@ func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateRequest(c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	certificate, certificateDiags := r.ToSharedCertificateInput(ctx)
-	diags.Append(certificateDiags...)
+	certificateRequest, certificateRequestDiags := r.ToSharedCertificateRequest(ctx)
+	diags.Append(certificateRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.CreateCertificateRequest{
-		ControlPlaneID: controlPlaneID,
-		Certificate:    *certificate,
+		ControlPlaneID:     controlPlaneID,
+		CertificateRequest: *certificateRequest,
 	}
 
 	return &out, diags
@@ -106,28 +107,31 @@ func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	certificate, certificateDiags := r.ToSharedCertificateInput(ctx)
-	diags.Append(certificateDiags...)
+	certificateRequest, certificateRequestDiags := r.ToSharedCertificateRequest(ctx)
+	diags.Append(certificateRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpsertCertificateRequest{
-		CertificateID:  certificateID,
-		ControlPlaneID: controlPlaneID,
-		Certificate:    *certificate,
+		CertificateID:      certificateID,
+		ControlPlaneID:     controlPlaneID,
+		CertificateRequest: *certificateRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayCertificateResourceModel) ToSharedCertificateInput(ctx context.Context) (*shared.CertificateInput, diag.Diagnostics) {
+func (r *GatewayCertificateResourceModel) ToSharedCertificateRequest(ctx context.Context) (*shared.CertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var cert string
-	cert = r.Cert.ValueString()
-
+	cert := new(string)
+	if !r.Cert.IsUnknown() && !r.Cert.IsNull() {
+		*cert = r.Cert.ValueString()
+	} else {
+		cert = nil
+	}
 	certAlt := new(string)
 	if !r.CertAlt.IsUnknown() && !r.CertAlt.IsNull() {
 		*certAlt = r.CertAlt.ValueString()
@@ -140,20 +144,45 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificateInput(ctx context.C
 	} else {
 		createdAt = nil
 	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
 	} else {
 		id = nil
 	}
-	var key string
-	key = r.Key.ValueString()
-
+	key := new(string)
+	if !r.Key.IsUnknown() && !r.Key.IsNull() {
+		*key = r.Key.ValueString()
+	} else {
+		key = nil
+	}
 	keyAlt := new(string)
 	if !r.KeyAlt.IsUnknown() && !r.KeyAlt.IsNull() {
 		*keyAlt = r.KeyAlt.ValueString()
 	} else {
 		keyAlt = nil
+	}
+	var managedBy map[string]interface{}
+	if r.ManagedBy != nil {
+		managedBy = make(map[string]interface{})
+		for managedByKey := range r.ManagedBy {
+			var managedByInst interface{}
+			_ = json.Unmarshal([]byte(r.ManagedBy[managedByKey].ValueString()), &managedByInst)
+			managedBy[managedByKey] = managedByInst
+		}
+	}
+	var snis []string
+	if r.Snis != nil {
+		snis = make([]string, 0, len(r.Snis))
+		for snisIndex := range r.Snis {
+			snis = append(snis, r.Snis[snisIndex].ValueString())
+		}
 	}
 	var tags []string
 	if r.Tags != nil {
@@ -168,15 +197,32 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificateInput(ctx context.C
 	} else {
 		updatedAt = nil
 	}
-	out := shared.CertificateInput{
-		Cert:      cert,
-		CertAlt:   certAlt,
-		CreatedAt: createdAt,
-		ID:        id,
-		Key:       key,
-		KeyAlt:    keyAlt,
-		Tags:      tags,
-		UpdatedAt: updatedAt,
+	vault := new(string)
+	if !r.Vault.IsUnknown() && !r.Vault.IsNull() {
+		*vault = r.Vault.ValueString()
+	} else {
+		vault = nil
+	}
+	vaultAlt := new(string)
+	if !r.VaultAlt.IsUnknown() && !r.VaultAlt.IsNull() {
+		*vaultAlt = r.VaultAlt.ValueString()
+	} else {
+		vaultAlt = nil
+	}
+	out := shared.CertificateRequest{
+		Cert:        cert,
+		CertAlt:     certAlt,
+		CreatedAt:   createdAt,
+		Description: description,
+		ID:          id,
+		Key:         key,
+		KeyAlt:      keyAlt,
+		ManagedBy:   managedBy,
+		Snis:        snis,
+		Tags:        tags,
+		UpdatedAt:   updatedAt,
+		Vault:       vault,
+		VaultAlt:    vaultAlt,
 	}
 
 	return &out, diags

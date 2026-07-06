@@ -120,6 +120,29 @@ func (h *HTTPLogPluginPartials) GetPath() string {
 	return h.Path
 }
 
+// HTTPLogPluginClientCertificate - Certificate to use as the mTLS client certificate when connecting to the configured HTTPS endpoint.
+type HTTPLogPluginClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (h HTTPLogPluginClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (h *HTTPLogPluginClientCertificate) GetID() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ID
+}
+
 // ContentType - Indicates the type of data sent. The only available option is `application/json`.
 type ContentType string
 
@@ -277,6 +300,8 @@ func (h *HTTPLogPluginQueue) GetMaxRetryTime() *float64 {
 }
 
 type HTTPLogPluginConfig struct {
+	// Certificate to use as the mTLS client certificate when connecting to the configured HTTPS endpoint.
+	ClientCertificate *HTTPLogPluginClientCertificate `json:"client_certificate"`
 	// Indicates the type of data sent. The only available option is `application/json`.
 	ContentType *ContentType `default:"application/json" json:"content_type"`
 	// Lua code as a key-value map
@@ -311,6 +336,13 @@ func (h *HTTPLogPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (h *HTTPLogPluginConfig) GetClientCertificate() *HTTPLogPluginClientCertificate {
+	if h == nil {
+		return nil
+	}
+	return h.ClientCertificate
 }
 
 func (h *HTTPLogPluginConfig) GetContentType() *ContentType {

@@ -39,7 +39,7 @@ type GetPortalCustomizationResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// The current customization options for a portal.
-	PortalCustomizationV3 *shared.PortalCustomizationV3
+	PortalCustomization *shared.PortalCustomization
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -80,11 +80,11 @@ func (g *GetPortalCustomizationResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetPortalCustomizationResponse) GetPortalCustomizationV3() *shared.PortalCustomizationV3 {
+func (g *GetPortalCustomizationResponse) GetPortalCustomization() *shared.PortalCustomization {
 	if g == nil {
 		return nil
 	}
-	return g.PortalCustomizationV3
+	return g.PortalCustomization
 }
 
 func (g *GetPortalCustomizationResponse) GetUnauthorizedError() *shared.UnauthorizedError {

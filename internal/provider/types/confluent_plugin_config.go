@@ -14,14 +14,17 @@ type ConfluentPluginConfig struct {
 	ClusterName                                  types.String                   `tfsdk:"cluster_name"`
 	ConfluentCloudAPIKey                         types.String                   `tfsdk:"confluent_cloud_api_key"`
 	ConfluentCloudAPISecret                      types.String                   `tfsdk:"confluent_cloud_api_secret"`
+	ErrorHandling                                *ErrorHandling                 `tfsdk:"error_handling"`
 	ForwardBody                                  types.Bool                     `tfsdk:"forward_body"`
 	ForwardHeaders                               types.Bool                     `tfsdk:"forward_headers"`
 	ForwardMethod                                types.Bool                     `tfsdk:"forward_method"`
 	ForwardURI                                   types.Bool                     `tfsdk:"forward_uri"`
+	Headers                                      *ConfluentPluginHeaders        `tfsdk:"headers"`
 	Keepalive                                    types.Int64                    `tfsdk:"keepalive"`
 	KeepaliveEnabled                             types.Bool                     `tfsdk:"keepalive_enabled"`
 	KeyQueryArg                                  types.String                   `tfsdk:"key_query_arg"`
 	MessageByLuaFunctions                        []types.String                 `tfsdk:"message_by_lua_functions"`
+	Oauthbearer                                  *Oauthbearer                   `tfsdk:"oauthbearer"`
 	ProducerAsync                                types.Bool                     `tfsdk:"producer_async"`
 	ProducerAsyncBufferingLimitsMessagesInMemory types.Int64                    `tfsdk:"producer_async_buffering_limits_messages_in_memory"`
 	ProducerAsyncFlushTimeout                    types.Int64                    `tfsdk:"producer_async_flush_timeout"`

@@ -80,8 +80,11 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 				Computed: true,
 				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"auth_password":    types.StringType,
-					"auth_username":    types.StringType,
+					"auth_password": types.StringType,
+					"auth_username": types.StringType,
+					"ca_certificates": types.ListType{
+						ElemType: types.StringType,
+					},
 					"http_proxy_host":  types.StringType,
 					"http_proxy_port":  types.Int64Type,
 					"https_proxy_host": types.StringType,
@@ -100,6 +103,11 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 						Optional: true,
 						MarkdownDescription: `The username to authenticate with, if the forward proxy is protected` + "\n" +
 							`by basic authentication.`,
+					},
+					"ca_certificates": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Array of CA Certificate object UUIDs used to build the trust store for verifying the upstream server's TLS certificate. When https_verify is enabled and this array is non-empty, those CAs override the global lua_ssl_trusted_certificate for requests proxied by this plugin. When unset or empty, verification falls back to the global lua_ssl_trusted_certificate. When https_verify is disabled, the value is retained in the configuration but ignored at request time.`,
 					},
 					"http_proxy_host": schema.StringAttribute{
 						Optional:    true,
@@ -127,7 +135,7 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
-						Description: `Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false`,
+						Description: `Whether the server certificate will be verified. When ca_certificates is configured, those certificates are used for verification. Otherwise, verification uses the CA certificates specified in lua_ssl_trusted_certificate. Default: false`,
 					},
 					"proxy_scheme": schema.StringAttribute{
 						Computed:    true,

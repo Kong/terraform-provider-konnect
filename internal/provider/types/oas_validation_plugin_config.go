@@ -14,9 +14,11 @@ type OasValidationPluginConfig struct {
 	CustomBasePath                          types.String `tfsdk:"custom_base_path"`
 	HeaderParameterCheck                    types.Bool   `tfsdk:"header_parameter_check"`
 	IncludeBasePath                         types.Bool   `tfsdk:"include_base_path"`
+	MaxStructuredErrors                     types.Int64  `tfsdk:"max_structured_errors"`
 	NotifyOnlyRequestValidationFailure      types.Bool   `tfsdk:"notify_only_request_validation_failure"`
 	NotifyOnlyResponseBodyValidationFailure types.Bool   `tfsdk:"notify_only_response_body_validation_failure"`
 	QueryParameterCheck                     types.Bool   `tfsdk:"query_parameter_check"`
+	StructuredErrors                        types.Bool   `tfsdk:"structured_errors"`
 	ValidateRequestBody                     types.Bool   `tfsdk:"validate_request_body"`
 	ValidateRequestHeaderParams             types.Bool   `tfsdk:"validate_request_header_params"`
 	ValidateRequestQueryParams              types.Bool   `tfsdk:"validate_request_query_params"`

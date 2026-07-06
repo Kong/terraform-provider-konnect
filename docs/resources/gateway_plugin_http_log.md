@@ -16,6 +16,9 @@ GatewayPluginHTTPLog Resource
 resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
   condition = "...my_condition..."
   config = {
+    client_certificate = {
+      id = "...my_id..."
+    }
     content_type = "application/json"
     custom_fields_by_lua = {
       key = "value"
@@ -118,6 +121,7 @@ Required:
 
 Optional:
 
+- `client_certificate` (Attributes) Certificate to use as the mTLS client certificate when connecting to the configured HTTPS endpoint. (see [below for nested schema](#nestedatt--config--client_certificate))
 - `content_type` (String) Indicates the type of data sent. The only available option is `application/json`. possible known values include one of ["application/json", "application/json; charset=utf-8"]; Default: "application/json"
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `flush_timeout` (Number) Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
@@ -129,6 +133,14 @@ Optional:
 - `retry_count` (Number) Number of times to retry when sending data to the upstream server.
 - `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server. Default: false
 - `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server. Default: 10000
+
+<a id="nestedatt--config--client_certificate"></a>
+### Nested Schema for `config.client_certificate`
+
+Optional:
+
+- `id` (String)
+
 
 <a id="nestedatt--config--queue"></a>
 ### Nested Schema for `config.queue`

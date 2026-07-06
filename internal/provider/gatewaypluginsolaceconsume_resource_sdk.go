@@ -74,6 +74,24 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 			r.Config.Session.Authentication.AccessToken = types.StringPointerValue(resp.Config.Session.Authentication.AccessToken)
 			r.Config.Session.Authentication.AccessTokenHeader = types.StringPointerValue(resp.Config.Session.Authentication.AccessTokenHeader)
 			r.Config.Session.Authentication.BasicAuthHeader = types.StringPointerValue(resp.Config.Session.Authentication.BasicAuthHeader)
+			if resp.Config.Session.Authentication.ClientCredentials == nil {
+				r.Config.Session.Authentication.ClientCredentials = nil
+			} else {
+				r.Config.Session.Authentication.ClientCredentials = &tfTypes.ClientCredentials{}
+				r.Config.Session.Authentication.ClientCredentials.ClientID = types.StringValue(resp.Config.Session.Authentication.ClientCredentials.ClientID)
+				r.Config.Session.Authentication.ClientCredentials.ClientSecret = types.StringValue(resp.Config.Session.Authentication.ClientCredentials.ClientSecret)
+				r.Config.Session.Authentication.ClientCredentials.EagerlyExpire = types.Int64PointerValue(resp.Config.Session.Authentication.ClientCredentials.EagerlyExpire)
+				if resp.Config.Session.Authentication.ClientCredentials.Scopes != nil {
+					r.Config.Session.Authentication.ClientCredentials.Scopes = make([]types.String, 0, len(resp.Config.Session.Authentication.ClientCredentials.Scopes))
+					for _, v := range resp.Config.Session.Authentication.ClientCredentials.Scopes {
+						r.Config.Session.Authentication.ClientCredentials.Scopes = append(r.Config.Session.Authentication.ClientCredentials.Scopes, types.StringValue(v))
+					}
+				} else {
+					r.Config.Session.Authentication.ClientCredentials.Scopes = nil
+				}
+				r.Config.Session.Authentication.ClientCredentials.SslVerify = types.BoolPointerValue(resp.Config.Session.Authentication.ClientCredentials.SslVerify)
+				r.Config.Session.Authentication.ClientCredentials.TokenEndpoint = types.StringValue(resp.Config.Session.Authentication.ClientCredentials.TokenEndpoint)
+			}
 			r.Config.Session.Authentication.IDToken = types.StringPointerValue(resp.Config.Session.Authentication.IDToken)
 			r.Config.Session.Authentication.IDTokenHeader = types.StringPointerValue(resp.Config.Session.Authentication.IDTokenHeader)
 			r.Config.Session.Authentication.Password = types.StringPointerValue(resp.Config.Session.Authentication.Password)
@@ -469,6 +487,45 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 		} else {
 			basicAuthHeader = nil
 		}
+		var clientCredentials *shared.ClientCredentials
+		if r.Config.Session.Authentication.ClientCredentials != nil {
+			var clientID string
+			clientID = r.Config.Session.Authentication.ClientCredentials.ClientID.ValueString()
+
+			var clientSecret string
+			clientSecret = r.Config.Session.Authentication.ClientCredentials.ClientSecret.ValueString()
+
+			eagerlyExpire := new(int64)
+			if !r.Config.Session.Authentication.ClientCredentials.EagerlyExpire.IsUnknown() && !r.Config.Session.Authentication.ClientCredentials.EagerlyExpire.IsNull() {
+				*eagerlyExpire = r.Config.Session.Authentication.ClientCredentials.EagerlyExpire.ValueInt64()
+			} else {
+				eagerlyExpire = nil
+			}
+			var scopes []string
+			if r.Config.Session.Authentication.ClientCredentials.Scopes != nil {
+				scopes = make([]string, 0, len(r.Config.Session.Authentication.ClientCredentials.Scopes))
+				for scopesIndex := range r.Config.Session.Authentication.ClientCredentials.Scopes {
+					scopes = append(scopes, r.Config.Session.Authentication.ClientCredentials.Scopes[scopesIndex].ValueString())
+				}
+			}
+			sslVerify := new(bool)
+			if !r.Config.Session.Authentication.ClientCredentials.SslVerify.IsUnknown() && !r.Config.Session.Authentication.ClientCredentials.SslVerify.IsNull() {
+				*sslVerify = r.Config.Session.Authentication.ClientCredentials.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			var tokenEndpoint string
+			tokenEndpoint = r.Config.Session.Authentication.ClientCredentials.TokenEndpoint.ValueString()
+
+			clientCredentials = &shared.ClientCredentials{
+				ClientID:      clientID,
+				ClientSecret:  clientSecret,
+				EagerlyExpire: eagerlyExpire,
+				Scopes:        scopes,
+				SslVerify:     sslVerify,
+				TokenEndpoint: tokenEndpoint,
+			}
+		}
 		idToken := new(string)
 		if !r.Config.Session.Authentication.IDToken.IsUnknown() && !r.Config.Session.Authentication.IDToken.IsNull() {
 			*idToken = r.Config.Session.Authentication.IDToken.ValueString()
@@ -503,6 +560,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 			AccessToken:       accessToken,
 			AccessTokenHeader: accessTokenHeader,
 			BasicAuthHeader:   basicAuthHeader,
+			ClientCredentials: clientCredentials,
 			IDToken:           idToken,
 			IDTokenHeader:     idTokenHeader,
 			Password:          password,

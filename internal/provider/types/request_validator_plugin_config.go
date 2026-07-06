@@ -8,6 +8,7 @@ import (
 
 type RequestValidatorPluginConfig struct {
 	AllowedContentTypes            []types.String    `tfsdk:"allowed_content_types"`
+	ArrayLengthCompat              types.Bool        `tfsdk:"array_length_compat"`
 	BodySchema                     types.String      `tfsdk:"body_schema"`
 	ContentTypeParameterValidation types.Bool        `tfsdk:"content_type_parameter_validation"`
 	ParameterSchema                []ParameterSchema `tfsdk:"parameter_schema"`

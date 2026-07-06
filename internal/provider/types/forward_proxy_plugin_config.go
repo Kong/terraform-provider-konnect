@@ -7,13 +7,14 @@ import (
 )
 
 type ForwardProxyPluginConfig struct {
-	AuthPassword   types.String `tfsdk:"auth_password"`
-	AuthUsername   types.String `tfsdk:"auth_username"`
-	HTTPProxyHost  types.String `tfsdk:"http_proxy_host"`
-	HTTPProxyPort  types.Int64  `tfsdk:"http_proxy_port"`
-	HTTPSProxyHost types.String `tfsdk:"https_proxy_host"`
-	HTTPSProxyPort types.Int64  `tfsdk:"https_proxy_port"`
-	HTTPSVerify    types.Bool   `tfsdk:"https_verify"`
-	ProxyScheme    types.String `tfsdk:"proxy_scheme"`
-	XHeaders       types.String `tfsdk:"x_headers"`
+	AuthPassword   types.String   `tfsdk:"auth_password"`
+	AuthUsername   types.String   `tfsdk:"auth_username"`
+	CaCertificates []types.String `tfsdk:"ca_certificates"`
+	HTTPProxyHost  types.String   `tfsdk:"http_proxy_host"`
+	HTTPProxyPort  types.Int64    `tfsdk:"http_proxy_port"`
+	HTTPSProxyHost types.String   `tfsdk:"https_proxy_host"`
+	HTTPSProxyPort types.Int64    `tfsdk:"https_proxy_port"`
+	HTTPSVerify    types.Bool     `tfsdk:"https_verify"`
+	ProxyScheme    types.String   `tfsdk:"proxy_scheme"`
+	XHeaders       types.String   `tfsdk:"x_headers"`
 }

@@ -30,6 +30,7 @@ type AwsLambdaPluginConfig struct {
 	Keepalive                          types.Float64 `tfsdk:"keepalive"`
 	LogType                            types.String  `tfsdk:"log_type"`
 	Port                               types.Int64   `tfsdk:"port"`
+	PreserveLambdaAPIErrorCode         types.Bool    `tfsdk:"preserve_lambda_api_error_code"`
 	ProxyURL                           types.String  `tfsdk:"proxy_url"`
 	Qualifier                          types.String  `tfsdk:"qualifier"`
 	SkipLargeBodies                    types.Bool    `tfsdk:"skip_large_bodies"`

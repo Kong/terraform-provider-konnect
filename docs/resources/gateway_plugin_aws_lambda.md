@@ -39,6 +39,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     keepalive                             = 60000
     log_type                              = "Tail"
     port                                  = 443
+    preserve_lambda_api_error_code        = false
     proxy_url                             = "...my_proxy_url..."
     qualifier                             = "...my_qualifier..."
     skip_large_bodies                     = true
@@ -141,6 +142,7 @@ Optional:
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000
 - `log_type` (String) The LogType to use when invoking the function. By default, None and Tail are supported. possible known values include one of ["None", "Tail"]; Default: "Tail"
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 443
+- `preserve_lambda_api_error_code` (Boolean) When enabled, the HTTP status code returned by the AWS Lambda API is forwarded to the client instead of mapping all errors to HTTP 500. Applies to 4xx and 5xx responses from the Lambda API. Default: false
 - `proxy_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `qualifier` (String) The qualifier to use when invoking the function.
 - `skip_large_bodies` (Boolean) An optional value that defines whether Kong should send large bodies that are buffered to disk. Default: true

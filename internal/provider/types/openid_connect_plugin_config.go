@@ -25,6 +25,7 @@ type OpenidConnectPluginConfig struct {
 	AuthorizationQueryArgsValues                 []types.String                    `tfsdk:"authorization_query_args_values"`
 	AuthorizationRollingTimeout                  types.Float64                     `tfsdk:"authorization_rolling_timeout"`
 	BearerTokenCookieName                        types.String                      `tfsdk:"bearer_token_cookie_name"`
+	BearerTokenHeaderName                        types.String                      `tfsdk:"bearer_token_header_name"`
 	BearerTokenParamType                         []types.String                    `tfsdk:"bearer_token_param_type"`
 	ByUsernameIgnoreCase                         types.Bool                        `tfsdk:"by_username_ignore_case"`
 	CacheIntrospection                           types.Bool                        `tfsdk:"cache_introspection"`
@@ -45,6 +46,7 @@ type OpenidConnectPluginConfig struct {
 	ClientID                                     []types.String                    `tfsdk:"client_id"`
 	ClientJwk                                    []ClientJwk                       `tfsdk:"client_jwk"`
 	ClientSecret                                 []types.String                    `tfsdk:"client_secret"`
+	ClusterCacheItems                            []types.String                    `tfsdk:"cluster_cache_items"`
 	ClusterCacheRedis                            *PartialVectordbRedis             `tfsdk:"cluster_cache_redis"`
 	ClusterCacheStrategy                         types.String                      `tfsdk:"cluster_cache_strategy"`
 	ConsumerBy                                   []types.String                    `tfsdk:"consumer_by"`
@@ -133,9 +135,11 @@ type OpenidConnectPluginConfig struct {
 	NoProxy                                      types.String                      `tfsdk:"no_proxy"`
 	PasswordParamType                            []types.String                    `tfsdk:"password_param_type"`
 	PreserveQueryArgs                            types.Bool                        `tfsdk:"preserve_query_args"`
+	Principals                                   *OpenidConnectPluginPrincipals    `tfsdk:"principals"`
 	ProofOfPossessionAuthMethodsValidation       types.Bool                        `tfsdk:"proof_of_possession_auth_methods_validation"`
 	ProofOfPossessionDpop                        types.String                      `tfsdk:"proof_of_possession_dpop"`
 	ProofOfPossessionMtls                        types.String                      `tfsdk:"proof_of_possession_mtls"`
+	ProofOfPossessionMtlsFromHeader              *ProofOfPossessionMtlsFromHeader  `tfsdk:"proof_of_possession_mtls_from_header"`
 	PushedAuthorizationRequestEndpoint           types.String                      `tfsdk:"pushed_authorization_request_endpoint"`
 	PushedAuthorizationRequestEndpointAuthMethod types.String                      `tfsdk:"pushed_authorization_request_endpoint_auth_method"`
 	RedirectURI                                  []types.String                    `tfsdk:"redirect_uri"`

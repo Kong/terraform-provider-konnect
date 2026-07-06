@@ -16,8 +16,11 @@ GatewayPluginForwardProxy Resource
 resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
   condition = "...my_condition..."
   config = {
-    auth_password    = "...my_auth_password..."
-    auth_username    = "...my_auth_username..."
+    auth_password = "...my_auth_password..."
+    auth_username = "...my_auth_username..."
+    ca_certificates = [
+      "..."
+    ]
     http_proxy_host  = "...my_http_proxy_host..."
     http_proxy_port  = 61130
     https_proxy_host = "...my_https_proxy_host..."
@@ -102,11 +105,12 @@ Optional:
 by basic authentication.
 - `auth_username` (String) The username to authenticate with, if the forward proxy is protected
 by basic authentication.
+- `ca_certificates` (List of String) Array of CA Certificate object UUIDs used to build the trust store for verifying the upstream server's TLS certificate. When https_verify is enabled and this array is non-empty, those CAs override the global lua_ssl_trusted_certificate for requests proxied by this plugin. When unset or empty, verification falls back to the global lua_ssl_trusted_certificate. When https_verify is disabled, the value is retained in the configuration but ignored at request time.
 - `http_proxy_host` (String) A string representing a host name, such as example.com.
 - `http_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false
+- `https_verify` (Boolean) Whether the server certificate will be verified. When ca_certificates is configured, those certificates are used for verification. Otherwise, verification uses the CA certificates specified in lua_ssl_trusted_certificate. Default: false
 - `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. Default: "http"; must be "http"
 - `x_headers` (String) Determines how to handle headers when forwarding the request. possible known values include one of ["append", "delete", "transparent"]; Default: "append"
 
