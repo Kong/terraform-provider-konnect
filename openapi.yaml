@@ -17535,8 +17535,10 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      deprecated: true
       tags:
         - Portal Appearance
+      x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
     patch:
       x-speakeasy-entity-operation:
         terraform-resource: 'PortalAppearance#create,update'
@@ -17563,8 +17565,10 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      deprecated: true
       tags:
         - Portal Appearance
+      x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
   '/v2/portals/{portalId}/product-versions/{productVersionId}':
     parameters:
       - $ref: '#/components/parameters/V2ProductVersionId'
@@ -28253,19 +28257,36 @@ components:
       type: object
       properties:
         theme_name:
-          $ref: '#/components/schemas/V2PortalTheme'
+          allOf:
+            - $ref: '#/components/schemas/V2PortalTheme'
+          deprecated: true
+          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
         custom_theme:
-          $ref: '#/components/schemas/V2NullableAppearanceThemeVariables'
+          allOf:
+            - $ref: '#/components/schemas/V2NullableAppearanceThemeVariables'
+          deprecated: true
+          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
         custom_fonts:
-          $ref: '#/components/schemas/V2NullableAppearanceFonts'
+          allOf:
+            - $ref: '#/components/schemas/V2NullableAppearanceFonts'
+          deprecated: true
+          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
         use_custom_fonts:
           description: 'If true, fonts in custom_fonts will be used over the theme''s default fonts'
           type: boolean
+          deprecated: true
           nullable: false
+          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
         text:
-          $ref: '#/components/schemas/V2NullableAppearanceTextVariables'
+          allOf:
+            - $ref: '#/components/schemas/V2NullableAppearanceTextVariables'
+          deprecated: true
+          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
         images:
-          $ref: '#/components/schemas/V2AppearanceImages'
+          allOf:
+            - $ref: '#/components/schemas/V2AppearanceImages'
+          deprecated: true
+          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
       example:
         theme_name: custom
         use_custom_fonts: true
