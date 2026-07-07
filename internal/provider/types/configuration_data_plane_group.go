@@ -12,6 +12,7 @@ type ConfigurationDataPlaneGroup struct {
 	CreatedAt             types.String                                  `tfsdk:"created_at"`
 	EgressIPAddresses     []types.String                                `tfsdk:"egress_ip_addresses"`
 	Environment           []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"environment"`
+	Hostnames             []types.String                                `tfsdk:"hostnames"`
 	ID                    types.String                                  `tfsdk:"id"`
 	PrivateIPAddresses    []types.String                                `tfsdk:"private_ip_addresses"`
 	Provider              types.String                                  `tfsdk:"provider"`

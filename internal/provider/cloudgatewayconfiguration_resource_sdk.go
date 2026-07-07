@@ -64,6 +64,14 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 
 				dataplaneGroups.Environment = append(dataplaneGroups.Environment, environment)
 			}
+			if dataplaneGroupsItem.Hostnames != nil {
+				dataplaneGroups.Hostnames = make([]types.String, 0, len(dataplaneGroupsItem.Hostnames))
+				for _, v := range dataplaneGroupsItem.Hostnames {
+					dataplaneGroups.Hostnames = append(dataplaneGroups.Hostnames, types.StringValue(v))
+				}
+			} else {
+				dataplaneGroups.Hostnames = nil
+			}
 			dataplaneGroups.ID = types.StringValue(dataplaneGroupsItem.ID)
 			if dataplaneGroupsItem.PrivateIPAddresses != nil {
 				dataplaneGroups.PrivateIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.PrivateIPAddresses))
