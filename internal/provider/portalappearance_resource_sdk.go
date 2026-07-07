@@ -18,7 +18,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2GetPortalAppearanceRe
 		if resp.CustomFonts == nil {
 			r.CustomFonts = nil
 		} else {
-			r.CustomFonts = &tfTypes.V2NullableAppearanceFonts{}
+			r.CustomFonts = &tfTypes.V2UpdatePortalAppearanceRequestCustomFonts{}
 			r.CustomFonts.Base = types.StringValue(string(resp.CustomFonts.Base))
 			r.CustomFonts.Code = types.StringValue(string(resp.CustomFonts.Code))
 			r.CustomFonts.Headings = types.StringValue(string(resp.CustomFonts.Headings))
@@ -26,7 +26,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2GetPortalAppearanceRe
 		if resp.CustomTheme == nil {
 			r.CustomTheme = nil
 		} else {
-			r.CustomTheme = &tfTypes.V2NullableAppearanceThemeVariables{}
+			r.CustomTheme = &tfTypes.V2UpdatePortalAppearanceRequestAppearanceThemeVariables{}
 			r.CustomTheme.Colors = &tfTypes.V2AppearanceThemeColorVariables{}
 			r.CustomTheme.Colors.Button = &tfTypes.Button{}
 			r.CustomTheme.Colors.Button.PrimaryFill = &tfTypes.V2AppearanceColorVariable{}
@@ -86,7 +86,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2GetPortalAppearanceRe
 		if resp.Images == nil {
 			r.Images = nil
 		} else {
-			r.Images = &tfTypes.V2AppearanceImages{}
+			r.Images = &tfTypes.V2UpdatePortalAppearanceRequestImages{}
 			if resp.Images.CatalogCover == nil {
 				r.Images.CatalogCover = nil
 			} else {
@@ -112,8 +112,8 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2GetPortalAppearanceRe
 		if resp.Text == nil {
 			r.Text = nil
 		} else {
-			r.Text = &tfTypes.V2NullableAppearanceTextVariables{}
-			r.Text.Catalog = &tfTypes.Catalog{}
+			r.Text = &tfTypes.V2UpdatePortalAppearanceRequestText{}
+			r.Text.Catalog = &tfTypes.V2UpdatePortalAppearanceRequestCatalog{}
 			r.Text.Catalog.PrimaryHeader = types.StringValue(resp.Text.Catalog.PrimaryHeader)
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
@@ -131,7 +131,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2UpdatePortalAppearanc
 		if resp.CustomFonts == nil {
 			r.CustomFonts = nil
 		} else {
-			r.CustomFonts = &tfTypes.V2NullableAppearanceFonts{}
+			r.CustomFonts = &tfTypes.V2UpdatePortalAppearanceRequestCustomFonts{}
 			r.CustomFonts.Base = types.StringValue(string(resp.CustomFonts.Base))
 			r.CustomFonts.Code = types.StringValue(string(resp.CustomFonts.Code))
 			r.CustomFonts.Headings = types.StringValue(string(resp.CustomFonts.Headings))
@@ -139,7 +139,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2UpdatePortalAppearanc
 		if resp.CustomTheme == nil {
 			r.CustomTheme = nil
 		} else {
-			r.CustomTheme = &tfTypes.V2NullableAppearanceThemeVariables{}
+			r.CustomTheme = &tfTypes.V2UpdatePortalAppearanceRequestAppearanceThemeVariables{}
 			r.CustomTheme.Colors = &tfTypes.V2AppearanceThemeColorVariables{}
 			r.CustomTheme.Colors.Button = &tfTypes.Button{}
 			r.CustomTheme.Colors.Button.PrimaryFill = &tfTypes.V2AppearanceColorVariable{}
@@ -199,7 +199,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2UpdatePortalAppearanc
 		if resp.Images == nil {
 			r.Images = nil
 		} else {
-			r.Images = &tfTypes.V2AppearanceImages{}
+			r.Images = &tfTypes.V2UpdatePortalAppearanceRequestImages{}
 			if resp.Images.CatalogCover == nil {
 				r.Images.CatalogCover = nil
 			} else {
@@ -225,8 +225,8 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2UpdatePortalAppearanc
 		if resp.Text == nil {
 			r.Text = nil
 		} else {
-			r.Text = &tfTypes.V2NullableAppearanceTextVariables{}
-			r.Text.Catalog = &tfTypes.Catalog{}
+			r.Text = &tfTypes.V2UpdatePortalAppearanceRequestText{}
+			r.Text.Catalog = &tfTypes.V2UpdatePortalAppearanceRequestCatalog{}
 			r.Text.Catalog.PrimaryHeader = types.StringValue(resp.Text.Catalog.PrimaryHeader)
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
@@ -274,13 +274,13 @@ func (r *PortalAppearanceResourceModel) ToOperationsUpdatePortalAppearanceReques
 func (r *PortalAppearanceResourceModel) ToSharedV2UpdatePortalAppearanceRequest(ctx context.Context) (*shared.V2UpdatePortalAppearanceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	themeName := new(shared.V2PortalTheme)
+	themeName := new(shared.V2UpdatePortalAppearanceRequestThemeName)
 	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
-		*themeName = shared.V2PortalTheme(r.ThemeName.ValueString())
+		*themeName = shared.V2UpdatePortalAppearanceRequestThemeName(r.ThemeName.ValueString())
 	} else {
 		themeName = nil
 	}
-	var customTheme *shared.V2NullableAppearanceThemeVariables
+	var customTheme *shared.V2UpdatePortalAppearanceRequestAppearanceThemeVariables
 	if r.CustomTheme != nil {
 		var value string
 		value = r.CustomTheme.Colors.Section.Header.Value.ValueString()
@@ -531,16 +531,16 @@ func (r *PortalAppearanceResourceModel) ToSharedV2UpdatePortalAppearanceRequest(
 			Text:    text,
 			Button:  button,
 		}
-		customTheme = &shared.V2NullableAppearanceThemeVariables{
+		customTheme = &shared.V2UpdatePortalAppearanceRequestAppearanceThemeVariables{
 			Colors: colors,
 		}
 	}
-	var customFonts *shared.V2NullableAppearanceFonts
+	var customFonts *shared.V2UpdatePortalAppearanceRequestCustomFonts
 	if r.CustomFonts != nil {
 		base := shared.V2AppearanceFontName(r.CustomFonts.Base.ValueString())
 		code := shared.V2AppearanceFontName(r.CustomFonts.Code.ValueString())
 		headings1 := shared.V2AppearanceFontName(r.CustomFonts.Headings.ValueString())
-		customFonts = &shared.V2NullableAppearanceFonts{
+		customFonts = &shared.V2UpdatePortalAppearanceRequestCustomFonts{
 			Base:     base,
 			Code:     code,
 			Headings: headings1,
@@ -552,7 +552,7 @@ func (r *PortalAppearanceResourceModel) ToSharedV2UpdatePortalAppearanceRequest(
 	} else {
 		useCustomFonts = nil
 	}
-	var text1 *shared.V2NullableAppearanceTextVariables
+	var text1 *shared.V2UpdatePortalAppearanceRequestText
 	if r.Text != nil {
 		var welcomeMessage string
 		welcomeMessage = r.Text.Catalog.WelcomeMessage.ValueString()
@@ -560,15 +560,15 @@ func (r *PortalAppearanceResourceModel) ToSharedV2UpdatePortalAppearanceRequest(
 		var primaryHeader string
 		primaryHeader = r.Text.Catalog.PrimaryHeader.ValueString()
 
-		catalog := shared.Catalog{
+		catalog := shared.V2UpdatePortalAppearanceRequestCatalog{
 			WelcomeMessage: welcomeMessage,
 			PrimaryHeader:  primaryHeader,
 		}
-		text1 = &shared.V2NullableAppearanceTextVariables{
+		text1 = &shared.V2UpdatePortalAppearanceRequestText{
 			Catalog: catalog,
 		}
 	}
-	var images *shared.V2AppearanceImages
+	var images *shared.V2UpdatePortalAppearanceRequestImages
 	if r.Images != nil {
 		var logo *shared.V2AppearanceImage
 		if r.Images.Logo != nil {
@@ -618,7 +618,7 @@ func (r *PortalAppearanceResourceModel) ToSharedV2UpdatePortalAppearanceRequest(
 				Filename: filename2,
 			}
 		}
-		images = &shared.V2AppearanceImages{
+		images = &shared.V2UpdatePortalAppearanceRequestImages{
 			Logo:         logo,
 			Favicon:      favicon,
 			CatalogCover: catalogCover,

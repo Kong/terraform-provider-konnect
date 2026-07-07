@@ -2,7 +2,7 @@
 
 package types
 
-type V2AppearanceImages struct {
+type V2UpdatePortalAppearanceRequestImages struct {
 	CatalogCover *V2AppearanceImage `tfsdk:"catalog_cover"`
 	Favicon      *V2AppearanceImage `tfsdk:"favicon"`
 	Logo         *V2AppearanceImage `tfsdk:"logo"`
