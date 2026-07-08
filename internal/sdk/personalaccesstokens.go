@@ -33,7 +33,7 @@ func newPersonalAccessTokens(rootSDK *Konnect, sdkConfig config.SDKConfiguration
 // GetOrganizationsPersonalAccessTokenSettings - Get personal access token policy settings
 // Get personal access token policy settings. Only organization administrators are authorized  to perform this action.
 //
-// This operation requires one of [Security.PersonalAccessToken], [Security.KonnectAccessToken], or [Security.ServiceAccessToken] to be set via [WithSecurity].
+// This operation requires one of [Security.PersonalAccessToken], [Security.KonnectAccessToken], [Security.ServiceAccessToken], or [Security.SystemAccountAccessToken] to be set via [WithSecurity].
 func (s *PersonalAccessTokens) GetOrganizationsPersonalAccessTokenSettings(ctx context.Context, request operations.GetOrganizationsPersonalAccessTokenSettingsRequest, opts ...operations.Option) (*operations.GetOrganizationsPersonalAccessTokenSettingsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -92,7 +92,7 @@ func (s *PersonalAccessTokens) GetOrganizationsPersonalAccessTokenSettings(ctx c
 
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "PersonalAccessToken", "KonnectAccessToken", "ServiceAccessToken"); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "PersonalAccessToken", "KonnectAccessToken", "ServiceAccessToken", "SystemAccountAccessToken"); err != nil {
 		return nil, err
 	}
 
@@ -284,7 +284,7 @@ func (s *PersonalAccessTokens) GetOrganizationsPersonalAccessTokenSettings(ctx c
 // UpdatePersonalAccessTokenSettings - Update personal access token policy settings
 // Update personal access token policy settings. Only organization administrators are authorized  to perform this action.
 //
-// This operation requires either [Security.PersonalAccessToken] or [Security.KonnectAccessToken] to be set via [WithSecurity].
+// This operation requires one of [Security.PersonalAccessToken], [Security.KonnectAccessToken], or [Security.SystemAccountAccessToken] to be set via [WithSecurity].
 func (s *PersonalAccessTokens) UpdatePersonalAccessTokenSettings(ctx context.Context, request operations.UpdatePersonalAccessTokenSettingsRequest, opts ...operations.Option) (*operations.UpdatePersonalAccessTokenSettingsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -350,7 +350,7 @@ func (s *PersonalAccessTokens) UpdatePersonalAccessTokenSettings(ctx context.Con
 		req.Header.Set("Content-Type", reqContentType)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "PersonalAccessToken", "KonnectAccessToken"); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "PersonalAccessToken", "KonnectAccessToken", "SystemAccountAccessToken"); err != nil {
 		return nil, err
 	}
 

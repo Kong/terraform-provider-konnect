@@ -18656,6 +18656,7 @@ paths:
         - personalAccessToken: []
         - konnectAccessToken: []
         - serviceAccessToken: []
+        - systemAccountAccessToken: []
       tags:
         - Personal Access Tokens
     patch:
@@ -18679,6 +18680,7 @@ paths:
       security:
         - personalAccessToken: []
         - konnectAccessToken: []
+        - systemAccountAccessToken: []
       tags:
         - Personal Access Tokens
   /v3/portals:
