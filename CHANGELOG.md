@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.21.0
+> Released 2026/07/??
+
+# Features
+* Add support for `konnect_organization_personal_access_token_settings` resource.
+
+
 ## 3.20.0
 > Released 2026/07/06
 
