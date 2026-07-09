@@ -75,7 +75,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						Description: `The name of the font to render in the browser. possible known values include one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
 					},
 				},
-				DeprecationMessage: `This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
 			},
 			"custom_theme": schema.SingleNestedAttribute{
 				Computed: true,
@@ -511,7 +511,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 				},
-				DeprecationMessage: `This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
 			},
 			"images": schema.SingleNestedAttribute{
 				Computed: true,
@@ -586,7 +586,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						Description: `The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.`,
 					},
 				},
-				DeprecationMessage: `This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
@@ -622,18 +622,18 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 				},
-				DeprecationMessage: `This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
 			},
 			"theme_name": schema.StringAttribute{
 				Computed:           true,
 				Optional:           true,
-				DeprecationMessage: `This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
 				Description:        `possible known values include one of ["mint_rocket", "dark_mode", "custom"]`,
 			},
 			"use_custom_fonts": schema.BoolAttribute{
 				Computed:           true,
 				Optional:           true,
-				DeprecationMessage: `This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
 				Description:        `If true, fonts in custom_fonts will be used over the theme's default fonts`,
 			},
 		},

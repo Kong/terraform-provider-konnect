@@ -34,7 +34,7 @@ func newPortalAppearance(rootSDK *Konnect, sdkConfig config.SDKConfiguration, ho
 // GetPortalAppearance - Get Appearance Configuration
 // Returns the current portal appearance configuration including any custom theme, colors, fonts, and image settings. Portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 func (s *PortalAppearance) GetPortalAppearance(ctx context.Context, request operations.GetPortalAppearanceRequest, opts ...operations.Option) (*operations.GetPortalAppearanceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -304,7 +304,7 @@ func (s *PortalAppearance) GetPortalAppearance(ctx context.Context, request oper
 // UpdatePortalAppearance - Update Appearance Configuration
 // Updates the current appearance configuration for this portal including setting pre-defined or custom themes, fonts, colors, and images. Note that portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 func (s *PortalAppearance) UpdatePortalAppearance(ctx context.Context, request operations.UpdatePortalAppearanceRequest, opts ...operations.Option) (*operations.UpdatePortalAppearanceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

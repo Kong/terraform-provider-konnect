@@ -8,7 +8,7 @@ import (
 
 // ThemeName - Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type ThemeName string
 
 const (
@@ -34,7 +34,7 @@ func (e *ThemeName) IsExact() bool {
 
 // AppearanceThemeVariables - Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type AppearanceThemeVariables struct {
 	Colors V2AppearanceThemeColorVariables `json:"colors"`
 }
@@ -59,7 +59,7 @@ func (a *AppearanceThemeVariables) GetColors() V2AppearanceThemeColorVariables {
 
 // CustomFonts - Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type CustomFonts struct {
 	// The name of the font to render in the browser.
 	Base V2AppearanceFontName `json:"base"`
@@ -133,7 +133,7 @@ func (c *Catalog) GetPrimaryHeader() string {
 
 // V2GetPortalAppearanceResponseText - Values to display for customizable text in the portal user interface
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type V2GetPortalAppearanceResponseText struct {
 	Catalog Catalog `json:"catalog"`
 }
@@ -161,7 +161,7 @@ func (v *V2GetPortalAppearanceResponseText) GetCatalog() Catalog {
 
 // Images - A collection of binary image data to customize images in the portal
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type Images struct {
 	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
 	Logo *V2AppearanceImage `json:"logo"`
@@ -204,19 +204,19 @@ func (i *Images) GetCatalogCover() *V2AppearanceImage {
 }
 
 type V2GetPortalAppearanceResponse struct {
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	ThemeName ThemeName `json:"theme_name"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomTheme *AppearanceThemeVariables `json:"custom_theme"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomFonts *CustomFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
 	//
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	UseCustomFonts bool `json:"use_custom_fonts"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Text *V2GetPortalAppearanceResponseText `json:"text"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Images *Images `json:"images"`
 }
 

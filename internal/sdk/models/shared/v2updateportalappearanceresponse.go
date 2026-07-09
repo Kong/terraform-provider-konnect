@@ -8,7 +8,7 @@ import (
 
 // V2UpdatePortalAppearanceResponseThemeName - Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type V2UpdatePortalAppearanceResponseThemeName string
 
 const (
@@ -34,7 +34,7 @@ func (e *V2UpdatePortalAppearanceResponseThemeName) IsExact() bool {
 
 // V2UpdatePortalAppearanceResponseAppearanceThemeVariables - Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type V2UpdatePortalAppearanceResponseAppearanceThemeVariables struct {
 	Colors V2AppearanceThemeColorVariables `json:"colors"`
 }
@@ -62,7 +62,7 @@ func (v *V2UpdatePortalAppearanceResponseAppearanceThemeVariables) GetColors() V
 
 // V2UpdatePortalAppearanceResponseCustomFonts - Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type V2UpdatePortalAppearanceResponseCustomFonts struct {
 	// The name of the font to render in the browser.
 	Base V2AppearanceFontName `json:"base"`
@@ -142,7 +142,7 @@ func (v *V2UpdatePortalAppearanceResponseCatalog) GetPrimaryHeader() string {
 
 // V2UpdatePortalAppearanceResponseText - Values to display for customizable text in the portal user interface
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type V2UpdatePortalAppearanceResponseText struct {
 	Catalog V2UpdatePortalAppearanceResponseCatalog `json:"catalog"`
 }
@@ -170,7 +170,7 @@ func (v *V2UpdatePortalAppearanceResponseText) GetCatalog() V2UpdatePortalAppear
 
 // V2UpdatePortalAppearanceResponseImages - A collection of binary image data to customize images in the portal
 //
-// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 type V2UpdatePortalAppearanceResponseImages struct {
 	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
 	Logo *V2AppearanceImage `json:"logo"`
@@ -216,19 +216,19 @@ func (v *V2UpdatePortalAppearanceResponseImages) GetCatalogCover() *V2Appearance
 // #endregion class-body-v2updateportalappearanceresponseimages
 
 type V2UpdatePortalAppearanceResponse struct {
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	ThemeName V2UpdatePortalAppearanceResponseThemeName `json:"theme_name"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomTheme *V2UpdatePortalAppearanceResponseAppearanceThemeVariables `json:"custom_theme"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomFonts *V2UpdatePortalAppearanceResponseCustomFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
 	//
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	UseCustomFonts bool `json:"use_custom_fonts"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Text *V2UpdatePortalAppearanceResponseText `json:"text"`
-	// Deprecated: This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release..
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Images *V2UpdatePortalAppearanceResponseImages `json:"images"`
 }
 
