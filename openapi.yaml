@@ -3026,6 +3026,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/MeshControlPlaneFilter'
       responses:
         '200':
           $ref: '#/components/responses/ListMeshControlPlanesResponse'
@@ -17538,7 +17539,7 @@ paths:
       deprecated: true
       tags:
         - Portal Appearance
-      x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+      x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
     patch:
       x-speakeasy-entity-operation:
         terraform-resource: 'PortalAppearance#create,update'
@@ -17568,7 +17569,7 @@ paths:
       deprecated: true
       tags:
         - Portal Appearance
-      x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+      x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
   '/v2/portals/{portalId}/product-versions/{productVersionId}':
     parameters:
       - $ref: '#/components/parameters/V2ProductVersionId'
@@ -20785,6 +20786,14 @@ components:
       name: list_consumers
       schema:
         type: boolean
+    MeshControlPlaneFilter:
+      name: filter
+      description: Filters a collection of control planes.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/MeshControlPlaneFilterParameters'
+      style: deepObject
     MTLSAuthId:
       description: ID of the MTLS-auth credential to lookup
       example: ''
@@ -22052,6 +22061,14 @@ components:
             - 71.78.149.75
             - 91.149.112.244
             - 51.235.15.121
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        hostnames:
+          description: List of hostnames for proxying to the data-plane group.
+          type: array
+          items:
+            type: string
           default: null
           nullable: true
           x-speakeasy-param-computed: false
@@ -24582,6 +24599,55 @@ components:
       type: string
       example: A control plane to handle traffic on development environment.
       maxLength: 250
+    MeshControlPlaneFilterParameters:
+      type: object
+      properties:
+        name:
+          description: 'Filter using **one** of the following operators: `eq`, `contains`'
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              description: The field exactly matches the provided value.
+              type: string
+            contains:
+              description: The field contains the provided value.
+              type: string
+        labels:
+          $ref: '#/components/schemas/LabelsFieldFilter'
+      additionalProperties: false
+      title: MeshControlPlaneFilterParameters
+    StringFieldFilter:
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
+      type: object
+      properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+        contains:
+          description: The field contains the provided value.
+          type: string
+        ocontains:
+          description: The field contains any of the provided values.
+          type: string
+        oeq:
+          description: The field matches any of the provided values.
+          type: string
+        neq:
+          description: The field does not match the provided value.
+          type: string
+      additionalProperties: false
+    LabelsFieldFilter:
+      allOf:
+        - title: LabelsFieldFilter
+          description: |
+            Filters on the resource's `labels` field. Filters must use dot-notation to identify
+            the label key that will be used to filter the results. For example:
+              - `filter[labels.owner]`
+              - `filter[labels.owner][neq]=kong`
+              - `filter[labels.env]=dev`
+              - `filter[labels.env][ocontains]=dev,test`
+        - $ref: '#/components/schemas/StringFieldFilter'
     APIProductPortals:
       description: The list of portals which this API product is published to
       type: array
@@ -25312,26 +25378,6 @@ components:
         - id
         - control_plane_id
       x-speakeasy-param-computed: false
-    StringFieldFilter:
-      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
-      type: object
-      properties:
-        eq:
-          description: The field exactly matches the provided value.
-          type: string
-        contains:
-          description: The field contains the provided value.
-          type: string
-        ocontains:
-          description: The field contains any of the provided values.
-          type: string
-        oeq:
-          description: The field matches any of the provided values.
-          type: string
-        neq:
-          description: The field does not match the provided value.
-          type: string
-      additionalProperties: false
     PublicLabels:
       description: |
         Public labels store information about an entity that can be used for filtering a list of objects.
@@ -28260,33 +28306,33 @@ components:
           allOf:
             - $ref: '#/components/schemas/V2PortalTheme'
           deprecated: true
-          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+          x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
         custom_theme:
           allOf:
             - $ref: '#/components/schemas/V2NullableAppearanceThemeVariables'
           deprecated: true
-          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+          x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
         custom_fonts:
           allOf:
             - $ref: '#/components/schemas/V2NullableAppearanceFonts'
           deprecated: true
-          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+          x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
         use_custom_fonts:
           description: 'If true, fonts in custom_fonts will be used over the theme''s default fonts'
           type: boolean
           deprecated: true
           nullable: false
-          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+          x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
         text:
           allOf:
             - $ref: '#/components/schemas/V2NullableAppearanceTextVariables'
           deprecated: true
-          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+          x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
         images:
           allOf:
             - $ref: '#/components/schemas/V2AppearanceImages'
           deprecated: true
-          x-speakeasy-deprecation-message: 'This resource relies on the deprecated Konnect v2 portal APIs. Use the konnect_portal_customization resource, which targets the v3 portal APIs, instead. This resource will be removed in a future release.'
+          x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
       example:
         theme_name: custom
         use_custom_fonts: true
