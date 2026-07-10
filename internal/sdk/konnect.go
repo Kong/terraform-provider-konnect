@@ -301,14 +301,15 @@ type Konnect struct {
 	//
 	PortalProductVersions *PortalProductVersions
 	// APIs related to configuration of Konnect Developer Portals.
-	Portals           *Portals
-	API               *API
-	APIDocumentation  *APIDocumentation
-	APIImplementation *APIImplementation
-	APIPublication    *APIPublication
-	APISpecification  *APISpecification
-	APIVersion        *APIVersion
-	AuthSettings      *AuthSettings
+	Portals              *Portals
+	API                  *API
+	APIDocumentation     *APIDocumentation
+	APIImplementation    *APIImplementation
+	APIPublication       *APIPublication
+	APISpecification     *APISpecification
+	APIVersion           *APIVersion
+	AuthSettings         *AuthSettings
+	PersonalAccessTokens *PersonalAccessTokens
 	// APIs for managing static assets for Konnect Developer Portals.
 	Assets          *Assets
 	PortalAuditLogs *PortalAuditLogs
@@ -505,6 +506,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthSettings = newAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
