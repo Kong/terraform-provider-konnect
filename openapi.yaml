@@ -18627,6 +18627,62 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Auth Settings
+  '/v3/organizations/{organizationId}/personal-access-token-settings':
+    parameters:
+      - name: organizationId
+        in: path
+        description: A UUID representing an organization.
+        required: true
+        schema:
+          description: UUID representing an organization
+          type: string
+          format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrganizationPersonalAccessTokenSettings#read
+        terraform-datasource: null
+      operationId: get-organizations-personal-access-token-settings
+      summary: Get personal access token policy settings
+      description: Get personal access token policy settings. Only organization administrators are authorized  to perform this action.
+      responses:
+        '200':
+          $ref: '#/components/responses/PersonalAccessTokenSettingsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - personalAccessToken: []
+        - konnectAccessToken: []
+        - serviceAccessToken: []
+        - systemAccountAccessToken: []
+      tags:
+        - Personal Access Tokens
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'OrganizationPersonalAccessTokenSettings#create,update'
+        terraform-datasource: null
+      operationId: update-personal-access-token-settings
+      summary: Update personal access token policy settings
+      description: Update personal access token policy settings. Only organization administrators are authorized  to perform this action.
+      requestBody:
+        $ref: '#/components/requestBodies/PersonalAccessTokenSettingsUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PersonalAccessTokenSettingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - personalAccessToken: []
+        - konnectAccessToken: []
+        - systemAccountAccessToken: []
+      tags:
+        - Personal Access Tokens
   /v3/portals:
     get:
       x-speakeasy-entity-operation:
@@ -22048,6 +22104,14 @@ components:
             - 71.78.149.75
             - 91.149.112.244
             - 51.235.15.121
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        hostnames:
+          description: List of hostnames for proxying to the data-plane group.
+          type: array
+          items:
+            type: string
           default: null
           nullable: true
           x-speakeasy-param-computed: false
@@ -34502,6 +34566,10 @@ components:
               type: string
               example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
               x-speakeasy-param-computed: true
+    MaxPATExpirationPeriodDays:
+      type: integer
+      maximum: 365
+      minimum: 1
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -74969,6 +75037,23 @@ components:
               - client_secret
               - grant_types
               - response_types
+    PersonalAccessTokenSettingsUpdateRequest:
+      description: Request body schema for updating personal access token settings.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationPersonalAccessTokenSettings
+            type: object
+            properties:
+              pats_enabled:
+                type: boolean
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              max_expiration_period_days:
+                $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
+            additionalProperties: false
+            minProperties: 1
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -76557,6 +76642,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    PersonalAccessTokenSettingsResponse:
+      description: Response containing personal access token settings.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationPersonalAccessTokenSettings
+            type: object
+            properties:
+              pats_enabled:
+                type: boolean
+                default: true
+              max_expiration_period_days:
+                $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
+            additionalProperties: false
+            required:
+              - pats_enabled
+              - max_expiration_period_days
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -76765,6 +76867,7 @@ tags:
   - name: System Accounts - Access Tokens
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
+  - name: Personal Access Tokens
   - name: Serverless Cloud Gateways
   - name: Audit Logs
   - name: Realms
