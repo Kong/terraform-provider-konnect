@@ -3026,6 +3026,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/MeshControlPlaneFilter'
       responses:
         '200':
           $ref: '#/components/responses/ListMeshControlPlanesResponse'
@@ -18774,6 +18775,212 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portals
+  '/v3/portals/{portalId}/applications':
+    post:
+      x-speakeasy-entity-operation: PortalApplication#create
+      operationId: create-application
+      summary: Create Application
+      description: 'Creates a new application for this portal. The application must be assigned to a developer or a team. An application can be registered for various APIs, issuing credentials for API access. If using DCR, an application will be linked to an Identity Provider''s application by its `client_id`.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplication'
+      responses:
+        '201':
+          $ref: '#/components/responses/GetApplication'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Applications
+      x-terraform-id-to-object:
+        auth_strategy_id: auth_strategy.id
+  '/v3/portals/{portalId}/applications/{applicationId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/ApplicationId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalApplication#read
+        terraform-datasource: null
+      operationId: get-application
+      summary: Get an Application by Portal
+      description: 'Returns the configuration of a single application in this portal. If an application is linked to a DCR Provider, the `dcr_provider.id` and `client_id` can be used to correlate it. An application manages a set of credentials and registrations for specific APIs.'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplication'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Applications
+    patch:
+      x-speakeasy-entity-operation: PortalApplication#update
+      operationId: update-application
+      summary: Update Application
+      description: Updates an application.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplication'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplication'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Applications
+    delete:
+      x-speakeasy-entity-operation: PortalApplication#delete
+      operationId: delete-application
+      summary: Delete Application by Portal
+      description: 'Delete a single application in this portal, along with its registrations and credentials.'
+      responses:
+        '204':
+          description: The application has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Applications
+  '/v3/portals/{portalId}/applications/{applicationId}/registrations':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - name: applicationId
+        in: path
+        description: ID of the application.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: application.id
+      - $ref: '#/components/parameters/ApplicationId'
+    post:
+      x-speakeasy-entity-operation: PortalApplicationRegistration#create
+      operationId: create-application-registration
+      summary: Create Registration
+      description: Creates a new registration for this application to access a specific API. Registrations created through the portal management API will respect the auto-approve settings of the portal and/or API publication. API publications that do not use auto-approve must be manually approved by an administrator after creation.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplicationRegistration'
+      responses:
+        '201':
+          $ref: '#/components/responses/GetApplicationRegistration'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+      tags:
+        - Application Registrations
+      x-terraform-id-to-object:
+        api_id: api.id
+  '/v3/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - name: applicationId
+        in: path
+        description: ID of the application.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: application.id
+      - $ref: '#/components/parameters/ApplicationId'
+      - $ref: '#/components/parameters/RegistrationId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalApplicationRegistration#read
+        terraform-datasource: null
+      operationId: get-application-registration
+      summary: Get a Registration
+      description: Returns information about an application's registration status for a particular API.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplicationRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Application Registrations
+    patch:
+      x-speakeasy-entity-operation: PortalApplicationRegistration#update
+      operationId: update-application-registration
+      summary: Update Registration
+      description: 'Updates the status of a particular application registration to an API. Approved application registrations will allow API traffic to the corresponding API. Revoked, rejected, or pending will not allow API traffic.'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplicationRegistration'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateApplicationRegistration'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Application Registrations
+    delete:
+      x-speakeasy-entity-operation: PortalApplicationRegistration#delete
+      operationId: delete-application-registration
+      summary: Delete Registration
+      description: |-
+        Deletes an application registration, which if currently approved will immediately block API traffic to the API.
+        Note: Developers can request a new application registration for the given API as long as they have RBAC access to consume.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Application Registrations
   '/v3/portals/{portalId}/assets/favicon':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -19098,6 +19305,99 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Customization
+  '/v3/portals/{portalId}/developers':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation: PortalDeveloper#create
+      operationId: create-developer
+      summary: Create Developer Account
+      description: Creates a new developer account in the specified portal. SAML login is currently not supported.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDeveloper'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateDeveloperResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+      tags:
+        - Portal Developers
+  '/v3/portals/{portalId}/developers/{developerId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/DeveloperId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalDeveloper#read
+        terraform-datasource: null
+      operationId: get-developer
+      summary: Get a Developer
+      description: 'Returns information about a single developer in this portal. Each developer manages a set applications, providing them credentials to access registered APIs. Developer registration access can be limited to specific APIs using RBAC.'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDeveloper'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Developers
+    patch:
+      x-speakeasy-entity-operation: PortalDeveloper#update
+      operationId: update-developer
+      summary: Update Developer
+      description: 'Updates the status of a particular developer. Approved developers have access to login to the portal. Revoked, rejected, or pending are not allowed to login. Even if a developer''s status is no longer approved, they will still be able to using any existing credentials generated while they were approved, until each application registration is revoked or deleted.'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateDeveloper'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateDeveloper'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Developers
+    delete:
+      x-speakeasy-entity-operation: PortalDeveloper#delete
+      operationId: delete-developer
+      summary: Delete Developer
+      description: 'Deletes a developer, which will discontinue their ability to login, view any non-public resources, and delete all applications owned by them. All credentials issued to the developer will no longer provide access to any APIs. A deleted developer''s unique email must be re-registered and approved to gain access again.'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Developers
   '/v3/portals/{portalId}/ip-allow-list':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -20405,6 +20705,15 @@ components:
       in: path
       required: true
       description: The UUID API identifier
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: ID of the application.
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
     AuditLogDestinationId:
       schema:
         type: string
@@ -20637,6 +20946,16 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
+    DeveloperId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: developerId
+      in: path
+      required: true
+      description: ID of the developer.
+      x-speakeasy-match: id
     DocumentId:
       schema:
         type: string
@@ -20781,6 +21100,14 @@ components:
       name: list_consumers
       schema:
         type: boolean
+    MeshControlPlaneFilter:
+      name: filter
+      description: Filters a collection of control planes.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/MeshControlPlaneFilterParameters'
+      style: deepObject
     MTLSAuthId:
       description: ID of the MTLS-auth credential to lookup
       example: ''
@@ -20888,6 +21215,15 @@ components:
       schema:
         type: string
         format: uuid
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: ID of the application registration.
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
     RouteId:
       description: ID of the Route to lookup
       example: a4326a41-aa12-44e3-93e4-6b6e58bfb9d7
@@ -22048,6 +22384,14 @@ components:
             - 71.78.149.75
             - 91.149.112.244
             - 51.235.15.121
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        hostnames:
+          description: List of hostnames for proxying to the data-plane group.
+          type: array
+          items:
+            type: string
           default: null
           nullable: true
           x-speakeasy-param-computed: false
@@ -24578,6 +24922,55 @@ components:
       type: string
       example: A control plane to handle traffic on development environment.
       maxLength: 250
+    MeshControlPlaneFilterParameters:
+      type: object
+      properties:
+        name:
+          description: 'Filter using **one** of the following operators: `eq`, `contains`'
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              description: The field exactly matches the provided value.
+              type: string
+            contains:
+              description: The field contains the provided value.
+              type: string
+        labels:
+          $ref: '#/components/schemas/LabelsFieldFilter'
+      additionalProperties: false
+      title: MeshControlPlaneFilterParameters
+    StringFieldFilter:
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
+      type: object
+      properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+        contains:
+          description: The field contains the provided value.
+          type: string
+        ocontains:
+          description: The field contains any of the provided values.
+          type: string
+        oeq:
+          description: The field matches any of the provided values.
+          type: string
+        neq:
+          description: The field does not match the provided value.
+          type: string
+      additionalProperties: false
+    LabelsFieldFilter:
+      allOf:
+        - title: LabelsFieldFilter
+          description: |
+            Filters on the resource's `labels` field. Filters must use dot-notation to identify
+            the label key that will be used to filter the results. For example:
+              - `filter[labels.owner]`
+              - `filter[labels.owner][neq]=kong`
+              - `filter[labels.env]=dev`
+              - `filter[labels.env][ocontains]=dev,test`
+        - $ref: '#/components/schemas/StringFieldFilter'
     APIProductPortals:
       description: The list of portals which this API product is published to
       type: array
@@ -25308,26 +25701,6 @@ components:
         - id
         - control_plane_id
       x-speakeasy-param-computed: false
-    StringFieldFilter:
-      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
-      type: object
-      properties:
-        eq:
-          description: The field exactly matches the provided value.
-          type: string
-        contains:
-          description: The field contains the provided value.
-          type: string
-        ocontains:
-          description: The field contains any of the provided values.
-          type: string
-        oeq:
-          description: The field matches any of the provided values.
-          type: string
-        neq:
-          description: The field does not match the provided value.
-          type: string
-      additionalProperties: false
     PublicLabels:
       description: |
         Public labels store information about an entity that can be used for filtering a list of objects.
@@ -25405,10 +25778,24 @@ components:
         - published
         - unpublished
       x-speakeasy-unknown-values: allow
+    AuthStrategyPrincipals:
+      description: |
+        Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+        applications; stored values may be set for any auth strategy in the organization.
+      type: object
+      properties:
+        enabled:
+          description: Whether application principals are enabled for this auth strategy.
+          type: boolean
+          default: false
+      additionalProperties: false
+      required:
+        - enabled
+      title: AuthStrategyPrincipals
     AppAuthStrategyConfigKeyAuth:
       description: |
-        The most basic mode to configure an Application Auth Strategy for an API Product Version. 
-        Using this mode will allow developers to generate API keys that will authenticate their application requests. 
+        The most basic mode to configure an Application Auth Strategy for an API Product Version.
+        Using this mode will allow developers to generate API keys that will authenticate their application requests.
         Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
       type: object
       properties:
@@ -25484,9 +25871,9 @@ components:
       title: PartialAppAuthStrategyConfigKeyAuth
     PartialAppAuthStrategyConfigOpenIDConnect:
       description: |
-        A more advanced mode to configure an API Product Version’s Application Auth Strategy. 
-        Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests. 
-        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy. 
+        A more advanced mode to configure an API Product Version’s Application Auth Strategy.
+        Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
+        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
         An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
       type: object
       properties:
@@ -25528,9 +25915,9 @@ components:
       title: PartialAppAuthStrategyConfigOpenIDConnect
     AppAuthStrategyConfigOpenIDConnect:
       description: |
-        A more advanced mode to configure an API Product Version’s Application Auth Strategy. 
-        Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests. 
-        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy. 
+        A more advanced mode to configure an API Product Version’s Application Auth Strategy.
+        Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
+        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
         An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
       type: object
       properties:
@@ -25586,6 +25973,8 @@ components:
             - key-auth
         labels:
           $ref: '#/components/schemas/Labels'
+        principals:
+          $ref: '#/components/schemas/AuthStrategyPrincipals'
       additionalProperties: false
       required:
         - name
@@ -25663,6 +26052,8 @@ components:
           default: true
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        principals:
+          $ref: '#/components/schemas/AuthStrategyPrincipals'
       additionalProperties: false
       required:
         - id
@@ -25705,6 +26096,8 @@ components:
           x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
+        principals:
+          $ref: '#/components/schemas/AuthStrategyPrincipals'
       additionalProperties: false
       required:
         - name
@@ -25782,6 +26175,8 @@ components:
           type: boolean
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        principals:
+          $ref: '#/components/schemas/AuthStrategyPrincipals'
       additionalProperties: false
       required:
         - id
@@ -25848,6 +26243,8 @@ components:
           oneOf:
             - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIdConnect'
             - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
+        principals:
+          $ref: '#/components/schemas/AuthStrategyPrincipals'
       additionalProperties: false
       title: UpdateAppAuthStrategyRequest
     UpdateAppAuthStrategyRequestOpenIdConnect:
@@ -28529,6 +28926,94 @@ components:
         - data
       title: ReplacePortalImageAsset
       x-speakeasy-param-computed: false
+    CreateDeveloperRequest:
+      description: Request body for creating a developer in a portal.
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          maxLength: 255
+        status:
+          description: 'When omitted, the portal''s `auto_approve_developers` setting determines the initial status. Set this property to override the portal default with any valid developer status.'
+          type: string
+          example: approved
+          enum:
+            - approved
+            - pending
+            - revoked
+            - rejected
+          title: DeveloperStatus
+          x-speakeasy-unknown-values: allow
+        send_invitation_email:
+          description: 'When true, sends an invitation email to the developer. Default is false; no emails are sent unless explicitly requested.'
+          type: boolean
+          default: false
+      example:
+        email: developer@example.com
+        full_name: Developer Name
+      additionalProperties: false
+      required:
+        - email
+        - full_name
+      title: CreateDeveloperRequest
+    UpdateDeveloperRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+      example:
+        status: approved
+      additionalProperties: false
+      title: UpdateDeveloperRequest
+    PortalDeveloper:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          maxLength: 255
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+      example:
+        id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+        email: developer@example.com
+        full_name: Jane Dev
+        status: approved
+        created_at: '2022-11-15T20:37:41.457Z'
+        updated_at: '2022-11-15T20:37:47.456Z'
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - email
+        - full_name
+        - status
+      title: PortalDeveloper
+    DeveloperStatus:
+      description: 'The status of a developer in a portal. Approved developers can log in, create applications, and view and register for products they have access to. Pending, revoked, and rejected developers cannot login or view any non-public portal information, or create or modify applications or registrations.'
+      type: string
+      example: approved
+      enum:
+        - approved
+        - pending
+        - revoked
+        - rejected
+      title: DeveloperStatus
+      x-speakeasy-unknown-values: allow
     PageSlug:
       description: |
         The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
@@ -28769,6 +29254,378 @@ components:
         - name
         - content
       title: CreatePortalSnippetRequest
+    CreateApplicationRequest:
+      type: object
+      properties:
+        name:
+          description: The name of the application.
+          type: string
+          maxLength: 255
+        description:
+          description: A description of the application.
+          type: string
+          maxLength: 255
+          nullable: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        dcr_client_id:
+          description: |
+            If using a DCR auth strategy, set this property to link the portal application to an existing
+            client from the DCR provider, instead of having Konnect create a new client.
+
+            This allows importing existing clients from an Identity Provider into Konnect, allowing
+            them to be controlled through DCR flows in the portal and use existing client secrets
+            for API access.
+
+            The value must be a valid client ID in the DCR provider associated with the auth strategy.
+            For some DCR providers, if the client ID is invalid, the application may still be created but will not function properly.
+
+            Note: For AzureAD auth strategies, the client ID must resolve to an accessible Microsoft Entra
+            application using the configured DCR provider credentials. Otherwise, application creation fails.
+          type: string
+          maxLength: 255
+          nullable: false
+        client_id:
+          $ref: '#/components/schemas/ApplicationClientId'
+        auth_strategy_id:
+          description: The ID of the authentication strategy the application will use when making requests to registered APIs.
+          type: string
+          format: uuid
+          nullable: false
+        owner:
+          $ref: '#/components/schemas/ApplicationOwner'
+      example:
+        name: Portal Application
+        description: A portal application provisioned for a developer by a Portal Admin.
+        labels:
+          env: production
+        auth_strategy_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        owner:
+          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          type: developer
+      additionalProperties: false
+      required:
+        - name
+        - owner
+      title: CreateApplicationRequest
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/ApplicationOwner'
+      additionalProperties: false
+      title: UpdateApplicationRequest
+    GetApplicationResponse:
+      $ref: '#/components/schemas/Application'
+    GetApplicationRegistrationResponse:
+      $ref: '#/components/schemas/ApplicationRegistration'
+    UpdateApplicationRegistrationResponse:
+      $ref: '#/components/schemas/ApplicationRegistration'
+    Application:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          description: The name of the application.
+          type: string
+        description:
+          description: A description of the application.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        client_id:
+          description: The ID used to linked the portal application to an Identity Provider application.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        registration_count:
+          description: The number of API registrations that are associated with the application. Registrations of any status are included in the count.
+          type: number
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        dcr_provider:
+          description: 'Information about the DCR provider this application uses, if using DCR.'
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+          readOnly: true
+          required:
+            - id
+          x-speakeasy-param-suppress-computed-diff: true
+        portal:
+          description: Information about the portal the application is in.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+          readOnly: true
+          required:
+            - id
+          x-speakeasy-param-suppress-computed-diff: true
+        auth_strategy:
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: The Application Auth Strategy ID.
+              type: string
+              format: uuid
+              example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            name:
+              type: string
+              example: name
+              default: name
+            credential_type:
+              type: string
+              enum:
+                - key_auth
+                - client_credentials
+                - self_managed_client_credentials
+              x-speakeasy-unknown-values: allow
+            key_names:
+              type: array
+              items:
+                type: string
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            ttl:
+              description: Default maximum Time-To-Live for keys created under this strategy.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                value:
+                  type: integer
+                  minimum: 1
+                unit:
+                  type: string
+                  enum:
+                    - days
+                    - weeks
+                    - years
+                  x-speakeasy-unknown-values: allow
+              readOnly: true
+              x-speakeasy-param-computed: false
+              x-speakeasy-param-suppress-computed-diff: true
+            auth_methods:
+              type: array
+              items:
+                type: string
+                description: Auth Methods enabled for this strategy
+              example:
+                - bearer
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            available_scopes:
+              description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+              type: array
+              items:
+                type: string
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+          readOnly: true
+          required:
+            - id
+            - name
+            - credential_type
+          x-speakeasy-param-suppress-computed-diff: true
+        granted_scopes:
+          description: List of granted scopes for the application. Null if application type does not support returning granted scopes.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+        owner:
+          $ref: '#/components/schemas/ApplicationOwner'
+      example:
+        id: b15e2460-ba40-431d-9df0-4957fcffacda
+        labels:
+          env: test
+        name: App 1
+        description: An easy to manage app in a Konnect developer portal
+        registration_count: 4
+        portal:
+          id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+        auth_strategy:
+          id: 45606071-49c7-4c2e-ae49-8a86d72a8110
+          name: API Key
+          credential_type: key_auth
+          key_names:
+            - apikey
+        created_at: '2022-12-22T19:09:30.712Z'
+        updated_at: '2022-12-22T19:09:30.712Z'
+        owner:
+          id: 8cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          type: developer
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - description
+        - registration_count
+        - auth_strategy
+        - portal
+        - labels
+      title: Application
+    CreateApplicationRegistrationRequest:
+      type: object
+      properties:
+        api_id:
+          description: The ID of the API the application is registering for.
+          type: string
+          format: uuid
+        status:
+          description: The status of the application registration. It must be a valid status value for a registration creation.
+          type: string
+          example: approved
+          enum:
+            - approved
+            - pending
+          x-speakeasy-unknown-values: allow
+      example:
+        api_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      additionalProperties: false
+      required:
+        - api_id
+      title: CreateApplicationRegistrationRequest
+    ApplicationRegistration:
+      description: A application's registration for a specific version of an API.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+        api:
+          description: Details about the API the application is registered to.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the API the application is registered to.
+              type: string
+            version:
+              description: The version of the API the application is registered to.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            entity_type:
+              $ref: '#/components/schemas/EntityType'
+          required:
+            - id
+            - name
+            - version
+            - entity_type
+        application:
+          description: Details about the application the registration is part of.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the application the registration is part of.
+              type: string
+          required:
+            - id
+            - name
+        consumer:
+          description: Details about the consumer associated with this application registration.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            custom_id:
+              description: The custom ID of the associated consumer.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            username:
+              description: The username of the associated consumer.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            control_plane_id:
+              $ref: '#/components/schemas/UUID'
+          required:
+            - id
+            - control_plane_id
+          x-speakeasy-param-computed: false
+      example:
+        id: c300cc33-2d33-4754-b086-a98e0fcd36fb
+        status: approved
+        application:
+          id: c15e2460-ba40-431d-9df0-4957fcff7cda
+          name: App 1
+        api:
+          id: 86f637b7-cd95-478b-9b02-d770618f641c
+          name: Great Stuff
+          version: v1
+          entity_type: api
+        created_at: '2022-12-22T20:13:07.305Z'
+        updated_at: '2022-12-22T20:13:36.710Z'
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - status
+        - api
+        - application
+      title: ApplicationRegistration
+    ApplicationRegistrationStatus:
+      description: |-
+        The status of an application registration request. Each registration is linked to a single API, and application credentials will not grant access to the API until the registration is approved.
+        Pending, revoked, and rejected registrations will not provide access to the API.
+      type: string
+      example: approved
+      enum:
+        - approved
+        - pending
+        - revoked
+        - rejected
+      title: ApplicationRegistrationStatus
+      x-speakeasy-unknown-values: allow
+    UpdateApplicationRegistrationRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+      example:
+        status: rejected
+      additionalProperties: false
+      title: UpdateApplicationRegistrationRequest
     PortalFilterParameters:
       type: object
       properties:
@@ -29543,6 +30400,44 @@ components:
       additionalProperties: false
       title: PortalCustomization
       x-speakeasy-name-override: PortalCustomization
+    ApplicationOwnerType:
+      description: The type of the owner of the application. Can be `developer` (individual developer) or `team`.
+      type: string
+      enum:
+        - developer
+        - team
+      x-speakeasy-unknown-values: allow
+    ApplicationOwnerId:
+      description: 'The ID of the owner of the application. When type is `developer`, this is the developer ID. When type is `team`, this is the team ID.'
+      type: string
+      format: uuid
+    ApplicationOwner:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ApplicationOwnerType'
+        id:
+          $ref: '#/components/schemas/ApplicationOwnerId'
+      additionalProperties: false
+      required:
+        - type
+        - id
+    ApplicationClientId:
+      description: |
+        An identifier to correlate the application with an external system.
+        Cannot be set when using Dynamic Client Registration.
+      type: string
+      maxLength: 255
+      nullable: false
+    EntityType:
+      description: The type of entity that is being published. Can be either an API or an API Package.
+      type: string
+      example: api
+      enum:
+        - api
+        - api_package
+      title: Entity Type
+      x-speakeasy-unknown-values: allow
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -73987,6 +74882,13 @@ components:
                 default: false
             additionalProperties: false
             title: Portal
+    UpdateDeveloper:
+      description: Update a developer.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDeveloperRequest'
     ReplacePortalImageAsset:
       description: Update an image asset for the portal.
       required: true
@@ -74027,6 +74929,41 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+    CreateDeveloper:
+      description: Create a developer for a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDeveloperRequest'
+    CreateApplication:
+      description: Create an application for a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationRequest'
+    CreateApplicationRegistration:
+      description: Create an application registration for a portal application.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationRegistrationRequest'
+    UpdateApplicationRegistration:
+      description: Update an application registration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRegistrationRequest'
+    UpdateApplication:
+      description: Update an application.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRequest'
     UpdatePortalAuditLogWebhook:
       description: The request schema to modify an portal audit log webhook.
       content:
@@ -75930,6 +76867,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalTeamResponse'
+    CreateDeveloperResponse:
+      description: Details about the created developer in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalDeveloper'
+    GetDeveloper:
+      description: Details about a developer in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalDeveloper'
+    UpdateDeveloper:
+      description: Details about the developer being updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalDeveloper'
     PortalCustomDomain:
       description: Portal custom domain
       content:
@@ -76201,6 +77156,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalSnippetResponse'
+    GetApplication:
+      description: Details about an application in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    GetApplicationRegistration:
+      description: Details about an application registration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationRegistrationResponse'
+    UpdateApplicationRegistration:
+      description: Details about the application registration being updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRegistrationResponse'
     PortalAuditLogWebhook:
       description: Portal audit log webhook response
       content:
@@ -76754,9 +77727,10 @@ tags:
   - name: API Product Version Specification
   - name: App Auth Strategies
     description: |
-      Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. 
-      Called “Auth Strategy” for short in the context of portals/applications. 
+      Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
+      Called “Auth Strategy” for short in the context of portals/applications.
       The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
+      The optional `principals` property controls application-principal behavior for V3 API Catalog portals and applications. It defaults to disabled when omitted.
   - name: Auth Settings
   - name: Roles
   - name: Team Membership
@@ -76837,6 +77811,8 @@ tags:
     description: APIs related to customization of Konnect Developer Portals.
   - name: Portal Auth Settings
     description: APIs related to configuration of Konnect Developer Portal auth settings.
+  - name: Portal Developers
+    description: APIs related to Konnect Developer Portal developers.
   - name: Portal Teams
     description: APIs related to configuration of Konnect Developer Portal developer teams.
   - name: Portal Team Roles
@@ -76847,6 +77823,10 @@ tags:
     description: APIs related to Konnect Developer Portal Custom Pages.
   - name: Snippets
     description: APIs related to Konnect Developer Portal Custom Snippets.
+  - name: Applications
+    description: APIs related to Konnect Developer Portal Applications.
+  - name: Application Registrations
+    description: APIs related to Konnect Developer Portal Application Registrations.
   - name: Portals IP Allow List
     description: APIs related to Konnect Portal IP Allow List.
   - name: API
