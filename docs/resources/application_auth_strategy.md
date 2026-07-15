@@ -30,7 +30,10 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
     labels = {
       key = "value"
     }
-    name          = "...my_name..."
+    name = "...my_name..."
+    principals = {
+      enabled = false
+    }
     strategy_type = "key_auth"
   }
 }
@@ -68,6 +71,9 @@ Optional:
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 Requires replacement if changed.
 - `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.
+- `principals` (Attributes) Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+applications; stored values may be set for any auth strategy in the organization.
+Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth--principals))
 - `strategy_type` (String) Not Null; must be "key_auth"; Requires replacement if changed.
 
 Read-Only:
@@ -86,8 +92,8 @@ Default: true
 
 Optional:
 
-- `key_auth` (Attributes) The most basic mode to configure an Application Auth Strategy for an API Product Version. 
-Using this mode will allow developers to generate API keys that will authenticate their application requests. 
+- `key_auth` (Attributes) The most basic mode to configure an Application Auth Strategy for an API Product Version.
+Using this mode will allow developers to generate API keys that will authenticate their application requests.
 Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
 Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth--configs--key_auth))
 
@@ -108,6 +114,14 @@ Optional:
 - `value` (Number) Not Null; Requires replacement if changed.
 
 
+
+
+<a id="nestedatt--key_auth--principals"></a>
+### Nested Schema for `key_auth.principals`
+
+Optional:
+
+- `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.
 
 
 <a id="nestedatt--key_auth--dcr_provider"></a>
@@ -135,6 +149,9 @@ Optional:
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 Requires replacement if changed.
 - `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.
+- `principals` (Attributes) Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+applications; stored values may be set for any auth strategy in the organization.
+Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect--principals))
 - `strategy_type` (String) Not Null; must be "openid_connect"; Requires replacement if changed.
 
 Read-Only:
@@ -153,9 +170,9 @@ Read-Only:
 
 Optional:
 
-- `openid_connect` (Attributes) A more advanced mode to configure an API Product Version’s Application Auth Strategy. 
-Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests. 
-Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy. 
+- `openid_connect` (Attributes) A more advanced mode to configure an API Product Version’s Application Auth Strategy.
+Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
+Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
 An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
 Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect--configs--openid_connect))
 
@@ -170,6 +187,14 @@ Optional:
 - `issuer` (String) Not Null; Requires replacement if changed.
 - `scopes` (List of String) Not Null; Requires replacement if changed.
 
+
+
+<a id="nestedatt--openid_connect--principals"></a>
+### Nested Schema for `openid_connect.principals`
+
+Optional:
+
+- `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.
 
 
 <a id="nestedatt--openid_connect--dcr_provider"></a>

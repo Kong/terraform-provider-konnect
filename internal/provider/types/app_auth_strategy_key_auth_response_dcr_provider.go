@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type DcrProvider struct {
+type AppAuthStrategyKeyAuthResponseDcrProvider struct {
 	DisplayName  types.String `tfsdk:"display_name"`
 	ID           types.String `tfsdk:"id"`
 	Name         types.String `tfsdk:"name"`

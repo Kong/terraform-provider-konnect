@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type LegacyStringFieldFilter struct {
+type MeshControlPlaneFilterParametersName struct {
 	Contains types.String `queryParam:"name=contains" tfsdk:"contains"`
 	Eq       types.String `queryParam:"name=eq" tfsdk:"eq"`
 }
