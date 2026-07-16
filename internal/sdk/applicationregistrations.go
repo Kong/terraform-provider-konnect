@@ -14,30 +14,26 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/retry"
 	"net/http"
-	"net/url"
 )
 
-// AppAuthStrategies - Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
-// Called “Auth Strategy” for short in the context of portals/applications.
-// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
-// The optional `principals` property controls application-principal behavior for V3 API Catalog portals and applications. It defaults to disabled when omitted.
-type AppAuthStrategies struct {
+// ApplicationRegistrations - APIs related to Konnect Developer Portal Application Registrations.
+type ApplicationRegistrations struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
 }
 
-func newAppAuthStrategies(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *AppAuthStrategies {
-	return &AppAuthStrategies{
+func newApplicationRegistrations(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *ApplicationRegistrations {
+	return &ApplicationRegistrations{
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
 	}
 }
 
-// CreateAppAuthStrategy - Create App Auth Strategy
-// Creates an application auth strategy.
-func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request shared.CreateAppAuthStrategyRequest, opts ...operations.Option) (*operations.CreateAppAuthStrategyResponse, error) {
+// CreateApplicationRegistration - Create Registration
+// Creates a new registration for this application to access a specific API. Registrations created through the portal management API will respect the auto-approve settings of the portal and/or API publication. API publications that do not use auto-approve must be manually approved by an administrator after creation.
+func (s *ApplicationRegistrations) CreateApplicationRegistration(ctx context.Context, request operations.CreateApplicationRegistrationRequest, opts ...operations.Option) (*operations.CreateApplicationRegistrationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57,7 +53,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/v2/application-auth-strategies")
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/applications/{applicationId}/registrations", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -67,11 +63,11 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-app-auth-strategy",
+		OperationID:      "create-application-registration",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateApplicationRegistrationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +203,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 		}
 	}
 
-	res := &operations.CreateAppAuthStrategyResponse{
+	res := &operations.CreateApplicationRegistrationResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -222,12 +218,12 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.GetApplicationRegistrationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.GetApplicationRegistrationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -298,6 +294,48 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.NotFoundError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.NotFoundError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 409:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.ConflictError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.ConflictError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -310,9 +348,9 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 
 }
 
-// GetAppAuthStrategy - Get App Auth Strategy
-// Returns an application auth strategy.
-func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request operations.GetAppAuthStrategyRequest, opts ...operations.Option) (*operations.GetAppAuthStrategyResponse, error) {
+// GetApplicationRegistration - Get a Registration
+// Returns information about an application's registration status for a particular API.
+func (s *ApplicationRegistrations) GetApplicationRegistration(ctx context.Context, request operations.GetApplicationRegistrationRequest, opts ...operations.Option) (*operations.GetApplicationRegistrationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -332,7 +370,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -342,7 +380,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-app-auth-strategy",
+		OperationID:      "get-application-registration",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -475,7 +513,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetAppAuthStrategyResponse{
+	res := &operations.GetApplicationRegistrationResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -490,12 +528,12 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.GetApplicationRegistrationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.GetApplicationRegistrationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -578,9 +616,9 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 
 }
 
-// UpdateAppAuthStrategy - Update App Auth Strategy
-// Updates an application auth strategy.
-func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request operations.UpdateAppAuthStrategyRequest, opts ...operations.Option) (*operations.UpdateAppAuthStrategyResponse, error) {
+// UpdateApplicationRegistration - Update Registration
+// Updates the status of a particular application registration to an API. Approved application registrations will allow API traffic to the corresponding API. Revoked, rejected, or pending will not allow API traffic.
+func (s *ApplicationRegistrations) UpdateApplicationRegistration(ctx context.Context, request operations.UpdateApplicationRegistrationRequest, opts ...operations.Option) (*operations.UpdateApplicationRegistrationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -600,7 +638,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -610,11 +648,11 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-app-auth-strategy",
+		OperationID:      "update-application-registration",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAppAuthStrategyRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateApplicationRegistrationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -750,7 +788,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateAppAuthStrategyResponse{
+	res := &operations.UpdateApplicationRegistrationResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -765,12 +803,12 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.GetApplicationRegistrationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.GetApplicationRegistrationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -874,9 +912,10 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 
 }
 
-// DeleteAppAuthStrategy - Delete App Auth Strategy
-// Deletes an application auth strategy. An application auth strategy can be deleted ONLY if it's not used by any product version within any portal regardless of their publication statuses. If an application auth strategy is still in use the request will result in an HTTP 409 CONFLICT.
-func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request operations.DeleteAppAuthStrategyRequest, opts ...operations.Option) (*operations.DeleteAppAuthStrategyResponse, error) {
+// DeleteApplicationRegistration - Delete Registration
+// Deletes an application registration, which if currently approved will immediately block API traffic to the API.
+// Note: Developers can request a new application registration for the given API as long as they have RBAC access to consume.
+func (s *ApplicationRegistrations) DeleteApplicationRegistration(ctx context.Context, request operations.DeleteApplicationRegistrationRequest, opts ...operations.Option) (*operations.DeleteApplicationRegistrationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -895,7 +934,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -905,7 +944,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-app-auth-strategy",
+		OperationID:      "delete-application-registration",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1033,7 +1072,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteAppAuthStrategyResponse{
+	res := &operations.DeleteApplicationRegistrationResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1098,27 +1137,6 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 			}
 
 			res.NotFoundError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

@@ -168,6 +168,10 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	// - `false` when not supported for Client Credentials strategies
 	//
 	SupportsMultipleCredentials *bool `json:"supports_multiple_credentials,omitempty"`
+	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+	// applications; stored values may be set for any auth strategy in the organization.
+	//
+	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
 }
 
 func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
@@ -258,6 +262,13 @@ func (a *AppAuthStrategyOpenIDConnectResponse) GetSupportsMultipleCredentials() 
 	return a.SupportsMultipleCredentials
 }
 
+func (a *AppAuthStrategyOpenIDConnectResponse) GetPrincipals() *AuthStrategyPrincipals {
+	if a == nil {
+		return nil
+	}
+	return a.Principals
+}
+
 type AppAuthStrategyKeyAuthResponseStrategyType string
 
 const (
@@ -335,7 +346,7 @@ func (e *ProviderType) IsExact() bool {
 	return false
 }
 
-type DcrProvider struct {
+type AppAuthStrategyKeyAuthResponseDcrProvider struct {
 	// Contains a unique identifier used for this resource.
 	ID   string `json:"id"`
 	Name string `json:"name"`
@@ -346,43 +357,43 @@ type DcrProvider struct {
 	ProviderType ProviderType `json:"provider_type"`
 }
 
-func (d DcrProvider) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
+func (a AppAuthStrategyKeyAuthResponseDcrProvider) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (d *DcrProvider) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"id", "name", "provider_type"}); err != nil {
+func (a *AppAuthStrategyKeyAuthResponseDcrProvider) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "provider_type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DcrProvider) GetID() string {
-	if d == nil {
+func (a *AppAuthStrategyKeyAuthResponseDcrProvider) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return d.ID
+	return a.ID
 }
 
-func (d *DcrProvider) GetName() string {
-	if d == nil {
+func (a *AppAuthStrategyKeyAuthResponseDcrProvider) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return d.Name
+	return a.Name
 }
 
-func (d *DcrProvider) GetDisplayName() *string {
-	if d == nil {
+func (a *AppAuthStrategyKeyAuthResponseDcrProvider) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return d.DisplayName
+	return a.DisplayName
 }
 
-func (d *DcrProvider) GetProviderType() ProviderType {
-	if d == nil {
+func (a *AppAuthStrategyKeyAuthResponseDcrProvider) GetProviderType() ProviderType {
+	if a == nil {
 		return ProviderType("")
 	}
-	return d.ProviderType
+	return a.ProviderType
 }
 
 // AppAuthStrategyKeyAuthResponse - Response payload from creating or updating a Key Auth Application Auth Strategy
@@ -399,8 +410,8 @@ type AppAuthStrategyKeyAuthResponse struct {
 	// JSON-B object containing the configuration for the Key Auth strategy
 	Configs AppAuthStrategyKeyAuthResponseConfigs `json:"configs"`
 	// At least one published entity is using this auth strategy.
-	Active      bool         `json:"active"`
-	DcrProvider *DcrProvider `json:"dcr_provider"`
+	Active      bool                                       `json:"active"`
+	DcrProvider *AppAuthStrategyKeyAuthResponseDcrProvider `json:"dcr_provider"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -414,6 +425,10 @@ type AppAuthStrategyKeyAuthResponse struct {
 	// Always `true` for KEY_AUTH.
 	//
 	SupportsMultipleCredentials *bool `default:"true" json:"supports_multiple_credentials"`
+	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+	// applications; stored values may be set for any auth strategy in the organization.
+	//
+	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
 }
 
 func (a AppAuthStrategyKeyAuthResponse) MarshalJSON() ([]byte, error) {
@@ -469,7 +484,7 @@ func (a *AppAuthStrategyKeyAuthResponse) GetActive() bool {
 	return a.Active
 }
 
-func (a *AppAuthStrategyKeyAuthResponse) GetDcrProvider() *DcrProvider {
+func (a *AppAuthStrategyKeyAuthResponse) GetDcrProvider() *AppAuthStrategyKeyAuthResponseDcrProvider {
 	if a == nil {
 		return nil
 	}
@@ -502,6 +517,13 @@ func (a *AppAuthStrategyKeyAuthResponse) GetSupportsMultipleCredentials() *bool 
 		return nil
 	}
 	return a.SupportsMultipleCredentials
+}
+
+func (a *AppAuthStrategyKeyAuthResponse) GetPrincipals() *AuthStrategyPrincipals {
+	if a == nil {
+		return nil
+	}
+	return a.Principals
 }
 
 type CreateAppAuthStrategyResponseType string
