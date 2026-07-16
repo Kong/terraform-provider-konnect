@@ -17,27 +17,26 @@ import (
 	"net/url"
 )
 
-// AppAuthStrategies - Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
-// Called “Auth Strategy” for short in the context of portals/applications.
-// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
-// The optional `principals` property controls application-principal behavior for V3 API Catalog portals and applications. It defaults to disabled when omitted.
-type AppAuthStrategies struct {
+// DCRProviders - Dynamic Client Registration Providers are configurations representing an external Identity Provider whose clients (i.e. Applications) Konnect will be authorized to manage.
+// For instance, they will be able to perform dynamic client registration (DCR) with the provider.
+// The DCR provider provides credentials to each DCR-enabled application in Konnect that can be used to access Product Versions that the app is registered for.
+type DCRProviders struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
 }
 
-func newAppAuthStrategies(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *AppAuthStrategies {
-	return &AppAuthStrategies{
+func newDCRProviders(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *DCRProviders {
+	return &DCRProviders{
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
 	}
 }
 
-// CreateAppAuthStrategy - Create App Auth Strategy
-// Creates an application auth strategy.
-func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request shared.CreateAppAuthStrategyRequest, opts ...operations.Option) (*operations.CreateAppAuthStrategyResponse, error) {
+// CreateDcrProvider - Create DCR provider
+// Creates a DCR provider.
+func (s *DCRProviders) CreateDcrProvider(ctx context.Context, request shared.CreateDcrProviderRequest, opts ...operations.Option) (*operations.CreateDcrProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57,7 +56,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/v2/application-auth-strategies")
+	opURL, err := url.JoinPath(baseURL, "/v2/dcr-providers")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -67,7 +66,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-app-auth-strategy",
+		OperationID:      "create-dcr-provider",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -207,7 +206,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 		}
 	}
 
-	res := &operations.CreateAppAuthStrategyResponse{
+	res := &operations.CreateDcrProviderResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -222,12 +221,12 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.CreateDcrProviderResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.CreateDcrProviderResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -310,9 +309,9 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 
 }
 
-// GetAppAuthStrategy - Get App Auth Strategy
-// Returns an application auth strategy.
-func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request operations.GetAppAuthStrategyRequest, opts ...operations.Option) (*operations.GetAppAuthStrategyResponse, error) {
+// GetDcrProvider - Get a DCR provider
+// Returns a DCR provider.
+func (s *DCRProviders) GetDcrProvider(ctx context.Context, request operations.GetDcrProviderRequest, opts ...operations.Option) (*operations.GetDcrProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -332,7 +331,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/dcr-providers/{dcrProviderId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -342,7 +341,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-app-auth-strategy",
+		OperationID:      "get-dcr-provider",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -475,7 +474,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetAppAuthStrategyResponse{
+	res := &operations.GetDcrProviderResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -490,12 +489,12 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.DcrProviderResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.DcrProviderResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -578,9 +577,9 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 
 }
 
-// UpdateAppAuthStrategy - Update App Auth Strategy
-// Updates an application auth strategy.
-func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request operations.UpdateAppAuthStrategyRequest, opts ...operations.Option) (*operations.UpdateAppAuthStrategyResponse, error) {
+// UpdateDcrProvider - Update DCR provider
+// Updates a DCR provider.
+func (s *DCRProviders) UpdateDcrProvider(ctx context.Context, request operations.UpdateDcrProviderRequest, opts ...operations.Option) (*operations.UpdateDcrProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -600,7 +599,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/dcr-providers/{dcrProviderId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -610,11 +609,11 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-app-auth-strategy",
+		OperationID:      "update-dcr-provider",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAppAuthStrategyRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateDcrProviderRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -750,7 +749,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateAppAuthStrategyResponse{
+	res := &operations.UpdateDcrProviderResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -765,12 +764,12 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.DcrProviderResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.DcrProviderResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -874,9 +873,9 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 
 }
 
-// DeleteAppAuthStrategy - Delete App Auth Strategy
-// Deletes an application auth strategy. An application auth strategy can be deleted ONLY if it's not used by any product version within any portal regardless of their publication statuses. If an application auth strategy is still in use the request will result in an HTTP 409 CONFLICT.
-func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request operations.DeleteAppAuthStrategyRequest, opts ...operations.Option) (*operations.DeleteAppAuthStrategyResponse, error) {
+// DeleteDcrProvider - Delete DCR provider
+// Deletes a DCR provider.
+func (s *DCRProviders) DeleteDcrProvider(ctx context.Context, request operations.DeleteDcrProviderRequest, opts ...operations.Option) (*operations.DeleteDcrProviderResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -895,7 +894,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/dcr-providers/{dcrProviderId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -905,7 +904,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-app-auth-strategy",
+		OperationID:      "delete-dcr-provider",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1033,7 +1032,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteAppAuthStrategyResponse{
+	res := &operations.DeleteDcrProviderResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1098,27 +1097,6 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 			}
 
 			res.NotFoundError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

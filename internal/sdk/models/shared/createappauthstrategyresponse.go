@@ -152,8 +152,9 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	// JSON-B object containing the configuration for the OIDC strategy
 	Configs AppAuthStrategyOpenIDConnectResponseConfigs `json:"configs"`
 	// At least one published entity is using this auth strategy.
-	Active      bool                                             `json:"active"`
-	DcrProvider *AppAuthStrategyOpenIDConnectResponseDcrProvider `json:"dcr_provider"`
+	Active        bool                                             `json:"active"`
+	DcrProvider   *AppAuthStrategyOpenIDConnectResponseDcrProvider `json:"dcr_provider"`
+	DcrProviderID *string                                          `default:"null" json:"dcr_provider_id"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -168,6 +169,10 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	// - `false` when not supported for Client Credentials strategies
 	//
 	SupportsMultipleCredentials *bool `json:"supports_multiple_credentials,omitempty"`
+	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+	// applications; stored values may be set for any auth strategy in the organization.
+	//
+	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
 }
 
 func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
@@ -175,6 +180,11 @@ func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyOpenIDConnectResponse) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ". + { dcr_provider_id: .dcr_provider.id }"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "display_name", "strategy_type", "configs", "active", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
@@ -230,6 +240,13 @@ func (a *AppAuthStrategyOpenIDConnectResponse) GetDcrProvider() *AppAuthStrategy
 	return a.DcrProvider
 }
 
+func (a *AppAuthStrategyOpenIDConnectResponse) GetDcrProviderID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DcrProviderID
+}
+
 func (a *AppAuthStrategyOpenIDConnectResponse) GetLabels() map[string]*string {
 	if a == nil {
 		return map[string]*string{}
@@ -256,6 +273,13 @@ func (a *AppAuthStrategyOpenIDConnectResponse) GetSupportsMultipleCredentials() 
 		return nil
 	}
 	return a.SupportsMultipleCredentials
+}
+
+func (a *AppAuthStrategyOpenIDConnectResponse) GetPrincipals() *AuthStrategyPrincipals {
+	if a == nil {
+		return nil
+	}
+	return a.Principals
 }
 
 type AppAuthStrategyKeyAuthResponseStrategyType string
@@ -308,24 +332,24 @@ func (a *AppAuthStrategyKeyAuthResponseConfigs) GetKeyAuth() AppAuthStrategyConf
 	return a.KeyAuth
 }
 
-// ProviderType - The type of DCR provider.
-type ProviderType string
+// AppAuthStrategyKeyAuthResponseProviderType - The type of DCR provider.
+type AppAuthStrategyKeyAuthResponseProviderType string
 
 const (
-	ProviderTypeAuth0        ProviderType = "auth0"
-	ProviderTypeAzureAd      ProviderType = "azureAd"
-	ProviderTypeCurity       ProviderType = "curity"
-	ProviderTypeOkta         ProviderType = "okta"
-	ProviderTypeHTTP         ProviderType = "http"
-	ProviderTypeKongIdentity ProviderType = "kongIdentity"
+	AppAuthStrategyKeyAuthResponseProviderTypeAuth0        AppAuthStrategyKeyAuthResponseProviderType = "auth0"
+	AppAuthStrategyKeyAuthResponseProviderTypeAzureAd      AppAuthStrategyKeyAuthResponseProviderType = "azureAd"
+	AppAuthStrategyKeyAuthResponseProviderTypeCurity       AppAuthStrategyKeyAuthResponseProviderType = "curity"
+	AppAuthStrategyKeyAuthResponseProviderTypeOkta         AppAuthStrategyKeyAuthResponseProviderType = "okta"
+	AppAuthStrategyKeyAuthResponseProviderTypeHTTP         AppAuthStrategyKeyAuthResponseProviderType = "http"
+	AppAuthStrategyKeyAuthResponseProviderTypeKongIdentity AppAuthStrategyKeyAuthResponseProviderType = "kongIdentity"
 )
 
-func (e ProviderType) ToPointer() *ProviderType {
+func (e AppAuthStrategyKeyAuthResponseProviderType) ToPointer() *AppAuthStrategyKeyAuthResponseProviderType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ProviderType) IsExact() bool {
+func (e *AppAuthStrategyKeyAuthResponseProviderType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "auth0", "azureAd", "curity", "okta", "http", "kongIdentity":
@@ -343,7 +367,7 @@ type DcrProvider struct {
 	//
 	DisplayName *string `json:"display_name,omitempty"`
 	// The type of DCR provider.
-	ProviderType ProviderType `json:"provider_type"`
+	ProviderType AppAuthStrategyKeyAuthResponseProviderType `json:"provider_type"`
 }
 
 func (d DcrProvider) MarshalJSON() ([]byte, error) {
@@ -378,9 +402,9 @@ func (d *DcrProvider) GetDisplayName() *string {
 	return d.DisplayName
 }
 
-func (d *DcrProvider) GetProviderType() ProviderType {
+func (d *DcrProvider) GetProviderType() AppAuthStrategyKeyAuthResponseProviderType {
 	if d == nil {
-		return ProviderType("")
+		return AppAuthStrategyKeyAuthResponseProviderType("")
 	}
 	return d.ProviderType
 }
@@ -414,6 +438,10 @@ type AppAuthStrategyKeyAuthResponse struct {
 	// Always `true` for KEY_AUTH.
 	//
 	SupportsMultipleCredentials *bool `default:"true" json:"supports_multiple_credentials"`
+	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+	// applications; stored values may be set for any auth strategy in the organization.
+	//
+	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
 }
 
 func (a AppAuthStrategyKeyAuthResponse) MarshalJSON() ([]byte, error) {
@@ -502,6 +530,13 @@ func (a *AppAuthStrategyKeyAuthResponse) GetSupportsMultipleCredentials() *bool 
 		return nil
 	}
 	return a.SupportsMultipleCredentials
+}
+
+func (a *AppAuthStrategyKeyAuthResponse) GetPrincipals() *AuthStrategyPrincipals {
+	if a == nil {
+		return nil
+	}
+	return a.Principals
 }
 
 type CreateAppAuthStrategyResponseType string

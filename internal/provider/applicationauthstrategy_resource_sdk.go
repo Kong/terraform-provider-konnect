@@ -41,15 +41,6 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			}
 			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
 			r.CreatedAt = r.KeyAuth.CreatedAt
-			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
-				r.KeyAuth.DcrProvider = nil
-			} else {
-				r.KeyAuth.DcrProvider = &tfTypes.DcrProvider{}
-				r.KeyAuth.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.DisplayName)
-				r.KeyAuth.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.ID)
-				r.KeyAuth.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.Name)
-				r.KeyAuth.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.ProviderType))
-			}
 			r.KeyAuth.DisplayName = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.DisplayName)
 			r.DisplayName = r.KeyAuth.DisplayName
 			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.ID)
@@ -62,6 +53,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			}
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.Name)
 			r.Name = r.KeyAuth.Name
+			if resp.AppAuthStrategyKeyAuthResponse.Principals == nil {
+				r.KeyAuth.Principals = nil
+			} else {
+				r.KeyAuth.Principals = &tfTypes.AuthStrategyPrincipals{}
+				r.KeyAuth.Principals.Enabled = types.BoolPointerValue(resp.AppAuthStrategyKeyAuthResponse.Principals.Enabled)
+			}
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.StrategyType))
 			r.StrategyType = r.KeyAuth.StrategyType
 			r.KeyAuth.SupportsMultipleCredentials = types.BoolPointerValue(resp.AppAuthStrategyKeyAuthResponse.SupportsMultipleCredentials)
@@ -96,15 +93,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			}
 			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.CreatedAt))
 			r.CreatedAt = r.OpenidConnect.CreatedAt
-			if resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider == nil {
-				r.OpenidConnect.DcrProvider = nil
-			} else {
-				r.OpenidConnect.DcrProvider = &tfTypes.DcrProvider{}
-				r.OpenidConnect.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.DisplayName)
-				r.OpenidConnect.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.ID)
-				r.OpenidConnect.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.Name)
-				r.OpenidConnect.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.ProviderType))
-			}
+			r.OpenidConnect.DcrProviderID = types.StringPointerValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProviderID)
 			r.OpenidConnect.DisplayName = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.DisplayName)
 			r.DisplayName = r.OpenidConnect.DisplayName
 			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.ID)
@@ -117,6 +106,12 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Name)
 			r.Name = r.OpenidConnect.Name
+			if resp.AppAuthStrategyOpenIDConnectResponse.Principals == nil {
+				r.OpenidConnect.Principals = nil
+			} else {
+				r.OpenidConnect.Principals = &tfTypes.AuthStrategyPrincipals{}
+				r.OpenidConnect.Principals.Enabled = types.BoolPointerValue(resp.AppAuthStrategyOpenIDConnectResponse.Principals.Enabled)
+			}
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.StrategyType))
 			r.StrategyType = r.OpenidConnect.StrategyType
 			r.OpenidConnect.SupportsMultipleCredentials = types.BoolPointerValue(resp.AppAuthStrategyOpenIDConnectResponse.SupportsMultipleCredentials)
@@ -224,12 +219,25 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			}
 			labels[labelsKey] = labelsInst
 		}
+		var principals *shared.AuthStrategyPrincipals
+		if r.KeyAuth.Principals != nil {
+			enabled := new(bool)
+			if !r.KeyAuth.Principals.Enabled.IsUnknown() && !r.KeyAuth.Principals.Enabled.IsNull() {
+				*enabled = r.KeyAuth.Principals.Enabled.ValueBool()
+			} else {
+				enabled = nil
+			}
+			principals = &shared.AuthStrategyPrincipals{
+				Enabled: enabled,
+			}
+		}
 		appAuthStrategyKeyAuthRequest = &shared.AppAuthStrategyKeyAuthRequest{
 			Name:         name,
 			DisplayName:  displayName,
 			StrategyType: strategyType,
 			Configs:      configs,
 			Labels:       labels,
+			Principals:   principals,
 		}
 	}
 	if appAuthStrategyKeyAuthRequest != nil {
@@ -291,6 +299,18 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			}
 			labels1[labelsKey1] = labelsInst1
 		}
+		var principals1 *shared.AuthStrategyPrincipals
+		if r.OpenidConnect.Principals != nil {
+			enabled1 := new(bool)
+			if !r.OpenidConnect.Principals.Enabled.IsUnknown() && !r.OpenidConnect.Principals.Enabled.IsNull() {
+				*enabled1 = r.OpenidConnect.Principals.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			principals1 = &shared.AuthStrategyPrincipals{
+				Enabled: enabled1,
+			}
+		}
 		appAuthStrategyOpenIDConnectRequest = &shared.AppAuthStrategyOpenIDConnectRequest{
 			Name:          name1,
 			DisplayName:   displayName1,
@@ -298,6 +318,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			Configs:       configs1,
 			DcrProviderID: dcrProviderID,
 			Labels:        labels1,
+			Principals:    principals1,
 		}
 	}
 	if appAuthStrategyOpenIDConnectRequest != nil {

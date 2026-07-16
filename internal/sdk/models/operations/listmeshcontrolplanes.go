@@ -13,6 +13,8 @@ type ListMeshControlPlanesRequest struct {
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page[size]"`
 	// Determines which page of the entities to retrieve.
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
+	// Filters a collection of control planes.
+	Filter *shared.MeshControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter"`
 }
 
 func (l ListMeshControlPlanesRequest) MarshalJSON() ([]byte, error) {
@@ -38,6 +40,13 @@ func (l *ListMeshControlPlanesRequest) GetPageNumber() *int64 {
 		return nil
 	}
 	return l.PageNumber
+}
+
+func (l *ListMeshControlPlanesRequest) GetFilter() *shared.MeshControlPlaneFilterParameters {
+	if l == nil {
+		return nil
+	}
+	return l.Filter
 }
 
 type ListMeshControlPlanesResponse struct {
