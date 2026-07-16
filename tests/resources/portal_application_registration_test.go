@@ -39,6 +39,13 @@ func TestPortalApplicationRegistration(t *testing.T) {
 						},
 					},
 				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_portal_application_registration.test_registration", "status", "pending"),
+					),
+				},
 			},
 		})
 	})
