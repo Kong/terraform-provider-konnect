@@ -18931,7 +18931,6 @@ paths:
           type: string
           format: uuid
         x-speakeasy-match: application.id
-      - $ref: '#/components/parameters/ApplicationId'
     post:
       x-speakeasy-entity-operation: PortalApplicationRegistration#create
       operationId: create-application-registration
@@ -18975,7 +18974,6 @@ paths:
           type: string
           format: uuid
         x-speakeasy-match: application.id
-      - $ref: '#/components/parameters/ApplicationId'
       - $ref: '#/components/parameters/RegistrationId'
     get:
       x-speakeasy-entity-operation:
@@ -57097,6 +57095,7 @@ components:
                     x-speakeasy-param-computed: false
                   scope:
                     type: string
+                    default: cp
                     enum:
                       - cp
                       - realm
