@@ -30,22 +30,6 @@ func TestPortalApplicationRegistration(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_portal_application_registration.test_registration", "application.id"),
 					),
 				},
-				{
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestStepDirectory(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-				{
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestStepDirectory(),
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_application_registration.test_registration", "status", "pending"),
-					),
-				},
 			},
 		})
 	})

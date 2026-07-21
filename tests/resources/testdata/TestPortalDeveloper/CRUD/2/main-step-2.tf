@@ -9,6 +9,5 @@ resource "konnect_portal_developer" "test_developer" {
   email                 = "developer@example.com"
   full_name             = "Test Developer"
   send_invitation_email = false
-  status                = "approved"
+  status                = "pending"
 }
-

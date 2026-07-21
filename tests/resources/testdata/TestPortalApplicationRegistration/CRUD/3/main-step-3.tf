@@ -50,17 +50,11 @@ resource "konnect_portal_application" "test_application_reg" {
     id   = konnect_portal_developer.test_reg_developer.id
     type = "developer"
   }
-
-  depends_on = [konnect_api_publication.my_api_publication_reg]
 }
 
 resource "konnect_portal_application_registration" "test_registration" {
   portal_id = konnect_portal.test_portal_reg.id
   api_id    = konnect_api.my_api_reg.id
   status    = "pending"
-  application = {
-    id = konnect_portal_application.test_application_reg.id
-  }
-
-  depends_on = [konnect_api_publication.my_api_publication_reg]
+  application_id = konnect_portal_application.test_application_reg.id
 }
