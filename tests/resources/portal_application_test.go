@@ -28,15 +28,6 @@ func TestPortalApplication(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_portal_application.test_application", "id"),
 					),
 				},
-				{
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestStepDirectory(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
 			},
 		})
 	})

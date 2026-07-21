@@ -56,10 +56,7 @@ resource "konnect_portal_application_registration" "test_registration" {
   portal_id = konnect_portal.test_portal_reg.id
   api_id    = konnect_api.my_api_reg.id
   status    = "approved"
-  application = {
-    id = konnect_portal_application.test_application_reg.id
-  }
-
+  application_id = konnect_portal_application.test_application_reg.id
 }
 
 
