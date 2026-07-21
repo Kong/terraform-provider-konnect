@@ -18923,14 +18923,7 @@ paths:
   '/v3/portals/{portalId}/applications/{applicationId}/registrations':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - name: applicationId
-        in: path
-        description: ID of the application.
-        required: true
-        schema:
-          type: string
-          format: uuid
-        x-speakeasy-match: application.id
+      - $ref: '#/components/parameters/ApplicationIdForChildren'
     post:
       x-speakeasy-entity-operation: PortalApplicationRegistration#create
       operationId: create-application-registration
@@ -18966,14 +18959,7 @@ paths:
   '/v3/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - name: applicationId
-        in: path
-        description: ID of the application.
-        required: true
-        schema:
-          type: string
-          format: uuid
-        x-speakeasy-match: application.id
+      - $ref: '#/components/parameters/ApplicationIdForChildren'
       - $ref: '#/components/parameters/RegistrationId'
     get:
       x-speakeasy-entity-operation:
@@ -20768,6 +20754,14 @@ components:
         type: string
         format: uuid
       x-speakeasy-match: id
+    ApplicationIdForChildren:
+      name: applicationId
+      in: path
+      required: true
+      description: ID of the application.
+      schema:
+        type: string
+        format: uuid
     AuditLogDestinationId:
       schema:
         type: string
@@ -29658,6 +29652,11 @@ components:
         - api
         - application
       title: ApplicationRegistration
+      x-speakeasy-transform-from-api:
+        jq: |
+          . + {
+            application_id: .application.id
+          }
     ApplicationRegistrationStatus:
       description: |-
         The status of an application registration request. Each registration is linked to a single API, and application credentials will not grant access to the API until the registration is approved.
