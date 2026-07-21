@@ -76,6 +76,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.`,
 			},
 			"custom_theme": schema.SingleNestedAttribute{
 				Computed: true,
@@ -512,6 +513,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.`,
 			},
 			"images": schema.SingleNestedAttribute{
 				Computed: true,
@@ -587,6 +589,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `A collection of binary image data to customize images in the portal`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
@@ -623,12 +626,13 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `Values to display for customizable text in the portal user interface`,
 			},
 			"theme_name": schema.StringAttribute{
 				Computed:           true,
 				Optional:           true,
 				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
-				Description:        `possible known values include one of ["mint_rocket", "dark_mode", "custom"]`,
+				Description:        `Select a pre-existing default theme or specify 'custom' to use custom_theme variables. possible known values include one of ["mint_rocket", "dark_mode", "custom"]`,
 			},
 			"use_custom_fonts": schema.BoolAttribute{
 				Computed:           true,

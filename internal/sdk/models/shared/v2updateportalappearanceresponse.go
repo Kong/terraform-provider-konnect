@@ -216,18 +216,28 @@ func (v *V2UpdatePortalAppearanceResponseImages) GetCatalogCover() *V2Appearance
 // #endregion class-body-v2updateportalappearanceresponseimages
 
 type V2UpdatePortalAppearanceResponse struct {
+	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	ThemeName V2UpdatePortalAppearanceResponseThemeName `json:"theme_name"`
+	// Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomTheme *V2UpdatePortalAppearanceResponseAppearanceThemeVariables `json:"custom_theme"`
+	// Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomFonts *V2UpdatePortalAppearanceResponseCustomFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
 	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	UseCustomFonts bool `json:"use_custom_fonts"`
+	// Values to display for customizable text in the portal user interface
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Text *V2UpdatePortalAppearanceResponseText `json:"text"`
+	// A collection of binary image data to customize images in the portal
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Images *V2UpdatePortalAppearanceResponseImages `json:"images"`
 }

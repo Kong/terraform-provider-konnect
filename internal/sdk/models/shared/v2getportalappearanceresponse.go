@@ -204,18 +204,28 @@ func (i *Images) GetCatalogCover() *V2AppearanceImage {
 }
 
 type V2GetPortalAppearanceResponse struct {
+	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	ThemeName ThemeName `json:"theme_name"`
+	// Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomTheme *AppearanceThemeVariables `json:"custom_theme"`
+	// Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	CustomFonts *CustomFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
 	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	UseCustomFonts bool `json:"use_custom_fonts"`
+	// Values to display for customizable text in the portal user interface
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Text *V2GetPortalAppearanceResponseText `json:"text"`
+	// A collection of binary image data to customize images in the portal
+	//
 	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	Images *Images `json:"images"`
 }

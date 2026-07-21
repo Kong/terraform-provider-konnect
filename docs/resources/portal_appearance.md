@@ -132,11 +132,11 @@ resource "konnect_portal_appearance" "my_portalappearance" {
 
 ### Optional
 
-- `custom_fonts` (Attributes, Deprecated) (see [below for nested schema](#nestedatt--custom_fonts))
-- `custom_theme` (Attributes, Deprecated) (see [below for nested schema](#nestedatt--custom_theme))
-- `images` (Attributes, Deprecated) (see [below for nested schema](#nestedatt--images))
-- `text` (Attributes, Deprecated) (see [below for nested schema](#nestedatt--text))
-- `theme_name` (String, Deprecated) possible known values include one of ["mint_rocket", "dark_mode", "custom"]
+- `custom_fonts` (Attributes, Deprecated) Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values. (see [below for nested schema](#nestedatt--custom_fonts))
+- `custom_theme` (Attributes, Deprecated) Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables. (see [below for nested schema](#nestedatt--custom_theme))
+- `images` (Attributes, Deprecated) A collection of binary image data to customize images in the portal (see [below for nested schema](#nestedatt--images))
+- `text` (Attributes, Deprecated) Values to display for customizable text in the portal user interface (see [below for nested schema](#nestedatt--text))
+- `theme_name` (String, Deprecated) Select a pre-existing default theme or specify 'custom' to use custom_theme variables. possible known values include one of ["mint_rocket", "dark_mode", "custom"]
 - `use_custom_fonts` (Boolean, Deprecated) If true, fonts in custom_fonts will be used over the theme's default fonts
 
 <a id="nestedatt--custom_fonts"></a>

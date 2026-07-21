@@ -17536,10 +17536,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      deprecated: true
       tags:
         - Portal Appearance
-      x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
     patch:
       x-speakeasy-entity-operation:
         terraform-resource: 'PortalAppearance#create,update'
@@ -17566,10 +17564,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      deprecated: true
       tags:
         - Portal Appearance
-      x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
   '/v2/portals/{portalId}/product-versions/{productVersionId}':
     parameters:
       - $ref: '#/components/parameters/V2ProductVersionId'
@@ -28177,93 +28173,6 @@ components:
         - section
         - text
         - button
-    V2NullableAppearanceThemeVariables:
-      description: Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
-      type: object
-      properties:
-        colors:
-          $ref: '#/components/schemas/V2AppearanceThemeColorVariables'
-      example:
-        colors:
-          section:
-            header:
-              value: '#F8F8F8'
-              description: Background for header
-            body:
-              value: '#FFFFFF'
-              description: Background for main content
-            hero:
-              value: '#F8F8F8'
-              description: Background for hero section
-            accent:
-              value: '#F8F8F8'
-              description: Subtle background
-            tertiary:
-              value: '#FFFFFF'
-              description: Tertiary background
-            stroke:
-              value: 'rgba(0,0,0,0.1)'
-              description: Border color
-            footer:
-              value: '#07A88D'
-              description: Background for footer
-          text:
-            header:
-              value: 'rgba(0,0,0,0.8)'
-              description: Header text
-            hero:
-              value: '#FFFFFF'
-              description: Hero text
-            headings:
-              value: 'rgba(0,0,0,0.8)'
-              description: Headings text
-            primary:
-              value: 'rgba(0,0,0,0.8)'
-              description: Main content text
-            secondary:
-              value: 'rgba(0,0,0,0.8)'
-              description: Supporting text
-            accent:
-              value: '#07A88D'
-              description: Subtle text
-            link:
-              value: '#07A88D'
-              description: Link text
-            footer:
-              value: '#FFFFFF'
-              description: Footer text
-          button:
-            primary_fill:
-              value: '#1155CB'
-              description: Background for Primary Button
-            primary_text:
-              value: '#FFFFFF'
-              description: Text for Primary Button
-      default: null
-      additionalProperties: false
-      nullable: true
-      required:
-        - colors
-      title: AppearanceThemeVariables
-      x-speakeasy-param-computed: false
-    V2NullableAppearanceFonts:
-      description: Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
-      type: object
-      properties:
-        base:
-          $ref: '#/components/schemas/V2AppearanceFontName'
-        code:
-          $ref: '#/components/schemas/V2AppearanceFontName'
-        headings:
-          $ref: '#/components/schemas/V2AppearanceFontName'
-      default: null
-      additionalProperties: false
-      nullable: true
-      required:
-        - base
-        - code
-        - headings
-      x-speakeasy-param-computed: false
     V2AppearanceFontName:
       description: The name of the font to render in the browser.
       type: string
@@ -28308,71 +28217,111 @@ components:
       required:
         - data
       x-speakeasy-param-computed: false
-    V2AppearanceImages:
-      description: A collection of binary image data to customize images in the portal
-      type: object
-      properties:
-        logo:
-          $ref: '#/components/schemas/V2AppearanceImage'
-        favicon:
-          $ref: '#/components/schemas/V2AppearanceImage'
-        catalog_cover:
-          $ref: '#/components/schemas/V2AppearanceImage'
-      example:
-        logo:
-          data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-        favicon:
-          data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-        catalog_cover:
-          data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-      additionalProperties: false
-      nullable: true
-      x-speakeasy-param-computed: true
-    V2NullableAppearanceTextVariables:
-      description: Values to display for customizable text in the portal user interface
-      type: object
-      properties:
-        catalog:
-          type: object
-          additionalProperties: false
-          properties:
-            welcome_message:
-              type: string
-              maxLength: 512
-            primary_header:
-              type: string
-              maxLength: 512
-          required:
-            - welcome_message
-            - primary_header
-      example:
-        catalog:
-          welcome_message: Welcome to our service catalog
-          primary_header: Find All of Our Services in a Single Place
-      default: null
-      additionalProperties: false
-      nullable: true
-      required:
-        - catalog
-      x-speakeasy-param-computed: false
     V2PortalAppearance:
       type: object
       properties:
         theme_name:
-          allOf:
-            - $ref: '#/components/schemas/V2PortalTheme'
+          description: Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
+          type: string
+          example: mint_rocket
+          enum:
+            - mint_rocket
+            - dark_mode
+            - custom
           deprecated: true
           x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
+          x-speakeasy-unknown-values: allow
         custom_theme:
-          allOf:
-            - $ref: '#/components/schemas/V2NullableAppearanceThemeVariables'
+          description: Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
+          type: object
+          example:
+            colors:
+              section:
+                header:
+                  value: '#F8F8F8'
+                  description: Background for header
+                body:
+                  value: '#FFFFFF'
+                  description: Background for main content
+                hero:
+                  value: '#F8F8F8'
+                  description: Background for hero section
+                accent:
+                  value: '#F8F8F8'
+                  description: Subtle background
+                tertiary:
+                  value: '#FFFFFF'
+                  description: Tertiary background
+                stroke:
+                  value: 'rgba(0,0,0,0.1)'
+                  description: Border color
+                footer:
+                  value: '#07A88D'
+                  description: Background for footer
+              text:
+                header:
+                  value: 'rgba(0,0,0,0.8)'
+                  description: Header text
+                hero:
+                  value: '#FFFFFF'
+                  description: Hero text
+                headings:
+                  value: 'rgba(0,0,0,0.8)'
+                  description: Headings text
+                primary:
+                  value: 'rgba(0,0,0,0.8)'
+                  description: Main content text
+                secondary:
+                  value: 'rgba(0,0,0,0.8)'
+                  description: Supporting text
+                accent:
+                  value: '#07A88D'
+                  description: Subtle text
+                link:
+                  value: '#07A88D'
+                  description: Link text
+                footer:
+                  value: '#FFFFFF'
+                  description: Footer text
+              button:
+                primary_fill:
+                  value: '#1155CB'
+                  description: Background for Primary Button
+                primary_text:
+                  value: '#FFFFFF'
+                  description: Text for Primary Button
+          default: null
+          additionalProperties: false
           deprecated: true
+          nullable: true
+          properties:
+            colors:
+              $ref: '#/components/schemas/V2AppearanceThemeColorVariables'
+          required:
+            - colors
+          title: AppearanceThemeVariables
           x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
+          x-speakeasy-param-computed: false
         custom_fonts:
-          allOf:
-            - $ref: '#/components/schemas/V2NullableAppearanceFonts'
+          description: Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
+          type: object
+          default: null
+          additionalProperties: false
           deprecated: true
+          nullable: true
+          properties:
+            base:
+              $ref: '#/components/schemas/V2AppearanceFontName'
+            code:
+              $ref: '#/components/schemas/V2AppearanceFontName'
+            headings:
+              $ref: '#/components/schemas/V2AppearanceFontName'
+          required:
+            - base
+            - code
+            - headings
           x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
+          x-speakeasy-param-computed: false
         use_custom_fonts:
           description: 'If true, fonts in custom_fonts will be used over the theme''s default fonts'
           type: boolean
@@ -28380,15 +28329,56 @@ components:
           nullable: false
           x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
         text:
-          allOf:
-            - $ref: '#/components/schemas/V2NullableAppearanceTextVariables'
+          description: Values to display for customizable text in the portal user interface
+          type: object
+          example:
+            catalog:
+              welcome_message: Welcome to our service catalog
+              primary_header: Find All of Our Services in a Single Place
+          default: null
+          additionalProperties: false
           deprecated: true
+          nullable: true
+          properties:
+            catalog:
+              type: object
+              additionalProperties: false
+              properties:
+                welcome_message:
+                  type: string
+                  maxLength: 512
+                primary_header:
+                  type: string
+                  maxLength: 512
+              required:
+                - welcome_message
+                - primary_header
+          required:
+            - catalog
           x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
+          x-speakeasy-param-computed: false
         images:
-          allOf:
-            - $ref: '#/components/schemas/V2AppearanceImages'
+          description: A collection of binary image data to customize images in the portal
+          type: object
+          example:
+            logo:
+              data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            favicon:
+              data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            catalog_cover:
+              data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+          additionalProperties: false
           deprecated: true
+          nullable: true
+          properties:
+            logo:
+              $ref: '#/components/schemas/V2AppearanceImage'
+            favicon:
+              $ref: '#/components/schemas/V2AppearanceImage'
+            catalog_cover:
+              $ref: '#/components/schemas/V2AppearanceImage'
           x-speakeasy-deprecation-message: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.
+          x-speakeasy-param-computed: true
       example:
         theme_name: custom
         use_custom_fonts: true
@@ -28466,15 +28456,6 @@ components:
           catalog_cover:
             data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
       additionalProperties: false
-    V2PortalTheme:
-      description: Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
-      type: string
-      example: mint_rocket
-      enum:
-        - mint_rocket
-        - dark_mode
-        - custom
-      x-speakeasy-unknown-values: allow
     UUID_RW:
       description: Contains a unique identifier used for this resource.
       type: string
