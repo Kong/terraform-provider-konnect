@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type V2NullableAppearanceFonts struct {
+type V2UpdatePortalAppearanceRequestCustomFonts struct {
 	Base     types.String `tfsdk:"base"`
 	Code     types.String `tfsdk:"code"`
 	Headings types.String `tfsdk:"headings"`

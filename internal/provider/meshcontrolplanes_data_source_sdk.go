@@ -68,7 +68,75 @@ func (r *MeshControlPlanesDataSourceModel) RefreshFromSharedListMeshControlPlane
 func (r *MeshControlPlanesDataSourceModel) ToOperationsListMeshControlPlanesRequest(ctx context.Context) (*operations.ListMeshControlPlanesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	out := operations.ListMeshControlPlanesRequest{}
+	var filter *shared.MeshControlPlaneFilterParameters
+	if r.Filter != nil {
+		var name *shared.MeshControlPlaneFilterParametersName
+		if r.Filter.Name != nil {
+			eq := new(string)
+			if !r.Filter.Name.Eq.IsUnknown() && !r.Filter.Name.Eq.IsNull() {
+				*eq = r.Filter.Name.Eq.ValueString()
+			} else {
+				eq = nil
+			}
+			contains := new(string)
+			if !r.Filter.Name.Contains.IsUnknown() && !r.Filter.Name.Contains.IsNull() {
+				*contains = r.Filter.Name.Contains.ValueString()
+			} else {
+				contains = nil
+			}
+			name = &shared.MeshControlPlaneFilterParametersName{
+				Eq:       eq,
+				Contains: contains,
+			}
+		}
+		var labels *shared.LabelsFieldFilter
+		if r.Filter.Labels != nil {
+			eq1 := new(string)
+			if !r.Filter.Labels.Eq.IsUnknown() && !r.Filter.Labels.Eq.IsNull() {
+				*eq1 = r.Filter.Labels.Eq.ValueString()
+			} else {
+				eq1 = nil
+			}
+			contains1 := new(string)
+			if !r.Filter.Labels.Contains.IsUnknown() && !r.Filter.Labels.Contains.IsNull() {
+				*contains1 = r.Filter.Labels.Contains.ValueString()
+			} else {
+				contains1 = nil
+			}
+			ocontains := new(string)
+			if !r.Filter.Labels.Ocontains.IsUnknown() && !r.Filter.Labels.Ocontains.IsNull() {
+				*ocontains = r.Filter.Labels.Ocontains.ValueString()
+			} else {
+				ocontains = nil
+			}
+			oeq := new(string)
+			if !r.Filter.Labels.Oeq.IsUnknown() && !r.Filter.Labels.Oeq.IsNull() {
+				*oeq = r.Filter.Labels.Oeq.ValueString()
+			} else {
+				oeq = nil
+			}
+			neq := new(string)
+			if !r.Filter.Labels.Neq.IsUnknown() && !r.Filter.Labels.Neq.IsNull() {
+				*neq = r.Filter.Labels.Neq.ValueString()
+			} else {
+				neq = nil
+			}
+			labels = &shared.LabelsFieldFilter{
+				Eq:        eq1,
+				Contains:  contains1,
+				Ocontains: ocontains,
+				Oeq:       oeq,
+				Neq:       neq,
+			}
+		}
+		filter = &shared.MeshControlPlaneFilterParameters{
+			Name:   name,
+			Labels: labels,
+		}
+	}
+	out := operations.ListMeshControlPlanesRequest{
+		Filter: filter,
+	}
 
 	return &out, diags
 }

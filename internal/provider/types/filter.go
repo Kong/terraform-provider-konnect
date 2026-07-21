@@ -7,7 +7,7 @@ import (
 )
 
 type Filter struct {
-	Description    *LegacyStringFieldFilter `queryParam:"name=description" tfsdk:"description"`
-	KonnectManaged types.Bool               `queryParam:"name=konnect_managed" tfsdk:"konnect_managed"`
-	Name           *LegacyStringFieldFilter `queryParam:"name=name" tfsdk:"name"`
+	Description    *MeshControlPlaneFilterParametersName `queryParam:"name=description" tfsdk:"description"`
+	KonnectManaged types.Bool                            `queryParam:"name=konnect_managed" tfsdk:"konnect_managed"`
+	Name           *MeshControlPlaneFilterParametersName `queryParam:"name=name" tfsdk:"name"`
 }
