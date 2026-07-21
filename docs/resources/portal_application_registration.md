@@ -14,12 +14,10 @@ PortalApplicationRegistration Resource
 
 ```terraform
 resource "konnect_portal_application_registration" "my_portalapplicationregistration" {
-  api_id = "15a8f0a0-e185-4b99-8591-c6319de5704a"
-  application = {
-    id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-  }
-  portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
-  status    = "approved"
+  api_id         = "15a8f0a0-e185-4b99-8591-c6319de5704a"
+  application_id = "f5e17ae7-79e1-4181-931f-143b2159d313"
+  portal_id      = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+  status         = "approved"
 }
 ```
 
@@ -29,32 +27,21 @@ resource "konnect_portal_application_registration" "my_portalapplicationregistra
 ### Required
 
 - `api_id` (String) The ID of the API the application is registering for. Requires replacement if changed.
+- `application_id` (String) ID of the application.
 - `portal_id` (String) The Portal identifier
 
 ### Optional
 
-- `application` (Attributes) Details about the application the registration is part of. (see [below for nested schema](#nestedatt--application))
 - `status` (String) The status of the application registration. It must be a valid status value for a registration creation. possible known values include one of ["approved", "pending"]
 
 ### Read-Only
 
 - `api` (Attributes) Details about the API the application is registered to. (see [below for nested schema](#nestedatt--api))
+- `application` (Attributes) Details about the application the registration is part of. (see [below for nested schema](#nestedatt--application))
 - `consumer` (Attributes) Details about the consumer associated with this application registration. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--application"></a>
-### Nested Schema for `application`
-
-Required:
-
-- `id` (String) Contains a unique identifier used for this resource.
-
-Read-Only:
-
-- `name` (String) The name of the application the registration is part of.
-
 
 <a id="nestedatt--api"></a>
 ### Nested Schema for `api`
@@ -65,6 +52,15 @@ Read-Only:
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String) The name of the API the application is registered to.
 - `version` (String) The version of the API the application is registered to.
+
+
+<a id="nestedatt--application"></a>
+### Nested Schema for `application`
+
+Read-Only:
+
+- `id` (String) Contains a unique identifier used for this resource.
+- `name` (String) The name of the application the registration is part of.
 
 
 <a id="nestedatt--consumer"></a>

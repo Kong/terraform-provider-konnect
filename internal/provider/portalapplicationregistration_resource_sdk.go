@@ -49,9 +49,8 @@ func (r *PortalApplicationRegistrationResourceModel) ToOperationsCreateApplicati
 	portalID = r.PortalID.ValueString()
 
 	var applicationID string
-	if r.Application != nil {
-		applicationID = r.Application.ID.ValueString()
-	}
+	applicationID = r.ApplicationID.ValueString()
+
 	createApplicationRegistrationRequest, createApplicationRegistrationRequestDiags := r.ToSharedCreateApplicationRegistrationRequest(ctx)
 	diags.Append(createApplicationRegistrationRequestDiags...)
 
@@ -75,9 +74,8 @@ func (r *PortalApplicationRegistrationResourceModel) ToOperationsDeleteApplicati
 	portalID = r.PortalID.ValueString()
 
 	var applicationID string
-	if r.Application != nil {
-		applicationID = r.Application.ID.ValueString()
-	}
+	applicationID = r.ApplicationID.ValueString()
+
 	var registrationID string
 	registrationID = r.ID.ValueString()
 
@@ -97,9 +95,8 @@ func (r *PortalApplicationRegistrationResourceModel) ToOperationsGetApplicationR
 	portalID = r.PortalID.ValueString()
 
 	var applicationID string
-	if r.Application != nil {
-		applicationID = r.Application.ID.ValueString()
-	}
+	applicationID = r.ApplicationID.ValueString()
+
 	var registrationID string
 	registrationID = r.ID.ValueString()
 
@@ -119,9 +116,8 @@ func (r *PortalApplicationRegistrationResourceModel) ToOperationsUpdateApplicati
 	portalID = r.PortalID.ValueString()
 
 	var applicationID string
-	if r.Application != nil {
-		applicationID = r.Application.ID.ValueString()
-	}
+	applicationID = r.ApplicationID.ValueString()
+
 	var registrationID string
 	registrationID = r.ID.ValueString()
 

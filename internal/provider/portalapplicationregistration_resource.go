@@ -37,15 +37,16 @@ type PortalApplicationRegistrationResource struct {
 
 // PortalApplicationRegistrationResourceModel describes the resource data model.
 type PortalApplicationRegistrationResourceModel struct {
-	API         *tfTypes.API                                        `tfsdk:"api"`
-	APIID       types.String                                        `tfsdk:"api_id"`
-	Application *tfTypes.APIProductVersionAuthStrategy              `tfsdk:"application"`
-	Consumer    *tfTypes.GetApplicationRegistrationResponseConsumer `tfsdk:"consumer"`
-	CreatedAt   types.String                                        `tfsdk:"created_at"`
-	ID          types.String                                        `tfsdk:"id"`
-	PortalID    types.String                                        `tfsdk:"portal_id"`
-	Status      types.String                                        `tfsdk:"status"`
-	UpdatedAt   types.String                                        `tfsdk:"updated_at"`
+	API           *tfTypes.API                                        `tfsdk:"api"`
+	APIID         types.String                                        `tfsdk:"api_id"`
+	Application   *tfTypes.APIProductVersionAuthStrategy              `tfsdk:"application"`
+	ApplicationID types.String                                        `tfsdk:"application_id"`
+	Consumer      *tfTypes.GetApplicationRegistrationResponseConsumer `tfsdk:"consumer"`
+	CreatedAt     types.String                                        `tfsdk:"created_at"`
+	ID            types.String                                        `tfsdk:"id"`
+	PortalID      types.String                                        `tfsdk:"portal_id"`
+	Status        types.String                                        `tfsdk:"status"`
+	UpdatedAt     types.String                                        `tfsdk:"updated_at"`
 }
 
 func (r *PortalApplicationRegistrationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -90,10 +91,9 @@ func (r *PortalApplicationRegistrationResource) Schema(ctx context.Context, req 
 			},
 			"application": schema.SingleNestedAttribute{
 				Computed: true,
-				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
-						Required: true,
+						Computed: true,
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
@@ -105,6 +105,10 @@ func (r *PortalApplicationRegistrationResource) Schema(ctx context.Context, req 
 					},
 				},
 				Description: `Details about the application the registration is part of.`,
+			},
+			"application_id": schema.StringAttribute{
+				Required:    true,
+				Description: `ID of the application.`,
 			},
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
@@ -439,7 +443,7 @@ func (r *PortalApplicationRegistrationResource) ImportState(ctx context.Context,
 		resp.Diagnostics.AddError("Missing required field", `The field application_id is required but was not found in the json encoded ID.`)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("application").AtName("id"), data.ApplicationID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("application_id"), data.ApplicationID)...)
 	if len(data.PortalID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
 		return

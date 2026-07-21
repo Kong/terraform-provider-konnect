@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: d61947d097292e77e96f97b5b90e8fd9
+  docChecksum: 7acbdd50ce7c3fed2ebf8b01a2a8f2cb
   docVersion: 2.0.0
   speakeasyVersion: 1.788.0
   generationVersion: 2.915.0
   releaseVersion: 3.20.0
   configChecksum: 8baf3fd67bbb5d991fba9bfa91ca751f
 persistentEdits:
-  generation_id: 46252e9a-0a2e-4319-9a91-5742e14ecc6d
-  pristine_commit_hash: 350c423bbad8d03548f483554db1259d8719c975
-  pristine_tree_hash: 28705f72ae333fd81d62bc59d8bad0f9e0613ac9
+  generation_id: f235f9e0-ede5-4b99-b890-66ba8968af17
+  pristine_commit_hash: f2eb79384bf2c99b487aabb5956e7f269aa8f352
+  pristine_tree_hash: 20ec15537a5eb0d6148dfe75b3ace00b90b3552b
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2449,8 +2449,8 @@ trackedFiles:
     pristine_git_object: bf547b628e9940f2ff70c6cbc313ca4451b3a08e
   examples/resources/konnect_portal_application_registration/resource.tf:
     id: 5b25d94426eb
-    last_write_checksum: sha1:ff7440ca590f65212624a960f34a2a5226e49954
-    pristine_git_object: 918f3593e2e5c5214dc367722250c07e464d81a5
+    last_write_checksum: sha1:8f2ffe98c811ea3d4eff4c629587dfa5a075370a
+    pristine_git_object: e05481a3c3572c556b5c49af43b69821eb0c2598
   examples/resources/konnect_portal_audit_log_webhook/import-by-string-id.tf:
     id: bcd3cf2f5fb0
     last_write_checksum: sha1:ee115e5e9d636fc3ac3a037fd847b5d29ad03f00
@@ -3881,8 +3881,8 @@ trackedFiles:
     pristine_git_object: fa537bde78e92da4c2c2f4cdb0b25b2f72394381
   internal/provider/gatewaypluginkeyauth_resource.go:
     id: 4688e0460267
-    last_write_checksum: sha1:918b2893790de1caa90edae4121608dd6c0eecd2
-    pristine_git_object: ac54d2dbbcbcfa6f7f5a6b111e18c4086efb8d83
+    last_write_checksum: sha1:6a3dbbc712422f7494d26f4cc6daaeaee0d813fb
+    pristine_git_object: 57622b00fcd3f57c898b083de6f7b58c7b402c0d
   internal/provider/gatewaypluginkeyauth_resource_sdk.go:
     id: 6d6f8600991d
     last_write_checksum: sha1:0a5e622acb05c280533cd7ac15f1a1854aa1e84b
@@ -4489,12 +4489,12 @@ trackedFiles:
     pristine_git_object: 2f2c68441c14375b48174b8fe8c14437eef35df6
   internal/provider/portalapplicationregistration_resource.go:
     id: 517fb5371fa7
-    last_write_checksum: sha1:be888a6a90c90f949f960fcc232a326be91a303c
-    pristine_git_object: ac643e43439b4f065c1df281a8b1ab459aca0f95
+    last_write_checksum: sha1:e2a5a1289cd27b487f4a1df79703015a13b5d644
+    pristine_git_object: 1484310a0f02f482141eb2e1061b3295e1afd3f5
   internal/provider/portalapplicationregistration_resource_sdk.go:
     id: 81baa86e22df
-    last_write_checksum: sha1:1bf174f428f7f1b82318eb16793f9b749046bc2e
-    pristine_git_object: 3a2e15e49044e7ec7dcb167e39484508107946f8
+    last_write_checksum: sha1:3a840b9815d4d36d5288b0707b9c7ede93b62fc7
+    pristine_git_object: daa271878263cad3f35000399154a64ea442b5a4
   internal/provider/portalauditlogwebhook_resource.go:
     id: 85780041b3ea
     last_write_checksum: sha1:c59852cc398d93b9bed1a23bfaf6775c6ab92358
@@ -11877,8 +11877,8 @@ trackedFiles:
     pristine_git_object: abdb580c3e901d01ef8d763dd02afc727af985e9
   internal/sdk/models/shared/getapplicationregistrationresponse.go:
     id: a11a0570ba8a
-    last_write_checksum: sha1:bf64a7f505ab7fcb83aa398d0298baa0d0cfa230
-    pristine_git_object: 7212840e5de09f4b8bd6e29d29b3fffb8fb890a5
+    last_write_checksum: sha1:75abdfedec0ac31d9004c2cdba7d6f33b348d5c6
+    pristine_git_object: 1d7029f0f517ae9ce5b79edb930e5a2db5be2ddb
   internal/sdk/models/shared/getapplicationresponse.go:
     id: bcc0e07794a4
     last_write_checksum: sha1:20172d72d5a19c3695562ee3857eb76876368833
@@ -12069,8 +12069,8 @@ trackedFiles:
     pristine_git_object: 8d2644c27e0f4232689a3412f9a177a333ef0968
   internal/sdk/models/shared/keyauthplugin.go:
     id: ed69dc0800c0
-    last_write_checksum: sha1:eab23252d7985d65c749c61996f89c4b6695b52a
-    pristine_git_object: aef66dbd1345455ac613f9202828eb52aa0d3937
+    last_write_checksum: sha1:bc136b13b5cef9f7140013d8220e08a5e3b5a041
+    pristine_git_object: c0a584a56696b0e628d620e32d4acbf5d2407876
   internal/sdk/models/shared/keyauthwithoutparents.go:
     id: 01585d7bf7a8
     last_write_checksum: sha1:6639a86f04cefbd5db16ae0cdaaf7e88134480d7

@@ -166,6 +166,11 @@ func (g GetApplicationRegistrationResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetApplicationRegistrationResponse) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ". + { application_id: .application.id }"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "created_at", "updated_at", "status", "api", "application"}); err != nil {
 		return err
 	}
