@@ -16,7 +16,7 @@ type CreateDcrProviderResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing the newly created DCR provider object.
-	CreateDcrProviderResponse *shared.CreateDcrProviderResponse
+	DcrProviderResponseFlattened *shared.DcrProviderResponseFlattened
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -57,11 +57,11 @@ func (c *CreateDcrProviderResponse) GetRawResponse() *http.Response {
 	return c.RawResponse
 }
 
-func (c *CreateDcrProviderResponse) GetCreateDcrProviderResponse() *shared.CreateDcrProviderResponse {
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseFlattened() *shared.DcrProviderResponseFlattened {
 	if c == nil {
 		return nil
 	}
-	return c.CreateDcrProviderResponse
+	return c.DcrProviderResponseFlattened
 }
 
 func (c *CreateDcrProviderResponse) GetBadRequestError() *shared.BadRequestError {

@@ -39,6 +39,26 @@ func (u *UpdateDcrProviderRequest) GetUpdateDcrProviderRequest() shared.UpdateDc
 	return u.UpdateDcrProviderRequest
 }
 
+func (u *UpdateDcrProviderRequest) GetUpdateDcrProviderRequestAuth0() *shared.UpdateDcrProviderRequestAuth0 {
+	return u.GetUpdateDcrProviderRequest().UpdateDcrProviderRequestAuth0
+}
+
+func (u *UpdateDcrProviderRequest) GetUpdateDcrProviderRequestAzureAd() *shared.UpdateDcrProviderRequestAzureAd {
+	return u.GetUpdateDcrProviderRequest().UpdateDcrProviderRequestAzureAd
+}
+
+func (u *UpdateDcrProviderRequest) GetUpdateDcrProviderRequestCurity() *shared.UpdateDcrProviderRequestCurity {
+	return u.GetUpdateDcrProviderRequest().UpdateDcrProviderRequestCurity
+}
+
+func (u *UpdateDcrProviderRequest) GetUpdateDcrProviderRequestOkta() *shared.UpdateDcrProviderRequestOkta {
+	return u.GetUpdateDcrProviderRequest().UpdateDcrProviderRequestOkta
+}
+
+func (u *UpdateDcrProviderRequest) GetUpdateDcrProviderRequestHTTP() *shared.UpdateDcrProviderRequestHTTP {
+	return u.GetUpdateDcrProviderRequest().UpdateDcrProviderRequestHTTP
+}
+
 type UpdateDcrProviderResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -47,7 +67,7 @@ type UpdateDcrProviderResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a single DCR provider object. Sensitive fields will be removed from the response.
-	DcrProviderResponse *shared.DcrProviderResponse
+	DcrProviderResponseFlattened *shared.DcrProviderResponseFlattened
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -90,11 +110,11 @@ func (u *UpdateDcrProviderResponse) GetRawResponse() *http.Response {
 	return u.RawResponse
 }
 
-func (u *UpdateDcrProviderResponse) GetDcrProviderResponse() *shared.DcrProviderResponse {
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseFlattened() *shared.DcrProviderResponseFlattened {
 	if u == nil {
 		return nil
 	}
-	return u.DcrProviderResponse
+	return u.DcrProviderResponseFlattened
 }
 
 func (u *UpdateDcrProviderResponse) GetBadRequestError() *shared.BadRequestError {

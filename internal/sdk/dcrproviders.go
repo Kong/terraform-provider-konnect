@@ -221,12 +221,12 @@ func (s *DCRProviders) CreateDcrProvider(ctx context.Context, request shared.Cre
 				return nil, err
 			}
 
-			var out shared.CreateDcrProviderResponse
+			var out shared.DcrProviderResponseFlattened
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateDcrProviderResponse = &out
+			res.DcrProviderResponseFlattened = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -489,12 +489,12 @@ func (s *DCRProviders) GetDcrProvider(ctx context.Context, request operations.Ge
 				return nil, err
 			}
 
-			var out shared.DcrProviderResponse
+			var out shared.DcrProviderResponseFlattened
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.DcrProviderResponse = &out
+			res.DcrProviderResponseFlattened = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -764,12 +764,12 @@ func (s *DCRProviders) UpdateDcrProvider(ctx context.Context, request operations
 				return nil, err
 			}
 
-			var out shared.DcrProviderResponse
+			var out shared.DcrProviderResponseFlattened
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.DcrProviderResponse = &out
+			res.DcrProviderResponseFlattened = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

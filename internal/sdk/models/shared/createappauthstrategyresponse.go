@@ -152,9 +152,8 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	// JSON-B object containing the configuration for the OIDC strategy
 	Configs AppAuthStrategyOpenIDConnectResponseConfigs `json:"configs"`
 	// At least one published entity is using this auth strategy.
-	Active        bool                                             `json:"active"`
-	DcrProvider   *AppAuthStrategyOpenIDConnectResponseDcrProvider `json:"dcr_provider"`
-	DcrProviderID *string                                          `default:"null" json:"dcr_provider_id"`
+	Active      bool                                             `json:"active"`
+	DcrProvider *AppAuthStrategyOpenIDConnectResponseDcrProvider `json:"dcr_provider"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -172,7 +171,8 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
 	// applications; stored values may be set for any auth strategy in the organization.
 	//
-	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
+	Principals    *AuthStrategyPrincipals `json:"principals,omitempty"`
+	DcrProviderID *string                 `default:"null" json:"dcr_provider_id"`
 }
 
 func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
@@ -240,13 +240,6 @@ func (a *AppAuthStrategyOpenIDConnectResponse) GetDcrProvider() *AppAuthStrategy
 	return a.DcrProvider
 }
 
-func (a *AppAuthStrategyOpenIDConnectResponse) GetDcrProviderID() *string {
-	if a == nil {
-		return nil
-	}
-	return a.DcrProviderID
-}
-
 func (a *AppAuthStrategyOpenIDConnectResponse) GetLabels() map[string]*string {
 	if a == nil {
 		return map[string]*string{}
@@ -280,6 +273,13 @@ func (a *AppAuthStrategyOpenIDConnectResponse) GetPrincipals() *AuthStrategyPrin
 		return nil
 	}
 	return a.Principals
+}
+
+func (a *AppAuthStrategyOpenIDConnectResponse) GetDcrProviderID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DcrProviderID
 }
 
 type AppAuthStrategyKeyAuthResponseStrategyType string

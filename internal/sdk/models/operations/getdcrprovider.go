@@ -39,7 +39,7 @@ type GetDcrProviderResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a single DCR provider object. Sensitive fields will be removed from the response.
-	DcrProviderResponse *shared.DcrProviderResponse
+	DcrProviderResponseFlattened *shared.DcrProviderResponseFlattened
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -80,11 +80,11 @@ func (g *GetDcrProviderResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetDcrProviderResponse) GetDcrProviderResponse() *shared.DcrProviderResponse {
+func (g *GetDcrProviderResponse) GetDcrProviderResponseFlattened() *shared.DcrProviderResponseFlattened {
 	if g == nil {
 		return nil
 	}
-	return g.DcrProviderResponse
+	return g.DcrProviderResponseFlattened
 }
 
 func (g *GetDcrProviderResponse) GetUnauthorizedError() *shared.UnauthorizedError {

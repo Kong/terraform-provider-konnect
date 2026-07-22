@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -24,6 +23,8 @@ import (
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -43,26 +44,19 @@ type DcrProviderResource struct {
 
 // DcrProviderResourceModel describes the resource data model.
 type DcrProviderResourceModel struct {
-	Active                  types.Bool                                    `tfsdk:"active"`
-	Auth0                   *tfTypes.CreateDcrProviderRequestAuth0        `queryParam:"inline" tfsdk:"auth0"`
-	AzureAd                 *tfTypes.CreateDcrProviderRequestAzureAd      `queryParam:"inline" tfsdk:"azure_ad"`
-	CreatedAt               types.String                                  `tfsdk:"created_at"`
-	Curity                  *tfTypes.CreateDcrProviderRequestAzureAd      `queryParam:"inline" tfsdk:"curity"`
-	DCRProviderAuth0        *tfTypes.DCRProviderAuth0                     `queryParam:"inline" tfsdk:"dcr_provider_auth0"`
-	DCRProviderAzureAD      *tfTypes.DCRProviderAzureAD                   `queryParam:"inline" tfsdk:"dcr_provider_azure_ad"`
-	DCRProviderCurity       *tfTypes.DCRProviderAzureAD                   `queryParam:"inline" tfsdk:"dcr_provider_curity"`
-	DCRProviderHTTP         *tfTypes.DCRProviderHTTP                      `queryParam:"inline" tfsdk:"dcr_provider_http"`
-	DCRProviderKongIdentity *tfTypes.DCRProviderKongIdentity              `queryParam:"inline" tfsdk:"dcr_provider_kong_identity"`
-	DCRProviderOKTA         *tfTypes.DCRProviderKongIdentity              `queryParam:"inline" tfsdk:"dcr_provider_okta"`
-	DisplayName             types.String                                  `tfsdk:"display_name"`
-	HTTP                    *tfTypes.CreateDcrProviderRequestHTTP         `queryParam:"inline" tfsdk:"http"`
-	ID                      types.String                                  `tfsdk:"id"`
-	Issuer                  types.String                                  `tfsdk:"issuer"`
-	KongIdentity            *tfTypes.CreateDcrProviderRequestKongIdentity `queryParam:"inline" tfsdk:"kong_identity"`
-	Name                    types.String                                  `tfsdk:"name"`
-	Okta                    *tfTypes.CreateDcrProviderRequestOkta         `queryParam:"inline" tfsdk:"okta"`
-	ProviderType            types.String                                  `tfsdk:"provider_type"`
-	UpdatedAt               types.String                                  `tfsdk:"updated_at"`
+	Active       types.Bool            `tfsdk:"active"`
+	Auth0        *tfTypes.Auth0        `queryParam:"inline" tfsdk:"auth0"`
+	AzureAd      *tfTypes.AzureAd      `queryParam:"inline" tfsdk:"azure_ad"`
+	CreatedAt    types.String          `tfsdk:"created_at"`
+	Curity       *tfTypes.AzureAd      `queryParam:"inline" tfsdk:"curity"`
+	HTTP         *tfTypes.HTTP         `queryParam:"inline" tfsdk:"http"`
+	ID           types.String          `tfsdk:"id"`
+	Issuer       types.String          `tfsdk:"issuer"`
+	KongIdentity *tfTypes.KongIdentity `queryParam:"inline" tfsdk:"kong_identity"`
+	Name         types.String          `tfsdk:"name"`
+	Okta         *tfTypes.Okta         `queryParam:"inline" tfsdk:"okta"`
+	ProviderType types.String          `tfsdk:"provider_type"`
+	UpdatedAt    types.String          `tfsdk:"updated_at"`
 }
 
 func (r *DcrProviderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -76,122 +70,125 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 			"active": schema.BoolAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.Bool{
-					speakeasy_boolplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("active")}}),
+					speakeasy_boolplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("active")}}),
 				},
 				Description: `At least one active auth strategy is using this DCR provider.`,
 			},
 			"auth0": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
-					"dcr_config": schema.SingleNestedAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
+					"active": schema.BoolAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
+						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_audience": schema.StringAttribute{
 								Optional: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
 								MarkdownDescription: `This is the audience value used for the initial client.` + "\n" +
 									`If using a custom domain on Auth0, this must be set as to the Auth0 Management API audience value.` + "\n" +
-									`If left blank, the issuer will be used instead.` + "\n" +
-									`Requires replacement if changed.`,
+									`If left blank, the issuer will be used instead.`,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 							"initial_client_id": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
+								Computed: true,
+								Optional: true,
 								MarkdownDescription: `This ID should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 							"initial_client_secret": schema.StringAttribute{
-								Required: true,
+								Optional:  true,
+								Sensitive: true,
 								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 							"use_developer_managed_scopes": schema.BoolAttribute{
 								Optional: true,
-								PlanModifiers: []planmodifier.Bool{
-									boolplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `Requires replacement if changed.`,
 							},
 						},
-						Description: `Payload to create an Auth0 DCR provider. Requires replacement if changed.`,
+						Description: `Payload to create an Auth0 DCR provider. Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
 					},
-					"display_name": schema.StringAttribute{
-						Optional: true,
+					"id": schema.StringAttribute{
+						Computed: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 256),
-						},
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"issuer": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The issuer of the DCR provider. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"labels": schema.MapAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`Requires replacement if changed.`,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"provider_type": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `must be "auth0"; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "auth0"`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("auth0"),
 						},
 					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
 				},
-				Description: `Request body for creating an Auth0 DCR provider. Requires replacement if changed.`,
+				Description: `A set of updates to an Auth0 DCR provider.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("azure_ad"),
@@ -199,107 +196,112 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						path.MatchRelative().AtParent().AtName("http"),
 						path.MatchRelative().AtParent().AtName("kong_identity"),
 						path.MatchRelative().AtParent().AtName("okta"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_auth0"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_azure_ad"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_curity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_http"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_kong_identity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_okta"),
 					}...),
 				},
 			},
 			"azure_ad": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
-					"dcr_config": schema.SingleNestedAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
+					"active": schema.BoolAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
+						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_id": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
+								Computed: true,
+								Optional: true,
 								MarkdownDescription: `This ID should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 							"initial_client_secret": schema.StringAttribute{
-								Required: true,
+								Optional:  true,
+								Sensitive: true,
 								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 						},
-						Description: `Payload to create an Azure AD DCR provider. Requires replacement if changed.`,
+						Description: `Payload to create an Azure AD DCR provider. Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
 					},
-					"display_name": schema.StringAttribute{
-						Optional: true,
+					"id": schema.StringAttribute{
+						Computed: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 256),
-						},
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"issuer": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The issuer of the DCR provider. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"labels": schema.MapAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`Requires replacement if changed.`,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"provider_type": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `must be "azureAd"; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "azureAd"`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("azureAd"),
 						},
 					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
 				},
-				Description: `Request body for creating an Azure AD DCR provider. Requires replacement if changed.`,
+				Description: `A set of updates to an Azure AD DCR provider.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -307,114 +309,119 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						path.MatchRelative().AtParent().AtName("http"),
 						path.MatchRelative().AtParent().AtName("kong_identity"),
 						path.MatchRelative().AtParent().AtName("okta"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_auth0"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_azure_ad"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_curity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_http"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_kong_identity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_okta"),
 					}...),
 				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("created_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("created_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"curity": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
-					"dcr_config": schema.SingleNestedAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
+					"active": schema.BoolAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
+						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_id": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
+								Computed: true,
+								Optional: true,
 								MarkdownDescription: `This ID should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 							"initial_client_secret": schema.StringAttribute{
-								Required: true,
+								Optional:  true,
+								Sensitive: true,
 								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 						},
-						Description: `Payload to create a Curity DCR provider. Requires replacement if changed.`,
+						Description: `Payload to create a Curity DCR provider. Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
 					},
-					"display_name": schema.StringAttribute{
-						Optional: true,
+					"id": schema.StringAttribute{
+						Computed: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 256),
-						},
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"issuer": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The issuer of the DCR provider. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"labels": schema.MapAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`Requires replacement if changed.`,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"provider_type": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `must be "curity"; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "curity"`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("curity"),
 						},
 					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
 				},
-				Description: `Request body for creating a Curity DCR provider. Requires replacement if changed.`,
+				Description: `A set of updates to a Curity DCR provider.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -422,17 +429,11 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						path.MatchRelative().AtParent().AtName("http"),
 						path.MatchRelative().AtParent().AtName("kong_identity"),
 						path.MatchRelative().AtParent().AtName("okta"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_auth0"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_azure_ad"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_curity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_http"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_kong_identity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_okta"),
 					}...),
 				},
 			},
-			"dcr_provider_auth0": schema.SingleNestedAttribute{
-				Computed: true,
+			"http": schema.SingleNestedAttribute{
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"active": schema.BoolAttribute{
 						Computed: true,
@@ -450,524 +451,104 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					},
 					"dcr_config": schema.SingleNestedAttribute{
 						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"initial_client_audience": schema.StringAttribute{
-								Computed: true,
-								MarkdownDescription: `This is the audience value used for the initial client.` + "\n" +
-									`If using a custom domain on Auth0, this must be set as to the Auth0 Management API audience value.` + "\n" +
-									`If left blank, the issuer will be used instead.`,
-							},
-							"initial_client_id": schema.StringAttribute{
-								Computed: true,
-								MarkdownDescription: `This ID should be copied from your identity provider's settings after you create a client` + "\n" +
-									`and assign it as the management client for DCR for this developer portal`,
-							},
-							"use_developer_managed_scopes": schema.BoolAttribute{
-								Computed: true,
-							},
-						},
-						Description: `A DCR provider configuration for Auth0`,
-					},
-					"display_name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Description: `The issuer of the DCR provider.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
-					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				Description: `A DCR provider for Auth0 -- only properties not included in DcrProviderBase`,
-			},
-			"dcr_provider_azure_ad": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"active": schema.BoolAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.Bool{
-							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-						},
-						Description: `At least one active auth strategy is using this DCR provider.`,
-					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"initial_client_id": schema.StringAttribute{
-								Computed: true,
-								MarkdownDescription: `This ID should be copied from your identity provider's settings after you create a client` + "\n" +
-									`and assign it as the management client for DCR for this developer portal`,
-							},
-						},
-						Description: `A DCR provider configuration for Azure AD`,
-					},
-					"display_name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Description: `The issuer of the DCR provider.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
-					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				Description: `A DCR provider for Azure AD -- only properties not included in DcrProviderBase`,
-			},
-			"dcr_provider_curity": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"active": schema.BoolAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.Bool{
-							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-						},
-						Description: `At least one active auth strategy is using this DCR provider.`,
-					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"initial_client_id": schema.StringAttribute{
-								Computed: true,
-								MarkdownDescription: `This ID should be copied from your identity provider's settings after you create a client` + "\n" +
-									`and assign it as the management client for DCR for this developer portal`,
-							},
-						},
-						Description: `A DCR provider configuration for Curity`,
-					},
-					"display_name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Description: `The issuer of the DCR provider.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
-					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				Description: `A DCR provider for Curity -- only properties not included in DcrProviderBase`,
-			},
-			"dcr_provider_http": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"active": schema.BoolAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.Bool{
-							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-						},
-						Description: `At least one active auth strategy is using this DCR provider.`,
-					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"allow_multiple_credentials": schema.BoolAttribute{
 								Computed:    true,
+								Optional:    true,
 								Default:     booldefault.StaticBool(false),
 								Description: `When enabled, indicates that the DCR provider supports creating and managing multiple credentials per application. Default: false`,
 							},
-							"dcr_base_url": schema.StringAttribute{
-								Computed: true,
-							},
-							"disable_event_hooks": schema.BoolAttribute{
-								Computed:    true,
-								Description: `This flag disables all the event-hooks on the application flow for the DCR provider.`,
-							},
-							"disable_refresh_secret": schema.BoolAttribute{
-								Computed:    true,
-								Description: `This flag disable the refresh-secret endpoint on the application flow for the DCR provider.`,
-							},
-						},
-						Description: `A DCR provider configuration for HTTP`,
-					},
-					"display_name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Description: `The issuer of the DCR provider.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
-					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				Description: `A DCR provider for HTTP -- only properties not included in DcrProviderBase`,
-			},
-			"dcr_provider_kong_identity": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"active": schema.BoolAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.Bool{
-							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-						},
-						Description: `At least one active auth strategy is using this DCR provider.`,
-					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"dcr_config": schema.SingleNestedAttribute{
-						Computed:    true,
-						Description: `A DCR provider configuration for Kong Identity`,
-					},
-					"display_name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Description: `The issuer of the DCR provider.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
-					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				Description: `A DCR provider for Kong Identity -- only properties not included in DcrProviderBase`,
-			},
-			"dcr_provider_okta": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"active": schema.BoolAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.Bool{
-							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-						},
-						Description: `At least one active auth strategy is using this DCR provider.`,
-					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"dcr_config": schema.SingleNestedAttribute{
-						Computed:    true,
-						Description: `A DCR provider configuration for Okta`,
-					},
-					"display_name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-					},
-					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Description: `The issuer of the DCR provider.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
-					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				Description: `A DCR provider for Okta -- only properties not included in DcrProviderBase`,
-			},
-			"display_name": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("display_name")}}),
-				},
-				Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-			},
-			"http": schema.SingleNestedAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Attributes: map[string]schema.Attribute{
-					"dcr_config": schema.SingleNestedAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Attributes: map[string]schema.Attribute{
-							"allow_multiple_credentials": schema.BoolAttribute{
+							"api_key": schema.StringAttribute{
 								Computed: true,
 								Optional: true,
-								Default:  booldefault.StaticBool(false),
-								PlanModifiers: []planmodifier.Bool{
-									boolplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `When enabled, indicates that the DCR provider supports creating and managing multiple credentials per application. Default: false; Requires replacement if changed.`,
-							},
-							"api_key": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
 								MarkdownDescription: `This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be` + "\n" +
 									`verified on the server to ensure that incoming requests are coming from Konnect.` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthBetween(12, 256),
 									stringvalidator.RegexMatches(regexp.MustCompile(`^[a-zA-Z0-9_]+$`), "must match pattern "+regexp.MustCompile(`^[a-zA-Z0-9_]+$`).String()),
 								},
 							},
 							"dcr_base_url": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
+								Computed: true,
+								Optional: true,
 								MarkdownDescription: `The base URL of the DCR server. This is the URL that will be used to make the HTTP requests from Konnect to the DCR provider.` + "\n" +
 									`This URL must be accessible from the Konnect service.` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 							"disable_event_hooks": schema.BoolAttribute{
-								Optional: true,
-								PlanModifiers: []planmodifier.Bool{
-									boolplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `This flag disables all the event-hooks on the application flow for the DCR provider. Requires replacement if changed.`,
+								Computed:    true,
+								Optional:    true,
+								Description: `This flag disables all the event-hooks on the application flow for the DCR provider.`,
 							},
 							"disable_refresh_secret": schema.BoolAttribute{
-								Optional: true,
-								PlanModifiers: []planmodifier.Bool{
-									boolplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `This flag disable the refresh-secret endpoint on the application flow for the DCR provider. Requires replacement if changed.`,
+								Computed:    true,
+								Optional:    true,
+								Description: `This flag disable the refresh-secret endpoint on the application flow for the DCR provider.`,
 							},
 						},
-						Description: `Payload to create an HTTP DCR provider. Requires replacement if changed.`,
+						Description: `Payload to create an HTTP DCR provider. Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
 					},
-					"display_name": schema.StringAttribute{
-						Optional: true,
+					"id": schema.StringAttribute{
+						Computed: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 256),
-						},
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"issuer": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The issuer of the DCR provider. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"labels": schema.MapAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`Requires replacement if changed.`,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"provider_type": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `must be "http"; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "http"`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("http"),
 						},
 					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
 				},
-				Description: `Request body for creating an HTTP DCR provider. Requires replacement if changed.`,
+				Description: `A set of updates to an HTTP DCR provider.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -975,26 +556,20 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						path.MatchRelative().AtParent().AtName("curity"),
 						path.MatchRelative().AtParent().AtName("kong_identity"),
 						path.MatchRelative().AtParent().AtName("okta"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_auth0"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_azure_ad"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_curity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_http"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_kong_identity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_okta"),
 					}...),
 				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("id")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"issuer": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("issuer")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("issuer")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("issuer")}}),
 				},
 				Description: `The issuer of the DCR provider.`,
 			},
@@ -1004,34 +579,49 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Attributes: map[string]schema.Attribute{
+					"active": schema.BoolAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+						},
+						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
 					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
 						},
 						Description: `Payload to create a Kong Identity DCR provider. Requires replacement if changed.`,
 					},
-					"display_name": schema.StringAttribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Contains a unique identifier used for this resource.`,
+					},
+					"issuer": schema.StringAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 						},
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.`,
+						Description: `The issuer of the DCR provider. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 256),
-						},
-					},
-					"issuer": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
-						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"labels": schema.MapAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Map{
 							mapplanmodifier.RequiresReplaceIfConfigured(),
@@ -1043,29 +633,40 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							`Requires replacement if changed.`,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 						},
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Requires replacement if changed.`,
+						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"provider_type": schema.StringAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 						},
-						Description: `must be "kongIdentity"; Requires replacement if changed.`,
+						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "kongIdentity"; Requires replacement if changed.`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf(
 								"kongIdentity",
 							),
 						},
 					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
 				},
-				Description: `Request body for creating a Kong Identity DCR provider. Requires replacement if changed.`,
+				Description: `A DCR provider for Kong Identity -- only properties not included in DcrProviderBase. Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -1073,102 +674,108 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						path.MatchRelative().AtParent().AtName("curity"),
 						path.MatchRelative().AtParent().AtName("http"),
 						path.MatchRelative().AtParent().AtName("okta"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_auth0"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_azure_ad"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_curity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_http"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_kong_identity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_okta"),
 					}...),
 				},
 			},
 			"name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("name")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("name")}}),
 				},
 				Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
 			},
 			"okta": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
-					"dcr_config": schema.SingleNestedAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
+					"active": schema.BoolAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
+						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"dcr_token": schema.StringAttribute{
-								Required: true,
+								Optional:  true,
+								Sensitive: true,
 								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
-									`Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(256),
 								},
 							},
 						},
-						Description: `Payload to create an Okta DCR provider. Requires replacement if changed.`,
+						Description: `Payload to create an Okta DCR provider. Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
 					},
-					"display_name": schema.StringAttribute{
-						Optional: true,
+					"id": schema.StringAttribute{
+						Computed: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 256),
-						},
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"issuer": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The issuer of the DCR provider. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
 						},
 					},
 					"labels": schema.MapAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`Requires replacement if changed.`,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
 					"provider_type": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `must be "okta"; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "okta"`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("okta"),
 						},
 					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
 				},
-				Description: `Request body for creating an Okta DCR provider. Requires replacement if changed.`,
+				Description: `A set of updates to an Okta DCR provider.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -1176,26 +783,20 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						path.MatchRelative().AtParent().AtName("curity"),
 						path.MatchRelative().AtParent().AtName("http"),
 						path.MatchRelative().AtParent().AtName("kong_identity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_auth0"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_azure_ad"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_curity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_http"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_kong_identity"),
-						path.MatchRelative().AtParent().AtName("dcr_provider_okta"),
 					}...),
 				},
 			},
 			"provider_type": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("provider_type")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("provider_type")}}),
 				},
 				Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_auth0"), FieldPath: path.Root("dcr_provider_auth0").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_azure_ad"), FieldPath: path.Root("dcr_provider_azure_ad").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_curity"), FieldPath: path.Root("dcr_provider_curity").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_okta"), FieldPath: path.Root("dcr_provider_okta").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_kong_identity"), FieldPath: path.Root("dcr_provider_kong_identity").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("dcr_provider_http"), FieldPath: path.Root("dcr_provider_http").AtName("updated_at")}}),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("updated_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
@@ -1263,11 +864,11 @@ func (r *DcrProviderResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateDcrProviderResponse != nil) {
+	if !(res.DcrProviderResponseFlattened != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateDcrProviderResponse(ctx, res.CreateDcrProviderResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseFlattened(ctx, res.DcrProviderResponseFlattened)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1327,11 +928,11 @@ func (r *DcrProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DcrProviderResponse != nil) {
+	if !(res.DcrProviderResponseFlattened != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponse(ctx, res.DcrProviderResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseFlattened(ctx, res.DcrProviderResponseFlattened)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1377,11 +978,11 @@ func (r *DcrProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DcrProviderResponse != nil) {
+	if !(res.DcrProviderResponseFlattened != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponse(ctx, res.DcrProviderResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseFlattened(ctx, res.DcrProviderResponseFlattened)...)
 
 	if resp.Diagnostics.HasError() {
 		return

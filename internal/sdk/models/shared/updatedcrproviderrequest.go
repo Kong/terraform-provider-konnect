@@ -3,180 +3,40 @@
 package shared
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type DcrConfigType string
+type UpdateDcrProviderRequestHTTPProviderType string
 
 const (
-	DcrConfigTypeUpdateDcrConfigAuth0InRequest   DcrConfigType = "UpdateDcrConfigAuth0InRequest"
-	DcrConfigTypeUpdateDcrConfigAzureAdInRequest DcrConfigType = "UpdateDcrConfigAzureAdInRequest"
-	DcrConfigTypeUpdateDcrConfigCurityInRequest  DcrConfigType = "UpdateDcrConfigCurityInRequest"
-	DcrConfigTypeUpdateDcrConfigOktaInRequest    DcrConfigType = "UpdateDcrConfigOktaInRequest"
-	DcrConfigTypeUpdateDcrConfigHTTPInRequest    DcrConfigType = "UpdateDcrConfigHttpInRequest"
+	UpdateDcrProviderRequestHTTPProviderTypeHTTP UpdateDcrProviderRequestHTTPProviderType = "http"
 )
 
-type DcrConfig struct {
-	UpdateDcrConfigAuth0InRequest   *UpdateDcrConfigAuth0InRequest   `queryParam:"inline" union:"member"`
-	UpdateDcrConfigAzureAdInRequest *UpdateDcrConfigAzureAdInRequest `queryParam:"inline" union:"member"`
-	UpdateDcrConfigCurityInRequest  *UpdateDcrConfigCurityInRequest  `queryParam:"inline" union:"member"`
-	UpdateDcrConfigOktaInRequest    *UpdateDcrConfigOktaInRequest    `queryParam:"inline" union:"member"`
-	UpdateDcrConfigHTTPInRequest    *UpdateDcrConfigHTTPInRequest    `queryParam:"inline" union:"member"`
-
-	Type DcrConfigType
+func (e UpdateDcrProviderRequestHTTPProviderType) ToPointer() *UpdateDcrProviderRequestHTTPProviderType {
+	return &e
 }
-
-func CreateDcrConfigUpdateDcrConfigAuth0InRequest(updateDcrConfigAuth0InRequest UpdateDcrConfigAuth0InRequest) DcrConfig {
-	typ := DcrConfigTypeUpdateDcrConfigAuth0InRequest
-
-	return DcrConfig{
-		UpdateDcrConfigAuth0InRequest: &updateDcrConfigAuth0InRequest,
-		Type:                          typ,
+func (e *UpdateDcrProviderRequestHTTPProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-}
-
-func CreateDcrConfigUpdateDcrConfigAzureAdInRequest(updateDcrConfigAzureAdInRequest UpdateDcrConfigAzureAdInRequest) DcrConfig {
-	typ := DcrConfigTypeUpdateDcrConfigAzureAdInRequest
-
-	return DcrConfig{
-		UpdateDcrConfigAzureAdInRequest: &updateDcrConfigAzureAdInRequest,
-		Type:                            typ,
-	}
-}
-
-func CreateDcrConfigUpdateDcrConfigCurityInRequest(updateDcrConfigCurityInRequest UpdateDcrConfigCurityInRequest) DcrConfig {
-	typ := DcrConfigTypeUpdateDcrConfigCurityInRequest
-
-	return DcrConfig{
-		UpdateDcrConfigCurityInRequest: &updateDcrConfigCurityInRequest,
-		Type:                           typ,
-	}
-}
-
-func CreateDcrConfigUpdateDcrConfigOktaInRequest(updateDcrConfigOktaInRequest UpdateDcrConfigOktaInRequest) DcrConfig {
-	typ := DcrConfigTypeUpdateDcrConfigOktaInRequest
-
-	return DcrConfig{
-		UpdateDcrConfigOktaInRequest: &updateDcrConfigOktaInRequest,
-		Type:                         typ,
-	}
-}
-
-func CreateDcrConfigUpdateDcrConfigHTTPInRequest(updateDcrConfigHTTPInRequest UpdateDcrConfigHTTPInRequest) DcrConfig {
-	typ := DcrConfigTypeUpdateDcrConfigHTTPInRequest
-
-	return DcrConfig{
-		UpdateDcrConfigHTTPInRequest: &updateDcrConfigHTTPInRequest,
-		Type:                         typ,
-	}
-}
-
-func (u *DcrConfig) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var updateDcrConfigAuth0InRequest UpdateDcrConfigAuth0InRequest = UpdateDcrConfigAuth0InRequest{}
-	if err := utils.UnmarshalJSON(data, &updateDcrConfigAuth0InRequest, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  DcrConfigTypeUpdateDcrConfigAuth0InRequest,
-			Value: &updateDcrConfigAuth0InRequest,
-		})
-	}
-
-	var updateDcrConfigAzureAdInRequest UpdateDcrConfigAzureAdInRequest = UpdateDcrConfigAzureAdInRequest{}
-	if err := utils.UnmarshalJSON(data, &updateDcrConfigAzureAdInRequest, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  DcrConfigTypeUpdateDcrConfigAzureAdInRequest,
-			Value: &updateDcrConfigAzureAdInRequest,
-		})
-	}
-
-	var updateDcrConfigCurityInRequest UpdateDcrConfigCurityInRequest = UpdateDcrConfigCurityInRequest{}
-	if err := utils.UnmarshalJSON(data, &updateDcrConfigCurityInRequest, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  DcrConfigTypeUpdateDcrConfigCurityInRequest,
-			Value: &updateDcrConfigCurityInRequest,
-		})
-	}
-
-	var updateDcrConfigOktaInRequest UpdateDcrConfigOktaInRequest = UpdateDcrConfigOktaInRequest{}
-	if err := utils.UnmarshalJSON(data, &updateDcrConfigOktaInRequest, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  DcrConfigTypeUpdateDcrConfigOktaInRequest,
-			Value: &updateDcrConfigOktaInRequest,
-		})
-	}
-
-	var updateDcrConfigHTTPInRequest UpdateDcrConfigHTTPInRequest = UpdateDcrConfigHTTPInRequest{}
-	if err := utils.UnmarshalJSON(data, &updateDcrConfigHTTPInRequest, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  DcrConfigTypeUpdateDcrConfigHTTPInRequest,
-			Value: &updateDcrConfigHTTPInRequest,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for DcrConfig", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for DcrConfig", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(DcrConfigType)
-	switch best.Type {
-	case DcrConfigTypeUpdateDcrConfigAuth0InRequest:
-		u.UpdateDcrConfigAuth0InRequest = best.Value.(*UpdateDcrConfigAuth0InRequest)
+	switch v {
+	case "http":
+		*e = UpdateDcrProviderRequestHTTPProviderType(v)
 		return nil
-	case DcrConfigTypeUpdateDcrConfigAzureAdInRequest:
-		u.UpdateDcrConfigAzureAdInRequest = best.Value.(*UpdateDcrConfigAzureAdInRequest)
-		return nil
-	case DcrConfigTypeUpdateDcrConfigCurityInRequest:
-		u.UpdateDcrConfigCurityInRequest = best.Value.(*UpdateDcrConfigCurityInRequest)
-		return nil
-	case DcrConfigTypeUpdateDcrConfigOktaInRequest:
-		u.UpdateDcrConfigOktaInRequest = best.Value.(*UpdateDcrConfigOktaInRequest)
-		return nil
-	case DcrConfigTypeUpdateDcrConfigHTTPInRequest:
-		u.UpdateDcrConfigHTTPInRequest = best.Value.(*UpdateDcrConfigHTTPInRequest)
-		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateDcrProviderRequestHTTPProviderType: %v", v)
 	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for DcrConfig", string(data))
 }
 
-func (u DcrConfig) MarshalJSON() ([]byte, error) {
-	if u.UpdateDcrConfigAuth0InRequest != nil {
-		return utils.MarshalJSON(u.UpdateDcrConfigAuth0InRequest, "", true)
-	}
-
-	if u.UpdateDcrConfigAzureAdInRequest != nil {
-		return utils.MarshalJSON(u.UpdateDcrConfigAzureAdInRequest, "", true)
-	}
-
-	if u.UpdateDcrConfigCurityInRequest != nil {
-		return utils.MarshalJSON(u.UpdateDcrConfigCurityInRequest, "", true)
-	}
-
-	if u.UpdateDcrConfigOktaInRequest != nil {
-		return utils.MarshalJSON(u.UpdateDcrConfigOktaInRequest, "", true)
-	}
-
-	if u.UpdateDcrConfigHTTPInRequest != nil {
-		return utils.MarshalJSON(u.UpdateDcrConfigHTTPInRequest, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type DcrConfig: all fields are null")
-}
-
-// UpdateDcrProviderRequest - A set of updates to a DCR provider. The provider_type cannot be updated after creation.
-type UpdateDcrProviderRequest struct {
+// UpdateDcrProviderRequestHTTP - A set of updates to an HTTP DCR provider.
+type UpdateDcrProviderRequestHTTP struct {
+	ProviderType UpdateDcrProviderRequestHTTPProviderType `json:"provider_type"`
+	// Payload to update an HTTP DCR provider.
+	DcrConfig *UpdateDcrConfigHTTPInRequest `json:"dcr_config,omitempty"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
@@ -190,52 +50,656 @@ type UpdateDcrProviderRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels    map[string]*string `json:"labels,omitempty"`
-	DcrConfig *DcrConfig         `json:"dcr_config,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (u UpdateDcrProviderRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
+func (u UpdateDcrProviderRequestHTTP) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "del(.provider_type)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func (u *UpdateDcrProviderRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+func (u *UpdateDcrProviderRequestHTTP) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"provider_type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpdateDcrProviderRequest) GetName() *string {
+func (u *UpdateDcrProviderRequestHTTP) GetProviderType() UpdateDcrProviderRequestHTTPProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestHTTPProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestHTTP) GetDcrConfig() *UpdateDcrConfigHTTPInRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
+}
+
+func (u *UpdateDcrProviderRequestHTTP) GetName() *string {
 	if u == nil {
 		return nil
 	}
 	return u.Name
 }
 
-func (u *UpdateDcrProviderRequest) GetDisplayName() *string {
+func (u *UpdateDcrProviderRequestHTTP) GetDisplayName() *string {
 	if u == nil {
 		return nil
 	}
 	return u.DisplayName
 }
 
-func (u *UpdateDcrProviderRequest) GetIssuer() *string {
+func (u *UpdateDcrProviderRequestHTTP) GetIssuer() *string {
 	if u == nil {
 		return nil
 	}
 	return u.Issuer
 }
 
-func (u *UpdateDcrProviderRequest) GetLabels() map[string]*string {
+func (u *UpdateDcrProviderRequestHTTP) GetLabels() map[string]*string {
 	if u == nil {
 		return nil
 	}
 	return u.Labels
 }
 
-func (u *UpdateDcrProviderRequest) GetDcrConfig() *DcrConfig {
+type UpdateDcrProviderRequestOktaProviderType string
+
+const (
+	UpdateDcrProviderRequestOktaProviderTypeOkta UpdateDcrProviderRequestOktaProviderType = "okta"
+)
+
+func (e UpdateDcrProviderRequestOktaProviderType) ToPointer() *UpdateDcrProviderRequestOktaProviderType {
+	return &e
+}
+func (e *UpdateDcrProviderRequestOktaProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "okta":
+		*e = UpdateDcrProviderRequestOktaProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateDcrProviderRequestOktaProviderType: %v", v)
+	}
+}
+
+// UpdateDcrProviderRequestOkta - A set of updates to an Okta DCR provider.
+type UpdateDcrProviderRequestOkta struct {
+	ProviderType UpdateDcrProviderRequestOktaProviderType `json:"provider_type"`
+	// Payload to update an Okta DCR provider.
+	DcrConfig *UpdateDcrConfigOktaInRequest `json:"dcr_config,omitempty"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name *string `json:"name,omitempty"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName *string `json:"display_name,omitempty"`
+	Issuer      *string `default:"null" json:"issuer"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Labels are intended to store **INTERNAL** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateDcrProviderRequestOkta) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "del(.provider_type)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (u *UpdateDcrProviderRequestOkta) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"provider_type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetProviderType() UpdateDcrProviderRequestOktaProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestOktaProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetDcrConfig() *UpdateDcrConfigOktaInRequest {
 	if u == nil {
 		return nil
 	}
 	return u.DcrConfig
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetIssuer() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Issuer
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetLabels() map[string]*string {
+	if u == nil {
+		return nil
+	}
+	return u.Labels
+}
+
+type UpdateDcrProviderRequestCurityProviderType string
+
+const (
+	UpdateDcrProviderRequestCurityProviderTypeCurity UpdateDcrProviderRequestCurityProviderType = "curity"
+)
+
+func (e UpdateDcrProviderRequestCurityProviderType) ToPointer() *UpdateDcrProviderRequestCurityProviderType {
+	return &e
+}
+func (e *UpdateDcrProviderRequestCurityProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "curity":
+		*e = UpdateDcrProviderRequestCurityProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateDcrProviderRequestCurityProviderType: %v", v)
+	}
+}
+
+// UpdateDcrProviderRequestCurity - A set of updates to a Curity DCR provider.
+type UpdateDcrProviderRequestCurity struct {
+	ProviderType UpdateDcrProviderRequestCurityProviderType `json:"provider_type"`
+	// Payload to update a Curity DCR provider.
+	DcrConfig *UpdateDcrConfigCurityInRequest `json:"dcr_config,omitempty"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name *string `json:"name,omitempty"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName *string `json:"display_name,omitempty"`
+	Issuer      *string `default:"null" json:"issuer"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Labels are intended to store **INTERNAL** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateDcrProviderRequestCurity) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "del(.provider_type)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (u *UpdateDcrProviderRequestCurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"provider_type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetProviderType() UpdateDcrProviderRequestCurityProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestCurityProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetDcrConfig() *UpdateDcrConfigCurityInRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetIssuer() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Issuer
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetLabels() map[string]*string {
+	if u == nil {
+		return nil
+	}
+	return u.Labels
+}
+
+type UpdateDcrProviderRequestAzureAdProviderType string
+
+const (
+	UpdateDcrProviderRequestAzureAdProviderTypeAzureAd UpdateDcrProviderRequestAzureAdProviderType = "azureAd"
+)
+
+func (e UpdateDcrProviderRequestAzureAdProviderType) ToPointer() *UpdateDcrProviderRequestAzureAdProviderType {
+	return &e
+}
+func (e *UpdateDcrProviderRequestAzureAdProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "azureAd":
+		*e = UpdateDcrProviderRequestAzureAdProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateDcrProviderRequestAzureAdProviderType: %v", v)
+	}
+}
+
+// UpdateDcrProviderRequestAzureAd - A set of updates to an Azure AD DCR provider.
+type UpdateDcrProviderRequestAzureAd struct {
+	ProviderType UpdateDcrProviderRequestAzureAdProviderType `json:"provider_type"`
+	// Payload to update an Azure AD DCR provider.
+	DcrConfig *UpdateDcrConfigAzureAdInRequest `json:"dcr_config,omitempty"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name *string `json:"name,omitempty"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName *string `json:"display_name,omitempty"`
+	Issuer      *string `default:"null" json:"issuer"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Labels are intended to store **INTERNAL** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateDcrProviderRequestAzureAd) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "del(.provider_type)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"provider_type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetProviderType() UpdateDcrProviderRequestAzureAdProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestAzureAdProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetDcrConfig() *UpdateDcrConfigAzureAdInRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetIssuer() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Issuer
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetLabels() map[string]*string {
+	if u == nil {
+		return nil
+	}
+	return u.Labels
+}
+
+type UpdateDcrProviderRequestAuth0ProviderType string
+
+const (
+	UpdateDcrProviderRequestAuth0ProviderTypeAuth0 UpdateDcrProviderRequestAuth0ProviderType = "auth0"
+)
+
+func (e UpdateDcrProviderRequestAuth0ProviderType) ToPointer() *UpdateDcrProviderRequestAuth0ProviderType {
+	return &e
+}
+func (e *UpdateDcrProviderRequestAuth0ProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "auth0":
+		*e = UpdateDcrProviderRequestAuth0ProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateDcrProviderRequestAuth0ProviderType: %v", v)
+	}
+}
+
+// UpdateDcrProviderRequestAuth0 - A set of updates to an Auth0 DCR provider.
+type UpdateDcrProviderRequestAuth0 struct {
+	ProviderType UpdateDcrProviderRequestAuth0ProviderType `json:"provider_type"`
+	// Payload to update an Auth0 DCR provider.
+	DcrConfig *UpdateDcrConfigAuth0InRequest `json:"dcr_config,omitempty"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name *string `json:"name,omitempty"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName *string `json:"display_name,omitempty"`
+	Issuer      *string `default:"null" json:"issuer"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Labels are intended to store **INTERNAL** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateDcrProviderRequestAuth0) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "del(.provider_type)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (u *UpdateDcrProviderRequestAuth0) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"provider_type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetProviderType() UpdateDcrProviderRequestAuth0ProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestAuth0ProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetDcrConfig() *UpdateDcrConfigAuth0InRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetIssuer() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Issuer
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetLabels() map[string]*string {
+	if u == nil {
+		return nil
+	}
+	return u.Labels
+}
+
+// #region class-body-updatedcrproviderrequestauth0
+// #endregion class-body-updatedcrproviderrequestauth0
+
+type UpdateDcrProviderRequestType string
+
+const (
+	UpdateDcrProviderRequestTypeAuth0   UpdateDcrProviderRequestType = "auth0"
+	UpdateDcrProviderRequestTypeAzureAd UpdateDcrProviderRequestType = "azureAd"
+	UpdateDcrProviderRequestTypeCurity  UpdateDcrProviderRequestType = "curity"
+	UpdateDcrProviderRequestTypeOkta    UpdateDcrProviderRequestType = "okta"
+	UpdateDcrProviderRequestTypeHTTP    UpdateDcrProviderRequestType = "http"
+)
+
+// UpdateDcrProviderRequest - A set of updates to a DCR provider. The provider_type cannot be updated after creation.
+type UpdateDcrProviderRequest struct {
+	UpdateDcrProviderRequestAuth0   *UpdateDcrProviderRequestAuth0   `queryParam:"inline" union:"member"`
+	UpdateDcrProviderRequestAzureAd *UpdateDcrProviderRequestAzureAd `queryParam:"inline" union:"member"`
+	UpdateDcrProviderRequestCurity  *UpdateDcrProviderRequestCurity  `queryParam:"inline" union:"member"`
+	UpdateDcrProviderRequestOkta    *UpdateDcrProviderRequestOkta    `queryParam:"inline" union:"member"`
+	UpdateDcrProviderRequestHTTP    *UpdateDcrProviderRequestHTTP    `queryParam:"inline" union:"member"`
+
+	Type UpdateDcrProviderRequestType
+}
+
+func CreateUpdateDcrProviderRequestAuth0(auth0 UpdateDcrProviderRequestAuth0) UpdateDcrProviderRequest {
+	typ := UpdateDcrProviderRequestTypeAuth0
+
+	typStr := UpdateDcrProviderRequestAuth0ProviderType(typ)
+	auth0.ProviderType = typStr
+
+	return UpdateDcrProviderRequest{
+		UpdateDcrProviderRequestAuth0: &auth0,
+		Type:                          typ,
+	}
+}
+
+func CreateUpdateDcrProviderRequestAzureAd(azureAd UpdateDcrProviderRequestAzureAd) UpdateDcrProviderRequest {
+	typ := UpdateDcrProviderRequestTypeAzureAd
+
+	typStr := UpdateDcrProviderRequestAzureAdProviderType(typ)
+	azureAd.ProviderType = typStr
+
+	return UpdateDcrProviderRequest{
+		UpdateDcrProviderRequestAzureAd: &azureAd,
+		Type:                            typ,
+	}
+}
+
+func CreateUpdateDcrProviderRequestCurity(curity UpdateDcrProviderRequestCurity) UpdateDcrProviderRequest {
+	typ := UpdateDcrProviderRequestTypeCurity
+
+	typStr := UpdateDcrProviderRequestCurityProviderType(typ)
+	curity.ProviderType = typStr
+
+	return UpdateDcrProviderRequest{
+		UpdateDcrProviderRequestCurity: &curity,
+		Type:                           typ,
+	}
+}
+
+func CreateUpdateDcrProviderRequestOkta(okta UpdateDcrProviderRequestOkta) UpdateDcrProviderRequest {
+	typ := UpdateDcrProviderRequestTypeOkta
+
+	typStr := UpdateDcrProviderRequestOktaProviderType(typ)
+	okta.ProviderType = typStr
+
+	return UpdateDcrProviderRequest{
+		UpdateDcrProviderRequestOkta: &okta,
+		Type:                         typ,
+	}
+}
+
+func CreateUpdateDcrProviderRequestHTTP(http UpdateDcrProviderRequestHTTP) UpdateDcrProviderRequest {
+	typ := UpdateDcrProviderRequestTypeHTTP
+
+	typStr := UpdateDcrProviderRequestHTTPProviderType(typ)
+	http.ProviderType = typStr
+
+	return UpdateDcrProviderRequest{
+		UpdateDcrProviderRequestHTTP: &http,
+		Type:                         typ,
+	}
+}
+
+func (u *UpdateDcrProviderRequest) UnmarshalJSON(data []byte) error {
+
+	type discriminator struct {
+		ProviderType string `json:"provider_type"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.ProviderType {
+	case "auth0":
+		updateDcrProviderRequestAuth0 := new(UpdateDcrProviderRequestAuth0)
+		if err := utils.UnmarshalJSON(data, &updateDcrProviderRequestAuth0, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == auth0) type UpdateDcrProviderRequestAuth0 within UpdateDcrProviderRequest: %w", string(data), err)
+		}
+
+		u.UpdateDcrProviderRequestAuth0 = updateDcrProviderRequestAuth0
+		u.Type = UpdateDcrProviderRequestTypeAuth0
+		return nil
+	case "azureAd":
+		updateDcrProviderRequestAzureAd := new(UpdateDcrProviderRequestAzureAd)
+		if err := utils.UnmarshalJSON(data, &updateDcrProviderRequestAzureAd, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == azureAd) type UpdateDcrProviderRequestAzureAd within UpdateDcrProviderRequest: %w", string(data), err)
+		}
+
+		u.UpdateDcrProviderRequestAzureAd = updateDcrProviderRequestAzureAd
+		u.Type = UpdateDcrProviderRequestTypeAzureAd
+		return nil
+	case "curity":
+		updateDcrProviderRequestCurity := new(UpdateDcrProviderRequestCurity)
+		if err := utils.UnmarshalJSON(data, &updateDcrProviderRequestCurity, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == curity) type UpdateDcrProviderRequestCurity within UpdateDcrProviderRequest: %w", string(data), err)
+		}
+
+		u.UpdateDcrProviderRequestCurity = updateDcrProviderRequestCurity
+		u.Type = UpdateDcrProviderRequestTypeCurity
+		return nil
+	case "okta":
+		updateDcrProviderRequestOkta := new(UpdateDcrProviderRequestOkta)
+		if err := utils.UnmarshalJSON(data, &updateDcrProviderRequestOkta, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == okta) type UpdateDcrProviderRequestOkta within UpdateDcrProviderRequest: %w", string(data), err)
+		}
+
+		u.UpdateDcrProviderRequestOkta = updateDcrProviderRequestOkta
+		u.Type = UpdateDcrProviderRequestTypeOkta
+		return nil
+	case "http":
+		updateDcrProviderRequestHTTP := new(UpdateDcrProviderRequestHTTP)
+		if err := utils.UnmarshalJSON(data, &updateDcrProviderRequestHTTP, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == http) type UpdateDcrProviderRequestHTTP within UpdateDcrProviderRequest: %w", string(data), err)
+		}
+
+		u.UpdateDcrProviderRequestHTTP = updateDcrProviderRequestHTTP
+		u.Type = UpdateDcrProviderRequestTypeHTTP
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for UpdateDcrProviderRequest", string(data))
+}
+
+func (u UpdateDcrProviderRequest) MarshalJSON() ([]byte, error) {
+	if u.UpdateDcrProviderRequestAuth0 != nil {
+		return utils.MarshalJSON(u.UpdateDcrProviderRequestAuth0, "", true)
+	}
+
+	if u.UpdateDcrProviderRequestAzureAd != nil {
+		return utils.MarshalJSON(u.UpdateDcrProviderRequestAzureAd, "", true)
+	}
+
+	if u.UpdateDcrProviderRequestCurity != nil {
+		return utils.MarshalJSON(u.UpdateDcrProviderRequestCurity, "", true)
+	}
+
+	if u.UpdateDcrProviderRequestOkta != nil {
+		return utils.MarshalJSON(u.UpdateDcrProviderRequestOkta, "", true)
+	}
+
+	if u.UpdateDcrProviderRequestHTTP != nil {
+		return utils.MarshalJSON(u.UpdateDcrProviderRequestHTTP, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type UpdateDcrProviderRequest: all fields are null")
 }
