@@ -92,7 +92,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_audience": schema.StringAttribute{
@@ -118,9 +117,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"initial_client_secret": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.UseConfigValue(),
-								},
+								WriteOnly: true,
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -217,7 +214,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_id": schema.StringAttribute{
@@ -234,9 +230,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"initial_client_secret": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.UseConfigValue(),
-								},
+								WriteOnly: true,
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -337,7 +331,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_id": schema.StringAttribute{
@@ -354,9 +347,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"initial_client_secret": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.UseConfigValue(),
-								},
+								WriteOnly: true,
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -450,7 +441,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"allow_multiple_credentials": schema.BoolAttribute{
@@ -460,8 +450,9 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 								Description: `When enabled, indicates that the DCR provider supports creating and managing multiple credentials per application. Default: false`,
 							},
 							"api_key": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Optional:  true,
+								Sensitive: true,
+								WriteOnly: true,
 								MarkdownDescription: `This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be` + "\n" +
 									`verified on the server to ensure that incoming requests are coming from Konnect.` + "\n" +
 									`Not Null`,
@@ -702,15 +693,12 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"dcr_token": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.UseConfigValue(),
-								},
+								WriteOnly: true,
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -825,8 +813,21 @@ func (r *DcrProviderResource) Configure(ctx context.Context, req resource.Config
 }
 
 func (r *DcrProviderResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *DcrProviderResourceModel
-	var plan types.Object
+	var (
+		configData DcrProviderResourceModel
+		data       DcrProviderResourceModel
+		plan       types.Object
+	)
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &configData)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	opts := &DcrProviderResourceModelOptions{
+		Config: &configData,
+	}
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -842,7 +843,7 @@ func (r *DcrProviderResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateDcrProviderRequest(ctx)
+	request, requestDiags := data.ToSharedCreateDcrProviderRequest(ctx, opts)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -902,7 +903,7 @@ func (r *DcrProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetDcrProviderRequest(ctx)
+	request, requestDiags := data.ToOperationsGetDcrProviderRequest(ctx, nil)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -943,8 +944,29 @@ func (r *DcrProviderResource) Read(ctx context.Context, req resource.ReadRequest
 }
 
 func (r *DcrProviderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *DcrProviderResourceModel
-	var plan types.Object
+	var (
+		configData DcrProviderResourceModel
+		data       DcrProviderResourceModel
+		plan       types.Object
+		stateData  DcrProviderResourceModel
+	)
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &configData)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	opts := &DcrProviderResourceModelOptions{
+		Config: &configData,
+		State:  &stateData,
+	}
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -956,7 +978,7 @@ func (r *DcrProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateDcrProviderRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateDcrProviderRequest(ctx, opts)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -1016,7 +1038,7 @@ func (r *DcrProviderResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteDcrProviderRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteDcrProviderRequest(ctx, nil)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {

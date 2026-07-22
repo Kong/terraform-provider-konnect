@@ -34,6 +34,56 @@ func (e *DcrProviderResponseFlattened6ProviderType) UnmarshalJSON(data []byte) e
 	}
 }
 
+// DcrConfigHTTPInResponse - A DCR provider configuration for HTTP
+type DcrConfigHTTPInResponse struct {
+	DcrBaseURL string `json:"dcr_base_url"`
+	// This flag disables all the event-hooks on the application flow for the DCR provider.
+	DisableEventHooks *bool `json:"disable_event_hooks,omitempty"`
+	// This flag disable the refresh-secret endpoint on the application flow for the DCR provider.
+	DisableRefreshSecret *bool `json:"disable_refresh_secret,omitempty"`
+	// When enabled, indicates that the DCR provider supports creating and managing multiple credentials per application.
+	AllowMultipleCredentials *bool `default:"false" json:"allow_multiple_credentials"`
+}
+
+func (d DcrConfigHTTPInResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DcrConfigHTTPInResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"dcr_base_url"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DcrConfigHTTPInResponse) GetDcrBaseURL() string {
+	if d == nil {
+		return ""
+	}
+	return d.DcrBaseURL
+}
+
+func (d *DcrConfigHTTPInResponse) GetDisableEventHooks() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.DisableEventHooks
+}
+
+func (d *DcrConfigHTTPInResponse) GetDisableRefreshSecret() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.DisableRefreshSecret
+}
+
+func (d *DcrConfigHTTPInResponse) GetAllowMultipleCredentials() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.AllowMultipleCredentials
+}
+
 // HTTP - A DCR provider for HTTP -- only properties not included in DcrProviderBase
 type HTTP struct {
 	// Contains a unique identifier used for this resource.
@@ -56,8 +106,7 @@ type HTTP struct {
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt time.Time `json:"updated_at"`
-	// A DCR provider configuration for HTTP
+	UpdatedAt time.Time               `json:"updated_at"`
 	DcrConfig DcrConfigHTTPInResponse `json:"dcr_config"`
 }
 
@@ -298,6 +347,21 @@ func (e *DcrProviderResponseFlattened4ProviderType) UnmarshalJSON(data []byte) e
 	}
 }
 
+// DcrConfigOktaInResponse - A DCR provider configuration for Okta
+type DcrConfigOktaInResponse struct {
+}
+
+func (d DcrConfigOktaInResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DcrConfigOktaInResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Okta - A DCR provider for Okta -- only properties not included in DcrProviderBase
 type Okta struct {
 	// Contains a unique identifier used for this resource.
@@ -320,8 +384,7 @@ type Okta struct {
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt time.Time `json:"updated_at"`
-	// A DCR provider configuration for Okta
+	UpdatedAt time.Time               `json:"updated_at"`
 	DcrConfig DcrConfigOktaInResponse `json:"dcr_config"`
 }
 
@@ -430,6 +493,32 @@ func (e *DcrProviderResponseFlattened3ProviderType) UnmarshalJSON(data []byte) e
 	}
 }
 
+// DcrConfigCurityInResponse - A DCR provider configuration for Curity
+type DcrConfigCurityInResponse struct {
+	// This ID should be copied from your identity provider's settings after you create a client
+	// and assign it as the management client for DCR for this developer portal
+	//
+	InitialClientID string `json:"initial_client_id"`
+}
+
+func (d DcrConfigCurityInResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DcrConfigCurityInResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"initial_client_id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DcrConfigCurityInResponse) GetInitialClientID() string {
+	if d == nil {
+		return ""
+	}
+	return d.InitialClientID
+}
+
 // Curity - A DCR provider for Curity -- only properties not included in DcrProviderBase
 type Curity struct {
 	// Contains a unique identifier used for this resource.
@@ -452,8 +541,7 @@ type Curity struct {
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt time.Time `json:"updated_at"`
-	// A DCR provider configuration for Curity
+	UpdatedAt time.Time                 `json:"updated_at"`
 	DcrConfig DcrConfigCurityInResponse `json:"dcr_config"`
 }
 
@@ -562,6 +650,32 @@ func (e *DcrProviderResponseFlattened2ProviderType) UnmarshalJSON(data []byte) e
 	}
 }
 
+// DcrConfigAzureAdInResponse - A DCR provider configuration for Azure AD
+type DcrConfigAzureAdInResponse struct {
+	// This ID should be copied from your identity provider's settings after you create a client
+	// and assign it as the management client for DCR for this developer portal
+	//
+	InitialClientID string `json:"initial_client_id"`
+}
+
+func (d DcrConfigAzureAdInResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DcrConfigAzureAdInResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"initial_client_id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DcrConfigAzureAdInResponse) GetInitialClientID() string {
+	if d == nil {
+		return ""
+	}
+	return d.InitialClientID
+}
+
 // AzureAd - A DCR provider for Azure AD -- only properties not included in DcrProviderBase
 type AzureAd struct {
 	// Contains a unique identifier used for this resource.
@@ -584,8 +698,7 @@ type AzureAd struct {
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt time.Time `json:"updated_at"`
-	// A DCR provider configuration for Azure AD
+	UpdatedAt time.Time                  `json:"updated_at"`
 	DcrConfig DcrConfigAzureAdInResponse `json:"dcr_config"`
 }
 
@@ -694,6 +807,55 @@ func (e *DcrProviderResponseFlattenedProviderType) UnmarshalJSON(data []byte) er
 	}
 }
 
+// DcrConfigAuth0InResponse - A DCR provider configuration for Auth0
+type DcrConfigAuth0InResponse struct {
+	// This ID should be copied from your identity provider's settings after you create a client
+	// and assign it as the management client for DCR for this developer portal
+	//
+	InitialClientID string `json:"initial_client_id"`
+	// This is the audience value used for the initial client.
+	// If using a custom domain on Auth0, this must be set as to the Auth0 Management API audience value.
+	// If left blank, the issuer will be used instead.
+	//
+	InitialClientAudience     *string `default:"null" json:"initial_client_audience"`
+	UseDeveloperManagedScopes bool    `json:"use_developer_managed_scopes"`
+}
+
+func (d DcrConfigAuth0InResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DcrConfigAuth0InResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"initial_client_id", "use_developer_managed_scopes"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DcrConfigAuth0InResponse) GetInitialClientID() string {
+	if d == nil {
+		return ""
+	}
+	return d.InitialClientID
+}
+
+func (d *DcrConfigAuth0InResponse) GetInitialClientAudience() *string {
+	if d == nil {
+		return nil
+	}
+	return d.InitialClientAudience
+}
+
+func (d *DcrConfigAuth0InResponse) GetUseDeveloperManagedScopes() bool {
+	if d == nil {
+		return false
+	}
+	return d.UseDeveloperManagedScopes
+}
+
+// #region class-body-dcrconfigauth0inresponse
+// #endregion class-body-dcrconfigauth0inresponse
+
 // Auth0 - A DCR provider for Auth0 -- only properties not included in DcrProviderBase
 type Auth0 struct {
 	// Contains a unique identifier used for this resource.
@@ -716,8 +878,7 @@ type Auth0 struct {
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt time.Time `json:"updated_at"`
-	// A DCR provider configuration for Auth0
+	UpdatedAt time.Time                `json:"updated_at"`
 	DcrConfig DcrConfigAuth0InResponse `json:"dcr_config"`
 }
 

@@ -81,7 +81,7 @@ If left blank, the issuer will be used instead.
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
-- `initial_client_secret` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
+- `initial_client_secret` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
 - `use_developer_managed_scopes` (Boolean)
@@ -116,7 +116,7 @@ Optional:
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
-- `initial_client_secret` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
+- `initial_client_secret` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
 
@@ -150,7 +150,7 @@ Optional:
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
-- `initial_client_secret` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
+- `initial_client_secret` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
 
@@ -182,7 +182,7 @@ Read-Only:
 Optional:
 
 - `allow_multiple_credentials` (Boolean) When enabled, indicates that the DCR provider supports creating and managing multiple credentials per application. Default: false
-- `api_key` (String) This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
+- `api_key` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
 verified on the server to ensure that incoming requests are coming from Konnect.
 Not Null
 - `dcr_base_url` (String) The base URL of the DCR server. This is the URL that will be used to make the HTTP requests from Konnect to the DCR provider.
@@ -244,7 +244,7 @@ Read-Only:
 
 Optional:
 
-- `dcr_token` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
+- `dcr_token` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
 

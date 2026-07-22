@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 49730896e238d5df97d7ef2a0f978f41
+  docChecksum: 3580951895aa28d0bbbd3c5c5bfde622
   docVersion: 2.0.0
   speakeasyVersion: 1.788.0
   generationVersion: 2.915.0
   releaseVersion: 3.20.0
   configChecksum: 8baf3fd67bbb5d991fba9bfa91ca751f
 persistentEdits:
-  generation_id: 44d52a1e-8f00-4ad4-989d-5bbc52444f5d
-  pristine_commit_hash: d0ecd7b71b7a29ba556d0caf582f6d8a3191099c
-  pristine_tree_hash: b9ac4a41bf22849a46b27e3e5bd0938fcfd8f965
+  generation_id: 0d38df5b-099e-4a77-9973-09cbf57df885
+  pristine_commit_hash: 88d83dd248d556d828cf0152b3fa6fe7ee7afd18
+  pristine_tree_hash: 3ecf085b35ea6c876e1630da729948593eba89e1
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3033,12 +3033,12 @@ trackedFiles:
     pristine_git_object: 5aafb5d84d9d3edec5a46f679734d0658ec9e82b
   internal/provider/dcrprovider_resource.go:
     id: b59a3b79b6fa
-    last_write_checksum: sha1:af84138a3a3637f09d5a3349c3f4e362aad0831a
-    pristine_git_object: 2d2f529658e7a27c1d82af4475ee6fbc889bd86d
+    last_write_checksum: sha1:8fbb41486a72fb222afb55156cafe9211841ce48
+    pristine_git_object: a1bed9682764c609fffb07a53484a0ade4779834
   internal/provider/dcrprovider_resource_sdk.go:
     id: 3651230ef319
-    last_write_checksum: sha1:12ee73b9db6ad2a1cf0ad3a20fd2ed142d981385
-    pristine_git_object: 8e6ee0472992fabfdc9a83b0f42b7a92cbaca38f
+    last_write_checksum: sha1:37557b72bb00b2154bfa009c6f7ecc2e1005e4eb
+    pristine_git_object: db9d6c239fbf75695178c65b5084d0c951c66052
   internal/provider/eventgateway_resource.go:
     id: 795e1c09d843
     last_write_checksum: sha1:a1a801dfd2a96ee7c3e619530349e923cb7ccd8b
@@ -11507,34 +11507,14 @@ trackedFiles:
     id: 44afc785d44f
     last_write_checksum: sha1:366bcd78853d59db9521a85aa183e12265688da5
     pristine_git_object: 6f5d1383fad2024d0c0e98bbc51de8ad92f8966f
-  internal/sdk/models/shared/dcrconfigauth0inresponse.go:
-    id: 19de2d8c808e
-    last_write_checksum: sha1:2bc63f357d340a5199d06ef6313850ee70fb6f3f
-    pristine_git_object: d2293fe03281d984290ea37b76deffa73c69b222
-  internal/sdk/models/shared/dcrconfigazureadinresponse.go:
-    id: 86ecac8c9571
-    last_write_checksum: sha1:868ad61e263ade1e838287f3a08c26ae8ed0b46d
-    pristine_git_object: a66e4efd8da2accbdfbd9b6fc2c7ba4025750f29
-  internal/sdk/models/shared/dcrconfigcurityinresponse.go:
-    id: 0460bdf3cabb
-    last_write_checksum: sha1:dae635e3fed5712a9898506af9ed21a4da728a95
-    pristine_git_object: b7f64053f158bb9017a821d8772af269ef67477f
-  internal/sdk/models/shared/dcrconfighttpinresponse.go:
-    id: b14cafeddc87
-    last_write_checksum: sha1:ca217fc31d6233ba2f66e1431efc1ddcceaafce5
-    pristine_git_object: 322d6ce7d01b0b6917b465a0d2c96f222362d47a
   internal/sdk/models/shared/dcrconfigkongidentityinresponse.go:
     id: 01c1a0e3687b
     last_write_checksum: sha1:676f2914013d3e94f2f4f5119695af41c3aab22e
     pristine_git_object: 8c76fe1030d11d054e10f6df86cff302eaf023a4
-  internal/sdk/models/shared/dcrconfigoktainresponse.go:
-    id: 3bbe267a082f
-    last_write_checksum: sha1:84880328e01f4ae518f36ae235042deb79ad6d97
-    pristine_git_object: 16e27672d6889b2da4bf17153f4d883bc0160fef
   internal/sdk/models/shared/dcrproviderresponseflattened.go:
     id: 6f6dd9360d69
-    last_write_checksum: sha1:5829f1490710a699fc03898a40f527ca3b6759b3
-    pristine_git_object: dc359c3bec83dfc4ad7365f50397ca9e684a0ada
+    last_write_checksum: sha1:49355a00bcb855bf693c59beca184aae02728ed1
+    pristine_git_object: f8519dc562f34ef8a8a1b90c0d81bb02e2087376
   internal/sdk/models/shared/decryptionrecordpart.go:
     id: 3f7924c7c064
     last_write_checksum: sha1:4dab34ef67cc370b06098ee2cc4608f79e3591de
