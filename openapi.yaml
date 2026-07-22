@@ -18861,7 +18861,7 @@ paths:
   '/v3/portals/{portalId}/applications/{applicationId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/ApplicationId'
+      - $ref: '#/components/parameters/ApplicationIdResource'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: PortalApplication#read
@@ -18960,7 +18960,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/ApplicationIdForChildren'
-      - $ref: '#/components/parameters/RegistrationId'
+      - $ref: '#/components/parameters/RegistrationIdResource'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: PortalApplicationRegistration#read
@@ -19379,7 +19379,7 @@ paths:
   '/v3/portals/{portalId}/developers/{developerId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/DeveloperId'
+      - $ref: '#/components/parameters/DeveloperIdResource'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: PortalDeveloper#read
@@ -20745,15 +20745,6 @@ components:
       in: path
       required: true
       description: The UUID API identifier
-    ApplicationId:
-      name: applicationId
-      in: path
-      required: true
-      description: ID of the application.
-      schema:
-        type: string
-        format: uuid
-      x-speakeasy-match: id
     ApplicationIdForChildren:
       name: applicationId
       in: path
@@ -20762,6 +20753,15 @@ components:
       schema:
         type: string
         format: uuid
+    ApplicationIdResource:
+      name: applicationId
+      in: path
+      required: true
+      description: ID of the application.
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
     AuditLogDestinationId:
       schema:
         type: string
@@ -20994,15 +20994,15 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
-    DeveloperId:
-      schema:
-        type: string
-        format: uuid
-        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+    DeveloperIdResource:
       name: developerId
       in: path
       required: true
       description: ID of the developer.
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
       x-speakeasy-match: id
     DocumentId:
       schema:
@@ -21263,7 +21263,7 @@ components:
       schema:
         type: string
         format: uuid
-    RegistrationId:
+    RegistrationIdResource:
       name: registrationId
       in: path
       required: true
