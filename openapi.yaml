@@ -25613,7 +25613,7 @@ components:
       title: DcrConfigPropertyInitialClientSecret
       writeOnly: true
       x-speakeasy-param-sensitive: true
-      x-speakeasy-terraform-plan-only: true
+      x-speakeasy-terraform-write-only: true
     DcrConfigPropertyDcrToken:
       description: |
         This secret should be copied from your identity provider's settings after you create a client
@@ -25623,7 +25623,7 @@ components:
       title: DcrConfigPropertyInitialDcrToken
       writeOnly: true
       x-speakeasy-param-sensitive: true
-      x-speakeasy-terraform-plan-only: true
+      x-speakeasy-terraform-write-only: true
     DcrConfigPropertyInitialClientAudience:
       description: |
         This is the audience value used for the initial client.
@@ -25644,6 +25644,9 @@ components:
       minLength: 12
       pattern: '^[a-zA-Z0-9_]+$'
       title: DcrConfigPropertyApiKey
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-write-only: true
     DcrConfigPropertyDisableEventHooks:
       description: This flag disables all the event-hooks on the application flow for the DCR provider.
       type: boolean
@@ -73895,7 +73898,9 @@ components:
             updated_at:
               $ref: '#/components/schemas/UpdatedAt'
             dcr_config:
-              $ref: '#/components/schemas/DcrConfigAuth0InResponse'
+              allOf:
+                - $ref: '#/components/schemas/DcrConfigAuth0InResponse'
+              x-speakeasy-param-computed: false
           required:
             - id
             - name
@@ -73941,7 +73946,9 @@ components:
             updated_at:
               $ref: '#/components/schemas/UpdatedAt'
             dcr_config:
-              $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
+              allOf:
+                - $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
+              x-speakeasy-param-computed: false
           required:
             - id
             - name
@@ -73987,7 +73994,9 @@ components:
             updated_at:
               $ref: '#/components/schemas/UpdatedAt'
             dcr_config:
-              $ref: '#/components/schemas/DcrConfigCurityInResponse'
+              allOf:
+                - $ref: '#/components/schemas/DcrConfigCurityInResponse'
+              x-speakeasy-param-computed: false
           required:
             - id
             - name
@@ -74033,7 +74042,9 @@ components:
             updated_at:
               $ref: '#/components/schemas/UpdatedAt'
             dcr_config:
-              $ref: '#/components/schemas/DcrConfigOktaInResponse'
+              allOf:
+                - $ref: '#/components/schemas/DcrConfigOktaInResponse'
+              x-speakeasy-param-computed: false
           required:
             - id
             - name
@@ -74125,7 +74136,9 @@ components:
             updated_at:
               $ref: '#/components/schemas/UpdatedAt'
             dcr_config:
-              $ref: '#/components/schemas/DcrConfigHttpInResponse'
+              allOf:
+                - $ref: '#/components/schemas/DcrConfigHttpInResponse'
+              x-speakeasy-param-computed: false
           required:
             - id
             - name
