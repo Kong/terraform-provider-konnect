@@ -36,13 +36,13 @@ type PortalAppearanceResource struct {
 
 // PortalAppearanceResourceModel describes the resource data model.
 type PortalAppearanceResourceModel struct {
-	CustomFonts    *tfTypes.V2NullableAppearanceFonts          `tfsdk:"custom_fonts"`
-	CustomTheme    *tfTypes.V2NullableAppearanceThemeVariables `tfsdk:"custom_theme"`
-	Images         *tfTypes.V2AppearanceImages                 `tfsdk:"images"`
-	PortalID       types.String                                `tfsdk:"portal_id"`
-	Text           *tfTypes.V2NullableAppearanceTextVariables  `tfsdk:"text"`
-	ThemeName      types.String                                `tfsdk:"theme_name"`
-	UseCustomFonts types.Bool                                  `tfsdk:"use_custom_fonts"`
+	CustomFonts    *tfTypes.V2UpdatePortalAppearanceRequestCustomFonts              `tfsdk:"custom_fonts"`
+	CustomTheme    *tfTypes.V2UpdatePortalAppearanceRequestAppearanceThemeVariables `tfsdk:"custom_theme"`
+	Images         *tfTypes.V2UpdatePortalAppearanceRequestImages                   `tfsdk:"images"`
+	PortalID       types.String                                                     `tfsdk:"portal_id"`
+	Text           *tfTypes.V2UpdatePortalAppearanceRequestText                     `tfsdk:"text"`
+	ThemeName      types.String                                                     `tfsdk:"theme_name"`
+	UseCustomFonts types.Bool                                                       `tfsdk:"use_custom_fonts"`
 }
 
 func (r *PortalAppearanceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -75,7 +75,8 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						Description: `The name of the font to render in the browser. possible known values include one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
 					},
 				},
-				Description: `Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.`,
 			},
 			"custom_theme": schema.SingleNestedAttribute{
 				Computed: true,
@@ -511,7 +512,8 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 				},
-				Description: `Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.`,
 			},
 			"images": schema.SingleNestedAttribute{
 				Computed: true,
@@ -586,7 +588,8 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						Description: `The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.`,
 					},
 				},
-				Description: `A collection of binary image data to customize images in the portal`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `A collection of binary image data to customize images in the portal`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
@@ -622,17 +625,20 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 				},
-				Description: `Values to display for customizable text in the portal user interface`,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `Values to display for customizable text in the portal user interface`,
 			},
 			"theme_name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Select a pre-existing default theme or specify 'custom' to use custom_theme variables. possible known values include one of ["mint_rocket", "dark_mode", "custom"]`,
+				Computed:           true,
+				Optional:           true,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `Select a pre-existing default theme or specify 'custom' to use custom_theme variables. possible known values include one of ["mint_rocket", "dark_mode", "custom"]`,
 			},
 			"use_custom_fonts": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `If true, fonts in custom_fonts will be used over the theme's default fonts`,
+				Computed:           true,
+				Optional:           true,
+				DeprecationMessage: `This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release.`,
+				Description:        `If true, fonts in custom_fonts will be used over the theme's default fonts`,
 			},
 		},
 	}

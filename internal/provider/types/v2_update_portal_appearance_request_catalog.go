@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type Catalog struct {
+type V2UpdatePortalAppearanceRequestCatalog struct {
 	PrimaryHeader  types.String `tfsdk:"primary_header"`
 	WelcomeMessage types.String `tfsdk:"welcome_message"`
 }

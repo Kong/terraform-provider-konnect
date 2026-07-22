@@ -2,6 +2,6 @@
 
 package types
 
-type V2NullableAppearanceThemeVariables struct {
+type V2UpdatePortalAppearanceRequestAppearanceThemeVariables struct {
 	Colors *V2AppearanceThemeColorVariables `tfsdk:"colors"`
 }
