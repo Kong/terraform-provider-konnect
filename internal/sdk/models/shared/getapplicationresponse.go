@@ -139,7 +139,7 @@ type GetApplicationResponseAuthStrategy struct {
 	CredentialType GetApplicationResponseCredentialType `json:"credential_type"`
 	KeyNames       []string                             `json:"key_names,omitempty"`
 	// Default maximum Time-To-Live for keys created under this strategy.
-	TTL         *GetApplicationResponseTTL `json:"ttl"`
+	TTL         *GetApplicationResponseTTL `json:"ttl,omitempty"`
 	AuthMethods []string                   `json:"auth_methods,omitempty"`
 	// Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
 	AvailableScopes []string `json:"available_scopes,omitempty"`

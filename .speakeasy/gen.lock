@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: c030a3e6477317744caeceff70aac341
+  docChecksum: 2a5ac64cb02f85436e848731d7123bbc
   docVersion: 2.0.0
   speakeasyVersion: 1.788.0
   generationVersion: 2.915.0
   releaseVersion: 3.20.0
   configChecksum: 8baf3fd67bbb5d991fba9bfa91ca751f
 persistentEdits:
-  generation_id: 47d57095-1ae9-4e6e-b9cf-702b9e874063
-  pristine_commit_hash: 68d49d74b004e0da8f7b418f0bea2e43b3fe6049
-  pristine_tree_hash: c6ed3cbea4b1d50007548c0ae95080d2f95041db
+  generation_id: d767b738-dfc6-42d3-b1ae-8ade6b4df919
+  pristine_commit_hash: bca6741ecef510024f7dd251dcb0e90c825ad6c9
+  pristine_tree_hash: 970dad1d0d27071d23dc4667fd2b88b02af83433
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4481,8 +4481,8 @@ trackedFiles:
     pristine_git_object: 9a6e43c155474599249fc145660d8cb45ec59960
   internal/provider/portalapplication_resource.go:
     id: 2d0de77fcc64
-    last_write_checksum: sha1:c342d4f81974f12cd21ec47b3b5d69fb4e4dbba2
-    pristine_git_object: fd2fb983404f1342ae60ec1676884c4d23d10577
+    last_write_checksum: sha1:4bc9d36a0f552a986f1679bc20cee34a329191aa
+    pristine_git_object: 0c8c1ecdfad493fbe76b986bd8a56636a4fe1adf
   internal/provider/portalapplication_resource_sdk.go:
     id: 9037b1b453e0
     last_write_checksum: sha1:416e2f7237719c216b3bbdec50075dec963c67fd
@@ -11881,8 +11881,8 @@ trackedFiles:
     pristine_git_object: 1d7029f0f517ae9ce5b79edb930e5a2db5be2ddb
   internal/sdk/models/shared/getapplicationresponse.go:
     id: bcc0e07794a4
-    last_write_checksum: sha1:20172d72d5a19c3695562ee3857eb76876368833
-    pristine_git_object: 4a21ca3bb9e563c84c7a9efdff1402ac9ed3518f
+    last_write_checksum: sha1:8fc0f713bb8540d09c1a6db5cbc6515c967b7eee
+    pristine_git_object: b0aeae81f57e337173a4994382562216963e8195
   internal/sdk/models/shared/getpluginschemaresponse.go:
     id: b63db7e92e3e
     last_write_checksum: sha1:dbc1abdce3e2341fd784b0e809c9b650b187f843
@@ -28211,7 +28211,7 @@ examples:
         application/json: {"name": "Portal Application", "description": "A portal application provisioned for a developer by a Portal Admin.", "labels": {"env": "production"}, "auth_strategy_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "owner": {"type": "developer", "id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}}
       responses:
         "201":
-          application/json: {"id": "b15e2460-ba40-431d-9df0-4957fcffacda", "created_at": "2022-12-22T19:09:30.712Z", "updated_at": "2022-12-22T19:09:30.712Z", "name": "App 1", "description": "An easy to manage app in a Konnect developer portal", "registration_count": 4, "portal": {"id": "95606071-49c7-4c2e-ae49-8a86d72a8110"}, "auth_strategy": {"id": "45606071-49c7-4c2e-ae49-8a86d72a8110", "name": "API Key", "credential_type": "key_auth", "key_names": ["apikey"], "ttl": null}, "granted_scopes": null, "owner": {"type": "developer", "id": "8cd9feff-b4da-4a9f-ba49-cbe83c75ff22"}}
+          application/json: {"id": "b15e2460-ba40-431d-9df0-4957fcffacda", "created_at": "2022-12-22T19:09:30.712Z", "updated_at": "2022-12-22T19:09:30.712Z", "name": "App 1", "description": "An easy to manage app in a Konnect developer portal", "registration_count": 4, "portal": {"id": "95606071-49c7-4c2e-ae49-8a86d72a8110"}, "auth_strategy": {"id": "45606071-49c7-4c2e-ae49-8a86d72a8110", "name": "API Key", "credential_type": "key_auth", "key_names": ["apikey"]}, "granted_scopes": null, "owner": {"type": "developer", "id": "8cd9feff-b4da-4a9f-ba49-cbe83c75ff22"}}
         "400":
           application/problem+json: {"status": 475778, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -28226,7 +28226,7 @@ examples:
           applicationId: "1e48f599-4da4-4b26-8f1d-0bc5457ba8ea"
       responses:
         "200":
-          application/json: {"id": "b15e2460-ba40-431d-9df0-4957fcffacda", "created_at": "2022-12-22T19:09:30.712Z", "updated_at": "2022-12-22T19:09:30.712Z", "name": "App 1", "description": "An easy to manage app in a Konnect developer portal", "registration_count": 4, "portal": {"id": "95606071-49c7-4c2e-ae49-8a86d72a8110"}, "auth_strategy": {"id": "45606071-49c7-4c2e-ae49-8a86d72a8110", "name": "API Key", "credential_type": "key_auth", "key_names": ["apikey"], "ttl": null}, "granted_scopes": null, "owner": {"type": "developer", "id": "8cd9feff-b4da-4a9f-ba49-cbe83c75ff22"}}
+          application/json: {"id": "b15e2460-ba40-431d-9df0-4957fcffacda", "created_at": "2022-12-22T19:09:30.712Z", "updated_at": "2022-12-22T19:09:30.712Z", "name": "App 1", "description": "An easy to manage app in a Konnect developer portal", "registration_count": 4, "portal": {"id": "95606071-49c7-4c2e-ae49-8a86d72a8110"}, "auth_strategy": {"id": "45606071-49c7-4c2e-ae49-8a86d72a8110", "name": "API Key", "credential_type": "key_auth", "key_names": ["apikey"]}, "granted_scopes": null, "owner": {"type": "developer", "id": "8cd9feff-b4da-4a9f-ba49-cbe83c75ff22"}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -28243,7 +28243,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"id": "b15e2460-ba40-431d-9df0-4957fcffacda", "created_at": "2022-12-22T19:09:30.712Z", "updated_at": "2022-12-22T19:09:30.712Z", "name": "App 1", "description": "An easy to manage app in a Konnect developer portal", "registration_count": 4, "portal": {"id": "95606071-49c7-4c2e-ae49-8a86d72a8110"}, "auth_strategy": {"id": "45606071-49c7-4c2e-ae49-8a86d72a8110", "name": "API Key", "credential_type": "key_auth", "key_names": ["apikey"], "ttl": null}, "granted_scopes": null, "owner": {"type": "developer", "id": "8cd9feff-b4da-4a9f-ba49-cbe83c75ff22"}}
+          application/json: {"id": "b15e2460-ba40-431d-9df0-4957fcffacda", "created_at": "2022-12-22T19:09:30.712Z", "updated_at": "2022-12-22T19:09:30.712Z", "name": "App 1", "description": "An easy to manage app in a Konnect developer portal", "registration_count": 4, "portal": {"id": "95606071-49c7-4c2e-ae49-8a86d72a8110"}, "auth_strategy": {"id": "45606071-49c7-4c2e-ae49-8a86d72a8110", "name": "API Key", "credential_type": "key_auth", "key_names": ["apikey"]}, "granted_scopes": null, "owner": {"type": "developer", "id": "8cd9feff-b4da-4a9f-ba49-cbe83c75ff22"}}
         "400":
           application/problem+json: {"status": 765306, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":

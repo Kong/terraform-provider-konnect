@@ -8,12 +8,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -123,10 +121,6 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 					},
 					"ttl": schema.SingleNestedAttribute{
 						Computed: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"unit":  types.StringType,
-							"value": types.Int64Type,
-						})),
 						PlanModifiers: []planmodifier.Object{
 							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
