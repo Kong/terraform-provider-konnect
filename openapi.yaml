@@ -18923,7 +18923,7 @@ paths:
   '/v3/portals/{portalId}/applications/{applicationId}/registrations':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/ApplicationIdForChildren'
+      - $ref: '#/components/parameters/ApplicationId'
     post:
       x-speakeasy-entity-operation: PortalApplicationRegistration#create
       operationId: create-application-registration
@@ -18959,7 +18959,7 @@ paths:
   '/v3/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/ApplicationIdForChildren'
+      - $ref: '#/components/parameters/ApplicationId'
       - $ref: '#/components/parameters/RegistrationIdResource'
     get:
       x-speakeasy-entity-operation:
@@ -20745,7 +20745,7 @@ components:
       in: path
       required: true
       description: The UUID API identifier
-    ApplicationIdForChildren:
+    ApplicationId:
       name: applicationId
       in: path
       required: true
@@ -29454,8 +29454,6 @@ components:
             ttl:
               description: Default maximum Time-To-Live for keys created under this strategy.
               type: object
-              default: null
-              nullable: true
               properties:
                 value:
                   type: integer
@@ -29468,7 +29466,6 @@ components:
                     - years
                   x-speakeasy-unknown-values: allow
               readOnly: true
-              x-speakeasy-param-computed: false
               x-speakeasy-param-suppress-computed-diff: true
             auth_methods:
               type: array
