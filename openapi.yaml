@@ -25611,6 +25611,9 @@ components:
       type: string
       maxLength: 256
       title: DcrConfigPropertyInitialClientSecret
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
     DcrConfigPropertyDcrToken:
       description: |
         This secret should be copied from your identity provider's settings after you create a client
@@ -25618,6 +25621,9 @@ components:
       type: string
       maxLength: 256
       title: DcrConfigPropertyInitialDcrToken
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
     DcrConfigPropertyInitialClientAudience:
       description: |
         This is the audience value used for the initial client.
@@ -25857,550 +25863,6 @@ components:
           $ref: '#/components/schemas/DcrConfigPropertyAllowMultipleCredentials'
       additionalProperties: false
       title: CreateDcrConfigHttpInRequest
-    CreateDcrProviderResponse:
-      x-speakeasy-entity: DcrProvider
-      description: A response containing the newly created DCR provider object.
-      type: object
-      discriminator:
-        propertyName: provider_type
-        mapping:
-          auth0: '#/components/schemas/DcrProviderAuth0'
-          azureAd: '#/components/schemas/DcrProviderAzureAd'
-          curity: '#/components/schemas/DcrProviderCurity'
-          okta: '#/components/schemas/DcrProviderOkta'
-          kongIdentity: '#/components/schemas/DcrProviderKongIdentity'
-          http: '#/components/schemas/DcrProviderHttp'
-      oneOf:
-        - type: object
-          description: A DCR provider for Auth0 -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - auth0
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigAuth0InResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Auth0
-        - type: object
-          description: A DCR provider for Azure AD -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - azureAd
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Azure AD
-        - type: object
-          description: A DCR provider for Curity -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - curity
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigCurityInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Curity
-        - type: object
-          description: A DCR provider for Okta -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - okta
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigOktaInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - OKTA
-        - type: object
-          description: A DCR provider for Kong Identity -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - kongIdentity
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigKongIdentityInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Kong Identity
-        - type: object
-          description: A DCR provider for HTTP -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - http
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigHttpInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - HTTP
-    DcrProviderResponse:
-      x-speakeasy-entity: DcrProvider
-      description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
-      type: object
-      discriminator:
-        propertyName: provider_type
-        mapping:
-          auth0: '#/components/schemas/DcrProviderAuth0'
-          azureAd: '#/components/schemas/DcrProviderAzureAd'
-          curity: '#/components/schemas/DcrProviderCurity'
-          okta: '#/components/schemas/DcrProviderOkta'
-          kongIdentity: '#/components/schemas/DcrProviderKongIdentity'
-          http: '#/components/schemas/DcrProviderHttp'
-      oneOf:
-        - type: object
-          description: A DCR provider for Auth0 -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - auth0
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigAuth0InResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Auth0
-        - type: object
-          description: A DCR provider for Azure AD -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - azureAd
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Azure AD
-        - type: object
-          description: A DCR provider for Curity -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - curity
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigCurityInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Curity
-        - type: object
-          description: A DCR provider for Okta -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - okta
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigOktaInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - OKTA
-        - type: object
-          description: A DCR provider for Kong Identity -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - kongIdentity
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigKongIdentityInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - Kong Identity
-        - type: object
-          description: A DCR provider for HTTP -- only properties not included in DcrProviderBase
-          additionalProperties: false
-          properties:
-            id:
-              $ref: '#/components/schemas/UUID'
-            name:
-              $ref: '#/components/schemas/DcrProviderName'
-            display_name:
-              $ref: '#/components/schemas/DcrProviderDisplayName'
-            provider_type:
-              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-              type: string
-              enum:
-                - http
-            issuer:
-              description: The issuer of the DCR provider.
-              type: string
-              format: url
-              maxLength: 256
-            active:
-              description: At least one active auth strategy is using this DCR provider.
-              type: boolean
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-            labels:
-              $ref: '#/components/schemas/Labels'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-            dcr_config:
-              $ref: '#/components/schemas/DcrConfigHttpInResponse'
-          required:
-            - id
-            - name
-            - provider_type
-            - issuer
-            - active
-            - created_at
-            - updated_at
-            - dcr_config
-          title: DCR provider - HTTP
     CreateDcrProviderRequestAuth0:
       description: Request body for creating an Auth0 DCR provider.
       type: object
@@ -26581,28 +26043,20 @@ components:
       x-speakeasy-entity: DcrProvider
       description: A set of updates to a DCR provider. The provider_type cannot be updated after creation.
       type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/DcrProviderName'
-        display_name:
-          $ref: '#/components/schemas/DcrProviderDisplayName'
-        issuer:
-          type: string
-          format: url
-          default: null
-          maxLength: 256
-          nullable: true
-          x-speakeasy-param-computed: false
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
-        dcr_config:
-          anyOf:
-            - $ref: '#/components/schemas/UpdateDcrConfigAuth0InRequest'
-            - $ref: '#/components/schemas/UpdateDcrConfigAzureAdInRequest'
-            - $ref: '#/components/schemas/UpdateDcrConfigCurityInRequest'
-            - $ref: '#/components/schemas/UpdateDcrConfigOktaInRequest'
-            - $ref: '#/components/schemas/UpdateDcrConfigHttpInRequest'
-      additionalProperties: false
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/UpdateDcrProviderRequestAuth0'
+          azureAd: '#/components/schemas/UpdateDcrProviderRequestAzureAd'
+          curity: '#/components/schemas/UpdateDcrProviderRequestCurity'
+          okta: '#/components/schemas/UpdateDcrProviderRequestOkta'
+          http: '#/components/schemas/UpdateDcrProviderRequestHttp'
+      oneOf:
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestAuth0'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestAzureAd'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestCurity'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestOkta'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestHttp'
       title: UpdateDcrProviderRequest
     AuthStrategyPrincipals:
       description: |
@@ -26985,12 +26439,6 @@ components:
             - provider_type
           x-speakeasy-param-suppress-computed-diff: true
           x-speakeasy-terraform-ignore: true
-        dcr_provider_id:
-          type: string
-          format: uuid
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
         created_at:
@@ -27007,6 +26455,12 @@ components:
           x-speakeasy-param-suppress-computed-diff: true
         principals:
           $ref: '#/components/schemas/AuthStrategyPrincipals'
+        dcr_provider_id:
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - id
@@ -57391,6 +56845,7 @@ components:
                     x-speakeasy-param-computed: false
                   scope:
                     type: string
+                    default: cp
                     enum:
                       - cp
                       - realm
@@ -74392,6 +73847,441 @@ components:
         - created_at
         - updated_at
         - config
+    DcrProviderResponseFlattened:
+      x-speakeasy-entity: DcrProvider
+      description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
+      type: object
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/DcrProviderAuth0'
+          azureAd: '#/components/schemas/DcrProviderAzureAd'
+          curity: '#/components/schemas/DcrProviderCurity'
+          okta: '#/components/schemas/DcrProviderOkta'
+          kongIdentity: '#/components/schemas/DcrProviderKongIdentity'
+          http: '#/components/schemas/DcrProviderHttp'
+      oneOf:
+        - type: object
+          description: A DCR provider for Auth0 -- only properties not included in DcrProviderBase
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              $ref: '#/components/schemas/DcrProviderName'
+            display_name:
+              allOf:
+                - $ref: '#/components/schemas/DcrProviderDisplayName'
+              x-speakeasy-terraform-ignore: true
+            provider_type:
+              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+              type: string
+              enum:
+                - auth0
+            issuer:
+              description: The issuer of the DCR provider.
+              type: string
+              format: url
+              maxLength: 256
+            active:
+              description: At least one active auth strategy is using this DCR provider.
+              type: boolean
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+            dcr_config:
+              $ref: '#/components/schemas/DcrConfigAuth0InResponse'
+          required:
+            - id
+            - name
+            - provider_type
+            - issuer
+            - active
+            - created_at
+            - updated_at
+            - dcr_config
+          title: DCR provider - Auth0
+          x-speakeasy-name-override: auth0
+        - type: object
+          description: A DCR provider for Azure AD -- only properties not included in DcrProviderBase
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              $ref: '#/components/schemas/DcrProviderName'
+            display_name:
+              allOf:
+                - $ref: '#/components/schemas/DcrProviderDisplayName'
+              x-speakeasy-terraform-ignore: true
+            provider_type:
+              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+              type: string
+              enum:
+                - azureAd
+            issuer:
+              description: The issuer of the DCR provider.
+              type: string
+              format: url
+              maxLength: 256
+            active:
+              description: At least one active auth strategy is using this DCR provider.
+              type: boolean
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+            dcr_config:
+              $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
+          required:
+            - id
+            - name
+            - provider_type
+            - issuer
+            - active
+            - created_at
+            - updated_at
+            - dcr_config
+          title: DCR provider - Azure AD
+          x-speakeasy-name-override: azureAd
+        - type: object
+          description: A DCR provider for Curity -- only properties not included in DcrProviderBase
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              $ref: '#/components/schemas/DcrProviderName'
+            display_name:
+              allOf:
+                - $ref: '#/components/schemas/DcrProviderDisplayName'
+              x-speakeasy-terraform-ignore: true
+            provider_type:
+              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+              type: string
+              enum:
+                - curity
+            issuer:
+              description: The issuer of the DCR provider.
+              type: string
+              format: url
+              maxLength: 256
+            active:
+              description: At least one active auth strategy is using this DCR provider.
+              type: boolean
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+            dcr_config:
+              $ref: '#/components/schemas/DcrConfigCurityInResponse'
+          required:
+            - id
+            - name
+            - provider_type
+            - issuer
+            - active
+            - created_at
+            - updated_at
+            - dcr_config
+          title: DCR provider - Curity
+          x-speakeasy-name-override: curity
+        - type: object
+          description: A DCR provider for Okta -- only properties not included in DcrProviderBase
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              $ref: '#/components/schemas/DcrProviderName'
+            display_name:
+              allOf:
+                - $ref: '#/components/schemas/DcrProviderDisplayName'
+              x-speakeasy-terraform-ignore: true
+            provider_type:
+              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+              type: string
+              enum:
+                - okta
+            issuer:
+              description: The issuer of the DCR provider.
+              type: string
+              format: url
+              maxLength: 256
+            active:
+              description: At least one active auth strategy is using this DCR provider.
+              type: boolean
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+            dcr_config:
+              $ref: '#/components/schemas/DcrConfigOktaInResponse'
+          required:
+            - id
+            - name
+            - provider_type
+            - issuer
+            - active
+            - created_at
+            - updated_at
+            - dcr_config
+          title: DCR provider - OKTA
+          x-speakeasy-name-override: okta
+        - type: object
+          description: A DCR provider for Kong Identity -- only properties not included in DcrProviderBase
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              $ref: '#/components/schemas/DcrProviderName'
+            display_name:
+              allOf:
+                - $ref: '#/components/schemas/DcrProviderDisplayName'
+              x-speakeasy-terraform-ignore: true
+            provider_type:
+              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+              type: string
+              enum:
+                - kongIdentity
+            issuer:
+              description: The issuer of the DCR provider.
+              type: string
+              format: url
+              maxLength: 256
+            active:
+              description: At least one active auth strategy is using this DCR provider.
+              type: boolean
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+            dcr_config:
+              $ref: '#/components/schemas/DcrConfigKongIdentityInResponse'
+          required:
+            - id
+            - name
+            - provider_type
+            - issuer
+            - active
+            - created_at
+            - updated_at
+            - dcr_config
+          title: DCR provider - Kong Identity
+          x-speakeasy-name-override: kongIdentity
+        - type: object
+          description: A DCR provider for HTTP -- only properties not included in DcrProviderBase
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              $ref: '#/components/schemas/DcrProviderName'
+            display_name:
+              allOf:
+                - $ref: '#/components/schemas/DcrProviderDisplayName'
+              x-speakeasy-terraform-ignore: true
+            provider_type:
+              description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+              type: string
+              enum:
+                - http
+            issuer:
+              description: The issuer of the DCR provider.
+              type: string
+              format: url
+              maxLength: 256
+            active:
+              description: At least one active auth strategy is using this DCR provider.
+              type: boolean
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            labels:
+              $ref: '#/components/schemas/Labels'
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+            dcr_config:
+              $ref: '#/components/schemas/DcrConfigHttpInResponse'
+          required:
+            - id
+            - name
+            - provider_type
+            - issuer
+            - active
+            - created_at
+            - updated_at
+            - dcr_config
+          title: DCR provider - HTTP
+          x-speakeasy-name-override: http
+    UpdateDcrProviderRequestAuth0:
+      description: A set of updates to an Auth0 DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - auth0
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigAuth0InRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+      additionalProperties: false
+      required:
+        - provider_type
+      title: UpdateDcrProviderRequestAuth0
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestAzureAd:
+      description: A set of updates to an Azure AD DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - azureAd
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigAzureAdInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+      additionalProperties: false
+      required:
+        - provider_type
+      title: UpdateDcrProviderRequestAzureAd
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestCurity:
+      description: A set of updates to a Curity DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - curity
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigCurityInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+      additionalProperties: false
+      required:
+        - provider_type
+      title: UpdateDcrProviderRequestCurity
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestOkta:
+      description: A set of updates to an Okta DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - okta
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigOktaInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+      additionalProperties: false
+      required:
+        - provider_type
+      title: UpdateDcrProviderRequestOkta
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestHttp:
+      description: A set of updates to an HTTP DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - http
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigHttpInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+      additionalProperties: false
+      required:
+        - provider_type
+      title: UpdateDcrProviderRequestHttp
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
   requestBodies:
     GroupMembershipAdd:
       content:
@@ -76814,13 +76704,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateDcrProviderResponse'
+            $ref: '#/components/schemas/DcrProviderResponseFlattened'
     GetDcrProvider:
       description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/DcrProviderResponse'
+            $ref: '#/components/schemas/DcrProviderResponseFlattened'
     CreateAppAuthStrategy:
       description: A response containing the newly created application auth strategy object.
       content:
