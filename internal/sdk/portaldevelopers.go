@@ -14,30 +14,26 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/retry"
 	"net/http"
-	"net/url"
 )
 
-// AppAuthStrategies - Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
-// Called “Auth Strategy” for short in the context of portals/applications.
-// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
-// The optional `principals` property controls application-principal behavior for V3 API Catalog portals and applications. It defaults to disabled when omitted.
-type AppAuthStrategies struct {
+// PortalDevelopers - APIs related to Konnect Developer Portal developers.
+type PortalDevelopers struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
 }
 
-func newAppAuthStrategies(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *AppAuthStrategies {
-	return &AppAuthStrategies{
+func newPortalDevelopers(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *PortalDevelopers {
+	return &PortalDevelopers{
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
 	}
 }
 
-// CreateAppAuthStrategy - Create App Auth Strategy
-// Creates an application auth strategy.
-func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request shared.CreateAppAuthStrategyRequest, opts ...operations.Option) (*operations.CreateAppAuthStrategyResponse, error) {
+// CreateDeveloper - Create Developer Account
+// Creates a new developer account in the specified portal. SAML login is currently not supported.
+func (s *PortalDevelopers) CreateDeveloper(ctx context.Context, request operations.CreateDeveloperRequest, opts ...operations.Option) (*operations.CreateDeveloperResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57,7 +53,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/v2/application-auth-strategies")
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/developers", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -67,11 +63,11 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-app-auth-strategy",
+		OperationID:      "create-developer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateDeveloperRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +203,7 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 		}
 	}
 
-	res := &operations.CreateAppAuthStrategyResponse{
+	res := &operations.CreateDeveloperResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -222,12 +218,12 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.PortalDeveloper
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.PortalDeveloper = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -298,6 +294,27 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 409:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.ConflictError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.ConflictError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -310,9 +327,9 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 
 }
 
-// GetAppAuthStrategy - Get App Auth Strategy
-// Returns an application auth strategy.
-func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request operations.GetAppAuthStrategyRequest, opts ...operations.Option) (*operations.GetAppAuthStrategyResponse, error) {
+// GetDeveloper - Get a Developer
+// Returns information about a single developer in this portal. Each developer manages a set applications, providing them credentials to access registered APIs. Developer registration access can be limited to specific APIs using RBAC.
+func (s *PortalDevelopers) GetDeveloper(ctx context.Context, request operations.GetDeveloperRequest, opts ...operations.Option) (*operations.GetDeveloperResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -332,7 +349,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/developers/{developerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -342,7 +359,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-app-auth-strategy",
+		OperationID:      "get-developer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -475,7 +492,7 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetAppAuthStrategyResponse{
+	res := &operations.GetDeveloperResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -490,12 +507,12 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.PortalDeveloper
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.PortalDeveloper = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -578,9 +595,9 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 
 }
 
-// UpdateAppAuthStrategy - Update App Auth Strategy
-// Updates an application auth strategy.
-func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request operations.UpdateAppAuthStrategyRequest, opts ...operations.Option) (*operations.UpdateAppAuthStrategyResponse, error) {
+// UpdateDeveloper - Update Developer
+// Updates the status of a particular developer. Approved developers have access to login to the portal. Revoked, rejected, or pending are not allowed to login. Even if a developer's status is no longer approved, they will still be able to using any existing credentials generated while they were approved, until each application registration is revoked or deleted.
+func (s *PortalDevelopers) UpdateDeveloper(ctx context.Context, request operations.UpdateDeveloperRequest, opts ...operations.Option) (*operations.UpdateDeveloperResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -600,7 +617,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/developers/{developerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -610,11 +627,11 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-app-auth-strategy",
+		OperationID:      "update-developer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAppAuthStrategyRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateDeveloperRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -750,7 +767,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateAppAuthStrategyResponse{
+	res := &operations.UpdateDeveloperResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -765,12 +782,12 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 				return nil, err
 			}
 
-			var out shared.CreateAppAuthStrategyResponse
+			var out shared.PortalDeveloper
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAppAuthStrategyResponse = &out
+			res.PortalDeveloper = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -874,9 +891,9 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 
 }
 
-// DeleteAppAuthStrategy - Delete App Auth Strategy
-// Deletes an application auth strategy. An application auth strategy can be deleted ONLY if it's not used by any product version within any portal regardless of their publication statuses. If an application auth strategy is still in use the request will result in an HTTP 409 CONFLICT.
-func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request operations.DeleteAppAuthStrategyRequest, opts ...operations.Option) (*operations.DeleteAppAuthStrategyResponse, error) {
+// DeleteDeveloper - Delete Developer
+// Deletes a developer, which will discontinue their ability to login, view any non-public resources, and delete all applications owned by them. All credentials issued to the developer will no longer provide access to any APIs. A deleted developer's unique email must be re-registered and approved to gain access again.
+func (s *PortalDevelopers) DeleteDeveloper(ctx context.Context, request operations.DeleteDeveloperRequest, opts ...operations.Option) (*operations.DeleteDeveloperResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -895,7 +912,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/developers/{developerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -905,7 +922,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-app-auth-strategy",
+		OperationID:      "delete-developer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1033,7 +1050,7 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteAppAuthStrategyResponse{
+	res := &operations.DeleteDeveloperResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1098,27 +1115,6 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 			}
 
 			res.NotFoundError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

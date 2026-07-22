@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
@@ -171,8 +172,8 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										Description: `Default maximum Time-To-Live for keys created under this strategy. Requires replacement if changed.`,
 									},
 								},
-								MarkdownDescription: `The most basic mode to configure an Application Auth Strategy for an API Product Version. ` + "\n" +
-									`Using this mode will allow developers to generate API keys that will authenticate their application requests. ` + "\n" +
+								MarkdownDescription: `The most basic mode to configure an Application Auth Strategy for an API Product Version.` + "\n" +
+									`Using this mode will allow developers to generate API keys that will authenticate their application requests.` + "\n" +
 									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.` + "\n" +
 									`Not Null; Requires replacement if changed.`,
 								Validators: []validator.Object{
@@ -275,6 +276,27 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
+					},
+					"principals": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"enabled": schema.BoolAttribute{
+								Computed: true,
+								Optional: true,
+								Default:  booldefault.StaticBool(false),
+								PlanModifiers: []planmodifier.Bool{
+									boolplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.`,
+							},
+						},
+						MarkdownDescription: `Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and` + "\n" +
+							`applications; stored values may be set for any auth strategy in the organization.` + "\n" +
+							`Requires replacement if changed.`,
 					},
 					"strategy_type": schema.StringAttribute{
 						Computed: true,
@@ -405,9 +427,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										},
 									},
 								},
-								MarkdownDescription: `A more advanced mode to configure an API Product Version’s Application Auth Strategy. ` + "\n" +
-									`Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests. ` + "\n" +
-									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy. ` + "\n" +
+								MarkdownDescription: `A more advanced mode to configure an API Product Version’s Application Auth Strategy.` + "\n" +
+									`Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.` + "\n" +
+									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.` + "\n" +
 									`An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.` + "\n" +
 									`Not Null; Requires replacement if changed.`,
 								Validators: []validator.Object{
@@ -517,6 +539,27 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
+					},
+					"principals": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"enabled": schema.BoolAttribute{
+								Computed: true,
+								Optional: true,
+								Default:  booldefault.StaticBool(false),
+								PlanModifiers: []planmodifier.Bool{
+									boolplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.`,
+							},
+						},
+						MarkdownDescription: `Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and` + "\n" +
+							`applications; stored values may be set for any auth strategy in the organization.` + "\n" +
+							`Requires replacement if changed.`,
 					},
 					"strategy_type": schema.StringAttribute{
 						Computed: true,

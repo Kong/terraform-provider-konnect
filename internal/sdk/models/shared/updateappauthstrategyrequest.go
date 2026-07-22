@@ -116,6 +116,10 @@ type UpdateAppAuthStrategyRequest struct {
 	DcrProviderID *string            `default:"null" json:"dcr_provider_id"`
 	// JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
 	Configs *Configs `json:"configs,omitempty"`
+	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+	// applications; stored values may be set for any auth strategy in the organization.
+	//
+	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
 }
 
 func (u UpdateAppAuthStrategyRequest) MarshalJSON() ([]byte, error) {
@@ -162,4 +166,11 @@ func (u *UpdateAppAuthStrategyRequest) GetConfigs() *Configs {
 		return nil
 	}
 	return u.Configs
+}
+
+func (u *UpdateAppAuthStrategyRequest) GetPrincipals() *AuthStrategyPrincipals {
+	if u == nil {
+		return nil
+	}
+	return u.Principals
 }
