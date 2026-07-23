@@ -21,8 +21,8 @@ func TestMeshControlPlanes(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					ConfigStateChecks: []statecheck.StateCheck{
-						statecheck.ExpectKnownOutputValueAtPath(
-							"mesh_control_planes",
+						statecheck.ExpectKnownValue(
+							"data.konnect_mesh_control_planes.my_meshcontrolplanes",
 							tfjsonpath.New("data").AtSliceIndex(0).AtMapKey("name"),
 							knownvalue.StringExact("Lookup Mesh Control Plane"),
 						),

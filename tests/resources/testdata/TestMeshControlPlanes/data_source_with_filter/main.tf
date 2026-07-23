@@ -11,7 +11,3 @@ data "konnect_mesh_control_planes" "my_meshcontrolplanes" {
   }
   depends_on = [konnect_mesh_control_plane.tfdemo]
 }
-
-output "mesh_control_planes" {
-  value = data.konnect_mesh_control_planes.my_meshcontrolplanes
-}

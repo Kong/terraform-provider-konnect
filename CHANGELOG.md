@@ -4,7 +4,9 @@
 > Released 2026/07/??
 
 # Features
+* Add support for `konnect_dcr_provider` resource.
 * Add support for `konnect_organization_personal_access_token_settings` resource.
+* Add support for filtering by `name` and `labels` in `konnect_mesh_control_planes` data source.
 
 
 ## 3.20.0
