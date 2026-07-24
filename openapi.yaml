@@ -18861,7 +18861,7 @@ paths:
   '/v3/portals/{portalId}/applications/{applicationId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/ApplicationIdResource'
+      - $ref: '#/components/parameters/ApplicationIdToMatchResourceID'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: PortalApplication#read
@@ -18960,7 +18960,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/PortalId'
       - $ref: '#/components/parameters/ApplicationId'
-      - $ref: '#/components/parameters/RegistrationIdResource'
+      - $ref: '#/components/parameters/RegistrationIdToMatchResourceID'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: PortalApplicationRegistration#read
@@ -19379,7 +19379,7 @@ paths:
   '/v3/portals/{portalId}/developers/{developerId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
-      - $ref: '#/components/parameters/DeveloperIdResource'
+      - $ref: '#/components/parameters/DeveloperIdToMatchResourceID'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: PortalDeveloper#read
@@ -20753,7 +20753,7 @@ components:
       schema:
         type: string
         format: uuid
-    ApplicationIdResource:
+    ApplicationIdToMatchResourceID:
       name: applicationId
       in: path
       required: true
@@ -20994,7 +20994,7 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
-    DeveloperIdResource:
+    DeveloperIdToMatchResourceID:
       name: developerId
       in: path
       required: true
@@ -21263,7 +21263,7 @@ components:
       schema:
         type: string
         format: uuid
-    RegistrationIdResource:
+    RegistrationIdToMatchResourceID:
       name: registrationId
       in: path
       required: true
