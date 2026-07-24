@@ -182,6 +182,7 @@ type Konnect struct {
 	// Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
 	// Called “Auth Strategy” for short in the context of portals/applications.
 	// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
+	// The optional `principals` property controls application-principal behavior for V3 API Catalog portals and applications. It defaults to disabled when omitted.
 	//
 	AppAuthStrategies *AppAuthStrategies
 	AuditLogs         *AuditLogs
@@ -310,6 +311,10 @@ type Konnect struct {
 	APIVersion           *APIVersion
 	AuthSettings         *AuthSettings
 	PersonalAccessTokens *PersonalAccessTokens
+	// APIs related to Konnect Developer Portal Applications.
+	Applications *Applications
+	// APIs related to Konnect Developer Portal Application Registrations.
+	ApplicationRegistrations *ApplicationRegistrations
 	// APIs for managing static assets for Konnect Developer Portals.
 	Assets          *Assets
 	PortalAuditLogs *PortalAuditLogs
@@ -319,6 +324,8 @@ type Konnect struct {
 	PortalCustomDomains *PortalCustomDomains
 	// APIs related to customization of Konnect Developer Portals.
 	PortalCustomization *PortalCustomization
+	// APIs related to Konnect Developer Portal developers.
+	PortalDevelopers *PortalDevelopers
 	// APIs related to Konnect Portal IP Allow List.
 	PortalsIPAllowList *PortalsIPAllowList
 	PortalPages        *PortalPages
@@ -507,11 +514,14 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthSettings = newAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Applications = newApplications(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ApplicationRegistrations = newApplicationRegistrations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)

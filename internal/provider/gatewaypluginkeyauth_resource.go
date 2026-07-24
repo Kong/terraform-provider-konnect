@@ -136,7 +136,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 								"scope": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `possible known values include one of ["cp", "realm"]`,
+									Default:     stringdefault.StaticString(`cp`),
+									Description: `possible known values include one of ["cp", "realm"]; Default: "cp"`,
 								},
 							},
 						},

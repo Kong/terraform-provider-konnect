@@ -146,7 +146,7 @@ type IdentityRealms struct {
 	// A string representing a UUID (universally unique identifier).
 	ID     *string             `json:"id,omitempty"`
 	Region *string             `default:"null" json:"region"`
-	Scope  *KeyAuthPluginScope `json:"scope,omitempty"`
+	Scope  *KeyAuthPluginScope `default:"cp" json:"scope"`
 }
 
 func (i IdentityRealms) MarshalJSON() ([]byte, error) {
