@@ -17540,7 +17540,13 @@ paths:
         - DCR Providers
   '/v2/dcr-providers/{dcrProviderId}':
     parameters:
-      - $ref: '#/components/parameters/DcrProviderId'
+      - name: dcrProviderId
+        in: path
+        description: DCR provider identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+        x-speakeasy-match: id
     get:
       x-speakeasy-entity-operation:
         terraform-resource: DcrProvider#read
@@ -20775,14 +20781,6 @@ components:
       schema:
         type: string
       required: true
-      x-speakeasy-match: id
-    DcrProviderId:
-      name: dcrProviderId
-      description: DCR provider identifier
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UUID'
       x-speakeasy-match: id
     DocumentId:
       schema:
@@ -26022,7 +26020,6 @@ components:
         - issuer
       title: CreateDcrProviderRequestHttp
     CreateDcrProviderRequest:
-      x-speakeasy-entity: DcrProvider
       description: Request body for creating a DCR provider. The provider_type cannot be updated after creation.
       type: object
       discriminator:
@@ -26043,7 +26040,6 @@ components:
         - $ref: '#/components/schemas/CreateDcrProviderRequestKongIdentity'
       title: CreateDcrProviderRequest
     UpdateDcrProviderRequest:
-      x-speakeasy-entity: DcrProvider
       description: A set of updates to a DCR provider. The provider_type cannot be updated after creation.
       type: object
       discriminator:
