@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.21.0
-> Released 2026/07/29
+> Released 2026/07/30
 
 # Features
 * Add support for `konnect_organization_personal_access_token_settings` resource.
@@ -9,7 +9,6 @@
 
 # Bug Fixes
 * Deprecate `konnect_portal_appearance` resource.
-
 
 ## 3.20.0
 > Released 2026/07/06
