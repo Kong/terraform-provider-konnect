@@ -55,7 +55,6 @@ type DcrProviderResourceModel struct {
 	KongIdentity *tfTypes.KongIdentity `queryParam:"inline" tfsdk:"kong_identity"`
 	Name         types.String          `tfsdk:"name"`
 	Okta         *tfTypes.Okta         `queryParam:"inline" tfsdk:"okta"`
-	ProviderType types.String          `tfsdk:"provider_type"`
 	UpdatedAt    types.String          `tfsdk:"updated_at"`
 }
 
@@ -92,6 +91,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_audience": schema.StringAttribute{
@@ -117,7 +117,9 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"initial_client_secret": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								WriteOnly: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.UseConfigValue(),
+								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -127,7 +129,10 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 								},
 							},
 							"use_developer_managed_scopes": schema.BoolAttribute{
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 						},
 						Description: `Payload to create an Auth0 DCR provider. Not Null`,
@@ -168,15 +173,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "auth0"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("auth0"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -185,7 +181,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `A set of updates to an Auth0 DCR provider.`,
+				Description: `A DCR provider for Auth0 -- only properties not included in DcrProviderBase`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("azure_ad"),
@@ -214,6 +210,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_id": schema.StringAttribute{
@@ -230,7 +227,9 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"initial_client_secret": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								WriteOnly: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.UseConfigValue(),
+								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -278,15 +277,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "azureAd"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("azureAd"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -295,7 +285,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `A set of updates to an Azure AD DCR provider.`,
+				Description: `A DCR provider for Azure AD -- only properties not included in DcrProviderBase`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -331,6 +321,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"initial_client_id": schema.StringAttribute{
@@ -347,7 +338,9 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"initial_client_secret": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								WriteOnly: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.UseConfigValue(),
+								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -395,15 +388,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "curity"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("curity"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -412,7 +396,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `A set of updates to a Curity DCR provider.`,
+				Description: `A DCR provider for Curity -- only properties not included in DcrProviderBase`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -441,6 +425,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"allow_multiple_credentials": schema.BoolAttribute{
@@ -452,7 +437,9 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"api_key": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								WriteOnly: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.UseConfigValue(),
+								},
 								MarkdownDescription: `This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be` + "\n" +
 									`verified on the server to ensure that incoming requests are coming from Konnect.` + "\n" +
 									`Not Null`,
@@ -522,15 +509,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "http"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("http"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -539,7 +517,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `A set of updates to an HTTP DCR provider.`,
+				Description: `A DCR provider for HTTP -- only properties not included in DcrProviderBase`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -635,20 +613,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
-					"provider_type": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "kongIdentity"; Requires replacement if changed.`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"kongIdentity",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -693,12 +657,15 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"dcr_token": schema.StringAttribute{
 								Optional:  true,
 								Sensitive: true,
-								WriteOnly: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.UseConfigValue(),
+								},
 								MarkdownDescription: `This secret should be copied from your identity provider's settings after you create a client` + "\n" +
 									`and assign it as the management client for DCR for this developer portal` + "\n" +
 									`Not Null`,
@@ -746,15 +713,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							stringvalidator.UTF8LengthBetween(1, 256),
 						},
 					},
-					"provider_type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "okta"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("okta"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -763,7 +721,7 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `A set of updates to an Okta DCR provider.`,
+				Description: `A DCR provider for Okta -- only properties not included in DcrProviderBase`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("auth0"),
@@ -773,13 +731,6 @@ func (r *DcrProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						path.MatchRelative().AtParent().AtName("kong_identity"),
 					}...),
 				},
-			},
-			"provider_type": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("auth0"), FieldPath: path.Root("auth0").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_ad"), FieldPath: path.Root("azure_ad").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("curity"), FieldPath: path.Root("curity").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("okta"), FieldPath: path.Root("okta").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("kong_identity"), FieldPath: path.Root("kong_identity").AtName("provider_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("http"), FieldPath: path.Root("http").AtName("provider_type")}}),
-				},
-				Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -813,21 +764,8 @@ func (r *DcrProviderResource) Configure(ctx context.Context, req resource.Config
 }
 
 func (r *DcrProviderResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var (
-		configData DcrProviderResourceModel
-		data       DcrProviderResourceModel
-		plan       types.Object
-	)
-
-	resp.Diagnostics.Append(req.Config.Get(ctx, &configData)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	opts := &DcrProviderResourceModelOptions{
-		Config: &configData,
-	}
+	var data *DcrProviderResourceModel
+	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -843,7 +781,7 @@ func (r *DcrProviderResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateDcrProviderRequest(ctx, opts)
+	request, requestDiags := data.ToSharedCreateDcrProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -865,11 +803,11 @@ func (r *DcrProviderResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DcrProviderResponseFlattened != nil) {
+	if !(res.DcrProviderResponseUnion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseFlattened(ctx, res.DcrProviderResponseFlattened)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseUnion(ctx, res.DcrProviderResponseUnion)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -903,7 +841,7 @@ func (r *DcrProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetDcrProviderRequest(ctx, nil)
+	request, requestDiags := data.ToOperationsGetDcrProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -929,11 +867,11 @@ func (r *DcrProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DcrProviderResponseFlattened != nil) {
+	if !(res.DcrProviderResponseUnion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseFlattened(ctx, res.DcrProviderResponseFlattened)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseUnion(ctx, res.DcrProviderResponseUnion)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -944,29 +882,8 @@ func (r *DcrProviderResource) Read(ctx context.Context, req resource.ReadRequest
 }
 
 func (r *DcrProviderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var (
-		configData DcrProviderResourceModel
-		data       DcrProviderResourceModel
-		plan       types.Object
-		stateData  DcrProviderResourceModel
-	)
-
-	resp.Diagnostics.Append(req.Config.Get(ctx, &configData)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	opts := &DcrProviderResourceModelOptions{
-		Config: &configData,
-		State:  &stateData,
-	}
+	var data *DcrProviderResourceModel
+	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -978,7 +895,7 @@ func (r *DcrProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateDcrProviderRequest(ctx, opts)
+	request, requestDiags := data.ToOperationsUpdateDcrProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -1000,11 +917,11 @@ func (r *DcrProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DcrProviderResponseFlattened != nil) {
+	if !(res.DcrProviderResponseUnion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseFlattened(ctx, res.DcrProviderResponseFlattened)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDcrProviderResponseUnion(ctx, res.DcrProviderResponseUnion)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1038,7 +955,7 @@ func (r *DcrProviderResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteDcrProviderRequest(ctx, nil)
+	request, requestDiags := data.ToOperationsDeleteDcrProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {

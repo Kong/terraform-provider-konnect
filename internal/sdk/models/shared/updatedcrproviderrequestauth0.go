@@ -8,34 +8,30 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type UpdateDcrProviderRequestAuth0ProviderType string
+type ProviderType string
 
 const (
-	UpdateDcrProviderRequestAuth0ProviderTypeAuth0 UpdateDcrProviderRequestAuth0ProviderType = "auth0"
+	ProviderTypeAuth0 ProviderType = "auth0"
 )
 
-func (e UpdateDcrProviderRequestAuth0ProviderType) ToPointer() *UpdateDcrProviderRequestAuth0ProviderType {
+func (e ProviderType) ToPointer() *ProviderType {
 	return &e
 }
-func (e *UpdateDcrProviderRequestAuth0ProviderType) UnmarshalJSON(data []byte) error {
+func (e *ProviderType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "auth0":
-		*e = UpdateDcrProviderRequestAuth0ProviderType(v)
+		*e = ProviderType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UpdateDcrProviderRequestAuth0ProviderType: %v", v)
+		return fmt.Errorf("invalid value for ProviderType: %v", v)
 	}
 }
 
-// UpdateDcrProviderRequestAuth0 - A set of updates to an Auth0 DCR provider.
 type UpdateDcrProviderRequestAuth0 struct {
-	ProviderType UpdateDcrProviderRequestAuth0ProviderType `json:"provider_type"`
-	// Payload to update an Auth0 DCR provider.
-	DcrConfig *UpdateDcrConfigAuth0InRequest `json:"dcr_config,omitempty"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
@@ -49,7 +45,10 @@ type UpdateDcrProviderRequestAuth0 struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels       map[string]*string `json:"labels,omitempty"`
+	ProviderType ProviderType       `json:"provider_type"`
+	// Payload to update an Auth0 DCR provider.
+	DcrConfig *UpdateDcrConfigAuth0InRequest `json:"dcr_config,omitempty"`
 }
 
 func (u UpdateDcrProviderRequestAuth0) MarshalJSON() ([]byte, error) {
@@ -69,20 +68,6 @@ func (u *UpdateDcrProviderRequestAuth0) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (u *UpdateDcrProviderRequestAuth0) GetProviderType() UpdateDcrProviderRequestAuth0ProviderType {
-	if u == nil {
-		return UpdateDcrProviderRequestAuth0ProviderType("")
-	}
-	return u.ProviderType
-}
-
-func (u *UpdateDcrProviderRequestAuth0) GetDcrConfig() *UpdateDcrConfigAuth0InRequest {
-	if u == nil {
-		return nil
-	}
-	return u.DcrConfig
 }
 
 func (u *UpdateDcrProviderRequestAuth0) GetName() *string {
@@ -111,6 +96,20 @@ func (u *UpdateDcrProviderRequestAuth0) GetLabels() map[string]*string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetProviderType() ProviderType {
+	if u == nil {
+		return ProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestAuth0) GetDcrConfig() *UpdateDcrConfigAuth0InRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
 }
 
 // #region class-body-updatedcrproviderrequestauth0

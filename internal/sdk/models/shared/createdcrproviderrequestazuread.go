@@ -3,37 +3,13 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type CreateDcrProviderRequestAzureAdProviderType string
-
-const (
-	CreateDcrProviderRequestAzureAdProviderTypeAzureAd CreateDcrProviderRequestAzureAdProviderType = "azureAd"
-)
-
-func (e CreateDcrProviderRequestAzureAdProviderType) ToPointer() *CreateDcrProviderRequestAzureAdProviderType {
-	return &e
-}
-func (e *CreateDcrProviderRequestAzureAdProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "azureAd":
-		*e = CreateDcrProviderRequestAzureAdProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateDcrProviderRequestAzureAdProviderType: %v", v)
-	}
-}
-
 // CreateDcrProviderRequestAzureAd - Request body for creating an Azure AD DCR provider.
 type CreateDcrProviderRequestAzureAd struct {
-	ProviderType CreateDcrProviderRequestAzureAdProviderType `json:"provider_type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	providerType string `const:"azureAd" json:"provider_type"`
 	// Payload to create an Azure AD DCR provider.
 	DcrConfig CreateDcrConfigAzureAdInRequest `json:"dcr_config"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
@@ -61,11 +37,8 @@ func (c *CreateDcrProviderRequestAzureAd) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateDcrProviderRequestAzureAd) GetProviderType() CreateDcrProviderRequestAzureAdProviderType {
-	if c == nil {
-		return CreateDcrProviderRequestAzureAdProviderType("")
-	}
-	return c.ProviderType
+func (c *CreateDcrProviderRequestAzureAd) GetProviderType() string {
+	return "azureAd"
 }
 
 func (c *CreateDcrProviderRequestAzureAd) GetDcrConfig() CreateDcrConfigAzureAdInRequest {

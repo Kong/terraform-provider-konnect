@@ -21,7 +21,7 @@ type CreateDcrConfigAuth0InRequest struct {
 	// If left blank, the issuer will be used instead.
 	//
 	InitialClientAudience     *string `default:"null" json:"initial_client_audience"`
-	UseDeveloperManagedScopes *bool   `default:"null" json:"use_developer_managed_scopes"`
+	UseDeveloperManagedScopes *bool   `default:"false" json:"use_developer_managed_scopes"`
 }
 
 func (c CreateDcrConfigAuth0InRequest) MarshalJSON() ([]byte, error) {

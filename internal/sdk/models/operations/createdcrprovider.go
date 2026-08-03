@@ -16,7 +16,7 @@ type CreateDcrProviderResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing the newly created DCR provider object.
-	DcrProviderResponseFlattened *shared.DcrProviderResponseFlattened
+	DcrProviderResponseUnion *shared.DcrProviderResponseUnion
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -57,11 +57,53 @@ func (c *CreateDcrProviderResponse) GetRawResponse() *http.Response {
 	return c.RawResponse
 }
 
-func (c *CreateDcrProviderResponse) GetDcrProviderResponseFlattened() *shared.DcrProviderResponseFlattened {
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseUnion() *shared.DcrProviderResponseUnion {
 	if c == nil {
 		return nil
 	}
-	return c.DcrProviderResponseFlattened
+	return c.DcrProviderResponseUnion
+}
+
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseUnionAuth0() *shared.Auth0 {
+	if v := c.GetDcrProviderResponseUnion(); v != nil {
+		return v.Auth0
+	}
+	return nil
+}
+
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseUnionAzureAd() *shared.AzureAd {
+	if v := c.GetDcrProviderResponseUnion(); v != nil {
+		return v.AzureAd
+	}
+	return nil
+}
+
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseUnionCurity() *shared.Curity {
+	if v := c.GetDcrProviderResponseUnion(); v != nil {
+		return v.Curity
+	}
+	return nil
+}
+
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseUnionOkta() *shared.Okta {
+	if v := c.GetDcrProviderResponseUnion(); v != nil {
+		return v.Okta
+	}
+	return nil
+}
+
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseUnionKongIdentity() *shared.KongIdentity {
+	if v := c.GetDcrProviderResponseUnion(); v != nil {
+		return v.KongIdentity
+	}
+	return nil
+}
+
+func (c *CreateDcrProviderResponse) GetDcrProviderResponseUnionHTTP() *shared.HTTP {
+	if v := c.GetDcrProviderResponseUnion(); v != nil {
+		return v.HTTP
+	}
+	return nil
 }
 
 func (c *CreateDcrProviderResponse) GetBadRequestError() *shared.BadRequestError {

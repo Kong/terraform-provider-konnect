@@ -3,37 +3,13 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type CreateDcrProviderRequestCurityProviderType string
-
-const (
-	CreateDcrProviderRequestCurityProviderTypeCurity CreateDcrProviderRequestCurityProviderType = "curity"
-)
-
-func (e CreateDcrProviderRequestCurityProviderType) ToPointer() *CreateDcrProviderRequestCurityProviderType {
-	return &e
-}
-func (e *CreateDcrProviderRequestCurityProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "curity":
-		*e = CreateDcrProviderRequestCurityProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateDcrProviderRequestCurityProviderType: %v", v)
-	}
-}
-
 // CreateDcrProviderRequestCurity - Request body for creating a Curity DCR provider.
 type CreateDcrProviderRequestCurity struct {
-	ProviderType CreateDcrProviderRequestCurityProviderType `json:"provider_type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	providerType string `const:"curity" json:"provider_type"`
 	// Payload to create a Curity DCR provider.
 	DcrConfig CreateDcrConfigCurityInRequest `json:"dcr_config"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
@@ -61,11 +37,8 @@ func (c *CreateDcrProviderRequestCurity) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateDcrProviderRequestCurity) GetProviderType() CreateDcrProviderRequestCurityProviderType {
-	if c == nil {
-		return CreateDcrProviderRequestCurityProviderType("")
-	}
-	return c.ProviderType
+func (c *CreateDcrProviderRequestCurity) GetProviderType() string {
+	return "curity"
 }
 
 func (c *CreateDcrProviderRequestCurity) GetDcrConfig() CreateDcrConfigCurityInRequest {

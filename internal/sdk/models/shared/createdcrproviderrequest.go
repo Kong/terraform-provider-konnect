@@ -35,9 +35,6 @@ type CreateDcrProviderRequest struct {
 func CreateCreateDcrProviderRequestAuth0(auth0 CreateDcrProviderRequestAuth0) CreateDcrProviderRequest {
 	typ := CreateDcrProviderRequestTypeAuth0
 
-	typStr := ProviderType(typ)
-	auth0.ProviderType = typStr
-
 	return CreateDcrProviderRequest{
 		CreateDcrProviderRequestAuth0: &auth0,
 		Type:                          typ,
@@ -46,9 +43,6 @@ func CreateCreateDcrProviderRequestAuth0(auth0 CreateDcrProviderRequestAuth0) Cr
 
 func CreateCreateDcrProviderRequestAzureAd(azureAd CreateDcrProviderRequestAzureAd) CreateDcrProviderRequest {
 	typ := CreateDcrProviderRequestTypeAzureAd
-
-	typStr := CreateDcrProviderRequestAzureAdProviderType(typ)
-	azureAd.ProviderType = typStr
 
 	return CreateDcrProviderRequest{
 		CreateDcrProviderRequestAzureAd: &azureAd,
@@ -59,9 +53,6 @@ func CreateCreateDcrProviderRequestAzureAd(azureAd CreateDcrProviderRequestAzure
 func CreateCreateDcrProviderRequestCurity(curity CreateDcrProviderRequestCurity) CreateDcrProviderRequest {
 	typ := CreateDcrProviderRequestTypeCurity
 
-	typStr := CreateDcrProviderRequestCurityProviderType(typ)
-	curity.ProviderType = typStr
-
 	return CreateDcrProviderRequest{
 		CreateDcrProviderRequestCurity: &curity,
 		Type:                           typ,
@@ -70,9 +61,6 @@ func CreateCreateDcrProviderRequestCurity(curity CreateDcrProviderRequestCurity)
 
 func CreateCreateDcrProviderRequestOkta(okta CreateDcrProviderRequestOkta) CreateDcrProviderRequest {
 	typ := CreateDcrProviderRequestTypeOkta
-
-	typStr := CreateDcrProviderRequestOktaProviderType(typ)
-	okta.ProviderType = typStr
 
 	return CreateDcrProviderRequest{
 		CreateDcrProviderRequestOkta: &okta,
@@ -83,9 +71,6 @@ func CreateCreateDcrProviderRequestOkta(okta CreateDcrProviderRequestOkta) Creat
 func CreateCreateDcrProviderRequestHTTP(http CreateDcrProviderRequestHTTP) CreateDcrProviderRequest {
 	typ := CreateDcrProviderRequestTypeHTTP
 
-	typStr := CreateDcrProviderRequestHTTPProviderType(typ)
-	http.ProviderType = typStr
-
 	return CreateDcrProviderRequest{
 		CreateDcrProviderRequestHTTP: &http,
 		Type:                         typ,
@@ -94,9 +79,6 @@ func CreateCreateDcrProviderRequestHTTP(http CreateDcrProviderRequestHTTP) Creat
 
 func CreateCreateDcrProviderRequestKongIdentity(kongIdentity CreateDcrProviderRequestKongIdentity) CreateDcrProviderRequest {
 	typ := CreateDcrProviderRequestTypeKongIdentity
-
-	typStr := CreateDcrProviderRequestKongIdentityProviderType(typ)
-	kongIdentity.ProviderType = typStr
 
 	return CreateDcrProviderRequest{
 		CreateDcrProviderRequestKongIdentity: &kongIdentity,

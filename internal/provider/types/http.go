@@ -7,13 +7,12 @@ import (
 )
 
 type HTTP struct {
-	Active       types.Bool                    `tfsdk:"active"`
-	CreatedAt    types.String                  `tfsdk:"created_at"`
-	DcrConfig    *CreateDcrConfigHTTPInRequest `tfsdk:"dcr_config"`
-	ID           types.String                  `tfsdk:"id"`
-	Issuer       types.String                  `tfsdk:"issuer"`
-	Labels       map[string]types.String       `tfsdk:"labels"`
-	Name         types.String                  `tfsdk:"name"`
-	ProviderType types.String                  `tfsdk:"provider_type"`
-	UpdatedAt    types.String                  `tfsdk:"updated_at"`
+	Active    types.Bool                    `tfsdk:"active"`
+	CreatedAt types.String                  `tfsdk:"created_at"`
+	DcrConfig *CreateDcrConfigHTTPInRequest `tfsdk:"dcr_config"`
+	ID        types.String                  `tfsdk:"id"`
+	Issuer    types.String                  `tfsdk:"issuer"`
+	Labels    map[string]types.String       `tfsdk:"labels"`
+	Name      types.String                  `tfsdk:"name"`
+	UpdatedAt types.String                  `tfsdk:"updated_at"`
 }

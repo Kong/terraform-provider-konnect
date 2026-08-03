@@ -33,7 +33,7 @@ type UpdateDcrProviderRequest struct {
 func CreateUpdateDcrProviderRequestAuth0(auth0 UpdateDcrProviderRequestAuth0) UpdateDcrProviderRequest {
 	typ := UpdateDcrProviderRequestTypeAuth0
 
-	typStr := UpdateDcrProviderRequestAuth0ProviderType(typ)
+	typStr := ProviderType(typ)
 	auth0.ProviderType = typStr
 
 	return UpdateDcrProviderRequest{

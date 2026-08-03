@@ -31,11 +31,7 @@ func (e *UpdateDcrProviderRequestOktaProviderType) UnmarshalJSON(data []byte) er
 	}
 }
 
-// UpdateDcrProviderRequestOkta - A set of updates to an Okta DCR provider.
 type UpdateDcrProviderRequestOkta struct {
-	ProviderType UpdateDcrProviderRequestOktaProviderType `json:"provider_type"`
-	// Payload to update an Okta DCR provider.
-	DcrConfig *UpdateDcrConfigOktaInRequest `json:"dcr_config,omitempty"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
@@ -49,7 +45,10 @@ type UpdateDcrProviderRequestOkta struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels       map[string]*string                       `json:"labels,omitempty"`
+	ProviderType UpdateDcrProviderRequestOktaProviderType `json:"provider_type"`
+	// Payload to update an Okta DCR provider.
+	DcrConfig *UpdateDcrConfigOktaInRequest `json:"dcr_config,omitempty"`
 }
 
 func (u UpdateDcrProviderRequestOkta) MarshalJSON() ([]byte, error) {
@@ -69,20 +68,6 @@ func (u *UpdateDcrProviderRequestOkta) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (u *UpdateDcrProviderRequestOkta) GetProviderType() UpdateDcrProviderRequestOktaProviderType {
-	if u == nil {
-		return UpdateDcrProviderRequestOktaProviderType("")
-	}
-	return u.ProviderType
-}
-
-func (u *UpdateDcrProviderRequestOkta) GetDcrConfig() *UpdateDcrConfigOktaInRequest {
-	if u == nil {
-		return nil
-	}
-	return u.DcrConfig
 }
 
 func (u *UpdateDcrProviderRequestOkta) GetName() *string {
@@ -111,4 +96,18 @@ func (u *UpdateDcrProviderRequestOkta) GetLabels() map[string]*string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetProviderType() UpdateDcrProviderRequestOktaProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestOktaProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestOkta) GetDcrConfig() *UpdateDcrConfigOktaInRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
 }

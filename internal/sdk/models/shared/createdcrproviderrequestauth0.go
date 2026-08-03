@@ -3,37 +3,13 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type ProviderType string
-
-const (
-	ProviderTypeAuth0 ProviderType = "auth0"
-)
-
-func (e ProviderType) ToPointer() *ProviderType {
-	return &e
-}
-func (e *ProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "auth0":
-		*e = ProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProviderType: %v", v)
-	}
-}
-
 // CreateDcrProviderRequestAuth0 - Request body for creating an Auth0 DCR provider.
 type CreateDcrProviderRequestAuth0 struct {
-	ProviderType ProviderType `json:"provider_type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	providerType string `const:"auth0" json:"provider_type"`
 	// Payload to create an Auth0 DCR provider.
 	DcrConfig CreateDcrConfigAuth0InRequest `json:"dcr_config"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
@@ -61,11 +37,8 @@ func (c *CreateDcrProviderRequestAuth0) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateDcrProviderRequestAuth0) GetProviderType() ProviderType {
-	if c == nil {
-		return ProviderType("")
-	}
-	return c.ProviderType
+func (c *CreateDcrProviderRequestAuth0) GetProviderType() string {
+	return "auth0"
 }
 
 func (c *CreateDcrProviderRequestAuth0) GetDcrConfig() CreateDcrConfigAuth0InRequest {

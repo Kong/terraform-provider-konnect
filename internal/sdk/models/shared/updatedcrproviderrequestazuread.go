@@ -31,11 +31,7 @@ func (e *UpdateDcrProviderRequestAzureAdProviderType) UnmarshalJSON(data []byte)
 	}
 }
 
-// UpdateDcrProviderRequestAzureAd - A set of updates to an Azure AD DCR provider.
 type UpdateDcrProviderRequestAzureAd struct {
-	ProviderType UpdateDcrProviderRequestAzureAdProviderType `json:"provider_type"`
-	// Payload to update an Azure AD DCR provider.
-	DcrConfig *UpdateDcrConfigAzureAdInRequest `json:"dcr_config,omitempty"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
@@ -49,7 +45,10 @@ type UpdateDcrProviderRequestAzureAd struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels       map[string]*string                          `json:"labels,omitempty"`
+	ProviderType UpdateDcrProviderRequestAzureAdProviderType `json:"provider_type"`
+	// Payload to update an Azure AD DCR provider.
+	DcrConfig *UpdateDcrConfigAzureAdInRequest `json:"dcr_config,omitempty"`
 }
 
 func (u UpdateDcrProviderRequestAzureAd) MarshalJSON() ([]byte, error) {
@@ -69,20 +68,6 @@ func (u *UpdateDcrProviderRequestAzureAd) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (u *UpdateDcrProviderRequestAzureAd) GetProviderType() UpdateDcrProviderRequestAzureAdProviderType {
-	if u == nil {
-		return UpdateDcrProviderRequestAzureAdProviderType("")
-	}
-	return u.ProviderType
-}
-
-func (u *UpdateDcrProviderRequestAzureAd) GetDcrConfig() *UpdateDcrConfigAzureAdInRequest {
-	if u == nil {
-		return nil
-	}
-	return u.DcrConfig
 }
 
 func (u *UpdateDcrProviderRequestAzureAd) GetName() *string {
@@ -111,4 +96,18 @@ func (u *UpdateDcrProviderRequestAzureAd) GetLabels() map[string]*string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetProviderType() UpdateDcrProviderRequestAzureAdProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestAzureAdProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestAzureAd) GetDcrConfig() *UpdateDcrConfigAzureAdInRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
 }

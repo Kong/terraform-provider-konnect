@@ -67,7 +67,7 @@ type UpdateDcrProviderResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a single DCR provider object. Sensitive fields will be removed from the response.
-	DcrProviderResponseFlattened *shared.DcrProviderResponseFlattened
+	DcrProviderResponseUnion *shared.DcrProviderResponseUnion
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -110,11 +110,53 @@ func (u *UpdateDcrProviderResponse) GetRawResponse() *http.Response {
 	return u.RawResponse
 }
 
-func (u *UpdateDcrProviderResponse) GetDcrProviderResponseFlattened() *shared.DcrProviderResponseFlattened {
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseUnion() *shared.DcrProviderResponseUnion {
 	if u == nil {
 		return nil
 	}
-	return u.DcrProviderResponseFlattened
+	return u.DcrProviderResponseUnion
+}
+
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseUnionAuth0() *shared.Auth0 {
+	if v := u.GetDcrProviderResponseUnion(); v != nil {
+		return v.Auth0
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseUnionAzureAd() *shared.AzureAd {
+	if v := u.GetDcrProviderResponseUnion(); v != nil {
+		return v.AzureAd
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseUnionCurity() *shared.Curity {
+	if v := u.GetDcrProviderResponseUnion(); v != nil {
+		return v.Curity
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseUnionOkta() *shared.Okta {
+	if v := u.GetDcrProviderResponseUnion(); v != nil {
+		return v.Okta
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseUnionKongIdentity() *shared.KongIdentity {
+	if v := u.GetDcrProviderResponseUnion(); v != nil {
+		return v.KongIdentity
+	}
+	return nil
+}
+
+func (u *UpdateDcrProviderResponse) GetDcrProviderResponseUnionHTTP() *shared.HTTP {
+	if v := u.GetDcrProviderResponseUnion(); v != nil {
+		return v.HTTP
+	}
+	return nil
 }
 
 func (u *UpdateDcrProviderResponse) GetBadRequestError() *shared.BadRequestError {

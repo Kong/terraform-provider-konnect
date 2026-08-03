@@ -3,37 +3,13 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type CreateDcrProviderRequestHTTPProviderType string
-
-const (
-	CreateDcrProviderRequestHTTPProviderTypeHTTP CreateDcrProviderRequestHTTPProviderType = "http"
-)
-
-func (e CreateDcrProviderRequestHTTPProviderType) ToPointer() *CreateDcrProviderRequestHTTPProviderType {
-	return &e
-}
-func (e *CreateDcrProviderRequestHTTPProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "http":
-		*e = CreateDcrProviderRequestHTTPProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateDcrProviderRequestHTTPProviderType: %v", v)
-	}
-}
-
 // CreateDcrProviderRequestHTTP - Request body for creating an HTTP DCR provider.
 type CreateDcrProviderRequestHTTP struct {
-	ProviderType CreateDcrProviderRequestHTTPProviderType `json:"provider_type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	providerType string `const:"http" json:"provider_type"`
 	// Payload to create an HTTP DCR provider.
 	DcrConfig CreateDcrConfigHTTPInRequest `json:"dcr_config"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
@@ -61,11 +37,8 @@ func (c *CreateDcrProviderRequestHTTP) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateDcrProviderRequestHTTP) GetProviderType() CreateDcrProviderRequestHTTPProviderType {
-	if c == nil {
-		return CreateDcrProviderRequestHTTPProviderType("")
-	}
-	return c.ProviderType
+func (c *CreateDcrProviderRequestHTTP) GetProviderType() string {
+	return "http"
 }
 
 func (c *CreateDcrProviderRequestHTTP) GetDcrConfig() CreateDcrConfigHTTPInRequest {

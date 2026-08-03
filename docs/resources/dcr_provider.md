@@ -22,8 +22,7 @@ resource "konnect_dcr_provider" "my_dcrprovider" {
     labels = {
       key = "value"
     }
-    name          = "...my_name..."
-    provider_type = "kongIdentity"
+    name = "...my_name..."
   }
 }
 ```
@@ -33,12 +32,12 @@ resource "konnect_dcr_provider" "my_dcrprovider" {
 
 ### Optional
 
-- `auth0` (Attributes) A set of updates to an Auth0 DCR provider. (see [below for nested schema](#nestedatt--auth0))
-- `azure_ad` (Attributes) A set of updates to an Azure AD DCR provider. (see [below for nested schema](#nestedatt--azure_ad))
-- `curity` (Attributes) A set of updates to a Curity DCR provider. (see [below for nested schema](#nestedatt--curity))
-- `http` (Attributes) A set of updates to an HTTP DCR provider. (see [below for nested schema](#nestedatt--http))
+- `auth0` (Attributes) A DCR provider for Auth0 -- only properties not included in DcrProviderBase (see [below for nested schema](#nestedatt--auth0))
+- `azure_ad` (Attributes) A DCR provider for Azure AD -- only properties not included in DcrProviderBase (see [below for nested schema](#nestedatt--azure_ad))
+- `curity` (Attributes) A DCR provider for Curity -- only properties not included in DcrProviderBase (see [below for nested schema](#nestedatt--curity))
+- `http` (Attributes) A DCR provider for HTTP -- only properties not included in DcrProviderBase (see [below for nested schema](#nestedatt--http))
 - `kong_identity` (Attributes) A DCR provider for Kong Identity -- only properties not included in DcrProviderBase. Requires replacement if changed. (see [below for nested schema](#nestedatt--kong_identity))
-- `okta` (Attributes) A set of updates to an Okta DCR provider. (see [below for nested schema](#nestedatt--okta))
+- `okta` (Attributes) A DCR provider for Okta -- only properties not included in DcrProviderBase (see [below for nested schema](#nestedatt--okta))
 
 ### Read-Only
 
@@ -47,7 +46,6 @@ resource "konnect_dcr_provider" "my_dcrprovider" {
 - `id` (String) Contains a unique identifier used for this resource.
 - `issuer` (String) The issuer of the DCR provider.
 - `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--auth0"></a>
@@ -61,7 +59,6 @@ Optional:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "auth0"
 
 Read-Only:
 
@@ -81,10 +78,10 @@ If left blank, the issuer will be used instead.
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
-- `initial_client_secret` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
+- `initial_client_secret` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
-- `use_developer_managed_scopes` (Boolean)
+- `use_developer_managed_scopes` (Boolean) Default: false
 
 
 
@@ -99,7 +96,6 @@ Optional:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "azureAd"
 
 Read-Only:
 
@@ -116,7 +112,7 @@ Optional:
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
-- `initial_client_secret` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
+- `initial_client_secret` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
 
@@ -133,7 +129,6 @@ Optional:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "curity"
 
 Read-Only:
 
@@ -150,7 +145,7 @@ Optional:
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
-- `initial_client_secret` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
+- `initial_client_secret` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
 
@@ -167,7 +162,6 @@ Optional:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "http"
 
 Read-Only:
 
@@ -182,7 +176,7 @@ Read-Only:
 Optional:
 
 - `allow_multiple_credentials` (Boolean) When enabled, indicates that the DCR provider supports creating and managing multiple credentials per application. Default: false
-- `api_key` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
+- `api_key` (String, Sensitive) This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
 verified on the server to ensure that incoming requests are coming from Konnect.
 Not Null
 - `dcr_base_url` (String) The base URL of the DCR server. This is the URL that will be used to make the HTTP requests from Konnect to the DCR provider.
@@ -205,7 +199,6 @@ Optional:
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 Requires replacement if changed.
 - `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null; Requires replacement if changed.
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "kongIdentity"; Requires replacement if changed.
 
 Read-Only:
 
@@ -230,7 +223,6 @@ Optional:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. Not Null; must be "okta"
 
 Read-Only:
 
@@ -244,7 +236,7 @@ Read-Only:
 
 Optional:
 
-- `dcr_token` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) This secret should be copied from your identity provider's settings after you create a client
+- `dcr_token` (String, Sensitive) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
 Not Null
 

@@ -3,37 +3,13 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type CreateDcrProviderRequestKongIdentityProviderType string
-
-const (
-	CreateDcrProviderRequestKongIdentityProviderTypeKongIdentity CreateDcrProviderRequestKongIdentityProviderType = "kongIdentity"
-)
-
-func (e CreateDcrProviderRequestKongIdentityProviderType) ToPointer() *CreateDcrProviderRequestKongIdentityProviderType {
-	return &e
-}
-func (e *CreateDcrProviderRequestKongIdentityProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "kongIdentity":
-		*e = CreateDcrProviderRequestKongIdentityProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateDcrProviderRequestKongIdentityProviderType: %v", v)
-	}
-}
-
 // CreateDcrProviderRequestKongIdentity - Request body for creating a Kong Identity DCR provider.
 type CreateDcrProviderRequestKongIdentity struct {
-	ProviderType CreateDcrProviderRequestKongIdentityProviderType `json:"provider_type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	providerType string `const:"kongIdentity" json:"provider_type"`
 	// Payload to create a Kong Identity DCR provider.
 	DcrConfig *CreateDcrConfigKongIdentityInRequest `json:"dcr_config,omitempty"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
@@ -61,11 +37,8 @@ func (c *CreateDcrProviderRequestKongIdentity) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-func (c *CreateDcrProviderRequestKongIdentity) GetProviderType() CreateDcrProviderRequestKongIdentityProviderType {
-	if c == nil {
-		return CreateDcrProviderRequestKongIdentityProviderType("")
-	}
-	return c.ProviderType
+func (c *CreateDcrProviderRequestKongIdentity) GetProviderType() string {
+	return "kongIdentity"
 }
 
 func (c *CreateDcrProviderRequestKongIdentity) GetDcrConfig() *CreateDcrConfigKongIdentityInRequest {

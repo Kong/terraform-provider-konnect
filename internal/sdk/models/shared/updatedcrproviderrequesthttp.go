@@ -31,11 +31,7 @@ func (e *UpdateDcrProviderRequestHTTPProviderType) UnmarshalJSON(data []byte) er
 	}
 }
 
-// UpdateDcrProviderRequestHTTP - A set of updates to an HTTP DCR provider.
 type UpdateDcrProviderRequestHTTP struct {
-	ProviderType UpdateDcrProviderRequestHTTPProviderType `json:"provider_type"`
-	// Payload to update an HTTP DCR provider.
-	DcrConfig *UpdateDcrConfigHTTPInRequest `json:"dcr_config,omitempty"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
@@ -49,7 +45,10 @@ type UpdateDcrProviderRequestHTTP struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels       map[string]*string                       `json:"labels,omitempty"`
+	ProviderType UpdateDcrProviderRequestHTTPProviderType `json:"provider_type"`
+	// Payload to update an HTTP DCR provider.
+	DcrConfig *UpdateDcrConfigHTTPInRequest `json:"dcr_config,omitempty"`
 }
 
 func (u UpdateDcrProviderRequestHTTP) MarshalJSON() ([]byte, error) {
@@ -69,20 +68,6 @@ func (u *UpdateDcrProviderRequestHTTP) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (u *UpdateDcrProviderRequestHTTP) GetProviderType() UpdateDcrProviderRequestHTTPProviderType {
-	if u == nil {
-		return UpdateDcrProviderRequestHTTPProviderType("")
-	}
-	return u.ProviderType
-}
-
-func (u *UpdateDcrProviderRequestHTTP) GetDcrConfig() *UpdateDcrConfigHTTPInRequest {
-	if u == nil {
-		return nil
-	}
-	return u.DcrConfig
 }
 
 func (u *UpdateDcrProviderRequestHTTP) GetName() *string {
@@ -111,4 +96,18 @@ func (u *UpdateDcrProviderRequestHTTP) GetLabels() map[string]*string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpdateDcrProviderRequestHTTP) GetProviderType() UpdateDcrProviderRequestHTTPProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestHTTPProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestHTTP) GetDcrConfig() *UpdateDcrConfigHTTPInRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
 }

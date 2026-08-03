@@ -39,7 +39,7 @@ type GetDcrProviderResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a single DCR provider object. Sensitive fields will be removed from the response.
-	DcrProviderResponseFlattened *shared.DcrProviderResponseFlattened
+	DcrProviderResponseUnion *shared.DcrProviderResponseUnion
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -80,11 +80,53 @@ func (g *GetDcrProviderResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetDcrProviderResponse) GetDcrProviderResponseFlattened() *shared.DcrProviderResponseFlattened {
+func (g *GetDcrProviderResponse) GetDcrProviderResponseUnion() *shared.DcrProviderResponseUnion {
 	if g == nil {
 		return nil
 	}
-	return g.DcrProviderResponseFlattened
+	return g.DcrProviderResponseUnion
+}
+
+func (g *GetDcrProviderResponse) GetDcrProviderResponseUnionAuth0() *shared.Auth0 {
+	if v := g.GetDcrProviderResponseUnion(); v != nil {
+		return v.Auth0
+	}
+	return nil
+}
+
+func (g *GetDcrProviderResponse) GetDcrProviderResponseUnionAzureAd() *shared.AzureAd {
+	if v := g.GetDcrProviderResponseUnion(); v != nil {
+		return v.AzureAd
+	}
+	return nil
+}
+
+func (g *GetDcrProviderResponse) GetDcrProviderResponseUnionCurity() *shared.Curity {
+	if v := g.GetDcrProviderResponseUnion(); v != nil {
+		return v.Curity
+	}
+	return nil
+}
+
+func (g *GetDcrProviderResponse) GetDcrProviderResponseUnionOkta() *shared.Okta {
+	if v := g.GetDcrProviderResponseUnion(); v != nil {
+		return v.Okta
+	}
+	return nil
+}
+
+func (g *GetDcrProviderResponse) GetDcrProviderResponseUnionKongIdentity() *shared.KongIdentity {
+	if v := g.GetDcrProviderResponseUnion(); v != nil {
+		return v.KongIdentity
+	}
+	return nil
+}
+
+func (g *GetDcrProviderResponse) GetDcrProviderResponseUnionHTTP() *shared.HTTP {
+	if v := g.GetDcrProviderResponseUnion(); v != nil {
+		return v.HTTP
+	}
+	return nil
 }
 
 func (g *GetDcrProviderResponse) GetUnauthorizedError() *shared.UnauthorizedError {

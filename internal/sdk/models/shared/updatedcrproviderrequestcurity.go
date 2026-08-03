@@ -31,11 +31,7 @@ func (e *UpdateDcrProviderRequestCurityProviderType) UnmarshalJSON(data []byte) 
 	}
 }
 
-// UpdateDcrProviderRequestCurity - A set of updates to a Curity DCR provider.
 type UpdateDcrProviderRequestCurity struct {
-	ProviderType UpdateDcrProviderRequestCurityProviderType `json:"provider_type"`
-	// Payload to update a Curity DCR provider.
-	DcrConfig *UpdateDcrConfigCurityInRequest `json:"dcr_config,omitempty"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
@@ -49,7 +45,10 @@ type UpdateDcrProviderRequestCurity struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels       map[string]*string                         `json:"labels,omitempty"`
+	ProviderType UpdateDcrProviderRequestCurityProviderType `json:"provider_type"`
+	// Payload to update a Curity DCR provider.
+	DcrConfig *UpdateDcrConfigCurityInRequest `json:"dcr_config,omitempty"`
 }
 
 func (u UpdateDcrProviderRequestCurity) MarshalJSON() ([]byte, error) {
@@ -69,20 +68,6 @@ func (u *UpdateDcrProviderRequestCurity) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (u *UpdateDcrProviderRequestCurity) GetProviderType() UpdateDcrProviderRequestCurityProviderType {
-	if u == nil {
-		return UpdateDcrProviderRequestCurityProviderType("")
-	}
-	return u.ProviderType
-}
-
-func (u *UpdateDcrProviderRequestCurity) GetDcrConfig() *UpdateDcrConfigCurityInRequest {
-	if u == nil {
-		return nil
-	}
-	return u.DcrConfig
 }
 
 func (u *UpdateDcrProviderRequestCurity) GetName() *string {
@@ -111,4 +96,18 @@ func (u *UpdateDcrProviderRequestCurity) GetLabels() map[string]*string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetProviderType() UpdateDcrProviderRequestCurityProviderType {
+	if u == nil {
+		return UpdateDcrProviderRequestCurityProviderType("")
+	}
+	return u.ProviderType
+}
+
+func (u *UpdateDcrProviderRequestCurity) GetDcrConfig() *UpdateDcrConfigCurityInRequest {
+	if u == nil {
+		return nil
+	}
+	return u.DcrConfig
 }

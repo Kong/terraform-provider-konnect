@@ -12,23 +12,21 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-// DcrProviderResourceModelOptions enables patch sdk method construction.
-type DcrProviderResourceModelOptions struct {
-	Config *DcrProviderResourceModel
-	State  *DcrProviderResourceModel
-}
-
-func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened(ctx context.Context, resp *shared.DcrProviderResponseFlattened) diag.Diagnostics {
+func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseUnion(ctx context.Context, resp *shared.DcrProviderResponseUnion) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		if resp.Auth0 != nil {
+			auth0PriorData := r.Auth0
 			r.Auth0 = &tfTypes.Auth0{}
 			r.Auth0.Active = types.BoolValue(resp.Auth0.Active)
 			r.Active = r.Auth0.Active
 			r.Auth0.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.Auth0.CreatedAt))
 			r.CreatedAt = r.Auth0.CreatedAt
-			dcrConfigPriorData := r.Auth0.DcrConfig
+			var dcrConfigPriorData *tfTypes.CreateDcrConfigAuth0InRequest
+			if auth0PriorData != nil {
+				dcrConfigPriorData = auth0PriorData.DcrConfig
+			}
 			r.Auth0.DcrConfig = &tfTypes.CreateDcrConfigAuth0InRequest{}
 			r.Auth0.DcrConfig.InitialClientAudience = types.StringPointerValue(resp.Auth0.DcrConfig.InitialClientAudience)
 			r.Auth0.DcrConfig.InitialClientID = types.StringValue(resp.Auth0.DcrConfig.InitialClientID)
@@ -48,18 +46,20 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened
 			}
 			r.Auth0.Name = types.StringValue(resp.Auth0.Name)
 			r.Name = r.Auth0.Name
-			r.Auth0.ProviderType = types.StringValue(string(resp.Auth0.ProviderType))
-			r.ProviderType = r.Auth0.ProviderType
 			r.Auth0.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.Auth0.UpdatedAt))
 			r.UpdatedAt = r.Auth0.UpdatedAt
 		}
 		if resp.AzureAd != nil {
+			azureAdPriorData := r.AzureAd
 			r.AzureAd = &tfTypes.AzureAd{}
 			r.AzureAd.Active = types.BoolValue(resp.AzureAd.Active)
 			r.Active = r.AzureAd.Active
 			r.AzureAd.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureAd.CreatedAt))
 			r.CreatedAt = r.AzureAd.CreatedAt
-			dcrConfigPriorData1 := r.AzureAd.DcrConfig
+			var dcrConfigPriorData1 *tfTypes.CreateDcrConfigAzureAdInRequest
+			if azureAdPriorData != nil {
+				dcrConfigPriorData1 = azureAdPriorData.DcrConfig
+			}
 			r.AzureAd.DcrConfig = &tfTypes.CreateDcrConfigAzureAdInRequest{}
 			r.AzureAd.DcrConfig.InitialClientID = types.StringValue(resp.AzureAd.DcrConfig.InitialClientID)
 			if dcrConfigPriorData1 != nil {
@@ -77,18 +77,20 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened
 			}
 			r.AzureAd.Name = types.StringValue(resp.AzureAd.Name)
 			r.Name = r.AzureAd.Name
-			r.AzureAd.ProviderType = types.StringValue(string(resp.AzureAd.ProviderType))
-			r.ProviderType = r.AzureAd.ProviderType
 			r.AzureAd.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureAd.UpdatedAt))
 			r.UpdatedAt = r.AzureAd.UpdatedAt
 		}
 		if resp.Curity != nil {
+			curityPriorData := r.Curity
 			r.Curity = &tfTypes.AzureAd{}
 			r.Curity.Active = types.BoolValue(resp.Curity.Active)
 			r.Active = r.Curity.Active
 			r.Curity.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.Curity.CreatedAt))
 			r.CreatedAt = r.Curity.CreatedAt
-			dcrConfigPriorData2 := r.Curity.DcrConfig
+			var dcrConfigPriorData2 *tfTypes.CreateDcrConfigAzureAdInRequest
+			if curityPriorData != nil {
+				dcrConfigPriorData2 = curityPriorData.DcrConfig
+			}
 			r.Curity.DcrConfig = &tfTypes.CreateDcrConfigAzureAdInRequest{}
 			r.Curity.DcrConfig.InitialClientID = types.StringValue(resp.Curity.DcrConfig.InitialClientID)
 			if dcrConfigPriorData2 != nil {
@@ -106,18 +108,20 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened
 			}
 			r.Curity.Name = types.StringValue(resp.Curity.Name)
 			r.Name = r.Curity.Name
-			r.Curity.ProviderType = types.StringValue(string(resp.Curity.ProviderType))
-			r.ProviderType = r.Curity.ProviderType
 			r.Curity.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.Curity.UpdatedAt))
 			r.UpdatedAt = r.Curity.UpdatedAt
 		}
 		if resp.HTTP != nil {
+			httpPriorData := r.HTTP
 			r.HTTP = &tfTypes.HTTP{}
 			r.HTTP.Active = types.BoolValue(resp.HTTP.Active)
 			r.Active = r.HTTP.Active
 			r.HTTP.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.HTTP.CreatedAt))
 			r.CreatedAt = r.HTTP.CreatedAt
-			dcrConfigPriorData3 := r.HTTP.DcrConfig
+			var dcrConfigPriorData3 *tfTypes.CreateDcrConfigHTTPInRequest
+			if httpPriorData != nil {
+				dcrConfigPriorData3 = httpPriorData.DcrConfig
+			}
 			r.HTTP.DcrConfig = &tfTypes.CreateDcrConfigHTTPInRequest{}
 			r.HTTP.DcrConfig.AllowMultipleCredentials = types.BoolPointerValue(resp.HTTP.DcrConfig.AllowMultipleCredentials)
 			r.HTTP.DcrConfig.DcrBaseURL = types.StringValue(resp.HTTP.DcrConfig.DcrBaseURL)
@@ -138,8 +142,6 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened
 			}
 			r.HTTP.Name = types.StringValue(resp.HTTP.Name)
 			r.Name = r.HTTP.Name
-			r.HTTP.ProviderType = types.StringValue(string(resp.HTTP.ProviderType))
-			r.ProviderType = r.HTTP.ProviderType
 			r.HTTP.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.HTTP.UpdatedAt))
 			r.UpdatedAt = r.HTTP.UpdatedAt
 		}
@@ -164,18 +166,20 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened
 			}
 			r.KongIdentity.Name = types.StringValue(resp.KongIdentity.Name)
 			r.Name = r.KongIdentity.Name
-			r.KongIdentity.ProviderType = types.StringValue(string(resp.KongIdentity.ProviderType))
-			r.ProviderType = r.KongIdentity.ProviderType
 			r.KongIdentity.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.KongIdentity.UpdatedAt))
 			r.UpdatedAt = r.KongIdentity.UpdatedAt
 		}
 		if resp.Okta != nil {
+			oktaPriorData := r.Okta
 			r.Okta = &tfTypes.Okta{}
 			r.Okta.Active = types.BoolValue(resp.Okta.Active)
 			r.Active = r.Okta.Active
 			r.Okta.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.Okta.CreatedAt))
 			r.CreatedAt = r.Okta.CreatedAt
-			dcrConfigPriorData4 := r.Okta.DcrConfig
+			var dcrConfigPriorData4 *tfTypes.CreateDcrConfigOktaInRequest
+			if oktaPriorData != nil {
+				dcrConfigPriorData4 = oktaPriorData.DcrConfig
+			}
 			r.Okta.DcrConfig = &tfTypes.CreateDcrConfigOktaInRequest{}
 			if dcrConfigPriorData4 != nil {
 				r.Okta.DcrConfig.DcrToken = dcrConfigPriorData4.DcrToken
@@ -192,8 +196,6 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened
 			}
 			r.Okta.Name = types.StringValue(resp.Okta.Name)
 			r.Name = r.Okta.Name
-			r.Okta.ProviderType = types.StringValue(string(resp.Okta.ProviderType))
-			r.ProviderType = r.Okta.ProviderType
 			r.Okta.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.Okta.UpdatedAt))
 			r.UpdatedAt = r.Okta.UpdatedAt
 		}
@@ -202,7 +204,7 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseFlattened
 	return diags
 }
 
-func (r *DcrProviderResourceModel) ToOperationsDeleteDcrProviderRequest(ctx context.Context, opts *DcrProviderResourceModelOptions) (*operations.DeleteDcrProviderRequest, diag.Diagnostics) {
+func (r *DcrProviderResourceModel) ToOperationsDeleteDcrProviderRequest(ctx context.Context) (*operations.DeleteDcrProviderRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var dcrProviderID string
@@ -215,7 +217,7 @@ func (r *DcrProviderResourceModel) ToOperationsDeleteDcrProviderRequest(ctx cont
 	return &out, diags
 }
 
-func (r *DcrProviderResourceModel) ToOperationsGetDcrProviderRequest(ctx context.Context, opts *DcrProviderResourceModelOptions) (*operations.GetDcrProviderRequest, diag.Diagnostics) {
+func (r *DcrProviderResourceModel) ToOperationsGetDcrProviderRequest(ctx context.Context) (*operations.GetDcrProviderRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var dcrProviderID string
@@ -228,13 +230,13 @@ func (r *DcrProviderResourceModel) ToOperationsGetDcrProviderRequest(ctx context
 	return &out, diags
 }
 
-func (r *DcrProviderResourceModel) ToOperationsUpdateDcrProviderRequest(ctx context.Context, opts *DcrProviderResourceModelOptions) (*operations.UpdateDcrProviderRequest, diag.Diagnostics) {
+func (r *DcrProviderResourceModel) ToOperationsUpdateDcrProviderRequest(ctx context.Context) (*operations.UpdateDcrProviderRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var dcrProviderID string
 	dcrProviderID = r.ID.ValueString()
 
-	updateDcrProviderRequest, updateDcrProviderRequestDiags := r.ToSharedUpdateDcrProviderRequest(ctx, opts)
+	updateDcrProviderRequest, updateDcrProviderRequestDiags := r.ToSharedUpdateDcrProviderRequest(ctx)
 	diags.Append(updateDcrProviderRequestDiags...)
 
 	if diags.HasError() {
@@ -249,18 +251,17 @@ func (r *DcrProviderResourceModel) ToOperationsUpdateDcrProviderRequest(ctx cont
 	return &out, diags
 }
 
-func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.Context, opts *DcrProviderResourceModelOptions) (*shared.CreateDcrProviderRequest, diag.Diagnostics) {
+func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.Context) (*shared.CreateDcrProviderRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var out shared.CreateDcrProviderRequest
 	var createDcrProviderRequestAuth0 *shared.CreateDcrProviderRequestAuth0
 	if r.Auth0 != nil {
-		providerType := shared.ProviderType(r.Auth0.ProviderType.ValueString())
 		var initialClientID string
 		initialClientID = r.Auth0.DcrConfig.InitialClientID.ValueString()
 
 		var initialClientSecret string
-		initialClientSecret = opts.Config.Auth0.DcrConfig.InitialClientSecret.ValueString()
+		initialClientSecret = r.Auth0.DcrConfig.InitialClientSecret.ValueString()
 
 		initialClientAudience := new(string)
 		if !r.Auth0.DcrConfig.InitialClientAudience.IsUnknown() && !r.Auth0.DcrConfig.InitialClientAudience.IsNull() {
@@ -297,11 +298,10 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 			labels[labelsKey] = labelsInst
 		}
 		createDcrProviderRequestAuth0 = &shared.CreateDcrProviderRequestAuth0{
-			ProviderType: providerType,
-			DcrConfig:    dcrConfig,
-			Name:         name,
-			Issuer:       issuer,
-			Labels:       labels,
+			DcrConfig: dcrConfig,
+			Name:      name,
+			Issuer:    issuer,
+			Labels:    labels,
 		}
 	}
 	if createDcrProviderRequestAuth0 != nil {
@@ -311,12 +311,11 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 	}
 	var createDcrProviderRequestAzureAd *shared.CreateDcrProviderRequestAzureAd
 	if r.AzureAd != nil {
-		providerType1 := shared.CreateDcrProviderRequestAzureAdProviderType(r.AzureAd.ProviderType.ValueString())
 		var initialClientId1 string
 		initialClientId1 = r.AzureAd.DcrConfig.InitialClientID.ValueString()
 
 		var initialClientSecret1 string
-		initialClientSecret1 = opts.Config.AzureAd.DcrConfig.InitialClientSecret.ValueString()
+		initialClientSecret1 = r.AzureAd.DcrConfig.InitialClientSecret.ValueString()
 
 		dcrConfig1 := shared.CreateDcrConfigAzureAdInRequest{
 			InitialClientID:     initialClientId1,
@@ -339,11 +338,10 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 			labels1[labelsKey1] = labelsInst1
 		}
 		createDcrProviderRequestAzureAd = &shared.CreateDcrProviderRequestAzureAd{
-			ProviderType: providerType1,
-			DcrConfig:    dcrConfig1,
-			Name:         name1,
-			Issuer:       issuer1,
-			Labels:       labels1,
+			DcrConfig: dcrConfig1,
+			Name:      name1,
+			Issuer:    issuer1,
+			Labels:    labels1,
 		}
 	}
 	if createDcrProviderRequestAzureAd != nil {
@@ -353,12 +351,11 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 	}
 	var createDcrProviderRequestCurity *shared.CreateDcrProviderRequestCurity
 	if r.Curity != nil {
-		providerType2 := shared.CreateDcrProviderRequestCurityProviderType(r.Curity.ProviderType.ValueString())
 		var initialClientId2 string
 		initialClientId2 = r.Curity.DcrConfig.InitialClientID.ValueString()
 
 		var initialClientSecret2 string
-		initialClientSecret2 = opts.Config.Curity.DcrConfig.InitialClientSecret.ValueString()
+		initialClientSecret2 = r.Curity.DcrConfig.InitialClientSecret.ValueString()
 
 		dcrConfig2 := shared.CreateDcrConfigCurityInRequest{
 			InitialClientID:     initialClientId2,
@@ -381,11 +378,10 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 			labels2[labelsKey2] = labelsInst2
 		}
 		createDcrProviderRequestCurity = &shared.CreateDcrProviderRequestCurity{
-			ProviderType: providerType2,
-			DcrConfig:    dcrConfig2,
-			Name:         name2,
-			Issuer:       issuer2,
-			Labels:       labels2,
+			DcrConfig: dcrConfig2,
+			Name:      name2,
+			Issuer:    issuer2,
+			Labels:    labels2,
 		}
 	}
 	if createDcrProviderRequestCurity != nil {
@@ -395,9 +391,8 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 	}
 	var createDcrProviderRequestOkta *shared.CreateDcrProviderRequestOkta
 	if r.Okta != nil {
-		providerType3 := shared.CreateDcrProviderRequestOktaProviderType(r.Okta.ProviderType.ValueString())
 		var dcrToken string
-		dcrToken = opts.Config.Okta.DcrConfig.DcrToken.ValueString()
+		dcrToken = r.Okta.DcrConfig.DcrToken.ValueString()
 
 		dcrConfig3 := shared.CreateDcrConfigOktaInRequest{
 			DcrToken: dcrToken,
@@ -419,11 +414,10 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 			labels3[labelsKey3] = labelsInst3
 		}
 		createDcrProviderRequestOkta = &shared.CreateDcrProviderRequestOkta{
-			ProviderType: providerType3,
-			DcrConfig:    dcrConfig3,
-			Name:         name3,
-			Issuer:       issuer3,
-			Labels:       labels3,
+			DcrConfig: dcrConfig3,
+			Name:      name3,
+			Issuer:    issuer3,
+			Labels:    labels3,
 		}
 	}
 	if createDcrProviderRequestOkta != nil {
@@ -433,12 +427,11 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 	}
 	var createDcrProviderRequestHTTP *shared.CreateDcrProviderRequestHTTP
 	if r.HTTP != nil {
-		providerType4 := shared.CreateDcrProviderRequestHTTPProviderType(r.HTTP.ProviderType.ValueString())
 		var dcrBaseURL string
 		dcrBaseURL = r.HTTP.DcrConfig.DcrBaseURL.ValueString()
 
 		var apiKey string
-		apiKey = opts.Config.HTTP.DcrConfig.APIKey.ValueString()
+		apiKey = r.HTTP.DcrConfig.APIKey.ValueString()
 
 		disableEventHooks := new(bool)
 		if !r.HTTP.DcrConfig.DisableEventHooks.IsUnknown() && !r.HTTP.DcrConfig.DisableEventHooks.IsNull() {
@@ -482,11 +475,10 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 			labels4[labelsKey4] = labelsInst4
 		}
 		createDcrProviderRequestHTTP = &shared.CreateDcrProviderRequestHTTP{
-			ProviderType: providerType4,
-			DcrConfig:    dcrConfig4,
-			Name:         name4,
-			Issuer:       issuer4,
-			Labels:       labels4,
+			DcrConfig: dcrConfig4,
+			Name:      name4,
+			Issuer:    issuer4,
+			Labels:    labels4,
 		}
 	}
 	if createDcrProviderRequestHTTP != nil {
@@ -496,7 +488,6 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 	}
 	var createDcrProviderRequestKongIdentity *shared.CreateDcrProviderRequestKongIdentity
 	if r.KongIdentity != nil {
-		providerType5 := shared.CreateDcrProviderRequestKongIdentityProviderType(r.KongIdentity.ProviderType.ValueString())
 		var dcrConfig5 *shared.CreateDcrConfigKongIdentityInRequest
 		if r.KongIdentity.DcrConfig != nil {
 			dcrConfig5 = &shared.CreateDcrConfigKongIdentityInRequest{}
@@ -518,11 +509,10 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 			labels5[labelsKey5] = labelsInst5
 		}
 		createDcrProviderRequestKongIdentity = &shared.CreateDcrProviderRequestKongIdentity{
-			ProviderType: providerType5,
-			DcrConfig:    dcrConfig5,
-			Name:         name5,
-			Issuer:       issuer5,
-			Labels:       labels5,
+			DcrConfig: dcrConfig5,
+			Name:      name5,
+			Issuer:    issuer5,
+			Labels:    labels5,
 		}
 	}
 	if createDcrProviderRequestKongIdentity != nil {
@@ -534,44 +524,12 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest(ctx context.
 	return &out, diags
 }
 
-func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.Context, opts *DcrProviderResourceModelOptions) (*shared.UpdateDcrProviderRequest, diag.Diagnostics) {
+func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.Context) (*shared.UpdateDcrProviderRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var out shared.UpdateDcrProviderRequest
 	var updateDcrProviderRequestAuth0 *shared.UpdateDcrProviderRequestAuth0
 	if r.Auth0 != nil {
-		providerType := shared.UpdateDcrProviderRequestAuth0ProviderType(r.Auth0.ProviderType.ValueString())
-		var dcrConfig *shared.UpdateDcrConfigAuth0InRequest
-		initialClientID := new(string)
-		if !r.Auth0.DcrConfig.InitialClientID.IsUnknown() && !r.Auth0.DcrConfig.InitialClientID.IsNull() {
-			*initialClientID = r.Auth0.DcrConfig.InitialClientID.ValueString()
-		} else {
-			initialClientID = nil
-		}
-		initialClientSecret := new(string)
-		if !opts.Config.Auth0.DcrConfig.InitialClientSecret.IsUnknown() && !opts.Config.Auth0.DcrConfig.InitialClientSecret.IsNull() {
-			*initialClientSecret = opts.Config.Auth0.DcrConfig.InitialClientSecret.ValueString()
-		} else {
-			initialClientSecret = nil
-		}
-		initialClientAudience := new(string)
-		if !r.Auth0.DcrConfig.InitialClientAudience.IsUnknown() && !r.Auth0.DcrConfig.InitialClientAudience.IsNull() {
-			*initialClientAudience = r.Auth0.DcrConfig.InitialClientAudience.ValueString()
-		} else {
-			initialClientAudience = nil
-		}
-		useDeveloperManagedScopes := new(bool)
-		if !r.Auth0.DcrConfig.UseDeveloperManagedScopes.IsUnknown() && !r.Auth0.DcrConfig.UseDeveloperManagedScopes.IsNull() {
-			*useDeveloperManagedScopes = r.Auth0.DcrConfig.UseDeveloperManagedScopes.ValueBool()
-		} else {
-			useDeveloperManagedScopes = nil
-		}
-		dcrConfig = &shared.UpdateDcrConfigAuth0InRequest{
-			InitialClientID:           initialClientID,
-			InitialClientSecret:       initialClientSecret,
-			InitialClientAudience:     initialClientAudience,
-			UseDeveloperManagedScopes: useDeveloperManagedScopes,
-		}
 		name := new(string)
 		if !r.Auth0.Name.IsUnknown() && !r.Auth0.Name.IsNull() {
 			*name = r.Auth0.Name.ValueString()
@@ -597,12 +555,42 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 				labels[labelsKey] = labelsInst
 			}
 		}
+		var dcrConfig *shared.UpdateDcrConfigAuth0InRequest
+		initialClientID := new(string)
+		if !r.Auth0.DcrConfig.InitialClientID.IsUnknown() && !r.Auth0.DcrConfig.InitialClientID.IsNull() {
+			*initialClientID = r.Auth0.DcrConfig.InitialClientID.ValueString()
+		} else {
+			initialClientID = nil
+		}
+		initialClientSecret := new(string)
+		if !r.Auth0.DcrConfig.InitialClientSecret.IsUnknown() && !r.Auth0.DcrConfig.InitialClientSecret.IsNull() {
+			*initialClientSecret = r.Auth0.DcrConfig.InitialClientSecret.ValueString()
+		} else {
+			initialClientSecret = nil
+		}
+		initialClientAudience := new(string)
+		if !r.Auth0.DcrConfig.InitialClientAudience.IsUnknown() && !r.Auth0.DcrConfig.InitialClientAudience.IsNull() {
+			*initialClientAudience = r.Auth0.DcrConfig.InitialClientAudience.ValueString()
+		} else {
+			initialClientAudience = nil
+		}
+		useDeveloperManagedScopes := new(bool)
+		if !r.Auth0.DcrConfig.UseDeveloperManagedScopes.IsUnknown() && !r.Auth0.DcrConfig.UseDeveloperManagedScopes.IsNull() {
+			*useDeveloperManagedScopes = r.Auth0.DcrConfig.UseDeveloperManagedScopes.ValueBool()
+		} else {
+			useDeveloperManagedScopes = nil
+		}
+		dcrConfig = &shared.UpdateDcrConfigAuth0InRequest{
+			InitialClientID:           initialClientID,
+			InitialClientSecret:       initialClientSecret,
+			InitialClientAudience:     initialClientAudience,
+			UseDeveloperManagedScopes: useDeveloperManagedScopes,
+		}
 		updateDcrProviderRequestAuth0 = &shared.UpdateDcrProviderRequestAuth0{
-			ProviderType: providerType,
-			DcrConfig:    dcrConfig,
-			Name:         name,
-			Issuer:       issuer,
-			Labels:       labels,
+			Name:      name,
+			Issuer:    issuer,
+			Labels:    labels,
+			DcrConfig: dcrConfig,
 		}
 	}
 	if updateDcrProviderRequestAuth0 != nil {
@@ -612,24 +600,6 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 	}
 	var updateDcrProviderRequestAzureAd *shared.UpdateDcrProviderRequestAzureAd
 	if r.AzureAd != nil {
-		providerType1 := shared.UpdateDcrProviderRequestAzureAdProviderType(r.AzureAd.ProviderType.ValueString())
-		var dcrConfig1 *shared.UpdateDcrConfigAzureAdInRequest
-		initialClientId1 := new(string)
-		if !r.AzureAd.DcrConfig.InitialClientID.IsUnknown() && !r.AzureAd.DcrConfig.InitialClientID.IsNull() {
-			*initialClientId1 = r.AzureAd.DcrConfig.InitialClientID.ValueString()
-		} else {
-			initialClientId1 = nil
-		}
-		initialClientSecret1 := new(string)
-		if !opts.Config.AzureAd.DcrConfig.InitialClientSecret.IsUnknown() && !opts.Config.AzureAd.DcrConfig.InitialClientSecret.IsNull() {
-			*initialClientSecret1 = opts.Config.AzureAd.DcrConfig.InitialClientSecret.ValueString()
-		} else {
-			initialClientSecret1 = nil
-		}
-		dcrConfig1 = &shared.UpdateDcrConfigAzureAdInRequest{
-			InitialClientID:     initialClientId1,
-			InitialClientSecret: initialClientSecret1,
-		}
 		name1 := new(string)
 		if !r.AzureAd.Name.IsUnknown() && !r.AzureAd.Name.IsNull() {
 			*name1 = r.AzureAd.Name.ValueString()
@@ -655,12 +625,28 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 				labels1[labelsKey1] = labelsInst1
 			}
 		}
+		var dcrConfig1 *shared.UpdateDcrConfigAzureAdInRequest
+		initialClientId1 := new(string)
+		if !r.AzureAd.DcrConfig.InitialClientID.IsUnknown() && !r.AzureAd.DcrConfig.InitialClientID.IsNull() {
+			*initialClientId1 = r.AzureAd.DcrConfig.InitialClientID.ValueString()
+		} else {
+			initialClientId1 = nil
+		}
+		initialClientSecret1 := new(string)
+		if !r.AzureAd.DcrConfig.InitialClientSecret.IsUnknown() && !r.AzureAd.DcrConfig.InitialClientSecret.IsNull() {
+			*initialClientSecret1 = r.AzureAd.DcrConfig.InitialClientSecret.ValueString()
+		} else {
+			initialClientSecret1 = nil
+		}
+		dcrConfig1 = &shared.UpdateDcrConfigAzureAdInRequest{
+			InitialClientID:     initialClientId1,
+			InitialClientSecret: initialClientSecret1,
+		}
 		updateDcrProviderRequestAzureAd = &shared.UpdateDcrProviderRequestAzureAd{
-			ProviderType: providerType1,
-			DcrConfig:    dcrConfig1,
-			Name:         name1,
-			Issuer:       issuer1,
-			Labels:       labels1,
+			Name:      name1,
+			Issuer:    issuer1,
+			Labels:    labels1,
+			DcrConfig: dcrConfig1,
 		}
 	}
 	if updateDcrProviderRequestAzureAd != nil {
@@ -670,24 +656,6 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 	}
 	var updateDcrProviderRequestCurity *shared.UpdateDcrProviderRequestCurity
 	if r.Curity != nil {
-		providerType2 := shared.UpdateDcrProviderRequestCurityProviderType(r.Curity.ProviderType.ValueString())
-		var dcrConfig2 *shared.UpdateDcrConfigCurityInRequest
-		initialClientId2 := new(string)
-		if !r.Curity.DcrConfig.InitialClientID.IsUnknown() && !r.Curity.DcrConfig.InitialClientID.IsNull() {
-			*initialClientId2 = r.Curity.DcrConfig.InitialClientID.ValueString()
-		} else {
-			initialClientId2 = nil
-		}
-		initialClientSecret2 := new(string)
-		if !opts.Config.Curity.DcrConfig.InitialClientSecret.IsUnknown() && !opts.Config.Curity.DcrConfig.InitialClientSecret.IsNull() {
-			*initialClientSecret2 = opts.Config.Curity.DcrConfig.InitialClientSecret.ValueString()
-		} else {
-			initialClientSecret2 = nil
-		}
-		dcrConfig2 = &shared.UpdateDcrConfigCurityInRequest{
-			InitialClientID:     initialClientId2,
-			InitialClientSecret: initialClientSecret2,
-		}
 		name2 := new(string)
 		if !r.Curity.Name.IsUnknown() && !r.Curity.Name.IsNull() {
 			*name2 = r.Curity.Name.ValueString()
@@ -713,12 +681,28 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 				labels2[labelsKey2] = labelsInst2
 			}
 		}
+		var dcrConfig2 *shared.UpdateDcrConfigCurityInRequest
+		initialClientId2 := new(string)
+		if !r.Curity.DcrConfig.InitialClientID.IsUnknown() && !r.Curity.DcrConfig.InitialClientID.IsNull() {
+			*initialClientId2 = r.Curity.DcrConfig.InitialClientID.ValueString()
+		} else {
+			initialClientId2 = nil
+		}
+		initialClientSecret2 := new(string)
+		if !r.Curity.DcrConfig.InitialClientSecret.IsUnknown() && !r.Curity.DcrConfig.InitialClientSecret.IsNull() {
+			*initialClientSecret2 = r.Curity.DcrConfig.InitialClientSecret.ValueString()
+		} else {
+			initialClientSecret2 = nil
+		}
+		dcrConfig2 = &shared.UpdateDcrConfigCurityInRequest{
+			InitialClientID:     initialClientId2,
+			InitialClientSecret: initialClientSecret2,
+		}
 		updateDcrProviderRequestCurity = &shared.UpdateDcrProviderRequestCurity{
-			ProviderType: providerType2,
-			DcrConfig:    dcrConfig2,
-			Name:         name2,
-			Issuer:       issuer2,
-			Labels:       labels2,
+			Name:      name2,
+			Issuer:    issuer2,
+			Labels:    labels2,
+			DcrConfig: dcrConfig2,
 		}
 	}
 	if updateDcrProviderRequestCurity != nil {
@@ -728,17 +712,6 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 	}
 	var updateDcrProviderRequestOkta *shared.UpdateDcrProviderRequestOkta
 	if r.Okta != nil {
-		providerType3 := shared.UpdateDcrProviderRequestOktaProviderType(r.Okta.ProviderType.ValueString())
-		var dcrConfig3 *shared.UpdateDcrConfigOktaInRequest
-		dcrToken := new(string)
-		if !opts.Config.Okta.DcrConfig.DcrToken.IsUnknown() && !opts.Config.Okta.DcrConfig.DcrToken.IsNull() {
-			*dcrToken = opts.Config.Okta.DcrConfig.DcrToken.ValueString()
-		} else {
-			dcrToken = nil
-		}
-		dcrConfig3 = &shared.UpdateDcrConfigOktaInRequest{
-			DcrToken: dcrToken,
-		}
 		name3 := new(string)
 		if !r.Okta.Name.IsUnknown() && !r.Okta.Name.IsNull() {
 			*name3 = r.Okta.Name.ValueString()
@@ -764,12 +737,21 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 				labels3[labelsKey3] = labelsInst3
 			}
 		}
+		var dcrConfig3 *shared.UpdateDcrConfigOktaInRequest
+		dcrToken := new(string)
+		if !r.Okta.DcrConfig.DcrToken.IsUnknown() && !r.Okta.DcrConfig.DcrToken.IsNull() {
+			*dcrToken = r.Okta.DcrConfig.DcrToken.ValueString()
+		} else {
+			dcrToken = nil
+		}
+		dcrConfig3 = &shared.UpdateDcrConfigOktaInRequest{
+			DcrToken: dcrToken,
+		}
 		updateDcrProviderRequestOkta = &shared.UpdateDcrProviderRequestOkta{
-			ProviderType: providerType3,
-			DcrConfig:    dcrConfig3,
-			Name:         name3,
-			Issuer:       issuer3,
-			Labels:       labels3,
+			Name:      name3,
+			Issuer:    issuer3,
+			Labels:    labels3,
+			DcrConfig: dcrConfig3,
 		}
 	}
 	if updateDcrProviderRequestOkta != nil {
@@ -779,7 +761,31 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 	}
 	var updateDcrProviderRequestHTTP *shared.UpdateDcrProviderRequestHTTP
 	if r.HTTP != nil {
-		providerType4 := shared.UpdateDcrProviderRequestHTTPProviderType(r.HTTP.ProviderType.ValueString())
+		name4 := new(string)
+		if !r.HTTP.Name.IsUnknown() && !r.HTTP.Name.IsNull() {
+			*name4 = r.HTTP.Name.ValueString()
+		} else {
+			name4 = nil
+		}
+		issuer4 := new(string)
+		if !r.HTTP.Issuer.IsUnknown() && !r.HTTP.Issuer.IsNull() {
+			*issuer4 = r.HTTP.Issuer.ValueString()
+		} else {
+			issuer4 = nil
+		}
+		var labels4 map[string]*string
+		if r.HTTP.Labels != nil {
+			labels4 = make(map[string]*string)
+			for labelsKey4 := range r.HTTP.Labels {
+				labelsInst4 := new(string)
+				if !r.HTTP.Labels[labelsKey4].IsUnknown() && !r.HTTP.Labels[labelsKey4].IsNull() {
+					*labelsInst4 = r.HTTP.Labels[labelsKey4].ValueString()
+				} else {
+					labelsInst4 = nil
+				}
+				labels4[labelsKey4] = labelsInst4
+			}
+		}
 		var dcrConfig4 *shared.UpdateDcrConfigHTTPInRequest
 		dcrBaseURL := new(string)
 		if !r.HTTP.DcrConfig.DcrBaseURL.IsUnknown() && !r.HTTP.DcrConfig.DcrBaseURL.IsNull() {
@@ -788,8 +794,8 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 			dcrBaseURL = nil
 		}
 		apiKey := new(string)
-		if !opts.Config.HTTP.DcrConfig.APIKey.IsUnknown() && !opts.Config.HTTP.DcrConfig.APIKey.IsNull() {
-			*apiKey = opts.Config.HTTP.DcrConfig.APIKey.ValueString()
+		if !r.HTTP.DcrConfig.APIKey.IsUnknown() && !r.HTTP.DcrConfig.APIKey.IsNull() {
+			*apiKey = r.HTTP.DcrConfig.APIKey.ValueString()
 		} else {
 			apiKey = nil
 		}
@@ -818,37 +824,11 @@ func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest(ctx context.
 			DisableRefreshSecret:     disableRefreshSecret,
 			AllowMultipleCredentials: allowMultipleCredentials,
 		}
-		name4 := new(string)
-		if !r.HTTP.Name.IsUnknown() && !r.HTTP.Name.IsNull() {
-			*name4 = r.HTTP.Name.ValueString()
-		} else {
-			name4 = nil
-		}
-		issuer4 := new(string)
-		if !r.HTTP.Issuer.IsUnknown() && !r.HTTP.Issuer.IsNull() {
-			*issuer4 = r.HTTP.Issuer.ValueString()
-		} else {
-			issuer4 = nil
-		}
-		var labels4 map[string]*string
-		if r.HTTP.Labels != nil {
-			labels4 = make(map[string]*string)
-			for labelsKey4 := range r.HTTP.Labels {
-				labelsInst4 := new(string)
-				if !r.HTTP.Labels[labelsKey4].IsUnknown() && !r.HTTP.Labels[labelsKey4].IsNull() {
-					*labelsInst4 = r.HTTP.Labels[labelsKey4].ValueString()
-				} else {
-					labelsInst4 = nil
-				}
-				labels4[labelsKey4] = labelsInst4
-			}
-		}
 		updateDcrProviderRequestHTTP = &shared.UpdateDcrProviderRequestHTTP{
-			ProviderType: providerType4,
-			DcrConfig:    dcrConfig4,
-			Name:         name4,
-			Issuer:       issuer4,
-			Labels:       labels4,
+			Name:      name4,
+			Issuer:    issuer4,
+			Labels:    labels4,
+			DcrConfig: dcrConfig4,
 		}
 	}
 	if updateDcrProviderRequestHTTP != nil {
