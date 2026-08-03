@@ -347,6 +347,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewIdentityAuthServerResource,
 		NewIdentityAuthServerClaimResource,
 		NewIdentityAuthServerClientResource,
+		NewIdentityAuthServerClientSecretResource,
 		NewIdentityAuthServerScopeResource,
 		NewIdentityProviderResource,
 		NewIdentityProviderTeamGroupMappingResource,

@@ -378,6 +378,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Auth Server Clients
+  '/v1/auth-servers/{authServerId}/clients/{clientId}/secrets':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/clientIdForChildren'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClientSecret#create
+        terraform-datasource: null
+      operationId: createClientSecret
+      summary: Create a new client secret
+      description: Create a new client secret for a given client. Multiple secrets can be active simultaneously for a single client.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSecretPayload'
+      responses:
+        '201':
+          $ref: '#/components/responses/ClientSecretBody'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Auth Server Clients
+  '/v1/auth-servers/{authServerId}/clients/{clientId}/secrets/{clientSecretId}':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/clientIdForChildren'
+      - $ref: '#/components/parameters/clientSecretId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClientSecret#read
+        terraform-datasource: null
+      operationId: getClientSecret
+      summary: Get a client secret
+      description: Get a specific client secret for a given client.
+      responses:
+        '200':
+          $ref: '#/components/responses/ClientSecretBody'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Clients
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClientSecret#update
+        terraform-datasource: null
+      operationId: updateClientSecret
+      summary: Update a client secret
+      description: 'Update a client secret for a given client, such as enabling or disabling the secret.'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateSecretPayload'
+      responses:
+        '200':
+          $ref: '#/components/responses/ClientSecretBody'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Clients
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClientSecret#delete
+        terraform-datasource: null
+      operationId: deleteClientSecret
+      summary: Delete a client secret
+      description: Delete a client secret for a given client. This action is irreversible.
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Clients
   '/v1/auth-servers/{authServerId}/scopes':
     parameters:
       - $ref: '#/components/parameters/authServerIdForChildren'
@@ -20851,6 +20924,24 @@ components:
       required: true
       description: The OAuth 2.0 client ID
       x-speakeasy-match: id
+    clientIdForChildren:
+      schema:
+        $ref: '#/components/schemas/ClientId'
+      name: clientId
+      in: path
+      required: true
+      description: The OAuth 2.0 client ID
+      x-speakeasy-name-override: client_id
+    clientSecretId:
+      schema:
+        type: string
+        format: uuid
+        example: 07d05309-45cc-4b37-92fb-1524846deec3
+      name: clientSecretId
+      in: path
+      required: true
+      description: The client secret ID
+      x-speakeasy-match: id
     ClonedPluginId:
       description: ID of the Cloned Plugin to lookup
       example: ''
@@ -30209,6 +30300,7 @@ components:
         name: IDM - Developers
         description: The Identity Management (IDM) API team.
         can_own_applications: false
+      additionalProperties: false
       title: PortalUpdateTeamRequest
     PortalCreateTeamRequest:
       x-speakeasy-entity: PortalTeam
@@ -30237,6 +30329,7 @@ components:
         name: IDM - Developers
         description: The Identity Management (IDM) team.
         can_own_applications: false
+      additionalProperties: false
       required:
         - name
       title: PortalCreateTeamRequest
@@ -30253,18 +30346,12 @@ components:
         name:
           type: string
           example: IDM - Developers
-          default: null
           maxLength: 250
-          nullable: true
           pattern: '^[\w \W]+$'
-          x-speakeasy-param-computed: false
         description:
           type: string
           example: The developers for the IDM API.
-          default: null
           maxLength: 250
-          nullable: true
-          x-speakeasy-param-computed: false
         created_at:
           type: string
           format: date-time
@@ -30291,6 +30378,12 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
+      required:
+        - id
+        - name
+        - description
+        - created_at
+        - updated_at
       title: PortalTeamResponse
     PortalAssignedRoleResponse:
       description: An assigned role associates a service and an action to a team.
@@ -32944,9 +33037,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -32956,6 +33065,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -33055,9 +33174,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -33067,6 +33202,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: The unique identifier of the parent schema validation policy.
@@ -33121,6 +33266,7 @@ components:
             type: string
             example: 'someObject.someArray[1].fieldName'
       maxItems: 50
+      minItems: 1
     EventGatewayDecryptPolicy:
       description: Decrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
       type: object
@@ -33308,9 +33454,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -33320,6 +33482,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -33419,9 +33591,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -33431,6 +33619,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: The unique identifier of the parent schema validation policy.
@@ -33565,9 +33763,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -33577,6 +33791,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -33678,9 +33902,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -33690,6 +33930,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -33783,9 +34033,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -33795,6 +34061,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -33881,9 +34157,25 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -33893,6 +34185,16 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-speakeasy-terraform-ignore: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -35091,6 +35393,39 @@ components:
         fields:
           - vault
       x-sensitive: true
+    CreateSecretPayload:
+      type: object
+      properties:
+        secret:
+          $ref: '#/components/schemas/ClientSecret'
+        enabled:
+          $ref: '#/components/schemas/SecretEnabled'
+    UpdateSecretPayload:
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/SecretEnabled'
+    ClientSecretItem:
+      description: The client secret. The secret value is only returned when creating a new secret item.
+      type: object
+      properties:
+        id:
+          description: The ID of the client secret
+          type: string
+          format: uuid
+        enabled:
+          $ref: '#/components/schemas/SecretEnabled'
+        secret:
+          $ref: '#/components/schemas/ClientSecret'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - enabled
+        - created_at
+        - updated_at
     ResponseType:
       description: OAuth 2.0 response type
       type: string
@@ -35300,6 +35635,10 @@ components:
       description: 'Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the ''/userinfo'' endpoint.'
       type: boolean
       default: true
+    SecretEnabled:
+      description: 'Specifies whether the secret is enabled. If the secret is not enabled, it will not be usable during authentication phase.'
+      type: boolean
+      default: true
     Claim:
       type: object
       properties:
@@ -35449,6 +35788,13 @@ components:
               type: string
               example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
               x-speakeasy-param-computed: true
+    ClientSecret:
+      description: The OAuth 2.0 client secret
+      type: string
+      example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
     MaxPATExpirationPeriodDays:
       type: integer
       maximum: 365
@@ -75755,6 +76101,20 @@ components:
               labels:
                 $ref: '#/components/schemas/Labels'
             additionalProperties: false
+    CreateSecretPayload:
+      description: Secret to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateSecretPayload'
+    UpdateSecretPayload:
+      description: Secret to be updated
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateSecretPayload'
     CreateAuthServer:
       description: Auth server to be created
       required: true
@@ -77574,6 +77934,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EventGatewayInfo'
+    ClientSecretBody:
+      description: A Client Secret item
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientSecretItem'
     AuthServer:
       description: An auth server
       content:

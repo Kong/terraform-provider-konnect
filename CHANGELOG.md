@@ -1,11 +1,12 @@
 # Changelog
 
 ## 3.21.0
-> Released 2026/07/30
+> Released 2026/08/03
 
 # Features
 * Add support for `konnect_organization_personal_access_token_settings` resource.
 * Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources.
+* Add support for `konnect_identity_auth_server_client_secret` resource.
 
 # Bug Fixes
 * Deprecate `konnect_portal_appearance` resource.
