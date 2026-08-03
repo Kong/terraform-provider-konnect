@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 4619566f8fd2ef9b91a37de24a9bc73c
+  docChecksum: 6cf455916ab63fc526db964599208e16
   docVersion: 2.0.0
   speakeasyVersion: 1.788.0
   generationVersion: 2.915.0
   releaseVersion: 3.21.0
   configChecksum: c5460c19646dafd6b7b82ae437ddd5d3
 persistentEdits:
-  generation_id: 86680c9e-39aa-4c8a-afdd-26449e8a3377
-  pristine_commit_hash: bdfe776bc600650d6836e421f59ce1bff7989495
-  pristine_tree_hash: 27754380c5ed4c70a254e242b5b943557c2fe0da
+  generation_id: 3dc54e00-323f-444c-b5df-040bc93e69b0
+  pristine_commit_hash: 92d3cf78079081c909374576eca630dc07063a7f
+  pristine_tree_hash: 5bf0595b70c335412a4ff115229fa56c71ef92bf
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2715,6 +2715,18 @@ trackedFiles:
     id: b1bf3e9b35e1
     last_write_checksum: sha1:2025939867ae1e5ef8bd06e20757ddeef18e9390
     pristine_git_object: dd602efe5cbf920a707e5acc9aa819c3292dc027
+  examples/resources/konnect_user_role/import-by-string-id.tf:
+    id: 8d77c8752d02
+    last_write_checksum: sha1:ebd20f6c211b276bdf8b74ae1a11a3c2995d5809
+    pristine_git_object: 838922f99fc475acb304ebe5e73a7f0c01f1a10a
+  examples/resources/konnect_user_role/import.sh:
+    id: a5cea5b3551c
+    last_write_checksum: sha1:c1aebc3564cad85e7e2f65615035e7a4ce269cbb
+    pristine_git_object: b2b3d3587d37629318749ac21955d19752758f0c
+  examples/resources/konnect_user_role/resource.tf:
+    id: ddc163f67448
+    last_write_checksum: sha1:169788d3b771a94df51b567e7e41cc7f1b4774e6
+    pristine_git_object: 1dd3598b7835e5c230dbf91646cfe4b205aa8d77
   go.mod:
     id: c47645c391ad
     last_write_checksum: sha1:491073d682f4b9dc9f6046c415c6e6c6f747aa63
@@ -4637,8 +4649,8 @@ trackedFiles:
     pristine_git_object: 47ecfc7393d52fb98a5bac2c40c6c49e8d4b4d1e
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:2d2c1de6a25a3d7b3f4fb905e1999fefbf34a054
-    pristine_git_object: ce6a6f7e0a558bae85f252f874095d3d200e265e
+    last_write_checksum: sha1:4cdc138fc6014a897f95a6d8a77e05a5fb9e1b8f
+    pristine_git_object: 1b0c2f05736ca92f89846f4955e33251bd5937c3
   internal/provider/realm_resource.go:
     id: 288745fe66d4
     last_write_checksum: sha1:84cfafee418c410926378f7ecbd147dd45e933e8
@@ -6867,6 +6879,14 @@ trackedFiles:
     id: 35ebaa702601
     last_write_checksum: sha1:c4baf73c1aa39567d0ec63b3eb4519980916a30c
     pristine_git_object: 37447d25574d2a0725dc1a1016e167ce1787e297
+  internal/provider/userrole_resource.go:
+    id: d881a3659fe7
+    last_write_checksum: sha1:9195a1aff66ff430ca29cfe6cc51f795a7a80c72
+    pristine_git_object: 0ec0a5964e9dcb36478d6025afc8814e8b149ff3
+  internal/provider/userrole_resource_sdk.go:
+    id: f35c9d87b02f
+    last_write_checksum: sha1:ba28695bf5de0b2e7bcb00f15ed6b12bdf21d818
+    pristine_git_object: 329daa4b2594af741dde2c9911d10bb265155618
   internal/provider/utils.go:
     id: 312d50f148af
     last_write_checksum: sha1:ca55cd7b082b8c5049923fd51da457d597a918cc
@@ -9723,6 +9743,10 @@ trackedFiles:
     id: 29aa8adff05e
     last_write_checksum: sha1:c73fe09278f4618ff0f1148d9077d53e6c74de30
     pristine_git_object: 977dbe0c6d044578d459ea8571648ac19d06761b
+  internal/sdk/models/operations/getuserrole.go:
+    id: dacc1243c8cc
+    last_write_checksum: sha1:15c9266ea0e87d74395c086bff2e6a80194f945b
+    pristine_git_object: 1ee64b7feab118d95089d2aee666e3bf416c6c67
   internal/sdk/models/operations/getvault.go:
     id: e9af0146ec02
     last_write_checksum: sha1:b6980fb6ae963690f52ab4aefa831cc72f17d52a
@@ -10639,6 +10663,14 @@ trackedFiles:
     id: faee8519b34b
     last_write_checksum: sha1:06d69732d7b4ceb36da0fe4fcd7770847fb5c982
     pristine_git_object: 0fab80fb322ef036e995b92336257160a3c243e4
+  internal/sdk/models/operations/usersassignrole.go:
+    id: d9d838da84e7
+    last_write_checksum: sha1:2ce8be2b27ebd933f8e89b6715af1048079a1607
+    pristine_git_object: 016f94f671b89de1164a9d100273411b21b2cdb2
+  internal/sdk/models/operations/usersremoverole.go:
+    id: d8df643cbc41
+    last_write_checksum: sha1:2feafd78f4644dd274e58c0ce186e7d34399f97b
+    pristine_git_object: 1710af3209fbcdf9e43659fd204a29269929850d
   internal/sdk/models/shared/aceplugin.go:
     id: afce4687f017
     last_write_checksum: sha1:ba45efe3b6597bfcdf0087c05d9d9b674d4c46ed
@@ -13341,8 +13373,8 @@ trackedFiles:
     pristine_git_object: 767002c7898128324d8741ce9c534bd466492169
   internal/sdk/roles.go:
     id: 5b6a722e8819
-    last_write_checksum: sha1:20a356363aae97bf5345484532d3e8a3adfa6b05
-    pristine_git_object: 95e26cac0f22f04fcaef7cd92c0ce8271284a781
+    last_write_checksum: sha1:333b99f04b3bb98977c818f4b0190277fffc331a
+    pristine_git_object: e640d8a5d7a5a7f433c433030cc656bff87b8f10
   internal/sdk/routes.go:
     id: d87401733f23
     last_write_checksum: sha1:e58318fdff76ccdeff7a464384e59f70f6cc312f
@@ -28500,6 +28532,56 @@ examples:
           clientId: "kYa9iQFU5xPDSIUH9z1z"
           clientSecretId: "07d05309-45cc-4b37-92fb-1524846deec3"
       responses:
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  users-assign-role:
+    speakeasy-default-users-assign-role:
+      parameters:
+        path:
+          userId: "e81bc3e5-e9db-4764-b7dd-e81e39072cbe"
+      requestBody:
+        application/json: {"role_name": "Viewer", "entity_id": "e67490ce-44dc-4cbd-b65e-b52c746fc26a", "entity_type_name": "Control Planes", "entity_region": "eu"}
+      responses:
+        "201":
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+        "400":
+          application/problem+json: {"status": 89532, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-user-role:
+    speakeasy-default-get-user-role:
+      parameters:
+        path:
+          userId: "e81bc3e5-e9db-4764-b7dd-e81e39072cbe"
+          roleId: "8350205f-a305-4e39-abe9-bc082a80091a"
+      responses:
+        "200":
+          application/json: {"id": "54cc6168-ebb1-4300-8168-d62a0dd08fc8", "role_name": "Viewer", "entity_id": "18ee2573-dec0-4b83-be99-fa7700bcdc61", "entity_type_name": "Control Planes", "entity_region": "us"}
+        "400":
+          application/problem+json: {"status": 908297, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  users-remove-role:
+    speakeasy-default-users-remove-role:
+      parameters:
+        path:
+          userId: "e81bc3e5-e9db-4764-b7dd-e81e39072cbe"
+          roleId: "8350205f-a305-4e39-abe9-bc082a80091a"
+      responses:
+        "400":
+          application/problem+json: {"status": 939239, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2

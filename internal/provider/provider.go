@@ -383,6 +383,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewTeamResource,
 		NewTeamRoleResource,
 		NewTeamUserResource,
+		NewUserRoleResource,
 		custom.NewCustomPluginResource,
 	}
 }

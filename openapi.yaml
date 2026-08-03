@@ -20685,6 +20685,99 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Team Membership
+  '/v3/users/{userId}/assigned-roles':
+    parameters:
+      - name: userId
+        in: path
+        description: The user ID
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+    post:
+      x-speakeasy-entity-operation: UserRole#create
+      operationId: users-assign-role
+      summary: Assign Role
+      description: Assigns a role to a user. Returns 409 if role is already assigned.
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRole'
+      responses:
+        '201':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/IdentityConflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Roles
+  '/v3/users/{userId}/assigned-roles/{roleId}':
+    parameters:
+      - name: userId
+        in: path
+        description: ID of the user.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
+      - name: roleId
+        in: path
+        description: ID of the role.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 8350205f-a305-4e39-abe9-bc082a80091a
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: UserRole#read
+        terraform-datasource: null
+      operationId: get-user-role
+      summary: Get User Role
+      description: Returns the assigned role for the specified ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/AssignedRoleSingle'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Roles
+    delete:
+      x-speakeasy-entity-operation: UserRole#delete
+      operationId: users-remove-role
+      summary: Remove Role
+      description: Removes an assigned role from a user. Returns 404 if the requested user or assigned role were not found.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Roles
   /v2/control-planes#single-resource:
     get:
       x-speakeasy-entity-operation:

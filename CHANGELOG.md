@@ -7,6 +7,7 @@
 * Add support for `konnect_organization_personal_access_token_settings` resource.
 * Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources.
 * Add support for `konnect_identity_auth_server_client_secret` resource.
+* Add support for `konnect_user_role` resource.
 
 # Bug Fixes
 * Deprecate `konnect_portal_appearance` resource.
