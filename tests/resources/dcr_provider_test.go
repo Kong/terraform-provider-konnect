@@ -39,10 +39,6 @@ func TestDcrProvider(t *testing.T) {
 		})
 	})
 
-	// Regression guard for the perpetual-replace bug tracked as issue 5 in
-	// RCA-remaining-issues.md: an application_auth_strategy linked to a
-	// dcr_provider via dcr_provider_id must converge to an empty plan, not
-	// force replacement on every subsequent plan/apply.
 	t.Run("kong_identity linked to auth strategy converges", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
@@ -59,6 +55,35 @@ func TestDcrProvider(t *testing.T) {
 							plancheck.ExpectEmptyPlan(),
 						},
 					},
+				},
+			},
+		})
+	})
+
+	t.Run("updates name and labels in place", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.name", "my-dcr-provider"),
+						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.labels.team", "platform"),
+					),
+				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_dcr_provider.my_dcrprovider", plancheck.ResourceActionUpdate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.name", "my-dcr-provider-renamed"),
+						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.labels.team", "identity"),
+					),
 				},
 			},
 		})
