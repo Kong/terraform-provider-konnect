@@ -1,13 +1,13 @@
 # Changelog
 
 ## 3.21.0
-> Released 2026/08/03
+> Released 2026/08/04
 
 # Features
-* Add support for `konnect_organization_personal_access_token_settings` resource.
-* Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources.
-* Add support for `konnect_identity_auth_server_client_secret` resource.
-* Add support for `konnect_user_role` resource.
+* Add support for `konnect_organization_personal_access_token_settings` resource, using which you can control organization-wide personal access token (PAT) policies, such as enabling PATs and setting the maximum token expiration period.
+* Add support for `konnect_portal_developer`, `konnect_portal_application` and `konnect_portal_application_registration` resources, using which you can manage developer accounts in a portal, the applications owned by those developers, and the registration of those applications against APIs published to the portal.
+* Add support for `konnect_identity_auth_server_client_secret` resource, using which you can create and rotate client secrets for an identity auth server client.
+* Add support for `konnect_user_role` resource, using which you can assign a role to a user scoped to a specific entity (for example, granting the `Viewer` role on a control plane).
 
 # Bug Fixes
 * Deprecate `konnect_portal_appearance` resource.
