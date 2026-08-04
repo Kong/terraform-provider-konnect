@@ -95,6 +95,7 @@ Read-Only:
 
 - `created_at` (String) An RFC-3339 timestamp representation of data-plane group creation date.
 - `egress_ip_addresses` (List of String) List of egress IP addresses for the network that this data-plane group runs on.
+- `hostnames` (List of String) List of hostnames for proxying to the data-plane group.
 - `id` (String) ID of the data-plane group that represents a deployment target for a set of data-planes.
 - `private_ip_addresses` (List of String) List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
 - `state` (String) State of the data-plane group.

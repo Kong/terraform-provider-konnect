@@ -232,6 +232,11 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							},
 							Description: `Array of environment variables to set for a data-plane group.`,
 						},
+						"hostnames": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `List of hostnames for proxying to the data-plane group.`,
+						},
 						"id": schema.StringAttribute{
 							Computed: true,
 							PlanModifiers: []planmodifier.String{

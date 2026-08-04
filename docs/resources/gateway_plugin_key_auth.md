@@ -125,7 +125,7 @@ Optional:
 
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `region` (String)
-- `scope` (String) possible known values include one of ["cp", "realm"]
+- `scope` (String) possible known values include one of ["cp", "realm"]; Default: "cp"
 
 
 <a id="nestedatt--config--principals"></a>

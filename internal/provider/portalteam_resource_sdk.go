@@ -16,11 +16,11 @@ func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx contex
 
 	if resp != nil {
 		r.CanOwnApplications = types.BoolPointerValue(resp.CanOwnApplications)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Description = types.StringValue(resp.Description)
+		r.ID = types.StringValue(resp.ID)
+		r.Name = types.StringValue(resp.Name)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
 	return diags

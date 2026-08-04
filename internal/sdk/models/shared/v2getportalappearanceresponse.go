@@ -6,19 +6,228 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// ThemeName - Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
+//
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+type ThemeName string
+
+const (
+	ThemeNameMintRocket ThemeName = "mint_rocket"
+	ThemeNameDarkMode   ThemeName = "dark_mode"
+	ThemeNameCustom     ThemeName = "custom"
+)
+
+func (e ThemeName) ToPointer() *ThemeName {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ThemeName) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "mint_rocket", "dark_mode", "custom":
+			return true
+		}
+	}
+	return false
+}
+
+// AppearanceThemeVariables - Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
+//
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+type AppearanceThemeVariables struct {
+	Colors V2AppearanceThemeColorVariables `json:"colors"`
+}
+
+func (a AppearanceThemeVariables) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppearanceThemeVariables) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"colors"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AppearanceThemeVariables) GetColors() V2AppearanceThemeColorVariables {
+	if a == nil {
+		return V2AppearanceThemeColorVariables{}
+	}
+	return a.Colors
+}
+
+// CustomFonts - Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
+//
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+type CustomFonts struct {
+	// The name of the font to render in the browser.
+	Base V2AppearanceFontName `json:"base"`
+	// The name of the font to render in the browser.
+	Code V2AppearanceFontName `json:"code"`
+	// The name of the font to render in the browser.
+	Headings V2AppearanceFontName `json:"headings"`
+}
+
+func (c CustomFonts) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CustomFonts) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"base", "code", "headings"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CustomFonts) GetBase() V2AppearanceFontName {
+	if c == nil {
+		return V2AppearanceFontName("")
+	}
+	return c.Base
+}
+
+func (c *CustomFonts) GetCode() V2AppearanceFontName {
+	if c == nil {
+		return V2AppearanceFontName("")
+	}
+	return c.Code
+}
+
+func (c *CustomFonts) GetHeadings() V2AppearanceFontName {
+	if c == nil {
+		return V2AppearanceFontName("")
+	}
+	return c.Headings
+}
+
+type Catalog struct {
+	WelcomeMessage string `json:"welcome_message"`
+	PrimaryHeader  string `json:"primary_header"`
+}
+
+func (c Catalog) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Catalog) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"welcome_message", "primary_header"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Catalog) GetWelcomeMessage() string {
+	if c == nil {
+		return ""
+	}
+	return c.WelcomeMessage
+}
+
+func (c *Catalog) GetPrimaryHeader() string {
+	if c == nil {
+		return ""
+	}
+	return c.PrimaryHeader
+}
+
+// V2GetPortalAppearanceResponseText - Values to display for customizable text in the portal user interface
+//
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+type V2GetPortalAppearanceResponseText struct {
+	Catalog Catalog `json:"catalog"`
+}
+
+func (v V2GetPortalAppearanceResponseText) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2GetPortalAppearanceResponseText) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"catalog"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (v *V2GetPortalAppearanceResponseText) GetCatalog() Catalog {
+	if v == nil {
+		return Catalog{}
+	}
+	return v.Catalog
+}
+
+// #region class-body-v2getportalappearanceresponsetext
+// #endregion class-body-v2getportalappearanceresponsetext
+
+// Images - A collection of binary image data to customize images in the portal
+//
+// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+type Images struct {
+	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
+	Logo *V2AppearanceImage `json:"logo"`
+	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
+	Favicon *V2AppearanceImage `json:"favicon,omitempty"`
+	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
+	CatalogCover *V2AppearanceImage `json:"catalog_cover,omitempty"`
+}
+
+func (i Images) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Images) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *Images) GetLogo() *V2AppearanceImage {
+	if i == nil {
+		return nil
+	}
+	return i.Logo
+}
+
+func (i *Images) GetFavicon() *V2AppearanceImage {
+	if i == nil {
+		return nil
+	}
+	return i.Favicon
+}
+
+func (i *Images) GetCatalogCover() *V2AppearanceImage {
+	if i == nil {
+		return nil
+	}
+	return i.CatalogCover
+}
+
 type V2GetPortalAppearanceResponse struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
-	ThemeName V2PortalTheme `json:"theme_name"`
+	//
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+	ThemeName ThemeName `json:"theme_name"`
 	// Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
-	CustomTheme *V2NullableAppearanceThemeVariables `json:"custom_theme"`
+	//
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+	CustomTheme *AppearanceThemeVariables `json:"custom_theme"`
 	// Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
-	CustomFonts *V2NullableAppearanceFonts `json:"custom_fonts"`
+	//
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+	CustomFonts *CustomFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
+	//
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
 	UseCustomFonts bool `json:"use_custom_fonts"`
 	// Values to display for customizable text in the portal user interface
-	Text *V2NullableAppearanceTextVariables `json:"text"`
+	//
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+	Text *V2GetPortalAppearanceResponseText `json:"text"`
 	// A collection of binary image data to customize images in the portal
-	Images *V2AppearanceImages `json:"images"`
+	//
+	// Deprecated: This resource is deprecated - use konnect_portal_customization resource instead. This resource will be removed in a future release..
+	Images *Images `json:"images"`
 }
 
 func (v V2GetPortalAppearanceResponse) MarshalJSON() ([]byte, error) {
@@ -32,21 +241,21 @@ func (v *V2GetPortalAppearanceResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *V2GetPortalAppearanceResponse) GetThemeName() V2PortalTheme {
+func (v *V2GetPortalAppearanceResponse) GetThemeName() ThemeName {
 	if v == nil {
-		return V2PortalTheme("")
+		return ThemeName("")
 	}
 	return v.ThemeName
 }
 
-func (v *V2GetPortalAppearanceResponse) GetCustomTheme() *V2NullableAppearanceThemeVariables {
+func (v *V2GetPortalAppearanceResponse) GetCustomTheme() *AppearanceThemeVariables {
 	if v == nil {
 		return nil
 	}
 	return v.CustomTheme
 }
 
-func (v *V2GetPortalAppearanceResponse) GetCustomFonts() *V2NullableAppearanceFonts {
+func (v *V2GetPortalAppearanceResponse) GetCustomFonts() *CustomFonts {
 	if v == nil {
 		return nil
 	}
@@ -60,14 +269,14 @@ func (v *V2GetPortalAppearanceResponse) GetUseCustomFonts() bool {
 	return v.UseCustomFonts
 }
 
-func (v *V2GetPortalAppearanceResponse) GetText() *V2NullableAppearanceTextVariables {
+func (v *V2GetPortalAppearanceResponse) GetText() *V2GetPortalAppearanceResponseText {
 	if v == nil {
 		return nil
 	}
 	return v.Text
 }
 
-func (v *V2GetPortalAppearanceResponse) GetImages() *V2AppearanceImages {
+func (v *V2GetPortalAppearanceResponse) GetImages() *Images {
 	if v == nil {
 		return nil
 	}

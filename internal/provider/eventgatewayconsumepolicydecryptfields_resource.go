@@ -95,6 +95,7 @@ func (r *EventGatewayConsumePolicyDecryptFieldsResource) Schema(ctx context.Cont
 									},
 								},
 								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
 									listvalidator.SizeAtMost(50),
 								},
 							},

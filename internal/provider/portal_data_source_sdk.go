@@ -20,7 +20,7 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 			return diags
 		}
 
-		diags.Append(r.RefreshFromSharedPortal(ctx, &resp.Data[0])...)
+		diags.Append(r.RefreshFromSharedListPortalsResponsePortal(ctx, &resp.Data[0])...)
 
 		if diags.HasError() {
 			return diags
@@ -31,7 +31,7 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 	return diags
 }
 
-func (r *PortalDataSourceModel) RefreshFromSharedPortal(ctx context.Context, resp *shared.Portal) diag.Diagnostics {
+func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx context.Context, resp *shared.ListPortalsResponsePortal) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
