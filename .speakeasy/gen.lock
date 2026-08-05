@@ -3,20 +3,20 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: de843b302534950b153bbff52e3bf4b5
   docVersion: 2.0.0
-  speakeasyVersion: 1.791.3
-  generationVersion: 2.926.2
+  speakeasyVersion: 1.791.4
+  generationVersion: 2.926.8
   releaseVersion: 3.21.0
-  configChecksum: c5460c19646dafd6b7b82ae437ddd5d3
+  configChecksum: 5855729e9f738f9729851d889bed1d72
 persistentEdits:
-  generation_id: ad283109-7ccc-45b2-8ede-a3b2b382f927
-  pristine_commit_hash: 34a635b23df65e3a9bca74715b0183b89beba3cc
-  pristine_tree_hash: ab622d82ca0fccce881c7321103385b760eaa859
+  generation_id: 6959e3b0-0a8a-42db-bb66-adac2fa7489f
+  pristine_commit_hash: bf9388e884878fa85472dd0c80bcb9d374280d63
+  pristine_tree_hash: bcb847c651cfd5858d6352d80622e242918812ee
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.5
     constsAndDefaults: 0.3.2
-    core: 3.47.10
+    core: 3.47.11
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.3
@@ -2741,8 +2741,8 @@ trackedFiles:
     pristine_git_object: 1dd3598b7835e5c230dbf91646cfe4b205aa8d77
   go.mod:
     id: c47645c391ad
-    last_write_checksum: sha1:491073d682f4b9dc9f6046c415c6e6c6f747aa63
-    pristine_git_object: 34fe443bafb4a19a8800692aa4a33c80640813cc
+    last_write_checksum: sha1:614fe0587637a768b4f32367cce9c71484d6eabd
+    pristine_git_object: 8d89f5cfc92857e773f924caa6fc3331d4750e7f
   internal/planmodifiers/boolplanmodifier/suppress_diff.go:
     id: 3cf85b98963e
     last_write_checksum: sha1:fd6984577c6c57e42da4c7aa4c45813eeded8092
@@ -7261,8 +7261,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:bc1ac927f0c510f66d04d3893b5a344102f9fa17
-    pristine_git_object: 8e170aa36ce30985f94a0a137d6f18e72e2b9a6a
+    last_write_checksum: sha1:ed75dece430abf67eefda62cc21520c031962c08
+    pristine_git_object: 1a2f93d6c5d359ed86d1a8ebd48fbda2205c4e1b
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
