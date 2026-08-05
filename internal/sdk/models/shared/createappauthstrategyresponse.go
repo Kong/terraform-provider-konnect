@@ -171,7 +171,8 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
 	// applications; stored values may be set for any auth strategy in the organization.
 	//
-	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
+	Principals    *AuthStrategyPrincipals `json:"principals,omitempty"`
+	DcrProviderID *string                 `default:"null" json:"dcr_provider_id"`
 }
 
 func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
@@ -179,6 +180,11 @@ func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyOpenIDConnectResponse) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ". + { dcr_provider_id: .dcr_provider.id }"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "display_name", "strategy_type", "configs", "active", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
@@ -269,6 +275,13 @@ func (a *AppAuthStrategyOpenIDConnectResponse) GetPrincipals() *AuthStrategyPrin
 	return a.Principals
 }
 
+func (a *AppAuthStrategyOpenIDConnectResponse) GetDcrProviderID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DcrProviderID
+}
+
 type AppAuthStrategyKeyAuthResponseStrategyType string
 
 const (
@@ -319,24 +332,24 @@ func (a *AppAuthStrategyKeyAuthResponseConfigs) GetKeyAuth() AppAuthStrategyConf
 	return a.KeyAuth
 }
 
-// ProviderType - The type of DCR provider.
-type ProviderType string
+// AppAuthStrategyKeyAuthResponseProviderType - The type of DCR provider.
+type AppAuthStrategyKeyAuthResponseProviderType string
 
 const (
-	ProviderTypeAuth0        ProviderType = "auth0"
-	ProviderTypeAzureAd      ProviderType = "azureAd"
-	ProviderTypeCurity       ProviderType = "curity"
-	ProviderTypeOkta         ProviderType = "okta"
-	ProviderTypeHTTP         ProviderType = "http"
-	ProviderTypeKongIdentity ProviderType = "kongIdentity"
+	AppAuthStrategyKeyAuthResponseProviderTypeAuth0        AppAuthStrategyKeyAuthResponseProviderType = "auth0"
+	AppAuthStrategyKeyAuthResponseProviderTypeAzureAd      AppAuthStrategyKeyAuthResponseProviderType = "azureAd"
+	AppAuthStrategyKeyAuthResponseProviderTypeCurity       AppAuthStrategyKeyAuthResponseProviderType = "curity"
+	AppAuthStrategyKeyAuthResponseProviderTypeOkta         AppAuthStrategyKeyAuthResponseProviderType = "okta"
+	AppAuthStrategyKeyAuthResponseProviderTypeHTTP         AppAuthStrategyKeyAuthResponseProviderType = "http"
+	AppAuthStrategyKeyAuthResponseProviderTypeKongIdentity AppAuthStrategyKeyAuthResponseProviderType = "kongIdentity"
 )
 
-func (e ProviderType) ToPointer() *ProviderType {
+func (e AppAuthStrategyKeyAuthResponseProviderType) ToPointer() *AppAuthStrategyKeyAuthResponseProviderType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ProviderType) IsExact() bool {
+func (e *AppAuthStrategyKeyAuthResponseProviderType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "auth0", "azureAd", "curity", "okta", "http", "kongIdentity":
@@ -354,7 +367,7 @@ type AppAuthStrategyKeyAuthResponseDcrProvider struct {
 	//
 	DisplayName *string `json:"display_name,omitempty"`
 	// The type of DCR provider.
-	ProviderType ProviderType `json:"provider_type"`
+	ProviderType AppAuthStrategyKeyAuthResponseProviderType `json:"provider_type"`
 }
 
 func (a AppAuthStrategyKeyAuthResponseDcrProvider) MarshalJSON() ([]byte, error) {
@@ -389,9 +402,9 @@ func (a *AppAuthStrategyKeyAuthResponseDcrProvider) GetDisplayName() *string {
 	return a.DisplayName
 }
 
-func (a *AppAuthStrategyKeyAuthResponseDcrProvider) GetProviderType() ProviderType {
+func (a *AppAuthStrategyKeyAuthResponseDcrProvider) GetProviderType() AppAuthStrategyKeyAuthResponseProviderType {
 	if a == nil {
-		return ProviderType("")
+		return AppAuthStrategyKeyAuthResponseProviderType("")
 	}
 	return a.ProviderType
 }
