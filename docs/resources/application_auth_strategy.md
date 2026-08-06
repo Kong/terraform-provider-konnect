@@ -80,7 +80,6 @@ Read-Only:
 
 - `active` (Boolean) At least one published entity is using this auth strategy.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--key_auth--dcr_provider))
 - `id` (String) Contains a unique identifier used for this resource.
 - `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
 Always `true` for KEY_AUTH.
@@ -124,17 +123,6 @@ Optional:
 - `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.
 
 
-<a id="nestedatt--key_auth--dcr_provider"></a>
-### Nested Schema for `key_auth.dcr_provider`
-
-Read-Only:
-
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-- `id` (String) Contains a unique identifier used for this resource.
-- `name` (String)
-- `provider_type` (String) The type of DCR provider.
-
-
 
 <a id="nestedatt--openid_connect"></a>
 ### Nested Schema for `openid_connect`
@@ -158,7 +146,6 @@ Read-Only:
 
 - `active` (Boolean) At least one published entity is using this auth strategy.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--openid_connect--dcr_provider))
 - `id` (String) Contains a unique identifier used for this resource.
 - `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
 - `true` for Key Auth strategies and when supported for Client Credentials strategies
@@ -195,17 +182,6 @@ Optional:
 Optional:
 
 - `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.
-
-
-<a id="nestedatt--openid_connect--dcr_provider"></a>
-### Nested Schema for `openid_connect.dcr_provider`
-
-Read-Only:
-
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-- `id` (String) Contains a unique identifier used for this resource.
-- `name` (String)
-- `provider_type` (String) The type of DCR provider.
 
 ## Import
 

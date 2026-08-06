@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -19,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -27,7 +25,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -192,47 +189,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"dcr_provider": schema.SingleNestedAttribute{
-						Computed: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"display_name":  types.StringType,
-							"id":            types.StringType,
-							"name":          types.StringType,
-							"provider_type": types.StringType,
-						})),
-						PlanModifiers: []planmodifier.Object{
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
-						Attributes: map[string]schema.Attribute{
-							"display_name": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-							},
-							"id": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Description: `Contains a unique identifier used for this resource.`,
-							},
-							"name": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-							},
-							"provider_type": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Description: `The type of DCR provider.`,
-							},
-						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed: true,
@@ -448,47 +404,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"dcr_provider": schema.SingleNestedAttribute{
-						Computed: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"display_name":  types.StringType,
-							"id":            types.StringType,
-							"name":          types.StringType,
-							"provider_type": types.StringType,
-						})),
-						PlanModifiers: []planmodifier.Object{
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
-						Attributes: map[string]schema.Attribute{
-							"display_name": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-							},
-							"id": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Description: `Contains a unique identifier used for this resource.`,
-							},
-							"name": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-							},
-							"provider_type": schema.StringAttribute{
-								Computed: true,
-								PlanModifiers: []planmodifier.String{
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Description: `The type of DCR provider.`,
-							},
-						},
 					},
 					"dcr_provider_id": schema.StringAttribute{
 						Optional: true,

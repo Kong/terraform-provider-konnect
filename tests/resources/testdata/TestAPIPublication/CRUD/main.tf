@@ -7,7 +7,7 @@ resource "konnect_api" "my_api" {
 
 resource "konnect_portal" "my_portal_api_publication" {
   force_destroy                        = "true"
-  name         = "My portal for api publication"
+  name         = "My Portal for API Publication"
 }
 
 resource "konnect_api_publication" "my_apipublication" {

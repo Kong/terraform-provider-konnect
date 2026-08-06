@@ -10,7 +10,6 @@ type AppAuthStrategyOpenIDConnectRequest struct {
 	Active                      types.Bool                                  `tfsdk:"active"`
 	Configs                     *AppAuthStrategyOpenIDConnectRequestConfigs `tfsdk:"configs"`
 	CreatedAt                   types.String                                `tfsdk:"created_at"`
-	DcrProvider                 *AppAuthStrategyKeyAuthResponseDcrProvider  `tfsdk:"dcr_provider"`
 	DcrProviderID               types.String                                `tfsdk:"dcr_provider_id"`
 	DisplayName                 types.String                                `tfsdk:"display_name"`
 	ID                          types.String                                `tfsdk:"id"`
