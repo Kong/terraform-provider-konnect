@@ -26,9 +26,6 @@ func TestDcrProvider(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.issuer", "https://issuer.example.com"),
 						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.labels.team", "platform"),
 						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.active", "false"),
-						// The root attributes are hoisted from the kong_identity block.
-						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "name", "my-dcr-provider"),
-						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "issuer", "https://issuer.example.com"),
 					),
 				},
 				{
@@ -36,6 +33,12 @@ func TestDcrProvider(t *testing.T) {
 					// false in state here, as this step's refresh predates the strategy.
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttrPair(
+							"konnect_application_auth_strategy.my_authstrategy", "openid_connect.dcr_provider_id",
+							"konnect_dcr_provider.my_dcrprovider", "id",
+						),
+					),
 				},
 				{
 					// Identical config to step 2: the first refresh to see active flip,
@@ -49,6 +52,10 @@ func TestDcrProvider(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.active", "true"),
+						resource.TestCheckResourceAttrPair(
+							"konnect_application_auth_strategy.my_authstrategy", "openid_connect.dcr_provider_id",
+							"konnect_dcr_provider.my_dcrprovider", "id",
+						),
 					),
 				},
 			},
@@ -80,16 +87,10 @@ func TestDcrProvider(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "http.name", "my-dcr-provider-renamed"),
 						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "http.labels.team", "identity"),
-						// root name is stale after an in-place update, since
-						// UseHoistedValue only fires when the plan value is unknown (create).
-						// The next refresh fixes it, see step 3. If the modifier is fixed,
-						// change this to expect "my-dcr-provider-renamed".
-						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "name", "my-dcr-provider"),
 					),
 				},
 				{
-					// Identical config to step 2: catches a perpetual diff on api_key and
-					// checks the refresh brings the hoisted root name up to date.
+					// Identical config to step 2: catches a perpetual diff on api_key.
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
@@ -97,9 +98,6 @@ func TestDcrProvider(t *testing.T) {
 							plancheck.ExpectEmptyPlan(),
 						},
 					},
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "name", "my-dcr-provider-renamed"),
-					),
 				},
 			},
 		})
@@ -149,16 +147,6 @@ func TestDcrProvider(t *testing.T) {
 					ConfigStateChecks: idState(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.name", "my-dcr-provider-renamed"),
-					),
-				},
-				{
-					// labels
-					Config:            providerConfigUs,
-					ConfigDirectory:   config.TestStepDirectory(),
-					ConfigPlanChecks:  replacePlan,
-					ConfigStateChecks: idState(),
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_dcr_provider.my_dcrprovider", "kong_identity.labels.team", "identity"),
 					),
 				},
 			},

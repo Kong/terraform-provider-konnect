@@ -115,11 +115,3 @@ resource "konnect_application_auth_strategy" "my_authstrategy" {
     }
   }
 }
-
-output "dcr_provider_id" {
-  value = konnect_dcr_provider.my_dcrprovider.id
-}
-
-output "auth_strategy_id" {
-  value = konnect_application_auth_strategy.my_authstrategy.id
-}
