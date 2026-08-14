@@ -69,6 +69,7 @@ type GatewayUpstreamResourceModel struct {
 	Tags                     []types.String        `tfsdk:"tags"`
 	UpdatedAt                types.Int64           `tfsdk:"updated_at"`
 	UseSrvName               types.Bool            `tfsdk:"use_srv_name"`
+	Workspace                types.String          `tfsdk:"workspace"`
 }
 
 func (r *GatewayUpstreamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -477,6 +478,12 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Default:     booldefault.StaticBool(false),
 				Description: `If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream ` + "`" + `Host` + "`" + `. Default: false`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`default`),
+				Description: `The name of the workspace. Default: "default"`,
+			},
 		},
 	}
 }
@@ -519,13 +526,13 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateUpstreamRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateUpstreamInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.CreateUpstream(ctx, *request)
+	res, err := r.client.Upstreams.CreateUpstreamInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -579,13 +586,13 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetUpstreamRequest(ctx)
+	request, requestDiags := data.ToOperationsGetUpstreamInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.GetUpstream(ctx, *request)
+	res, err := r.client.Upstreams.GetUpstreamInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -633,13 +640,13 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertUpstreamRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertUpstreamInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.UpsertUpstream(ctx, *request)
+	res, err := r.client.Upstreams.UpsertUpstreamInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -693,13 +700,13 @@ func (r *GatewayUpstreamResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteUpstreamRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteUpstreamInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.DeleteUpstream(ctx, *request)
+	res, err := r.client.Upstreams.DeleteUpstreamInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -727,10 +734,11 @@ func (r *GatewayUpstreamResource) ImportState(ctx context.Context, req resource.
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -744,4 +752,9 @@ func (r *GatewayUpstreamResource) ImportState(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

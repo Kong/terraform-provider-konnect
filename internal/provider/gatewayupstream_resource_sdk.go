@@ -155,11 +155,14 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Con
 	return diags
 }
 
-func (r *GatewayUpstreamResourceModel) ToOperationsCreateUpstreamRequest(ctx context.Context) (*operations.CreateUpstreamRequest, diag.Diagnostics) {
+func (r *GatewayUpstreamResourceModel) ToOperationsCreateUpstreamInWorkspaceRequest(ctx context.Context) (*operations.CreateUpstreamInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
 	diags.Append(upstreamDiags...)
@@ -168,15 +171,16 @@ func (r *GatewayUpstreamResourceModel) ToOperationsCreateUpstreamRequest(ctx con
 		return nil, diags
 	}
 
-	out := operations.CreateUpstreamRequest{
+	out := operations.CreateUpstreamInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Upstream:       *upstream,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayUpstreamResourceModel) ToOperationsDeleteUpstreamRequest(ctx context.Context) (*operations.DeleteUpstreamRequest, diag.Diagnostics) {
+func (r *GatewayUpstreamResourceModel) ToOperationsDeleteUpstreamInWorkspaceRequest(ctx context.Context) (*operations.DeleteUpstreamInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -185,15 +189,19 @@ func (r *GatewayUpstreamResourceModel) ToOperationsDeleteUpstreamRequest(ctx con
 	var upstreamID string
 	upstreamID = r.ID.ValueString()
 
-	out := operations.DeleteUpstreamRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteUpstreamInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		UpstreamID:     upstreamID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayUpstreamResourceModel) ToOperationsGetUpstreamRequest(ctx context.Context) (*operations.GetUpstreamRequest, diag.Diagnostics) {
+func (r *GatewayUpstreamResourceModel) ToOperationsGetUpstreamInWorkspaceRequest(ctx context.Context) (*operations.GetUpstreamInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var upstreamID string
@@ -202,15 +210,19 @@ func (r *GatewayUpstreamResourceModel) ToOperationsGetUpstreamRequest(ctx contex
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetUpstreamRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetUpstreamInWorkspaceRequest{
 		UpstreamID:     upstreamID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayUpstreamResourceModel) ToOperationsUpsertUpstreamRequest(ctx context.Context) (*operations.UpsertUpstreamRequest, diag.Diagnostics) {
+func (r *GatewayUpstreamResourceModel) ToOperationsUpsertUpstreamInWorkspaceRequest(ctx context.Context) (*operations.UpsertUpstreamInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var upstreamID string
@@ -218,6 +230,9 @@ func (r *GatewayUpstreamResourceModel) ToOperationsUpsertUpstreamRequest(ctx con
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
 	diags.Append(upstreamDiags...)
@@ -226,9 +241,10 @@ func (r *GatewayUpstreamResourceModel) ToOperationsUpsertUpstreamRequest(ctx con
 		return nil, diags
 	}
 
-	out := operations.UpsertUpstreamRequest{
+	out := operations.UpsertUpstreamInWorkspaceRequest{
 		UpstreamID:     upstreamID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Upstream:       *upstream,
 	}
 

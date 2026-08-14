@@ -30,9 +30,9 @@ func newAPIKeys(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateKeyAuthWithConsumer - Create a new API-key associated with a Consumer
-// Create a new API-key associated with a Consumer
-func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operations.CreateKeyAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateKeyAuthWithConsumerResponse, error) {
+// CreateKeyAuthWithConsumerInWorkspace - Create a new API-key associated with a Consumer in a workspace
+// Create a new API-key associated with a Consumer in a workspace
+func (s *APIKeys) CreateKeyAuthWithConsumerInWorkspace(ctx context.Context, request operations.CreateKeyAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKeyAuthWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51,7 +51,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/key-auth", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61,7 +61,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-key-auth-with-consumer",
+		OperationID:      "create-key-auth-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.CreateKeyAuthWithConsumerResponse{
+	res := &operations.CreateKeyAuthWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operati
 
 }
 
-// DeleteKeyAuthWithConsumer - Delete a an API-key associated with a Consumer
-// Delete a an API-key associated with a Consumer using ID.
-func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operations.DeleteKeyAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteKeyAuthWithConsumerResponse, error) {
+// DeleteKeyAuthWithConsumerInWorkspace - Delete a an API-key associated with a Consumer in a workspace
+// Delete a an API-key associated with a Consumer using ID in a workspace.
+func (s *APIKeys) DeleteKeyAuthWithConsumerInWorkspace(ctx context.Context, request operations.DeleteKeyAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKeyAuthWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -257,7 +257,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -267,7 +267,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-key-auth-with-consumer",
+		OperationID:      "delete-key-auth-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteKeyAuthWithConsumerResponse{
+	res := &operations.DeleteKeyAuthWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 
 }
 
-// GetKeyAuthWithConsumer - Get an API-key associated with a Consumer
-// Get an API-key associated with a Consumer using ID.
-func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations.GetKeyAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetKeyAuthWithConsumerResponse, error) {
+// GetKeyAuthWithConsumerInWorkspace - Get an API-key associated with a Consumer in a workspace
+// Get an API-key associated with a Consumer using ID in a workspace.
+func (s *APIKeys) GetKeyAuthWithConsumerInWorkspace(ctx context.Context, request operations.GetKeyAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetKeyAuthWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -439,7 +439,7 @@ func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -449,7 +449,7 @@ func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-key-auth-with-consumer",
+		OperationID:      "get-key-auth-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.GetKeyAuthWithConsumerResponse{
+	res := &operations.GetKeyAuthWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

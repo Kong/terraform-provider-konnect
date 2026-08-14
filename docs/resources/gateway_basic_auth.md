@@ -22,7 +22,8 @@ resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
   tags = [
     "..."
   ]
-  username = "...my_username..."
+  username  = "...my_username..."
+  workspace = "team-payments"
 }
 ```
 
@@ -41,6 +42,7 @@ resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `tags` (List of String) A set of strings representing tags. Requires replacement if changed.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 
@@ -55,6 +57,7 @@ import {
     consumer_id      = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "80db1b58-ca7c-4d21-b92a-64eb07725872"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -62,5 +65,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_basic_auth.my_konnect_gateway_basic_auth '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "80db1b58-ca7c-4d21-b92a-64eb07725872"}'
+terraform import konnect_gateway_basic_auth.my_konnect_gateway_basic_auth '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "80db1b58-ca7c-4d21-b92a-64eb07725872", "workspace": "team-payments"}'
 ```

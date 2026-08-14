@@ -601,7 +601,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
-						Description: `Enable signature validation for SAML responses. Default: true`,
+						Description: `Controls SAML response signature validation. When enabled (the default), the ` + "`" + `saml:Assertion` + "`" + ` signature is validated and a valid ` + "`" + `idp_certificate` + "`" + ` is required. When disabled, the signature is still validated as long as an ` + "`" + `idp_certificate` + "`" + ` is configured, but the ` + "`" + `samlp:Response` + "`" + ` signature is checked instead of the assertion. Disabling it without an ` + "`" + `idp_certificate` + "`" + ` skips signature validation entirely, which is insecure (unsigned responses are accepted) and logs a warning. Default: true`,
 					},
 				},
 			},

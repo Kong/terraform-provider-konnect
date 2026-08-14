@@ -41,11 +41,14 @@ func (r *GatewayVaultResourceModel) RefreshFromSharedVault(ctx context.Context, 
 	return diags
 }
 
-func (r *GatewayVaultResourceModel) ToOperationsCreateVaultRequest(ctx context.Context) (*operations.CreateVaultRequest, diag.Diagnostics) {
+func (r *GatewayVaultResourceModel) ToOperationsCreateVaultInWorkspaceRequest(ctx context.Context) (*operations.CreateVaultInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	vault, vaultDiags := r.ToSharedVault(ctx)
 	diags.Append(vaultDiags...)
@@ -54,15 +57,16 @@ func (r *GatewayVaultResourceModel) ToOperationsCreateVaultRequest(ctx context.C
 		return nil, diags
 	}
 
-	out := operations.CreateVaultRequest{
+	out := operations.CreateVaultInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Vault:          *vault,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayVaultResourceModel) ToOperationsDeleteVaultRequest(ctx context.Context) (*operations.DeleteVaultRequest, diag.Diagnostics) {
+func (r *GatewayVaultResourceModel) ToOperationsDeleteVaultInWorkspaceRequest(ctx context.Context) (*operations.DeleteVaultInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -71,15 +75,19 @@ func (r *GatewayVaultResourceModel) ToOperationsDeleteVaultRequest(ctx context.C
 	var vaultID string
 	vaultID = r.ID.ValueString()
 
-	out := operations.DeleteVaultRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteVaultInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		VaultID:        vaultID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayVaultResourceModel) ToOperationsGetVaultRequest(ctx context.Context) (*operations.GetVaultRequest, diag.Diagnostics) {
+func (r *GatewayVaultResourceModel) ToOperationsGetVaultInWorkspaceRequest(ctx context.Context) (*operations.GetVaultInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var vaultID string
@@ -88,15 +96,19 @@ func (r *GatewayVaultResourceModel) ToOperationsGetVaultRequest(ctx context.Cont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetVaultRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetVaultInWorkspaceRequest{
 		VaultID:        vaultID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayVaultResourceModel) ToOperationsUpsertVaultRequest(ctx context.Context) (*operations.UpsertVaultRequest, diag.Diagnostics) {
+func (r *GatewayVaultResourceModel) ToOperationsUpsertVaultInWorkspaceRequest(ctx context.Context) (*operations.UpsertVaultInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var vaultID string
@@ -104,6 +116,9 @@ func (r *GatewayVaultResourceModel) ToOperationsUpsertVaultRequest(ctx context.C
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	vault, vaultDiags := r.ToSharedVault(ctx)
 	diags.Append(vaultDiags...)
@@ -112,9 +127,10 @@ func (r *GatewayVaultResourceModel) ToOperationsUpsertVaultRequest(ctx context.C
 		return nil, diags
 	}
 
-	out := operations.UpsertVaultRequest{
+	out := operations.UpsertVaultInWorkspaceRequest{
 		VaultID:        vaultID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Vault:          *vault,
 	}
 

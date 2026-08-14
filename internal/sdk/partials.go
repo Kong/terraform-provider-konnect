@@ -31,9 +31,9 @@ func newPartials(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hoo
 	}
 }
 
-// CreatePartial - Create a new Partial
-// Create a new Partial
-func (s *Partials) CreatePartial(ctx context.Context, request operations.CreatePartialRequest, opts ...operations.Option) (*operations.CreatePartialResponse, error) {
+// CreatePartialInWorkspace - Create a new Partial in a workspace
+// Create a new Partial in a workspace
+func (s *Partials) CreatePartialInWorkspace(ctx context.Context, request operations.CreatePartialInWorkspaceRequest, opts ...operations.Option) (*operations.CreatePartialInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52,7 +52,7 @@ func (s *Partials) CreatePartial(ctx context.Context, request operations.CreateP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -62,7 +62,7 @@ func (s *Partials) CreatePartial(ctx context.Context, request operations.CreateP
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-partial",
+		OperationID:      "create-partial-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -197,7 +197,7 @@ func (s *Partials) CreatePartial(ctx context.Context, request operations.CreateP
 		}
 	}
 
-	res := &operations.CreatePartialResponse{
+	res := &operations.CreatePartialInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -258,9 +258,9 @@ func (s *Partials) CreatePartial(ctx context.Context, request operations.CreateP
 
 }
 
-// DeletePartial - Delete a Partial
-// Delete a Partial
-func (s *Partials) DeletePartial(ctx context.Context, request operations.DeletePartialRequest, opts ...operations.Option) (*operations.DeletePartialResponse, error) {
+// DeletePartialInWorkspace - Delete a Partial in a workspace
+// Delete a Partial in a workspace
+func (s *Partials) DeletePartialInWorkspace(ctx context.Context, request operations.DeletePartialInWorkspaceRequest, opts ...operations.Option) (*operations.DeletePartialInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -279,7 +279,7 @@ func (s *Partials) DeletePartial(ctx context.Context, request operations.DeleteP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials/{PartialId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -289,7 +289,7 @@ func (s *Partials) DeletePartial(ctx context.Context, request operations.DeleteP
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-partial",
+		OperationID:      "delete-partial-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -417,7 +417,7 @@ func (s *Partials) DeletePartial(ctx context.Context, request operations.DeleteP
 		}
 	}
 
-	res := &operations.DeletePartialResponse{
+	res := &operations.DeletePartialInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -461,9 +461,9 @@ func (s *Partials) DeletePartial(ctx context.Context, request operations.DeleteP
 
 }
 
-// GetPartial - Get a Partial
-// Get a Partial using ID.
-func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartialRequest, opts ...operations.Option) (*operations.GetPartialResponse, error) {
+// GetPartialInWorkspace - Get a Partial in a workspace
+// Get a Partial using ID in a workspace.
+func (s *Partials) GetPartialInWorkspace(ctx context.Context, request operations.GetPartialInWorkspaceRequest, opts ...operations.Option) (*operations.GetPartialInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -482,7 +482,7 @@ func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartial
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials/{PartialId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -492,7 +492,7 @@ func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartial
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-partial",
+		OperationID:      "get-partial-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -620,7 +620,7 @@ func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartial
 		}
 	}
 
-	res := &operations.GetPartialResponse{
+	res := &operations.GetPartialInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -683,9 +683,9 @@ func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartial
 
 }
 
-// UpsertPartial - Upsert a Partial
-// Create or Update Partial using ID.
-func (s *Partials) UpsertPartial(ctx context.Context, request operations.UpsertPartialRequest, opts ...operations.Option) (*operations.UpsertPartialResponse, error) {
+// UpsertPartialInWorkspace - Upsert a Partial in a workspace
+// Create or Update Partial using ID in a workspace.
+func (s *Partials) UpsertPartialInWorkspace(ctx context.Context, request operations.UpsertPartialInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertPartialInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -704,7 +704,7 @@ func (s *Partials) UpsertPartial(ctx context.Context, request operations.UpsertP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials/{PartialId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -714,7 +714,7 @@ func (s *Partials) UpsertPartial(ctx context.Context, request operations.UpsertP
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-partial",
+		OperationID:      "upsert-partial-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -849,7 +849,7 @@ func (s *Partials) UpsertPartial(ctx context.Context, request operations.UpsertP
 		}
 	}
 
-	res := &operations.UpsertPartialResponse{
+	res := &operations.UpsertPartialInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

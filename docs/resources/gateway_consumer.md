@@ -23,6 +23,7 @@ resource "konnect_gateway_consumer" "my_gatewayconsumer" {
   ]
   updated_at = 1
   username   = "...my_username..."
+  workspace  = "team-payments"
 }
 ```
 
@@ -41,6 +42,7 @@ resource "konnect_gateway_consumer" "my_gatewayconsumer" {
 - `tags` (List of String) An optional set of strings associated with the Consumer for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `username` (String) The unique username of the Consumer. You must send either this field or `custom_id` with the request.
+- `workspace` (String) The name of the workspace. Default: "default"
 
 ## Import
 
@@ -54,6 +56,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "c1059869-6fa7-4329-a5f5-5946d14ca2c5"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -61,5 +64,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_consumer.my_konnect_gateway_consumer '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "c1059869-6fa7-4329-a5f5-5946d14ca2c5"}'
+terraform import konnect_gateway_consumer.my_konnect_gateway_consumer '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "c1059869-6fa7-4329-a5f5-5946d14ca2c5", "workspace": "team-payments"}'
 ```

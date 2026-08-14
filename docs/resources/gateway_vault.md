@@ -25,6 +25,7 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
     "..."
   ]
   updated_at = 4
+  workspace  = "team-payments"
 }
 ```
 
@@ -45,6 +46,7 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `tags` (List of String) An optional set of strings associated with the Vault for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"
 
 ## Import
 
@@ -58,6 +60,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "9d4d6d19-77c6-428e-a965-9bc9647633e9"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -65,5 +68,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_vault.my_konnect_gateway_vault '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9d4d6d19-77c6-428e-a965-9bc9647633e9"}'
+terraform import konnect_gateway_vault.my_konnect_gateway_vault '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9d4d6d19-77c6-428e-a965-9bc9647633e9", "workspace": "team-payments"}'
 ```

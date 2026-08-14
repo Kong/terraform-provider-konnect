@@ -30,7 +30,7 @@ func (r *GatewayACLResourceModel) RefreshFromSharedACL(ctx context.Context, resp
 	return diags
 }
 
-func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerRequest(ctx context.Context) (*operations.CreateACLWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.CreateACLWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -38,6 +38,9 @@ func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerRequest(ctx c
 
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aclWithoutParents, aclWithoutParentsDiags := r.ToSharedACLWithoutParents(ctx)
 	diags.Append(aclWithoutParentsDiags...)
@@ -46,16 +49,17 @@ func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerRequest(ctx c
 		return nil, diags
 	}
 
-	out := operations.CreateACLWithConsumerRequest{
+	out := operations.CreateACLWithConsumerInWorkspaceRequest{
 		ControlPlaneID:    controlPlaneID,
 		ConsumerID:        consumerID,
+		Workspace:         workspace,
 		ACLWithoutParents: *aclWithoutParents,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayACLResourceModel) ToOperationsDeleteACLWithConsumerRequest(ctx context.Context) (*operations.DeleteACLWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayACLResourceModel) ToOperationsDeleteACLWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.DeleteACLWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -67,16 +71,20 @@ func (r *GatewayACLResourceModel) ToOperationsDeleteACLWithConsumerRequest(ctx c
 	var aclID string
 	aclID = r.ID.ValueString()
 
-	out := operations.DeleteACLWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteACLWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		ACLID:          aclID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayACLResourceModel) ToOperationsGetACLWithConsumerRequest(ctx context.Context) (*operations.GetACLWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayACLResourceModel) ToOperationsGetACLWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.GetACLWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -88,10 +96,14 @@ func (r *GatewayACLResourceModel) ToOperationsGetACLWithConsumerRequest(ctx cont
 	var aclID string
 	aclID = r.ID.ValueString()
 
-	out := operations.GetACLWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetACLWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		ACLID:          aclID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

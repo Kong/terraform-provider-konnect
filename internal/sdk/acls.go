@@ -30,9 +30,9 @@ func newACLs(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateACLWithConsumer - Create a new ACL associated with a Consumer
-// Create a new ACL associated with a Consumer
-func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.CreateACLWithConsumerRequest, opts ...operations.Option) (*operations.CreateACLWithConsumerResponse, error) {
+// CreateACLWithConsumerInWorkspace - Create a new ACL associated with a Consumer in a workspace
+// Create a new ACL associated with a Consumer in a workspace
+func (s *ACLs) CreateACLWithConsumerInWorkspace(ctx context.Context, request operations.CreateACLWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateACLWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51,7 +51,7 @@ func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/acls", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61,7 +61,7 @@ func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.Cre
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-acl-with-consumer",
+		OperationID:      "create-acl-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.Cre
 		}
 	}
 
-	res := &operations.CreateACLWithConsumerResponse{
+	res := &operations.CreateACLWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.Cre
 
 }
 
-// DeleteACLWithConsumer - Delete a an ACL associated with a Consumer
-// Delete a an ACL associated with a Consumer using ID.
-func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.DeleteACLWithConsumerRequest, opts ...operations.Option) (*operations.DeleteACLWithConsumerResponse, error) {
+// DeleteACLWithConsumerInWorkspace - Delete a an ACL associated with a Consumer in a workspace
+// Delete a an ACL associated with a Consumer using ID in a workspace.
+func (s *ACLs) DeleteACLWithConsumerInWorkspace(ctx context.Context, request operations.DeleteACLWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteACLWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -257,7 +257,7 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -267,7 +267,7 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-acl-with-consumer",
+		OperationID:      "delete-acl-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 		}
 	}
 
-	res := &operations.DeleteACLWithConsumerResponse{
+	res := &operations.DeleteACLWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 
 }
 
-// GetACLWithConsumer - Get an ACL associated with a Consumer
-// Get an ACL associated with a Consumer using ID.
-func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACLWithConsumerRequest, opts ...operations.Option) (*operations.GetACLWithConsumerResponse, error) {
+// GetACLWithConsumerInWorkspace - Get an ACL associated with a Consumer in a workspace
+// Get an ACL associated with a Consumer using ID in a workspace.
+func (s *ACLs) GetACLWithConsumerInWorkspace(ctx context.Context, request operations.GetACLWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetACLWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -439,7 +439,7 @@ func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACL
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -449,7 +449,7 @@ func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACL
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-acl-with-consumer",
+		OperationID:      "get-acl-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACL
 		}
 	}
 
-	res := &operations.GetACLWithConsumerResponse{
+	res := &operations.GetACLWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

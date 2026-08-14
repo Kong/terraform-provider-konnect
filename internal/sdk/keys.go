@@ -31,9 +31,9 @@ func newKeys(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateKey - Create a new Key
-// Create a new Key
-func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyRequest, opts ...operations.Option) (*operations.CreateKeyResponse, error) {
+// CreateKeyInWorkspace - Create a new Key in a workspace
+// Create a new Key in a workspace
+func (s *Keys) CreateKeyInWorkspace(ctx context.Context, request operations.CreateKeyInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKeyInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52,7 +52,7 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -62,7 +62,7 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-key",
+		OperationID:      "create-key-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -197,7 +197,7 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 		}
 	}
 
-	res := &operations.CreateKeyResponse{
+	res := &operations.CreateKeyInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -258,9 +258,9 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 
 }
 
-// DeleteKey - Delete a Key
-// Delete a Key
-func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyRequest, opts ...operations.Option) (*operations.DeleteKeyResponse, error) {
+// DeleteKeyInWorkspace - Delete a Key in a workspace
+// Delete a Key in a workspace
+func (s *Keys) DeleteKeyInWorkspace(ctx context.Context, request operations.DeleteKeyInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKeyInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -279,7 +279,7 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -289,7 +289,7 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-key",
+		OperationID:      "delete-key-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -417,7 +417,7 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 		}
 	}
 
-	res := &operations.DeleteKeyResponse{
+	res := &operations.DeleteKeyInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -461,9 +461,9 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 
 }
 
-// GetKey - Get a Key
-// Get a Key using ID or name.
-func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opts ...operations.Option) (*operations.GetKeyResponse, error) {
+// GetKeyInWorkspace - Get a Key in a workspace
+// Get a Key using ID or name in a workspace.
+func (s *Keys) GetKeyInWorkspace(ctx context.Context, request operations.GetKeyInWorkspaceRequest, opts ...operations.Option) (*operations.GetKeyInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -482,7 +482,7 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -492,7 +492,7 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-key",
+		OperationID:      "get-key-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -620,7 +620,7 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 		}
 	}
 
-	res := &operations.GetKeyResponse{
+	res := &operations.GetKeyInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -683,9 +683,9 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 
 }
 
-// UpsertKey - Upsert a Key
-// Create or Update Key using ID or name.
-func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyRequest, opts ...operations.Option) (*operations.UpsertKeyResponse, error) {
+// UpsertKeyInWorkspace - Upsert a Key in a workspace
+// Create or Update Key using ID or name in a workspace.
+func (s *Keys) UpsertKeyInWorkspace(ctx context.Context, request operations.UpsertKeyInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertKeyInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -704,7 +704,7 @@ func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -714,7 +714,7 @@ func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyReques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-key",
+		OperationID:      "upsert-key-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -849,7 +849,7 @@ func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyReques
 		}
 	}
 
-	res := &operations.UpsertKeyResponse{
+	res := &operations.UpsertKeyInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

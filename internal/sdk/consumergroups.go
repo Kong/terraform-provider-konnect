@@ -32,9 +32,9 @@ func newConsumerGroups(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hook
 	}
 }
 
-// CreateConsumerGroup - Create a new Consumer Group
-// Create a new Consumer Group
-func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operations.CreateConsumerGroupRequest, opts ...operations.Option) (*operations.CreateConsumerGroupResponse, error) {
+// CreateConsumerGroupInWorkspace - Create a new Consumer Group in a workspace
+// Create a new Consumer Group in a workspace
+func (s *ConsumerGroups) CreateConsumerGroupInWorkspace(ctx context.Context, request operations.CreateConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.CreateConsumerGroupInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53,7 +53,7 @@ func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63,7 +63,7 @@ func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-consumer_group",
+		OperationID:      "create-consumer_group-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -198,7 +198,7 @@ func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.CreateConsumerGroupResponse{
+	res := &operations.CreateConsumerGroupInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -259,9 +259,9 @@ func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operat
 
 }
 
-// DeleteConsumerGroup - Delete a Consumer Group
-// Delete a Consumer Group
-func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operations.DeleteConsumerGroupRequest, opts ...operations.Option) (*operations.DeleteConsumerGroupResponse, error) {
+// DeleteConsumerGroupInWorkspace - Delete a Consumer Group in a workspace
+// Delete a Consumer Group in a workspace
+func (s *ConsumerGroups) DeleteConsumerGroupInWorkspace(ctx context.Context, request operations.DeleteConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteConsumerGroupInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -280,7 +280,7 @@ func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -290,7 +290,7 @@ func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-consumer_group",
+		OperationID:      "delete-consumer_group-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -418,7 +418,7 @@ func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.DeleteConsumerGroupResponse{
+	res := &operations.DeleteConsumerGroupInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -462,9 +462,9 @@ func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operat
 
 }
 
-// GetConsumerGroup - Get a Consumer Group
-// Get a Consumer Group using ID.
-func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operations.GetConsumerGroupRequest, opts ...operations.Option) (*operations.GetConsumerGroupResponse, error) {
+// GetConsumerGroupInWorkspace - Get a Consumer Group in a workspace
+// Get a Consumer Group using ID in a workspace.
+func (s *ConsumerGroups) GetConsumerGroupInWorkspace(ctx context.Context, request operations.GetConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.GetConsumerGroupInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -483,7 +483,7 @@ func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -493,7 +493,7 @@ func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-consumer_group",
+		OperationID:      "get-consumer_group-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -625,7 +625,7 @@ func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.GetConsumerGroupResponse{
+	res := &operations.GetConsumerGroupInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -688,9 +688,9 @@ func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operation
 
 }
 
-// UpsertConsumerGroup - Upsert a Consumer Group
-// Create or Update Consumer Group using ID.
-func (s *ConsumerGroups) UpsertConsumerGroup(ctx context.Context, request operations.UpsertConsumerGroupRequest, opts ...operations.Option) (*operations.UpsertConsumerGroupResponse, error) {
+// UpsertConsumerGroupInWorkspace - Upsert a Consumer Group in a workspace
+// Create or Update Consumer Group using ID in a workspace.
+func (s *ConsumerGroups) UpsertConsumerGroupInWorkspace(ctx context.Context, request operations.UpsertConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertConsumerGroupInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -709,7 +709,7 @@ func (s *ConsumerGroups) UpsertConsumerGroup(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -719,7 +719,7 @@ func (s *ConsumerGroups) UpsertConsumerGroup(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-consumer_group",
+		OperationID:      "upsert-consumer_group-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -854,7 +854,7 @@ func (s *ConsumerGroups) UpsertConsumerGroup(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.UpsertConsumerGroupResponse{
+	res := &operations.UpsertConsumerGroupInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -915,9 +915,9 @@ func (s *ConsumerGroups) UpsertConsumerGroup(ctx context.Context, request operat
 
 }
 
-// AddConsumerToGroup - Add consumer to consumer group
-// Add a consumer to a consumer group
-func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operations.AddConsumerToGroupRequest, opts ...operations.Option) (*operations.AddConsumerToGroupResponse, error) {
+// AddConsumerToGroupInWorkspace - Add consumer to consumer group in a workspace
+// Add a consumer to a consumer group in a workspace
+func (s *ConsumerGroups) AddConsumerToGroupInWorkspace(ctx context.Context, request operations.AddConsumerToGroupInWorkspaceRequest, opts ...operations.Option) (*operations.AddConsumerToGroupInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -936,7 +936,7 @@ func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}/consumers", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -946,7 +946,7 @@ func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "add-consumer-to-group",
+		OperationID:      "add-consumer-to-group-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -970,7 +970,7 @@ func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operati
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
@@ -1081,7 +1081,7 @@ func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.AddConsumerToGroupResponse{
+	res := &operations.AddConsumerToGroupInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1089,7 +1089,26 @@ func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operati
 
 	switch {
 	case httpRes.StatusCode == 201:
-		utils.DrainBody(httpRes)
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out operations.AddConsumerToGroupInWorkspaceResponseBody
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.Object = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1102,9 +1121,9 @@ func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operati
 
 }
 
-// RemoveConsumerFromGroup - Remove consumer from consumer group
-// Remove a consumer from a consumer group
-func (s *ConsumerGroups) RemoveConsumerFromGroup(ctx context.Context, request operations.RemoveConsumerFromGroupRequest, opts ...operations.Option) (*operations.RemoveConsumerFromGroupResponse, error) {
+// RemoveConsumerFromGroupInWorkspace - Remove consumer from consumer group in a workspace
+// Remove a consumer from a consumer group in a workspace
+func (s *ConsumerGroups) RemoveConsumerFromGroupInWorkspace(ctx context.Context, request operations.RemoveConsumerFromGroupInWorkspaceRequest, opts ...operations.Option) (*operations.RemoveConsumerFromGroupInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1123,7 +1142,7 @@ func (s *ConsumerGroups) RemoveConsumerFromGroup(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1133,7 +1152,7 @@ func (s *ConsumerGroups) RemoveConsumerFromGroup(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "remove-consumer-from-group",
+		OperationID:      "remove-consumer-from-group-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1261,7 +1280,7 @@ func (s *ConsumerGroups) RemoveConsumerFromGroup(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.RemoveConsumerFromGroupResponse{
+	res := &operations.RemoveConsumerFromGroupInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

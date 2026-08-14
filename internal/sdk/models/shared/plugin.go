@@ -126,37 +126,6 @@ func (o *Ordering) GetBefore() *Before {
 	return o.Before
 }
 
-// Protocols - A string representing a protocol, such as HTTP or HTTPS.
-type Protocols string
-
-const (
-	ProtocolsGrpc           Protocols = "grpc"
-	ProtocolsGrpcs          Protocols = "grpcs"
-	ProtocolsHTTP           Protocols = "http"
-	ProtocolsHTTPS          Protocols = "https"
-	ProtocolsTCP            Protocols = "tcp"
-	ProtocolsTLS            Protocols = "tls"
-	ProtocolsTLSPassthrough Protocols = "tls_passthrough"
-	ProtocolsUDP            Protocols = "udp"
-	ProtocolsWs             Protocols = "ws"
-	ProtocolsWss            Protocols = "wss"
-)
-
-func (e Protocols) ToPointer() *Protocols {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Protocols) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
-			return true
-		}
-	}
-	return false
-}
-
 // Route - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type Route struct {
 	ID *string `json:"id,omitempty"`

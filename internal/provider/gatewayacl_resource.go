@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -43,6 +44,7 @@ type GatewayACLResourceModel struct {
 	Group          types.String   `tfsdk:"group"`
 	ID             types.String   `tfsdk:"id"`
 	Tags           []types.String `tfsdk:"tags"`
+	Workspace      types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayACLResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -101,6 +103,15 @@ func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequ
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags. Requires replacement if changed.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -143,13 +154,13 @@ func (r *GatewayACLResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateACLWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateACLWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ACLs.CreateACLWithConsumer(ctx, *request)
+	res, err := r.client.ACLs.CreateACLWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -203,13 +214,13 @@ func (r *GatewayACLResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetACLWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsGetACLWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ACLs.GetACLWithConsumer(ctx, *request)
+	res, err := r.client.ACLs.GetACLWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -281,13 +292,13 @@ func (r *GatewayACLResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteACLWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteACLWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ACLs.DeleteACLWithConsumer(ctx, *request)
+	res, err := r.client.ACLs.DeleteACLWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -316,10 +327,11 @@ func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.Impor
 		ID             string `json:"id"`
 		ConsumerID     string `json:"consumer_id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -338,4 +350,9 @@ func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

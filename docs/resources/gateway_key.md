@@ -31,6 +31,7 @@ resource "konnect_gateway_key" "my_gatewaykey" {
     "..."
   ]
   updated_at = 2
+  workspace  = "team-payments"
   x5t        = "...my_x5t..."
 }
 ```
@@ -53,6 +54,7 @@ resource "konnect_gateway_key" "my_gatewaykey" {
 - `set` (Attributes) The id (an UUID) of the key-set with which to associate the key. (see [below for nested schema](#nestedatt--set))
 - `tags` (List of String) An optional set of strings associated with the Key for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"
 - `x5t` (String) X.509 certificate SHA-1 thumbprint.
 
 <a id="nestedatt--pem"></a>
@@ -83,6 +85,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "bba22c06-a632-42be-a018-1b9ff357b5b9"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -90,5 +93,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_key.my_konnect_gateway_key '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "bba22c06-a632-42be-a018-1b9ff357b5b9"}'
+terraform import konnect_gateway_key.my_konnect_gateway_key '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "bba22c06-a632-42be-a018-1b9ff357b5b9", "workspace": "team-payments"}'
 ```

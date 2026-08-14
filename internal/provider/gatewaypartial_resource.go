@@ -61,6 +61,7 @@ type GatewayPartialResourceModel struct {
 	RedisEe        *tfTypes.PartialRedisEe    `queryParam:"inline" tfsdk:"redis_ee"`
 	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 	Vectordb       *tfTypes.PartialVectordb   `queryParam:"inline" tfsdk:"vectordb"`
+	Workspace      types.String               `tfsdk:"workspace"`
 }
 
 func (r *GatewayPartialResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -1869,6 +1870,12 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 					}...),
 				},
 			},
+			"workspace": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`default`),
+				Description: `The name of the workspace. Default: "default"`,
+			},
 		},
 	}
 }
@@ -1911,13 +1918,13 @@ func (r *GatewayPartialResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreatePartialRequest(ctx)
+	request, requestDiags := data.ToOperationsCreatePartialInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.CreatePartial(ctx, *request)
+	res, err := r.client.Partials.CreatePartialInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1971,13 +1978,13 @@ func (r *GatewayPartialResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetPartialRequest(ctx)
+	request, requestDiags := data.ToOperationsGetPartialInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.GetPartial(ctx, *request)
+	res, err := r.client.Partials.GetPartialInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2025,13 +2032,13 @@ func (r *GatewayPartialResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertPartialRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertPartialInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.UpsertPartial(ctx, *request)
+	res, err := r.client.Partials.UpsertPartialInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2085,13 +2092,13 @@ func (r *GatewayPartialResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeletePartialRequest(ctx)
+	request, requestDiags := data.ToOperationsDeletePartialInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.DeletePartial(ctx, *request)
+	res, err := r.client.Partials.DeletePartialInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2119,10 +2126,11 @@ func (r *GatewayPartialResource) ImportState(ctx context.Context, req resource.I
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -2136,4 +2144,9 @@ func (r *GatewayPartialResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

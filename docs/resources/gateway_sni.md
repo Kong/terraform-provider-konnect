@@ -25,6 +25,7 @@ resource "konnect_gateway_sni" "my_gatewaysni" {
     "..."
   ]
   updated_at = 10
+  workspace  = "team-payments"
 }
 ```
 
@@ -43,6 +44,7 @@ resource "konnect_gateway_sni" "my_gatewaysni" {
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `tags` (List of String) An optional set of strings associated with the SNIs for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"
 
 <a id="nestedatt--certificate"></a>
 ### Nested Schema for `certificate`
@@ -63,6 +65,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -70,5 +73,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_sni.my_konnect_gateway_sni '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"}'
+terraform import konnect_gateway_sni.my_konnect_gateway_sni '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f", "workspace": "team-payments"}'
 ```

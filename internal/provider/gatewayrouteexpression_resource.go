@@ -58,6 +58,7 @@ type GatewayRouteExpressionResourceModel struct {
 	StripPath               types.Bool     `tfsdk:"strip_path"`
 	Tags                    []types.String `tfsdk:"tags"`
 	UpdatedAt               types.Int64    `tfsdk:"updated_at"`
+	Workspace               types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayRouteExpressionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -172,6 +173,12 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`default`),
+				Description: `The name of the workspace. Default: "default"`,
+			},
 		},
 	}
 }
@@ -214,13 +221,13 @@ func (r *GatewayRouteExpressionResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRouteRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRouteInWorkspaceRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.CreateRouteRouteExpression(ctx, *request)
+	res, err := r.client.Routes.CreateRouteInWorkspaceRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -274,13 +281,13 @@ func (r *GatewayRouteExpressionResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRouteRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRouteInWorkspaceRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.GetRouteRouteExpression(ctx, *request)
+	res, err := r.client.Routes.GetRouteInWorkspaceRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -328,13 +335,13 @@ func (r *GatewayRouteExpressionResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertRouteRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertRouteInWorkspaceRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.UpsertRouteRouteExpression(ctx, *request)
+	res, err := r.client.Routes.UpsertRouteInWorkspaceRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -388,13 +395,13 @@ func (r *GatewayRouteExpressionResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRouteRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRouteInWorkspaceRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.DeleteRouteRouteExpression(ctx, *request)
+	res, err := r.client.Routes.DeleteRouteInWorkspaceRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -422,10 +429,11 @@ func (r *GatewayRouteExpressionResource) ImportState(ctx context.Context, req re
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -439,4 +447,9 @@ func (r *GatewayRouteExpressionResource) ImportState(ctx context.Context, req re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

@@ -46,11 +46,14 @@ func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroupInside
 	return diags
 }
 
-func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupRequest(ctx context.Context) (*operations.CreateConsumerGroupRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupInWorkspaceRequest(ctx context.Context) (*operations.CreateConsumerGroupInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
 	diags.Append(consumerGroupDiags...)
@@ -59,15 +62,16 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupReque
 		return nil, diags
 	}
 
-	out := operations.CreateConsumerGroupRequest{
+	out := operations.CreateConsumerGroupInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		ConsumerGroup:  *consumerGroup,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerGroupResourceModel) ToOperationsDeleteConsumerGroupRequest(ctx context.Context) (*operations.DeleteConsumerGroupRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupResourceModel) ToOperationsDeleteConsumerGroupInWorkspaceRequest(ctx context.Context) (*operations.DeleteConsumerGroupInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -76,15 +80,19 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsDeleteConsumerGroupReque
 	var consumerGroupID string
 	consumerGroupID = r.ID.ValueString()
 
-	out := operations.DeleteConsumerGroupRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteConsumerGroupInWorkspaceRequest{
 		ControlPlaneID:  controlPlaneID,
 		ConsumerGroupID: consumerGroupID,
+		Workspace:       workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerGroupResourceModel) ToOperationsGetConsumerGroupRequest(ctx context.Context) (*operations.GetConsumerGroupRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupResourceModel) ToOperationsGetConsumerGroupInWorkspaceRequest(ctx context.Context) (*operations.GetConsumerGroupInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerGroupID string
@@ -93,15 +101,19 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsGetConsumerGroupRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetConsumerGroupRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetConsumerGroupInWorkspaceRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupRequest(ctx context.Context) (*operations.UpsertConsumerGroupRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupInWorkspaceRequest(ctx context.Context) (*operations.UpsertConsumerGroupInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerGroupID string
@@ -109,6 +121,9 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
 	diags.Append(consumerGroupDiags...)
@@ -117,9 +132,10 @@ func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupReque
 		return nil, diags
 	}
 
-	out := operations.UpsertConsumerGroupRequest{
+	out := operations.UpsertConsumerGroupInWorkspaceRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		ConsumerGroup:   *consumerGroup,
 	}
 

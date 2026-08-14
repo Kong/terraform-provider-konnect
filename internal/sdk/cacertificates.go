@@ -32,9 +32,9 @@ func newCACertificates(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hook
 	}
 }
 
-// CreateCaCertificate - Create a new CA Certificate
-// Create a new CA Certificate
-func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operations.CreateCaCertificateRequest, opts ...operations.Option) (*operations.CreateCaCertificateResponse, error) {
+// CreateCaCertificateInWorkspace - Create a new CA Certificate in a workspace
+// Create a new CA Certificate in a workspace
+func (s *CACertificates) CreateCaCertificateInWorkspace(ctx context.Context, request operations.CreateCaCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.CreateCaCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53,7 +53,7 @@ func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63,7 +63,7 @@ func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-ca_certificate",
+		OperationID:      "create-ca_certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -198,7 +198,7 @@ func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.CreateCaCertificateResponse{
+	res := &operations.CreateCaCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -259,9 +259,9 @@ func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operat
 
 }
 
-// DeleteCaCertificate - Delete a CA Certificate
-// Delete a CA Certificate
-func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operations.DeleteCaCertificateRequest, opts ...operations.Option) (*operations.DeleteCaCertificateResponse, error) {
+// DeleteCaCertificateInWorkspace - Delete a CA Certificate in a workspace
+// Delete a CA Certificate in a workspace
+func (s *CACertificates) DeleteCaCertificateInWorkspace(ctx context.Context, request operations.DeleteCaCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteCaCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -280,7 +280,7 @@ func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -290,7 +290,7 @@ func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-ca_certificate",
+		OperationID:      "delete-ca_certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -418,7 +418,7 @@ func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.DeleteCaCertificateResponse{
+	res := &operations.DeleteCaCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -462,9 +462,9 @@ func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operat
 
 }
 
-// GetCaCertificate - Get a CA Certificate
-// Get a CA Certificate using ID.
-func (s *CACertificates) GetCaCertificate(ctx context.Context, request operations.GetCaCertificateRequest, opts ...operations.Option) (*operations.GetCaCertificateResponse, error) {
+// GetCaCertificateInWorkspace - Get a CA Certificate in a workspace
+// Get a CA Certificate using ID in a workspace.
+func (s *CACertificates) GetCaCertificateInWorkspace(ctx context.Context, request operations.GetCaCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.GetCaCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -483,7 +483,7 @@ func (s *CACertificates) GetCaCertificate(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -493,7 +493,7 @@ func (s *CACertificates) GetCaCertificate(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-ca_certificate",
+		OperationID:      "get-ca_certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -621,7 +621,7 @@ func (s *CACertificates) GetCaCertificate(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.GetCaCertificateResponse{
+	res := &operations.GetCaCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -684,9 +684,9 @@ func (s *CACertificates) GetCaCertificate(ctx context.Context, request operation
 
 }
 
-// UpsertCaCertificate - Upsert a CA Certificate
-// Create or Update CA Certificate using ID.
-func (s *CACertificates) UpsertCaCertificate(ctx context.Context, request operations.UpsertCaCertificateRequest, opts ...operations.Option) (*operations.UpsertCaCertificateResponse, error) {
+// UpsertCaCertificateInWorkspace - Upsert a CA Certificate in a workspace
+// Create or Update CA Certificate using ID in a workspace.
+func (s *CACertificates) UpsertCaCertificateInWorkspace(ctx context.Context, request operations.UpsertCaCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertCaCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -705,7 +705,7 @@ func (s *CACertificates) UpsertCaCertificate(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -715,7 +715,7 @@ func (s *CACertificates) UpsertCaCertificate(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-ca_certificate",
+		OperationID:      "upsert-ca_certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -850,7 +850,7 @@ func (s *CACertificates) UpsertCaCertificate(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.UpsertCaCertificateResponse{
+	res := &operations.UpsertCaCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

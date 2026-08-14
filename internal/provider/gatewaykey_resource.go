@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -46,6 +47,7 @@ type GatewayKeyResourceModel struct {
 	Set            *tfTypes.Set   `tfsdk:"set"`
 	Tags           []types.String `tfsdk:"tags"`
 	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
+	Workspace      types.String   `tfsdk:"workspace"`
 	X5t            types.String   `tfsdk:"x5t"`
 }
 
@@ -127,6 +129,12 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`default`),
+				Description: `The name of the workspace. Default: "default"`,
+			},
 			"x5t": schema.StringAttribute{
 				Optional:    true,
 				Description: `X.509 certificate SHA-1 thumbprint.`,
@@ -173,13 +181,13 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKeyRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKeyInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.CreateKey(ctx, *request)
+	res, err := r.client.Keys.CreateKeyInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -233,13 +241,13 @@ func (r *GatewayKeyResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKeyRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKeyInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.GetKey(ctx, *request)
+	res, err := r.client.Keys.GetKeyInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -287,13 +295,13 @@ func (r *GatewayKeyResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertKeyRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertKeyInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.UpsertKey(ctx, *request)
+	res, err := r.client.Keys.UpsertKeyInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -347,13 +355,13 @@ func (r *GatewayKeyResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKeyRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKeyInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.DeleteKey(ctx, *request)
+	res, err := r.client.Keys.DeleteKeyInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -381,10 +389,11 @@ func (r *GatewayKeyResource) ImportState(ctx context.Context, req resource.Impor
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "bba22c06-a632-42be-a018-1b9ff357b5b9"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "bba22c06-a632-42be-a018-1b9ff357b5b9", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -398,4 +407,9 @@ func (r *GatewayKeyResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

@@ -35,9 +35,9 @@ func newCertificates(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks 
 	}
 }
 
-// CreateCertificate - Create a new Certificate
-// Create a new Certificate
-func (s *Certificates) CreateCertificate(ctx context.Context, request operations.CreateCertificateRequest, opts ...operations.Option) (*operations.CreateCertificateResponse, error) {
+// CreateCertificateInWorkspace - Create a new Certificate in a workspace
+// Create a new Certificate in a workspace
+func (s *Certificates) CreateCertificateInWorkspace(ctx context.Context, request operations.CreateCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.CreateCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -56,7 +56,7 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/certificates", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -66,7 +66,7 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-certificate",
+		OperationID:      "create-certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -201,7 +201,7 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.CreateCertificateResponse{
+	res := &operations.CreateCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -262,9 +262,9 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 
 }
 
-// DeleteCertificate - Delete a Certificate
-// Delete a Certificate
-func (s *Certificates) DeleteCertificate(ctx context.Context, request operations.DeleteCertificateRequest, opts ...operations.Option) (*operations.DeleteCertificateResponse, error) {
+// DeleteCertificateInWorkspace - Delete a Certificate in a workspace
+// Delete a Certificate in a workspace
+func (s *Certificates) DeleteCertificateInWorkspace(ctx context.Context, request operations.DeleteCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -283,7 +283,7 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/certificates/{CertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -293,7 +293,7 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-certificate",
+		OperationID:      "delete-certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -421,7 +421,7 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.DeleteCertificateResponse{
+	res := &operations.DeleteCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -465,9 +465,9 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 
 }
 
-// GetCertificate - Get a Certificate
-// Get a Certificate using ID.
-func (s *Certificates) GetCertificate(ctx context.Context, request operations.GetCertificateRequest, opts ...operations.Option) (*operations.GetCertificateResponse, error) {
+// GetCertificateInWorkspace - Get a Certificate in a workspace
+// Get a Certificate using ID in a workspace.
+func (s *Certificates) GetCertificateInWorkspace(ctx context.Context, request operations.GetCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.GetCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -486,7 +486,7 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/certificates/{CertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -496,7 +496,7 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-certificate",
+		OperationID:      "get-certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -624,7 +624,7 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 		}
 	}
 
-	res := &operations.GetCertificateResponse{
+	res := &operations.GetCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -687,9 +687,9 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 
 }
 
-// UpsertCertificate - Upsert a Certificate
-// Create or Update Certificate using ID.
-func (s *Certificates) UpsertCertificate(ctx context.Context, request operations.UpsertCertificateRequest, opts ...operations.Option) (*operations.UpsertCertificateResponse, error) {
+// UpsertCertificateInWorkspace - Upsert a Certificate in a workspace
+// Create or Update Certificate using ID in a workspace.
+func (s *Certificates) UpsertCertificateInWorkspace(ctx context.Context, request operations.UpsertCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertCertificateInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -708,7 +708,7 @@ func (s *Certificates) UpsertCertificate(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/certificates/{CertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -718,7 +718,7 @@ func (s *Certificates) UpsertCertificate(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-certificate",
+		OperationID:      "upsert-certificate-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -853,7 +853,7 @@ func (s *Certificates) UpsertCertificate(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.UpsertCertificateResponse{
+	res := &operations.UpsertCertificateInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
