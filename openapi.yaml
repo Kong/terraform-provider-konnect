@@ -5426,16 +5426,18 @@ paths:
           $ref: '#/components/responses/ConfigStoreSecretNotFound'
       tags:
         - Config Store Secrets
-  '/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates':
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     post:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCACertificate#create
-      operationId: create-ca_certificate
-      summary: Create a new CA Certificate
-      description: Create a new CA Certificate
+      operationId: create-ca_certificate-in-workspace
+      summary: Create a new CA Certificate in a workspace
+      description: Create a new CA Certificate in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       requestBody:
         description: Description of the new CA Certificate for creation
         required: true
@@ -5454,16 +5456,17 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - CA Certificates
-  '/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}':
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}':
     delete:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCACertificate#delete
-      operationId: delete-ca_certificate
-      summary: Delete a CA Certificate
-      description: Delete a CA Certificate
+      operationId: delete-ca_certificate-in-workspace
+      summary: Delete a CA Certificate in a workspace
+      description: Delete a CA Certificate in a workspace
       parameters:
         - $ref: '#/components/parameters/CACertificateId'
+        - $ref: '#/components/parameters/Workspace'
       responses:
         '204':
           description: Successfully deleted CA Certificate or the resource didn't exist
@@ -5475,9 +5478,11 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCACertificate#read
-      operationId: get-ca_certificate
-      summary: Get a CA Certificate
-      description: Get a CA Certificate using ID.
+      operationId: get-ca_certificate-in-workspace
+      summary: Get a CA Certificate in a workspace
+      description: Get a CA Certificate using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       responses:
         '200':
           description: Successfully fetched CA Certificate
@@ -5498,9 +5503,11 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCACertificate#update
-      operationId: upsert-ca_certificate
-      summary: Upsert a CA Certificate
-      description: Create or Update CA Certificate using ID.
+      operationId: upsert-ca_certificate-in-workspace
+      summary: Upsert a CA Certificate in a workspace
+      description: Create or Update CA Certificate using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       requestBody:
         description: Description of the CA Certificate
         required: true
@@ -5519,16 +5526,18 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - CA Certificates
-  '/v2/control-planes/{controlPlaneId}/core-entities/certificates':
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/certificates':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     post:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCertificate#create
-      operationId: create-certificate
-      summary: Create a new Certificate
-      description: Create a new Certificate
+      operationId: create-certificate-in-workspace
+      summary: Create a new Certificate in a workspace
+      description: Create a new Certificate in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       requestBody:
         description: Description of the new Certificate for creation
         required: true
@@ -5547,16 +5556,17 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Certificates
-  '/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}':
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/certificates/{CertificateId}':
     delete:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCertificate#delete
-      operationId: delete-certificate
-      summary: Delete a Certificate
-      description: Delete a Certificate
+      operationId: delete-certificate-in-workspace
+      summary: Delete a Certificate in a workspace
+      description: Delete a Certificate in a workspace
       parameters:
         - $ref: '#/components/parameters/CertificateId'
+        - $ref: '#/components/parameters/Workspace'
       responses:
         '204':
           description: Successfully deleted Certificate or the resource didn't exist
@@ -5568,9 +5578,11 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCertificate#read
-      operationId: get-certificate
-      summary: Get a Certificate
-      description: Get a Certificate using ID.
+      operationId: get-certificate-in-workspace
+      summary: Get a Certificate in a workspace
+      description: Get a Certificate using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       responses:
         '200':
           description: Successfully fetched Certificate
@@ -5591,9 +5603,11 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayCertificate#update
-      operationId: upsert-certificate
-      summary: Upsert a Certificate
-      description: Create or Update Certificate using ID.
+      operationId: upsert-certificate-in-workspace
+      summary: Upsert a Certificate in a workspace
+      description: Create or Update Certificate using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       requestBody:
         description: Description of the Certificate
         required: true
@@ -5612,6 +5626,1684 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Certificates
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumerGroup#create
+      operationId: create-consumer_group-in-workspace
+      summary: Create a new Consumer Group in a workspace
+      description: Create a new Consumer Group in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Consumer Group for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsumerGroup'
+      responses:
+        '201':
+          description: Successfully created Consumer Group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumerGroup'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumer Groups
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumerGroup#delete
+      operationId: delete-consumer_group-in-workspace
+      summary: Delete a Consumer Group in a workspace
+      description: Delete a Consumer Group in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerGroupId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Consumer Group or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumer Groups
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumerGroup#read
+      operationId: get-consumer_group-in-workspace
+      summary: Get a Consumer Group in a workspace
+      description: Get a Consumer Group using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+        - $ref: '#/components/parameters/ListConsumers'
+      responses:
+        '200':
+          description: Successfully fetched Consumer Group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumerGroupInsideWrapper'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Consumer Groups
+    parameters:
+      - $ref: '#/components/parameters/ConsumerGroupId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumerGroup#update
+      operationId: upsert-consumer_group-in-workspace
+      summary: Upsert a Consumer Group in a workspace
+      description: Create or Update Consumer Group using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Consumer Group
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsumerGroup'
+      responses:
+        '200':
+          description: Successfully upserted Consumer Group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumerGroup'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumer Groups
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}/consumers':
+    parameters:
+      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayConsumerGroupMember#create
+      operationId: add-consumer-to-group-in-workspace
+      summary: Add consumer to consumer group in a workspace
+      description: Add a consumer to a consumer group in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                consumer:
+                  type: string
+                  example: cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b
+                  default: null
+                  nullable: true
+                  x-speakeasy-name-override: consumer_id
+                  x-speakeasy-param-computed: false
+      responses:
+        '201':
+          description: Consumer added to group
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  consumer_group:
+                    $ref: '#/components/schemas/ConsumerGroup'
+                  consumers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Consumer'
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+      tags:
+        - Consumer Groups
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}':
+    delete:
+      x-speakeasy-entity-operation: GatewayConsumerGroupMember#delete
+      operationId: remove-consumer-from-group-in-workspace
+      summary: Remove consumer from consumer group in a workspace
+      description: Remove a consumer from a consumer group in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Consumer removed from group
+      tags:
+        - Consumer Groups
+    parameters:
+      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
+      - name: ConsumerId
+        in: path
+        required: true
+        schema:
+          type: string
+        x-speakeasy-name-override: consumer_id
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumer#create
+      operationId: create-consumer-in-workspace
+      summary: Create a new Consumer in a workspace
+      description: Create a new Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Consumer for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consumer'
+      responses:
+        '201':
+          description: Successfully created Consumer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consumer'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumers
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumer#delete
+      operationId: delete-consumer-in-workspace
+      summary: Delete a Consumer in a workspace
+      description: Delete a Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Consumer or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumers
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumer#read
+      operationId: get-consumer-in-workspace
+      summary: Get a Consumer in a workspace
+      description: Get a Consumer using ID or username in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Consumer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consumer'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Consumers
+    parameters:
+      - $ref: '#/components/parameters/ConsumerId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayConsumer#update
+      operationId: upsert-consumer-in-workspace
+      summary: Upsert a Consumer in a workspace
+      description: Create or Update Consumer using ID or username in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Consumer
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consumer'
+      responses:
+        '200':
+          description: Successfully upserted Consumer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consumer'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Consumers
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/acls':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayACL#create
+      operationId: create-acl-with-consumer-in-workspace
+      summary: Create a new ACL associated with a Consumer in a workspace
+      description: Create a new ACL associated with a Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of new ACL for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ACLWithoutParents'
+      responses:
+        '201':
+          description: Successfully created ACL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACL'
+      tags:
+        - ACLs
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayACL#delete
+      operationId: delete-acl-with-consumer-in-workspace
+      summary: Delete a an ACL associated with a Consumer in a workspace
+      description: Delete a an ACL associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/ACLId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted ACL or the resource didn't exist
+      tags:
+        - ACLs
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayACL#read
+      operationId: get-acl-with-consumer-in-workspace
+      summary: Get an ACL associated with a Consumer in a workspace
+      description: Get an ACL associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/ACLId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched ACL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACL'
+        '404':
+          description: Resource does not exist
+      tags:
+        - ACLs
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/basic-auth':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayBasicAuth#create
+      operationId: create-basic-auth-with-consumer-in-workspace
+      summary: Create a new Basic-auth credential associated with a Consumer in a workspace
+      description: Create a new Basic-auth credential associated with a Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of new Basic-auth credential for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicAuthWithoutParents'
+      responses:
+        '201':
+          description: Successfully created Basic-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicAuth'
+      tags:
+        - Basic-auth credentials
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayBasicAuth#delete
+      operationId: delete-basic-auth-with-consumer-in-workspace
+      summary: Delete a a Basic-auth credential associated with a Consumer in a workspace
+      description: Delete a a Basic-auth credential associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/BasicAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Basic-auth credential or the resource didn't exist
+      tags:
+        - Basic-auth credentials
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayBasicAuth#read
+      operationId: get-basic-auth-with-consumer-in-workspace
+      summary: Get a Basic-auth credential associated with a Consumer in a workspace
+      description: Get a Basic-auth credential associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/BasicAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Basic-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicAuth'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Basic-auth credentials
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/hmac-auth':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayHMACAuth#create
+      operationId: create-hmac-auth-with-consumer-in-workspace
+      summary: Create a new HMAC-auth credential associated with a Consumer in a workspace
+      description: Create a new HMAC-auth credential associated with a Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of new HMAC-auth credential for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HMACAuthWithoutParents'
+      responses:
+        '201':
+          description: Successfully created HMAC-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HMACAuth'
+      tags:
+        - HMAC-auth credentials
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayHMACAuth#delete
+      operationId: delete-hmac-auth-with-consumer-in-workspace
+      summary: Delete a a HMAC-auth credential associated with a Consumer in a workspace
+      description: Delete a a HMAC-auth credential associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/HMACAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted HMAC-auth credential or the resource didn't exist
+      tags:
+        - HMAC-auth credentials
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayHMACAuth#read
+      operationId: get-hmac-auth-with-consumer-in-workspace
+      summary: Get a HMAC-auth credential associated with a Consumer in a workspace
+      description: Get a HMAC-auth credential associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/HMACAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched HMAC-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HMACAuth'
+        '404':
+          description: Resource does not exist
+      tags:
+        - HMAC-auth credentials
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/jwt':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayJWT#create
+      operationId: create-jwt-with-consumer-in-workspace
+      summary: Create a new JWT associated with a Consumer in a workspace
+      description: Create a new JWT associated with a Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of new JWT for creation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JWTWithoutParents'
+      responses:
+        '201':
+          description: Successfully created JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+      tags:
+        - JWTs
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayJWT#delete
+      operationId: delete-jwt-with-consumer-in-workspace
+      summary: Delete a a JWT associated with a Consumer in a workspace
+      description: Delete a a JWT associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/JWTId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted JWT or the resource didn't exist
+      tags:
+        - JWTs
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayJWT#read
+      operationId: get-jwt-with-consumer-in-workspace
+      summary: Get a JWT associated with a Consumer in a workspace
+      description: Get a JWT associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/JWTId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+        '404':
+          description: Resource does not exist
+      tags:
+        - JWTs
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/key-auth':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKeyAuth#create
+      operationId: create-key-auth-with-consumer-in-workspace
+      summary: Create a new API-key associated with a Consumer in a workspace
+      description: Create a new API-key associated with a Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of new API-key for creation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyAuthWithoutParents'
+      responses:
+        '201':
+          description: Successfully created API-key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyAuth'
+      tags:
+        - API-keys
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKeyAuth#delete
+      operationId: delete-key-auth-with-consumer-in-workspace
+      summary: Delete a an API-key associated with a Consumer in a workspace
+      description: Delete a an API-key associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/KeyAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted API-key or the resource didn't exist
+      tags:
+        - API-keys
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKeyAuth#read
+      operationId: get-key-auth-with-consumer-in-workspace
+      summary: Get an API-key associated with a Consumer in a workspace
+      description: Get an API-key associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/KeyAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched API-key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyAuth'
+        '404':
+          description: Resource does not exist
+      tags:
+        - API-keys
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/mtls-auth':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayMTLSAuth#create
+      operationId: create-mtls-auth-with-consumer-in-workspace
+      summary: Create a new MTLS-auth credential associated with a Consumer in a workspace
+      description: Create a new MTLS-auth credential associated with a Consumer in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of new MTLS-auth credential for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MTLSAuthWithoutParents'
+      responses:
+        '201':
+          description: Successfully created MTLS-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MTLSAuth'
+      tags:
+        - MTLS-auth credentials
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/mtls-auth/{MTLSAuthId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayMTLSAuth#delete
+      operationId: delete-mtls-auth-with-consumer-in-workspace
+      summary: Delete a a MTLS-auth credential associated with a Consumer in a workspace
+      description: Delete a a MTLS-auth credential associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/MTLSAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted MTLS-auth credential or the resource didn't exist
+      tags:
+        - MTLS-auth credentials
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayMTLSAuth#read
+      operationId: get-mtls-auth-with-consumer-in-workspace
+      summary: Get a MTLS-auth credential associated with a Consumer in a workspace
+      description: Get a MTLS-auth credential associated with a Consumer using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/MTLSAuthId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched MTLS-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MTLSAuth'
+        '404':
+          description: Resource does not exist
+      tags:
+        - MTLS-auth credentials
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/graphql-rate-limiting-advanced/costs/{GraphQLCostDecorationId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayGraphQLCostDecoration#read
+      operationId: get-graphql-rate-limiting-advanced-cost-in-workspace
+      summary: Get a GraphQL Cost Decoration in a workspace
+      description: Get a GraphQL Cost Decoration using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched GraphQL Cost Decoration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLCostDecoration'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - GraphQL Cost Decorations
+    parameters:
+      - $ref: '#/components/parameters/GraphQLCostDecorationId'
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/key-sets':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKeySet#create
+      operationId: create-key-set-in-workspace
+      summary: Create a new KeySet in a workspace
+      description: Create a new KeySet in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new KeySet for creation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeySet'
+      responses:
+        '201':
+          description: Successfully created KeySet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeySet'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - KeySets
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/key-sets/{KeySetId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKeySet#delete
+      operationId: delete-key-set-in-workspace
+      summary: Delete a KeySet in a workspace
+      description: Delete a KeySet in a workspace
+      parameters:
+        - $ref: '#/components/parameters/KeySetId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted KeySet or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - KeySets
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKeySet#read
+      operationId: get-key-set-in-workspace
+      summary: Get a KeySet in a workspace
+      description: Get a KeySet using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched KeySet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeySet'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - KeySets
+    parameters:
+      - $ref: '#/components/parameters/KeySetId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKeySet#update
+      operationId: upsert-key-set-in-workspace
+      summary: Upsert a KeySet in a workspace
+      description: Create or Update KeySet using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the KeySet
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeySet'
+      responses:
+        '200':
+          description: Successfully upserted KeySet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeySet'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - KeySets
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKey#create
+      operationId: create-key-in-workspace
+      summary: Create a new Key in a workspace
+      description: Create a new Key in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Key for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Key'
+      responses:
+        '201':
+          description: Successfully created Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Keys
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/keys/{KeyId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKey#delete
+      operationId: delete-key-in-workspace
+      summary: Delete a Key in a workspace
+      description: Delete a Key in a workspace
+      parameters:
+        - $ref: '#/components/parameters/KeyId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Key or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Keys
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKey#read
+      operationId: get-key-in-workspace
+      summary: Get a Key in a workspace
+      description: Get a Key using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Keys
+    parameters:
+      - $ref: '#/components/parameters/KeyId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayKey#update
+      operationId: upsert-key-in-workspace
+      summary: Upsert a Key in a workspace
+      description: Create or Update Key using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Key
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Key'
+      responses:
+        '200':
+          description: Successfully upserted Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Keys
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPartial#create
+      operationId: create-partial-in-workspace
+      summary: Create a new Partial in a workspace
+      description: Create a new Partial in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Partial for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partial'
+      responses:
+        '201':
+          description: Successfully created Partial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partial'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Partials
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials/{PartialId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPartial#delete
+      operationId: delete-partial-in-workspace
+      summary: Delete a Partial in a workspace
+      description: Delete a Partial in a workspace
+      parameters:
+        - $ref: '#/components/parameters/PartialId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Partial or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Partials
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPartial#read
+      operationId: get-partial-in-workspace
+      summary: Get a Partial in a workspace
+      description: Get a Partial using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Partial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partial'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Partials
+    parameters:
+      - $ref: '#/components/parameters/PartialId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPartial#update
+      operationId: upsert-partial-in-workspace
+      summary: Upsert a Partial in a workspace
+      description: Create or Update Partial using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Partial
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partial'
+      responses:
+        '200':
+          description: Successfully upserted Partial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partial'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Partials
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/routes':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRoute#create
+      operationId: create-route-in-workspace
+      summary: Create a new Route in a workspace
+      description: Create a new Route in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Route for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteJson'
+      responses:
+        '201':
+          description: Successfully created Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteJson'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Routes
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/routes/{RouteId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRoute#delete
+      operationId: delete-route-in-workspace
+      summary: Delete a Route in a workspace
+      description: Delete a Route in a workspace
+      parameters:
+        - $ref: '#/components/parameters/RouteId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Route or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Routes
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRoute#read
+      operationId: get-route-in-workspace
+      summary: Get a Route in a workspace
+      description: Get a Route using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteJson'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Routes
+    parameters:
+      - $ref: '#/components/parameters/RouteId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRoute#update
+      operationId: upsert-route-in-workspace
+      summary: Upsert a Route in a workspace
+      description: Create or Update Route using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Route
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteJson'
+      responses:
+        '200':
+          description: Successfully upserted Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteJson'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Routes
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/routes/{RouteId}#RouteExpression':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRouteExpression#delete
+      operationId: delete-route-in-workspace-RouteExpression
+      summary: Delete a Route in a workspace
+      description: Delete a Route in a workspace
+      parameters:
+        - $ref: '#/components/parameters/RouteId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Route or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Routes
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRouteExpression#read
+      operationId: get-route-in-workspace-RouteExpression
+      summary: Get a Route in a workspace
+      description: Get a Route using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteExpression'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Routes
+    parameters:
+      - $ref: '#/components/parameters/RouteId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRouteExpression#update
+      operationId: upsert-route-in-workspace-RouteExpression
+      summary: Upsert a Route in a workspace
+      description: Create or Update Route using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Route
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteExpression'
+      responses:
+        '200':
+          description: Successfully upserted Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteExpression'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Routes
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/routes#RouteExpression':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayRouteExpression#create
+      operationId: create-route-in-workspace-RouteExpression
+      summary: Create a new Route in a workspace
+      description: Create a new Route in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Route for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteExpression'
+      responses:
+        '201':
+          description: Successfully created Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteExpression'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Routes
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/services':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayService#create
+      operationId: create-service-in-workspace
+      summary: Create a new Service in a workspace
+      description: Create a new Service in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Service for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        '201':
+          description: Successfully created Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Services
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/services/{ServiceId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayService#delete
+      operationId: delete-service-in-workspace
+      summary: Delete a Service in a workspace
+      description: Delete a Service in a workspace
+      parameters:
+        - $ref: '#/components/parameters/ServiceId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Service or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Services
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayService#read
+      operationId: get-service-in-workspace
+      summary: Get a Service in a workspace
+      description: Get a Service using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Services
+    parameters:
+      - $ref: '#/components/parameters/ServiceId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayService#update
+      operationId: upsert-service-in-workspace
+      summary: Upsert a Service in a workspace
+      description: Create or Update Service using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Service
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        '200':
+          description: Successfully upserted Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Services
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/snis':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewaySNI#create
+      operationId: create-sni-in-workspace
+      summary: Create a new SNI in a workspace
+      description: Create a new SNI in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new SNI for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SNI'
+      responses:
+        '201':
+          description: Successfully created SNI
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SNI'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - SNIs
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/snis/{SNIId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewaySNI#delete
+      operationId: delete-sni-in-workspace
+      summary: Delete an SNI in a workspace
+      description: Delete an SNI in a workspace
+      parameters:
+        - $ref: '#/components/parameters/SNIId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted SNI or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - SNIs
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewaySNI#read
+      operationId: get-sni-in-workspace
+      summary: Get an SNI in a workspace
+      description: Get an SNI using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched SNI
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SNI'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - SNIs
+    parameters:
+      - $ref: '#/components/parameters/SNIId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewaySNI#update
+      operationId: upsert-sni-in-workspace
+      summary: Upsert a SNI in a workspace
+      description: Create or Update SNI using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the SNI
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SNI'
+      responses:
+        '200':
+          description: Successfully upserted SNI
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SNI'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - SNIs
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayUpstream#create
+      operationId: create-upstream-in-workspace
+      summary: Create a new Upstream in a workspace
+      description: Create a new Upstream in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Upstream for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Upstream'
+      responses:
+        '201':
+          description: Successfully created Upstream
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upstream'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Upstreams
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayUpstream#delete
+      operationId: delete-upstream-in-workspace
+      summary: Delete an Upstream in a workspace
+      description: Delete an Upstream in a workspace
+      parameters:
+        - $ref: '#/components/parameters/UpstreamId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Upstream or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Upstreams
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayUpstream#read
+      operationId: get-upstream-in-workspace
+      summary: Get an Upstream in a workspace
+      description: Get an Upstream using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Upstream
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upstream'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Upstreams
+    parameters:
+      - $ref: '#/components/parameters/UpstreamId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayUpstream#update
+      operationId: upsert-upstream-in-workspace
+      summary: Upsert a Upstream in a workspace
+      description: Create or Update Upstream using ID or name in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Upstream
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Upstream'
+      responses:
+        '200':
+          description: Successfully upserted Upstream
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upstream'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Upstreams
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayTarget#create
+      operationId: create-target-with-upstream-in-workspace
+      summary: Create a new Target associated with an Upstream in a workspace
+      description: Create a new Target associated with an Upstream in a workspace
+      parameters:
+        - $ref: '#/components/parameters/UpstreamIdForTarget'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of new Target for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TargetWithoutParents'
+      responses:
+        '201':
+          description: Successfully created Target
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Target'
+      tags:
+        - Targets
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets/{TargetId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayTarget#delete
+      operationId: delete-target-with-upstream-in-workspace
+      summary: Delete a a Target associated with an Upstream in a workspace
+      description: Delete a a Target associated with an Upstream using ID or target in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/UpstreamIdForTarget'
+        - $ref: '#/components/parameters/TargetId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Target or the resource didn't exist
+      tags:
+        - Targets
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayTarget#read
+      operationId: get-target-with-upstream-in-workspace
+      summary: Get a Target associated with an Upstream in a workspace
+      description: Get a Target associated with an Upstream using ID or target in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/UpstreamIdForTarget'
+        - $ref: '#/components/parameters/TargetId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Target
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Target'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Targets
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/vaults':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayVault#create
+      operationId: create-vault-in-workspace
+      summary: Create a new Vault in a workspace
+      description: Create a new Vault in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Vault for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vault'
+      responses:
+        '201':
+          description: Successfully created Vault
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vault'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Vaults
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/vaults/{VaultId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayVault#delete
+      operationId: delete-vault-in-workspace
+      summary: Delete a Vault in a workspace
+      description: Delete a Vault in a workspace
+      parameters:
+        - $ref: '#/components/parameters/VaultId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Vault or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Vaults
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayVault#read
+      operationId: get-vault-in-workspace
+      summary: Get a Vault in a workspace
+      description: Get a Vault using ID or prefix in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Vault
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vault'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Vaults
+    parameters:
+      - $ref: '#/components/parameters/VaultId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayVault#update
+      operationId: upsert-vault-in-workspace
+      summary: Upsert a Vault in a workspace
+      description: Create or Update Vault using ID or prefix in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Vault
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vault'
+      responses:
+        '200':
+          description: Successfully upserted Vault
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vault'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Vaults
   '/v2/control-planes/{controlPlaneId}/core-entities/cloned-plugins':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -5705,641 +7397,6 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Cloned Plugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumerGroup#create
-      operationId: create-consumer_group
-      summary: Create a new Consumer Group
-      description: Create a new Consumer Group
-      requestBody:
-        description: Description of the new Consumer Group for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConsumerGroup'
-      responses:
-        '201':
-          description: Successfully created Consumer Group
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConsumerGroup'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Consumer Groups
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumerGroup#delete
-      operationId: delete-consumer_group
-      summary: Delete a Consumer Group
-      description: Delete a Consumer Group
-      parameters:
-        - $ref: '#/components/parameters/ConsumerGroupId'
-      responses:
-        '204':
-          description: Successfully deleted Consumer Group or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Consumer Groups
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumerGroup#read
-      operationId: get-consumer_group
-      summary: Get a Consumer Group
-      description: Get a Consumer Group using ID.
-      parameters:
-        - $ref: '#/components/parameters/ListConsumers'
-      responses:
-        '200':
-          description: Successfully fetched Consumer Group
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConsumerGroupInsideWrapper'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Consumer Groups
-    parameters:
-      - $ref: '#/components/parameters/ConsumerGroupId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumerGroup#update
-      operationId: upsert-consumer_group
-      summary: Upsert a Consumer Group
-      description: Create or Update Consumer Group using ID.
-      requestBody:
-        description: Description of the Consumer Group
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConsumerGroup'
-      responses:
-        '200':
-          description: Successfully upserted Consumer Group
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConsumerGroup'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Consumer Groups
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers':
-    parameters:
-      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation: GatewayConsumerGroupMember#create
-      operationId: add-consumer-to-group
-      summary: Add consumer to consumer group
-      description: Add a consumer to a consumer group
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                consumer:
-                  type: string
-                  example: cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b
-                  default: null
-                  nullable: true
-                  x-speakeasy-name-override: consumer_id
-                  x-speakeasy-param-computed: false
-      responses:
-        '201':
-          description: Consumer added to group
-      tags:
-        - Consumer Groups
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers/{ConsumerId}':
-    delete:
-      x-speakeasy-entity-operation: GatewayConsumerGroupMember#delete
-      operationId: remove-consumer-from-group
-      summary: Remove consumer from consumer group
-      description: Remove a consumer from a consumer group
-      responses:
-        '204':
-          description: Consumer removed from group
-      tags:
-        - Consumer Groups
-    parameters:
-      - $ref: '#/components/parameters/ConsumerGroupIdManageConsumers'
-      - name: ConsumerId
-        in: path
-        required: true
-        schema:
-          type: string
-        x-speakeasy-name-override: consumer_id
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumer#create
-      operationId: create-consumer
-      summary: Create a new Consumer
-      description: Create a new Consumer
-      requestBody:
-        description: Description of the new Consumer for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Consumer'
-      responses:
-        '201':
-          description: Successfully created Consumer
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Consumer'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Consumers
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumer#delete
-      operationId: delete-consumer
-      summary: Delete a Consumer
-      description: Delete a Consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerId'
-      responses:
-        '204':
-          description: Successfully deleted Consumer or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Consumers
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumer#read
-      operationId: get-consumer
-      summary: Get a Consumer
-      description: Get a Consumer using ID or username.
-      responses:
-        '200':
-          description: Successfully fetched Consumer
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Consumer'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Consumers
-    parameters:
-      - $ref: '#/components/parameters/ConsumerId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayConsumer#update
-      operationId: upsert-consumer
-      summary: Upsert a Consumer
-      description: Create or Update Consumer using ID or username.
-      requestBody:
-        description: Description of the Consumer
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Consumer'
-      responses:
-        '200':
-          description: Successfully upserted Consumer
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Consumer'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Consumers
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayACL#create
-      operationId: create-acl-with-consumer
-      summary: Create a new ACL associated with a Consumer
-      description: Create a new ACL associated with a Consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-      requestBody:
-        description: Description of new ACL for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ACLWithoutParents'
-      responses:
-        '201':
-          description: Successfully created ACL
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ACL'
-      tags:
-        - ACLs
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/acls/{ACLId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayACL#delete
-      operationId: delete-acl-with-consumer
-      summary: Delete a an ACL associated with a Consumer
-      description: Delete a an ACL associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/ACLId'
-      responses:
-        '204':
-          description: Successfully deleted ACL or the resource didn't exist
-      tags:
-        - ACLs
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayACL#read
-      operationId: get-acl-with-consumer
-      summary: Get an ACL associated with a Consumer
-      description: Get an ACL associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/ACLId'
-      responses:
-        '200':
-          description: Successfully fetched ACL
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ACL'
-        '404':
-          description: Resource does not exist
-      tags:
-        - ACLs
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayBasicAuth#create
-      operationId: create-basic-auth-with-consumer
-      summary: Create a new Basic-auth credential associated with a Consumer
-      description: Create a new Basic-auth credential associated with a Consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-      requestBody:
-        description: Description of new Basic-auth credential for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicAuthWithoutParents'
-      responses:
-        '201':
-          description: Successfully created Basic-auth credential
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BasicAuth'
-      tags:
-        - Basic-auth credentials
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayBasicAuth#delete
-      operationId: delete-basic-auth-with-consumer
-      summary: Delete a a Basic-auth credential associated with a Consumer
-      description: Delete a a Basic-auth credential associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/BasicAuthId'
-      responses:
-        '204':
-          description: Successfully deleted Basic-auth credential or the resource didn't exist
-      tags:
-        - Basic-auth credentials
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayBasicAuth#read
-      operationId: get-basic-auth-with-consumer
-      summary: Get a Basic-auth credential associated with a Consumer
-      description: Get a Basic-auth credential associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/BasicAuthId'
-      responses:
-        '200':
-          description: Successfully fetched Basic-auth credential
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BasicAuth'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Basic-auth credentials
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayHMACAuth#create
-      operationId: create-hmac-auth-with-consumer
-      summary: Create a new HMAC-auth credential associated with a Consumer
-      description: Create a new HMAC-auth credential associated with a Consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-      requestBody:
-        description: Description of new HMAC-auth credential for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/HMACAuthWithoutParents'
-      responses:
-        '201':
-          description: Successfully created HMAC-auth credential
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HMACAuth'
-      tags:
-        - HMAC-auth credentials
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayHMACAuth#delete
-      operationId: delete-hmac-auth-with-consumer
-      summary: Delete a a HMAC-auth credential associated with a Consumer
-      description: Delete a a HMAC-auth credential associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/HMACAuthId'
-      responses:
-        '204':
-          description: Successfully deleted HMAC-auth credential or the resource didn't exist
-      tags:
-        - HMAC-auth credentials
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayHMACAuth#read
-      operationId: get-hmac-auth-with-consumer
-      summary: Get a HMAC-auth credential associated with a Consumer
-      description: Get a HMAC-auth credential associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/HMACAuthId'
-      responses:
-        '200':
-          description: Successfully fetched HMAC-auth credential
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HMACAuth'
-        '404':
-          description: Resource does not exist
-      tags:
-        - HMAC-auth credentials
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayJWT#create
-      operationId: create-jwt-with-consumer
-      summary: Create a new JWT associated with a Consumer
-      description: Create a new JWT associated with a Consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-      requestBody:
-        description: Description of new JWT for creation
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/JWTWithoutParents'
-      responses:
-        '201':
-          description: Successfully created JWT
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JWT'
-      tags:
-        - JWTs
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayJWT#delete
-      operationId: delete-jwt-with-consumer
-      summary: Delete a a JWT associated with a Consumer
-      description: Delete a a JWT associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/JWTId'
-      responses:
-        '204':
-          description: Successfully deleted JWT or the resource didn't exist
-      tags:
-        - JWTs
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayJWT#read
-      operationId: get-jwt-with-consumer
-      summary: Get a JWT associated with a Consumer
-      description: Get a JWT associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/JWTId'
-      responses:
-        '200':
-          description: Successfully fetched JWT
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JWT'
-        '404':
-          description: Resource does not exist
-      tags:
-        - JWTs
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKeyAuth#create
-      operationId: create-key-auth-with-consumer
-      summary: Create a new API-key associated with a Consumer
-      description: Create a new API-key associated with a Consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-      requestBody:
-        description: Description of new API-key for creation
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KeyAuthWithoutParents'
-      responses:
-        '201':
-          description: Successfully created API-key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KeyAuth'
-      tags:
-        - API-keys
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/key-auth/{KeyAuthId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKeyAuth#delete
-      operationId: delete-key-auth-with-consumer
-      summary: Delete a an API-key associated with a Consumer
-      description: Delete a an API-key associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/KeyAuthId'
-      responses:
-        '204':
-          description: Successfully deleted API-key or the resource didn't exist
-      tags:
-        - API-keys
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKeyAuth#read
-      operationId: get-key-auth-with-consumer
-      summary: Get an API-key associated with a Consumer
-      description: Get an API-key associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/KeyAuthId'
-      responses:
-        '200':
-          description: Successfully fetched API-key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KeyAuth'
-        '404':
-          description: Resource does not exist
-      tags:
-        - API-keys
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/mtls-auth':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayMTLSAuth#create
-      operationId: create-mtls-auth-with-consumer
-      summary: Create a new MTLS-auth credential associated with a Consumer
-      description: Create a new MTLS-auth credential associated with a Consumer
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-      requestBody:
-        description: Description of new MTLS-auth credential for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MTLSAuthWithoutParents'
-      responses:
-        '201':
-          description: Successfully created MTLS-auth credential
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MTLSAuth'
-      tags:
-        - MTLS-auth credentials
-  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/mtls-auth/{MTLSAuthId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayMTLSAuth#delete
-      operationId: delete-mtls-auth-with-consumer
-      summary: Delete a a MTLS-auth credential associated with a Consumer
-      description: Delete a a MTLS-auth credential associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/MTLSAuthId'
-      responses:
-        '204':
-          description: Successfully deleted MTLS-auth credential or the resource didn't exist
-      tags:
-        - MTLS-auth credentials
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayMTLSAuth#read
-      operationId: get-mtls-auth-with-consumer
-      summary: Get a MTLS-auth credential associated with a Consumer
-      description: Get a MTLS-auth credential associated with a Consumer using ID.
-      parameters:
-        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
-        - $ref: '#/components/parameters/MTLSAuthId'
-      responses:
-        '200':
-          description: Successfully fetched MTLS-auth credential
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MTLSAuth'
-        '404':
-          description: Resource does not exist
-      tags:
-        - MTLS-auth credentials
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
   '/v2/control-planes/{controlPlaneId}/core-entities/custom-plugins':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -6433,307 +7490,6 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - CustomPlugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/graphql-rate-limiting-advanced/costs/{GraphQLCostDecorationId}':
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayGraphQLCostDecoration#read
-      operationId: get-graphql-rate-limiting-advanced-cost
-      summary: Get a GraphQL Cost Decoration
-      description: Get a GraphQL Cost Decoration using ID.
-      responses:
-        '200':
-          description: Successfully fetched GraphQL Cost Decoration
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GraphQLCostDecoration'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - GraphQL Cost Decorations
-    parameters:
-      - $ref: '#/components/parameters/GraphQLCostDecorationId'
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/key-sets':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKeySet#create
-      operationId: create-key-set
-      summary: Create a new KeySet
-      description: Create a new KeySet
-      requestBody:
-        description: Description of the new KeySet for creation
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KeySet'
-      responses:
-        '201':
-          description: Successfully created KeySet
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KeySet'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - KeySets
-  '/v2/control-planes/{controlPlaneId}/core-entities/key-sets/{KeySetId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKeySet#delete
-      operationId: delete-key-set
-      summary: Delete a KeySet
-      description: Delete a KeySet
-      parameters:
-        - $ref: '#/components/parameters/KeySetId'
-      responses:
-        '204':
-          description: Successfully deleted KeySet or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - KeySets
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKeySet#read
-      operationId: get-key-set
-      summary: Get a KeySet
-      description: Get a KeySet using ID or name.
-      responses:
-        '200':
-          description: Successfully fetched KeySet
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KeySet'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - KeySets
-    parameters:
-      - $ref: '#/components/parameters/KeySetId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKeySet#update
-      operationId: upsert-key-set
-      summary: Upsert a KeySet
-      description: Create or Update KeySet using ID or name.
-      requestBody:
-        description: Description of the KeySet
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KeySet'
-      responses:
-        '200':
-          description: Successfully upserted KeySet
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KeySet'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - KeySets
-  '/v2/control-planes/{controlPlaneId}/core-entities/keys':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKey#create
-      operationId: create-key
-      summary: Create a new Key
-      description: Create a new Key
-      requestBody:
-        description: Description of the new Key for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Key'
-      responses:
-        '201':
-          description: Successfully created Key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Key'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Keys
-  '/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKey#delete
-      operationId: delete-key
-      summary: Delete a Key
-      description: Delete a Key
-      parameters:
-        - $ref: '#/components/parameters/KeyId'
-      responses:
-        '204':
-          description: Successfully deleted Key or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Keys
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKey#read
-      operationId: get-key
-      summary: Get a Key
-      description: Get a Key using ID or name.
-      responses:
-        '200':
-          description: Successfully fetched Key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Key'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Keys
-    parameters:
-      - $ref: '#/components/parameters/KeyId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayKey#update
-      operationId: upsert-key
-      summary: Upsert a Key
-      description: Create or Update Key using ID or name.
-      requestBody:
-        description: Description of the Key
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Key'
-      responses:
-        '200':
-          description: Successfully upserted Key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Key'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Keys
-  '/v2/control-planes/{controlPlaneId}/core-entities/partials':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPartial#create
-      operationId: create-partial
-      summary: Create a new Partial
-      description: Create a new Partial
-      requestBody:
-        description: Description of the new Partial for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Partial'
-      responses:
-        '201':
-          description: Successfully created Partial
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Partial'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Partials
-  '/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPartial#delete
-      operationId: delete-partial
-      summary: Delete a Partial
-      description: Delete a Partial
-      parameters:
-        - $ref: '#/components/parameters/PartialId'
-      responses:
-        '204':
-          description: Successfully deleted Partial or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Partials
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPartial#read
-      operationId: get-partial
-      summary: Get a Partial
-      description: Get a Partial using ID.
-      responses:
-        '200':
-          description: Successfully fetched Partial
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Partial'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Partials
-    parameters:
-      - $ref: '#/components/parameters/PartialId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPartial#update
-      operationId: upsert-partial
-      summary: Upsert a Partial
-      description: Create or Update Partial using ID.
-      requestBody:
-        description: Description of the Partial
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Partial'
-      responses:
-        '200':
-          description: Successfully upserted Partial
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Partial'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Partials
   '/v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -16789,192 +17545,6 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/routes':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRoute#create
-      operationId: create-route
-      summary: Create a new Route
-      description: Create a new Route
-      requestBody:
-        description: Description of the new Route for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RouteJson'
-      responses:
-        '201':
-          description: Successfully created Route
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RouteJson'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Routes
-  '/v2/control-planes/{controlPlaneId}/core-entities/routes/{RouteId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRoute#delete
-      operationId: delete-route
-      summary: Delete a Route
-      description: Delete a Route
-      parameters:
-        - $ref: '#/components/parameters/RouteId'
-      responses:
-        '204':
-          description: Successfully deleted Route or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Routes
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRoute#read
-      operationId: get-route
-      summary: Get a Route
-      description: Get a Route using ID or name.
-      responses:
-        '200':
-          description: Successfully fetched Route
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RouteJson'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Routes
-    parameters:
-      - $ref: '#/components/parameters/RouteId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRoute#update
-      operationId: upsert-route
-      summary: Upsert a Route
-      description: Create or Update Route using ID or name.
-      requestBody:
-        description: Description of the Route
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RouteJson'
-      responses:
-        '200':
-          description: Successfully upserted Route
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RouteJson'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Routes
-  '/v2/control-planes/{controlPlaneId}/core-entities/routes/{RouteId}#RouteExpression':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRouteExpression#delete
-      operationId: delete-route-RouteExpression
-      summary: Delete a Route
-      description: Delete a Route
-      parameters:
-        - $ref: '#/components/parameters/RouteId'
-      responses:
-        '204':
-          description: Successfully deleted Route or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Routes
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRouteExpression#read
-      operationId: get-route-RouteExpression
-      summary: Get a Route
-      description: Get a Route using ID or name.
-      responses:
-        '200':
-          description: Successfully fetched Route
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RouteExpression'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Routes
-    parameters:
-      - $ref: '#/components/parameters/RouteId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRouteExpression#update
-      operationId: upsert-route-RouteExpression
-      summary: Upsert a Route
-      description: Create or Update Route using ID or name.
-      requestBody:
-        description: Description of the Route
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RouteExpression'
-      responses:
-        '200':
-          description: Successfully upserted Route
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RouteExpression'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Routes
-  '/v2/control-planes/{controlPlaneId}/core-entities/routes#RouteExpression':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayRouteExpression#create
-      operationId: create-route-RouteExpression
-      summary: Create a new Route
-      description: Create a new Route
-      requestBody:
-        description: Description of the new Route for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RouteExpression'
-      responses:
-        '201':
-          description: Successfully created Route
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RouteExpression'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Routes
   '/v2/control-planes/{controlPlaneId}/core-entities/schemas/plugins/{pluginName}':
     get:
       operationId: fetch-plugin-schema
@@ -16994,445 +17564,6 @@ paths:
         schema:
           type: string
       - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/services':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayService#create
-      operationId: create-service
-      summary: Create a new Service
-      description: Create a new Service
-      requestBody:
-        description: Description of the new Service for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Service'
-      responses:
-        '201':
-          description: Successfully created Service
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Services
-  '/v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayService#delete
-      operationId: delete-service
-      summary: Delete a Service
-      description: Delete a Service
-      parameters:
-        - $ref: '#/components/parameters/ServiceId'
-      responses:
-        '204':
-          description: Successfully deleted Service or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Services
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayService#read
-      operationId: get-service
-      summary: Get a Service
-      description: Get a Service using ID or name.
-      responses:
-        '200':
-          description: Successfully fetched Service
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Services
-    parameters:
-      - $ref: '#/components/parameters/ServiceId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayService#update
-      operationId: upsert-service
-      summary: Upsert a Service
-      description: Create or Update Service using ID or name.
-      requestBody:
-        description: Description of the Service
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Service'
-      responses:
-        '200':
-          description: Successfully upserted Service
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Services
-  '/v2/control-planes/{controlPlaneId}/core-entities/snis':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewaySNI#create
-      operationId: create-sni
-      summary: Create a new SNI
-      description: Create a new SNI
-      requestBody:
-        description: Description of the new SNI for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SNI'
-      responses:
-        '201':
-          description: Successfully created SNI
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SNI'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - SNIs
-  '/v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewaySNI#delete
-      operationId: delete-sni
-      summary: Delete an SNI
-      description: Delete an SNI
-      parameters:
-        - $ref: '#/components/parameters/SNIId'
-      responses:
-        '204':
-          description: Successfully deleted SNI or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - SNIs
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewaySNI#read
-      operationId: get-sni
-      summary: Get an SNI
-      description: Get an SNI using ID or name.
-      responses:
-        '200':
-          description: Successfully fetched SNI
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SNI'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - SNIs
-    parameters:
-      - $ref: '#/components/parameters/SNIId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewaySNI#update
-      operationId: upsert-sni
-      summary: Upsert a SNI
-      description: Create or Update SNI using ID or name.
-      requestBody:
-        description: Description of the SNI
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SNI'
-      responses:
-        '200':
-          description: Successfully upserted SNI
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SNI'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - SNIs
-  '/v2/control-planes/{controlPlaneId}/core-entities/upstreams':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayUpstream#create
-      operationId: create-upstream
-      summary: Create a new Upstream
-      description: Create a new Upstream
-      requestBody:
-        description: Description of the new Upstream for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Upstream'
-      responses:
-        '201':
-          description: Successfully created Upstream
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Upstream'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Upstreams
-  '/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayUpstream#delete
-      operationId: delete-upstream
-      summary: Delete an Upstream
-      description: Delete an Upstream
-      parameters:
-        - $ref: '#/components/parameters/UpstreamId'
-      responses:
-        '204':
-          description: Successfully deleted Upstream or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Upstreams
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayUpstream#read
-      operationId: get-upstream
-      summary: Get an Upstream
-      description: Get an Upstream using ID or name.
-      responses:
-        '200':
-          description: Successfully fetched Upstream
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Upstream'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Upstreams
-    parameters:
-      - $ref: '#/components/parameters/UpstreamId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayUpstream#update
-      operationId: upsert-upstream
-      summary: Upsert a Upstream
-      description: Create or Update Upstream using ID or name.
-      requestBody:
-        description: Description of the Upstream
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Upstream'
-      responses:
-        '200':
-          description: Successfully upserted Upstream
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Upstream'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Upstreams
-  '/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayTarget#create
-      operationId: create-target-with-upstream
-      summary: Create a new Target associated with an Upstream
-      description: Create a new Target associated with an Upstream
-      parameters:
-        - $ref: '#/components/parameters/UpstreamIdForTarget'
-      requestBody:
-        description: Description of new Target for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TargetWithoutParents'
-      responses:
-        '201':
-          description: Successfully created Target
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Target'
-      tags:
-        - Targets
-  '/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayTarget#delete
-      operationId: delete-target-with-upstream
-      summary: Delete a a Target associated with an Upstream
-      description: Delete a a Target associated with an Upstream using ID or target.
-      parameters:
-        - $ref: '#/components/parameters/UpstreamIdForTarget'
-        - $ref: '#/components/parameters/TargetId'
-      responses:
-        '204':
-          description: Successfully deleted Target or the resource didn't exist
-      tags:
-        - Targets
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayTarget#read
-      operationId: get-target-with-upstream
-      summary: Get a Target associated with an Upstream
-      description: Get a Target associated with an Upstream using ID or target.
-      parameters:
-        - $ref: '#/components/parameters/UpstreamIdForTarget'
-        - $ref: '#/components/parameters/TargetId'
-      responses:
-        '200':
-          description: Successfully fetched Target
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Target'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Targets
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-  '/v2/control-planes/{controlPlaneId}/core-entities/vaults':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayVault#create
-      operationId: create-vault
-      summary: Create a new Vault
-      description: Create a new Vault
-      requestBody:
-        description: Description of the new Vault for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Vault'
-      responses:
-        '201':
-          description: Successfully created Vault
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vault'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Vaults
-  '/v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayVault#delete
-      operationId: delete-vault
-      summary: Delete a Vault
-      description: Delete a Vault
-      parameters:
-        - $ref: '#/components/parameters/VaultId'
-      responses:
-        '204':
-          description: Successfully deleted Vault or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Vaults
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayVault#read
-      operationId: get-vault
-      summary: Get a Vault
-      description: Get a Vault using ID or prefix.
-      responses:
-        '200':
-          description: Successfully fetched Vault
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vault'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Vaults
-    parameters:
-      - $ref: '#/components/parameters/VaultId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayVault#update
-      operationId: upsert-vault
-      summary: Upsert a Vault
-      description: Create or Update Vault using ID or prefix.
-      requestBody:
-        description: Description of the Vault
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Vault'
-      responses:
-        '200':
-          description: Successfully upserted Vault
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vault'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Vaults
   '/v2/control-planes/{controlPlaneId}/dp-client-certificates':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -20420,17 +20551,24 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
         - name: filter
           in: query
-          description: Filter teams returned in the response.
+          description: |-
+            Filter teams returned in the response. Supports filtering by label value using
+            dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
+            `eq`, `contains`, or `exists`.
           required: false
           schema:
             type: object
             properties:
               name:
                 $ref: '#/components/schemas/LegacyStringFieldFilter'
+              labels:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/LegacyStringFieldFilterWithExists'
           style: deepObject
       responses:
         '200':
-          $ref: '#/components/responses/TeamCollection'
+          $ref: '#/components/responses/TeamCollectionResponse'
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
@@ -21716,6 +21854,15 @@ components:
       in: path
       required: true
       description: The ID of the Virtual Cluster.
+    Workspace:
+      description: The name of the workspace
+      in: path
+      name: workspace
+      required: true
+      schema:
+        type: string
+        example: team-payments
+        default: default
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -22898,6 +23045,7 @@ components:
         - `ready`: The network is fully provisioned and available for data plane groups.
         - `terminating`: The network is being deleted and is no longer accepting new resources.
         - `terminated`: The network has been fully deleted and is no longer available.
+      type: string
       enum:
         - created
         - initializing
@@ -27289,20 +27437,14 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          description: The name of the team.
-          type: string
-          example: IDM - Developers
-          default: null
-          maxLength: 250
-          nullable: true
-          pattern: '^[\w \W]+$'
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/TeamName'
         description:
-          description: The team description in Konnect.
+          description: The description of the team.
           type: string
           example: The developers for the IDM API.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
         system_team:
@@ -27338,6 +27480,18 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       title: Team
+    TeamResponse:
+      allOf:
+        - $ref: '#/components/schemas/Team'
+        - type: object
+          required:
+            - id
+            - name
+            - description
+            - system_team
+            - labels
+            - created_at
+            - updated_at
     IdpTeamGroupMapping:
       description: A mapping between a Konnect team and an identity provider group.
       type: object
@@ -27538,6 +27692,30 @@ components:
           description: The field contains the provided value.
           type: string
       additionalProperties: false
+    StringFieldExistsFilter:
+      description: Filters on whether the given field exists.
+      type: object
+      properties:
+        exists:
+          type: boolean
+      additionalProperties: false
+      deprecated: true
+      required:
+        - exists
+      title: StringFieldExistsFilter
+    LegacyStringFieldFilterWithExists:
+      description: 'Filter a string value field by exact match, partial contains, or existence.'
+      oneOf:
+        - $ref: '#/components/schemas/LegacyStringFieldFilter'
+        - $ref: '#/components/schemas/StringFieldExistsFilter'
+      title: StringFieldFilterWithExists
+    TeamName:
+      description: The name of the team.
+      type: string
+      example: IDM - Developers
+      maxLength: 250
+      minLength: 1
+      pattern: '^[\w \W]+$'
     ServerlessCloudGateway:
       x-speakeasy-entity: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -30929,18 +31107,23 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
           default: null
+          maxLength: 250
+          minLength: 1
           nullable: true
           pattern: '^[\w \W]+$'
           writeOnly: true
           x-speakeasy-param-computed: false
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) API team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -30963,15 +31146,20 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
+          maxLength: 250
+          minLength: 1
           pattern: '^[\w \W]+$'
           writeOnly: true
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -30999,14 +31187,13 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          type: string
-          example: IDM - Developers
-          maxLength: 250
-          pattern: '^[\w \W]+$'
+          $ref: '#/components/schemas/TeamName'
         description:
+          description: The description of the team.
           type: string
           example: The developers for the IDM API.
           maxLength: 250
+          minLength: 1
         created_at:
           type: string
           format: date-time
@@ -48983,10 +49170,18 @@ components:
           x-referenceable: true
           x-speakeasy-param-computed: false
         managed_by:
-          description: 'Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.'
+          description: |-
+            Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+            Keys must be 1–63 characters long and start with an alphanumeric character.
           type: object
           default: null
-          additionalProperties: true
+          additionalProperties:
+            maxLength: 63
+            minLength: 1
+            pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+            type: string
+          maxProperties: 5
           nullable: true
           x-speakeasy-param-computed: false
         snis:
@@ -64501,20 +64696,7 @@ components:
           description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.'
           type: array
           items:
-            description: 'A string representing a protocol, such as HTTP or HTTPS.'
-            enum:
-              - grpc
-              - grpcs
-              - http
-              - https
-              - tcp
-              - tls
-              - tls_passthrough
-              - udp
-              - ws
-              - wss
-            type: string
-            x-speakeasy-unknown-values: allow
+            $ref: '#/components/schemas/Protocols'
           default:
             - grpc
             - grpcs
@@ -69014,20 +69196,7 @@ components:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
           type: array
           items:
-            description: 'A string representing a protocol, such as HTTP or HTTPS.'
-            enum:
-              - grpc
-              - grpcs
-              - http
-              - https
-              - tcp
-              - tls
-              - tls_passthrough
-              - udp
-              - ws
-              - wss
-            type: string
-            x-speakeasy-unknown-values: allow
+            $ref: '#/components/schemas/Protocols'
           default:
             - http
             - https
@@ -69777,7 +69946,7 @@ components:
               type: boolean
               default: false
             validate_assertion_signature:
-              description: Enable signature validation for SAML responses.
+              description: 'Controls SAML response signature validation. When enabled (the default), the `saml:Assertion` signature is validated and a valid `idp_certificate` is required. When disabled, the signature is still validated as long as an `idp_certificate` is configured, but the `samlp:Response` signature is checked instead of the assertion. Disabling it without an `idp_certificate` skips signature validation entirely, which is insecure (unsigned responses are accepted) and logs a warning.'
               type: boolean
               default: true
           required:
@@ -74921,6 +75090,21 @@ components:
           properties:
             message:
               example: Conflict
+    Protocols:
+      description: 'A string representing a protocol, such as HTTP or HTTPS.'
+      type: string
+      enum:
+        - grpc
+        - grpcs
+        - http
+        - https
+        - tcp
+        - tls
+        - tls_passthrough
+        - udp
+        - ws
+        - wss
+      x-speakeasy-unknown-values: allow
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -75626,17 +75810,20 @@ components:
             type: object
             properties:
               name:
-                description: A name for the team being created.
+                description: The name of the team.
                 type: string
                 example: IDM - Developers
+                maxLength: 250
+                minLength: 1
                 pattern: '^[\w \W]+$'
                 writeOnly: true
               description:
-                description: The description of the new team.
+                description: The description of the team.
                 type: string
                 example: The Identity Management (IDM) team.
                 default: null
                 maxLength: 250
+                minLength: 1
                 nullable: true
                 writeOnly: true
                 x-speakeasy-param-computed: false
@@ -75657,6 +75844,8 @@ components:
                 type: string
                 example: IDM - Developers
                 default: null
+                maxLength: 250
+                minLength: 1
                 nullable: true
                 pattern: '^[\w \W]+$'
                 writeOnly: true
@@ -75667,6 +75856,7 @@ components:
                 example: The Identity Management (IDM) API team.
                 default: null
                 maxLength: 250
+                minLength: 1
                 nullable: true
                 writeOnly: true
                 x-speakeasy-param-computed: false
@@ -78035,9 +78225,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Team'
-    TeamCollection:
-      description: A paginated list response for a collection of users.
+            $ref: '#/components/schemas/TeamResponse'
+    TeamCollectionResponse:
+      description: A paginated list response for a collection of teams.
       content:
         application/json:
           schema:
@@ -78048,7 +78238,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Team'
+                  $ref: '#/components/schemas/TeamResponse'
                 default: null
                 nullable: true
                 x-speakeasy-param-computed: false
