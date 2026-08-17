@@ -6634,6 +6634,94 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Partials
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      operationId: create-plugin-in-workspace
+      summary: Create a new Plugin in a workspace
+      description: Create a new Plugin in a workspace
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the new Plugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plugin'
+      responses:
+        '201':
+          description: Successfully created Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}':
+    delete:
+      operationId: delete-plugin-in-workspace
+      summary: Delete a Plugin in a workspace
+      description: Delete a Plugin in a workspace
+      parameters:
+        - $ref: '#/components/parameters/PluginId'
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      operationId: get-plugin-in-workspace
+      summary: Get a Plugin in a workspace
+      description: Get a Plugin using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          description: Successfully fetched Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      operationId: upsert-plugin-in-workspace
+      summary: Upsert a Plugin in a workspace
+      description: Create or Update Plugin using ID in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Description of the Plugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plugin'
+      responses:
+        '200':
+          description: Successfully upserted Plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/routes':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
