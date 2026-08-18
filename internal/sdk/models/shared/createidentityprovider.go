@@ -104,7 +104,7 @@ type CreateIdentityProvider struct {
 	// Indicates whether the identity provider is enabled.
 	// Only one identity provider can be active at a time, such as SAML or OIDC.
 	//
-	Enabled *bool `default:"false" json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// The path used for initiating login requests with the identity provider.
 	LoginPath *string                       `json:"login_path,omitempty"`
 	Config    *CreateIdentityProviderConfig `json:"config,omitempty"`

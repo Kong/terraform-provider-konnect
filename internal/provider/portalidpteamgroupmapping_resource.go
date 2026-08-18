@@ -7,99 +7,106 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &PortalTeamResource{}
-var _ resource.ResourceWithImportState = &PortalTeamResource{}
+var _ resource.Resource = &PortalIdpTeamGroupMappingResource{}
+var _ resource.ResourceWithImportState = &PortalIdpTeamGroupMappingResource{}
 
-func NewPortalTeamResource() resource.Resource {
-	return &PortalTeamResource{}
+func NewPortalIdpTeamGroupMappingResource() resource.Resource {
+	return &PortalIdpTeamGroupMappingResource{}
 }
 
-// PortalTeamResource defines the resource implementation.
-type PortalTeamResource struct {
+// PortalIdpTeamGroupMappingResource defines the resource implementation.
+type PortalIdpTeamGroupMappingResource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// PortalTeamResourceModel describes the resource data model.
-type PortalTeamResourceModel struct {
-	CanOwnApplications types.Bool   `tfsdk:"can_own_applications"`
-	CreatedAt          types.String `tfsdk:"created_at"`
-	Description        types.String `tfsdk:"description"`
-	ID                 types.String `tfsdk:"id"`
-	Name               types.String `tfsdk:"name"`
-	PortalID           types.String `tfsdk:"portal_id"`
-	UpdatedAt          types.String `tfsdk:"updated_at"`
+// PortalIdpTeamGroupMappingResourceModel describes the resource data model.
+type PortalIdpTeamGroupMappingResourceModel struct {
+	CreatedAt types.String `tfsdk:"created_at"`
+	Group     types.String `tfsdk:"group"`
+	ID        types.String `tfsdk:"id"`
+	MappingID types.String `tfsdk:"mapping_id"`
+	PortalID  types.String `tfsdk:"portal_id"`
+	TeamID    types.String `tfsdk:"team_id"`
+	UpdatedAt types.String `tfsdk:"updated_at"`
 }
 
-func (r *PortalTeamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_portal_team"
+func (r *PortalIdpTeamGroupMappingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_portal_idp_team_group_mapping"
 }
 
-func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *PortalIdpTeamGroupMappingResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "PortalTeam Resource",
+		MarkdownDescription: "PortalIdpTeamGroupMapping Resource",
 		Attributes: map[string]schema.Attribute{
-			"can_own_applications": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Whether the team is allowed to own applications`,
-			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Description: `Creation timestamp.`,
 			},
-			"description": schema.StringAttribute{
-				Optional:    true,
-				Description: `The description of the team.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 250),
+			"group": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Description: `The IdP group name. Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `ID of the identity provider. Requires replacement if changed.`,
+			},
+			"mapping_id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-			},
-			"name": schema.StringAttribute{
-				Required:    true,
-				Description: `The name of the team.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 250),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w \W]+$`), "must match pattern "+regexp.MustCompile(`^[\w \W]+$`).String()),
-				},
+				Description: `ID of the team group mapping.`,
 			},
 			"portal_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The Portal identifier`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The Portal identifier. Requires replacement if changed.`,
+			},
+			"team_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The Konnect team ID. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Description: `Last update timestamp.`,
 			},
 		},
 	}
 }
 
-func (r *PortalTeamResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *PortalIdpTeamGroupMappingResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -119,8 +126,8 @@ func (r *PortalTeamResource) Configure(ctx context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *PortalTeamResourceModel
+func (r *PortalIdpTeamGroupMappingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *PortalIdpTeamGroupMappingResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -137,13 +144,13 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreatePortalTeamRequest(ctx)
+	request, requestDiags := data.ToOperationsCreatePortalIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.PortalTeams.CreatePortalTeam(ctx, *request)
+	res, err := r.client.PortalAuthSettings.CreatePortalIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -155,15 +162,22 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
+		return
+	}
 	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalTeamResponse != nil) {
+	if !(res.PortalIdpTeamGroupMapping != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalIdpTeamGroupMapping(ctx, res.PortalIdpTeamGroupMapping)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -179,8 +193,8 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *PortalTeamResourceModel
+func (r *PortalIdpTeamGroupMappingResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *PortalIdpTeamGroupMappingResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -197,13 +211,13 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetPortalTeamRequest(ctx)
+	request, requestDiags := data.ToOperationsGetPortalIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.PortalTeams.GetPortalTeam(ctx, *request)
+	res, err := r.client.PortalAuthSettings.GetPortalIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -223,11 +237,11 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalTeamResponse != nil) {
+	if !(res.PortalIdpTeamGroupMapping != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalIdpTeamGroupMapping(ctx, res.PortalIdpTeamGroupMapping)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -237,8 +251,8 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *PortalTeamResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *PortalTeamResourceModel
+func (r *PortalIdpTeamGroupMappingResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *PortalIdpTeamGroupMappingResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -251,50 +265,14 @@ func (r *PortalTeamResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdatePortalTeamRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res, err := r.client.PortalTeams.UpdatePortalTeam(ctx, *request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
-		}
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if !(res.PortalTeamResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	// Not Implemented; all attributes marked as RequiresReplace
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *PortalTeamResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *PortalTeamResourceModel
+func (r *PortalIdpTeamGroupMappingResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *PortalIdpTeamGroupMappingResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -311,13 +289,13 @@ func (r *PortalTeamResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeletePortalTeamRequest(ctx)
+	request, requestDiags := data.ToOperationsDeletePortalIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.PortalTeams.DeletePortalTeam(ctx, *request)
+	res, err := r.client.PortalAuthSettings.DeletePortalIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -339,27 +317,33 @@ func (r *PortalTeamResource) Delete(ctx context.Context, req resource.DeleteRequ
 
 }
 
-func (r *PortalTeamResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *PortalIdpTeamGroupMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		PortalID string `json:"portal_id"`
-		ID       string `json:"id"`
+		ID        string `json:"id"`
+		MappingID string `json:"mapping_id"`
+		PortalID  string `json:"portal_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "mapping_id": "...", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
-	if len(data.PortalID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("portal_id"), data.PortalID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.MappingID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field mapping_id is required but was not found in the json encoded ID.`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("mapping_id"), data.MappingID)...)
+	if len(data.PortalID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("portal_id"), data.PortalID)...)
 }
