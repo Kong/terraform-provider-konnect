@@ -83,10 +83,13 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"workspace": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString(`default`),
-				Description: `The name of the workspace. Default: "default"`,
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 		},
 	}

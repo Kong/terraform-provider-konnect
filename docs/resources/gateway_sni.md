@@ -44,7 +44,7 @@ resource "konnect_gateway_sni" "my_gatewaysni" {
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `tags` (List of String) An optional set of strings associated with the SNIs for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--certificate"></a>
 ### Nested Schema for `certificate`

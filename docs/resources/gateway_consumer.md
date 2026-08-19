@@ -42,7 +42,7 @@ resource "konnect_gateway_consumer" "my_gatewayconsumer" {
 - `tags` (List of String) An optional set of strings associated with the Consumer for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `username` (String) The unique username of the Consumer. You must send either this field or `custom_id` with the request.
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 

@@ -64,7 +64,7 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
 - `strip_path` (Boolean) When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL. Default: true
 - `tags` (List of String) An optional set of strings associated with the Route for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--service"></a>
 ### Nested Schema for `service`

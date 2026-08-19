@@ -21860,6 +21860,7 @@ components:
         type: string
         example: team-payments
         default: default
+      x-speakeasy-param-force-new: true
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership

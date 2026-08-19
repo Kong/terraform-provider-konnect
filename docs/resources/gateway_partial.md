@@ -350,7 +350,7 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
 - `redis_ce` (Attributes) (see [below for nested schema](#nestedatt--redis_ce))
 - `redis_ee` (Attributes) (see [below for nested schema](#nestedatt--redis_ee))
 - `vectordb` (Attributes) (see [below for nested schema](#nestedatt--vectordb))
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ### Read-Only
 

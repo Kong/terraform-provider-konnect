@@ -126,7 +126,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 - `tags` (List of String) An optional set of strings associated with the Upstream for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `use_srv_name` (Boolean) If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`. Default: false
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--client_certificate"></a>
 ### Nested Schema for `client_certificate`

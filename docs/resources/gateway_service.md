@@ -78,7 +78,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 - `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 - `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000
 
 <a id="nestedatt--client_certificate"></a>

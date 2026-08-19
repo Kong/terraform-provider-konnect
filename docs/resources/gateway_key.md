@@ -54,7 +54,7 @@ resource "konnect_gateway_key" "my_gatewaykey" {
 - `set` (Attributes) The id (an UUID) of the key-set with which to associate the key. (see [below for nested schema](#nestedatt--set))
 - `tags` (List of String) An optional set of strings associated with the Key for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 - `x5t` (String) X.509 certificate SHA-1 thumbprint.
 
 <a id="nestedatt--pem"></a>

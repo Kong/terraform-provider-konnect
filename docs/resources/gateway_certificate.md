@@ -62,7 +62,7 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `vault` (String) Shorthand that expands into cert and key; when both vault and cert/key are provided, the vault expansion takes precedence.
 - `vault_alt` (String) Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 

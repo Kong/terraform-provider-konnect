@@ -40,7 +40,7 @@ resource "konnect_gateway_key_set" "my_gatewaykeyset" {
 - `name` (String) The name to associate with the given key-set.
 - `tags` (List of String) A set of strings representing tags.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-- `workspace` (String) The name of the workspace. Default: "default"
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 
