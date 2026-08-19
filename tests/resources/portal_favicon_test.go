@@ -17,7 +17,7 @@ func TestPortalFavicon(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_favicon.my_portal_favicon", "data", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=="),
+						resource.TestCheckResourceAttr("konnect_portal_favicon.my_portal_favicon", "data", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAEElEQVR4nGL6n50NCAAA//8ESgHYqxSkJQAAAABJRU5ErkJggg=="),
 					),
 				},
 				{
