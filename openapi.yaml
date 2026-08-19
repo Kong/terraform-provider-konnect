@@ -7671,89 +7671,6 @@ paths:
           $ref: '#/components/responses/KonnectCPLegacyNotFound'
       tags:
         - Custom Plugin Schemas
-  '/v2/control-planes/{controlPlaneId}/core-entities/plugins':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      operationId: create-plugin
-      summary: Create a new Plugin
-      description: Create a new Plugin
-      requestBody:
-        description: Description of the new Plugin for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Plugin'
-      responses:
-        '201':
-          description: Successfully created Plugin
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Plugin'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Plugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}':
-    delete:
-      operationId: delete-plugin
-      summary: Delete a Plugin
-      description: Delete a Plugin
-      parameters:
-        - $ref: '#/components/parameters/PluginId'
-      responses:
-        '204':
-          description: Successfully deleted Plugin or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Plugins
-    get:
-      operationId: get-plugin
-      summary: Get a Plugin
-      description: Get a Plugin using ID.
-      parameters:
-        - $ref: '#/components/parameters/ExpandPartials'
-      responses:
-        '200':
-          description: Successfully fetched Plugin
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Plugin'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Plugins
-    parameters:
-      - $ref: '#/components/parameters/PluginId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      operationId: upsert-plugin
-      summary: Upsert a Plugin
-      description: Create or Update Plugin using ID.
-      requestBody:
-        description: Description of the Plugin
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Plugin'
-      responses:
-        '200':
-          description: Successfully upserted Plugin
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Plugin'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Ace':
     delete:
       x-speakeasy-entity-operation:
@@ -21541,14 +21458,6 @@ components:
       description: |
         Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request.
       required: false
-    ExpandPartials:
-      description: Expand partials for the plugin.
-      example: true
-      in: query
-      name: expand_partials
-      schema:
-        type: boolean
-      x-speakeasy-terraform-ignore: true
     FilterByLabels:
       x-speakeasy-name-override: filter_labels
       name: labels

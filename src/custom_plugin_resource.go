@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -179,6 +180,12 @@ func (r *CustomPluginResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString("default"),
+				Description: `The name of the workspace. Default: "default"`,
+			},
 		},
 	}
 }
@@ -227,8 +234,9 @@ func (r *CustomPluginResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	res, err := r.client.Plugins.CreatePlugin(ctx, operations.CreatePluginRequest{
+	res, err := r.client.Plugins.CreatePluginInWorkspace(ctx, operations.CreatePluginInWorkspaceRequest{
 		ControlPlaneID: plugin.ControlPlaneID.ValueString(),
+		Workspace:      plugin.Workspace.ValueString(),
 		Plugin:         pluginData,
 	})
 
@@ -263,8 +271,9 @@ func (r *CustomPluginResource) Read(ctx context.Context, req resource.ReadReques
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
 
-	res, err := r.client.Plugins.GetPlugin(ctx, operations.GetPluginRequest{
+	res, err := r.client.Plugins.GetPluginInWorkspace(ctx, operations.GetPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
 	})
 
@@ -326,8 +335,9 @@ func (r *CustomPluginResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	res, err := r.client.Plugins.UpsertPlugin(ctx, operations.UpsertPluginRequest{
+	res, err := r.client.Plugins.UpsertPluginInWorkspace(ctx, operations.UpsertPluginInWorkspaceRequest{
 		ControlPlaneID: data.ControlPlaneID.ValueString(),
+		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
 		Plugin:         plugin,
 	})
@@ -362,8 +372,9 @@ func (r *CustomPluginResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	res, err := r.client.Plugins.DeletePlugin(ctx, operations.DeletePluginRequest{
+	res, err := r.client.Plugins.DeletePluginInWorkspace(ctx, operations.DeletePluginInWorkspaceRequest{
 		ControlPlaneID: data.ControlPlaneID.ValueString(),
+		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
 	})
 
@@ -529,11 +540,11 @@ func checkPluginResponse(res any, err error, diagnostics *diag.Diagnostics) {
 
 func getPluginFromResponse(res any) *shared.Plugin {
 	switch t := res.(type) {
-	case *operations.GetPluginResponse:
+	case *operations.GetPluginInWorkspaceResponse:
 		return t.Plugin
-	case *operations.UpsertPluginResponse:
+	case *operations.UpsertPluginInWorkspaceResponse:
 		return t.Plugin
-	case *operations.CreatePluginResponse:
+	case *operations.CreatePluginInWorkspaceResponse:
 		return t.Plugin
 	default:
 		return nil
