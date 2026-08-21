@@ -16,11 +16,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayCACertificateResource{}
-var _ resource.ResourceWithImportState = &GatewayCACertificateResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayCACertificateResource{}
 
 func NewGatewayCACertificateResource() resource.Resource {
 	return &GatewayCACertificateResource{}
@@ -51,6 +52,7 @@ func (r *GatewayCACertificateResource) Metadata(ctx context.Context, req resourc
 func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayCACertificate Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
 				Required:    true,
@@ -369,4 +371,10 @@ func (r *GatewayCACertificateResource) ImportState(ctx context.Context, req reso
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayCACertificateResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaycacertificateStateUpgraderV0},
+	}
 }

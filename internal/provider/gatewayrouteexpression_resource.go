@@ -24,11 +24,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayRouteExpressionResource{}
-var _ resource.ResourceWithImportState = &GatewayRouteExpressionResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayRouteExpressionResource{}
 
 func NewGatewayRouteExpressionResource() resource.Resource {
 	return &GatewayRouteExpressionResource{}
@@ -68,6 +69,7 @@ func (r *GatewayRouteExpressionResource) Metadata(ctx context.Context, req resou
 func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayRouteExpression Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -455,4 +457,10 @@ func (r *GatewayRouteExpressionResource) ImportState(ctx context.Context, req re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayRouteExpressionResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayrouteexpressionStateUpgraderV0},
+	}
 }

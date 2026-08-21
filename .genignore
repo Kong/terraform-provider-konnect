@@ -1,0 +1,27 @@
+# Blocks Speakeasy from regenerating no-op internal/stateupgraders/<entity>_v0.go
+# stubs; the real logic lives in internal/stateupgraders/workspace_upgraders.go.
+# List files explicitly (no globs) - a glob would also stop Speakeasy from ever
+# wiring up a brand-new entity. Per new entity: annotate + regenerate, add its
+# exact filename here, add its wrapper in workspace_upgraders.go, rebuild.
+internal/provider/workspace_upgrade_schema.go
+internal/stateupgraders/gatewayacl_v0.go
+internal/stateupgraders/gatewaybasicauth_v0.go
+internal/stateupgraders/gatewaycacertificate_v0.go
+internal/stateupgraders/gatewaycertificate_v0.go
+internal/stateupgraders/gatewayconsumer_v0.go
+internal/stateupgraders/gatewayconsumergroup_v0.go
+internal/stateupgraders/gatewayconsumergroupmember_v0.go
+internal/stateupgraders/gatewayhmacauth_v0.go
+internal/stateupgraders/gatewayjwt_v0.go
+internal/stateupgraders/gatewaykey_v0.go
+internal/stateupgraders/gatewaykeyauth_v0.go
+internal/stateupgraders/gatewaykeyset_v0.go
+internal/stateupgraders/gatewaymtlsauth_v0.go
+internal/stateupgraders/gatewaypartial_v0.go
+internal/stateupgraders/gatewayroute_v0.go
+internal/stateupgraders/gatewayrouteexpression_v0.go
+internal/stateupgraders/gatewayservice_v0.go
+internal/stateupgraders/gatewaysni_v0.go
+internal/stateupgraders/gatewaytarget_v0.go
+internal/stateupgraders/gatewayupstream_v0.go
+internal/stateupgraders/gatewayvault_v0.go

@@ -14,11 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayConsumerGroupMemberResource{}
-var _ resource.ResourceWithImportState = &GatewayConsumerGroupMemberResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayConsumerGroupMemberResource{}
 
 func NewGatewayConsumerGroupMemberResource() resource.Resource {
 	return &GatewayConsumerGroupMemberResource{}
@@ -47,6 +48,7 @@ func (r *GatewayConsumerGroupMemberResource) Metadata(ctx context.Context, req r
 func (r *GatewayConsumerGroupMemberResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayConsumerGroupMember Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"consumer_group": schema.SingleNestedAttribute{
 				Computed: true,
@@ -312,4 +314,10 @@ func (r *GatewayConsumerGroupMemberResource) Delete(ctx context.Context, req res
 
 func (r *GatewayConsumerGroupMemberResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource gateway_consumer_group_member.")
+}
+
+func (r *GatewayConsumerGroupMemberResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayconsumergroupmemberStateUpgraderV0},
+	}
 }

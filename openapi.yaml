@@ -36922,6 +36922,7 @@ components:
       additionalProperties: false
       required:
         - group
+      x-speakeasy-entity-version: 1
     AcePlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -48790,6 +48791,7 @@ components:
       required:
         - password
         - username
+      x-speakeasy-entity-version: 1
     BotDetectionPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -48906,6 +48908,7 @@ components:
       additionalProperties: false
       required:
         - cert
+      x-speakeasy-entity-version: 1
     CanaryPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -49120,6 +49123,7 @@ components:
       required:
         - cert
         - key
+      x-speakeasy-entity-version: 1
     CertificateRequest:
       type: object
       properties:
@@ -50611,6 +50615,7 @@ components:
           - silver-tier
         username: bob-the-builder
       additionalProperties: false
+      x-speakeasy-entity-version: 1
     ConsumerGroup:
       x-speakeasy-entity: GatewayConsumerGroup
       type: object
@@ -50642,6 +50647,7 @@ components:
       additionalProperties: false
       required:
         - name
+      x-speakeasy-entity-version: 1
     ConsumerGroupInsideWrapper:
       type: object
       properties:
@@ -53957,6 +53963,7 @@ components:
       additionalProperties: false
       required:
         - username
+      x-speakeasy-entity-version: 1
     HeaderCertAuthPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -54814,6 +54821,7 @@ components:
         key: YJdmaDvVTJxtcWRCvkMikc8oELgAVNcz
         secret: C50k0bcahDhLNhLKSUBSR1OMiFGzNZ7X
       additionalProperties: false
+      x-speakeasy-entity-version: 1
     JqPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -58206,6 +58214,7 @@ components:
       additionalProperties: false
       required:
         - kid
+      x-speakeasy-entity-version: 1
     KeyAuth:
       x-speakeasy-entity: GatewayKeyAuth
       type: object
@@ -58426,6 +58435,7 @@ components:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
       additionalProperties: false
+      x-speakeasy-entity-version: 1
     KeySet:
       x-speakeasy-entity: GatewayKeySet
       type: object
@@ -58463,6 +58473,7 @@ components:
         tags:
           - idp-keys
       additionalProperties: false
+      x-speakeasy-entity-version: 1
     LdapAuthAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -59001,6 +59012,7 @@ components:
       additionalProperties: false
       required:
         - subject_name
+      x-speakeasy-entity-version: 1
     MeteringAndBillingPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -62831,6 +62843,7 @@ components:
         - $ref: '#/components/schemas/PartialVectordb'
         - $ref: '#/components/schemas/PartialEmbeddings'
         - $ref: '#/components/schemas/PartialModel'
+      x-speakeasy-entity-version: 1
     PartialEmbeddings:
       type: object
       properties:
@@ -69086,6 +69099,7 @@ components:
           type: integer
           nullable: true
       additionalProperties: false
+      x-speakeasy-entity-version: 1
     RouteJson:
       x-speakeasy-entity: GatewayRoute
       description: 'Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.'
@@ -69287,6 +69301,7 @@ components:
         service:
           id: bd380f99-659d-415e-b0e7-72ea05df3218
       additionalProperties: false
+      x-speakeasy-entity-version: 1
     RouteTransformerAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -69412,6 +69427,7 @@ components:
       required:
         - name
         - certificate
+      x-speakeasy-entity-version: 1
     SamlPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -70171,6 +70187,7 @@ components:
       additionalProperties: false
       required:
         - host
+      x-speakeasy-entity-version: 1
     ServiceProtectionPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -72650,6 +72667,7 @@ components:
       additionalProperties: false
       required:
         - target
+      x-speakeasy-entity-version: 1
     TcpLogPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -73573,6 +73591,7 @@ components:
       additionalProperties: false
       required:
         - name
+      x-speakeasy-entity-version: 1
     UpstreamOauthPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -74269,6 +74288,7 @@ components:
       required:
         - name
         - prefix
+      x-speakeasy-entity-version: 1
     VaultAuthPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'

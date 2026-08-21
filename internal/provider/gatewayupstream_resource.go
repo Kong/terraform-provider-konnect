@@ -27,11 +27,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayUpstreamResource{}
-var _ resource.ResourceWithImportState = &GatewayUpstreamResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayUpstreamResource{}
 
 func NewGatewayUpstreamResource() resource.Resource {
 	return &GatewayUpstreamResource{}
@@ -79,6 +80,7 @@ func (r *GatewayUpstreamResource) Metadata(ctx context.Context, req resource.Met
 func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayUpstream Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
 				Computed:    true,
@@ -760,4 +762,10 @@ func (r *GatewayUpstreamResource) ImportState(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayUpstreamResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayupstreamStateUpgraderV0},
+	}
 }

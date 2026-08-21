@@ -23,11 +23,12 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayMTLSAuthResource{}
-var _ resource.ResourceWithImportState = &GatewayMTLSAuthResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayMTLSAuthResource{}
 
 func NewGatewayMTLSAuthResource() resource.Resource {
 	return &GatewayMTLSAuthResource{}
@@ -58,6 +59,7 @@ func (r *GatewayMTLSAuthResource) Metadata(ctx context.Context, req resource.Met
 func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayMTLSAuth Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"ca_certificate": schema.SingleNestedAttribute{
 				Computed: true,
@@ -379,4 +381,10 @@ func (r *GatewayMTLSAuthResource) ImportState(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayMTLSAuthResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaymtlsauthStateUpgraderV0},
+	}
 }

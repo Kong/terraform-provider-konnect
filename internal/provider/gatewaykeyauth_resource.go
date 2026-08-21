@@ -20,11 +20,12 @@ import (
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayKeyAuthResource{}
-var _ resource.ResourceWithImportState = &GatewayKeyAuthResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayKeyAuthResource{}
 
 func NewGatewayKeyAuthResource() resource.Resource {
 	return &GatewayKeyAuthResource{}
@@ -55,6 +56,7 @@ func (r *GatewayKeyAuthResource) Metadata(ctx context.Context, req resource.Meta
 func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayKeyAuth Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"consumer_id": schema.StringAttribute{
 				Required: true,
@@ -366,4 +368,10 @@ func (r *GatewayKeyAuthResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayKeyAuthResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaykeyauthStateUpgraderV0},
+	}
 }

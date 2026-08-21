@@ -17,11 +17,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayVaultResource{}
-var _ resource.ResourceWithImportState = &GatewayVaultResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayVaultResource{}
 
 func NewGatewayVaultResource() resource.Resource {
 	return &GatewayVaultResource{}
@@ -54,6 +55,7 @@ func (r *GatewayVaultResource) Metadata(ctx context.Context, req resource.Metada
 func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayVault Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"config": schema.StringAttribute{
 				CustomType:  jsontypes.NormalizedType{},
@@ -382,4 +384,10 @@ func (r *GatewayVaultResource) ImportState(ctx context.Context, req resource.Imp
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayVaultResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayvaultStateUpgraderV0},
+	}
 }

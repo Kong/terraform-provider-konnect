@@ -16,11 +16,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayConsumerResource{}
-var _ resource.ResourceWithImportState = &GatewayConsumerResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayConsumerResource{}
 
 func NewGatewayConsumerResource() resource.Resource {
 	return &GatewayConsumerResource{}
@@ -51,6 +52,7 @@ func (r *GatewayConsumerResource) Metadata(ctx context.Context, req resource.Met
 func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayConsumer Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -369,4 +371,10 @@ func (r *GatewayConsumerResource) ImportState(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayConsumerResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayconsumerStateUpgraderV0},
+	}
 }
