@@ -4,7 +4,7 @@ package stringplanmodifier
 
 import (
 	"context"
-
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
@@ -38,6 +38,11 @@ func (m useHoistedValue) PlanModifyString(ctx context.Context, req planmodifier.
 
 	if fieldValue := utils.FindActiveHoistedValue[types.String](ctx, req.Plan, req.State, m.sources); fieldValue != nil {
 		resp.PlanValue = *fieldValue
+		return
+	}
+
+	if fieldValue := utils.FindActiveHoistedValue[jsontypes.Normalized](ctx, req.Plan, req.State, m.sources); fieldValue != nil && !fieldValue.IsNull() {
+		resp.PlanValue = types.StringValue(fieldValue.ValueString())
 		return
 	}
 
