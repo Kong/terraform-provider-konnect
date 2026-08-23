@@ -4,7 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
@@ -168,12 +167,13 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificateRequest(ctx context
 	} else {
 		keyAlt = nil
 	}
-	var managedBy map[string]interface{}
+	var managedBy map[string]string
 	if r.ManagedBy != nil {
-		managedBy = make(map[string]interface{})
+		managedBy = make(map[string]string)
 		for managedByKey := range r.ManagedBy {
-			var managedByInst interface{}
-			_ = json.Unmarshal([]byte(r.ManagedBy[managedByKey].ValueString()), &managedByInst)
+			var managedByInst string
+			managedByInst = r.ManagedBy[managedByKey].ValueString()
+
 			managedBy[managedByKey] = managedByInst
 		}
 	}

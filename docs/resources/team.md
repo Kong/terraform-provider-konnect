@@ -27,11 +27,11 @@ resource "konnect_team" "my_team" {
 
 ### Required
 
-- `name` (String) A name for the team being created.
+- `name` (String) The name of the team.
 
 ### Optional
 
-- `description` (String) The description of the new team.
+- `description` (String) The description of the team.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
