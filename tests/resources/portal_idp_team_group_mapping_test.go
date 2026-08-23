@@ -51,6 +51,25 @@ const (
 			group = "Tech Leads"
 		}
 	`
+
+	portalIdpSAMLForMapping = `
+		resource "konnect_portal_identity_provider" "saml_provider" {
+			type    = "saml"
+			enabled = true
+			config = {
+				portal_saml_identity_provider_config = {
+					idp_metadata_url = "https://mocksaml.com/api/saml/metadata"
+					idp_metadata_xml = ""
+				}
+			}
+		}
+	`
+
+	portalIdpTeamGroupMappingSAML = `
+		resource "konnect_portal_idp_team_group_mapping" "my_mapping" {
+			group = "API Engineers"
+		}
+	`
 )
 
 func TestPortalIdpTeamGroupMapping(t *testing.T) {
@@ -98,6 +117,57 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 				},
 				{
 					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(oidcProvider).Upsert(mapping).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+			},
+		})
+	})
+
+	t.Run("saml", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(hclbuilder.Konnect, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.Konnect
+
+		portal, err := hclbuilder.FromString(portalForIdpMapping)
+		require.NoError(t, err)
+
+		portalTeam, err := hclbuilder.FromString(portalTeamForIdpMapping)
+		require.NoError(t, err)
+		portalTeam.AddAttribute("portal_id", portal.ResourcePath()+".id")
+
+		samlProvider, err := hclbuilder.FromString(portalIdpSAMLForMapping)
+		require.NoError(t, err)
+		samlProvider.AddAttribute("portal_id", portal.ResourcePath()+".id")
+
+		mapping, err := hclbuilder.FromString(portalIdpTeamGroupMappingSAML)
+		require.NoError(t, err)
+		mapping.AddAttribute("id", samlProvider.ResourcePath()+".id")
+		mapping.AddAttribute("portal_id", portal.ResourcePath()+".id")
+		mapping.AddAttribute("team_id", portalTeam.ResourcePath()+".id")
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(samlProvider).Upsert(mapping).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_portal_idp_team_group_mapping.my_mapping", plancheck.ResourceActionCreate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_portal_idp_team_group_mapping.my_mapping", "group", "API Engineers"),
+						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "portal_id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "team_id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "mapping_id"),
+					),
+				},
+				{
+					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(samlProvider).Upsert(mapping).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectEmptyPlan(),
