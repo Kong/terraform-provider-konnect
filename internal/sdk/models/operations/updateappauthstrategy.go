@@ -39,6 +39,14 @@ func (u *UpdateAppAuthStrategyRequest) GetUpdateAppAuthStrategyRequest() shared.
 	return u.UpdateAppAuthStrategyRequest
 }
 
+func (u *UpdateAppAuthStrategyRequest) GetUpdateAppAuthStrategyRequestKeyAuth() *shared.UpdateAppAuthStrategyRequestKeyAuth {
+	return u.GetUpdateAppAuthStrategyRequest().UpdateAppAuthStrategyRequestKeyAuth
+}
+
+func (u *UpdateAppAuthStrategyRequest) GetUpdateAppAuthStrategyRequestOpenidConnect() *shared.UpdateAppAuthStrategyRequestOpenIDConnect {
+	return u.GetUpdateAppAuthStrategyRequest().UpdateAppAuthStrategyRequestOpenIDConnect
+}
+
 type UpdateAppAuthStrategyResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

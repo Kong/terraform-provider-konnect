@@ -9,8 +9,10 @@ import (
 
 // PortalTeamResponse - Details about a developer team.
 type PortalTeamResponse struct {
-	ID          string    `json:"id"`
-	Name        string    `json:"name"`
+	ID string `json:"id"`
+	// The name of the team.
+	Name string `json:"name"`
+	// The description of the team.
 	Description string    `json:"description"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`

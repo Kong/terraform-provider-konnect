@@ -3,103 +3,64 @@
 package shared
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type ConfigsType string
+type UpdateAppAuthStrategyRequestOpenIDConnectStrategyType string
 
 const (
-	ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect ConfigsType = "UpdateAppAuthStrategyRequestOpenIdConnect"
-	ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth       ConfigsType = "UpdateAppAuthStrategyRequestKeyAuth"
+	UpdateAppAuthStrategyRequestOpenIDConnectStrategyTypeOpenidConnect UpdateAppAuthStrategyRequestOpenIDConnectStrategyType = "openid_connect"
 )
 
-// Configs - JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
-type Configs struct {
-	UpdateAppAuthStrategyRequestOpenIDConnect *UpdateAppAuthStrategyRequestOpenIDConnect `queryParam:"inline" union:"member"`
-	UpdateAppAuthStrategyRequestKeyAuth       *UpdateAppAuthStrategyRequestKeyAuth       `queryParam:"inline" union:"member"`
-
-	Type ConfigsType
+func (e UpdateAppAuthStrategyRequestOpenIDConnectStrategyType) ToPointer() *UpdateAppAuthStrategyRequestOpenIDConnectStrategyType {
+	return &e
 }
-
-func CreateConfigsUpdateAppAuthStrategyRequestOpenIDConnect(updateAppAuthStrategyRequestOpenIDConnect UpdateAppAuthStrategyRequestOpenIDConnect) Configs {
-	typ := ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect
-
-	return Configs{
-		UpdateAppAuthStrategyRequestOpenIDConnect: &updateAppAuthStrategyRequestOpenIDConnect,
-		Type: typ,
+func (e *UpdateAppAuthStrategyRequestOpenIDConnectStrategyType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-}
-
-func CreateConfigsUpdateAppAuthStrategyRequestKeyAuth(updateAppAuthStrategyRequestKeyAuth UpdateAppAuthStrategyRequestKeyAuth) Configs {
-	typ := ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth
-
-	return Configs{
-		UpdateAppAuthStrategyRequestKeyAuth: &updateAppAuthStrategyRequestKeyAuth,
-		Type:                                typ,
-	}
-}
-
-func (u *Configs) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var updateAppAuthStrategyRequestOpenIDConnect UpdateAppAuthStrategyRequestOpenIDConnect = UpdateAppAuthStrategyRequestOpenIDConnect{}
-	if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestOpenIDConnect, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect,
-			Value: &updateAppAuthStrategyRequestOpenIDConnect,
-		})
-	}
-
-	var updateAppAuthStrategyRequestKeyAuth UpdateAppAuthStrategyRequestKeyAuth = UpdateAppAuthStrategyRequestKeyAuth{}
-	if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestKeyAuth, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth,
-			Value: &updateAppAuthStrategyRequestKeyAuth,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Configs", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Configs", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(ConfigsType)
-	switch best.Type {
-	case ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect:
-		u.UpdateAppAuthStrategyRequestOpenIDConnect = best.Value.(*UpdateAppAuthStrategyRequestOpenIDConnect)
+	switch v {
+	case "openid_connect":
+		*e = UpdateAppAuthStrategyRequestOpenIDConnectStrategyType(v)
 		return nil
-	case ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth:
-		u.UpdateAppAuthStrategyRequestKeyAuth = best.Value.(*UpdateAppAuthStrategyRequestKeyAuth)
-		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateAppAuthStrategyRequestOpenIDConnectStrategyType: %v", v)
 	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Configs", string(data))
 }
 
-func (u Configs) MarshalJSON() ([]byte, error) {
-	if u.UpdateAppAuthStrategyRequestOpenIDConnect != nil {
-		return utils.MarshalJSON(u.UpdateAppAuthStrategyRequestOpenIDConnect, "", true)
-	}
-
-	if u.UpdateAppAuthStrategyRequestKeyAuth != nil {
-		return utils.MarshalJSON(u.UpdateAppAuthStrategyRequestKeyAuth, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type Configs: all fields are null")
+// UpdateAppAuthStrategyRequestOpenIDConnectConfigs - JSON-B object containing the configuration for the OIDC strategy
+type UpdateAppAuthStrategyRequestOpenIDConnectConfigs struct {
+	// A more advanced mode to configure an API Product Version’s Application Auth Strategy.
+	// Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
+	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
+	// An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
+	//
+	OpenidConnect PartialAppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
 }
 
-// UpdateAppAuthStrategyRequest - Request body for updating an Application Auth Strategy
-type UpdateAppAuthStrategyRequest struct {
+func (u UpdateAppAuthStrategyRequestOpenIDConnectConfigs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAppAuthStrategyRequestOpenIDConnectConfigs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"openid-connect"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateAppAuthStrategyRequestOpenIDConnectConfigs) GetOpenidConnect() PartialAppAuthStrategyConfigOpenIDConnect {
+	if u == nil {
+		return PartialAppAuthStrategyConfigOpenIDConnect{}
+	}
+	return u.OpenidConnect
+}
+
+type UpdateAppAuthStrategyRequestOpenIDConnect struct {
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
 	Name *string `json:"name,omitempty"`
@@ -112,65 +73,300 @@ type UpdateAppAuthStrategyRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels        map[string]*string `json:"labels,omitempty"`
-	DcrProviderID *string            `default:"null" json:"dcr_provider_id"`
-	// JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
-	Configs *Configs `json:"configs,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
 	// applications; stored values may be set for any auth strategy in the organization.
 	//
-	Principals *AuthStrategyPrincipals `json:"principals,omitempty"`
+	Principals    *AuthStrategyPrincipals                                `json:"principals,omitempty"`
+	StrategyType  *UpdateAppAuthStrategyRequestOpenIDConnectStrategyType `json:"strategy_type,omitempty"`
+	DcrProviderID *string                                                `default:"null" json:"dcr_provider_id"`
+	// JSON-B object containing the configuration for the OIDC strategy
+	Configs *UpdateAppAuthStrategyRequestOpenIDConnectConfigs `json:"configs"`
 }
 
-func (u UpdateAppAuthStrategyRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
+func (u UpdateAppAuthStrategyRequestOpenIDConnect) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "del(.strategy_type)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func (u *UpdateAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpdateAppAuthStrategyRequest) GetName() *string {
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetName() *string {
 	if u == nil {
 		return nil
 	}
 	return u.Name
 }
 
-func (u *UpdateAppAuthStrategyRequest) GetDisplayName() *string {
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetDisplayName() *string {
 	if u == nil {
 		return nil
 	}
 	return u.DisplayName
 }
 
-func (u *UpdateAppAuthStrategyRequest) GetLabels() map[string]*string {
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetLabels() map[string]*string {
 	if u == nil {
 		return nil
 	}
 	return u.Labels
 }
 
-func (u *UpdateAppAuthStrategyRequest) GetDcrProviderID() *string {
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetPrincipals() *AuthStrategyPrincipals {
+	if u == nil {
+		return nil
+	}
+	return u.Principals
+}
+
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetStrategyType() *UpdateAppAuthStrategyRequestOpenIDConnectStrategyType {
+	if u == nil {
+		return nil
+	}
+	return u.StrategyType
+}
+
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetDcrProviderID() *string {
 	if u == nil {
 		return nil
 	}
 	return u.DcrProviderID
 }
 
-func (u *UpdateAppAuthStrategyRequest) GetConfigs() *Configs {
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetConfigs() *UpdateAppAuthStrategyRequestOpenIDConnectConfigs {
 	if u == nil {
 		return nil
 	}
 	return u.Configs
 }
 
-func (u *UpdateAppAuthStrategyRequest) GetPrincipals() *AuthStrategyPrincipals {
+type UpdateAppAuthStrategyRequestKeyAuthStrategyType string
+
+const (
+	UpdateAppAuthStrategyRequestKeyAuthStrategyTypeKeyAuth UpdateAppAuthStrategyRequestKeyAuthStrategyType = "key_auth"
+)
+
+func (e UpdateAppAuthStrategyRequestKeyAuthStrategyType) ToPointer() *UpdateAppAuthStrategyRequestKeyAuthStrategyType {
+	return &e
+}
+func (e *UpdateAppAuthStrategyRequestKeyAuthStrategyType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "key_auth":
+		*e = UpdateAppAuthStrategyRequestKeyAuthStrategyType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateAppAuthStrategyRequestKeyAuthStrategyType: %v", v)
+	}
+}
+
+// UpdateAppAuthStrategyRequestKeyAuthConfigs - JSON-B object containing the configuration for the Key Auth strategy
+type UpdateAppAuthStrategyRequestKeyAuthConfigs struct {
+	// Key Auth configuration for updating an Application Auth Strategy.
+	// The ttl field can be set to null to unset the Time-To-Live.
+	//
+	KeyAuth PartialAppAuthStrategyConfigKeyAuth `json:"key-auth"`
+}
+
+func (u UpdateAppAuthStrategyRequestKeyAuthConfigs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuthConfigs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"key-auth"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuthConfigs) GetKeyAuth() PartialAppAuthStrategyConfigKeyAuth {
+	if u == nil {
+		return PartialAppAuthStrategyConfigKeyAuth{}
+	}
+	return u.KeyAuth
+}
+
+type UpdateAppAuthStrategyRequestKeyAuth struct {
+	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
+	//
+	Name *string `json:"name,omitempty"`
+	// The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+	//
+	DisplayName *string `json:"display_name,omitempty"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Labels are intended to store **INTERNAL** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]*string `json:"labels,omitempty"`
+	// Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
+	// applications; stored values may be set for any auth strategy in the organization.
+	//
+	Principals   *AuthStrategyPrincipals                          `json:"principals,omitempty"`
+	StrategyType *UpdateAppAuthStrategyRequestKeyAuthStrategyType `json:"strategy_type,omitempty"`
+	// JSON-B object containing the configuration for the Key Auth strategy
+	Configs *UpdateAppAuthStrategyRequestKeyAuthConfigs `json:"configs"`
+}
+
+func (u UpdateAppAuthStrategyRequestKeyAuth) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "del(.strategy_type)")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuth) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuth) GetDisplayName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DisplayName
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuth) GetLabels() map[string]*string {
+	if u == nil {
+		return nil
+	}
+	return u.Labels
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuth) GetPrincipals() *AuthStrategyPrincipals {
 	if u == nil {
 		return nil
 	}
 	return u.Principals
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuth) GetStrategyType() *UpdateAppAuthStrategyRequestKeyAuthStrategyType {
+	if u == nil {
+		return nil
+	}
+	return u.StrategyType
+}
+
+func (u *UpdateAppAuthStrategyRequestKeyAuth) GetConfigs() *UpdateAppAuthStrategyRequestKeyAuthConfigs {
+	if u == nil {
+		return nil
+	}
+	return u.Configs
+}
+
+type UpdateAppAuthStrategyRequestType string
+
+const (
+	UpdateAppAuthStrategyRequestTypeKeyAuth       UpdateAppAuthStrategyRequestType = "key_auth"
+	UpdateAppAuthStrategyRequestTypeOpenidConnect UpdateAppAuthStrategyRequestType = "openid_connect"
+)
+
+// UpdateAppAuthStrategyRequest - Request body for updating an Application Auth Strategy
+type UpdateAppAuthStrategyRequest struct {
+	UpdateAppAuthStrategyRequestKeyAuth       *UpdateAppAuthStrategyRequestKeyAuth       `queryParam:"inline" union:"member"`
+	UpdateAppAuthStrategyRequestOpenIDConnect *UpdateAppAuthStrategyRequestOpenIDConnect `queryParam:"inline" union:"member"`
+
+	Type UpdateAppAuthStrategyRequestType
+}
+
+func CreateUpdateAppAuthStrategyRequestKeyAuth(keyAuth UpdateAppAuthStrategyRequestKeyAuth) UpdateAppAuthStrategyRequest {
+	typ := UpdateAppAuthStrategyRequestTypeKeyAuth
+
+	typStr := UpdateAppAuthStrategyRequestKeyAuthStrategyType(typ)
+	keyAuth.StrategyType = &typStr
+
+	return UpdateAppAuthStrategyRequest{
+		UpdateAppAuthStrategyRequestKeyAuth: &keyAuth,
+		Type:                                typ,
+	}
+}
+
+func CreateUpdateAppAuthStrategyRequestOpenidConnect(openidConnect UpdateAppAuthStrategyRequestOpenIDConnect) UpdateAppAuthStrategyRequest {
+	typ := UpdateAppAuthStrategyRequestTypeOpenidConnect
+
+	typStr := UpdateAppAuthStrategyRequestOpenIDConnectStrategyType(typ)
+	openidConnect.StrategyType = &typStr
+
+	return UpdateAppAuthStrategyRequest{
+		UpdateAppAuthStrategyRequestOpenIDConnect: &openidConnect,
+		Type: typ,
+	}
+}
+
+func (u *UpdateAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
+
+	type discriminator struct {
+		StrategyType string `json:"strategy_type"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.StrategyType {
+	case "key_auth":
+		updateAppAuthStrategyRequestKeyAuth := new(UpdateAppAuthStrategyRequestKeyAuth)
+		if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestKeyAuth, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == key_auth) type UpdateAppAuthStrategyRequestKeyAuth within UpdateAppAuthStrategyRequest: %w", string(data), err)
+		}
+
+		u.UpdateAppAuthStrategyRequestKeyAuth = updateAppAuthStrategyRequestKeyAuth
+		u.Type = UpdateAppAuthStrategyRequestTypeKeyAuth
+		return nil
+	case "openid_connect":
+		updateAppAuthStrategyRequestOpenIDConnect := new(UpdateAppAuthStrategyRequestOpenIDConnect)
+		if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestOpenIDConnect, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == openid_connect) type UpdateAppAuthStrategyRequestOpenIDConnect within UpdateAppAuthStrategyRequest: %w", string(data), err)
+		}
+
+		u.UpdateAppAuthStrategyRequestOpenIDConnect = updateAppAuthStrategyRequestOpenIDConnect
+		u.Type = UpdateAppAuthStrategyRequestTypeOpenidConnect
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for UpdateAppAuthStrategyRequest", string(data))
+}
+
+func (u UpdateAppAuthStrategyRequest) MarshalJSON() ([]byte, error) {
+	if u.UpdateAppAuthStrategyRequestKeyAuth != nil {
+		return utils.MarshalJSON(u.UpdateAppAuthStrategyRequestKeyAuth, "", true)
+	}
+
+	if u.UpdateAppAuthStrategyRequestOpenIDConnect != nil {
+		return utils.MarshalJSON(u.UpdateAppAuthStrategyRequestOpenIDConnect, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type UpdateAppAuthStrategyRequest: all fields are null")
 }

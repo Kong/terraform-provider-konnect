@@ -22,7 +22,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponse.Active)
 			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs = &tfTypes.AppAuthStrategyKeyAuthRequestConfigs{}
+			r.KeyAuth.Configs = &tfTypes.Configs{}
 			r.KeyAuth.Configs.KeyAuth = &tfTypes.AppAuthStrategyConfigKeyAuth{}
 			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames != nil {
 				r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
@@ -206,7 +206,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			KeyNames: keyNames,
 			TTL:      ttl,
 		}
-		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
+		configs := shared.Configs{
 			KeyAuth: keyAuth,
 		}
 		labels := make(map[string]*string)
@@ -333,21 +333,199 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequest(ctx context.Context) (*shared.UpdateAppAuthStrategyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
+	var out shared.UpdateAppAuthStrategyRequest
+	var updateAppAuthStrategyRequestKeyAuth *shared.UpdateAppAuthStrategyRequestKeyAuth
+	if r.KeyAuth != nil {
+		name := new(string)
+		if !r.KeyAuth.Name.IsUnknown() && !r.KeyAuth.Name.IsNull() {
+			*name = r.KeyAuth.Name.ValueString()
+		} else {
+			name = nil
+		}
+		displayName := new(string)
+		if !r.KeyAuth.DisplayName.IsUnknown() && !r.KeyAuth.DisplayName.IsNull() {
+			*displayName = r.KeyAuth.DisplayName.ValueString()
+		} else {
+			displayName = nil
+		}
+		var labels map[string]*string
+		if r.KeyAuth.Labels != nil {
+			labels = make(map[string]*string)
+			for labelsKey := range r.KeyAuth.Labels {
+				labelsInst := new(string)
+				if !r.KeyAuth.Labels[labelsKey].IsUnknown() && !r.KeyAuth.Labels[labelsKey].IsNull() {
+					*labelsInst = r.KeyAuth.Labels[labelsKey].ValueString()
+				} else {
+					labelsInst = nil
+				}
+				labels[labelsKey] = labelsInst
+			}
+		}
+		var principals *shared.AuthStrategyPrincipals
+		if r.KeyAuth.Principals != nil {
+			enabled := new(bool)
+			if !r.KeyAuth.Principals.Enabled.IsUnknown() && !r.KeyAuth.Principals.Enabled.IsNull() {
+				*enabled = r.KeyAuth.Principals.Enabled.ValueBool()
+			} else {
+				enabled = nil
+			}
+			principals = &shared.AuthStrategyPrincipals{
+				Enabled: enabled,
+			}
+		}
+		strategyType := new(shared.UpdateAppAuthStrategyRequestKeyAuthStrategyType)
+		if !r.KeyAuth.StrategyType.IsUnknown() && !r.KeyAuth.StrategyType.IsNull() {
+			*strategyType = shared.UpdateAppAuthStrategyRequestKeyAuthStrategyType(r.KeyAuth.StrategyType.ValueString())
+		} else {
+			strategyType = nil
+		}
+		var configs *shared.UpdateAppAuthStrategyRequestKeyAuthConfigs
+		var keyNames []string
+		if r.KeyAuth.Configs.KeyAuth.KeyNames != nil {
+			keyNames = make([]string, 0, len(r.KeyAuth.Configs.KeyAuth.KeyNames))
+			for keyNamesIndex := range r.KeyAuth.Configs.KeyAuth.KeyNames {
+				keyNames = append(keyNames, r.KeyAuth.Configs.KeyAuth.KeyNames[keyNamesIndex].ValueString())
+			}
+		}
+		var ttl *shared.PartialAppAuthStrategyConfigKeyAuthTTL
+		if r.KeyAuth.Configs.KeyAuth.TTL != nil {
+			var value int64
+			value = r.KeyAuth.Configs.KeyAuth.TTL.Value.ValueInt64()
+
+			unit := shared.PartialAppAuthStrategyConfigKeyAuthUnit(r.KeyAuth.Configs.KeyAuth.TTL.Unit.ValueString())
+			ttl = &shared.PartialAppAuthStrategyConfigKeyAuthTTL{
+				Value: value,
+				Unit:  unit,
+			}
+		}
+		keyAuth := shared.PartialAppAuthStrategyConfigKeyAuth{
+			KeyNames: keyNames,
+			TTL:      ttl,
+		}
+		configs = &shared.UpdateAppAuthStrategyRequestKeyAuthConfigs{
+			KeyAuth: keyAuth,
+		}
+		updateAppAuthStrategyRequestKeyAuth = &shared.UpdateAppAuthStrategyRequestKeyAuth{
+			Name:         name,
+			DisplayName:  displayName,
+			Labels:       labels,
+			Principals:   principals,
+			StrategyType: strategyType,
+			Configs:      configs,
+		}
 	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
+	if updateAppAuthStrategyRequestKeyAuth != nil {
+		out = shared.UpdateAppAuthStrategyRequest{
+			UpdateAppAuthStrategyRequestKeyAuth: updateAppAuthStrategyRequestKeyAuth,
+		}
 	}
-	out := shared.UpdateAppAuthStrategyRequest{
-		Name:        name,
-		DisplayName: displayName,
+	var updateAppAuthStrategyRequestOpenIDConnect *shared.UpdateAppAuthStrategyRequestOpenIDConnect
+	if r.OpenidConnect != nil {
+		name1 := new(string)
+		if !r.OpenidConnect.Name.IsUnknown() && !r.OpenidConnect.Name.IsNull() {
+			*name1 = r.OpenidConnect.Name.ValueString()
+		} else {
+			name1 = nil
+		}
+		displayName1 := new(string)
+		if !r.OpenidConnect.DisplayName.IsUnknown() && !r.OpenidConnect.DisplayName.IsNull() {
+			*displayName1 = r.OpenidConnect.DisplayName.ValueString()
+		} else {
+			displayName1 = nil
+		}
+		var labels1 map[string]*string
+		if r.OpenidConnect.Labels != nil {
+			labels1 = make(map[string]*string)
+			for labelsKey1 := range r.OpenidConnect.Labels {
+				labelsInst1 := new(string)
+				if !r.OpenidConnect.Labels[labelsKey1].IsUnknown() && !r.OpenidConnect.Labels[labelsKey1].IsNull() {
+					*labelsInst1 = r.OpenidConnect.Labels[labelsKey1].ValueString()
+				} else {
+					labelsInst1 = nil
+				}
+				labels1[labelsKey1] = labelsInst1
+			}
+		}
+		var principals1 *shared.AuthStrategyPrincipals
+		if r.OpenidConnect.Principals != nil {
+			enabled1 := new(bool)
+			if !r.OpenidConnect.Principals.Enabled.IsUnknown() && !r.OpenidConnect.Principals.Enabled.IsNull() {
+				*enabled1 = r.OpenidConnect.Principals.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			principals1 = &shared.AuthStrategyPrincipals{
+				Enabled: enabled1,
+			}
+		}
+		strategyType1 := new(shared.UpdateAppAuthStrategyRequestOpenIDConnectStrategyType)
+		if !r.OpenidConnect.StrategyType.IsUnknown() && !r.OpenidConnect.StrategyType.IsNull() {
+			*strategyType1 = shared.UpdateAppAuthStrategyRequestOpenIDConnectStrategyType(r.OpenidConnect.StrategyType.ValueString())
+		} else {
+			strategyType1 = nil
+		}
+		dcrProviderID := new(string)
+		if !r.OpenidConnect.DcrProviderID.IsUnknown() && !r.OpenidConnect.DcrProviderID.IsNull() {
+			*dcrProviderID = r.OpenidConnect.DcrProviderID.ValueString()
+		} else {
+			dcrProviderID = nil
+		}
+		var configs1 *shared.UpdateAppAuthStrategyRequestOpenIDConnectConfigs
+		issuer := new(string)
+		if !r.OpenidConnect.Configs.OpenidConnect.Issuer.IsUnknown() && !r.OpenidConnect.Configs.OpenidConnect.Issuer.IsNull() {
+			*issuer = r.OpenidConnect.Configs.OpenidConnect.Issuer.ValueString()
+		} else {
+			issuer = nil
+		}
+		var credentialClaim []string
+		if r.OpenidConnect.Configs.OpenidConnect.CredentialClaim != nil {
+			credentialClaim = make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim))
+			for credentialClaimIndex := range r.OpenidConnect.Configs.OpenidConnect.CredentialClaim {
+				credentialClaim = append(credentialClaim, r.OpenidConnect.Configs.OpenidConnect.CredentialClaim[credentialClaimIndex].ValueString())
+			}
+		}
+		var scopes []string
+		if r.OpenidConnect.Configs.OpenidConnect.Scopes != nil {
+			scopes = make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.Scopes))
+			for scopesIndex := range r.OpenidConnect.Configs.OpenidConnect.Scopes {
+				scopes = append(scopes, r.OpenidConnect.Configs.OpenidConnect.Scopes[scopesIndex].ValueString())
+			}
+		}
+		var authMethods []string
+		if r.OpenidConnect.Configs.OpenidConnect.AuthMethods != nil {
+			authMethods = make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.AuthMethods))
+			for authMethodsIndex := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
+				authMethods = append(authMethods, r.OpenidConnect.Configs.OpenidConnect.AuthMethods[authMethodsIndex].ValueString())
+			}
+		}
+		var additionalProperties map[string]any
+		if !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsUnknown() && !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsNull() {
+			_ = json.Unmarshal([]byte(r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.ValueString()), &additionalProperties)
+		}
+		openidConnect := shared.PartialAppAuthStrategyConfigOpenIDConnect{
+			Issuer:               issuer,
+			CredentialClaim:      credentialClaim,
+			Scopes:               scopes,
+			AuthMethods:          authMethods,
+			AdditionalProperties: additionalProperties,
+		}
+		configs1 = &shared.UpdateAppAuthStrategyRequestOpenIDConnectConfigs{
+			OpenidConnect: openidConnect,
+		}
+		updateAppAuthStrategyRequestOpenIDConnect = &shared.UpdateAppAuthStrategyRequestOpenIDConnect{
+			Name:          name1,
+			DisplayName:   displayName1,
+			Labels:        labels1,
+			Principals:    principals1,
+			StrategyType:  strategyType1,
+			DcrProviderID: dcrProviderID,
+			Configs:       configs1,
+		}
+	}
+	if updateAppAuthStrategyRequestOpenIDConnect != nil {
+		out = shared.UpdateAppAuthStrategyRequest{
+			UpdateAppAuthStrategyRequestOpenIDConnect: updateAppAuthStrategyRequestOpenIDConnect,
+		}
 	}
 
 	return &out, diags
