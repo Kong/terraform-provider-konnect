@@ -47,7 +47,7 @@ const (
 	`
 
 	portalIdpTeamGroupMappingOIDC = `
-		resource "konnect_portal_idp_team_group_mapping" "my_mapping" {
+		resource "konnect_portal_identity_provider_team_group_mapping" "my_mapping" {
 			group = "Tech Leads"
 		}
 	`
@@ -57,7 +57,7 @@ const (
 			type    = "saml"
 			enabled = true
 			config = {
-				portal_saml_identity_provider_config = {
+				saml_identity_provider_config = {
 					idp_metadata_url = "https://mocksaml.com/api/saml/metadata"
 					idp_metadata_xml = ""
 				}
@@ -66,7 +66,7 @@ const (
 	`
 
 	portalIdpTeamGroupMappingSAML = `
-		resource "konnect_portal_idp_team_group_mapping" "my_mapping" {
+		resource "konnect_portal_identity_provider_team_group_mapping" "my_mapping" {
 			group = "API Engineers"
 		}
 	`
@@ -93,7 +93,7 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 
 		mapping, err := hclbuilder.FromString(portalIdpTeamGroupMappingOIDC)
 		require.NoError(t, err)
-		mapping.AddAttribute("id", oidcProvider.ResourcePath()+".id")
+		mapping.AddAttribute("identity_provider_id", oidcProvider.ResourcePath()+".id")
 		mapping.AddAttribute("portal_id", portal.ResourcePath()+".id")
 		mapping.AddAttribute("team_id", portalTeam.ResourcePath()+".id")
 
@@ -104,15 +104,15 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(oidcProvider).Upsert(mapping).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_portal_idp_team_group_mapping.my_mapping", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_portal_identity_provider_team_group_mapping.my_mapping", plancheck.ResourceActionCreate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_idp_team_group_mapping.my_mapping", "group", "Tech Leads"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "portal_id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "team_id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "mapping_id"),
+						resource.TestCheckResourceAttr("konnect_portal_identity_provider_team_group_mapping.my_mapping", "group", "Tech Leads"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "portal_id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "team_id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 					),
 				},
 				{
@@ -144,7 +144,7 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 
 		mapping, err := hclbuilder.FromString(portalIdpTeamGroupMappingSAML)
 		require.NoError(t, err)
-		mapping.AddAttribute("id", samlProvider.ResourcePath()+".id")
+		mapping.AddAttribute("identity_provider_id", samlProvider.ResourcePath()+".id")
 		mapping.AddAttribute("portal_id", portal.ResourcePath()+".id")
 		mapping.AddAttribute("team_id", portalTeam.ResourcePath()+".id")
 
@@ -155,15 +155,15 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(samlProvider).Upsert(mapping).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_portal_idp_team_group_mapping.my_mapping", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_portal_identity_provider_team_group_mapping.my_mapping", plancheck.ResourceActionCreate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_idp_team_group_mapping.my_mapping", "group", "API Engineers"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "portal_id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "team_id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "mapping_id"),
+						resource.TestCheckResourceAttr("konnect_portal_identity_provider_team_group_mapping.my_mapping", "group", "API Engineers"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "portal_id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "team_id"),
+						resource.TestCheckResourceAttrSet("konnect_portal_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 					),
 				},
 				{
