@@ -19599,6 +19599,196 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Developers
+  '/v3/portals/{portalId}/identity-providers':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation: PortalIdentityProvider#create
+      operationId: create-portal-identity-provider
+      summary: Create Identity Provider
+      description: |
+        Creates a new identity provider. This operation allows the creation of a new identity provider for
+        authentication purposes.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalCreateIdentityProviderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/IdentityProviderId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIdentityProvider#read
+        terraform-datasource: null
+      operationId: get-portal-identity-provider
+      summary: Get Identity Provider
+      description: |
+        Retrieves the configuration of a single identity provider. This operation returns information about a
+        specific identity provider's settings and authentication integration details.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    patch:
+      x-speakeasy-entity-operation: PortalIdentityProvider#update
+      operationId: update-portal-identity-provider
+      summary: Update Identity Provider
+      description: |
+        Updates the configuration of an existing identity provider. This operation allows modifications to be made
+        to an existing identity provider's configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalUpdateIdentityProviderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+    delete:
+      x-speakeasy-entity-operation: PortalIdentityProvider#delete
+      operationId: delete-portal-identity-provider
+      summary: Delete Identity Provider
+      description: |
+        Deletes an existing identity provider configuration. This operation removes a specific identity provider
+        from the portal.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}/team-group-mappings':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - name: id
+        in: path
+        description: ID of the identity provider.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        x-speakeasy-name-override: identityProviderId
+    post:
+      x-speakeasy-entity-operation: PortalIdentityProviderTeamGroupMapping#create
+      operationId: create-portal-idp-team-group-mapping
+      summary: Create Team Group Mapping
+      description: |
+        Creates a new team group mapping for the specified identity provider.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalIdpTeamGroupMapping'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalIdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}/team-group-mappings/{mappingId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - name: id
+        in: path
+        description: ID of the identity provider.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        x-speakeasy-name-override: identityProviderId
+      - name: mappingId
+        in: path
+        description: ID of the team group mapping.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIdentityProviderTeamGroupMapping#read
+        terraform-datasource: null
+      operationId: get-portal-idp-team-group-mapping
+      summary: Get Team Group Mapping
+      description: Returns the team group mapping for the specified ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    delete:
+      x-speakeasy-entity-operation: PortalIdentityProviderTeamGroupMapping#delete
+      operationId: delete-portal-idp-team-group-mapping
+      summary: Delete Team Group Mapping
+      description: |
+        Deletes a team group mapping by ID.
+        Returns 204 if the mapping was deleted, or 404 if the mapping was not found.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
   '/v3/portals/{portalId}/ip-allow-list':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -20420,17 +20610,24 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
         - name: filter
           in: query
-          description: Filter teams returned in the response.
+          description: |-
+            Filter teams returned in the response. Supports filtering by label value using
+            dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
+            `eq`, `contains`, or `exists`.
           required: false
           schema:
             type: object
             properties:
               name:
                 $ref: '#/components/schemas/LegacyStringFieldFilter'
+              labels:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/LegacyStringFieldFilterWithExists'
           style: deepObject
       responses:
         '200':
-          $ref: '#/components/responses/TeamCollection'
+          $ref: '#/components/responses/TeamCollectionResponse'
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
@@ -21359,6 +21556,15 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    IdentityProviderId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: id
+      in: path
+      required: true
+      description: ID of the identity provider.
     ImplementationId:
       schema:
         type: string
@@ -22898,6 +23104,7 @@ components:
         - `ready`: The network is fully provisioned and available for data plane groups.
         - `terminating`: The network is being deleted and is no longer accepting new resources.
         - `terminated`: The network has been fully deleted and is no longer available.
+      type: string
       enum:
         - created
         - initializing
@@ -27156,6 +27363,7 @@ components:
       type: string
       format: uri
       example: 'https://mocksaml.com/api/saml/metadata'
+      default: ''
       title: SAML Identity Provider Metadata URL
     SAMLIdentityProviderMetadata:
       description: |
@@ -27166,6 +27374,7 @@ components:
         <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
           <!-- SAML metadata content here -->
         </EntityDescriptor>
+      default: ''
       title: SAML Identity Provider Metadata
     CreateIdentityProvider:
       x-speakeasy-entity: IdentityProvider
@@ -27289,20 +27498,14 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          description: The name of the team.
-          type: string
-          example: IDM - Developers
-          default: null
-          maxLength: 250
-          nullable: true
-          pattern: '^[\w \W]+$'
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/TeamName'
         description:
-          description: The team description in Konnect.
+          description: The description of the team.
           type: string
           example: The developers for the IDM API.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
         system_team:
@@ -27338,6 +27541,18 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       title: Team
+    TeamResponse:
+      allOf:
+        - $ref: '#/components/schemas/Team'
+        - type: object
+          required:
+            - id
+            - name
+            - description
+            - system_team
+            - labels
+            - created_at
+            - updated_at
     IdpTeamGroupMapping:
       description: A mapping between a Konnect team and an identity provider group.
       type: object
@@ -27538,6 +27753,30 @@ components:
           description: The field contains the provided value.
           type: string
       additionalProperties: false
+    StringFieldExistsFilter:
+      description: Filters on whether the given field exists.
+      type: object
+      properties:
+        exists:
+          type: boolean
+      additionalProperties: false
+      deprecated: true
+      required:
+        - exists
+      title: StringFieldExistsFilter
+    LegacyStringFieldFilterWithExists:
+      description: 'Filter a string value field by exact match, partial contains, or existence.'
+      oneOf:
+        - $ref: '#/components/schemas/LegacyStringFieldFilter'
+        - $ref: '#/components/schemas/StringFieldExistsFilter'
+      title: StringFieldFilterWithExists
+    TeamName:
+      description: The name of the team.
+      type: string
+      example: IDM - Developers
+      maxLength: 250
+      minLength: 1
+      pattern: '^[\w \W]+$'
     ServerlessCloudGateway:
       x-speakeasy-entity: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -29700,6 +29939,60 @@ components:
       required:
         - title
         - items
+    CreatePortalIdpTeamGroupMappingRequest:
+      type: object
+      properties:
+        team_id:
+          description: The Konnect team ID.
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+        group:
+          description: The IdP group name.
+          type: string
+          example: API Engineers
+      required:
+        - team_id
+        - group
+    PortalIdpTeamGroupMapping:
+      type: object
+      properties:
+        id:
+          description: The mapping ID.
+          type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-4a8b-9c0d-1e2f3a4b5c6d
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        team_id:
+          description: The Konnect team ID.
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+        group:
+          description: The IdP group name.
+          type: string
+          example: API Engineers
+        created_at:
+          description: Creation timestamp.
+          type: string
+          format: date-time
+          example: '2024-01-15T10:30:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: Last update timestamp.
+          type: string
+          format: date-time
+          example: '2024-01-15T10:30:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - id
+        - team_id
+        - group
+        - created_at
+        - updated_at
     PortalImageDataUri:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       type: string
@@ -30929,18 +31222,23 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
           default: null
+          maxLength: 250
+          minLength: 1
           nullable: true
           pattern: '^[\w \W]+$'
           writeOnly: true
           x-speakeasy-param-computed: false
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) API team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -30963,15 +31261,20 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
+          maxLength: 250
+          minLength: 1
           pattern: '^[\w \W]+$'
           writeOnly: true
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -30999,14 +31302,13 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          type: string
-          example: IDM - Developers
-          maxLength: 250
-          pattern: '^[\w \W]+$'
+          $ref: '#/components/schemas/TeamName'
         description:
+          description: The description of the team.
           type: string
           example: The developers for the IDM API.
           maxLength: 250
+          minLength: 1
         created_at:
           type: string
           format: date-time
@@ -31238,6 +31540,82 @@ components:
         - api_package
       title: Entity Type
       x-speakeasy-unknown-values: allow
+    PortalSAMLIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the SAML authentication integration.
+      type: object
+      properties:
+        idp_metadata_url:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadataURL'
+        idp_metadata_xml:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadata'
+        sp_metadata_url:
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/metadata
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        sp_entity_id:
+          description: The entity ID of the service provider (SP).
+          type: string
+          example: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        callback_url:
+          description: The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/acs
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      title: Portal SAML Identity Provider Config
+      x-speakeasy-name-override: SAMLIdentityProviderConfig
+    PortalIdentityProvider:
+      description: The identity provider that contains configuration data for authentication integration.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      title: Portal Identity Provider
+    PortalCreateIdentityProvider:
+      description: The identity provider that contains configuration data for creating an authentication integration.
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Identity Provider
+    PortalUpdateIdentityProvider:
+      description: The identity provider that contains configuration data for updating an authentication integration.
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Identity Provider
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -48983,10 +49361,18 @@ components:
           x-referenceable: true
           x-speakeasy-param-computed: false
         managed_by:
-          description: 'Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.'
+          description: |-
+            Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+            Keys must be 1–63 characters long and start with an alphanumeric character.
           type: object
           default: null
-          additionalProperties: true
+          additionalProperties:
+            maxLength: 63
+            minLength: 1
+            pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+            type: string
+          maxProperties: 5
           nullable: true
           x-speakeasy-param-computed: false
         snis:
@@ -75626,17 +76012,20 @@ components:
             type: object
             properties:
               name:
-                description: A name for the team being created.
+                description: The name of the team.
                 type: string
                 example: IDM - Developers
+                maxLength: 250
+                minLength: 1
                 pattern: '^[\w \W]+$'
                 writeOnly: true
               description:
-                description: The description of the new team.
+                description: The description of the team.
                 type: string
                 example: The Identity Management (IDM) team.
                 default: null
                 maxLength: 250
+                minLength: 1
                 nullable: true
                 writeOnly: true
                 x-speakeasy-param-computed: false
@@ -75657,6 +76046,8 @@ components:
                 type: string
                 example: IDM - Developers
                 default: null
+                maxLength: 250
+                minLength: 1
                 nullable: true
                 pattern: '^[\w \W]+$'
                 writeOnly: true
@@ -75667,6 +76058,7 @@ components:
                 example: The Identity Management (IDM) API team.
                 default: null
                 maxLength: 250
+                minLength: 1
                 nullable: true
                 writeOnly: true
                 x-speakeasy-param-computed: false
@@ -76172,6 +76564,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V2UpdatePortalAppearanceRequest'
+    CreatePortalIdpTeamGroupMapping:
+      description: Create a team group mapping for an identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalIdpTeamGroupMappingRequest'
     CreatePortalCustomDomain:
       description: Create a portal custom domain.
       required: true
@@ -76519,6 +76918,22 @@ components:
             additionalProperties: false
             required:
               - allowed_ips
+    PortalCreateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for creating a new identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCreateIdentityProvider'
+    PortalUpdateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for updating an identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalUpdateIdentityProvider'
     CreateApiRequest:
       required: true
       content:
@@ -78035,9 +78450,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Team'
-    TeamCollection:
-      description: A paginated list response for a collection of users.
+            $ref: '#/components/schemas/TeamResponse'
+    TeamCollectionResponse:
+      description: A paginated list response for a collection of teams.
       content:
         application/json:
           schema:
@@ -78048,7 +78463,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Team'
+                  $ref: '#/components/schemas/TeamResponse'
                 default: null
                 nullable: true
                 x-speakeasy-param-computed: false
@@ -78393,6 +78808,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V2UpdatePortalAppearanceResponse'
+    PortalIdpTeamGroupMapping:
+      description: A team group mapping for an identity provider.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalIdpTeamGroupMapping'
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
       content:
@@ -78749,6 +79170,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IPEntry'
+    PortalIdentityProvider:
+      description: |
+        An identity provider configuration. This response represents the configuration of a specific identity provider, which can be either OIDC or SAML.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalIdentityProvider'
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
       content:
