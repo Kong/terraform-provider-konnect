@@ -3,6 +3,13 @@ data "konnect_team" "my_team" {
     name = {
       eq = "portal-admin"
     }
+    labels = {
+      example = {
+        legacy_string_field_filter = {
+          eq = "here"
+        }
+      }
+    }
   }
 }
 
