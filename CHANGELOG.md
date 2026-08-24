@@ -5,6 +5,7 @@
 
 # Features
 * Add support for `konnect_dcr_provider` resource, using which you can manage Dynamic Client Registration (DCR) providers in Konnect. This allows you to configure DCR providers for use with OpenID Connect (OIDC) authentication strategies in Konnect.
+* Add support for `konnect_portal_identity_provider` and `konnect_portal_identity_provider_team_group_mapping` resources, using which you can manage Developer Portal Identity Providers, as well as Identity Provider Group <> Portal Team mapping.
 
 ## 3.21.0
 > Released 2026/08/04
