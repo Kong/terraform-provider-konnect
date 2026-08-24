@@ -85,6 +85,22 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 					r.Config.Llm.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.PerformanceConfigLatency)
 					r.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI)
 				}
+				r.Config.Llm.Model.Options.CacheReadCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.CacheReadCost)
+				r.Config.Llm.Model.Options.CacheWriteCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.CacheWriteCost)
+				if resp.Config.Llm.Model.Options.CacheWriteCostList != nil {
+					r.Config.Llm.Model.Options.CacheWriteCostList = []tfTypes.PartialModelCacheWriteCostList{}
+
+					for _, cacheWriteCostListItem := range resp.Config.Llm.Model.Options.CacheWriteCostList {
+						var cacheWriteCostList tfTypes.PartialModelCacheWriteCostList
+
+						cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
+						cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
+
+						r.Config.Llm.Model.Options.CacheWriteCostList = append(r.Config.Llm.Model.Options.CacheWriteCostList, cacheWriteCostList)
+					}
+				} else {
+					r.Config.Llm.Model.Options.CacheWriteCostList = nil
+				}
 				if resp.Config.Llm.Model.Options.Cohere == nil {
 					r.Config.Llm.Model.Options.Cohere = nil
 				} else {
@@ -95,6 +111,21 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 						r.Config.Llm.Model.Options.Cohere.EmbeddingInputType = types.StringNull()
 					}
 					r.Config.Llm.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Cohere.WaitForModel)
+				}
+				if resp.Config.Llm.Model.Options.ContextWindowFactor != nil {
+					r.Config.Llm.Model.Options.ContextWindowFactor = []tfTypes.PartialModelContextWindowFactor{}
+
+					for _, contextWindowFactorItem := range resp.Config.Llm.Model.Options.ContextWindowFactor {
+						var contextWindowFactor tfTypes.PartialModelContextWindowFactor
+
+						contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
+						contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
+						contextWindowFactor.OutputFactor = types.Float64Value(contextWindowFactorItem.OutputFactor)
+
+						r.Config.Llm.Model.Options.ContextWindowFactor = append(r.Config.Llm.Model.Options.ContextWindowFactor, contextWindowFactor)
+					}
+				} else {
+					r.Config.Llm.Model.Options.ContextWindowFactor = nil
 				}
 				if resp.Config.Llm.Model.Options.Dashscope == nil {
 					r.Config.Llm.Model.Options.Dashscope = nil
@@ -138,6 +169,20 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 					r.Config.Llm.Model.Options.MistralFormat = types.StringNull()
 				}
 				r.Config.Llm.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.OutputCost)
+				if resp.Config.Llm.Model.Options.ServiceTierFactor != nil {
+					r.Config.Llm.Model.Options.ServiceTierFactor = []tfTypes.PartialModelServiceTierFactor{}
+
+					for _, serviceTierFactorItem := range resp.Config.Llm.Model.Options.ServiceTierFactor {
+						var serviceTierFactor tfTypes.PartialModelServiceTierFactor
+
+						serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
+						serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)
+
+						r.Config.Llm.Model.Options.ServiceTierFactor = append(r.Config.Llm.Model.Options.ServiceTierFactor, serviceTierFactor)
+					}
+				} else {
+					r.Config.Llm.Model.Options.ServiceTierFactor = nil
+				}
 				r.Config.Llm.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Llm.Model.Options.Temperature)
 				r.Config.Llm.Model.Options.TopK = types.Int64PointerValue(resp.Config.Llm.Model.Options.TopK)
 				r.Config.Llm.Model.Options.TopP = types.Float64PointerValue(resp.Config.Llm.Model.Options.TopP)
@@ -701,6 +746,34 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 					VideoOutputS3URI:         videoOutputS3URI,
 				}
 			}
+			cacheReadCost := new(float64)
+			if !r.Config.Llm.Model.Options.CacheReadCost.IsUnknown() && !r.Config.Llm.Model.Options.CacheReadCost.IsNull() {
+				*cacheReadCost = r.Config.Llm.Model.Options.CacheReadCost.ValueFloat64()
+			} else {
+				cacheReadCost = nil
+			}
+			cacheWriteCost := new(float64)
+			if !r.Config.Llm.Model.Options.CacheWriteCost.IsUnknown() && !r.Config.Llm.Model.Options.CacheWriteCost.IsNull() {
+				*cacheWriteCost = r.Config.Llm.Model.Options.CacheWriteCost.ValueFloat64()
+			} else {
+				cacheWriteCost = nil
+			}
+			var cacheWriteCostList []shared.AiResponseTransformerPluginCacheWriteCostList
+			if r.Config.Llm.Model.Options.CacheWriteCostList != nil {
+				cacheWriteCostList = make([]shared.AiResponseTransformerPluginCacheWriteCostList, 0, len(r.Config.Llm.Model.Options.CacheWriteCostList))
+				for cacheWriteCostListIndex := range r.Config.Llm.Model.Options.CacheWriteCostList {
+					var cost float64
+					cost = r.Config.Llm.Model.Options.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
+
+					var ttl string
+					ttl = r.Config.Llm.Model.Options.CacheWriteCostList[cacheWriteCostListIndex].TTL.ValueString()
+
+					cacheWriteCostList = append(cacheWriteCostList, shared.AiResponseTransformerPluginCacheWriteCostList{
+						Cost: cost,
+						TTL:  ttl,
+					})
+				}
+			}
 			var cohere *shared.AiResponseTransformerPluginCohere
 			if r.Config.Llm.Model.Options.Cohere != nil {
 				embeddingInputType := new(shared.AiResponseTransformerPluginEmbeddingInputType)
@@ -718,6 +791,26 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 				cohere = &shared.AiResponseTransformerPluginCohere{
 					EmbeddingInputType: embeddingInputType,
 					WaitForModel:       waitForModel,
+				}
+			}
+			var contextWindowFactor []shared.AiResponseTransformerPluginContextWindowFactor
+			if r.Config.Llm.Model.Options.ContextWindowFactor != nil {
+				contextWindowFactor = make([]shared.AiResponseTransformerPluginContextWindowFactor, 0, len(r.Config.Llm.Model.Options.ContextWindowFactor))
+				for contextWindowFactorIndex := range r.Config.Llm.Model.Options.ContextWindowFactor {
+					var above string
+					above = r.Config.Llm.Model.Options.ContextWindowFactor[contextWindowFactorIndex].Above.ValueString()
+
+					var inputFactor float64
+					inputFactor = r.Config.Llm.Model.Options.ContextWindowFactor[contextWindowFactorIndex].InputFactor.ValueFloat64()
+
+					var outputFactor float64
+					outputFactor = r.Config.Llm.Model.Options.ContextWindowFactor[contextWindowFactorIndex].OutputFactor.ValueFloat64()
+
+					contextWindowFactor = append(contextWindowFactor, shared.AiResponseTransformerPluginContextWindowFactor{
+						Above:        above,
+						InputFactor:  inputFactor,
+						OutputFactor: outputFactor,
+					})
 				}
 			}
 			var dashscope *shared.AiResponseTransformerPluginDashscope
@@ -832,6 +925,22 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 			} else {
 				outputCost = nil
 			}
+			var serviceTierFactor []shared.AiResponseTransformerPluginServiceTierFactor
+			if r.Config.Llm.Model.Options.ServiceTierFactor != nil {
+				serviceTierFactor = make([]shared.AiResponseTransformerPluginServiceTierFactor, 0, len(r.Config.Llm.Model.Options.ServiceTierFactor))
+				for serviceTierFactorIndex := range r.Config.Llm.Model.Options.ServiceTierFactor {
+					var factor float64
+					factor = r.Config.Llm.Model.Options.ServiceTierFactor[serviceTierFactorIndex].Factor.ValueFloat64()
+
+					var tier string
+					tier = r.Config.Llm.Model.Options.ServiceTierFactor[serviceTierFactorIndex].Tier.ValueString()
+
+					serviceTierFactor = append(serviceTierFactor, shared.AiResponseTransformerPluginServiceTierFactor{
+						Factor: factor,
+						Tier:   tier,
+					})
+				}
+			}
 			temperature := new(float64)
 			if !r.Config.Llm.Model.Options.Temperature.IsUnknown() && !r.Config.Llm.Model.Options.Temperature.IsNull() {
 				*temperature = r.Config.Llm.Model.Options.Temperature.ValueFloat64()
@@ -868,7 +977,11 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 				AzureDeploymentID:    azureDeploymentID,
 				AzureInstance:        azureInstance,
 				Bedrock:              bedrock,
+				CacheReadCost:        cacheReadCost,
+				CacheWriteCost:       cacheWriteCost,
+				CacheWriteCostList:   cacheWriteCostList,
 				Cohere:               cohere,
+				ContextWindowFactor:  contextWindowFactor,
 				Dashscope:            dashscope,
 				Databricks:           databricks,
 				EmbeddingsDimensions: embeddingsDimensions,
@@ -879,6 +992,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 				MaxTokens:            maxTokens,
 				MistralFormat:        mistralFormat,
 				OutputCost:           outputCost,
+				ServiceTierFactor:    serviceTierFactor,
 				Temperature:          temperature,
 				TopK:                 topK,
 				TopP:                 topP,

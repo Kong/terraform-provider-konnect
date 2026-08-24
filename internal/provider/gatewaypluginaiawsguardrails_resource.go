@@ -152,7 +152,7 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`concatenate_all_content`),
-						Description: `Select where to pick the 'text' for the Content Guard Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content"]; Default: "concatenate_all_content"`,
+						Description: `Select where to pick the 'text' for the Content Guard Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "concatenate_all_content"`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

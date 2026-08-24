@@ -62,9 +62,9 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"description": schema.StringAttribute{
 				Optional:    true,
-				Description: `The description of the new team.`,
+				Description: `The description of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 				},
 			},
 			"id": schema.StringAttribute{
@@ -84,9 +84,9 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
-				Description: `A name for the team being created.`,
+				Description: `The name of the team.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(250),
+					stringvalidator.UTF8LengthBetween(1, 250),
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w \W]+$`), "must match pattern "+regexp.MustCompile(`^[\w \W]+$`).String()),
 				},
 			},
@@ -169,11 +169,11 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.Team != nil) {
+	if !(res.TeamResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedTeam(ctx, res.Team)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTeamResponse(ctx, res.TeamResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -233,11 +233,11 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.Team != nil) {
+	if !(res.TeamResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedTeam(ctx, res.Team)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTeamResponse(ctx, res.TeamResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -283,11 +283,11 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.Team != nil) {
+	if !(res.TeamResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedTeam(ctx, res.Team)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTeamResponse(ctx, res.TeamResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

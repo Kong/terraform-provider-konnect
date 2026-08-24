@@ -899,7 +899,7 @@ type SamlPluginConfig struct {
 	SessionStorage *SamlPluginSessionStorage `default:"cookie" json:"session_storage"`
 	// Configures whether or not session metadata should be stored. This includes information about the active sessions for the `specific_audience` belonging to a specific subject.
 	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
-	// Enable signature validation for SAML responses.
+	// Controls SAML response signature validation. When enabled (the default), the `saml:Assertion` signature is validated and a valid `idp_certificate` is required. When disabled, the signature is still validated as long as an `idp_certificate` is configured, but the `samlp:Response` signature is checked instead of the assertion. Disabling it without an `idp_certificate` skips signature validation entirely, which is insecure (unsigned responses are accepted) and logs a warning.
 	ValidateAssertionSignature *bool `default:"true" json:"validate_assertion_signature"`
 }
 

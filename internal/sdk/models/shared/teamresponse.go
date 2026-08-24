@@ -7,13 +7,13 @@ import (
 	"time"
 )
 
-// Team - The team object contains information about a group of users.
-type Team struct {
+// TeamResponse - The team object contains information about a group of users.
+type TeamResponse struct {
 	// The team ID.
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// The name of the team.
-	Name *string `default:"null" json:"name"`
-	// The team description in Konnect.
+	Name string `json:"name"`
+	// The description of the team.
 	Description *string `default:"null" json:"description"`
 	// Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"
 	SystemTeam *bool `default:"false" json:"system_team"`
@@ -21,70 +21,70 @@ type Team struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels"`
 	// A Unix timestamp representation of team creation.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
 	// A Unix timestamp representation of the most recent change to the team object in Konnect.
 	//
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (t Team) MarshalJSON() ([]byte, error) {
+func (t TeamResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(t, "", false)
 }
 
-func (t *Team) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+func (t *TeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id", "name", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *Team) GetID() *string {
+func (t *TeamResponse) GetID() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.ID
 }
 
-func (t *Team) GetName() *string {
+func (t *TeamResponse) GetName() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.Name
 }
 
-func (t *Team) GetDescription() *string {
+func (t *TeamResponse) GetDescription() *string {
 	if t == nil {
 		return nil
 	}
 	return t.Description
 }
 
-func (t *Team) GetSystemTeam() *bool {
+func (t *TeamResponse) GetSystemTeam() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.SystemTeam
 }
 
-func (t *Team) GetLabels() map[string]*string {
+func (t *TeamResponse) GetLabels() map[string]*string {
 	if t == nil {
-		return nil
+		return map[string]*string{}
 	}
 	return t.Labels
 }
 
-func (t *Team) GetCreatedAt() *time.Time {
+func (t *TeamResponse) GetCreatedAt() time.Time {
 	if t == nil {
-		return nil
+		return time.Time{}
 	}
 	return t.CreatedAt
 }
 
-func (t *Team) GetUpdatedAt() *time.Time {
+func (t *TeamResponse) GetUpdatedAt() time.Time {
 	if t == nil {
-		return nil
+		return time.Time{}
 	}
 	return t.UpdatedAt
 }

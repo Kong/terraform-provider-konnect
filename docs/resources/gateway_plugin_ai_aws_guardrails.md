@@ -126,7 +126,7 @@ Optional:
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
 - `ssl_verify` (Boolean) Verify TLS certificate when connecting to the bedrock service. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
-- `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content"]; Default: "concatenate_all_content"
+- `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "concatenate_all_content"
 - `timeout` (Number) Connection timeout with the bedrock service. Default: 10000
 
 
