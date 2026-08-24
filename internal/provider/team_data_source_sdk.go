@@ -11,26 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *TeamDataSourceModel) RefreshFromSharedTeam(ctx context.Context, resp *shared.Team) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-	r.Description = types.StringPointerValue(resp.Description)
-	r.ID = types.StringPointerValue(resp.ID)
-	if len(resp.Labels) > 0 {
-		r.Labels = make(map[string]types.String, len(resp.Labels))
-		for key, value := range resp.Labels {
-			r.Labels[key] = types.StringPointerValue(value)
-		}
-	}
-	r.Name = types.StringPointerValue(resp.Name)
-	r.SystemTeam = types.BoolPointerValue(resp.SystemTeam)
-	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-
-	return diags
-}
-
-func (r *TeamDataSourceModel) RefreshFromSharedTeamCollection(ctx context.Context, resp *shared.TeamCollection) diag.Diagnostics {
+func (r *TeamDataSourceModel) RefreshFromSharedTeamCollectionResponse(ctx context.Context, resp *shared.TeamCollectionResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -39,13 +20,32 @@ func (r *TeamDataSourceModel) RefreshFromSharedTeamCollection(ctx context.Contex
 			return diags
 		}
 
-		diags.Append(r.RefreshFromSharedTeam(ctx, &resp.Data[0])...)
+		diags.Append(r.RefreshFromSharedTeamResponse(ctx, &resp.Data[0])...)
 
 		if diags.HasError() {
 			return diags
 		}
 
 	}
+
+	return diags
+}
+
+func (r *TeamDataSourceModel) RefreshFromSharedTeamResponse(ctx context.Context, resp *shared.TeamResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+	r.Description = types.StringPointerValue(resp.Description)
+	r.ID = types.StringValue(resp.ID)
+	if len(resp.Labels) > 0 {
+		r.Labels = make(map[string]types.String, len(resp.Labels))
+		for key, value := range resp.Labels {
+			r.Labels[key] = types.StringPointerValue(value)
+		}
+	}
+	r.Name = types.StringValue(resp.Name)
+	r.SystemTeam = types.BoolPointerValue(resp.SystemTeam)
+	r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 
 	return diags
 }
@@ -74,8 +74,52 @@ func (r *TeamDataSourceModel) ToOperationsListTeamsRequest(ctx context.Context) 
 				Contains: contains,
 			}
 		}
+		labels := make(map[string]shared.LegacyStringFieldFilterWithExists)
+		for labelsKey := range r.Filter.Labels {
+			var labelsInst shared.LegacyStringFieldFilterWithExists
+			var legacyStringFieldFilter *shared.LegacyStringFieldFilter
+			if r.Filter.Labels[labelsKey].LegacyStringFieldFilter != nil {
+				eq1 := new(string)
+				if !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.IsUnknown() && !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.IsNull() {
+					*eq1 = r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.ValueString()
+				} else {
+					eq1 = nil
+				}
+				contains1 := new(string)
+				if !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.IsUnknown() && !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.IsNull() {
+					*contains1 = r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.ValueString()
+				} else {
+					contains1 = nil
+				}
+				legacyStringFieldFilter = &shared.LegacyStringFieldFilter{
+					Eq:       eq1,
+					Contains: contains1,
+				}
+			}
+			if legacyStringFieldFilter != nil {
+				labelsInst = shared.LegacyStringFieldFilterWithExists{
+					LegacyStringFieldFilter: legacyStringFieldFilter,
+				}
+			}
+			var stringFieldExistsFilter *shared.StringFieldExistsFilter
+			if r.Filter.Labels[labelsKey].StringFieldExistsFilter != nil {
+				var exists bool
+				exists = r.Filter.Labels[labelsKey].StringFieldExistsFilter.Exists.ValueBool()
+
+				stringFieldExistsFilter = &shared.StringFieldExistsFilter{
+					Exists: exists,
+				}
+			}
+			if stringFieldExistsFilter != nil {
+				labelsInst = shared.LegacyStringFieldFilterWithExists{
+					StringFieldExistsFilter: stringFieldExistsFilter,
+				}
+			}
+			labels[labelsKey] = labelsInst
+		}
 		filter = &operations.QueryParamFilter{
-			Name: name,
+			Name:   name,
+			Labels: labels,
 		}
 	}
 	out := operations.ListTeamsRequest{

@@ -43,7 +43,7 @@ type GetTeamResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response including a single team.
-	Team *shared.Team
+	TeamResponse *shared.TeamResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Not Found
@@ -82,11 +82,11 @@ func (g *GetTeamResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetTeamResponse) GetTeam() *shared.Team {
+func (g *GetTeamResponse) GetTeamResponse() *shared.TeamResponse {
 	if g == nil {
 		return nil
 	}
-	return g.Team
+	return g.TeamResponse
 }
 
 func (g *GetTeamResponse) GetBadRequestError() *shared.BadRequestError {

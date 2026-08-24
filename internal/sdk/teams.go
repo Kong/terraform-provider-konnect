@@ -276,12 +276,12 @@ func (s *Teams) ListTeams(ctx context.Context, request operations.ListTeamsReque
 				return nil, err
 			}
 
-			var out shared.TeamCollection
+			var out shared.TeamCollectionResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.TeamCollection = &out
+			res.TeamCollectionResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -529,12 +529,12 @@ func (s *Teams) CreateTeam(ctx context.Context, request *shared.CreateTeam, opts
 				return nil, err
 			}
 
-			var out shared.Team
+			var out shared.TeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.Team = &out
+			res.TeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -775,12 +775,12 @@ func (s *Teams) GetTeam(ctx context.Context, request operations.GetTeamRequest, 
 				return nil, err
 			}
 
-			var out shared.Team
+			var out shared.TeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.Team = &out
+			res.TeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1028,12 +1028,12 @@ func (s *Teams) UpdateTeam(ctx context.Context, request operations.UpdateTeamReq
 				return nil, err
 			}
 
-			var out shared.Team
+			var out shared.TeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.Team = &out
+			res.TeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

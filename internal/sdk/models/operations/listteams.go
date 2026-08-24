@@ -12,10 +12,13 @@ var ListTeamsServerList = []string{
 	"https://global.api.konghq.com/",
 }
 
-// QueryParamFilter - Filter teams returned in the response.
+// QueryParamFilter - Filter teams returned in the response. Supports filtering by label value using
+// dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
+// `eq`, `contains`, or `exists`.
 type QueryParamFilter struct {
 	// Filter using **one** of the following operators: `eq`, `contains`
-	Name *shared.LegacyStringFieldFilter `queryParam:"name=name"`
+	Name   *shared.LegacyStringFieldFilter                     `queryParam:"name=name"`
+	Labels map[string]shared.LegacyStringFieldFilterWithExists `queryParam:"name=labels"`
 }
 
 func (q QueryParamFilter) MarshalJSON() ([]byte, error) {
@@ -36,12 +39,21 @@ func (q *QueryParamFilter) GetName() *shared.LegacyStringFieldFilter {
 	return q.Name
 }
 
+func (q *QueryParamFilter) GetLabels() map[string]shared.LegacyStringFieldFilterWithExists {
+	if q == nil {
+		return nil
+	}
+	return q.Labels
+}
+
 type ListTeamsRequest struct {
 	// The maximum number of items to include per page. The last page of a collection may include fewer items.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page[size]"`
 	// Determines which page of the entities to retrieve.
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
-	// Filter teams returned in the response.
+	// Filter teams returned in the response. Supports filtering by label value using
+	// dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
+	// `eq`, `contains`, or `exists`.
 	Filter *QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter"`
 }
 
@@ -84,8 +96,8 @@ type ListTeamsResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// A paginated list response for a collection of users.
-	TeamCollection *shared.TeamCollection
+	// A paginated list response for a collection of teams.
+	TeamCollectionResponse *shared.TeamCollectionResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Not Found
@@ -126,11 +138,11 @@ func (l *ListTeamsResponse) GetRawResponse() *http.Response {
 	return l.RawResponse
 }
 
-func (l *ListTeamsResponse) GetTeamCollection() *shared.TeamCollection {
+func (l *ListTeamsResponse) GetTeamCollectionResponse() *shared.TeamCollectionResponse {
 	if l == nil {
 		return nil
 	}
-	return l.TeamCollection
+	return l.TeamCollectionResponse
 }
 
 func (l *ListTeamsResponse) GetBadRequestError() *shared.BadRequestError {

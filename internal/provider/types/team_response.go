@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type Team struct {
+type TeamResponse struct {
 	CreatedAt   types.String            `tfsdk:"created_at"`
 	Description types.String            `tfsdk:"description"`
 	ID          types.String            `tfsdk:"id"`

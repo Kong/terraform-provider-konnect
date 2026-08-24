@@ -3,5 +3,6 @@
 package types
 
 type QueryParamFilter struct {
-	Name *MeshControlPlaneFilterParametersName `queryParam:"name=name" tfsdk:"name"`
+	Labels map[string]LegacyStringFieldFilterWithExists `queryParam:"name=labels" tfsdk:"labels"`
+	Name   *MeshControlPlaneFilterParametersName        `queryParam:"name=name" tfsdk:"name"`
 }

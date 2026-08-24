@@ -12,30 +12,30 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *TeamListDataSourceModel) RefreshFromSharedTeamCollection(ctx context.Context, resp *shared.TeamCollection) diag.Diagnostics {
+func (r *TeamListDataSourceModel) RefreshFromSharedTeamCollectionResponse(ctx context.Context, resp *shared.TeamCollectionResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		if resp.Data != nil {
 			if r.Data == nil {
-				r.Data = []tfTypes.Team{}
+				r.Data = []tfTypes.TeamResponse{}
 			}
 
 			for _, dataItem := range resp.Data {
-				var data tfTypes.Team
+				var data tfTypes.TeamResponse
 
-				data.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(dataItem.CreatedAt))
+				data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
 				data.Description = types.StringPointerValue(dataItem.Description)
-				data.ID = types.StringPointerValue(dataItem.ID)
+				data.ID = types.StringValue(dataItem.ID)
 				if len(dataItem.Labels) > 0 {
 					data.Labels = make(map[string]types.String, len(dataItem.Labels))
 					for key, value := range dataItem.Labels {
 						data.Labels[key] = types.StringPointerValue(value)
 					}
 				}
-				data.Name = types.StringPointerValue(dataItem.Name)
+				data.Name = types.StringValue(dataItem.Name)
 				data.SystemTeam = types.BoolPointerValue(dataItem.SystemTeam)
-				data.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(dataItem.UpdatedAt))
+				data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
 
 				r.Data = append(r.Data, data)
 			}
@@ -71,8 +71,52 @@ func (r *TeamListDataSourceModel) ToOperationsListTeamsRequest(ctx context.Conte
 				Contains: contains,
 			}
 		}
+		labels := make(map[string]shared.LegacyStringFieldFilterWithExists)
+		for labelsKey := range r.Filter.Labels {
+			var labelsInst shared.LegacyStringFieldFilterWithExists
+			var legacyStringFieldFilter *shared.LegacyStringFieldFilter
+			if r.Filter.Labels[labelsKey].LegacyStringFieldFilter != nil {
+				eq1 := new(string)
+				if !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.IsUnknown() && !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.IsNull() {
+					*eq1 = r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.ValueString()
+				} else {
+					eq1 = nil
+				}
+				contains1 := new(string)
+				if !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.IsUnknown() && !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.IsNull() {
+					*contains1 = r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.ValueString()
+				} else {
+					contains1 = nil
+				}
+				legacyStringFieldFilter = &shared.LegacyStringFieldFilter{
+					Eq:       eq1,
+					Contains: contains1,
+				}
+			}
+			if legacyStringFieldFilter != nil {
+				labelsInst = shared.LegacyStringFieldFilterWithExists{
+					LegacyStringFieldFilter: legacyStringFieldFilter,
+				}
+			}
+			var stringFieldExistsFilter *shared.StringFieldExistsFilter
+			if r.Filter.Labels[labelsKey].StringFieldExistsFilter != nil {
+				var exists bool
+				exists = r.Filter.Labels[labelsKey].StringFieldExistsFilter.Exists.ValueBool()
+
+				stringFieldExistsFilter = &shared.StringFieldExistsFilter{
+					Exists: exists,
+				}
+			}
+			if stringFieldExistsFilter != nil {
+				labelsInst = shared.LegacyStringFieldFilterWithExists{
+					StringFieldExistsFilter: stringFieldExistsFilter,
+				}
+			}
+			labels[labelsKey] = labelsInst
+		}
 		filter = &operations.QueryParamFilter{
-			Name: name,
+			Name:   name,
+			Labels: labels,
 		}
 	}
 	out := operations.ListTeamsRequest{
