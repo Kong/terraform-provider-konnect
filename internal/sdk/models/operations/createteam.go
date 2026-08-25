@@ -20,7 +20,7 @@ type CreateTeamResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response including a single team.
-	Team *shared.Team
+	TeamResponse *shared.TeamResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Permission denied
@@ -59,11 +59,11 @@ func (c *CreateTeamResponse) GetRawResponse() *http.Response {
 	return c.RawResponse
 }
 
-func (c *CreateTeamResponse) GetTeam() *shared.Team {
+func (c *CreateTeamResponse) GetTeamResponse() *shared.TeamResponse {
 	if c == nil {
 		return nil
 	}
-	return c.Team
+	return c.TeamResponse
 }
 
 func (c *CreateTeamResponse) GetBadRequestError() *shared.BadRequestError {

@@ -3,6 +3,11 @@ data "konnect_team_list" "my_teamlist" {
     name = {
       eq = "portal-admin"
     }
+    labels = {
+      example = {
+        eq = "here"
+      }
+    }
   }
 }
 

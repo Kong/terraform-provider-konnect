@@ -56,11 +56,30 @@ func (r *TeamDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
-				Description: `The team description in Konnect.`,
+				Description: `The description of the team.`,
 			},
 			"filter": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"labels": schema.MapNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"contains": schema.StringAttribute{
+									Optional:    true,
+									Description: `The field contains the provided value.`,
+								},
+								"eq": schema.StringAttribute{
+									Optional:    true,
+									Description: `The field exactly matches the provided value.`,
+								},
+								"exists": schema.BoolAttribute{
+									Optional:    true,
+									Description: `Filters on whether the given field exists.`,
+								},
+							},
+						},
+					},
 					"name": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -76,7 +95,9 @@ func (r *TeamDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `contains` + "`" + ``,
 					},
 				},
-				Description: `Filter teams returned in the response.`,
+				MarkdownDescription: `Filter teams returned in the response. Supports filtering by label value using` + "\n" +
+					`dot-notation, e.g. ` + "`" + `filter[labels.<key>][<op>]=<value>` + "`" + `, where ` + "`" + `<op>` + "`" + ` is one of` + "\n" +
+					`` + "`" + `eq` + "`" + `, ` + "`" + `contains` + "`" + `, or ` + "`" + `exists` + "`" + `.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -165,11 +186,11 @@ func (r *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.TeamCollection != nil) {
+	if !(res.TeamCollectionResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedTeamCollection(ctx, res.TeamCollection)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTeamCollectionResponse(ctx, res.TeamCollectionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
