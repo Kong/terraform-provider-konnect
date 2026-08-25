@@ -8,25 +8,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
-func TestGatewayPluginAiLlmAsJudge(t *testing.T) {
+func TestGatewayPluginAiResponseTransformer(t *testing.T) {
 	t.Parallel()
 
-	resourceName := "konnect_gateway_plugin_ai_llm_as_judge.my_plugin"
-
-	t.Run("smoke", func(t *testing.T) {
-		resource.Test(t, resource.TestCase{
-			ProtoV6ProviderFactories: providerFactory,
-			Steps: []resource.TestStep{
-				{
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(resourceName, "instance_name", "my-test-plugin"),
-					),
-				},
-			},
-		})
-	})
+	resourceName := "konnect_gateway_plugin_ai_response_transformer.my_plugin"
 
 	t.Run("CRUD", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
@@ -42,8 +27,10 @@ func TestGatewayPluginAiLlmAsJudge(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr(resourceName, "enabled", "true"),
-						resource.TestCheckResourceAttr(resourceName, "config.message_countback", "3"),
-						resource.TestCheckResourceAttr(resourceName, "config.sampling_rate", "1"),
+						resource.TestCheckResourceAttr(resourceName, "config.prompt", "Convert the upstream response body into a valid JSON payload."),
+						resource.TestCheckResourceAttr(resourceName, "config.http_timeout", "60000"),
+						resource.TestCheckResourceAttr(resourceName, "config.https_verify", "true"),
+						resource.TestCheckResourceAttr(resourceName, "config.parse_llm_response_json_instructions", "false"),
 						resource.TestCheckResourceAttr(resourceName, "config.llm.route_type", "llm/v1/chat"),
 						resource.TestCheckResourceAttr(resourceName, "config.llm.model.name", "claude-3-5-sonnet-20241022"),
 						resource.TestCheckResourceAttr(resourceName, "config.llm.model.provider", "anthropic"),
@@ -72,7 +59,8 @@ func TestGatewayPluginAiLlmAsJudge(t *testing.T) {
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(resourceName, "config.message_countback", "5"),
+						resource.TestCheckResourceAttr(resourceName, "config.prompt", "Convert the upstream response body into a valid XML payload."),
+						resource.TestCheckResourceAttr(resourceName, "config.http_timeout", "30000"),
 						resource.TestCheckResourceAttr(resourceName, "config.llm.model.options.max_tokens", "2048"),
 						resource.TestCheckResourceAttr(resourceName, "config.llm.model.options.input_cost", "5"),
 						resource.TestCheckResourceAttr(resourceName, "config.llm.model.options.output_cost", "20"),
