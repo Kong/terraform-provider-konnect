@@ -76,44 +76,28 @@ func (r *TeamDataSourceModel) ToOperationsListTeamsRequest(ctx context.Context) 
 		}
 		labels := make(map[string]shared.LegacyStringFieldFilterWithExists)
 		for labelsKey := range r.Filter.Labels {
-			var labelsInst shared.LegacyStringFieldFilterWithExists
-			var legacyStringFieldFilter *shared.LegacyStringFieldFilter
-			if r.Filter.Labels[labelsKey].LegacyStringFieldFilter != nil {
-				eq1 := new(string)
-				if !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.IsUnknown() && !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.IsNull() {
-					*eq1 = r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Eq.ValueString()
-				} else {
-					eq1 = nil
-				}
-				contains1 := new(string)
-				if !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.IsUnknown() && !r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.IsNull() {
-					*contains1 = r.Filter.Labels[labelsKey].LegacyStringFieldFilter.Contains.ValueString()
-				} else {
-					contains1 = nil
-				}
-				legacyStringFieldFilter = &shared.LegacyStringFieldFilter{
-					Eq:       eq1,
-					Contains: contains1,
-				}
+			eq1 := new(string)
+			if !r.Filter.Labels[labelsKey].Eq.IsUnknown() && !r.Filter.Labels[labelsKey].Eq.IsNull() {
+				*eq1 = r.Filter.Labels[labelsKey].Eq.ValueString()
+			} else {
+				eq1 = nil
 			}
-			if legacyStringFieldFilter != nil {
-				labelsInst = shared.LegacyStringFieldFilterWithExists{
-					LegacyStringFieldFilter: legacyStringFieldFilter,
-				}
+			contains1 := new(string)
+			if !r.Filter.Labels[labelsKey].Contains.IsUnknown() && !r.Filter.Labels[labelsKey].Contains.IsNull() {
+				*contains1 = r.Filter.Labels[labelsKey].Contains.ValueString()
+			} else {
+				contains1 = nil
 			}
-			var stringFieldExistsFilter *shared.StringFieldExistsFilter
-			if r.Filter.Labels[labelsKey].StringFieldExistsFilter != nil {
-				var exists bool
-				exists = r.Filter.Labels[labelsKey].StringFieldExistsFilter.Exists.ValueBool()
-
-				stringFieldExistsFilter = &shared.StringFieldExistsFilter{
-					Exists: exists,
-				}
+			exists := new(bool)
+			if !r.Filter.Labels[labelsKey].Exists.IsUnknown() && !r.Filter.Labels[labelsKey].Exists.IsNull() {
+				*exists = r.Filter.Labels[labelsKey].Exists.ValueBool()
+			} else {
+				exists = nil
 			}
-			if stringFieldExistsFilter != nil {
-				labelsInst = shared.LegacyStringFieldFilterWithExists{
-					StringFieldExistsFilter: stringFieldExistsFilter,
-				}
+			labelsInst := shared.LegacyStringFieldFilterWithExists{
+				Eq:       eq1,
+				Contains: contains1,
+				Exists:   exists,
 			}
 			labels[labelsKey] = labelsInst
 		}

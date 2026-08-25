@@ -27552,22 +27552,29 @@ components:
           description: The field contains the provided value.
           type: string
       additionalProperties: false
-    StringFieldExistsFilter:
-      description: Filters on whether the given field exists.
+    LegacyStringFieldFilterWithExists:
+      description: 'Filter using **one** of the following operators: `eq`, `contains`, `exists`'
       type: object
       properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        contains:
+          description: The field contains the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         exists:
+          description: Filters on whether the given field exists.
           type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
-      deprecated: true
-      required:
-        - exists
-      title: StringFieldExistsFilter
-    LegacyStringFieldFilterWithExists:
-      description: 'Filter a string value field by exact match, partial contains, or existence.'
-      oneOf:
-        - $ref: '#/components/schemas/LegacyStringFieldFilter'
-        - $ref: '#/components/schemas/StringFieldExistsFilter'
       title: StringFieldFilterWithExists
     TeamName:
       description: The name of the team.

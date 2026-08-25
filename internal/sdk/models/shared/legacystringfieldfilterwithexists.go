@@ -3,97 +3,47 @@
 package shared
 
 import (
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type LegacyStringFieldFilterWithExistsType string
-
-const (
-	LegacyStringFieldFilterWithExistsTypeLegacyStringFieldFilter LegacyStringFieldFilterWithExistsType = "LegacyStringFieldFilter"
-	LegacyStringFieldFilterWithExistsTypeStringFieldExistsFilter LegacyStringFieldFilterWithExistsType = "StringFieldExistsFilter"
-)
-
-// LegacyStringFieldFilterWithExists - Filter a string value field by exact match, partial contains, or existence.
+// LegacyStringFieldFilterWithExists - Filter using **one** of the following operators: `eq`, `contains`, `exists`
 type LegacyStringFieldFilterWithExists struct {
-	LegacyStringFieldFilter *LegacyStringFieldFilter `queryParam:"inline" union:"member"`
-	StringFieldExistsFilter *StringFieldExistsFilter `queryParam:"inline" union:"member"`
-
-	Type LegacyStringFieldFilterWithExistsType
+	// The field exactly matches the provided value.
+	Eq *string `default:"null" queryParam:"name=eq"`
+	// The field contains the provided value.
+	Contains *string `default:"null" queryParam:"name=contains"`
+	// Filters on whether the given field exists.
+	Exists *bool `default:"null" queryParam:"name=exists"`
 }
 
-func CreateLegacyStringFieldFilterWithExistsLegacyStringFieldFilter(legacyStringFieldFilter LegacyStringFieldFilter) LegacyStringFieldFilterWithExists {
-	typ := LegacyStringFieldFilterWithExistsTypeLegacyStringFieldFilter
-
-	return LegacyStringFieldFilterWithExists{
-		LegacyStringFieldFilter: &legacyStringFieldFilter,
-		Type:                    typ,
-	}
+func (l LegacyStringFieldFilterWithExists) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
 }
 
-func CreateLegacyStringFieldFilterWithExistsStringFieldExistsFilter(stringFieldExistsFilter StringFieldExistsFilter) LegacyStringFieldFilterWithExists {
-	typ := LegacyStringFieldFilterWithExistsTypeStringFieldExistsFilter
-
-	return LegacyStringFieldFilterWithExists{
-		StringFieldExistsFilter: &stringFieldExistsFilter,
-		Type:                    typ,
+func (l *LegacyStringFieldFilterWithExists) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
 	}
+	return nil
 }
 
-func (u *LegacyStringFieldFilterWithExists) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var legacyStringFieldFilter LegacyStringFieldFilter = LegacyStringFieldFilter{}
-	if err := utils.UnmarshalJSON(data, &legacyStringFieldFilter, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  LegacyStringFieldFilterWithExistsTypeLegacyStringFieldFilter,
-			Value: &legacyStringFieldFilter,
-		})
-	}
-
-	var stringFieldExistsFilter StringFieldExistsFilter = StringFieldExistsFilter{}
-	if err := utils.UnmarshalJSON(data, &stringFieldExistsFilter, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  LegacyStringFieldFilterWithExistsTypeStringFieldExistsFilter,
-			Value: &stringFieldExistsFilter,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for LegacyStringFieldFilterWithExists", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for LegacyStringFieldFilterWithExists", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(LegacyStringFieldFilterWithExistsType)
-	switch best.Type {
-	case LegacyStringFieldFilterWithExistsTypeLegacyStringFieldFilter:
-		u.LegacyStringFieldFilter = best.Value.(*LegacyStringFieldFilter)
-		return nil
-	case LegacyStringFieldFilterWithExistsTypeStringFieldExistsFilter:
-		u.StringFieldExistsFilter = best.Value.(*StringFieldExistsFilter)
+func (l *LegacyStringFieldFilterWithExists) GetEq() *string {
+	if l == nil {
 		return nil
 	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for LegacyStringFieldFilterWithExists", string(data))
+	return l.Eq
 }
 
-func (u LegacyStringFieldFilterWithExists) MarshalJSON() ([]byte, error) {
-	if u.LegacyStringFieldFilter != nil {
-		return utils.MarshalJSON(u.LegacyStringFieldFilter, "", true)
+func (l *LegacyStringFieldFilterWithExists) GetContains() *string {
+	if l == nil {
+		return nil
 	}
+	return l.Contains
+}
 
-	if u.StringFieldExistsFilter != nil {
-		return utils.MarshalJSON(u.StringFieldExistsFilter, "", true)
+func (l *LegacyStringFieldFilterWithExists) GetExists() *bool {
+	if l == nil {
+		return nil
 	}
-
-	return nil, errors.New("could not marshal union type LegacyStringFieldFilterWithExists: all fields are null")
+	return l.Exists
 }

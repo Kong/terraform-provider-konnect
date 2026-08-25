@@ -5,9 +5,7 @@ data "konnect_team" "my_team" {
     }
     labels = {
       example = {
-        legacy_string_field_filter = {
-          eq = "here"
-        }
+        eq = "here"
       }
     }
   }
