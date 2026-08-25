@@ -8,15 +8,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayConsumerGroupMemberResource{}
-var _ resource.ResourceWithImportState = &GatewayConsumerGroupMemberResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayConsumerGroupMemberResource{}
 
 func NewGatewayConsumerGroupMemberResource() resource.Resource {
 	return &GatewayConsumerGroupMemberResource{}
@@ -30,9 +33,12 @@ type GatewayConsumerGroupMemberResource struct {
 
 // GatewayConsumerGroupMemberResourceModel describes the resource data model.
 type GatewayConsumerGroupMemberResourceModel struct {
-	ConsumerGroupID types.String `tfsdk:"consumer_group_id"`
-	ConsumerID      types.String `tfsdk:"consumer_id"`
-	ControlPlaneID  types.String `tfsdk:"control_plane_id"`
+	ConsumerGroup   *tfTypes.ConsumerGroup `tfsdk:"consumer_group"`
+	ConsumerGroupID types.String           `tfsdk:"consumer_group_id"`
+	ConsumerID      types.String           `tfsdk:"consumer_id"`
+	Consumers       []tfTypes.Consumer     `tfsdk:"consumers"`
+	ControlPlaneID  types.String           `tfsdk:"control_plane_id"`
+	Workspace       types.String           `tfsdk:"workspace"`
 }
 
 func (r *GatewayConsumerGroupMemberResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -42,7 +48,34 @@ func (r *GatewayConsumerGroupMemberResource) Metadata(ctx context.Context, req r
 func (r *GatewayConsumerGroupMemberResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayConsumerGroupMember Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
+			"consumer_group": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.Int64Attribute{
+						Computed:    true,
+						Description: `Unix epoch when the resource was created.`,
+					},
+					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `A string representing a UUID (universally unique identifier).`,
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `The name of the consumer group.`,
+					},
+					"tags": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `A set of strings representing tags.`,
+					},
+					"updated_at": schema.Int64Attribute{
+						Computed:    true,
+						Description: `Unix epoch when the resource was last updated.`,
+					},
+				},
+			},
 			"consumer_group_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
@@ -57,12 +90,53 @@ func (r *GatewayConsumerGroupMemberResource) Schema(ctx context.Context, req res
 				},
 				Description: `Requires replacement if changed.`,
 			},
+			"consumers": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"created_at": schema.Int64Attribute{
+							Computed:    true,
+							Description: `Unix epoch when the resource was created.`,
+						},
+						"custom_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or ` + "`" + `username` + "`" + ` with the request.`,
+						},
+						"id": schema.StringAttribute{
+							Computed:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
+						},
+						"tags": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `An optional set of strings associated with the Consumer for grouping and filtering.`,
+						},
+						"updated_at": schema.Int64Attribute{
+							Computed:    true,
+							Description: `Unix epoch when the resource was last updated.`,
+						},
+						"username": schema.StringAttribute{
+							Computed:    true,
+							Description: `The unique username of the Consumer. You must send either this field or ` + "`" + `custom_id` + "`" + ` with the request.`,
+						},
+					},
+				},
+			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
+			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 		},
 	}
@@ -106,13 +180,13 @@ func (r *GatewayConsumerGroupMemberResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsAddConsumerToGroupRequest(ctx)
+	request, requestDiags := data.ToOperationsAddConsumerToGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.AddConsumerToGroup(ctx, *request)
+	res, err := r.client.ConsumerGroups.AddConsumerToGroupInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -126,6 +200,15 @@ func (r *GatewayConsumerGroupMemberResource) Create(ctx context.Context, req res
 	}
 	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.Object != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromOperationsAddConsumerToGroupInWorkspaceResponseBody(ctx, res.Object)...)
+
+	if resp.Diagnostics.HasError() {
 		return
 	}
 
@@ -201,13 +284,13 @@ func (r *GatewayConsumerGroupMemberResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsRemoveConsumerFromGroupRequest(ctx)
+	request, requestDiags := data.ToOperationsRemoveConsumerFromGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.RemoveConsumerFromGroup(ctx, *request)
+	res, err := r.client.ConsumerGroups.RemoveConsumerFromGroupInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -231,4 +314,10 @@ func (r *GatewayConsumerGroupMemberResource) Delete(ctx context.Context, req res
 
 func (r *GatewayConsumerGroupMemberResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource gateway_consumer_group_member.")
+}
+
+func (r *GatewayConsumerGroupMemberResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayconsumergroupmemberStateUpgraderV0},
+	}
 }

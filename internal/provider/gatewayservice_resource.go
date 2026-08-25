@@ -24,11 +24,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayServiceResource{}
-var _ resource.ResourceWithImportState = &GatewayServiceResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayServiceResource{}
 
 func NewGatewayServiceResource() resource.Resource {
 	return &GatewayServiceResource{}
@@ -61,6 +62,7 @@ type GatewayServiceResourceModel struct {
 	TLSVerify         types.Bool       `tfsdk:"tls_verify"`
 	TLSVerifyDepth    types.Int64      `tfsdk:"tls_verify_depth"`
 	UpdatedAt         types.Int64      `tfsdk:"updated_at"`
+	Workspace         types.String     `tfsdk:"workspace"`
 	WriteTimeout      types.Int64      `tfsdk:"write_timeout"`
 }
 
@@ -71,6 +73,7 @@ func (r *GatewayServiceResource) Metadata(ctx context.Context, req resource.Meta
 func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayService Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"ca_certificates": schema.ListAttribute{
 				Optional:    true,
@@ -217,6 +220,15 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 			"write_timeout": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
@@ -268,13 +280,13 @@ func (r *GatewayServiceResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateServiceInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.CreateService(ctx, *request)
+	res, err := r.client.Services.CreateServiceInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -328,13 +340,13 @@ func (r *GatewayServiceResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetServiceInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.GetService(ctx, *request)
+	res, err := r.client.Services.GetServiceInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -382,13 +394,13 @@ func (r *GatewayServiceResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertServiceInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.UpsertService(ctx, *request)
+	res, err := r.client.Services.UpsertServiceInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -442,13 +454,13 @@ func (r *GatewayServiceResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteServiceInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.DeleteService(ctx, *request)
+	res, err := r.client.Services.DeleteServiceInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -476,10 +488,11 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -493,4 +506,15 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayServiceResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayserviceStateUpgraderV0},
+	}
 }

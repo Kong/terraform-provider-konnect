@@ -218,11 +218,14 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 	return diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreateRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.CreateRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreateRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestTransformerAdvancedPlugin, requestTransformerAdvancedPluginDiags := r.ToSharedRequestTransformerAdvancedPlugin(ctx)
 	diags.Append(requestTransformerAdvancedPluginDiags...)
@@ -231,15 +234,16 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreat
 		return nil, diags
 	}
 
-	out := operations.CreateRequesttransformeradvancedPluginRequest{
+	out := operations.CreateRequesttransformeradvancedPluginInWorkspaceRequest{
 		ControlPlaneID:                   controlPlaneID,
+		Workspace:                        workspace,
 		RequestTransformerAdvancedPlugin: *requestTransformerAdvancedPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDeleteRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.DeleteRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDeleteRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -248,15 +252,19 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDelet
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRequesttransformeradvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRequesttransformeradvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.GetRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -265,15 +273,19 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRequesttransformeradvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRequesttransformeradvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdateRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.UpdateRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdateRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -281,6 +293,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdat
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestTransformerAdvancedPlugin, requestTransformerAdvancedPluginDiags := r.ToSharedRequestTransformerAdvancedPlugin(ctx)
 	diags.Append(requestTransformerAdvancedPluginDiags...)
@@ -289,9 +304,10 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdat
 		return nil, diags
 	}
 
-	out := operations.UpdateRequesttransformeradvancedPluginRequest{
+	out := operations.UpdateRequesttransformeradvancedPluginInWorkspaceRequest{
 		PluginID:                         pluginID,
 		ControlPlaneID:                   controlPlaneID,
+		Workspace:                        workspace,
 		RequestTransformerAdvancedPlugin: *requestTransformerAdvancedPlugin,
 	}
 

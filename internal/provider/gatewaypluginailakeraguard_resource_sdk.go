@@ -126,11 +126,14 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) RefreshFromSharedAiLakeraGuard
 	return diags
 }
 
-func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsCreateAilakeraguardPluginRequest(ctx context.Context) (*operations.CreateAilakeraguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsCreateAilakeraguardPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAilakeraguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiLakeraGuardPlugin, aiLakeraGuardPluginDiags := r.ToSharedAiLakeraGuardPlugin(ctx)
 	diags.Append(aiLakeraGuardPluginDiags...)
@@ -139,15 +142,16 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsCreateAilakeraguar
 		return nil, diags
 	}
 
-	out := operations.CreateAilakeraguardPluginRequest{
+	out := operations.CreateAilakeraguardPluginInWorkspaceRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiLakeraGuardPlugin: *aiLakeraGuardPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsDeleteAilakeraguardPluginRequest(ctx context.Context) (*operations.DeleteAilakeraguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsDeleteAilakeraguardPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAilakeraguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -156,15 +160,19 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsDeleteAilakeraguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAilakeraguardPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAilakeraguardPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsGetAilakeraguardPluginRequest(ctx context.Context) (*operations.GetAilakeraguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsGetAilakeraguardPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAilakeraguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -173,15 +181,19 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsGetAilakeraguardPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAilakeraguardPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAilakeraguardPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsUpdateAilakeraguardPluginRequest(ctx context.Context) (*operations.UpdateAilakeraguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsUpdateAilakeraguardPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAilakeraguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -189,6 +201,9 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsUpdateAilakeraguar
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiLakeraGuardPlugin, aiLakeraGuardPluginDiags := r.ToSharedAiLakeraGuardPlugin(ctx)
 	diags.Append(aiLakeraGuardPluginDiags...)
@@ -197,9 +212,10 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsUpdateAilakeraguar
 		return nil, diags
 	}
 
-	out := operations.UpdateAilakeraguardPluginRequest{
+	out := operations.UpdateAilakeraguardPluginInWorkspaceRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiLakeraGuardPlugin: *aiLakeraGuardPlugin,
 	}
 

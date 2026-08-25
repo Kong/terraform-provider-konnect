@@ -30,6 +30,7 @@ type CustomPluginResourceModel struct {
 	Service        *ForeignKeyWithId          `tfsdk:"service"`
 	Tags           []types.String             `tfsdk:"tags"`
 	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
+	Workspace      types.String               `tfsdk:"workspace"`
 }
 
 func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.Plugin, error) {

@@ -108,11 +108,14 @@ func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(ctx con
 	return diags
 }
 
-func (r *GatewayPluginTCPLogResourceModel) ToOperationsCreateTcplogPluginRequest(ctx context.Context) (*operations.CreateTcplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsCreateTcplogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateTcplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	tcpLogPlugin, tcpLogPluginDiags := r.ToSharedTCPLogPlugin(ctx)
 	diags.Append(tcpLogPluginDiags...)
@@ -121,15 +124,16 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsCreateTcplogPluginRequest
 		return nil, diags
 	}
 
-	out := operations.CreateTcplogPluginRequest{
+	out := operations.CreateTcplogPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		TCPLogPlugin:   *tcpLogPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginTCPLogResourceModel) ToOperationsDeleteTcplogPluginRequest(ctx context.Context) (*operations.DeleteTcplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsDeleteTcplogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteTcplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -138,15 +142,19 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsDeleteTcplogPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteTcplogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteTcplogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginTCPLogResourceModel) ToOperationsGetTcplogPluginRequest(ctx context.Context) (*operations.GetTcplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsGetTcplogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetTcplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -155,15 +163,19 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsGetTcplogPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetTcplogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetTcplogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginTCPLogResourceModel) ToOperationsUpdateTcplogPluginRequest(ctx context.Context) (*operations.UpdateTcplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsUpdateTcplogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateTcplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -171,6 +183,9 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsUpdateTcplogPluginRequest
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	tcpLogPlugin, tcpLogPluginDiags := r.ToSharedTCPLogPlugin(ctx)
 	diags.Append(tcpLogPluginDiags...)
@@ -179,9 +194,10 @@ func (r *GatewayPluginTCPLogResourceModel) ToOperationsUpdateTcplogPluginRequest
 		return nil, diags
 	}
 
-	out := operations.UpdateTcplogPluginRequest{
+	out := operations.UpdateTcplogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		TCPLogPlugin:   *tcpLogPlugin,
 	}
 

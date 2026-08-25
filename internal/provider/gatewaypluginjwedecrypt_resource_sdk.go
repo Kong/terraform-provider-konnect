@@ -96,11 +96,14 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 	return diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPluginRequest(ctx context.Context) (*operations.CreateJwedecryptPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	jweDecryptPlugin, jweDecryptPluginDiags := r.ToSharedJweDecryptPlugin(ctx)
 	diags.Append(jweDecryptPluginDiags...)
@@ -109,15 +112,16 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPlugi
 		return nil, diags
 	}
 
-	out := operations.CreateJwedecryptPluginRequest{
+	out := operations.CreateJwedecryptPluginInWorkspaceRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		JweDecryptPlugin: *jweDecryptPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPluginRequest(ctx context.Context) (*operations.DeleteJwedecryptPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -126,15 +130,19 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteJwedecryptPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteJwedecryptPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginRequest(ctx context.Context) (*operations.GetJwedecryptPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.GetJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -143,15 +151,19 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetJwedecryptPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetJwedecryptPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPluginRequest(ctx context.Context) (*operations.UpdateJwedecryptPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -159,6 +171,9 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPlugi
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	jweDecryptPlugin, jweDecryptPluginDiags := r.ToSharedJweDecryptPlugin(ctx)
 	diags.Append(jweDecryptPluginDiags...)
@@ -167,9 +182,10 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdateJwedecryptPluginRequest{
+	out := operations.UpdateJwedecryptPluginInWorkspaceRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		JweDecryptPlugin: *jweDecryptPlugin,
 	}
 

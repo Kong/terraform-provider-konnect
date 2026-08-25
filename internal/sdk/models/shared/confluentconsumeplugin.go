@@ -744,6 +744,10 @@ func (c *ConfluentConsumePluginOauth2Client) GetTimeout() *int64 {
 
 type ConfluentConsumePluginAuthentication struct {
 	Basic *ConfluentConsumePluginBasic `json:"basic"`
+	// The Confluent Cloud OAuth identity pool ID, sent as the `Confluent-Identity-Pool-Id` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.
+	IdentityPoolID *string `default:"null" json:"identity_pool_id"`
+	// The Confluent Cloud Schema Registry cluster ID, sent as the `target-sr-cluster` request header. Confluent Cloud requires this when `mode` is 'oauth2'.
+	LogicalClusterID *string `default:"null" json:"logical_cluster_id"`
 	// Authentication mode to use with the schema registry.
 	Mode         *ConfluentConsumePluginConfigSchemaRegistryMode `default:"none" json:"mode"`
 	Oauth2       *ConfluentConsumePluginOauth2                   `json:"oauth2"`
@@ -766,6 +770,20 @@ func (c *ConfluentConsumePluginAuthentication) GetBasic() *ConfluentConsumePlugi
 		return nil
 	}
 	return c.Basic
+}
+
+func (c *ConfluentConsumePluginAuthentication) GetIdentityPoolID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.IdentityPoolID
+}
+
+func (c *ConfluentConsumePluginAuthentication) GetLogicalClusterID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.LogicalClusterID
 }
 
 func (c *ConfluentConsumePluginAuthentication) GetMode() *ConfluentConsumePluginConfigSchemaRegistryMode {
@@ -1234,6 +1252,10 @@ func (c *ConfluentConsumePluginConfigOauth2Client) GetTimeout() *int64 {
 
 type ConfluentConsumePluginConfigAuthentication struct {
 	Basic *ConfluentConsumePluginConfigBasic `json:"basic"`
+	// The Confluent Cloud OAuth identity pool ID, sent as the `Confluent-Identity-Pool-Id` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.
+	IdentityPoolID *string `default:"null" json:"identity_pool_id"`
+	// The Confluent Cloud Schema Registry cluster ID, sent as the `target-sr-cluster` request header. Confluent Cloud requires this when `mode` is 'oauth2'.
+	LogicalClusterID *string `default:"null" json:"logical_cluster_id"`
 	// Authentication mode to use with the schema registry.
 	Mode         *ConfluentConsumePluginConfigTopicsMode   `default:"none" json:"mode"`
 	Oauth2       *ConfluentConsumePluginConfigOauth2       `json:"oauth2"`
@@ -1256,6 +1278,20 @@ func (c *ConfluentConsumePluginConfigAuthentication) GetBasic() *ConfluentConsum
 		return nil
 	}
 	return c.Basic
+}
+
+func (c *ConfluentConsumePluginConfigAuthentication) GetIdentityPoolID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.IdentityPoolID
+}
+
+func (c *ConfluentConsumePluginConfigAuthentication) GetLogicalClusterID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.LogicalClusterID
 }
 
 func (c *ConfluentConsumePluginConfigAuthentication) GetMode() *ConfluentConsumePluginConfigTopicsMode {

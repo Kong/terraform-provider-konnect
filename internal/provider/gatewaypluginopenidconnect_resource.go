@@ -27,6 +27,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -34,7 +35,7 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginOpenidConnectResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginOpenidConnectResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginOpenidConnectResource{}
 
 func NewGatewayPluginOpenidConnectResource() resource.Resource {
 	return &GatewayPluginOpenidConnectResource{}
@@ -62,6 +63,7 @@ type GatewayPluginOpenidConnectResourceModel struct {
 	Service        *tfTypes.Set                       `tfsdk:"service"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Workspace      types.String                       `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginOpenidConnectResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -71,6 +73,7 @@ func (r *GatewayPluginOpenidConnectResource) Metadata(ctx context.Context, req r
 func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginOpenidConnect Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -908,7 +911,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `Skip the token signature verification on certain grants: - ` + "`" + `password` + "`" + `: OAuth password grant - ` + "`" + `client_credentials` + "`" + `: OAuth client credentials grant - ` + "`" + `authorization_code` + "`" + `: authorization code flow - ` + "`" + `refresh_token` + "`" + `: OAuth refresh token grant - ` + "`" + `session` + "`" + `: session cookie authentication - ` + "`" + `introspection` + "`" + `: OAuth introspection - ` + "`" + `userinfo` + "`" + `: OpenID Connect user info endpoint authentication. Default: []`,
+						Description: `Skip the token signature verification on certain grants. This is insecure and logs a warning; use it only for providers that publish no verification key. Grants: - ` + "`" + `password` + "`" + `: OAuth password grant - ` + "`" + `client_credentials` + "`" + `: OAuth client credentials grant - ` + "`" + `authorization_code` + "`" + `: authorization code flow - ` + "`" + `refresh_token` + "`" + `: OAuth refresh token grant - ` + "`" + `session` + "`" + `: session cookie authentication - ` + "`" + `introspection` + "`" + `: OAuth introspection - ` + "`" + `userinfo` + "`" + `: OpenID Connect user info endpoint authentication. Default: []`,
 					},
 					"introspect_jwt_tokens": schema.BoolAttribute{
 						Computed:    true,
@@ -2444,6 +2447,15 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -2486,13 +2498,13 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateOpenidconnectPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateOpenidconnectPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateOpenidconnectPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateOpenidconnectPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2546,13 +2558,13 @@ func (r *GatewayPluginOpenidConnectResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetOpenidconnectPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetOpenidconnectPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetOpenidconnectPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetOpenidconnectPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2600,13 +2612,13 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateOpenidconnectPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateOpenidconnectPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateOpenidconnectPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateOpenidconnectPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2660,13 +2672,13 @@ func (r *GatewayPluginOpenidConnectResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteOpenidconnectPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteOpenidconnectPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteOpenidconnectPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteOpenidconnectPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2694,10 +2706,11 @@ func (r *GatewayPluginOpenidConnectResource) ImportState(ctx context.Context, re
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -2711,4 +2724,15 @@ func (r *GatewayPluginOpenidConnectResource) ImportState(ctx context.Context, re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginOpenidConnectResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginopenidconnectStateUpgraderV0},
+	}
 }

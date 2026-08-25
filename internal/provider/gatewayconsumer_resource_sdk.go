@@ -32,11 +32,14 @@ func (r *GatewayConsumerResourceModel) RefreshFromSharedConsumer(ctx context.Con
 	return diags
 }
 
-func (r *GatewayConsumerResourceModel) ToOperationsCreateConsumerRequest(ctx context.Context) (*operations.CreateConsumerRequest, diag.Diagnostics) {
+func (r *GatewayConsumerResourceModel) ToOperationsCreateConsumerInWorkspaceRequest(ctx context.Context) (*operations.CreateConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	consumer, consumerDiags := r.ToSharedConsumer(ctx)
 	diags.Append(consumerDiags...)
@@ -45,15 +48,16 @@ func (r *GatewayConsumerResourceModel) ToOperationsCreateConsumerRequest(ctx con
 		return nil, diags
 	}
 
-	out := operations.CreateConsumerRequest{
+	out := operations.CreateConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Consumer:       *consumer,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerResourceModel) ToOperationsDeleteConsumerRequest(ctx context.Context) (*operations.DeleteConsumerRequest, diag.Diagnostics) {
+func (r *GatewayConsumerResourceModel) ToOperationsDeleteConsumerInWorkspaceRequest(ctx context.Context) (*operations.DeleteConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -62,15 +66,19 @@ func (r *GatewayConsumerResourceModel) ToOperationsDeleteConsumerRequest(ctx con
 	var consumerID string
 	consumerID = r.ID.ValueString()
 
-	out := operations.DeleteConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerResourceModel) ToOperationsGetConsumerRequest(ctx context.Context) (*operations.GetConsumerRequest, diag.Diagnostics) {
+func (r *GatewayConsumerResourceModel) ToOperationsGetConsumerInWorkspaceRequest(ctx context.Context) (*operations.GetConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerID string
@@ -79,15 +87,19 @@ func (r *GatewayConsumerResourceModel) ToOperationsGetConsumerRequest(ctx contex
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetConsumerInWorkspaceRequest{
 		ConsumerID:     consumerID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerResourceModel) ToOperationsUpsertConsumerRequest(ctx context.Context) (*operations.UpsertConsumerRequest, diag.Diagnostics) {
+func (r *GatewayConsumerResourceModel) ToOperationsUpsertConsumerInWorkspaceRequest(ctx context.Context) (*operations.UpsertConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerID string
@@ -95,6 +107,9 @@ func (r *GatewayConsumerResourceModel) ToOperationsUpsertConsumerRequest(ctx con
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	consumer, consumerDiags := r.ToSharedConsumer(ctx)
 	diags.Append(consumerDiags...)
@@ -103,9 +118,10 @@ func (r *GatewayConsumerResourceModel) ToOperationsUpsertConsumerRequest(ctx con
 		return nil, diags
 	}
 
-	out := operations.UpsertConsumerRequest{
+	out := operations.UpsertConsumerInWorkspaceRequest{
 		ConsumerID:     consumerID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Consumer:       *consumer,
 	}
 

@@ -322,11 +322,14 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 	return diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.CreateAisemanticresponseguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiSemanticResponseGuardPlugin, aiSemanticResponseGuardPluginDiags := r.ToSharedAiSemanticResponseGuardPlugin(ctx)
 	diags.Append(aiSemanticResponseGuardPluginDiags...)
@@ -335,15 +338,16 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAi
 		return nil, diags
 	}
 
-	out := operations.CreateAisemanticresponseguardPluginRequest{
+	out := operations.CreateAisemanticresponseguardPluginInWorkspaceRequest{
 		ControlPlaneID:                controlPlaneID,
+		Workspace:                     workspace,
 		AiSemanticResponseGuardPlugin: *aiSemanticResponseGuardPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.DeleteAisemanticresponseguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -352,15 +356,19 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAisemanticresponseguardPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAisemanticresponseguardPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.GetAisemanticresponseguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -369,15 +377,19 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisem
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAisemanticresponseguardPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAisemanticresponseguardPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.UpdateAisemanticresponseguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -385,6 +397,9 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAi
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiSemanticResponseGuardPlugin, aiSemanticResponseGuardPluginDiags := r.ToSharedAiSemanticResponseGuardPlugin(ctx)
 	diags.Append(aiSemanticResponseGuardPluginDiags...)
@@ -393,9 +408,10 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAi
 		return nil, diags
 	}
 
-	out := operations.UpdateAisemanticresponseguardPluginRequest{
+	out := operations.UpdateAisemanticresponseguardPluginInWorkspaceRequest{
 		PluginID:                      pluginID,
 		ControlPlaneID:                controlPlaneID,
+		Workspace:                     workspace,
 		AiSemanticResponseGuardPlugin: *aiSemanticResponseGuardPlugin,
 	}
 

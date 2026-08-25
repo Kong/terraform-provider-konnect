@@ -37,9 +37,9 @@ func newVaults(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks
 	}
 }
 
-// CreateVault - Create a new Vault
-// Create a new Vault
-func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVaultRequest, opts ...operations.Option) (*operations.CreateVaultResponse, error) {
+// CreateVaultInWorkspace - Create a new Vault in a workspace
+// Create a new Vault in a workspace
+func (s *Vaults) CreateVaultInWorkspace(ctx context.Context, request operations.CreateVaultInWorkspaceRequest, opts ...operations.Option) (*operations.CreateVaultInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -58,7 +58,7 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/vaults", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/vaults", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -68,7 +68,7 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-vault",
+		OperationID:      "create-vault-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -203,7 +203,7 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 		}
 	}
 
-	res := &operations.CreateVaultResponse{
+	res := &operations.CreateVaultInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -264,9 +264,9 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 
 }
 
-// DeleteVault - Delete a Vault
-// Delete a Vault
-func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVaultRequest, opts ...operations.Option) (*operations.DeleteVaultResponse, error) {
+// DeleteVaultInWorkspace - Delete a Vault in a workspace
+// Delete a Vault in a workspace
+func (s *Vaults) DeleteVaultInWorkspace(ctx context.Context, request operations.DeleteVaultInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteVaultInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -285,7 +285,7 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/vaults/{VaultId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -295,7 +295,7 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-vault",
+		OperationID:      "delete-vault-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -423,7 +423,7 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 		}
 	}
 
-	res := &operations.DeleteVaultResponse{
+	res := &operations.DeleteVaultInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -467,9 +467,9 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 
 }
 
-// GetVault - Get a Vault
-// Get a Vault using ID or prefix.
-func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultRequest, opts ...operations.Option) (*operations.GetVaultResponse, error) {
+// GetVaultInWorkspace - Get a Vault in a workspace
+// Get a Vault using ID or prefix in a workspace.
+func (s *Vaults) GetVaultInWorkspace(ctx context.Context, request operations.GetVaultInWorkspaceRequest, opts ...operations.Option) (*operations.GetVaultInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -488,7 +488,7 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/vaults/{VaultId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -498,7 +498,7 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-vault",
+		OperationID:      "get-vault-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -626,7 +626,7 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 		}
 	}
 
-	res := &operations.GetVaultResponse{
+	res := &operations.GetVaultInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -689,9 +689,9 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 
 }
 
-// UpsertVault - Upsert a Vault
-// Create or Update Vault using ID or prefix.
-func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVaultRequest, opts ...operations.Option) (*operations.UpsertVaultResponse, error) {
+// UpsertVaultInWorkspace - Upsert a Vault in a workspace
+// Create or Update Vault using ID or prefix in a workspace.
+func (s *Vaults) UpsertVaultInWorkspace(ctx context.Context, request operations.UpsertVaultInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertVaultInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -710,7 +710,7 @@ func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVault
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/vaults/{VaultId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -720,7 +720,7 @@ func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVault
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-vault",
+		OperationID:      "upsert-vault-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -855,7 +855,7 @@ func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVault
 		}
 	}
 
-	res := &operations.UpsertVaultResponse{
+	res := &operations.UpsertVaultInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

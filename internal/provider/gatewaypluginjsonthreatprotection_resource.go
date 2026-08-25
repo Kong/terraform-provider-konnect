@@ -25,13 +25,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginJSONThreatProtectionResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginJSONThreatProtectionResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginJSONThreatProtectionResource{}
 
 func NewGatewayPluginJSONThreatProtectionResource() resource.Resource {
 	return &GatewayPluginJSONThreatProtectionResource{}
@@ -59,6 +60,7 @@ type GatewayPluginJSONThreatProtectionResourceModel struct {
 	Service        *tfTypes.Set                              `tfsdk:"service"`
 	Tags           []types.String                            `tfsdk:"tags"`
 	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Workspace      types.String                              `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginJSONThreatProtectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,6 +70,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Metadata(ctx context.Context
 func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginJSONThreatProtection Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -338,6 +341,15 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -380,13 +392,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Create(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJsonthreatprotectionPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJsonthreatprotectionPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateJsonthreatprotectionPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateJsonthreatprotectionPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -440,13 +452,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Read(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJsonthreatprotectionPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJsonthreatprotectionPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetJsonthreatprotectionPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetJsonthreatprotectionPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -494,13 +506,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Update(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateJsonthreatprotectionPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateJsonthreatprotectionPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateJsonthreatprotectionPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateJsonthreatprotectionPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -554,13 +566,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Delete(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJsonthreatprotectionPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJsonthreatprotectionPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteJsonthreatprotectionPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteJsonthreatprotectionPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -588,10 +600,11 @@ func (r *GatewayPluginJSONThreatProtectionResource) ImportState(ctx context.Cont
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -605,4 +618,15 @@ func (r *GatewayPluginJSONThreatProtectionResource) ImportState(ctx context.Cont
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginJSONThreatProtectionResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginjsonthreatprotectionStateUpgraderV0},
+	}
 }

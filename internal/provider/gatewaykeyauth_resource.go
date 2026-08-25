@@ -13,17 +13,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayKeyAuthResource{}
-var _ resource.ResourceWithImportState = &GatewayKeyAuthResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayKeyAuthResource{}
 
 func NewGatewayKeyAuthResource() resource.Resource {
 	return &GatewayKeyAuthResource{}
@@ -44,6 +46,7 @@ type GatewayKeyAuthResourceModel struct {
 	Key            types.String   `tfsdk:"key"`
 	Tags           []types.String `tfsdk:"tags"`
 	TTL            types.Int64    `tfsdk:"ttl"`
+	Workspace      types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayKeyAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,6 +56,7 @@ func (r *GatewayKeyAuthResource) Metadata(ctx context.Context, req resource.Meta
 func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayKeyAuth Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"consumer_id": schema.StringAttribute{
 				Required: true,
@@ -112,6 +116,15 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 				},
 				Description: `key-auth ttl in seconds. Requires replacement if changed.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -154,13 +167,13 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKeyAuthWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKeyAuthWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIKeys.CreateKeyAuthWithConsumer(ctx, *request)
+	res, err := r.client.APIKeys.CreateKeyAuthWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -214,13 +227,13 @@ func (r *GatewayKeyAuthResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKeyAuthWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKeyAuthWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIKeys.GetKeyAuthWithConsumer(ctx, *request)
+	res, err := r.client.APIKeys.GetKeyAuthWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -292,13 +305,13 @@ func (r *GatewayKeyAuthResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKeyAuthWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKeyAuthWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumer(ctx, *request)
+	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -327,10 +340,11 @@ func (r *GatewayKeyAuthResource) ImportState(ctx context.Context, req resource.I
 		ID             string `json:"id"`
 		ConsumerID     string `json:"consumer_id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -349,4 +363,15 @@ func (r *GatewayKeyAuthResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayKeyAuthResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaykeyauthStateUpgraderV0},
+	}
 }

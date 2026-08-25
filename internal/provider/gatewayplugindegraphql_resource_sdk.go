@@ -94,11 +94,14 @@ func (r *GatewayPluginDegraphqlResourceModel) RefreshFromSharedDegraphqlPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginRequest(ctx context.Context) (*operations.CreateDegraphqlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	degraphqlPlugin, degraphqlPluginDiags := r.ToSharedDegraphqlPlugin(ctx)
 	diags.Append(degraphqlPluginDiags...)
@@ -107,15 +110,16 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginR
 		return nil, diags
 	}
 
-	out := operations.CreateDegraphqlPluginRequest{
+	out := operations.CreateDegraphqlPluginInWorkspaceRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		DegraphqlPlugin: *degraphqlPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginRequest(ctx context.Context) (*operations.DeleteDegraphqlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -124,15 +128,19 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteDegraphqlPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteDegraphqlPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginRequest(ctx context.Context) (*operations.GetDegraphqlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.GetDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -141,15 +149,19 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetDegraphqlPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetDegraphqlPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginRequest(ctx context.Context) (*operations.UpdateDegraphqlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -157,6 +169,9 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginR
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	degraphqlPlugin, degraphqlPluginDiags := r.ToSharedDegraphqlPlugin(ctx)
 	diags.Append(degraphqlPluginDiags...)
@@ -165,9 +180,10 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginR
 		return nil, diags
 	}
 
-	out := operations.UpdateDegraphqlPluginRequest{
+	out := operations.UpdateDegraphqlPluginInWorkspaceRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		DegraphqlPlugin: *degraphqlPlugin,
 	}
 

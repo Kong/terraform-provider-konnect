@@ -36,6 +36,7 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
     "..."
   ]
   updated_at = 8
+  workspace  = "team-payments"
 }
 ```
 
@@ -63,6 +64,7 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
 - `strip_path` (Boolean) When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL. Default: true
 - `tags` (List of String) An optional set of strings associated with the Route for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--service"></a>
 ### Nested Schema for `service`
@@ -83,6 +85,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -90,5 +93,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_route_expression.my_konnect_gateway_route_expression '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"}'
+terraform import konnect_gateway_route_expression.my_konnect_gateway_route_expression '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7", "workspace": "team-payments"}'
 ```

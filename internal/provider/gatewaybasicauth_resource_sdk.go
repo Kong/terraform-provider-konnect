@@ -30,7 +30,7 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(ctx context.C
 	return diags
 }
 
-func (r *GatewayBasicAuthResourceModel) ToOperationsCreateBasicAuthWithConsumerRequest(ctx context.Context) (*operations.CreateBasicAuthWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayBasicAuthResourceModel) ToOperationsCreateBasicAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.CreateBasicAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -38,6 +38,9 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsCreateBasicAuthWithConsumerR
 
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	basicAuthWithoutParents, basicAuthWithoutParentsDiags := r.ToSharedBasicAuthWithoutParents(ctx)
 	diags.Append(basicAuthWithoutParentsDiags...)
@@ -46,16 +49,17 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsCreateBasicAuthWithConsumerR
 		return nil, diags
 	}
 
-	out := operations.CreateBasicAuthWithConsumerRequest{
+	out := operations.CreateBasicAuthWithConsumerInWorkspaceRequest{
 		ControlPlaneID:          controlPlaneID,
 		ConsumerID:              consumerID,
+		Workspace:               workspace,
 		BasicAuthWithoutParents: *basicAuthWithoutParents,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayBasicAuthResourceModel) ToOperationsDeleteBasicAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteBasicAuthWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayBasicAuthResourceModel) ToOperationsDeleteBasicAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.DeleteBasicAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -67,16 +71,20 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsDeleteBasicAuthWithConsumerR
 	var basicAuthID string
 	basicAuthID = r.ID.ValueString()
 
-	out := operations.DeleteBasicAuthWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteBasicAuthWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		BasicAuthID:    basicAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayBasicAuthResourceModel) ToOperationsGetBasicAuthWithConsumerRequest(ctx context.Context) (*operations.GetBasicAuthWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayBasicAuthResourceModel) ToOperationsGetBasicAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.GetBasicAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -88,10 +96,14 @@ func (r *GatewayBasicAuthResourceModel) ToOperationsGetBasicAuthWithConsumerRequ
 	var basicAuthID string
 	basicAuthID = r.ID.ValueString()
 
-	out := operations.GetBasicAuthWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetBasicAuthWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		BasicAuthID:    basicAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

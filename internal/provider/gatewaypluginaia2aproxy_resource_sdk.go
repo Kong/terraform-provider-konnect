@@ -102,11 +102,14 @@ func (r *GatewayPluginAiA2aProxyResourceModel) RefreshFromSharedAiA2aProxyPlugin
 	return diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPluginRequest(ctx context.Context) (*operations.CreateAia2aproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiA2aProxyPlugin, aiA2aProxyPluginDiags := r.ToSharedAiA2aProxyPlugin(ctx)
 	diags.Append(aiA2aProxyPluginDiags...)
@@ -115,15 +118,16 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.CreateAia2aproxyPluginRequest{
+	out := operations.CreateAia2aproxyPluginInWorkspaceRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiA2aProxyPlugin: *aiA2aProxyPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPluginRequest(ctx context.Context) (*operations.DeleteAia2aproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -132,15 +136,19 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAia2aproxyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAia2aproxyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginRequest(ctx context.Context) (*operations.GetAia2aproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -149,15 +157,19 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAia2aproxyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAia2aproxyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPluginRequest(ctx context.Context) (*operations.UpdateAia2aproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -165,6 +177,9 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPlugi
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiA2aProxyPlugin, aiA2aProxyPluginDiags := r.ToSharedAiA2aProxyPlugin(ctx)
 	diags.Append(aiA2aProxyPluginDiags...)
@@ -173,9 +188,10 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdateAia2aproxyPluginRequest{
+	out := operations.UpdateAia2aproxyPluginInWorkspaceRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiA2aProxyPlugin: *aiA2aProxyPlugin,
 	}
 

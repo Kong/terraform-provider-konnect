@@ -5,10 +5,63 @@ package provider
 import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 )
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequest(ctx context.Context) (*operations.AddConsumerToGroupRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupMemberResourceModel) RefreshFromOperationsAddConsumerToGroupInWorkspaceResponseBody(ctx context.Context, resp *operations.AddConsumerToGroupInWorkspaceResponseBody) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ConsumerGroup{}
+			r.ConsumerGroup.CreatedAt = types.Int64PointerValue(resp.ConsumerGroup.CreatedAt)
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+			r.ConsumerGroup.Name = types.StringValue(resp.ConsumerGroup.Name)
+			if resp.ConsumerGroup.Tags != nil {
+				r.ConsumerGroup.Tags = make([]types.String, 0, len(resp.ConsumerGroup.Tags))
+				for _, v := range resp.ConsumerGroup.Tags {
+					r.ConsumerGroup.Tags = append(r.ConsumerGroup.Tags, types.StringValue(v))
+				}
+			} else {
+				r.ConsumerGroup.Tags = nil
+			}
+			r.ConsumerGroup.UpdatedAt = types.Int64PointerValue(resp.ConsumerGroup.UpdatedAt)
+		}
+		if resp.Consumers != nil {
+			r.Consumers = []tfTypes.Consumer{}
+
+			for _, consumersItem := range resp.Consumers {
+				var consumers tfTypes.Consumer
+
+				consumers.CreatedAt = types.Int64PointerValue(consumersItem.CreatedAt)
+				consumers.CustomID = types.StringPointerValue(consumersItem.CustomID)
+				consumers.ID = types.StringPointerValue(consumersItem.ID)
+				if consumersItem.Tags != nil {
+					consumers.Tags = make([]types.String, 0, len(consumersItem.Tags))
+					for _, v := range consumersItem.Tags {
+						consumers.Tags = append(consumers.Tags, types.StringValue(v))
+					}
+				} else {
+					consumers.Tags = nil
+				}
+				consumers.UpdatedAt = types.Int64PointerValue(consumersItem.UpdatedAt)
+				consumers.Username = types.StringPointerValue(consumersItem.Username)
+
+				r.Consumers = append(r.Consumers, consumers)
+			}
+		} else {
+			r.Consumers = nil
+		}
+	}
+
+	return diags
+}
+
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupInWorkspaceRequest(ctx context.Context) (*operations.AddConsumerToGroupInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerGroupID string
@@ -17,23 +70,27 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	requestBody, requestBodyDiags := r.ToOperationsAddConsumerToGroupRequestBody(ctx)
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	requestBody, requestBodyDiags := r.ToOperationsAddConsumerToGroupInWorkspaceRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.AddConsumerToGroupRequest{
+	out := operations.AddConsumerToGroupInWorkspaceRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		RequestBody:     requestBody,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequestBody(ctx context.Context) (*operations.AddConsumerToGroupRequestBody, diag.Diagnostics) {
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupInWorkspaceRequestBody(ctx context.Context) (*operations.AddConsumerToGroupInWorkspaceRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	consumerID := new(string)
@@ -42,14 +99,14 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	} else {
 		consumerID = nil
 	}
-	out := operations.AddConsumerToGroupRequestBody{
+	out := operations.AddConsumerToGroupInWorkspaceRequestBody{
 		ConsumerID: consumerID,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFromGroupRequest(ctx context.Context) (*operations.RemoveConsumerFromGroupRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFromGroupInWorkspaceRequest(ctx context.Context) (*operations.RemoveConsumerFromGroupInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerGroupID string
@@ -61,10 +118,14 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFrom
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.RemoveConsumerFromGroupRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.RemoveConsumerFromGroupInWorkspaceRequest{
 		ConsumerGroupID: consumerGroupID,
 		ConsumerID:      consumerID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 	}
 
 	return &out, diags

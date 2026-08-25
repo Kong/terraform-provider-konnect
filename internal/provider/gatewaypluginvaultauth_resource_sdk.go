@@ -105,11 +105,14 @@ func (r *GatewayPluginVaultAuthResourceModel) RefreshFromSharedVaultAuthPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginRequest(ctx context.Context) (*operations.CreateVaultauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	vaultAuthPlugin, vaultAuthPluginDiags := r.ToSharedVaultAuthPlugin(ctx)
 	diags.Append(vaultAuthPluginDiags...)
@@ -118,15 +121,16 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginR
 		return nil, diags
 	}
 
-	out := operations.CreateVaultauthPluginRequest{
+	out := operations.CreateVaultauthPluginInWorkspaceRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		VaultAuthPlugin: *vaultAuthPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginRequest(ctx context.Context) (*operations.DeleteVaultauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -135,15 +139,19 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteVaultauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteVaultauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginRequest(ctx context.Context) (*operations.GetVaultauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -152,15 +160,19 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetVaultauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetVaultauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginRequest(ctx context.Context) (*operations.UpdateVaultauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -168,6 +180,9 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginR
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	vaultAuthPlugin, vaultAuthPluginDiags := r.ToSharedVaultAuthPlugin(ctx)
 	diags.Append(vaultAuthPluginDiags...)
@@ -176,9 +191,10 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginR
 		return nil, diags
 	}
 
-	out := operations.UpdateVaultauthPluginRequest{
+	out := operations.UpdateVaultauthPluginInWorkspaceRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		VaultAuthPlugin: *vaultAuthPlugin,
 	}
 

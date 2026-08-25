@@ -27,6 +27,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -34,7 +35,7 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginKafkaUpstreamResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginKafkaUpstreamResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginKafkaUpstreamResource{}
 
 func NewGatewayPluginKafkaUpstreamResource() resource.Resource {
 	return &GatewayPluginKafkaUpstreamResource{}
@@ -63,6 +64,7 @@ type GatewayPluginKafkaUpstreamResourceModel struct {
 	Service        *tfTypes.Set                       `tfsdk:"service"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Workspace      types.String                       `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginKafkaUpstreamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -72,6 +74,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Metadata(ctx context.Context, req r
 func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginKafkaUpstream Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -371,7 +374,9 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 													`username`: types.StringType,
 												},
 											},
-											`mode`: types.StringType,
+											`identity_pool_id`:   types.StringType,
+											`logical_cluster_id`: types.StringType,
+											`mode`:               types.StringType,
 											`oauth2`: types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`audience`: types.ListType{
@@ -438,7 +443,9 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 													`username`: types.StringType,
 												},
 											},
-											"mode": types.StringType,
+											"identity_pool_id":   types.StringType,
+											"logical_cluster_id": types.StringType,
+											"mode":               types.StringType,
 											"oauth2": types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`audience`: types.ListType{
@@ -503,6 +510,14 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 														},
 													},
 												},
+											},
+											"identity_pool_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `The Confluent Cloud OAuth identity pool ID, sent as the ` + "`" + `Confluent-Identity-Pool-Id` + "`" + ` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.`,
+											},
+											"logical_cluster_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `The Confluent Cloud Schema Registry cluster ID, sent as the ` + "`" + `target-sr-cluster` + "`" + ` request header. Confluent Cloud requires this when ` + "`" + `mode` + "`" + ` is 'oauth2'.`,
 											},
 											"mode": schema.StringAttribute{
 												Computed:    true,
@@ -933,6 +948,15 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -975,13 +999,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKafkaupstreamPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKafkaupstreamPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateKafkaupstreamPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateKafkaupstreamPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1035,13 +1059,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKafkaupstreamPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKafkaupstreamPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetKafkaupstreamPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetKafkaupstreamPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1089,13 +1113,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateKafkaupstreamPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateKafkaupstreamPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateKafkaupstreamPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateKafkaupstreamPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1149,13 +1173,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKafkaupstreamPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKafkaupstreamPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteKafkaupstreamPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteKafkaupstreamPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1183,10 +1207,11 @@ func (r *GatewayPluginKafkaUpstreamResource) ImportState(ctx context.Context, re
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -1200,4 +1225,15 @@ func (r *GatewayPluginKafkaUpstreamResource) ImportState(ctx context.Context, re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginKafkaUpstreamResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginkafkaupstreamStateUpgraderV0},
+	}
 }

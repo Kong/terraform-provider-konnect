@@ -37,7 +37,7 @@ func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(ctx context.Con
 	return diags
 }
 
-func (r *GatewayMTLSAuthResourceModel) ToOperationsCreateMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.CreateMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayMTLSAuthResourceModel) ToOperationsCreateMtlsAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.CreateMtlsAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -45,6 +45,9 @@ func (r *GatewayMTLSAuthResourceModel) ToOperationsCreateMtlsAuthWithConsumerReq
 
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	mtlsAuthWithoutParents, mtlsAuthWithoutParentsDiags := r.ToSharedMTLSAuthWithoutParents(ctx)
 	diags.Append(mtlsAuthWithoutParentsDiags...)
@@ -53,16 +56,17 @@ func (r *GatewayMTLSAuthResourceModel) ToOperationsCreateMtlsAuthWithConsumerReq
 		return nil, diags
 	}
 
-	out := operations.CreateMtlsAuthWithConsumerRequest{
+	out := operations.CreateMtlsAuthWithConsumerInWorkspaceRequest{
 		ControlPlaneID:         controlPlaneID,
 		ConsumerID:             consumerID,
+		Workspace:              workspace,
 		MTLSAuthWithoutParents: *mtlsAuthWithoutParents,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayMTLSAuthResourceModel) ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayMTLSAuthResourceModel) ToOperationsDeleteMtlsAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.DeleteMtlsAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -74,16 +78,20 @@ func (r *GatewayMTLSAuthResourceModel) ToOperationsDeleteMtlsAuthWithConsumerReq
 	var mtlsAuthID string
 	mtlsAuthID = r.ID.ValueString()
 
-	out := operations.DeleteMtlsAuthWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteMtlsAuthWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		MTLSAuthID:     mtlsAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayMTLSAuthResourceModel) ToOperationsGetMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.GetMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayMTLSAuthResourceModel) ToOperationsGetMtlsAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.GetMtlsAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -95,10 +103,14 @@ func (r *GatewayMTLSAuthResourceModel) ToOperationsGetMtlsAuthWithConsumerReques
 	var mtlsAuthID string
 	mtlsAuthID = r.ID.ValueString()
 
-	out := operations.GetMtlsAuthWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetMtlsAuthWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		MTLSAuthID:     mtlsAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

@@ -103,11 +103,14 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) RefreshFromSharedRo
 	return diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.CreateRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	routeTransformerAdvancedPlugin, routeTransformerAdvancedPluginDiags := r.ToSharedRouteTransformerAdvancedPlugin(ctx)
 	diags.Append(routeTransformerAdvancedPluginDiags...)
@@ -116,15 +119,16 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateR
 		return nil, diags
 	}
 
-	out := operations.CreateRoutetransformeradvancedPluginRequest{
+	out := operations.CreateRoutetransformeradvancedPluginInWorkspaceRequest{
 		ControlPlaneID:                 controlPlaneID,
+		Workspace:                      workspace,
 		RouteTransformerAdvancedPlugin: *routeTransformerAdvancedPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.DeleteRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -133,15 +137,19 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRoutetransformeradvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRoutetransformeradvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.GetRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -150,15 +158,19 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRout
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRoutetransformeradvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRoutetransformeradvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.UpdateRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -166,6 +178,9 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateR
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	routeTransformerAdvancedPlugin, routeTransformerAdvancedPluginDiags := r.ToSharedRouteTransformerAdvancedPlugin(ctx)
 	diags.Append(routeTransformerAdvancedPluginDiags...)
@@ -174,9 +189,10 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateR
 		return nil, diags
 	}
 
-	out := operations.UpdateRoutetransformeradvancedPluginRequest{
+	out := operations.UpdateRoutetransformeradvancedPluginInWorkspaceRequest{
 		PluginID:                       pluginID,
 		ControlPlaneID:                 controlPlaneID,
+		Workspace:                      workspace,
 		RouteTransformerAdvancedPlugin: *routeTransformerAdvancedPlugin,
 	}
 

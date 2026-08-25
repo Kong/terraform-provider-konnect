@@ -37,7 +37,7 @@ func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(ctx context.Context, resp
 	return diags
 }
 
-func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerRequest(ctx context.Context) (*operations.CreateJwtWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.CreateJwtWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -45,6 +45,9 @@ func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerRequest(ctx c
 
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	jwtWithoutParents, jwtWithoutParentsDiags := r.ToSharedJWTWithoutParents(ctx)
 	diags.Append(jwtWithoutParentsDiags...)
@@ -53,16 +56,17 @@ func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerRequest(ctx c
 		return nil, diags
 	}
 
-	out := operations.CreateJwtWithConsumerRequest{
+	out := operations.CreateJwtWithConsumerInWorkspaceRequest{
 		ControlPlaneID:    controlPlaneID,
 		ConsumerID:        consumerID,
+		Workspace:         workspace,
 		JWTWithoutParents: jwtWithoutParents,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayJWTResourceModel) ToOperationsDeleteJwtWithConsumerRequest(ctx context.Context) (*operations.DeleteJwtWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayJWTResourceModel) ToOperationsDeleteJwtWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.DeleteJwtWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -74,16 +78,20 @@ func (r *GatewayJWTResourceModel) ToOperationsDeleteJwtWithConsumerRequest(ctx c
 	var jwtID string
 	jwtID = r.ID.ValueString()
 
-	out := operations.DeleteJwtWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteJwtWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		JWTID:          jwtID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayJWTResourceModel) ToOperationsGetJwtWithConsumerRequest(ctx context.Context) (*operations.GetJwtWithConsumerRequest, diag.Diagnostics) {
+func (r *GatewayJWTResourceModel) ToOperationsGetJwtWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.GetJwtWithConsumerInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -95,10 +103,14 @@ func (r *GatewayJWTResourceModel) ToOperationsGetJwtWithConsumerRequest(ctx cont
 	var jwtID string
 	jwtID = r.ID.ValueString()
 
-	out := operations.GetJwtWithConsumerRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetJwtWithConsumerInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		JWTID:          jwtID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

@@ -104,11 +104,14 @@ func (r *GatewayPluginRedirectResourceModel) RefreshFromSharedRedirectPlugin(ctx
 	return diags
 }
 
-func (r *GatewayPluginRedirectResourceModel) ToOperationsCreateRedirectPluginRequest(ctx context.Context) (*operations.CreateRedirectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRedirectResourceModel) ToOperationsCreateRedirectPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRedirectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	redirectPlugin, redirectPluginDiags := r.ToSharedRedirectPlugin(ctx)
 	diags.Append(redirectPluginDiags...)
@@ -117,15 +120,16 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsCreateRedirectPluginReq
 		return nil, diags
 	}
 
-	out := operations.CreateRedirectPluginRequest{
+	out := operations.CreateRedirectPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RedirectPlugin: *redirectPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRedirectResourceModel) ToOperationsDeleteRedirectPluginRequest(ctx context.Context) (*operations.DeleteRedirectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRedirectResourceModel) ToOperationsDeleteRedirectPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRedirectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -134,15 +138,19 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsDeleteRedirectPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRedirectPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRedirectPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRedirectResourceModel) ToOperationsGetRedirectPluginRequest(ctx context.Context) (*operations.GetRedirectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRedirectResourceModel) ToOperationsGetRedirectPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRedirectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -151,15 +159,19 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsGetRedirectPluginReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRedirectPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRedirectPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRedirectResourceModel) ToOperationsUpdateRedirectPluginRequest(ctx context.Context) (*operations.UpdateRedirectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRedirectResourceModel) ToOperationsUpdateRedirectPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRedirectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -167,6 +179,9 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsUpdateRedirectPluginReq
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	redirectPlugin, redirectPluginDiags := r.ToSharedRedirectPlugin(ctx)
 	diags.Append(redirectPluginDiags...)
@@ -175,9 +190,10 @@ func (r *GatewayPluginRedirectResourceModel) ToOperationsUpdateRedirectPluginReq
 		return nil, diags
 	}
 
-	out := operations.UpdateRedirectPluginRequest{
+	out := operations.UpdateRedirectPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RedirectPlugin: *redirectPlugin,
 	}
 

@@ -27,6 +27,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -34,7 +35,7 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginConfluentResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginConfluentResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginConfluentResource{}
 
 func NewGatewayPluginConfluentResource() resource.Resource {
 	return &GatewayPluginConfluentResource{}
@@ -63,6 +64,7 @@ type GatewayPluginConfluentResourceModel struct {
 	Service        *tfTypes.Set                   `tfsdk:"service"`
 	Tags           []types.String                 `tfsdk:"tags"`
 	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
+	Workspace      types.String                   `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginConfluentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -72,6 +74,7 @@ func (r *GatewayPluginConfluentResource) Metadata(ctx context.Context, req resou
 func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginConfluent Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -356,7 +359,9 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 													`username`: types.StringType,
 												},
 											},
-											`mode`: types.StringType,
+											`identity_pool_id`:   types.StringType,
+											`logical_cluster_id`: types.StringType,
+											`mode`:               types.StringType,
 											`oauth2`: types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`audience`: types.ListType{
@@ -423,7 +428,9 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 													`username`: types.StringType,
 												},
 											},
-											"mode": types.StringType,
+											"identity_pool_id":   types.StringType,
+											"logical_cluster_id": types.StringType,
+											"mode":               types.StringType,
 											"oauth2": types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`audience`: types.ListType{
@@ -488,6 +495,14 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 														},
 													},
 												},
+											},
+											"identity_pool_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `The Confluent Cloud OAuth identity pool ID, sent as the ` + "`" + `Confluent-Identity-Pool-Id` + "`" + ` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.`,
+											},
+											"logical_cluster_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `The Confluent Cloud Schema Registry cluster ID, sent as the ` + "`" + `target-sr-cluster` + "`" + ` request header. Confluent Cloud requires this when ` + "`" + `mode` + "`" + ` is 'oauth2'.`,
 											},
 											"mode": schema.StringAttribute{
 												Computed:    true,
@@ -910,6 +925,15 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -952,13 +976,13 @@ func (r *GatewayPluginConfluentResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateConfluentPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateConfluentPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateConfluentPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateConfluentPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1012,13 +1036,13 @@ func (r *GatewayPluginConfluentResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetConfluentPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetConfluentPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetConfluentPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetConfluentPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1066,13 +1090,13 @@ func (r *GatewayPluginConfluentResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateConfluentPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateConfluentPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateConfluentPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateConfluentPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1126,13 +1150,13 @@ func (r *GatewayPluginConfluentResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteConfluentPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteConfluentPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteConfluentPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteConfluentPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1160,10 +1184,11 @@ func (r *GatewayPluginConfluentResource) ImportState(ctx context.Context, req re
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -1177,4 +1202,15 @@ func (r *GatewayPluginConfluentResource) ImportState(ctx context.Context, req re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginConfluentResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginconfluentStateUpgraderV0},
+	}
 }

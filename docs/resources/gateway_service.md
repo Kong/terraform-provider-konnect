@@ -46,6 +46,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
   tls_verify       = true
   tls_verify_depth = 49
   updated_at       = 8
+  workspace        = "team-payments"
   write_timeout    = 60000
 }
 ```
@@ -77,6 +78,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 - `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 - `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000
 
 <a id="nestedatt--client_certificate"></a>
@@ -107,6 +109,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "7fca84d6-7d37-4a74-a7b0-93e576089a41"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -114,5 +117,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_service.my_konnect_gateway_service '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}'
+terraform import konnect_gateway_service.my_konnect_gateway_service '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41", "workspace": "team-payments"}'
 ```

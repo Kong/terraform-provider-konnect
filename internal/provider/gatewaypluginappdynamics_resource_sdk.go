@@ -103,11 +103,14 @@ func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlug
 	return diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPluginRequest(ctx context.Context) (*operations.CreateAppdynamicsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	appDynamicsPlugin, appDynamicsPluginDiags := r.ToSharedAppDynamicsPlugin(ctx)
 	diags.Append(appDynamicsPluginDiags...)
@@ -116,15 +119,16 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPlu
 		return nil, diags
 	}
 
-	out := operations.CreateAppdynamicsPluginRequest{
+	out := operations.CreateAppdynamicsPluginInWorkspaceRequest{
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AppDynamicsPlugin: *appDynamicsPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPluginRequest(ctx context.Context) (*operations.DeleteAppdynamicsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -133,15 +137,19 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAppdynamicsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAppdynamicsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPluginRequest(ctx context.Context) (*operations.GetAppdynamicsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -150,15 +158,19 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPlugin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAppdynamicsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAppdynamicsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPluginRequest(ctx context.Context) (*operations.UpdateAppdynamicsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -166,6 +178,9 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPlu
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	appDynamicsPlugin, appDynamicsPluginDiags := r.ToSharedAppDynamicsPlugin(ctx)
 	diags.Append(appDynamicsPluginDiags...)
@@ -174,9 +189,10 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPlu
 		return nil, diags
 	}
 
-	out := operations.UpdateAppdynamicsPluginRequest{
+	out := operations.UpdateAppdynamicsPluginInWorkspaceRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AppDynamicsPlugin: *appDynamicsPlugin,
 	}
 

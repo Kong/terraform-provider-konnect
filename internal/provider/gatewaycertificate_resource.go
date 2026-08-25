@@ -11,15 +11,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayCertificateResource{}
-var _ resource.ResourceWithImportState = &GatewayCertificateResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayCertificateResource{}
 
 func NewGatewayCertificateResource() resource.Resource {
 	return &GatewayCertificateResource{}
@@ -47,6 +49,7 @@ type GatewayCertificateResourceModel struct {
 	UpdatedAt      types.Int64             `tfsdk:"updated_at"`
 	Vault          types.String            `tfsdk:"vault"`
 	VaultAlt       types.String            `tfsdk:"vault_alt"`
+	Workspace      types.String            `tfsdk:"workspace"`
 }
 
 func (r *GatewayCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,6 +59,7 @@ func (r *GatewayCertificateResource) Metadata(ctx context.Context, req resource.
 func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayCertificate Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
 				Optional:    true,
@@ -123,6 +127,15 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 				Optional:    true,
 				Description: `Shorthand that expands into cert_alt and key_alt; when both vault_alt and cert_alt/key_alt are provided, the vault_alt expansion takes precedence.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -165,13 +178,13 @@ func (r *GatewayCertificateResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateCertificateRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateCertificateInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Certificates.CreateCertificate(ctx, *request)
+	res, err := r.client.Certificates.CreateCertificateInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -225,13 +238,13 @@ func (r *GatewayCertificateResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetCertificateRequest(ctx)
+	request, requestDiags := data.ToOperationsGetCertificateInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Certificates.GetCertificate(ctx, *request)
+	res, err := r.client.Certificates.GetCertificateInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -279,13 +292,13 @@ func (r *GatewayCertificateResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertCertificateRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertCertificateInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Certificates.UpsertCertificate(ctx, *request)
+	res, err := r.client.Certificates.UpsertCertificateInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -339,13 +352,13 @@ func (r *GatewayCertificateResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteCertificateRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteCertificateInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Certificates.DeleteCertificate(ctx, *request)
+	res, err := r.client.Certificates.DeleteCertificateInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -373,10 +386,11 @@ func (r *GatewayCertificateResource) ImportState(ctx context.Context, req resour
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "ddf3cdaa-3329-4961-822a-ce6dbd38eff7"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "ddf3cdaa-3329-4961-822a-ce6dbd38eff7", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -390,4 +404,15 @@ func (r *GatewayCertificateResource) ImportState(ctx context.Context, req resour
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayCertificateResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaycertificateStateUpgraderV0},
+	}
 }

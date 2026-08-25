@@ -146,6 +146,8 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
 					}
+					r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID)
+					r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID)
 					if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
 						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
 					} else {
@@ -317,11 +319,14 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginConfluentResourceModel) ToOperationsCreateConfluentPluginRequest(ctx context.Context) (*operations.CreateConfluentPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentResourceModel) ToOperationsCreateConfluentPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateConfluentPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
 	diags.Append(confluentPluginDiags...)
@@ -330,15 +335,16 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsCreateConfluentPluginR
 		return nil, diags
 	}
 
-	out := operations.CreateConfluentPluginRequest{
+	out := operations.CreateConfluentPluginInWorkspaceRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		ConfluentPlugin: *confluentPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginConfluentResourceModel) ToOperationsDeleteConfluentPluginRequest(ctx context.Context) (*operations.DeleteConfluentPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentResourceModel) ToOperationsDeleteConfluentPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteConfluentPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -347,15 +353,19 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsDeleteConfluentPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteConfluentPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteConfluentPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginConfluentResourceModel) ToOperationsGetConfluentPluginRequest(ctx context.Context) (*operations.GetConfluentPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentResourceModel) ToOperationsGetConfluentPluginInWorkspaceRequest(ctx context.Context) (*operations.GetConfluentPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -364,15 +374,19 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsGetConfluentPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetConfluentPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetConfluentPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginRequest(ctx context.Context) (*operations.UpdateConfluentPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateConfluentPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -380,6 +394,9 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginR
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
 	diags.Append(confluentPluginDiags...)
@@ -388,9 +405,10 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginR
 		return nil, diags
 	}
 
-	out := operations.UpdateConfluentPluginRequest{
+	out := operations.UpdateConfluentPluginInWorkspaceRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		ConfluentPlugin: *confluentPlugin,
 	}
 
@@ -779,6 +797,18 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 						Username: username,
 					}
 				}
+				identityPoolID := new(string)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.IsNull() {
+					*identityPoolID = r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.ValueString()
+				} else {
+					identityPoolID = nil
+				}
+				logicalClusterID := new(string)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.IsNull() {
+					*logicalClusterID = r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.ValueString()
+				} else {
+					logicalClusterID = nil
+				}
 				mode := new(shared.ConfluentPluginMode)
 				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
 					*mode = shared.ConfluentPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
@@ -944,10 +974,12 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 					}
 				}
 				authentication = &shared.ConfluentPluginAuthentication{
-					Basic:        basic,
-					Mode:         mode,
-					Oauth2:       oauth2,
-					Oauth2Client: oauth2Client,
+					Basic:            basic,
+					IdentityPoolID:   identityPoolID,
+					LogicalClusterID: logicalClusterID,
+					Mode:             mode,
+					Oauth2:           oauth2,
+					Oauth2Client:     oauth2Client,
 				}
 			}
 			var keySchema *shared.KeySchema

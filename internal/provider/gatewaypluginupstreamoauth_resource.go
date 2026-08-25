@@ -27,13 +27,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginUpstreamOauthResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginUpstreamOauthResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginUpstreamOauthResource{}
 
 func NewGatewayPluginUpstreamOauthResource() resource.Resource {
 	return &GatewayPluginUpstreamOauthResource{}
@@ -63,6 +64,7 @@ type GatewayPluginUpstreamOauthResourceModel struct {
 	Service        *tfTypes.Set                       `tfsdk:"service"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Workspace      types.String                       `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginUpstreamOauthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -72,6 +74,7 @@ func (r *GatewayPluginUpstreamOauthResource) Metadata(ctx context.Context, req r
 func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginUpstreamOauth Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -726,6 +729,15 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -768,13 +780,13 @@ func (r *GatewayPluginUpstreamOauthResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateUpstreamoauthPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateUpstreamoauthPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateUpstreamoauthPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateUpstreamoauthPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -828,13 +840,13 @@ func (r *GatewayPluginUpstreamOauthResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetUpstreamoauthPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetUpstreamoauthPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetUpstreamoauthPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetUpstreamoauthPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -882,13 +894,13 @@ func (r *GatewayPluginUpstreamOauthResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateUpstreamoauthPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateUpstreamoauthPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateUpstreamoauthPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateUpstreamoauthPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -942,13 +954,13 @@ func (r *GatewayPluginUpstreamOauthResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteUpstreamoauthPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteUpstreamoauthPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteUpstreamoauthPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteUpstreamoauthPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -976,10 +988,11 @@ func (r *GatewayPluginUpstreamOauthResource) ImportState(ctx context.Context, re
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -993,4 +1006,15 @@ func (r *GatewayPluginUpstreamOauthResource) ImportState(ctx context.Context, re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginUpstreamOauthResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginupstreamoauthStateUpgraderV0},
+	}
 }

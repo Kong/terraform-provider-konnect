@@ -100,11 +100,14 @@ func (r *GatewayPluginGrpcGatewayResourceModel) RefreshFromSharedGrpcGatewayPlug
 	return diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPluginRequest(ctx context.Context) (*operations.CreateGrpcgatewayPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	grpcGatewayPlugin, grpcGatewayPluginDiags := r.ToSharedGrpcGatewayPlugin(ctx)
 	diags.Append(grpcGatewayPluginDiags...)
@@ -113,15 +116,16 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPlu
 		return nil, diags
 	}
 
-	out := operations.CreateGrpcgatewayPluginRequest{
+	out := operations.CreateGrpcgatewayPluginInWorkspaceRequest{
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		GrpcGatewayPlugin: *grpcGatewayPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPluginRequest(ctx context.Context) (*operations.DeleteGrpcgatewayPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -130,15 +134,19 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteGrpcgatewayPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteGrpcgatewayPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPluginRequest(ctx context.Context) (*operations.GetGrpcgatewayPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.GetGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -147,15 +155,19 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPlugin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetGrpcgatewayPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetGrpcgatewayPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPluginRequest(ctx context.Context) (*operations.UpdateGrpcgatewayPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -163,6 +175,9 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPlu
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	grpcGatewayPlugin, grpcGatewayPluginDiags := r.ToSharedGrpcGatewayPlugin(ctx)
 	diags.Append(grpcGatewayPluginDiags...)
@@ -171,9 +186,10 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPlu
 		return nil, diags
 	}
 
-	out := operations.UpdateGrpcgatewayPluginRequest{
+	out := operations.UpdateGrpcgatewayPluginInWorkspaceRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		GrpcGatewayPlugin: *grpcGatewayPlugin,
 	}
 

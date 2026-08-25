@@ -151,11 +151,14 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginRequest(ctx context.Context) (*operations.CreateSessionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateSessionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
 	diags.Append(sessionPluginDiags...)
@@ -164,15 +167,16 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateSessionPluginRequest{
+	out := operations.CreateSessionPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SessionPlugin:  *sessionPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSessionResourceModel) ToOperationsDeleteSessionPluginRequest(ctx context.Context) (*operations.DeleteSessionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSessionResourceModel) ToOperationsDeleteSessionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteSessionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -181,15 +185,19 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsDeleteSessionPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteSessionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteSessionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSessionResourceModel) ToOperationsGetSessionPluginRequest(ctx context.Context) (*operations.GetSessionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSessionResourceModel) ToOperationsGetSessionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetSessionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -198,15 +206,19 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsGetSessionPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetSessionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetSessionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginRequest(ctx context.Context) (*operations.UpdateSessionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateSessionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -214,6 +226,9 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
 	diags.Append(sessionPluginDiags...)
@@ -222,9 +237,10 @@ func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateSessionPluginRequest{
+	out := operations.UpdateSessionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SessionPlugin:  *sessionPlugin,
 	}
 

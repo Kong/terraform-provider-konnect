@@ -645,6 +645,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     "..."
   ]
   updated_at = 2
+  workspace  = "team-payments"
 }
 ```
 
@@ -670,6 +671,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -766,7 +768,7 @@ Optional:
 - `https_proxy_authorization` (String) The HTTPS proxy authorization.
 - `id_token_param_name` (String) The name of the parameter used to pass the id token.
 - `id_token_param_type` (List of String) Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body. Default: ["body","header","query"]
-- `ignore_signature` (List of String) Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication. Default: []
+- `ignore_signature` (List of String) Skip the token signature verification on certain grants. This is insecure and logs a warning; use it only for providers that publish no verification key. Grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication. Default: []
 - `introspect_jwt_tokens` (Boolean) Specifies whether to introspect the JWT access tokens (can be used to check for revocations). Default: false
 - `introspection_accept` (String) The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document). possible known values include one of ["application/json", "application/jwt", "application/token-introspection+jwt"]; Default: "application/json"
 - `introspection_check_active` (Boolean) Check that the introspection response has an `active` claim with a value of `true`. Default: true
@@ -1257,6 +1259,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -1264,5 +1267,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_plugin_openid_connect.my_konnect_gateway_plugin_openid_connect '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'
+terraform import konnect_gateway_plugin_openid_connect.my_konnect_gateway_plugin_openid_connect '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}'
 ```

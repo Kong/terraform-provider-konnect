@@ -124,11 +124,14 @@ func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPl
 	return diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyPluginRequest(ctx context.Context) (*operations.CreateForwardproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	forwardProxyPlugin, forwardProxyPluginDiags := r.ToSharedForwardProxyPlugin(ctx)
 	diags.Append(forwardProxyPluginDiags...)
@@ -137,15 +140,16 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyP
 		return nil, diags
 	}
 
-	out := operations.CreateForwardproxyPluginRequest{
+	out := operations.CreateForwardproxyPluginInWorkspaceRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		ForwardProxyPlugin: *forwardProxyPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyPluginRequest(ctx context.Context) (*operations.DeleteForwardproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -154,15 +158,19 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteForwardproxyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteForwardproxyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPluginRequest(ctx context.Context) (*operations.GetForwardproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -171,15 +179,19 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetForwardproxyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetForwardproxyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyPluginRequest(ctx context.Context) (*operations.UpdateForwardproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -187,6 +199,9 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyP
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	forwardProxyPlugin, forwardProxyPluginDiags := r.ToSharedForwardProxyPlugin(ctx)
 	diags.Append(forwardProxyPluginDiags...)
@@ -195,9 +210,10 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyP
 		return nil, diags
 	}
 
-	out := operations.UpdateForwardproxyPluginRequest{
+	out := operations.UpdateForwardproxyPluginInWorkspaceRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		ForwardProxyPlugin: *forwardProxyPlugin,
 	}
 

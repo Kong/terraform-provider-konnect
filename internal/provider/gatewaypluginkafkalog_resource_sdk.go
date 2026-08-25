@@ -114,6 +114,8 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
 					}
+					r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID)
+					r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID)
 					if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
 						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
 					} else {
@@ -286,11 +288,14 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 	return diags
 }
 
-func (r *GatewayPluginKafkaLogResourceModel) ToOperationsCreateKafkalogPluginRequest(ctx context.Context) (*operations.CreateKafkalogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsCreateKafkalogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateKafkalogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	kafkaLogPlugin, kafkaLogPluginDiags := r.ToSharedKafkaLogPlugin(ctx)
 	diags.Append(kafkaLogPluginDiags...)
@@ -299,15 +304,16 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsCreateKafkalogPluginReq
 		return nil, diags
 	}
 
-	out := operations.CreateKafkalogPluginRequest{
+	out := operations.CreateKafkalogPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KafkaLogPlugin: *kafkaLogPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaLogResourceModel) ToOperationsDeleteKafkalogPluginRequest(ctx context.Context) (*operations.DeleteKafkalogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsDeleteKafkalogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteKafkalogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -316,15 +322,19 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsDeleteKafkalogPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteKafkalogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteKafkalogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaLogResourceModel) ToOperationsGetKafkalogPluginRequest(ctx context.Context) (*operations.GetKafkalogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsGetKafkalogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetKafkalogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -333,15 +343,19 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsGetKafkalogPluginReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetKafkalogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetKafkalogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginRequest(ctx context.Context) (*operations.UpdateKafkalogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateKafkalogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -349,6 +363,9 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginReq
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	kafkaLogPlugin, kafkaLogPluginDiags := r.ToSharedKafkaLogPlugin(ctx)
 	diags.Append(kafkaLogPluginDiags...)
@@ -357,9 +374,10 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginReq
 		return nil, diags
 	}
 
-	out := operations.UpdateKafkalogPluginRequest{
+	out := operations.UpdateKafkalogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KafkaLogPlugin: *kafkaLogPlugin,
 	}
 
@@ -681,6 +699,18 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 						Username: username,
 					}
 				}
+				identityPoolID := new(string)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.IsNull() {
+					*identityPoolID = r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.ValueString()
+				} else {
+					identityPoolID = nil
+				}
+				logicalClusterID := new(string)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.IsNull() {
+					*logicalClusterID = r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.ValueString()
+				} else {
+					logicalClusterID = nil
+				}
 				mode := new(shared.KafkaLogPluginMode)
 				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
 					*mode = shared.KafkaLogPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
@@ -846,10 +876,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 					}
 				}
 				authentication1 = &shared.KafkaLogPluginConfigAuthentication{
-					Basic:        basic,
-					Mode:         mode,
-					Oauth2:       oauth2,
-					Oauth2Client: oauth2Client,
+					Basic:            basic,
+					IdentityPoolID:   identityPoolID,
+					LogicalClusterID: logicalClusterID,
+					Mode:             mode,
+					Oauth2:           oauth2,
+					Oauth2Client:     oauth2Client,
 				}
 			}
 			var keySchema *shared.KafkaLogPluginKeySchema

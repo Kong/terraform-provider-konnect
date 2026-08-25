@@ -133,11 +133,14 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Conte
 	return diags
 }
 
-func (r *GatewayRouteResourceModel) ToOperationsCreateRouteRequest(ctx context.Context) (*operations.CreateRouteRequest, diag.Diagnostics) {
+func (r *GatewayRouteResourceModel) ToOperationsCreateRouteInWorkspaceRequest(ctx context.Context) (*operations.CreateRouteInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
 	diags.Append(routeJSONDiags...)
@@ -146,15 +149,16 @@ func (r *GatewayRouteResourceModel) ToOperationsCreateRouteRequest(ctx context.C
 		return nil, diags
 	}
 
-	out := operations.CreateRouteRequest{
+	out := operations.CreateRouteInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RouteJSON:      *routeJSON,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayRouteResourceModel) ToOperationsDeleteRouteRequest(ctx context.Context) (*operations.DeleteRouteRequest, diag.Diagnostics) {
+func (r *GatewayRouteResourceModel) ToOperationsDeleteRouteInWorkspaceRequest(ctx context.Context) (*operations.DeleteRouteInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -163,15 +167,19 @@ func (r *GatewayRouteResourceModel) ToOperationsDeleteRouteRequest(ctx context.C
 	var routeID string
 	routeID = r.ID.ValueString()
 
-	out := operations.DeleteRouteRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRouteInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		RouteID:        routeID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayRouteResourceModel) ToOperationsGetRouteRequest(ctx context.Context) (*operations.GetRouteRequest, diag.Diagnostics) {
+func (r *GatewayRouteResourceModel) ToOperationsGetRouteInWorkspaceRequest(ctx context.Context) (*operations.GetRouteInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var routeID string
@@ -180,15 +188,19 @@ func (r *GatewayRouteResourceModel) ToOperationsGetRouteRequest(ctx context.Cont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRouteRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRouteInWorkspaceRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.Context) (*operations.UpsertRouteRequest, diag.Diagnostics) {
+func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteInWorkspaceRequest(ctx context.Context) (*operations.UpsertRouteInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var routeID string
@@ -196,6 +208,9 @@ func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.C
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
 	diags.Append(routeJSONDiags...)
@@ -204,9 +219,10 @@ func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.C
 		return nil, diags
 	}
 
-	out := operations.UpsertRouteRequest{
+	out := operations.UpsertRouteInWorkspaceRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RouteJSON:      *routeJSON,
 	}
 
@@ -306,11 +322,11 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	} else {
 		preserveHost = nil
 	}
-	var protocols []shared.RouteJSONProtocols
+	var protocols []shared.Protocols
 	if r.Protocols != nil {
-		protocols = make([]shared.RouteJSONProtocols, 0, len(r.Protocols))
+		protocols = make([]shared.Protocols, 0, len(r.Protocols))
 		for _, protocolsItem := range r.Protocols {
-			protocols = append(protocols, shared.RouteJSONProtocols(protocolsItem.ValueString()))
+			protocols = append(protocols, shared.Protocols(protocolsItem.ValueString()))
 		}
 	}
 	regexPriority := new(int64)

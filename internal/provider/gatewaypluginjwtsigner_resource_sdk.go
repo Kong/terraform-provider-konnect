@@ -644,11 +644,14 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginRequest(ctx context.Context) (*operations.CreateJwtsignerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	jwtSignerPlugin, jwtSignerPluginDiags := r.ToSharedJwtSignerPlugin(ctx)
 	diags.Append(jwtSignerPluginDiags...)
@@ -657,15 +660,16 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginR
 		return nil, diags
 	}
 
-	out := operations.CreateJwtsignerPluginRequest{
+	out := operations.CreateJwtsignerPluginInWorkspaceRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		JwtSignerPlugin: *jwtSignerPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginRequest(ctx context.Context) (*operations.DeleteJwtsignerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -674,15 +678,19 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteJwtsignerPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteJwtsignerPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginRequest(ctx context.Context) (*operations.GetJwtsignerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.GetJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -691,15 +699,19 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetJwtsignerPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetJwtsignerPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginRequest(ctx context.Context) (*operations.UpdateJwtsignerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -707,6 +719,9 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginR
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	jwtSignerPlugin, jwtSignerPluginDiags := r.ToSharedJwtSignerPlugin(ctx)
 	diags.Append(jwtSignerPluginDiags...)
@@ -715,9 +730,10 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginR
 		return nil, diags
 	}
 
-	out := operations.UpdateJwtsignerPluginRequest{
+	out := operations.UpdateJwtsignerPluginInWorkspaceRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		JwtSignerPlugin: *jwtSignerPlugin,
 	}
 

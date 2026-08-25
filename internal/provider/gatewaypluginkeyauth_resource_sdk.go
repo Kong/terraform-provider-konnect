@@ -127,11 +127,14 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginKeyAuthResourceModel) ToOperationsCreateKeyauthPluginRequest(ctx context.Context) (*operations.CreateKeyauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsCreateKeyauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateKeyauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	keyAuthPlugin, keyAuthPluginDiags := r.ToSharedKeyAuthPlugin(ctx)
 	diags.Append(keyAuthPluginDiags...)
@@ -140,15 +143,16 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsCreateKeyauthPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateKeyauthPluginRequest{
+	out := operations.CreateKeyauthPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KeyAuthPlugin:  *keyAuthPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKeyAuthResourceModel) ToOperationsDeleteKeyauthPluginRequest(ctx context.Context) (*operations.DeleteKeyauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsDeleteKeyauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteKeyauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -157,15 +161,19 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsDeleteKeyauthPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteKeyauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteKeyauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKeyAuthResourceModel) ToOperationsGetKeyauthPluginRequest(ctx context.Context) (*operations.GetKeyauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsGetKeyauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetKeyauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -174,15 +182,19 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsGetKeyauthPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetKeyauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetKeyauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginRequest(ctx context.Context) (*operations.UpdateKeyauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateKeyauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -190,6 +202,9 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	keyAuthPlugin, keyAuthPluginDiags := r.ToSharedKeyAuthPlugin(ctx)
 	diags.Append(keyAuthPluginDiags...)
@@ -198,9 +213,10 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateKeyauthPluginRequest{
+	out := operations.UpdateKeyauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		KeyAuthPlugin:  *keyAuthPlugin,
 	}
 

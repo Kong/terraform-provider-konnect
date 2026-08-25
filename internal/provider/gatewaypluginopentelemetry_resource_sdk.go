@@ -207,11 +207,14 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 	return diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetryPluginRequest(ctx context.Context) (*operations.CreateOpentelemetryPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	opentelemetryPlugin, opentelemetryPluginDiags := r.ToSharedOpentelemetryPlugin(ctx)
 	diags.Append(opentelemetryPluginDiags...)
@@ -220,15 +223,16 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetr
 		return nil, diags
 	}
 
-	out := operations.CreateOpentelemetryPluginRequest{
+	out := operations.CreateOpentelemetryPluginInWorkspaceRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpentelemetryPlugin: *opentelemetryPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetryPluginRequest(ctx context.Context) (*operations.DeleteOpentelemetryPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -237,15 +241,19 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteOpentelemetryPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteOpentelemetryPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPluginRequest(ctx context.Context) (*operations.GetOpentelemetryPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.GetOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -254,15 +262,19 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetOpentelemetryPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetOpentelemetryPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetryPluginRequest(ctx context.Context) (*operations.UpdateOpentelemetryPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -270,6 +282,9 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetr
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	opentelemetryPlugin, opentelemetryPluginDiags := r.ToSharedOpentelemetryPlugin(ctx)
 	diags.Append(opentelemetryPluginDiags...)
@@ -278,9 +293,10 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetr
 		return nil, diags
 	}
 
-	out := operations.UpdateOpentelemetryPluginRequest{
+	out := operations.UpdateOpentelemetryPluginInWorkspaceRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpentelemetryPlugin: *opentelemetryPlugin,
 	}
 

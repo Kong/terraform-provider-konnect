@@ -88,7 +88,9 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
             password = "...my_password..."
             username = "...my_username..."
           }
-          mode = "none"
+          identity_pool_id   = "...my_identity_pool_id..."
+          logical_cluster_id = "...my_logical_cluster_id..."
+          mode               = "none"
           oauth2 = {
             audience = [
               "..."
@@ -185,6 +187,7 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
     "..."
   ]
   updated_at = 0
+  workspace  = "team-payments"
 }
 ```
 
@@ -211,6 +214,7 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -330,6 +334,8 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
+- `identity_pool_id` (String) The Confluent Cloud OAuth identity pool ID, sent as the `Confluent-Identity-Pool-Id` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.
+- `logical_cluster_id` (String) The Confluent Cloud Schema Registry cluster ID, sent as the `target-sr-cluster` request header. Confluent Cloud requires this when `mode` is 'oauth2'.
 - `mode` (String) Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"
 - `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2))
 - `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2_client))
@@ -480,6 +486,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -487,5 +494,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_plugin_kafka_upstream.my_konnect_gateway_plugin_kafka_upstream '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'
+terraform import konnect_gateway_plugin_kafka_upstream.my_konnect_gateway_plugin_kafka_upstream '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}'
 ```

@@ -98,11 +98,14 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHan
 	return diags
 }
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsCreateTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.CreateTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsCreateTlshandshakemodifierPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateTlshandshakemodifierPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	tlsHandshakeModifierPlugin, tlsHandshakeModifierPluginDiags := r.ToSharedTLSHandshakeModifierPlugin(ctx)
 	diags.Append(tlsHandshakeModifierPluginDiags...)
@@ -111,15 +114,16 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsCreateTlsha
 		return nil, diags
 	}
 
-	out := operations.CreateTlshandshakemodifierPluginRequest{
+	out := operations.CreateTlshandshakemodifierPluginInWorkspaceRequest{
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		TLSHandshakeModifierPlugin: *tlsHandshakeModifierPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsDeleteTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.DeleteTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsDeleteTlshandshakemodifierPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteTlshandshakemodifierPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -128,15 +132,19 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsDeleteTlsha
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteTlshandshakemodifierPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteTlshandshakemodifierPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsGetTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.GetTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsGetTlshandshakemodifierPluginInWorkspaceRequest(ctx context.Context) (*operations.GetTlshandshakemodifierPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -145,15 +153,19 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsGetTlshands
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetTlshandshakemodifierPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetTlshandshakemodifierPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsUpdateTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.UpdateTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsUpdateTlshandshakemodifierPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateTlshandshakemodifierPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -161,6 +173,9 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsUpdateTlsha
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	tlsHandshakeModifierPlugin, tlsHandshakeModifierPluginDiags := r.ToSharedTLSHandshakeModifierPlugin(ctx)
 	diags.Append(tlsHandshakeModifierPluginDiags...)
@@ -169,9 +184,10 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsUpdateTlsha
 		return nil, diags
 	}
 
-	out := operations.UpdateTlshandshakemodifierPluginRequest{
+	out := operations.UpdateTlshandshakemodifierPluginInWorkspaceRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		TLSHandshakeModifierPlugin: *tlsHandshakeModifierPlugin,
 	}
 

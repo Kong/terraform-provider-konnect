@@ -90,6 +90,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
   ]
   updated_at   = 1
   use_srv_name = false
+  workspace    = "team-payments"
 }
 ```
 
@@ -125,6 +126,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 - `tags` (List of String) An optional set of strings associated with the Upstream for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `use_srv_name` (Boolean) If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`. Default: false
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--client_certificate"></a>
 ### Nested Schema for `client_certificate`
@@ -221,6 +223,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "426d620c-7058-4ae6-aacc-f85a3204a2c5"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -228,5 +231,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_upstream.my_konnect_gateway_upstream '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}'
+terraform import konnect_gateway_upstream.my_konnect_gateway_upstream '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5", "workspace": "team-payments"}'
 ```

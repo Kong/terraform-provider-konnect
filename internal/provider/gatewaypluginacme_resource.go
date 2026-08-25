@@ -28,6 +28,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -35,7 +36,7 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginAcmeResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginAcmeResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginAcmeResource{}
 
 func NewGatewayPluginAcmeResource() resource.Resource {
 	return &GatewayPluginAcmeResource{}
@@ -61,6 +62,7 @@ type GatewayPluginAcmeResourceModel struct {
 	Protocols      []types.String              `tfsdk:"protocols"`
 	Tags           []types.String              `tfsdk:"tags"`
 	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
+	Workspace      types.String                `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginAcmeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,6 +72,7 @@ func (r *GatewayPluginAcmeResource) Metadata(ctx context.Context, req resource.M
 func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAcme Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -709,6 +712,15 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -751,13 +763,13 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAcmePluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAcmePluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAcmePlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateAcmePluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -811,13 +823,13 @@ func (r *GatewayPluginAcmeResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAcmePluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAcmePluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAcmePlugin(ctx, *request)
+	res, err := r.client.Plugins.GetAcmePluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -865,13 +877,13 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAcmePluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAcmePluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAcmePlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateAcmePluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -925,13 +937,13 @@ func (r *GatewayPluginAcmeResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAcmePluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAcmePluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAcmePlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteAcmePluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -959,10 +971,11 @@ func (r *GatewayPluginAcmeResource) ImportState(ctx context.Context, req resourc
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -976,4 +989,15 @@ func (r *GatewayPluginAcmeResource) ImportState(ctx context.Context, req resourc
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginAcmeResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginacmeStateUpgraderV0},
+	}
 }

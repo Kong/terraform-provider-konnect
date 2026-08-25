@@ -30,9 +30,9 @@ func newGraphQLCostDecorations(rootSDK *Konnect, sdkConfig config.SDKConfigurati
 	}
 }
 
-// GetGraphqlRateLimitingAdvancedCost - Get a GraphQL Cost Decoration
-// Get a GraphQL Cost Decoration using ID.
-func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCost(ctx context.Context, request operations.GetGraphqlRateLimitingAdvancedCostRequest, opts ...operations.Option) (*operations.GetGraphqlRateLimitingAdvancedCostResponse, error) {
+// GetGraphqlRateLimitingAdvancedCostInWorkspace - Get a GraphQL Cost Decoration in a workspace
+// Get a GraphQL Cost Decoration using ID in a workspace.
+func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCostInWorkspace(ctx context.Context, request operations.GetGraphqlRateLimitingAdvancedCostInWorkspaceRequest, opts ...operations.Option) (*operations.GetGraphqlRateLimitingAdvancedCostInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51,7 +51,7 @@ func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCost(ctx context.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/graphql-rate-limiting-advanced/costs/{GraphQLCostDecorationId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/graphql-rate-limiting-advanced/costs/{GraphQLCostDecorationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61,7 +61,7 @@ func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCost(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-graphql-rate-limiting-advanced-cost",
+		OperationID:      "get-graphql-rate-limiting-advanced-cost-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -189,7 +189,7 @@ func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCost(ctx context.
 		}
 	}
 
-	res := &operations.GetGraphqlRateLimitingAdvancedCostResponse{
+	res := &operations.GetGraphqlRateLimitingAdvancedCostInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

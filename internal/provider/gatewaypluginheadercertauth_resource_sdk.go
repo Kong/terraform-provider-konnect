@@ -122,11 +122,14 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAu
 	return diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercertauthPluginRequest(ctx context.Context) (*operations.CreateHeadercertauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	headerCertAuthPlugin, headerCertAuthPluginDiags := r.ToSharedHeaderCertAuthPlugin(ctx)
 	diags.Append(headerCertAuthPluginDiags...)
@@ -135,15 +138,16 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercerta
 		return nil, diags
 	}
 
-	out := operations.CreateHeadercertauthPluginRequest{
+	out := operations.CreateHeadercertauthPluginInWorkspaceRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		HeaderCertAuthPlugin: *headerCertAuthPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercertauthPluginRequest(ctx context.Context) (*operations.DeleteHeadercertauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -152,15 +156,19 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercerta
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteHeadercertauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteHeadercertauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauthPluginRequest(ctx context.Context) (*operations.GetHeadercertauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -169,15 +177,19 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauth
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetHeadercertauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetHeadercertauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercertauthPluginRequest(ctx context.Context) (*operations.UpdateHeadercertauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -185,6 +197,9 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercerta
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	headerCertAuthPlugin, headerCertAuthPluginDiags := r.ToSharedHeaderCertAuthPlugin(ctx)
 	diags.Append(headerCertAuthPluginDiags...)
@@ -193,9 +208,10 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercerta
 		return nil, diags
 	}
 
-	out := operations.UpdateHeadercertauthPluginRequest{
+	out := operations.UpdateHeadercertauthPluginInWorkspaceRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		HeaderCertAuthPlugin: *headerCertAuthPlugin,
 	}
 

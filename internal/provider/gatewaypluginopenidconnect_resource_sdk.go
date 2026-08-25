@@ -1209,11 +1209,14 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 	return diags
 }
 
-func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsCreateOpenidconnectPluginRequest(ctx context.Context) (*operations.CreateOpenidconnectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsCreateOpenidconnectPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateOpenidconnectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	openidConnectPlugin, openidConnectPluginDiags := r.ToSharedOpenidConnectPlugin(ctx)
 	diags.Append(openidConnectPluginDiags...)
@@ -1222,15 +1225,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsCreateOpenidconnec
 		return nil, diags
 	}
 
-	out := operations.CreateOpenidconnectPluginRequest{
+	out := operations.CreateOpenidconnectPluginInWorkspaceRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpenidConnectPlugin: *openidConnectPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsDeleteOpenidconnectPluginRequest(ctx context.Context) (*operations.DeleteOpenidconnectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsDeleteOpenidconnectPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteOpenidconnectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -1239,15 +1243,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsDeleteOpenidconnec
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteOpenidconnectPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteOpenidconnectPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsGetOpenidconnectPluginRequest(ctx context.Context) (*operations.GetOpenidconnectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsGetOpenidconnectPluginInWorkspaceRequest(ctx context.Context) (*operations.GetOpenidconnectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -1256,15 +1264,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsGetOpenidconnectPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetOpenidconnectPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetOpenidconnectPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsUpdateOpenidconnectPluginRequest(ctx context.Context) (*operations.UpdateOpenidconnectPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsUpdateOpenidconnectPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateOpenidconnectPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -1272,6 +1284,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsUpdateOpenidconnec
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	openidConnectPlugin, openidConnectPluginDiags := r.ToSharedOpenidConnectPlugin(ctx)
 	diags.Append(openidConnectPluginDiags...)
@@ -1280,9 +1295,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsUpdateOpenidconnec
 		return nil, diags
 	}
 
-	out := operations.UpdateOpenidconnectPluginRequest{
+	out := operations.UpdateOpenidconnectPluginInWorkspaceRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpenidConnectPlugin: *openidConnectPlugin,
 	}
 

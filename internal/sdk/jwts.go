@@ -30,9 +30,9 @@ func newJWTs(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateJwtWithConsumer - Create a new JWT associated with a Consumer
-// Create a new JWT associated with a Consumer
-func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.CreateJwtWithConsumerRequest, opts ...operations.Option) (*operations.CreateJwtWithConsumerResponse, error) {
+// CreateJwtWithConsumerInWorkspace - Create a new JWT associated with a Consumer in a workspace
+// Create a new JWT associated with a Consumer in a workspace
+func (s *JWTs) CreateJwtWithConsumerInWorkspace(ctx context.Context, request operations.CreateJwtWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateJwtWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51,7 +51,7 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/jwt", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61,7 +61,7 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-jwt-with-consumer",
+		OperationID:      "create-jwt-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 		}
 	}
 
-	res := &operations.CreateJwtWithConsumerResponse{
+	res := &operations.CreateJwtWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 
 }
 
-// DeleteJwtWithConsumer - Delete a a JWT associated with a Consumer
-// Delete a a JWT associated with a Consumer using ID.
-func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.DeleteJwtWithConsumerRequest, opts ...operations.Option) (*operations.DeleteJwtWithConsumerResponse, error) {
+// DeleteJwtWithConsumerInWorkspace - Delete a a JWT associated with a Consumer in a workspace
+// Delete a a JWT associated with a Consumer using ID in a workspace.
+func (s *JWTs) DeleteJwtWithConsumerInWorkspace(ctx context.Context, request operations.DeleteJwtWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteJwtWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -257,7 +257,7 @@ func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -267,7 +267,7 @@ func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.Del
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-jwt-with-consumer",
+		OperationID:      "delete-jwt-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.Del
 		}
 	}
 
-	res := &operations.DeleteJwtWithConsumerResponse{
+	res := &operations.DeleteJwtWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.Del
 
 }
 
-// GetJwtWithConsumer - Get a JWT associated with a Consumer
-// Get a JWT associated with a Consumer using ID.
-func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwtWithConsumerRequest, opts ...operations.Option) (*operations.GetJwtWithConsumerResponse, error) {
+// GetJwtWithConsumerInWorkspace - Get a JWT associated with a Consumer in a workspace
+// Get a JWT associated with a Consumer using ID in a workspace.
+func (s *JWTs) GetJwtWithConsumerInWorkspace(ctx context.Context, request operations.GetJwtWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetJwtWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -439,7 +439,7 @@ func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwt
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/jwt/{JWTId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -449,7 +449,7 @@ func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwt
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-jwt-with-consumer",
+		OperationID:      "get-jwt-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwt
 		}
 	}
 
-	res := &operations.GetJwtWithConsumerResponse{
+	res := &operations.GetJwtWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

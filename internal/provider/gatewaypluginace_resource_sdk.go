@@ -182,11 +182,14 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 	return diags
 }
 
-func (r *GatewayPluginAceResourceModel) ToOperationsCreateAcePluginRequest(ctx context.Context) (*operations.CreateAcePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAceResourceModel) ToOperationsCreateAcePluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAcePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	acePlugin, acePluginDiags := r.ToSharedAcePlugin(ctx)
 	diags.Append(acePluginDiags...)
@@ -195,15 +198,16 @@ func (r *GatewayPluginAceResourceModel) ToOperationsCreateAcePluginRequest(ctx c
 		return nil, diags
 	}
 
-	out := operations.CreateAcePluginRequest{
+	out := operations.CreateAcePluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		AcePlugin:      *acePlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAceResourceModel) ToOperationsDeleteAcePluginRequest(ctx context.Context) (*operations.DeleteAcePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAceResourceModel) ToOperationsDeleteAcePluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAcePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -212,15 +216,19 @@ func (r *GatewayPluginAceResourceModel) ToOperationsDeleteAcePluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAcePluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAcePluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAceResourceModel) ToOperationsGetAcePluginRequest(ctx context.Context) (*operations.GetAcePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAceResourceModel) ToOperationsGetAcePluginInWorkspaceRequest(ctx context.Context) (*operations.GetAcePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -229,15 +237,19 @@ func (r *GatewayPluginAceResourceModel) ToOperationsGetAcePluginRequest(ctx cont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAcePluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAcePluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAceResourceModel) ToOperationsUpdateAcePluginRequest(ctx context.Context) (*operations.UpdateAcePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAceResourceModel) ToOperationsUpdateAcePluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAcePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -245,6 +257,9 @@ func (r *GatewayPluginAceResourceModel) ToOperationsUpdateAcePluginRequest(ctx c
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	acePlugin, acePluginDiags := r.ToSharedAcePlugin(ctx)
 	diags.Append(acePluginDiags...)
@@ -253,9 +268,10 @@ func (r *GatewayPluginAceResourceModel) ToOperationsUpdateAcePluginRequest(ctx c
 		return nil, diags
 	}
 
-	out := operations.UpdateAcePluginRequest{
+	out := operations.UpdateAcePluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		AcePlugin:      *acePlugin,
 	}
 

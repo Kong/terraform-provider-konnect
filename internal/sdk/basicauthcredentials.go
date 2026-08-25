@@ -30,9 +30,9 @@ func newBasicAuthCredentials(rootSDK *Konnect, sdkConfig config.SDKConfiguration
 	}
 }
 
-// CreateBasicAuthWithConsumer - Create a new Basic-auth credential associated with a Consumer
-// Create a new Basic-auth credential associated with a Consumer
-func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, request operations.CreateBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateBasicAuthWithConsumerResponse, error) {
+// CreateBasicAuthWithConsumerInWorkspace - Create a new Basic-auth credential associated with a Consumer in a workspace
+// Create a new Basic-auth credential associated with a Consumer in a workspace
+func (s *BasicAuthCredentials) CreateBasicAuthWithConsumerInWorkspace(ctx context.Context, request operations.CreateBasicAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateBasicAuthWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51,7 +51,7 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/basic-auth", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61,7 +61,7 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-basic-auth-with-consumer",
+		OperationID:      "create-basic-auth-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, 
 		}
 	}
 
-	res := &operations.CreateBasicAuthWithConsumerResponse{
+	res := &operations.CreateBasicAuthWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, 
 
 }
 
-// DeleteBasicAuthWithConsumer - Delete a a Basic-auth credential associated with a Consumer
-// Delete a a Basic-auth credential associated with a Consumer using ID.
-func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, request operations.DeleteBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteBasicAuthWithConsumerResponse, error) {
+// DeleteBasicAuthWithConsumerInWorkspace - Delete a a Basic-auth credential associated with a Consumer in a workspace
+// Delete a a Basic-auth credential associated with a Consumer using ID in a workspace.
+func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumerInWorkspace(ctx context.Context, request operations.DeleteBasicAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteBasicAuthWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -257,7 +257,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -267,7 +267,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-basic-auth-with-consumer",
+		OperationID:      "delete-basic-auth-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, 
 		}
 	}
 
-	res := &operations.DeleteBasicAuthWithConsumerResponse{
+	res := &operations.DeleteBasicAuthWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, 
 
 }
 
-// GetBasicAuthWithConsumer - Get a Basic-auth credential associated with a Consumer
-// Get a Basic-auth credential associated with a Consumer using ID.
-func (s *BasicAuthCredentials) GetBasicAuthWithConsumer(ctx context.Context, request operations.GetBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetBasicAuthWithConsumerResponse, error) {
+// GetBasicAuthWithConsumerInWorkspace - Get a Basic-auth credential associated with a Consumer in a workspace
+// Get a Basic-auth credential associated with a Consumer using ID in a workspace.
+func (s *BasicAuthCredentials) GetBasicAuthWithConsumerInWorkspace(ctx context.Context, request operations.GetBasicAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetBasicAuthWithConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -439,7 +439,7 @@ func (s *BasicAuthCredentials) GetBasicAuthWithConsumer(ctx context.Context, req
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerIdForNestedEntities}/basic-auth/{BasicAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -449,7 +449,7 @@ func (s *BasicAuthCredentials) GetBasicAuthWithConsumer(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-basic-auth-with-consumer",
+		OperationID:      "get-basic-auth-with-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *BasicAuthCredentials) GetBasicAuthWithConsumer(ctx context.Context, req
 		}
 	}
 
-	res := &operations.GetBasicAuthWithConsumerResponse{
+	res := &operations.GetBasicAuthWithConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

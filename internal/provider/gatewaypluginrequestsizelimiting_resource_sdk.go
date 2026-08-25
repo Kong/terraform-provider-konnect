@@ -106,11 +106,14 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) RefreshFromSharedRequest
 	return diags
 }
 
-func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsCreateRequestsizelimitingPluginRequest(ctx context.Context) (*operations.CreateRequestsizelimitingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsCreateRequestsizelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRequestsizelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestSizeLimitingPlugin, requestSizeLimitingPluginDiags := r.ToSharedRequestSizeLimitingPlugin(ctx)
 	diags.Append(requestSizeLimitingPluginDiags...)
@@ -119,15 +122,16 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsCreateReques
 		return nil, diags
 	}
 
-	out := operations.CreateRequestsizelimitingPluginRequest{
+	out := operations.CreateRequestsizelimitingPluginInWorkspaceRequest{
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		RequestSizeLimitingPlugin: *requestSizeLimitingPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsDeleteRequestsizelimitingPluginRequest(ctx context.Context) (*operations.DeleteRequestsizelimitingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsDeleteRequestsizelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRequestsizelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -136,15 +140,19 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsDeleteReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRequestsizelimitingPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRequestsizelimitingPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsGetRequestsizelimitingPluginRequest(ctx context.Context) (*operations.GetRequestsizelimitingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsGetRequestsizelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRequestsizelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -153,15 +161,19 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsGetRequestsi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRequestsizelimitingPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRequestsizelimitingPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsUpdateRequestsizelimitingPluginRequest(ctx context.Context) (*operations.UpdateRequestsizelimitingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsUpdateRequestsizelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRequestsizelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -169,6 +181,9 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsUpdateReques
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestSizeLimitingPlugin, requestSizeLimitingPluginDiags := r.ToSharedRequestSizeLimitingPlugin(ctx)
 	diags.Append(requestSizeLimitingPluginDiags...)
@@ -177,9 +192,10 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsUpdateReques
 		return nil, diags
 	}
 
-	out := operations.UpdateRequestsizelimitingPluginRequest{
+	out := operations.UpdateRequestsizelimitingPluginInWorkspaceRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		RequestSizeLimitingPlugin: *requestSizeLimitingPlugin,
 	}
 

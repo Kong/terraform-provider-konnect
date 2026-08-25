@@ -269,11 +269,14 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 	return diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoauthPluginRequest(ctx context.Context) (*operations.CreateUpstreamoauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
 	diags.Append(upstreamOauthPluginDiags...)
@@ -282,15 +285,16 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoaut
 		return nil, diags
 	}
 
-	out := operations.CreateUpstreamoauthPluginRequest{
+	out := operations.CreateUpstreamoauthPluginInWorkspaceRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		UpstreamOauthPlugin: *upstreamOauthPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoauthPluginRequest(ctx context.Context) (*operations.DeleteUpstreamoauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -299,15 +303,19 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoaut
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteUpstreamoauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteUpstreamoauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPluginRequest(ctx context.Context) (*operations.GetUpstreamoauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -316,15 +324,19 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetUpstreamoauthPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetUpstreamoauthPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoauthPluginRequest(ctx context.Context) (*operations.UpdateUpstreamoauthPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -332,6 +344,9 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoaut
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
 	diags.Append(upstreamOauthPluginDiags...)
@@ -340,9 +355,10 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoaut
 		return nil, diags
 	}
 
-	out := operations.UpdateUpstreamoauthPluginRequest{
+	out := operations.UpdateUpstreamoauthPluginInWorkspaceRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		UpstreamOauthPlugin: *upstreamOauthPlugin,
 	}
 

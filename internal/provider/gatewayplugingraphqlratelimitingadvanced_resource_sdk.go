@@ -207,11 +207,14 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 	return diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCreateGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.CreateGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCreateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	graphqlRateLimitingAdvancedPlugin, graphqlRateLimitingAdvancedPluginDiags := r.ToSharedGraphqlRateLimitingAdvancedPlugin(ctx)
 	diags.Append(graphqlRateLimitingAdvancedPluginDiags...)
@@ -220,15 +223,16 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCrea
 		return nil, diags
 	}
 
-	out := operations.CreateGraphqlratelimitingadvancedPluginRequest{
+	out := operations.CreateGraphqlratelimitingadvancedPluginInWorkspaceRequest{
 		ControlPlaneID:                    controlPlaneID,
+		Workspace:                         workspace,
 		GraphqlRateLimitingAdvancedPlugin: *graphqlRateLimitingAdvancedPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDeleteGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.DeleteGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -237,15 +241,19 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDele
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteGraphqlratelimitingadvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.GetGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -254,15 +262,19 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetG
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetGraphqlratelimitingadvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetGraphqlratelimitingadvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpdateGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.UpdateGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -270,6 +282,9 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpda
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	graphqlRateLimitingAdvancedPlugin, graphqlRateLimitingAdvancedPluginDiags := r.ToSharedGraphqlRateLimitingAdvancedPlugin(ctx)
 	diags.Append(graphqlRateLimitingAdvancedPluginDiags...)
@@ -278,9 +293,10 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpda
 		return nil, diags
 	}
 
-	out := operations.UpdateGraphqlratelimitingadvancedPluginRequest{
+	out := operations.UpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest{
 		PluginID:                          pluginID,
 		ControlPlaneID:                    controlPlaneID,
+		Workspace:                         workspace,
 		GraphqlRateLimitingAdvancedPlugin: *graphqlRateLimitingAdvancedPlugin,
 	}
 

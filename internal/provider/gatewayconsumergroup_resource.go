@@ -11,15 +11,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayConsumerGroupResource{}
-var _ resource.ResourceWithImportState = &GatewayConsumerGroupResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayConsumerGroupResource{}
 
 func NewGatewayConsumerGroupResource() resource.Resource {
 	return &GatewayConsumerGroupResource{}
@@ -39,6 +41,7 @@ type GatewayConsumerGroupResourceModel struct {
 	Name           types.String   `tfsdk:"name"`
 	Tags           []types.String `tfsdk:"tags"`
 	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
+	Workspace      types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayConsumerGroupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -48,6 +51,7 @@ func (r *GatewayConsumerGroupResource) Metadata(ctx context.Context, req resourc
 func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayConsumerGroup Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -79,6 +83,15 @@ func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.
 				Computed:    true,
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 		},
 	}
@@ -122,13 +135,13 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateConsumerGroupRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateConsumerGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.CreateConsumerGroup(ctx, *request)
+	res, err := r.client.ConsumerGroups.CreateConsumerGroupInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -159,13 +172,13 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetConsumerGroupRequest(ctx)
+	request1, request1Diags := data.ToOperationsGetConsumerGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request1)
+	res1, err := r.client.ConsumerGroups.GetConsumerGroupInWorkspace(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -219,13 +232,13 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetConsumerGroupRequest(ctx)
+	request, requestDiags := data.ToOperationsGetConsumerGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request)
+	res, err := r.client.ConsumerGroups.GetConsumerGroupInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -273,13 +286,13 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertConsumerGroupRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertConsumerGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.UpsertConsumerGroup(ctx, *request)
+	res, err := r.client.ConsumerGroups.UpsertConsumerGroupInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -310,13 +323,13 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetConsumerGroupRequest(ctx)
+	request1, request1Diags := data.ToOperationsGetConsumerGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request1)
+	res1, err := r.client.ConsumerGroups.GetConsumerGroupInWorkspace(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -370,13 +383,13 @@ func (r *GatewayConsumerGroupResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteConsumerGroupRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteConsumerGroupInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.DeleteConsumerGroup(ctx, *request)
+	res, err := r.client.ConsumerGroups.DeleteConsumerGroupInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -404,10 +417,11 @@ func (r *GatewayConsumerGroupResource) ImportState(ctx context.Context, req reso
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -421,4 +435,15 @@ func (r *GatewayConsumerGroupResource) ImportState(ctx context.Context, req reso
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayConsumerGroupResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayconsumergroupStateUpgraderV0},
+	}
 }

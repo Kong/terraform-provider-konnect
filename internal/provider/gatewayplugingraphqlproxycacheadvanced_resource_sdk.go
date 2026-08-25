@@ -197,11 +197,14 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) RefreshFromSharedG
 	return diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreateGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.CreateGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreateGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
 	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
@@ -210,15 +213,16 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreate
 		return nil, diags
 	}
 
-	out := operations.CreateGraphqlproxycacheadvancedPluginRequest{
+	out := operations.CreateGraphqlproxycacheadvancedPluginInWorkspaceRequest{
 		ControlPlaneID:                  controlPlaneID,
+		Workspace:                       workspace,
 		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDeleteGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.DeleteGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -227,15 +231,19 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDelete
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteGraphqlproxycacheadvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.GetGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -244,15 +252,19 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGra
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetGraphqlproxycacheadvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetGraphqlproxycacheadvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdateGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.UpdateGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -260,6 +272,9 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
 	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
@@ -268,9 +283,10 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 		return nil, diags
 	}
 
-	out := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
+	out := operations.UpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest{
 		PluginID:                        pluginID,
 		ControlPlaneID:                  controlPlaneID,
+		Workspace:                       workspace,
 		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
 	}
 

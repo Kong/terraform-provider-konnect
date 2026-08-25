@@ -2850,7 +2850,7 @@ type OpenidConnectPluginConfig struct {
 	IDTokenParamName *string `default:"null" json:"id_token_param_name"`
 	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 	IDTokenParamType []IDTokenParamType `json:"id_token_param_type,omitempty"`
-	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
+	// Skip the token signature verification on certain grants. This is insecure and logs a warning; use it only for providers that publish no verification key. Grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
 	IgnoreSignature []IgnoreSignature `json:"ignore_signature,omitempty"`
 	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
 	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`

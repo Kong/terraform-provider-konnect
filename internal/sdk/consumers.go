@@ -32,9 +32,9 @@ func newConsumers(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *ho
 	}
 }
 
-// CreateConsumer - Create a new Consumer
-// Create a new Consumer
-func (s *Consumers) CreateConsumer(ctx context.Context, request operations.CreateConsumerRequest, opts ...operations.Option) (*operations.CreateConsumerResponse, error) {
+// CreateConsumerInWorkspace - Create a new Consumer in a workspace
+// Create a new Consumer in a workspace
+func (s *Consumers) CreateConsumerInWorkspace(ctx context.Context, request operations.CreateConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53,7 +53,7 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63,7 +63,7 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-consumer",
+		OperationID:      "create-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -198,7 +198,7 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 		}
 	}
 
-	res := &operations.CreateConsumerResponse{
+	res := &operations.CreateConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -259,9 +259,9 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 
 }
 
-// DeleteConsumer - Delete a Consumer
-// Delete a Consumer
-func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.DeleteConsumerRequest, opts ...operations.Option) (*operations.DeleteConsumerResponse, error) {
+// DeleteConsumerInWorkspace - Delete a Consumer in a workspace
+// Delete a Consumer in a workspace
+func (s *Consumers) DeleteConsumerInWorkspace(ctx context.Context, request operations.DeleteConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -280,7 +280,7 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -290,7 +290,7 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-consumer",
+		OperationID:      "delete-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -418,7 +418,7 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 		}
 	}
 
-	res := &operations.DeleteConsumerResponse{
+	res := &operations.DeleteConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -462,9 +462,9 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 
 }
 
-// GetConsumer - Get a Consumer
-// Get a Consumer using ID or username.
-func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsumerRequest, opts ...operations.Option) (*operations.GetConsumerResponse, error) {
+// GetConsumerInWorkspace - Get a Consumer in a workspace
+// Get a Consumer using ID or username in a workspace.
+func (s *Consumers) GetConsumerInWorkspace(ctx context.Context, request operations.GetConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -483,7 +483,7 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -493,7 +493,7 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-consumer",
+		OperationID:      "get-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -621,7 +621,7 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 		}
 	}
 
-	res := &operations.GetConsumerResponse{
+	res := &operations.GetConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -684,9 +684,9 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 
 }
 
-// UpsertConsumer - Upsert a Consumer
-// Create or Update Consumer using ID or username.
-func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.UpsertConsumerRequest, opts ...operations.Option) (*operations.UpsertConsumerResponse, error) {
+// UpsertConsumerInWorkspace - Upsert a Consumer in a workspace
+// Create or Update Consumer using ID or username in a workspace.
+func (s *Consumers) UpsertConsumerInWorkspace(ctx context.Context, request operations.UpsertConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertConsumerInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -705,7 +705,7 @@ func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.Upser
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/consumers/{ConsumerId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -715,7 +715,7 @@ func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.Upser
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-consumer",
+		OperationID:      "upsert-consumer-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -850,7 +850,7 @@ func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.Upser
 		}
 	}
 
-	res := &operations.UpsertConsumerResponse{
+	res := &operations.UpsertConsumerInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

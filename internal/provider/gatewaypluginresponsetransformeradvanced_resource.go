@@ -17,19 +17,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginResponseTransformerAdvancedResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginResponseTransformerAdvancedResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginResponseTransformerAdvancedResource{}
 
 func NewGatewayPluginResponseTransformerAdvancedResource() resource.Resource {
 	return &GatewayPluginResponseTransformerAdvancedResource{}
@@ -59,6 +61,7 @@ type GatewayPluginResponseTransformerAdvancedResourceModel struct {
 	Service        *tfTypes.Set                                     `tfsdk:"service"`
 	Tags           []types.String                                   `tfsdk:"tags"`
 	UpdatedAt      types.Int64                                      `tfsdk:"updated_at"`
+	Workspace      types.String                                     `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginResponseTransformerAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,6 +71,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Metadata(ctx context.
 func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginResponseTransformerAdvanced Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -557,6 +561,15 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -599,13 +612,13 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Create(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateResponsetransformeradvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateResponsetransformeradvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateResponsetransformeradvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateResponsetransformeradvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -659,13 +672,13 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Read(ctx context.Cont
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetResponsetransformeradvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetResponsetransformeradvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetResponsetransformeradvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetResponsetransformeradvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -713,13 +726,13 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Update(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateResponsetransformeradvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateResponsetransformeradvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateResponsetransformeradvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateResponsetransformeradvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -773,13 +786,13 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Delete(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteResponsetransformeradvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteResponsetransformeradvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteResponsetransformeradvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteResponsetransformeradvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -807,10 +820,11 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) ImportState(ctx conte
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -824,4 +838,15 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) ImportState(ctx conte
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginResponseTransformerAdvancedResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginresponsetransformeradvancedStateUpgraderV0},
+	}
 }

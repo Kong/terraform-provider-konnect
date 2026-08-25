@@ -221,11 +221,14 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 	return diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstreamPluginRequest(ctx context.Context) (*operations.CreateSolaceupstreamPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	solaceUpstreamPlugin, solaceUpstreamPluginDiags := r.ToSharedSolaceUpstreamPlugin(ctx)
 	diags.Append(solaceUpstreamPluginDiags...)
@@ -234,15 +237,16 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstr
 		return nil, diags
 	}
 
-	out := operations.CreateSolaceupstreamPluginRequest{
+	out := operations.CreateSolaceupstreamPluginInWorkspaceRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		SolaceUpstreamPlugin: *solaceUpstreamPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstreamPluginRequest(ctx context.Context) (*operations.DeleteSolaceupstreamPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -251,15 +255,19 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteSolaceupstreamPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteSolaceupstreamPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstreamPluginRequest(ctx context.Context) (*operations.GetSolaceupstreamPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.GetSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -268,15 +276,19 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstream
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetSolaceupstreamPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetSolaceupstreamPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstreamPluginRequest(ctx context.Context) (*operations.UpdateSolaceupstreamPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -284,6 +296,9 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstr
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	solaceUpstreamPlugin, solaceUpstreamPluginDiags := r.ToSharedSolaceUpstreamPlugin(ctx)
 	diags.Append(solaceUpstreamPluginDiags...)
@@ -292,9 +307,10 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstr
 		return nil, diags
 	}
 
-	out := operations.UpdateSolaceupstreamPluginRequest{
+	out := operations.UpdateSolaceupstreamPluginInWorkspaceRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		SolaceUpstreamPlugin: *solaceUpstreamPlugin,
 	}
 

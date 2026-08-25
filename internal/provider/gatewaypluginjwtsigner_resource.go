@@ -25,13 +25,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginJwtSignerResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginJwtSignerResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginJwtSignerResource{}
 
 func NewGatewayPluginJwtSignerResource() resource.Resource {
 	return &GatewayPluginJwtSignerResource{}
@@ -59,6 +60,7 @@ type GatewayPluginJwtSignerResourceModel struct {
 	Service        *tfTypes.Set                   `tfsdk:"service"`
 	Tags           []types.String                 `tfsdk:"tags"`
 	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
+	Workspace      types.String                   `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginJwtSignerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,6 +70,7 @@ func (r *GatewayPluginJwtSignerResource) Metadata(ctx context.Context, req resou
 func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginJwtSigner Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -1487,6 +1490,15 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -1529,13 +1541,13 @@ func (r *GatewayPluginJwtSignerResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJwtsignerPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJwtsignerPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateJwtsignerPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateJwtsignerPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1589,13 +1601,13 @@ func (r *GatewayPluginJwtSignerResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJwtsignerPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJwtsignerPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetJwtsignerPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetJwtsignerPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1643,13 +1655,13 @@ func (r *GatewayPluginJwtSignerResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateJwtsignerPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateJwtsignerPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateJwtsignerPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateJwtsignerPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1703,13 +1715,13 @@ func (r *GatewayPluginJwtSignerResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJwtsignerPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJwtsignerPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteJwtsignerPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteJwtsignerPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1737,10 +1749,11 @@ func (r *GatewayPluginJwtSignerResource) ImportState(ctx context.Context, req re
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -1754,4 +1767,15 @@ func (r *GatewayPluginJwtSignerResource) ImportState(ctx context.Context, req re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginJwtSignerResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginjwtsignerStateUpgraderV0},
+	}
 }

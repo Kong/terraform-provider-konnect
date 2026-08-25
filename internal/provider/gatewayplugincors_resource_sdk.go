@@ -126,11 +126,14 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 	return diags
 }
 
-func (r *GatewayPluginCorsResourceModel) ToOperationsCreateCorsPluginRequest(ctx context.Context) (*operations.CreateCorsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorsResourceModel) ToOperationsCreateCorsPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateCorsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
 	diags.Append(corsPluginDiags...)
@@ -139,15 +142,16 @@ func (r *GatewayPluginCorsResourceModel) ToOperationsCreateCorsPluginRequest(ctx
 		return nil, diags
 	}
 
-	out := operations.CreateCorsPluginRequest{
+	out := operations.CreateCorsPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		CorsPlugin:     *corsPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginCorsResourceModel) ToOperationsDeleteCorsPluginRequest(ctx context.Context) (*operations.DeleteCorsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorsResourceModel) ToOperationsDeleteCorsPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteCorsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -156,15 +160,19 @@ func (r *GatewayPluginCorsResourceModel) ToOperationsDeleteCorsPluginRequest(ctx
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteCorsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteCorsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginCorsResourceModel) ToOperationsGetCorsPluginRequest(ctx context.Context) (*operations.GetCorsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorsResourceModel) ToOperationsGetCorsPluginInWorkspaceRequest(ctx context.Context) (*operations.GetCorsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -173,15 +181,19 @@ func (r *GatewayPluginCorsResourceModel) ToOperationsGetCorsPluginRequest(ctx co
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetCorsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetCorsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginCorsResourceModel) ToOperationsUpdateCorsPluginRequest(ctx context.Context) (*operations.UpdateCorsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorsResourceModel) ToOperationsUpdateCorsPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateCorsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -189,6 +201,9 @@ func (r *GatewayPluginCorsResourceModel) ToOperationsUpdateCorsPluginRequest(ctx
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
 	diags.Append(corsPluginDiags...)
@@ -197,9 +212,10 @@ func (r *GatewayPluginCorsResourceModel) ToOperationsUpdateCorsPluginRequest(ctx
 		return nil, diags
 	}
 
-	out := operations.UpdateCorsPluginRequest{
+	out := operations.UpdateCorsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		CorsPlugin:     *corsPlugin,
 	}
 

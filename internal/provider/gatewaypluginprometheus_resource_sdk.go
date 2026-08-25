@@ -106,11 +106,14 @@ func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin
 	return diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPluginRequest(ctx context.Context) (*operations.CreatePrometheusPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.CreatePrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	prometheusPlugin, prometheusPluginDiags := r.ToSharedPrometheusPlugin(ctx)
 	diags.Append(prometheusPluginDiags...)
@@ -119,15 +122,16 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPlugi
 		return nil, diags
 	}
 
-	out := operations.CreatePrometheusPluginRequest{
+	out := operations.CreatePrometheusPluginInWorkspaceRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		PrometheusPlugin: *prometheusPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPluginRequest(ctx context.Context) (*operations.DeletePrometheusPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.DeletePrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -136,15 +140,19 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeletePrometheusPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeletePrometheusPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginRequest(ctx context.Context) (*operations.GetPrometheusPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.GetPrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -153,15 +161,19 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetPrometheusPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetPrometheusPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPluginRequest(ctx context.Context) (*operations.UpdatePrometheusPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdatePrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -169,6 +181,9 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPlugi
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	prometheusPlugin, prometheusPluginDiags := r.ToSharedPrometheusPlugin(ctx)
 	diags.Append(prometheusPluginDiags...)
@@ -177,9 +192,10 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdatePrometheusPluginRequest{
+	out := operations.UpdatePrometheusPluginInWorkspaceRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		PrometheusPlugin: *prometheusPlugin,
 	}
 

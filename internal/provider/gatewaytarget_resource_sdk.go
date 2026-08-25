@@ -40,7 +40,7 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context
 	return diags
 }
 
-func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest(ctx context.Context) (*operations.CreateTargetWithUpstreamRequest, diag.Diagnostics) {
+func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamInWorkspaceRequest(ctx context.Context) (*operations.CreateTargetWithUpstreamInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -48,6 +48,9 @@ func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest
 
 	var upstreamID string
 	upstreamID = r.UpstreamID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	targetWithoutParents, targetWithoutParentsDiags := r.ToSharedTargetWithoutParents(ctx)
 	diags.Append(targetWithoutParentsDiags...)
@@ -56,16 +59,17 @@ func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest
 		return nil, diags
 	}
 
-	out := operations.CreateTargetWithUpstreamRequest{
+	out := operations.CreateTargetWithUpstreamInWorkspaceRequest{
 		ControlPlaneID:       controlPlaneID,
 		UpstreamID:           upstreamID,
+		Workspace:            workspace,
 		TargetWithoutParents: *targetWithoutParents,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayTargetResourceModel) ToOperationsDeleteTargetWithUpstreamRequest(ctx context.Context) (*operations.DeleteTargetWithUpstreamRequest, diag.Diagnostics) {
+func (r *GatewayTargetResourceModel) ToOperationsDeleteTargetWithUpstreamInWorkspaceRequest(ctx context.Context) (*operations.DeleteTargetWithUpstreamInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -77,16 +81,20 @@ func (r *GatewayTargetResourceModel) ToOperationsDeleteTargetWithUpstreamRequest
 	var targetID string
 	targetID = r.ID.ValueString()
 
-	out := operations.DeleteTargetWithUpstreamRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteTargetWithUpstreamInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		UpstreamID:     upstreamID,
 		TargetID:       targetID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayTargetResourceModel) ToOperationsGetTargetWithUpstreamRequest(ctx context.Context) (*operations.GetTargetWithUpstreamRequest, diag.Diagnostics) {
+func (r *GatewayTargetResourceModel) ToOperationsGetTargetWithUpstreamInWorkspaceRequest(ctx context.Context) (*operations.GetTargetWithUpstreamInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -98,10 +106,14 @@ func (r *GatewayTargetResourceModel) ToOperationsGetTargetWithUpstreamRequest(ct
 	var targetID string
 	targetID = r.ID.ValueString()
 
-	out := operations.GetTargetWithUpstreamRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetTargetWithUpstreamInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
 		UpstreamID:     upstreamID,
 		TargetID:       targetID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

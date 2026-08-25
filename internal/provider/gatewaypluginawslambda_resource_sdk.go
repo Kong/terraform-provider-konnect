@@ -149,11 +149,14 @@ func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginRequest(ctx context.Context) (*operations.CreateAwslambdaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	awsLambdaPlugin, awsLambdaPluginDiags := r.ToSharedAwsLambdaPlugin(ctx)
 	diags.Append(awsLambdaPluginDiags...)
@@ -162,15 +165,16 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginR
 		return nil, diags
 	}
 
-	out := operations.CreateAwslambdaPluginRequest{
+	out := operations.CreateAwslambdaPluginInWorkspaceRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		AwsLambdaPlugin: *awsLambdaPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginRequest(ctx context.Context) (*operations.DeleteAwslambdaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -179,15 +183,19 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAwslambdaPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAwslambdaPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginRequest(ctx context.Context) (*operations.GetAwslambdaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -196,15 +204,19 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAwslambdaPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAwslambdaPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginRequest(ctx context.Context) (*operations.UpdateAwslambdaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -212,6 +224,9 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginR
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	awsLambdaPlugin, awsLambdaPluginDiags := r.ToSharedAwsLambdaPlugin(ctx)
 	diags.Append(awsLambdaPluginDiags...)
@@ -220,9 +235,10 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginR
 		return nil, diags
 	}
 
-	out := operations.UpdateAwslambdaPluginRequest{
+	out := operations.UpdateAwslambdaPluginInWorkspaceRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		AwsLambdaPlugin: *awsLambdaPlugin,
 	}
 

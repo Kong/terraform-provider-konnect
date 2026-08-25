@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -22,11 +23,12 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayMTLSAuthResource{}
-var _ resource.ResourceWithImportState = &GatewayMTLSAuthResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayMTLSAuthResource{}
 
 func NewGatewayMTLSAuthResource() resource.Resource {
 	return &GatewayMTLSAuthResource{}
@@ -47,6 +49,7 @@ type GatewayMTLSAuthResourceModel struct {
 	ID             types.String   `tfsdk:"id"`
 	SubjectName    types.String   `tfsdk:"subject_name"`
 	Tags           []types.String `tfsdk:"tags"`
+	Workspace      types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayMTLSAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,6 +59,7 @@ func (r *GatewayMTLSAuthResource) Metadata(ctx context.Context, req resource.Met
 func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayMTLSAuth Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"ca_certificate": schema.SingleNestedAttribute{
 				Computed: true,
@@ -125,6 +129,15 @@ func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.Schem
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags. Requires replacement if changed.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -167,13 +180,13 @@ func (r *GatewayMTLSAuthResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMtlsAuthWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateMtlsAuthWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumer(ctx, *request)
+	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -227,13 +240,13 @@ func (r *GatewayMTLSAuthResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetMtlsAuthWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsGetMtlsAuthWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumer(ctx, *request)
+	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -305,13 +318,13 @@ func (r *GatewayMTLSAuthResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteMtlsAuthWithConsumerInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumer(ctx, *request)
+	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumerInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -340,10 +353,11 @@ func (r *GatewayMTLSAuthResource) ImportState(ctx context.Context, req resource.
 		ID             string `json:"id"`
 		ConsumerID     string `json:"consumer_id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -362,4 +376,15 @@ func (r *GatewayMTLSAuthResource) ImportState(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayMTLSAuthResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaymtlsauthStateUpgraderV0},
+	}
 }

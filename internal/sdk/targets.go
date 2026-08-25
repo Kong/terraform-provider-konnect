@@ -33,9 +33,9 @@ func newTargets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateTargetWithUpstream - Create a new Target associated with an Upstream
-// Create a new Target associated with an Upstream
-func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operations.CreateTargetWithUpstreamRequest, opts ...operations.Option) (*operations.CreateTargetWithUpstreamResponse, error) {
+// CreateTargetWithUpstreamInWorkspace - Create a new Target associated with an Upstream in a workspace
+// Create a new Target associated with an Upstream in a workspace
+func (s *Targets) CreateTargetWithUpstreamInWorkspace(ctx context.Context, request operations.CreateTargetWithUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.CreateTargetWithUpstreamInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -54,7 +54,7 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -64,7 +64,7 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-target-with-upstream",
+		OperationID:      "create-target-with-upstream-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -199,7 +199,7 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.CreateTargetWithUpstreamResponse{
+	res := &operations.CreateTargetWithUpstreamInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -239,9 +239,9 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 
 }
 
-// DeleteTargetWithUpstream - Delete a a Target associated with an Upstream
-// Delete a a Target associated with an Upstream using ID or target.
-func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operations.DeleteTargetWithUpstreamRequest, opts ...operations.Option) (*operations.DeleteTargetWithUpstreamResponse, error) {
+// DeleteTargetWithUpstreamInWorkspace - Delete a a Target associated with an Upstream in a workspace
+// Delete a a Target associated with an Upstream using ID or target in a workspace.
+func (s *Targets) DeleteTargetWithUpstreamInWorkspace(ctx context.Context, request operations.DeleteTargetWithUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteTargetWithUpstreamInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -260,7 +260,7 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -270,7 +270,7 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-target-with-upstream",
+		OperationID:      "delete-target-with-upstream-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -398,7 +398,7 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.DeleteTargetWithUpstreamResponse{
+	res := &operations.DeleteTargetWithUpstreamInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -421,9 +421,9 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 
 }
 
-// GetTargetWithUpstream - Get a Target associated with an Upstream
-// Get a Target associated with an Upstream using ID or target.
-func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.GetTargetWithUpstreamRequest, opts ...operations.Option) (*operations.GetTargetWithUpstreamResponse, error) {
+// GetTargetWithUpstreamInWorkspace - Get a Target associated with an Upstream in a workspace
+// Get a Target associated with an Upstream using ID or target in a workspace.
+func (s *Targets) GetTargetWithUpstreamInWorkspace(ctx context.Context, request operations.GetTargetWithUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.GetTargetWithUpstreamInWorkspaceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -442,7 +442,7 @@ func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -452,7 +452,7 @@ func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-target-with-upstream",
+		OperationID:      "get-target-with-upstream-in-workspace",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -580,7 +580,7 @@ func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.GetTargetWithUpstreamResponse{
+	res := &operations.GetTargetWithUpstreamInWorkspaceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
