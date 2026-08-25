@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
-id: fd38a9cd-7467-4f69-8db6-6079b2f54d58
+id: 23bd69a1-68c9-4548-8b7e-9c998c94ec05
 management:
-  docChecksum: b48808aaf3614592d19094c2e24dab70
+  docChecksum: 1e0d2fa78ece7db7baadf825de5e3f30
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.21.0
   configChecksum: 7a39f0691cbc4f366c3e558ffcf65d92
 persistentEdits:
-  generation_id: 0783713f-294c-44a8-8ea0-179c0faa757e
-  pristine_commit_hash: 8513f34874f7a44784b89109510a3e5f91bdfd42
-  pristine_tree_hash: a582455909af83fdd27e29eaa5c4d0198c58f5af
+  generation_id: 6e328f17-b6ed-48c6-babf-5bafd24a2caa
+  pristine_commit_hash: 41fbf49a78d82b73db3bd73953c4cb9956a28219
+  pristine_tree_hash: a3e1f4d66bbcd85ee8f1ce8f03216411c6211cbb
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -85,12 +85,12 @@ trackedFiles:
     pristine_git_object: ee6640d3d38b477494562efa81afab65d7423609
   examples/data-sources/konnect_team/data-source.tf:
     id: 39682e493e2d
-    last_write_checksum: sha1:fa1578334cf47c6a998967571d5402f33e156310
-    pristine_git_object: 2e0ff96719b517fdd6c072365c428e52a51bfaaf
+    last_write_checksum: sha1:903ef47f1f690f09c7a4703d18224137e28ca524
+    pristine_git_object: 69aeb4cdf504cdf15bb213cea9bb0e0bf7805f1a
   examples/data-sources/konnect_team_list/data-source.tf:
     id: 7fde72c53573
-    last_write_checksum: sha1:9e704cfe42e887f34762e1b405d2abf8a09d7db6
-    pristine_git_object: 5343d90de3cc460c54b0248a02ddcd2119ed48a4
+    last_write_checksum: sha1:79d4c70cc3771f0c6f2060735c3ad1f116b50a15
+    pristine_git_object: 69f0f524eee382945578ad4f60cbadb6f4b6038a
   examples/provider/provider.tf:
     id: 954e955c0240
     last_write_checksum: sha1:25656f9c7e30743cdbb6ba483673a4589eb7486e
@@ -865,8 +865,8 @@ trackedFiles:
     pristine_git_object: a6eb3b300adfda50603e5ed6b0bb2bf255903f97
   examples/resources/konnect_gateway_partial/resource.tf:
     id: ab0f06accffa
-    last_write_checksum: sha1:9ad96b5b7a136ab85ef1b528d7862b83410fb5a8
-    pristine_git_object: bb76d8c0d1a9c75c3efb7f2905e25e51774481d3
+    last_write_checksum: sha1:fdd495eb8fc419d102ab7ab284a97d57ebdfe591
+    pristine_git_object: 419606c0cd346234f6fc25a660189cdec09b968f
   examples/resources/konnect_gateway_plugin_ace/import-by-string-id.tf:
     id: 57a987a74a84
     last_write_checksum: sha1:2aeaaa49510bb9571abe195ac9bb860f5f97f09e
@@ -985,8 +985,8 @@ trackedFiles:
     pristine_git_object: f97f8361ed4493ab7477126209005f9272c82175
   examples/resources/konnect_gateway_plugin_ai_llm_as_judge/resource.tf:
     id: 0025c6e432ae
-    last_write_checksum: sha1:165a3fce069d82b5e92669abc62633bc972d625d
-    pristine_git_object: fc8c74a93821ddf77ab98f8cbbc1a8db6b522ea9
+    last_write_checksum: sha1:3abba113f734f97b6efee3d7415e1e2619eccac6
+    pristine_git_object: 783efdd07689e98095ddbda51b3bdb7f9ecac48f
   examples/resources/konnect_gateway_plugin_ai_mcp_oauth2/import-by-string-id.tf:
     id: 1ebe6fb2f708
     last_write_checksum: sha1:f64a9fed5f03527cb37a8fd0e1cb21041956763f
@@ -1069,8 +1069,8 @@ trackedFiles:
     pristine_git_object: c971cc826bd9ba3dedf2e01151647396ca496612
   examples/resources/konnect_gateway_plugin_ai_proxy/resource.tf:
     id: 094cb10cb370
-    last_write_checksum: sha1:350f2f066b4280fcbd4d952b6c3ee6621657efda
-    pristine_git_object: 33ef6271d709a95e8c2dfc4a97557c226d421507
+    last_write_checksum: sha1:3f092a67345ed50d19a2a0d0d073d3ce985e937b
+    pristine_git_object: 34d50dd61e58d9fb007a76f75e77424785f4830b
   examples/resources/konnect_gateway_plugin_ai_proxy_advanced/import-by-string-id.tf:
     id: b4e4e2121b60
     last_write_checksum: sha1:de46c175869e096e3e0b105873eb10d31ed8df5d
@@ -1081,8 +1081,8 @@ trackedFiles:
     pristine_git_object: 822a8c6c15c8639bc6325d7d83f5485b10aca959
   examples/resources/konnect_gateway_plugin_ai_proxy_advanced/resource.tf:
     id: cdc5b9af93d3
-    last_write_checksum: sha1:db47677b6451a2fdd891178c344028b908befa7c
-    pristine_git_object: 9a02bfb5829defb6b64896f126fea1fea453abd8
+    last_write_checksum: sha1:39cf80d6ccc207e2a1aa13372a7b95d7175a14eb
+    pristine_git_object: bd39b6a6c92d3e7ebfc6702f8398b2b0609e30f4
   examples/resources/konnect_gateway_plugin_ai_rag_injector/import-by-string-id.tf:
     id: 4da69ba2cbe8
     last_write_checksum: sha1:bbaa11cc3ab44c67a9820029d087986c2875fc4d
@@ -1117,8 +1117,8 @@ trackedFiles:
     pristine_git_object: 55308392009eafa820c33d0776808a6ffe0e2b90
   examples/resources/konnect_gateway_plugin_ai_request_transformer/resource.tf:
     id: 705ecaaccc63
-    last_write_checksum: sha1:d8a051ae3c5a45fbf7d7d8d9c997e8098d8defef
-    pristine_git_object: 758ab1a44290f7946210747ff7fc41f6c84d5b5a
+    last_write_checksum: sha1:9a28608613abb83f1182885eeff077018f2a1119
+    pristine_git_object: 5646c9b8f2715deff2ba1589c6daa312f420d33a
   examples/resources/konnect_gateway_plugin_ai_response_transformer/import-by-string-id.tf:
     id: 7f8a1fd06d83
     last_write_checksum: sha1:61faabf8a571459cb47e5cf24243ccb2c735707e
@@ -1129,8 +1129,8 @@ trackedFiles:
     pristine_git_object: 5d530185fbf381c3c2bfaa288d0ad7ddbba72d2f
   examples/resources/konnect_gateway_plugin_ai_response_transformer/resource.tf:
     id: c104f14b1c19
-    last_write_checksum: sha1:d4edd94cb86bb9d34f91740000e1d12a944839a2
-    pristine_git_object: f02aed661c349fd54fac0c0c8cb534c447cfa065
+    last_write_checksum: sha1:e519ee765b3780ca1063cc872bbb8fb30328a7be
+    pristine_git_object: d80d1890ab92f7d41d3937f5fce07c040f41bb75
   examples/resources/konnect_gateway_plugin_ai_sanitizer/import-by-string-id.tf:
     id: 09c814d1dece
     last_write_checksum: sha1:3958d99d9bfc079faabe7629f6d8b0581992d0c0
@@ -3445,12 +3445,12 @@ trackedFiles:
     pristine_git_object: 6e43f0dbfcf66687cad0dfbd0808eb64d65e8f8e
   internal/provider/gatewaypartial_resource.go:
     id: 24134bc2dadf
-    last_write_checksum: sha1:23503ad72755f4eb69739a471bf90aeba785f862
-    pristine_git_object: b726a49d9cdeb274d3b9c3ba07adb9b4877c6672
+    last_write_checksum: sha1:e33a39942956e7cb559b9e655c6939ecc1f7836e
+    pristine_git_object: cfbf49805b7dce17b1238a004077bc3b80932cd3
   internal/provider/gatewaypartial_resource_sdk.go:
     id: 9589d5bd52ec
-    last_write_checksum: sha1:4891c85a02b0243997e8a2747c98f598fb4e2d28
-    pristine_git_object: 28f758c060a30b3a68d410e6fda381bc3d6ded72
+    last_write_checksum: sha1:8da525ebdc0b85cec49eb94b3afd3082fd45e8fe
+    pristine_git_object: 6f8b4b8448e1857b6f6f5630d1f7febb8d01642b
   internal/provider/gatewaypluginace_resource.go:
     id: 99615ff382c8
     last_write_checksum: sha1:0af98ad268dd9707621839cb9091e7b6f2d08007
@@ -3485,16 +3485,16 @@ trackedFiles:
     pristine_git_object: 6a15b430638f2446f5d5dfce0734ac0a14bf26db
   internal/provider/gatewaypluginaiawsguardrails_resource.go:
     id: 92833b3109a1
-    last_write_checksum: sha1:5c23675d9542fa8d1123bf7e0300923ea5d45f9b
-    pristine_git_object: 6c2bb1a8dc3e05b6eb8ae6c50a6689114dcce0ea
+    last_write_checksum: sha1:acdb8f25656ffa1f9077a157fc41985167edbeb9
+    pristine_git_object: fa5d1a7cd918618810e138c99ae3b72475bd8f99
   internal/provider/gatewaypluginaiawsguardrails_resource_sdk.go:
     id: bc08b528a38a
     last_write_checksum: sha1:8111008e9b2277e2e0b6ee89c45b71836047ed5e
     pristine_git_object: a82009dba511fa02b3964d4ab7d7bdcab4b79ba4
   internal/provider/gatewaypluginaiazurecontentsafety_resource.go:
     id: 3a75ee25bf2a
-    last_write_checksum: sha1:6b4bf59cc774a1126ca616aaed2d5d10f3c4fbf9
-    pristine_git_object: e40110c665215df52ca3f1ff26bf38bf2d1600da
+    last_write_checksum: sha1:aae3860171b343912606be51108a219569cbc023
+    pristine_git_object: bb392b5d8ad304bd0d25d66204426efcf10aeb63
   internal/provider/gatewaypluginaiazurecontentsafety_resource_sdk.go:
     id: da1ec3206f8c
     last_write_checksum: sha1:d3e26cf87864868965c8785c1a80191828029fe6
@@ -3525,12 +3525,12 @@ trackedFiles:
     pristine_git_object: b5366839dad7cbe0e19f5a2917488daf7bd44894
   internal/provider/gatewaypluginaillmasjudge_resource.go:
     id: 1975f2c04d10
-    last_write_checksum: sha1:e21edd7d390e0de1c1b5adfc104cef9e8d1233cd
-    pristine_git_object: d50c01a38133906686907ca03807802c3433090e
+    last_write_checksum: sha1:acba7fdf2aea47fd2f729274dab350417bac6270
+    pristine_git_object: 65de94a443b94f2f56642e3ddb43dc1e4ddb60e4
   internal/provider/gatewaypluginaillmasjudge_resource_sdk.go:
     id: 454be652ce3a
-    last_write_checksum: sha1:8ea4794f6e8aa8edca8a414149ef2acc48f0ecd4
-    pristine_git_object: e58cddea416646452b5fd851464c04ff6e2e3c36
+    last_write_checksum: sha1:da20f31d9380747a427b15349ecbec6d658a90c4
+    pristine_git_object: 9010faf5420600403e08e7b45a34b50b6a1ab33c
   internal/provider/gatewaypluginaimcpoauth2_resource.go:
     id: e1f6ff1a01a0
     last_write_checksum: sha1:32328a987850f6c9c6c640844a553445eebfa5bc
@@ -3581,20 +3581,20 @@ trackedFiles:
     pristine_git_object: fb4d1b5a4363c53f3a11bc5eed4545be31eea7da
   internal/provider/gatewaypluginaiproxy_resource.go:
     id: e06b962aa4d0
-    last_write_checksum: sha1:a674192d517335661016c00a03c1afd5de8b2199
-    pristine_git_object: 9f38160a1b1a065b7068dcb080e47363696bec57
+    last_write_checksum: sha1:82b6ae5338af710a606170e040ec04c2ec3acd6f
+    pristine_git_object: b72a109d831b8e2557db2fa4605a2809f77a4d9d
   internal/provider/gatewaypluginaiproxy_resource_sdk.go:
     id: 35ffdfc9e2a1
-    last_write_checksum: sha1:826fedc9dd58980d44b9cdd92e0f0ec4c0bab211
-    pristine_git_object: 49ae772156d5c4ac031b3101ee24f6de8a821cc5
+    last_write_checksum: sha1:dcb6b70f85b3f31510584e856be115da5e37f7fb
+    pristine_git_object: 84227a60544d28b193451c212826ed180bda13a5
   internal/provider/gatewaypluginaiproxyadvanced_resource.go:
     id: 184142ae7600
-    last_write_checksum: sha1:052883ecf8e131c7202fde435aeb65104381346d
-    pristine_git_object: fab1357008c47d9a4f339622b4dde7100ecc37d0
+    last_write_checksum: sha1:2a7e9dd765d148047020cbfbede5f61fa13526ef
+    pristine_git_object: edfb10781b91d37302952d8c987ab2729781c0c4
   internal/provider/gatewaypluginaiproxyadvanced_resource_sdk.go:
     id: eea2e6387e4c
-    last_write_checksum: sha1:35784350b41953cc13fc8e4201b90be0b546fe6b
-    pristine_git_object: 2d77c060f846d010f7ccfa8aa02bada10b7a76cd
+    last_write_checksum: sha1:a6b75a1aeb96c81d8b3bddf76bfc00bda5fad6b6
+    pristine_git_object: 046cba1eff0132bf6cc6159752959e8f9c55dcf5
   internal/provider/gatewaypluginairaginjector_resource.go:
     id: 1c254049d8e4
     last_write_checksum: sha1:fdcafcf077024d79ce2da1cebca8507e6968d113
@@ -3613,20 +3613,20 @@ trackedFiles:
     pristine_git_object: 6e07a164e03bb6c25b2e679b2c2418e9be51a0b3
   internal/provider/gatewaypluginairequesttransformer_resource.go:
     id: 72cbbe48dc9a
-    last_write_checksum: sha1:e344920a5b16ddf3c572d257957da2c61cacaec6
-    pristine_git_object: 1c4df945cc135df61eeedade0055cebc8b48532c
+    last_write_checksum: sha1:e4653b9c3365658d1d61072a24a9d341a618d507
+    pristine_git_object: 452fb7fecd0be5ac2c81cdc3bfe4836d02d9c980
   internal/provider/gatewaypluginairequesttransformer_resource_sdk.go:
     id: 86ceb4b99803
-    last_write_checksum: sha1:6de586cff98ecd55743e0938923077c48911ced6
-    pristine_git_object: 1e9ff98cd96f7645d1b8986c93d138766954c861
+    last_write_checksum: sha1:78a0b6f8543f01d0e187a46761f050d7121a2db8
+    pristine_git_object: ce9785661577d4236affce8444ad77b963914ebb
   internal/provider/gatewaypluginairesponsetransformer_resource.go:
     id: 2c5b75625f1c
-    last_write_checksum: sha1:6f0c649e83079d608ffd6d43e2e0606f1af0cab1
-    pristine_git_object: bd21b7a5f04d4bb260d132be71732d445521d186
+    last_write_checksum: sha1:7df10575f4cd09171ac4733604e952df648efc4a
+    pristine_git_object: e5d20311ae0d2381b30df0ca68abe6411554b273
   internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go:
     id: fa8c2b5ed656
-    last_write_checksum: sha1:593e6832c5f856709fb40042f0fbd97c423c60e6
-    pristine_git_object: 914a4341453c28d44c6771d8068b5f7b676686bd
+    last_write_checksum: sha1:6dcd29c46a38b67251dfb4ac0e429e10ce090839
+    pristine_git_object: f75be8281784bec3034fe63217f278ae39d3ab39
   internal/provider/gatewaypluginaisanitizer_resource.go:
     id: 6bbcc5671131
     last_write_checksum: sha1:12c9709397b08a4fa71cec14171b11de0e811272
@@ -4793,12 +4793,12 @@ trackedFiles:
     pristine_git_object: 70d9461fbfd63b6020d6be1760ba21d1b1ceba33
   internal/provider/team_data_source.go:
     id: 04f2d9ddc539
-    last_write_checksum: sha1:2ca9f5e3230165827dae56b710920262c6d87100
-    pristine_git_object: c7e2239dcf1c2307509abc9c2a461729072b22b2
+    last_write_checksum: sha1:87fc3653639d1105563b1acd4e9fb6bee738ff8e
+    pristine_git_object: d2dd47f3c3af7ec94d0ea64c899409afaa76f1d8
   internal/provider/team_data_source_sdk.go:
     id: 63ef911cc938
-    last_write_checksum: sha1:99783df9a62a81ff2d2a3ce975631d875fc30c11
-    pristine_git_object: c6705d0b56e0853548d556231a1718c0f2c60f50
+    last_write_checksum: sha1:7da9d4bc1788899786d22d1e1446ddff364fea5b
+    pristine_git_object: b863832797a77d95b1e47951d6d7b815a5c4bfb1
   internal/provider/team_resource.go:
     id: 31cbf207d880
     last_write_checksum: sha1:e33adf53860605323d0997162869b6298871f9c7
@@ -4809,12 +4809,12 @@ trackedFiles:
     pristine_git_object: d8eea4d1a7a5361be68c280faa7748829a94cd27
   internal/provider/teamlist_data_source.go:
     id: 5e3b889bdf83
-    last_write_checksum: sha1:9344c5ea3a81f38c754d52ae36b9c9000a7b2225
-    pristine_git_object: 4a91c4b69ecaf7a304adecbe48ac4dd4bb7d82b8
+    last_write_checksum: sha1:383ac701ede89ce6412abeb1a580af14ae11a2e0
+    pristine_git_object: 42e5eae991430bc9be8f5688e37ab2c0cdee11c5
   internal/provider/teamlist_data_source_sdk.go:
     id: fd26a36b84cc
-    last_write_checksum: sha1:e8e3a56d5bf2eaf1979635de3155560ca19277dd
-    pristine_git_object: c0539f0685d8034bd4ab54f4b4c4c1725a532727
+    last_write_checksum: sha1:66f4ce811f71a7225140534dfaeb62c52ccda817
+    pristine_git_object: 049ee03d948621b3a0400e2fdbe6fd0a480e3a58
   internal/provider/teamrole_resource.go:
     id: d74f466c05c1
     last_write_checksum: sha1:c0106aa5824bc5d6df9a0baf85b892243e66ae8b
@@ -5937,8 +5937,8 @@ trackedFiles:
     pristine_git_object: 6501e2a3c1f0187174eecd56dc0d9796f2d9b6ba
   internal/provider/types/legacy_string_field_filter_with_exists.go:
     id: 433c71741534
-    last_write_checksum: sha1:aed0398cc5c4f897b5e12c997c36121f4237370c
-    pristine_git_object: 7eb5a865cf6a4bf25d8421ece08eaacf2535d628
+    last_write_checksum: sha1:091fcaa58317d237b4d824da596fa96b3b5772bb
+    pristine_git_object: fcd43c2737af800a88e6413a18d770a6d49cade1
   internal/provider/types/limits.go:
     id: c4c495a3b106
     last_write_checksum: sha1:177647736dc22dbaa36159af398f0c10305a5d66
@@ -6207,6 +6207,10 @@ trackedFiles:
     id: 27be1aeaf076
     last_write_checksum: sha1:faa63e6b7633539b97f55b32880b49e097aff931
     pristine_git_object: e5d21d13f309b358f0e7ba8ec637d1740906746d
+  internal/provider/types/partial_model_cache_write_cost_list.go:
+    id: c8dde8b6d9c8
+    last_write_checksum: sha1:0068670e57ea4caa34041e187b33b27b0eff7a73
+    pristine_git_object: f53874077a1b236ffd8369a21b0f06e614038ff1
   internal/provider/types/partial_model_cohere.go:
     id: 5661ce88be3d
     last_write_checksum: sha1:976a3c15cd3602a9387d327352eb3ef15ae3366e
@@ -6215,6 +6219,10 @@ trackedFiles:
     id: 51ae8c29e74e
     last_write_checksum: sha1:907ce25e012ccbb291ff13bed7df4a9b501497c9
     pristine_git_object: 6c2cd3c758a934a64a08c01ce2c30abc30742a54
+  internal/provider/types/partial_model_context_window_factor.go:
+    id: c2fae054e74e
+    last_write_checksum: sha1:8333ec81eee5dff21be0c2db75606c72383e81be
+    pristine_git_object: eb2a4ea883693a0afd3257bf222f362fab3300f6
   internal/provider/types/partial_model_dashscope.go:
     id: 75a40a1e6ce7
     last_write_checksum: sha1:addc33abfa31add3818e19345b928ef9e7e12164
@@ -6237,8 +6245,12 @@ trackedFiles:
     pristine_git_object: 2cfc2fe3f6f5f049a055d732c07a497d1bf787f6
   internal/provider/types/partial_model_options.go:
     id: 7eb859a8d06e
-    last_write_checksum: sha1:0aa4b1c78fa9560987eaaec90ea5a67a81be7117
-    pristine_git_object: f84bdc277ac00fe659aa55cd09341ec9125777f8
+    last_write_checksum: sha1:33df8fbf6e5bb9a053034cfb6ef871479bb3cad1
+    pristine_git_object: 014b4db7b1d34f05d4fea3c25675b8469a23b2b3
+  internal/provider/types/partial_model_service_tier_factor.go:
+    id: 96d6928a7e3b
+    last_write_checksum: sha1:fc1c4dd53c63353aae0db963059e4b545e968bf1
+    pristine_git_object: 30cb28176204cceade9bf467436cfdbf5db55dbb
   internal/provider/types/partial_redis_ce.go:
     id: 2d9706384605
     last_write_checksum: sha1:c2390390076f25c8a7ceff964c4d7827568b001c
@@ -6675,10 +6687,6 @@ trackedFiles:
     id: 5bd1c526402b
     last_write_checksum: sha1:8a3126ef9328cadfa36dfbf41e02a004b98c5841
     pristine_git_object: 7b44e3fa0123677834c74f5c27eb94888e30f3a8
-  internal/provider/types/string_field_exists_filter.go:
-    id: 49a8d3893296
-    last_write_checksum: sha1:d2a7624a559442231c6fbaa454631e5a33be2c87
-    pristine_git_object: e0be78320b8d21ee2920583953c2ad801f1d6da6
   internal/provider/types/subject.go:
     id: 6212757abc27
     last_write_checksum: sha1:da725c8fe0773d644e8189f01fdcdb7c1f97887a
@@ -10809,12 +10817,12 @@ trackedFiles:
     pristine_git_object: 58346baff515037a9deedd7eea29b2c1a71dc9ae
   internal/sdk/models/shared/aiawsguardrailsplugin.go:
     id: 63ed8874f6b9
-    last_write_checksum: sha1:0d902d12da6f52a6dcf78564bd3962f5807d1586
-    pristine_git_object: 1d20cd0b68bcf8c15d04e91b452534095c56e15f
+    last_write_checksum: sha1:b5fcbd05f24d8a3aa40f40e29f35cc742fe905e2
+    pristine_git_object: 9c0b72011571a6727b007cd768f2b8d1aa1099be
   internal/sdk/models/shared/aiazurecontentsafetyplugin.go:
     id: 148987d8cfab
-    last_write_checksum: sha1:f9e04c7a9f46e2101b830a8cbed6b2b405989053
-    pristine_git_object: 428b0722641a7ffee9131fe717fc16586e201a71
+    last_write_checksum: sha1:fed962839de9419b71bf3e573fe914f81d13ce7c
+    pristine_git_object: 960c73e8b5e2e7783efa060ba0038732b6eaab01
   internal/sdk/models/shared/aicustomguardrailplugin.go:
     id: fb31f9230fbc
     last_write_checksum: sha1:1df2eb760d2c0b264a307361802e68ef5a17f3ce
@@ -10829,8 +10837,8 @@ trackedFiles:
     pristine_git_object: 6c361f8886e3152add4c6ea79098ca1e03d49199
   internal/sdk/models/shared/aillmasjudgeplugin.go:
     id: e198d2863c59
-    last_write_checksum: sha1:8b051e6f027a7c5a80b6863526bf683bc922f331
-    pristine_git_object: 6b8ad4c68bf61ae708e9504214e7d6d4df120126
+    last_write_checksum: sha1:42bfe8eba9b123ffc67131c3f3b43568ef2e075d
+    pristine_git_object: 7c6a878c44aba0db0b4706e20dc2762ae10747a0
   internal/sdk/models/shared/aimcpoauth2plugin.go:
     id: 3d888b1417ab
     last_write_checksum: sha1:17b0209fd9d9f2c05e732cfd8e551dadc4dc5077
@@ -10857,12 +10865,12 @@ trackedFiles:
     pristine_git_object: 56ecf1f28488f3e37e637808650fdd4d26ce3497
   internal/sdk/models/shared/aiproxyadvancedplugin.go:
     id: 430b79651b7d
-    last_write_checksum: sha1:714ef57d7605685298ac76da9b56802446cab486
-    pristine_git_object: 08b3b766a0dd17e54266014346891f93e6c50236
+    last_write_checksum: sha1:7df002a79bceb109068ae76bd7c741d8a7088270
+    pristine_git_object: 2f5202a6560627c1135efd621cbe46d6bbf8df4e
   internal/sdk/models/shared/aiproxyplugin.go:
     id: 6abf67e3c471
-    last_write_checksum: sha1:90d6ed863d5139cb1b708af4aa76039155f58149
-    pristine_git_object: 105c38a564685e6bb97b577d11e1bb1d177cf03c
+    last_write_checksum: sha1:6593faa7839a5dc23912f4b7cebf3cdd182a16e7
+    pristine_git_object: c44cce0d903583bb65e695d522766193e9b0b45d
   internal/sdk/models/shared/airaginjectorplugin.go:
     id: 7505174fec4e
     last_write_checksum: sha1:227d71150dec37d01a9e447546b2bffcc710fb75
@@ -10873,12 +10881,12 @@ trackedFiles:
     pristine_git_object: 320f4b3a84db6c43150a77e2a7e518055160494a
   internal/sdk/models/shared/airequesttransformerplugin.go:
     id: cfe1079f8425
-    last_write_checksum: sha1:7c2584a4e76ac86929faa9b084ec596bd626325d
-    pristine_git_object: 32bc1f1bc9ff3f073b54226ae71f33ad0901ab89
+    last_write_checksum: sha1:2ac6960973bf2c531e5f349f1fb1b5dd3a64d288
+    pristine_git_object: 14afabaf9f7b9dd033bb7ac40cc2283eb2cf107d
   internal/sdk/models/shared/airesponsetransformerplugin.go:
     id: 065f0877ea34
-    last_write_checksum: sha1:6b24ca6d10ee257f4f444cf685af6da2cc5ad045
-    pristine_git_object: c3dbe1e030e404d797f2f8eabade81fcc9d012a2
+    last_write_checksum: sha1:72e27ae850783de5eabd52f413f1358a8cd35dff
+    pristine_git_object: 6fda60b749d01875114f4b7f38bbb1b21fe85b6d
   internal/sdk/models/shared/aisanitizerplugin.go:
     id: 86c0bec918d7
     last_write_checksum: sha1:897d599863e39d8def6508813678aa0e43383935
@@ -12365,8 +12373,8 @@ trackedFiles:
     pristine_git_object: 049c8e2aa9963c53185b3e9ec5bbd8f302c6b376
   internal/sdk/models/shared/legacystringfieldfilterwithexists.go:
     id: e7a7c9365013
-    last_write_checksum: sha1:75ba9d4366fc0238c755ffaa9ae3dd5db7de0634
-    pristine_git_object: aecc7f994ce0b400f5e05f35ecf46dd581cfebea
+    last_write_checksum: sha1:a8748d869d4df80b07e796fcddc9fd2f16ba0ec2
+    pristine_git_object: 632c7e40a95bcc98b4698c4d973c3d28306d2130
   internal/sdk/models/shared/listcontrolplanesresponse.go:
     id: 9581cd81f240
     last_write_checksum: sha1:2dcdf26c51f52a086457325676f39fef8e0906da
@@ -12553,8 +12561,8 @@ trackedFiles:
     pristine_git_object: 97ecb01d09df71a9f39078fc4c548f7f8b07d2e6
   internal/sdk/models/shared/partial.go:
     id: 8b3e30a616ef
-    last_write_checksum: sha1:08398ba596a5a599ecf3231a48e458d95bf44c36
-    pristine_git_object: 285d98b6bd04016e4ce41e8daf823bf7967578b9
+    last_write_checksum: sha1:a2e008232609245a7d12b6c632e2c67f533bc76a
+    pristine_git_object: bd4e7c1ee506614f2d6de0d0bc6264b4bcdc5a50
   internal/sdk/models/shared/partialappauthstrategyconfigkeyauth.go:
     id: ab0e7e1e58ae
     last_write_checksum: sha1:18e8af038162bd94ddc1b51c43af55e5b2fff6b1
@@ -12967,10 +12975,6 @@ trackedFiles:
     id: eb0d70142933
     last_write_checksum: sha1:4a7b97abfcbf4e6eac80c5d3473c15995e17b40e
     pristine_git_object: 93d98f46493db97f688cf43cdd2c9695e3d9f0f8
-  internal/sdk/models/shared/stringfieldexistsfilter.go:
-    id: d249d77826e4
-    last_write_checksum: sha1:8ff53e8b167a482de500e3e7e073f8987d4f9aa8
-    pristine_git_object: 4ec6619f913f37bba7c211d2b11b4514de2d6a1d
   internal/sdk/models/shared/stringfieldfilter.go:
     id: db684bad12fe
     last_write_checksum: sha1:866d19a3ae4bb2e1b88be9978b0513fe84839904
@@ -17966,7 +17970,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "logging": null, "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "vllm"}, "model_name_header": true, "response_streaming": "allow", "route_type": "llm/v1/batches"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "vllm"}, "model_name_header": true, "response_streaming": "allow", "route_type": "llm/v1/batches"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 836381}
   update-aiproxy-plugin:
@@ -17976,10 +17980,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "logging": null, "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "bedrock"}, "model_name_header": true, "response_streaming": "allow", "route_type": "video/v1/videos/generations"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "bedrock"}, "model_name_header": true, "response_streaming": "allow", "route_type": "video/v1/videos/generations"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "logging": null, "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "bedrock"}, "model_name_header": true, "response_streaming": "allow", "route_type": "video/v1/videos/generations"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "bedrock"}, "model_name_header": true, "response_streaming": "allow", "route_type": "video/v1/videos/generations"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 581905}
   delete-aiproxyadvanced-plugin:
@@ -17999,7 +18003,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "balancer": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 99516}
   update-aiproxyadvanced-plugin:
@@ -18009,10 +18013,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "balancer": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "logging": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "cerebras"}, "route_type": "preserve", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "cerebras"}, "route_type": "preserve", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "balancer": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "logging": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "cerebras"}, "route_type": "preserve", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "cerebras"}, "route_type": "preserve", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 868925}
   delete-airaginjector-plugin:
@@ -21282,10 +21286,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "logging": null, "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "openai"}, "model_name_header": true, "response_streaming": "allow", "route_type": "audio/v1/audio/transcriptions"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "openai"}, "model_name_header": true, "response_streaming": "allow", "route_type": "audio/v1/audio/transcriptions"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "logging": null, "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "openai"}, "model_name_header": true, "response_streaming": "allow", "route_type": "audio/v1/audio/transcriptions"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy", "ordering": null, "partials": null, "tags": null, "config": {"auth": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model": {"model_alias": null, "name": null, "options": null, "provider": "openai"}, "model_name_header": true, "response_streaming": "allow", "route_type": "audio/v1/audio/transcriptions"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 345925}
   create-aiproxyadvanced-plugin:
@@ -21294,10 +21298,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "balancer": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "logging": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "anthropic"}, "route_type": "audio/v1/audio/speech", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "anthropic"}, "route_type": "audio/v1/audio/speech", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "balancer": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "logging": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "anthropic"}, "route_type": "audio/v1/audio/speech", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-proxy-advanced", "ordering": null, "partials": null, "tags": null, "config": {"acls": null, "embeddings": null, "genai_category": "text/generation", "llm_format": "openai", "max_request_body_size": 1048576, "model_name_header": true, "response_streaming": "allow", "targets": [{"auth": null, "description": null, "model": {"model_alias": null, "name": null, "options": null, "provider": "anthropic"}, "route_type": "audio/v1/audio/speech", "weight": 100}], "vectordb": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 107964}
   create-airaginjector-plugin:

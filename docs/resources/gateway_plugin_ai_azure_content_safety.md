@@ -130,7 +130,7 @@ Optional:
 - `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so. Default: true
 - `ssl_verify` (Boolean) Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
-- `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content"]; Default: "concatenate_all_content"
+- `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "concatenate_all_content"
 
 <a id="nestedatt--config--categories"></a>
 ### Nested Schema for `config.categories`

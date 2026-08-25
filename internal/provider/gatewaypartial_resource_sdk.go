@@ -175,6 +175,22 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 					r.Model.Config.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.PartialModel.Config.Model.Options.Bedrock.PerformanceConfigLatency)
 					r.Model.Config.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.PartialModel.Config.Model.Options.Bedrock.VideoOutputS3URI)
 				}
+				r.Model.Config.Model.Options.CacheReadCost = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.CacheReadCost)
+				r.Model.Config.Model.Options.CacheWriteCost = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.CacheWriteCost)
+				if resp.PartialModel.Config.Model.Options.CacheWriteCostList != nil {
+					r.Model.Config.Model.Options.CacheWriteCostList = []tfTypes.PartialModelCacheWriteCostList{}
+
+					for _, cacheWriteCostListItem := range resp.PartialModel.Config.Model.Options.CacheWriteCostList {
+						var cacheWriteCostList tfTypes.PartialModelCacheWriteCostList
+
+						cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
+						cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
+
+						r.Model.Config.Model.Options.CacheWriteCostList = append(r.Model.Config.Model.Options.CacheWriteCostList, cacheWriteCostList)
+					}
+				} else {
+					r.Model.Config.Model.Options.CacheWriteCostList = nil
+				}
 				if resp.PartialModel.Config.Model.Options.Cohere == nil {
 					r.Model.Config.Model.Options.Cohere = nil
 				} else {
@@ -185,6 +201,21 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 						r.Model.Config.Model.Options.Cohere.EmbeddingInputType = types.StringNull()
 					}
 					r.Model.Config.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.PartialModel.Config.Model.Options.Cohere.WaitForModel)
+				}
+				if resp.PartialModel.Config.Model.Options.ContextWindowFactor != nil {
+					r.Model.Config.Model.Options.ContextWindowFactor = []tfTypes.PartialModelContextWindowFactor{}
+
+					for _, contextWindowFactorItem := range resp.PartialModel.Config.Model.Options.ContextWindowFactor {
+						var contextWindowFactor tfTypes.PartialModelContextWindowFactor
+
+						contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
+						contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
+						contextWindowFactor.OutputFactor = types.Float64Value(contextWindowFactorItem.OutputFactor)
+
+						r.Model.Config.Model.Options.ContextWindowFactor = append(r.Model.Config.Model.Options.ContextWindowFactor, contextWindowFactor)
+					}
+				} else {
+					r.Model.Config.Model.Options.ContextWindowFactor = nil
 				}
 				if resp.PartialModel.Config.Model.Options.Dashscope == nil {
 					r.Model.Config.Model.Options.Dashscope = nil
@@ -228,6 +259,20 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 					r.Model.Config.Model.Options.MistralFormat = types.StringNull()
 				}
 				r.Model.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.OutputCost)
+				if resp.PartialModel.Config.Model.Options.ServiceTierFactor != nil {
+					r.Model.Config.Model.Options.ServiceTierFactor = []tfTypes.PartialModelServiceTierFactor{}
+
+					for _, serviceTierFactorItem := range resp.PartialModel.Config.Model.Options.ServiceTierFactor {
+						var serviceTierFactor tfTypes.PartialModelServiceTierFactor
+
+						serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
+						serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)
+
+						r.Model.Config.Model.Options.ServiceTierFactor = append(r.Model.Config.Model.Options.ServiceTierFactor, serviceTierFactor)
+					}
+				} else {
+					r.Model.Config.Model.Options.ServiceTierFactor = nil
+				}
 				r.Model.Config.Model.Options.Temperature = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.Temperature)
 				r.Model.Config.Model.Options.TopK = types.Int64PointerValue(resp.PartialModel.Config.Model.Options.TopK)
 				r.Model.Config.Model.Options.TopP = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.TopP)
@@ -2158,6 +2203,34 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 					VideoOutputS3URI:         videoOutputS3Uri1,
 				}
 			}
+			cacheReadCost := new(float64)
+			if !r.Model.Config.Model.Options.CacheReadCost.IsUnknown() && !r.Model.Config.Model.Options.CacheReadCost.IsNull() {
+				*cacheReadCost = r.Model.Config.Model.Options.CacheReadCost.ValueFloat64()
+			} else {
+				cacheReadCost = nil
+			}
+			cacheWriteCost := new(float64)
+			if !r.Model.Config.Model.Options.CacheWriteCost.IsUnknown() && !r.Model.Config.Model.Options.CacheWriteCost.IsNull() {
+				*cacheWriteCost = r.Model.Config.Model.Options.CacheWriteCost.ValueFloat64()
+			} else {
+				cacheWriteCost = nil
+			}
+			var cacheWriteCostList []shared.PartialModelCacheWriteCostList
+			if r.Model.Config.Model.Options.CacheWriteCostList != nil {
+				cacheWriteCostList = make([]shared.PartialModelCacheWriteCostList, 0, len(r.Model.Config.Model.Options.CacheWriteCostList))
+				for cacheWriteCostListIndex := range r.Model.Config.Model.Options.CacheWriteCostList {
+					var cost float64
+					cost = r.Model.Config.Model.Options.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
+
+					var ttl string
+					ttl = r.Model.Config.Model.Options.CacheWriteCostList[cacheWriteCostListIndex].TTL.ValueString()
+
+					cacheWriteCostList = append(cacheWriteCostList, shared.PartialModelCacheWriteCostList{
+						Cost: cost,
+						TTL:  ttl,
+					})
+				}
+			}
 			var cohere *shared.PartialModelCohere
 			if r.Model.Config.Model.Options.Cohere != nil {
 				embeddingInputType := new(shared.PartialModelEmbeddingInputType)
@@ -2175,6 +2248,26 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				cohere = &shared.PartialModelCohere{
 					EmbeddingInputType: embeddingInputType,
 					WaitForModel:       waitForModel1,
+				}
+			}
+			var contextWindowFactor []shared.PartialModelContextWindowFactor
+			if r.Model.Config.Model.Options.ContextWindowFactor != nil {
+				contextWindowFactor = make([]shared.PartialModelContextWindowFactor, 0, len(r.Model.Config.Model.Options.ContextWindowFactor))
+				for contextWindowFactorIndex := range r.Model.Config.Model.Options.ContextWindowFactor {
+					var above string
+					above = r.Model.Config.Model.Options.ContextWindowFactor[contextWindowFactorIndex].Above.ValueString()
+
+					var inputFactor float64
+					inputFactor = r.Model.Config.Model.Options.ContextWindowFactor[contextWindowFactorIndex].InputFactor.ValueFloat64()
+
+					var outputFactor float64
+					outputFactor = r.Model.Config.Model.Options.ContextWindowFactor[contextWindowFactorIndex].OutputFactor.ValueFloat64()
+
+					contextWindowFactor = append(contextWindowFactor, shared.PartialModelContextWindowFactor{
+						Above:        above,
+						InputFactor:  inputFactor,
+						OutputFactor: outputFactor,
+					})
 				}
 			}
 			var dashscope *shared.PartialModelDashscope
@@ -2289,6 +2382,22 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				outputCost = nil
 			}
+			var serviceTierFactor []shared.PartialModelServiceTierFactor
+			if r.Model.Config.Model.Options.ServiceTierFactor != nil {
+				serviceTierFactor = make([]shared.PartialModelServiceTierFactor, 0, len(r.Model.Config.Model.Options.ServiceTierFactor))
+				for serviceTierFactorIndex := range r.Model.Config.Model.Options.ServiceTierFactor {
+					var factor float64
+					factor = r.Model.Config.Model.Options.ServiceTierFactor[serviceTierFactorIndex].Factor.ValueFloat64()
+
+					var tier string
+					tier = r.Model.Config.Model.Options.ServiceTierFactor[serviceTierFactorIndex].Tier.ValueString()
+
+					serviceTierFactor = append(serviceTierFactor, shared.PartialModelServiceTierFactor{
+						Factor: factor,
+						Tier:   tier,
+					})
+				}
+			}
 			temperature := new(float64)
 			if !r.Model.Config.Model.Options.Temperature.IsUnknown() && !r.Model.Config.Model.Options.Temperature.IsNull() {
 				*temperature = r.Model.Config.Model.Options.Temperature.ValueFloat64()
@@ -2325,7 +2434,11 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				AzureDeploymentID:    azureDeploymentID,
 				AzureInstance:        azureInstance,
 				Bedrock:              bedrock1,
+				CacheReadCost:        cacheReadCost,
+				CacheWriteCost:       cacheWriteCost,
+				CacheWriteCostList:   cacheWriteCostList,
 				Cohere:               cohere,
+				ContextWindowFactor:  contextWindowFactor,
 				Dashscope:            dashscope,
 				Databricks:           databricks,
 				EmbeddingsDimensions: embeddingsDimensions,
@@ -2336,6 +2449,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				MaxTokens:            maxTokens,
 				MistralFormat:        mistralFormat,
 				OutputCost:           outputCost,
+				ServiceTierFactor:    serviceTierFactor,
 				Temperature:          temperature,
 				TopK:                 topK,
 				TopP:                 topP,

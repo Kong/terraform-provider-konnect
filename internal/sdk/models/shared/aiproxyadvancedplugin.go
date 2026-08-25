@@ -1500,6 +1500,36 @@ func (a *AiProxyAdvancedPluginConfigBedrock) GetVideoOutputS3URI() *string {
 	return a.VideoOutputS3URI
 }
 
+type AiProxyAdvancedPluginCacheWriteCostList struct {
+	Cost float64 `json:"cost"`
+	TTL  string  `json:"ttl"`
+}
+
+func (a AiProxyAdvancedPluginCacheWriteCostList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginCacheWriteCostList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"cost", "ttl"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginCacheWriteCostList) GetCost() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.Cost
+}
+
+func (a *AiProxyAdvancedPluginCacheWriteCostList) GetTTL() string {
+	if a == nil {
+		return ""
+	}
+	return a.TTL
+}
+
 // AiProxyAdvancedPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
 type AiProxyAdvancedPluginEmbeddingInputType string
 
@@ -1556,6 +1586,44 @@ func (a *AiProxyAdvancedPluginCohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return a.WaitForModel
+}
+
+type AiProxyAdvancedPluginContextWindowFactor struct {
+	Above        string  `json:"above"`
+	InputFactor  float64 `json:"input_factor"`
+	OutputFactor float64 `json:"output_factor"`
+}
+
+func (a AiProxyAdvancedPluginContextWindowFactor) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginContextWindowFactor) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"above", "input_factor", "output_factor"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginContextWindowFactor) GetAbove() string {
+	if a == nil {
+		return ""
+	}
+	return a.Above
+}
+
+func (a *AiProxyAdvancedPluginContextWindowFactor) GetInputFactor() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.InputFactor
+}
+
+func (a *AiProxyAdvancedPluginContextWindowFactor) GetOutputFactor() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.OutputFactor
 }
 
 type AiProxyAdvancedPluginDashscope struct {
@@ -1735,6 +1803,37 @@ func (e *AiProxyAdvancedPluginMistralFormat) IsExact() bool {
 	return false
 }
 
+type AiProxyAdvancedPluginServiceTierFactor struct {
+	Factor float64 `json:"factor"`
+	// A word matched case-insensitively as a substring of the vendor's reported service tier (e.g. 'priority', 'flex', or 'throughput' for Gemini/Vertex's PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn't matter. Configure 'priority' will also match 'fast' (whole word) as OpenAI returns either 'priority' or 'fast' for priority service tier.
+	Tier string `json:"tier"`
+}
+
+func (a AiProxyAdvancedPluginServiceTierFactor) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginServiceTierFactor) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"factor", "tier"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginServiceTierFactor) GetFactor() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.Factor
+}
+
+func (a *AiProxyAdvancedPluginServiceTierFactor) GetTier() string {
+	if a == nil {
+		return ""
+	}
+	return a.Tier
+}
+
 // AiProxyAdvancedPluginConfigOptions - Key/value settings for the model
 type AiProxyAdvancedPluginConfigOptions struct {
 	// Defines the schema/API version, if using Anthropic provider.
@@ -1746,9 +1845,17 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	// Instance name for Azure OpenAI hosted models.
 	AzureInstance *string                             `default:"null" json:"azure_instance"`
 	Bedrock       *AiProxyAdvancedPluginConfigBedrock `json:"bedrock"`
-	Cohere        *AiProxyAdvancedPluginCohere        `json:"cohere"`
-	Dashscope     *AiProxyAdvancedPluginDashscope     `json:"dashscope"`
-	Databricks    *AiProxyAdvancedPluginDatabricks    `json:"databricks"`
+	// Defines the cost per 1M cache-read (cached) prompt tokens.
+	CacheReadCost *float64 `default:"null" json:"cache_read_cost"`
+	// Defines the cost per 1M cache-write prompt tokens.
+	CacheWriteCost *float64 `default:"null" json:"cache_write_cost"`
+	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.
+	CacheWriteCostList []AiProxyAdvancedPluginCacheWriteCostList `json:"cache_write_cost_list"`
+	Cohere             *AiProxyAdvancedPluginCohere              `json:"cohere"`
+	// Above an input-token threshold, scale input/output pricing with the corresponding factor.
+	ContextWindowFactor []AiProxyAdvancedPluginContextWindowFactor `json:"context_window_factor"`
+	Dashscope           *AiProxyAdvancedPluginDashscope            `json:"dashscope"`
+	Databricks          *AiProxyAdvancedPluginDatabricks           `json:"databricks"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                  `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiProxyAdvancedPluginConfigGemini      `json:"gemini"`
@@ -1763,6 +1870,8 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	MistralFormat *AiProxyAdvancedPluginMistralFormat `json:"mistral_format,omitempty"`
 	// Defines the cost per 1M tokens in the output of the AI.
 	OutputCost *float64 `default:"null" json:"output_cost"`
+	// Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.
+	ServiceTierFactor []AiProxyAdvancedPluginServiceTierFactor `json:"service_tier_factor"`
 	// Defines the matching temperature, if using chat or completion models.
 	Temperature *float64 `default:"null" json:"temperature"`
 	// Defines the top-k most likely tokens, if supported.
@@ -1821,11 +1930,39 @@ func (a *AiProxyAdvancedPluginConfigOptions) GetBedrock() *AiProxyAdvancedPlugin
 	return a.Bedrock
 }
 
+func (a *AiProxyAdvancedPluginConfigOptions) GetCacheReadCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheReadCost
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) GetCacheWriteCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCost
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) GetCacheWriteCostList() []AiProxyAdvancedPluginCacheWriteCostList {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCostList
+}
+
 func (a *AiProxyAdvancedPluginConfigOptions) GetCohere() *AiProxyAdvancedPluginCohere {
 	if a == nil {
 		return nil
 	}
 	return a.Cohere
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) GetContextWindowFactor() []AiProxyAdvancedPluginContextWindowFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ContextWindowFactor
 }
 
 func (a *AiProxyAdvancedPluginConfigOptions) GetDashscope() *AiProxyAdvancedPluginDashscope {
@@ -1896,6 +2033,13 @@ func (a *AiProxyAdvancedPluginConfigOptions) GetOutputCost() *float64 {
 		return nil
 	}
 	return a.OutputCost
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) GetServiceTierFactor() []AiProxyAdvancedPluginServiceTierFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ServiceTierFactor
 }
 
 func (a *AiProxyAdvancedPluginConfigOptions) GetTemperature() *float64 {
@@ -2060,7 +2204,7 @@ type Targets struct {
 	Auth *AiProxyAdvancedPluginConfigAuth `json:"auth"`
 	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 	Description *string                       `default:"null" json:"description"`
-	Logging     *AiProxyAdvancedPluginLogging `json:"logging"`
+	Logging     *AiProxyAdvancedPluginLogging `json:"logging,omitempty"`
 	// For internal use only.
 	Metadata any                              `json:"metadata,omitempty"`
 	Model    AiProxyAdvancedPluginConfigModel `json:"model"`
@@ -2851,7 +2995,7 @@ func (v *Vectordb) GetThreshold() *float64 {
 type AiProxyAdvancedPluginConfig struct {
 	// Optional ACL rules. Deny rules take precedence over allow rules.
 	Acls       *Acls       `json:"acls"`
-	Balancer   *Balancer   `json:"balancer"`
+	Balancer   *Balancer   `json:"balancer,omitempty"`
 	Embeddings *Embeddings `json:"embeddings"`
 	// Generative AI category of the request
 	GenaiCategory *AiProxyAdvancedPluginGenaiCategory `default:"text/generation" json:"genai_category"`

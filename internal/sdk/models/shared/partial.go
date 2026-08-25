@@ -317,6 +317,36 @@ func (p *PartialModelBedrock) GetVideoOutputS3URI() *string {
 	return p.VideoOutputS3URI
 }
 
+type PartialModelCacheWriteCostList struct {
+	Cost float64 `json:"cost"`
+	TTL  string  `json:"ttl"`
+}
+
+func (p PartialModelCacheWriteCostList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialModelCacheWriteCostList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"cost", "ttl"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PartialModelCacheWriteCostList) GetCost() float64 {
+	if p == nil {
+		return 0.0
+	}
+	return p.Cost
+}
+
+func (p *PartialModelCacheWriteCostList) GetTTL() string {
+	if p == nil {
+		return ""
+	}
+	return p.TTL
+}
+
 // PartialModelEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
 type PartialModelEmbeddingInputType string
 
@@ -373,6 +403,44 @@ func (p *PartialModelCohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return p.WaitForModel
+}
+
+type PartialModelContextWindowFactor struct {
+	Above        string  `json:"above"`
+	InputFactor  float64 `json:"input_factor"`
+	OutputFactor float64 `json:"output_factor"`
+}
+
+func (p PartialModelContextWindowFactor) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialModelContextWindowFactor) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"above", "input_factor", "output_factor"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PartialModelContextWindowFactor) GetAbove() string {
+	if p == nil {
+		return ""
+	}
+	return p.Above
+}
+
+func (p *PartialModelContextWindowFactor) GetInputFactor() float64 {
+	if p == nil {
+		return 0.0
+	}
+	return p.InputFactor
+}
+
+func (p *PartialModelContextWindowFactor) GetOutputFactor() float64 {
+	if p == nil {
+		return 0.0
+	}
+	return p.OutputFactor
 }
 
 type PartialModelDashscope struct {
@@ -552,6 +620,37 @@ func (e *PartialModelMistralFormat) IsExact() bool {
 	return false
 }
 
+type PartialModelServiceTierFactor struct {
+	Factor float64 `json:"factor"`
+	// A word matched case-insensitively as a substring of the vendor's reported service tier (e.g. 'priority', 'flex', or 'throughput' for Gemini/Vertex's PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn't matter. Configure 'priority' will also match 'fast' (whole word) as OpenAI returns either 'priority' or 'fast' for priority service tier.
+	Tier string `json:"tier"`
+}
+
+func (p PartialModelServiceTierFactor) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialModelServiceTierFactor) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"factor", "tier"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PartialModelServiceTierFactor) GetFactor() float64 {
+	if p == nil {
+		return 0.0
+	}
+	return p.Factor
+}
+
+func (p *PartialModelServiceTierFactor) GetTier() string {
+	if p == nil {
+		return ""
+	}
+	return p.Tier
+}
+
 // PartialModelOptions - Key/value settings for the model
 type PartialModelOptions struct {
 	// Defines the schema/API version, if using Anthropic provider.
@@ -561,11 +660,19 @@ type PartialModelOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                 `default:"null" json:"azure_instance"`
-	Bedrock       *PartialModelBedrock    `json:"bedrock"`
-	Cohere        *PartialModelCohere     `json:"cohere"`
-	Dashscope     *PartialModelDashscope  `json:"dashscope"`
-	Databricks    *PartialModelDatabricks `json:"databricks"`
+	AzureInstance *string              `default:"null" json:"azure_instance"`
+	Bedrock       *PartialModelBedrock `json:"bedrock"`
+	// Defines the cost per 1M cache-read (cached) prompt tokens.
+	CacheReadCost *float64 `default:"null" json:"cache_read_cost"`
+	// Defines the cost per 1M cache-write prompt tokens.
+	CacheWriteCost *float64 `default:"null" json:"cache_write_cost"`
+	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.
+	CacheWriteCostList []PartialModelCacheWriteCostList `json:"cache_write_cost_list"`
+	Cohere             *PartialModelCohere              `json:"cohere"`
+	// Above an input-token threshold, scale input/output pricing with the corresponding factor.
+	ContextWindowFactor []PartialModelContextWindowFactor `json:"context_window_factor"`
+	Dashscope           *PartialModelDashscope            `json:"dashscope"`
+	Databricks          *PartialModelDatabricks           `json:"databricks"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                   `default:"null" json:"embeddings_dimensions"`
 	Gemini               *PartialModelGemini      `json:"gemini"`
@@ -580,6 +687,8 @@ type PartialModelOptions struct {
 	MistralFormat *PartialModelMistralFormat `json:"mistral_format,omitempty"`
 	// Defines the cost per 1M tokens in the output of the AI.
 	OutputCost *float64 `default:"null" json:"output_cost"`
+	// Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.
+	ServiceTierFactor []PartialModelServiceTierFactor `json:"service_tier_factor"`
 	// Defines the matching temperature, if using chat or completion models.
 	Temperature *float64 `default:"null" json:"temperature"`
 	// Defines the top-k most likely tokens, if supported.
@@ -638,11 +747,39 @@ func (p *PartialModelOptions) GetBedrock() *PartialModelBedrock {
 	return p.Bedrock
 }
 
+func (p *PartialModelOptions) GetCacheReadCost() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.CacheReadCost
+}
+
+func (p *PartialModelOptions) GetCacheWriteCost() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.CacheWriteCost
+}
+
+func (p *PartialModelOptions) GetCacheWriteCostList() []PartialModelCacheWriteCostList {
+	if p == nil {
+		return nil
+	}
+	return p.CacheWriteCostList
+}
+
 func (p *PartialModelOptions) GetCohere() *PartialModelCohere {
 	if p == nil {
 		return nil
 	}
 	return p.Cohere
+}
+
+func (p *PartialModelOptions) GetContextWindowFactor() []PartialModelContextWindowFactor {
+	if p == nil {
+		return nil
+	}
+	return p.ContextWindowFactor
 }
 
 func (p *PartialModelOptions) GetDashscope() *PartialModelDashscope {
@@ -713,6 +850,13 @@ func (p *PartialModelOptions) GetOutputCost() *float64 {
 		return nil
 	}
 	return p.OutputCost
+}
+
+func (p *PartialModelOptions) GetServiceTierFactor() []PartialModelServiceTierFactor {
+	if p == nil {
+		return nil
+	}
+	return p.ServiceTierFactor
 }
 
 func (p *PartialModelOptions) GetTemperature() *float64 {
@@ -877,7 +1021,7 @@ type PartialModelConfig struct {
 	Auth *PartialModelAuth `json:"auth"`
 	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 	Description *string              `default:"null" json:"description"`
-	Logging     *PartialModelLogging `json:"logging"`
+	Logging     *PartialModelLogging `json:"logging,omitempty"`
 	// For internal use only.
 	Metadata any               `json:"metadata,omitempty"`
 	Model    PartialModelModel `json:"model"`

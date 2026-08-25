@@ -17,13 +17,9 @@ data "konnect_team_list" "my_teamlist" {
   filter = {
     labels = {
       key = {
-        legacy_string_field_filter = {
-          contains = "...my_contains..."
-          eq       = "...my_eq..."
-        }
-        string_field_exists_filter = {
-          exists = true
-        }
+        contains = "...my_contains..."
+        eq       = "...my_eq..."
+        exists   = true
       }
     }
     name = {
@@ -60,25 +56,9 @@ Optional:
 
 Optional:
 
-- `legacy_string_field_filter` (Attributes) Filter using **one** of the following operators: `eq`, `contains` (see [below for nested schema](#nestedatt--filter--labels--legacy_string_field_filter))
-- `string_field_exists_filter` (Attributes, Deprecated) Filters on whether the given field exists. (see [below for nested schema](#nestedatt--filter--labels--string_field_exists_filter))
-
-<a id="nestedatt--filter--labels--legacy_string_field_filter"></a>
-### Nested Schema for `filter.labels.legacy_string_field_filter`
-
-Optional:
-
 - `contains` (String) The field contains the provided value.
 - `eq` (String) The field exactly matches the provided value.
-
-
-<a id="nestedatt--filter--labels--string_field_exists_filter"></a>
-### Nested Schema for `filter.labels.string_field_exists_filter`
-
-Required:
-
-- `exists` (Boolean)
-
+- `exists` (Boolean) Filters on whether the given field exists.
 
 
 <a id="nestedatt--filter--name"></a>

@@ -5,11 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/path"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -92,39 +89,17 @@ func (r *TeamListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"legacy_string_field_filter": schema.SingleNestedAttribute{
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"contains": schema.StringAttribute{
-											Optional:    true,
-											Description: `The field contains the provided value.`,
-										},
-										"eq": schema.StringAttribute{
-											Optional:    true,
-											Description: `The field exactly matches the provided value.`,
-										},
-									},
-									Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `contains` + "`" + ``,
-									Validators: []validator.Object{
-										objectvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("string_field_exists_filter"),
-										}...),
-									},
+								"contains": schema.StringAttribute{
+									Optional:    true,
+									Description: `The field contains the provided value.`,
 								},
-								"string_field_exists_filter": schema.SingleNestedAttribute{
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"exists": schema.BoolAttribute{
-											Required: true,
-										},
-									},
-									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-									Description:        `Filters on whether the given field exists.`,
-									Validators: []validator.Object{
-										objectvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("legacy_string_field_filter"),
-										}...),
-									},
+								"eq": schema.StringAttribute{
+									Optional:    true,
+									Description: `The field exactly matches the provided value.`,
+								},
+								"exists": schema.BoolAttribute{
+									Optional:    true,
+									Description: `Filters on whether the given field exists.`,
 								},
 							},
 						},

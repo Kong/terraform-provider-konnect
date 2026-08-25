@@ -428,6 +428,36 @@ func (a *AiRequestTransformerPluginBedrock) GetVideoOutputS3URI() *string {
 	return a.VideoOutputS3URI
 }
 
+type AiRequestTransformerPluginCacheWriteCostList struct {
+	Cost float64 `json:"cost"`
+	TTL  string  `json:"ttl"`
+}
+
+func (a AiRequestTransformerPluginCacheWriteCostList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginCacheWriteCostList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"cost", "ttl"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRequestTransformerPluginCacheWriteCostList) GetCost() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.Cost
+}
+
+func (a *AiRequestTransformerPluginCacheWriteCostList) GetTTL() string {
+	if a == nil {
+		return ""
+	}
+	return a.TTL
+}
+
 // AiRequestTransformerPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
 type AiRequestTransformerPluginEmbeddingInputType string
 
@@ -484,6 +514,44 @@ func (a *AiRequestTransformerPluginCohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return a.WaitForModel
+}
+
+type AiRequestTransformerPluginContextWindowFactor struct {
+	Above        string  `json:"above"`
+	InputFactor  float64 `json:"input_factor"`
+	OutputFactor float64 `json:"output_factor"`
+}
+
+func (a AiRequestTransformerPluginContextWindowFactor) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginContextWindowFactor) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"above", "input_factor", "output_factor"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRequestTransformerPluginContextWindowFactor) GetAbove() string {
+	if a == nil {
+		return ""
+	}
+	return a.Above
+}
+
+func (a *AiRequestTransformerPluginContextWindowFactor) GetInputFactor() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.InputFactor
+}
+
+func (a *AiRequestTransformerPluginContextWindowFactor) GetOutputFactor() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.OutputFactor
 }
 
 type AiRequestTransformerPluginDashscope struct {
@@ -663,6 +731,37 @@ func (e *AiRequestTransformerPluginMistralFormat) IsExact() bool {
 	return false
 }
 
+type AiRequestTransformerPluginServiceTierFactor struct {
+	Factor float64 `json:"factor"`
+	// A word matched case-insensitively as a substring of the vendor's reported service tier (e.g. 'priority', 'flex', or 'throughput' for Gemini/Vertex's PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn't matter. Configure 'priority' will also match 'fast' (whole word) as OpenAI returns either 'priority' or 'fast' for priority service tier.
+	Tier string `json:"tier"`
+}
+
+func (a AiRequestTransformerPluginServiceTierFactor) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginServiceTierFactor) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"factor", "tier"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRequestTransformerPluginServiceTierFactor) GetFactor() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.Factor
+}
+
+func (a *AiRequestTransformerPluginServiceTierFactor) GetTier() string {
+	if a == nil {
+		return ""
+	}
+	return a.Tier
+}
+
 // AiRequestTransformerPluginOptions - Key/value settings for the model
 type AiRequestTransformerPluginOptions struct {
 	// Defines the schema/API version, if using Anthropic provider.
@@ -672,11 +771,19 @@ type AiRequestTransformerPluginOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                               `default:"null" json:"azure_instance"`
-	Bedrock       *AiRequestTransformerPluginBedrock    `json:"bedrock"`
-	Cohere        *AiRequestTransformerPluginCohere     `json:"cohere"`
-	Dashscope     *AiRequestTransformerPluginDashscope  `json:"dashscope"`
-	Databricks    *AiRequestTransformerPluginDatabricks `json:"databricks"`
+	AzureInstance *string                            `default:"null" json:"azure_instance"`
+	Bedrock       *AiRequestTransformerPluginBedrock `json:"bedrock"`
+	// Defines the cost per 1M cache-read (cached) prompt tokens.
+	CacheReadCost *float64 `default:"null" json:"cache_read_cost"`
+	// Defines the cost per 1M cache-write prompt tokens.
+	CacheWriteCost *float64 `default:"null" json:"cache_write_cost"`
+	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.
+	CacheWriteCostList []AiRequestTransformerPluginCacheWriteCostList `json:"cache_write_cost_list"`
+	Cohere             *AiRequestTransformerPluginCohere              `json:"cohere"`
+	// Above an input-token threshold, scale input/output pricing with the corresponding factor.
+	ContextWindowFactor []AiRequestTransformerPluginContextWindowFactor `json:"context_window_factor"`
+	Dashscope           *AiRequestTransformerPluginDashscope            `json:"dashscope"`
+	Databricks          *AiRequestTransformerPluginDatabricks           `json:"databricks"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                 `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiRequestTransformerPluginGemini      `json:"gemini"`
@@ -691,6 +798,8 @@ type AiRequestTransformerPluginOptions struct {
 	MistralFormat *AiRequestTransformerPluginMistralFormat `json:"mistral_format,omitempty"`
 	// Defines the cost per 1M tokens in the output of the AI.
 	OutputCost *float64 `default:"null" json:"output_cost"`
+	// Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.
+	ServiceTierFactor []AiRequestTransformerPluginServiceTierFactor `json:"service_tier_factor"`
 	// Defines the matching temperature, if using chat or completion models.
 	Temperature *float64 `default:"null" json:"temperature"`
 	// Defines the top-k most likely tokens, if supported.
@@ -749,11 +858,39 @@ func (a *AiRequestTransformerPluginOptions) GetBedrock() *AiRequestTransformerPl
 	return a.Bedrock
 }
 
+func (a *AiRequestTransformerPluginOptions) GetCacheReadCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheReadCost
+}
+
+func (a *AiRequestTransformerPluginOptions) GetCacheWriteCost() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCost
+}
+
+func (a *AiRequestTransformerPluginOptions) GetCacheWriteCostList() []AiRequestTransformerPluginCacheWriteCostList {
+	if a == nil {
+		return nil
+	}
+	return a.CacheWriteCostList
+}
+
 func (a *AiRequestTransformerPluginOptions) GetCohere() *AiRequestTransformerPluginCohere {
 	if a == nil {
 		return nil
 	}
 	return a.Cohere
+}
+
+func (a *AiRequestTransformerPluginOptions) GetContextWindowFactor() []AiRequestTransformerPluginContextWindowFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ContextWindowFactor
 }
 
 func (a *AiRequestTransformerPluginOptions) GetDashscope() *AiRequestTransformerPluginDashscope {
@@ -824,6 +961,13 @@ func (a *AiRequestTransformerPluginOptions) GetOutputCost() *float64 {
 		return nil
 	}
 	return a.OutputCost
+}
+
+func (a *AiRequestTransformerPluginOptions) GetServiceTierFactor() []AiRequestTransformerPluginServiceTierFactor {
+	if a == nil {
+		return nil
+	}
+	return a.ServiceTierFactor
 }
 
 func (a *AiRequestTransformerPluginOptions) GetTemperature() *float64 {
@@ -988,7 +1132,7 @@ type AiRequestTransformerPluginLlm struct {
 	Auth *AiRequestTransformerPluginAuth `json:"auth"`
 	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 	Description *string                            `default:"null" json:"description"`
-	Logging     *AiRequestTransformerPluginLogging `json:"logging"`
+	Logging     *AiRequestTransformerPluginLogging `json:"logging,omitempty"`
 	// For internal use only.
 	Metadata any                             `json:"metadata,omitempty"`
 	Model    AiRequestTransformerPluginModel `json:"model"`

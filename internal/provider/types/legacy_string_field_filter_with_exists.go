@@ -2,7 +2,12 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type LegacyStringFieldFilterWithExists struct {
-	LegacyStringFieldFilter *MeshControlPlaneFilterParametersName `queryParam:"inline" tfsdk:"legacy_string_field_filter"`
-	StringFieldExistsFilter *StringFieldExistsFilter              `queryParam:"inline" tfsdk:"string_field_exists_filter"`
+	Contains types.String `queryParam:"name=contains" tfsdk:"contains"`
+	Eq       types.String `queryParam:"name=eq" tfsdk:"eq"`
+	Exists   types.Bool   `queryParam:"name=exists" tfsdk:"exists"`
 }

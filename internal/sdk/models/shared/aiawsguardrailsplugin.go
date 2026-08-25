@@ -150,6 +150,7 @@ type TextSource string
 const (
 	TextSourceConcatenateAllContent  TextSource = "concatenate_all_content"
 	TextSourceConcatenateUserContent TextSource = "concatenate_user_content"
+	TextSourceLastMessage            TextSource = "last_message"
 )
 
 func (e TextSource) ToPointer() *TextSource {
@@ -160,7 +161,7 @@ func (e TextSource) ToPointer() *TextSource {
 func (e *TextSource) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "concatenate_all_content", "concatenate_user_content":
+		case "concatenate_all_content", "concatenate_user_content", "last_message":
 			return true
 		}
 	}

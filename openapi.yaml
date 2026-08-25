@@ -27690,22 +27690,29 @@ components:
           description: The field contains the provided value.
           type: string
       additionalProperties: false
-    StringFieldExistsFilter:
-      description: Filters on whether the given field exists.
+    LegacyStringFieldFilterWithExists:
+      description: 'Filter using **one** of the following operators: `eq`, `contains`, `exists`'
       type: object
       properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        contains:
+          description: The field contains the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         exists:
+          description: Filters on whether the given field exists.
           type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
-      deprecated: true
-      required:
-        - exists
-      title: StringFieldExistsFilter
-    LegacyStringFieldFilterWithExists:
-      description: 'Filter a string value field by exact match, partial contains, or existence.'
-      oneOf:
-        - $ref: '#/components/schemas/LegacyStringFieldFilter'
-        - $ref: '#/components/schemas/StringFieldExistsFilter'
       title: StringFieldFilterWithExists
     TeamName:
       description: The name of the team.
@@ -37904,6 +37911,7 @@ components:
               enum:
                 - concatenate_all_content
                 - concatenate_user_content
+                - last_message
               x-speakeasy-unknown-values: allow
             timeout:
               description: Connection timeout with the bedrock service
@@ -38096,6 +38104,7 @@ components:
               enum:
                 - concatenate_all_content
                 - concatenate_user_content
+                - last_message
               x-speakeasy-unknown-values: allow
           required:
             - content_safety_url
@@ -38871,8 +38880,6 @@ components:
                   x-speakeasy-param-computed: false
                 logging:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     log_payloads:
                       description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -38882,7 +38889,7 @@ components:
                       description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                       type: boolean
                       default: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 metadata:
                   description: 'For internal use only. '
                   type: object
@@ -38991,6 +38998,34 @@ components:
                               nullable: true
                               x-speakeasy-param-computed: false
                           x-speakeasy-param-computed: false
+                        cache_read_cost:
+                          description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost:
+                          description: Defines the cost per 1M cache-write prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost_list:
+                          description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                          type: array
+                          items:
+                            properties:
+                              cost:
+                                type: number
+                              ttl:
+                                type: string
+                            required:
+                              - cost
+                              - ttl
+                            type: object
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
                         cohere:
                           type: object
                           default: null
@@ -39013,6 +39048,25 @@ components:
                               default: null
                               nullable: true
                               x-speakeasy-param-computed: false
+                          x-speakeasy-param-computed: false
+                        context_window_factor:
+                          description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                          type: array
+                          items:
+                            properties:
+                              above:
+                                type: string
+                              input_factor:
+                                type: number
+                              output_factor:
+                                type: number
+                            required:
+                              - above
+                              - input_factor
+                              - output_factor
+                            type: object
+                          default: null
+                          nullable: true
                           x-speakeasy-param-computed: false
                         dashscope:
                           type: object
@@ -39122,6 +39176,24 @@ components:
                         output_cost:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        service_tier_factor:
+                          description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                          type: array
+                          items:
+                            properties:
+                              factor:
+                                type: number
+                              tier:
+                                description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                type: string
+                                minLength: 1
+                            required:
+                              - factor
+                              - tier
+                            type: object
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
@@ -41019,8 +41091,6 @@ components:
               x-speakeasy-param-computed: false
             balancer:
               type: object
-              default: null
-              nullable: true
               properties:
                 algorithm:
                   description: Which load balancing algorithm to use.
@@ -41118,7 +41188,7 @@ components:
                   default: 60000
                   maximum: 2147483646
                   minimum: 1
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             embeddings:
               type: object
               default: null
@@ -41567,8 +41637,6 @@ components:
                     x-speakeasy-param-computed: false
                   logging:
                     type: object
-                    default: null
-                    nullable: true
                     properties:
                       log_payloads:
                         description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -41578,7 +41646,7 @@ components:
                         description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                         type: boolean
                         default: false
-                    x-speakeasy-param-computed: false
+                    x-speakeasy-param-computed: true
                   metadata:
                     description: 'For internal use only. '
                     type: object
@@ -41687,6 +41755,34 @@ components:
                                 nullable: true
                                 x-speakeasy-param-computed: false
                             x-speakeasy-param-computed: false
+                          cache_read_cost:
+                            description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                            type: number
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
+                          cache_write_cost:
+                            description: Defines the cost per 1M cache-write prompt tokens.
+                            type: number
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
+                          cache_write_cost_list:
+                            description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                            type: array
+                            items:
+                              properties:
+                                cost:
+                                  type: number
+                                ttl:
+                                  type: string
+                              required:
+                                - cost
+                                - ttl
+                              type: object
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
                           cohere:
                             type: object
                             default: null
@@ -41709,6 +41805,25 @@ components:
                                 default: null
                                 nullable: true
                                 x-speakeasy-param-computed: false
+                            x-speakeasy-param-computed: false
+                          context_window_factor:
+                            description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                            type: array
+                            items:
+                              properties:
+                                above:
+                                  type: string
+                                input_factor:
+                                  type: number
+                                output_factor:
+                                  type: number
+                              required:
+                                - above
+                                - input_factor
+                                - output_factor
+                              type: object
+                            default: null
+                            nullable: true
                             x-speakeasy-param-computed: false
                           dashscope:
                             type: object
@@ -41818,6 +41933,24 @@ components:
                           output_cost:
                             description: Defines the cost per 1M tokens in the output of the AI.
                             type: number
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
+                          service_tier_factor:
+                            description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                            type: array
+                            items:
+                              properties:
+                                factor:
+                                  type: number
+                                tier:
+                                  description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                  type: string
+                                  minLength: 1
+                              required:
+                                - factor
+                                - tier
+                              type: object
                             default: null
                             nullable: true
                             x-speakeasy-param-computed: false
@@ -42505,8 +42638,6 @@ components:
               x-speakeasy-unknown-values: allow
             logging:
               type: object
-              default: null
-              nullable: true
               properties:
                 log_payloads:
                   description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -42516,7 +42647,7 @@ components:
                   description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             max_request_body_size:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
@@ -42622,6 +42753,34 @@ components:
                           nullable: true
                           x-speakeasy-param-computed: false
                       x-speakeasy-param-computed: false
+                    cache_read_cost:
+                      description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost:
+                      description: Defines the cost per 1M cache-write prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost_list:
+                      description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                      type: array
+                      items:
+                        properties:
+                          cost:
+                            type: number
+                          ttl:
+                            type: string
+                        required:
+                          - cost
+                          - ttl
+                        type: object
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
                     cohere:
                       type: object
                       default: null
@@ -42644,6 +42803,25 @@ components:
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                    context_window_factor:
+                      description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                      type: array
+                      items:
+                        properties:
+                          above:
+                            type: string
+                          input_factor:
+                            type: number
+                          output_factor:
+                            type: number
+                        required:
+                          - above
+                          - input_factor
+                          - output_factor
+                        type: object
+                      default: null
+                      nullable: true
                       x-speakeasy-param-computed: false
                     dashscope:
                       type: object
@@ -42753,6 +42931,24 @@ components:
                     output_cost:
                       description: Defines the cost per 1M tokens in the output of the AI.
                       type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    service_tier_factor:
+                      description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                      type: array
+                      items:
+                        properties:
+                          factor:
+                            type: number
+                          tier:
+                            description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                            type: string
+                            minLength: 1
+                        required:
+                          - factor
+                          - tier
+                        type: object
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
@@ -44488,8 +44684,6 @@ components:
                   x-speakeasy-param-computed: false
                 logging:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     log_payloads:
                       description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -44499,7 +44693,7 @@ components:
                       description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                       type: boolean
                       default: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 metadata:
                   description: 'For internal use only. '
                   type: object
@@ -44608,6 +44802,34 @@ components:
                               nullable: true
                               x-speakeasy-param-computed: false
                           x-speakeasy-param-computed: false
+                        cache_read_cost:
+                          description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost:
+                          description: Defines the cost per 1M cache-write prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost_list:
+                          description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                          type: array
+                          items:
+                            properties:
+                              cost:
+                                type: number
+                              ttl:
+                                type: string
+                            required:
+                              - cost
+                              - ttl
+                            type: object
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
                         cohere:
                           type: object
                           default: null
@@ -44630,6 +44852,25 @@ components:
                               default: null
                               nullable: true
                               x-speakeasy-param-computed: false
+                          x-speakeasy-param-computed: false
+                        context_window_factor:
+                          description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                          type: array
+                          items:
+                            properties:
+                              above:
+                                type: string
+                              input_factor:
+                                type: number
+                              output_factor:
+                                type: number
+                            required:
+                              - above
+                              - input_factor
+                              - output_factor
+                            type: object
+                          default: null
+                          nullable: true
                           x-speakeasy-param-computed: false
                         dashscope:
                           type: object
@@ -44739,6 +44980,24 @@ components:
                         output_cost:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        service_tier_factor:
+                          description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                          type: array
+                          items:
+                            properties:
+                              factor:
+                                type: number
+                              tier:
+                                description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                type: string
+                                minLength: 1
+                            required:
+                              - factor
+                              - tier
+                            type: object
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
@@ -45073,8 +45332,6 @@ components:
                   x-speakeasy-param-computed: false
                 logging:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     log_payloads:
                       description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -45084,7 +45341,7 @@ components:
                       description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                       type: boolean
                       default: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 metadata:
                   description: 'For internal use only. '
                   type: object
@@ -45193,6 +45450,34 @@ components:
                               nullable: true
                               x-speakeasy-param-computed: false
                           x-speakeasy-param-computed: false
+                        cache_read_cost:
+                          description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost:
+                          description: Defines the cost per 1M cache-write prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost_list:
+                          description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                          type: array
+                          items:
+                            properties:
+                              cost:
+                                type: number
+                              ttl:
+                                type: string
+                            required:
+                              - cost
+                              - ttl
+                            type: object
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
                         cohere:
                           type: object
                           default: null
@@ -45215,6 +45500,25 @@ components:
                               default: null
                               nullable: true
                               x-speakeasy-param-computed: false
+                          x-speakeasy-param-computed: false
+                        context_window_factor:
+                          description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                          type: array
+                          items:
+                            properties:
+                              above:
+                                type: string
+                              input_factor:
+                                type: number
+                              output_factor:
+                                type: number
+                            required:
+                              - above
+                              - input_factor
+                              - output_factor
+                            type: object
+                          default: null
+                          nullable: true
                           x-speakeasy-param-computed: false
                         dashscope:
                           type: object
@@ -45324,6 +45628,24 @@ components:
                         output_cost:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        service_tier_factor:
+                          description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                          type: array
+                          items:
+                            properties:
+                              factor:
+                                type: number
+                              tier:
+                                description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                type: string
+                                minLength: 1
+                            required:
+                              - factor
+                              - tier
+                            type: object
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
@@ -63295,8 +63617,6 @@ components:
               x-speakeasy-param-computed: false
             logging:
               type: object
-              default: null
-              nullable: true
               properties:
                 log_payloads:
                   description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -63306,7 +63626,7 @@ components:
                   description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             metadata:
               description: 'For internal use only. '
               type: object
@@ -63416,6 +63736,34 @@ components:
                           nullable: true
                           x-speakeasy-param-computed: false
                       x-speakeasy-param-computed: false
+                    cache_read_cost:
+                      description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost:
+                      description: Defines the cost per 1M cache-write prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost_list:
+                      description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                      type: array
+                      items:
+                        properties:
+                          cost:
+                            type: number
+                          ttl:
+                            type: string
+                        required:
+                          - cost
+                          - ttl
+                        type: object
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
                     cohere:
                       type: object
                       default: null
@@ -63438,6 +63786,25 @@ components:
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                    context_window_factor:
+                      description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                      type: array
+                      items:
+                        properties:
+                          above:
+                            type: string
+                          input_factor:
+                            type: number
+                          output_factor:
+                            type: number
+                        required:
+                          - above
+                          - input_factor
+                          - output_factor
+                        type: object
+                      default: null
+                      nullable: true
                       x-speakeasy-param-computed: false
                     dashscope:
                       type: object
@@ -63547,6 +63914,24 @@ components:
                     output_cost:
                       description: Defines the cost per 1M tokens in the output of the AI.
                       type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    service_tier_factor:
+                      description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                      type: array
+                      items:
+                        properties:
+                          factor:
+                            type: number
+                          tier:
+                            description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                            type: string
+                            minLength: 1
+                        required:
+                          - factor
+                          - tier
+                        type: object
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
