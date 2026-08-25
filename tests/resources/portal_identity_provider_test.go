@@ -20,6 +20,7 @@ const (
 	portalIdentityProviderOIDC = `
 		resource "konnect_portal_identity_provider" "oidc_provider" {
 			type      = "oidc"
+			enabled = false
 			config = {
 				oidc_identity_provider_config = {
 					client_id     = "client-id"
@@ -42,7 +43,7 @@ const (
 	portalIdentityProviderSAML = `
 		resource "konnect_portal_identity_provider" "saml_provider" {
 			type    = "saml"
-			enabled = true
+			enabled = false
 			config = {
 				saml_identity_provider_config = {
 					idp_metadata_url = "https://mocksaml.com/api/saml/metadata"
