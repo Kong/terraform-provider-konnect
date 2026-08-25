@@ -177,11 +177,14 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) RefreshFromSharedAiCustomG
 	return diags
 }
 
-func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsCreateAicustomguardrailPluginRequest(ctx context.Context) (*operations.CreateAicustomguardrailPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsCreateAicustomguardrailPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAicustomguardrailPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiCustomGuardrailPlugin, aiCustomGuardrailPluginDiags := r.ToSharedAiCustomGuardrailPlugin(ctx)
 	diags.Append(aiCustomGuardrailPluginDiags...)
@@ -190,15 +193,16 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsCreateAicustom
 		return nil, diags
 	}
 
-	out := operations.CreateAicustomguardrailPluginRequest{
+	out := operations.CreateAicustomguardrailPluginInWorkspaceRequest{
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		AiCustomGuardrailPlugin: *aiCustomGuardrailPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsDeleteAicustomguardrailPluginRequest(ctx context.Context) (*operations.DeleteAicustomguardrailPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsDeleteAicustomguardrailPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAicustomguardrailPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -207,15 +211,19 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsDeleteAicustom
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAicustomguardrailPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAicustomguardrailPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsGetAicustomguardrailPluginRequest(ctx context.Context) (*operations.GetAicustomguardrailPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsGetAicustomguardrailPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAicustomguardrailPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -224,15 +232,19 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsGetAicustomgua
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAicustomguardrailPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAicustomguardrailPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsUpdateAicustomguardrailPluginRequest(ctx context.Context) (*operations.UpdateAicustomguardrailPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsUpdateAicustomguardrailPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAicustomguardrailPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -240,6 +252,9 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsUpdateAicustom
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiCustomGuardrailPlugin, aiCustomGuardrailPluginDiags := r.ToSharedAiCustomGuardrailPlugin(ctx)
 	diags.Append(aiCustomGuardrailPluginDiags...)
@@ -248,9 +263,10 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToOperationsUpdateAicustom
 		return nil, diags
 	}
 
-	out := operations.UpdateAicustomguardrailPluginRequest{
+	out := operations.UpdateAicustomguardrailPluginInWorkspaceRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		AiCustomGuardrailPlugin: *aiCustomGuardrailPlugin,
 	}
 

@@ -225,7 +225,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 								},
@@ -272,7 +272,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 									"http_statuses": schema.ListAttribute{
@@ -306,7 +306,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 									"timeouts": schema.Int64Attribute{
@@ -315,7 +315,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 								},
@@ -363,7 +363,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 								},
@@ -384,7 +384,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 									"http_statuses": schema.ListAttribute{
@@ -404,7 +404,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 									"timeouts": schema.Int64Attribute{
@@ -413,7 +413,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Int64{
-											int64validator.Between(0, 255),
+											int64validator.Between(0, 254),
 										},
 									},
 								},

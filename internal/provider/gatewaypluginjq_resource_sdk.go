@@ -133,11 +133,14 @@ func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(ctx context.Con
 	return diags
 }
 
-func (r *GatewayPluginJqResourceModel) ToOperationsCreateJqPluginRequest(ctx context.Context) (*operations.CreateJqPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJqResourceModel) ToOperationsCreateJqPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateJqPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	jqPlugin, jqPluginDiags := r.ToSharedJqPlugin(ctx)
 	diags.Append(jqPluginDiags...)
@@ -146,15 +149,16 @@ func (r *GatewayPluginJqResourceModel) ToOperationsCreateJqPluginRequest(ctx con
 		return nil, diags
 	}
 
-	out := operations.CreateJqPluginRequest{
+	out := operations.CreateJqPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		JqPlugin:       *jqPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJqResourceModel) ToOperationsDeleteJqPluginRequest(ctx context.Context) (*operations.DeleteJqPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJqResourceModel) ToOperationsDeleteJqPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteJqPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -163,15 +167,19 @@ func (r *GatewayPluginJqResourceModel) ToOperationsDeleteJqPluginRequest(ctx con
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteJqPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteJqPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJqResourceModel) ToOperationsGetJqPluginRequest(ctx context.Context) (*operations.GetJqPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJqResourceModel) ToOperationsGetJqPluginInWorkspaceRequest(ctx context.Context) (*operations.GetJqPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -180,15 +188,19 @@ func (r *GatewayPluginJqResourceModel) ToOperationsGetJqPluginRequest(ctx contex
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetJqPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetJqPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginJqResourceModel) ToOperationsUpdateJqPluginRequest(ctx context.Context) (*operations.UpdateJqPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginJqResourceModel) ToOperationsUpdateJqPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateJqPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -196,6 +208,9 @@ func (r *GatewayPluginJqResourceModel) ToOperationsUpdateJqPluginRequest(ctx con
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	jqPlugin, jqPluginDiags := r.ToSharedJqPlugin(ctx)
 	diags.Append(jqPluginDiags...)
@@ -204,9 +219,10 @@ func (r *GatewayPluginJqResourceModel) ToOperationsUpdateJqPluginRequest(ctx con
 		return nil, diags
 	}
 
-	out := operations.UpdateJqPluginRequest{
+	out := operations.UpdateJqPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		JqPlugin:       *jqPlugin,
 	}
 

@@ -248,11 +248,14 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 	return diags
 }
 
-func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsCreateRatelimitingadvancedPluginRequest(ctx context.Context) (*operations.CreateRatelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsCreateRatelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRatelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	rateLimitingAdvancedPlugin, rateLimitingAdvancedPluginDiags := r.ToSharedRateLimitingAdvancedPlugin(ctx)
 	diags.Append(rateLimitingAdvancedPluginDiags...)
@@ -261,15 +264,16 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsCreateRatel
 		return nil, diags
 	}
 
-	out := operations.CreateRatelimitingadvancedPluginRequest{
+	out := operations.CreateRatelimitingadvancedPluginInWorkspaceRequest{
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		RateLimitingAdvancedPlugin: *rateLimitingAdvancedPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsDeleteRatelimitingadvancedPluginRequest(ctx context.Context) (*operations.DeleteRatelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsDeleteRatelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRatelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -278,15 +282,19 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsDeleteRatel
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRatelimitingadvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRatelimitingadvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsGetRatelimitingadvancedPluginRequest(ctx context.Context) (*operations.GetRatelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsGetRatelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRatelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -295,15 +303,19 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsGetRatelimi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRatelimitingadvancedPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRatelimitingadvancedPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsUpdateRatelimitingadvancedPluginRequest(ctx context.Context) (*operations.UpdateRatelimitingadvancedPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsUpdateRatelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRatelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -311,6 +323,9 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsUpdateRatel
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	rateLimitingAdvancedPlugin, rateLimitingAdvancedPluginDiags := r.ToSharedRateLimitingAdvancedPlugin(ctx)
 	diags.Append(rateLimitingAdvancedPluginDiags...)
@@ -319,9 +334,10 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsUpdateRatel
 		return nil, diags
 	}
 
-	out := operations.UpdateRatelimitingadvancedPluginRequest{
+	out := operations.UpdateRatelimitingadvancedPluginInWorkspaceRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		RateLimitingAdvancedPlugin: *rateLimitingAdvancedPlugin,
 	}
 

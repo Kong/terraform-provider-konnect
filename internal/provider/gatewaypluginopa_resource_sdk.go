@@ -104,11 +104,14 @@ func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(ctx context.C
 	return diags
 }
 
-func (r *GatewayPluginOpaResourceModel) ToOperationsCreateOpaPluginRequest(ctx context.Context) (*operations.CreateOpaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpaResourceModel) ToOperationsCreateOpaPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateOpaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	opaPlugin, opaPluginDiags := r.ToSharedOpaPlugin(ctx)
 	diags.Append(opaPluginDiags...)
@@ -117,15 +120,16 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsCreateOpaPluginRequest(ctx c
 		return nil, diags
 	}
 
-	out := operations.CreateOpaPluginRequest{
+	out := operations.CreateOpaPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		OpaPlugin:      *opaPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpaResourceModel) ToOperationsDeleteOpaPluginRequest(ctx context.Context) (*operations.DeleteOpaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpaResourceModel) ToOperationsDeleteOpaPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteOpaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -134,15 +138,19 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsDeleteOpaPluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteOpaPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteOpaPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpaResourceModel) ToOperationsGetOpaPluginRequest(ctx context.Context) (*operations.GetOpaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpaResourceModel) ToOperationsGetOpaPluginInWorkspaceRequest(ctx context.Context) (*operations.GetOpaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -151,15 +159,19 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsGetOpaPluginRequest(ctx cont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetOpaPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetOpaPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginOpaResourceModel) ToOperationsUpdateOpaPluginRequest(ctx context.Context) (*operations.UpdateOpaPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpaResourceModel) ToOperationsUpdateOpaPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateOpaPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -167,6 +179,9 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsUpdateOpaPluginRequest(ctx c
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	opaPlugin, opaPluginDiags := r.ToSharedOpaPlugin(ctx)
 	diags.Append(opaPluginDiags...)
@@ -175,9 +190,10 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsUpdateOpaPluginRequest(ctx c
 		return nil, diags
 	}
 
-	out := operations.UpdateOpaPluginRequest{
+	out := operations.UpdateOpaPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		OpaPlugin:      *opaPlugin,
 	}
 

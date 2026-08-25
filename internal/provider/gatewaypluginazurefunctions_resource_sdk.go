@@ -105,11 +105,14 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 	return diags
 }
 
-func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsCreateAzurefunctionsPluginRequest(ctx context.Context) (*operations.CreateAzurefunctionsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsCreateAzurefunctionsPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAzurefunctionsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	azureFunctionsPlugin, azureFunctionsPluginDiags := r.ToSharedAzureFunctionsPlugin(ctx)
 	diags.Append(azureFunctionsPluginDiags...)
@@ -118,15 +121,16 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsCreateAzurefuncti
 		return nil, diags
 	}
 
-	out := operations.CreateAzurefunctionsPluginRequest{
+	out := operations.CreateAzurefunctionsPluginInWorkspaceRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		AzureFunctionsPlugin: *azureFunctionsPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsDeleteAzurefunctionsPluginRequest(ctx context.Context) (*operations.DeleteAzurefunctionsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsDeleteAzurefunctionsPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAzurefunctionsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -135,15 +139,19 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsDeleteAzurefuncti
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAzurefunctionsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAzurefunctionsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsGetAzurefunctionsPluginRequest(ctx context.Context) (*operations.GetAzurefunctionsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsGetAzurefunctionsPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAzurefunctionsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -152,15 +160,19 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsGetAzurefunctions
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAzurefunctionsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAzurefunctionsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefunctionsPluginRequest(ctx context.Context) (*operations.UpdateAzurefunctionsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefunctionsPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAzurefunctionsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -168,6 +180,9 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefuncti
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	azureFunctionsPlugin, azureFunctionsPluginDiags := r.ToSharedAzureFunctionsPlugin(ctx)
 	diags.Append(azureFunctionsPluginDiags...)
@@ -176,9 +191,10 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefuncti
 		return nil, diags
 	}
 
-	out := operations.UpdateAzurefunctionsPluginRequest{
+	out := operations.UpdateAzurefunctionsPluginInWorkspaceRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		AzureFunctionsPlugin: *azureFunctionsPlugin,
 	}
 

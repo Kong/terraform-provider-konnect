@@ -101,11 +101,14 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) RefreshFromSharedWebsocke
 	return diags
 }
 
-func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsCreateWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.CreateWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsCreateWebsocketsizelimitPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateWebsocketsizelimitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	websocketSizeLimitPlugin, websocketSizeLimitPluginDiags := r.ToSharedWebsocketSizeLimitPlugin(ctx)
 	diags.Append(websocketSizeLimitPluginDiags...)
@@ -114,15 +117,16 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsCreateWebsock
 		return nil, diags
 	}
 
-	out := operations.CreateWebsocketsizelimitPluginRequest{
+	out := operations.CreateWebsocketsizelimitPluginInWorkspaceRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		WebsocketSizeLimitPlugin: *websocketSizeLimitPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsDeleteWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.DeleteWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsDeleteWebsocketsizelimitPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteWebsocketsizelimitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -131,15 +135,19 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsDeleteWebsock
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteWebsocketsizelimitPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteWebsocketsizelimitPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsGetWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.GetWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsGetWebsocketsizelimitPluginInWorkspaceRequest(ctx context.Context) (*operations.GetWebsocketsizelimitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -148,15 +156,19 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsGetWebsockets
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetWebsocketsizelimitPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetWebsocketsizelimitPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsUpdateWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.UpdateWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsUpdateWebsocketsizelimitPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateWebsocketsizelimitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,6 +176,9 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsUpdateWebsock
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	websocketSizeLimitPlugin, websocketSizeLimitPluginDiags := r.ToSharedWebsocketSizeLimitPlugin(ctx)
 	diags.Append(websocketSizeLimitPluginDiags...)
@@ -172,9 +187,10 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsUpdateWebsock
 		return nil, diags
 	}
 
-	out := operations.UpdateWebsocketsizelimitPluginRequest{
+	out := operations.UpdateWebsocketsizelimitPluginInWorkspaceRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		WebsocketSizeLimitPlugin: *websocketSizeLimitPlugin,
 	}
 

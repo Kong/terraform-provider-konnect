@@ -111,11 +111,14 @@ func (r *GatewayPluginRequestTerminationResourceModel) RefreshFromSharedRequestT
 	return diags
 }
 
-func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsCreateRequestterminationPluginRequest(ctx context.Context) (*operations.CreateRequestterminationPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsCreateRequestterminationPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRequestterminationPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestTerminationPlugin, requestTerminationPluginDiags := r.ToSharedRequestTerminationPlugin(ctx)
 	diags.Append(requestTerminationPluginDiags...)
@@ -124,15 +127,16 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsCreateRequest
 		return nil, diags
 	}
 
-	out := operations.CreateRequestterminationPluginRequest{
+	out := operations.CreateRequestterminationPluginInWorkspaceRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		RequestTerminationPlugin: *requestTerminationPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsDeleteRequestterminationPluginRequest(ctx context.Context) (*operations.DeleteRequestterminationPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsDeleteRequestterminationPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRequestterminationPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -141,15 +145,19 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsDeleteRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRequestterminationPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRequestterminationPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsGetRequestterminationPluginRequest(ctx context.Context) (*operations.GetRequestterminationPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsGetRequestterminationPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRequestterminationPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -158,15 +166,19 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsGetRequestter
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRequestterminationPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRequestterminationPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsUpdateRequestterminationPluginRequest(ctx context.Context) (*operations.UpdateRequestterminationPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsUpdateRequestterminationPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRequestterminationPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -174,6 +186,9 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsUpdateRequest
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestTerminationPlugin, requestTerminationPluginDiags := r.ToSharedRequestTerminationPlugin(ctx)
 	diags.Append(requestTerminationPluginDiags...)
@@ -182,9 +197,10 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsUpdateRequest
 		return nil, diags
 	}
 
-	out := operations.UpdateRequestterminationPluginRequest{
+	out := operations.UpdateRequestterminationPluginInWorkspaceRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		RequestTerminationPlugin: *requestTerminationPlugin,
 	}
 

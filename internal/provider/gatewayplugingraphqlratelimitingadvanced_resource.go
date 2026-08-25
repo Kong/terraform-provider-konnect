@@ -26,13 +26,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginGraphqlRateLimitingAdvancedResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginGraphqlRateLimitingAdvancedResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginGraphqlRateLimitingAdvancedResource{}
 
 func NewGatewayPluginGraphqlRateLimitingAdvancedResource() resource.Resource {
 	return &GatewayPluginGraphqlRateLimitingAdvancedResource{}
@@ -61,6 +62,7 @@ type GatewayPluginGraphqlRateLimitingAdvancedResourceModel struct {
 	Service        *tfTypes.Set                                     `tfsdk:"service"`
 	Tags           []types.String                                   `tfsdk:"tags"`
 	UpdatedAt      types.Int64                                      `tfsdk:"updated_at"`
+	Workspace      types.String                                     `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,6 +72,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Metadata(ctx context.
 func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginGraphqlRateLimitingAdvanced Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -622,6 +625,15 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -664,13 +676,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Create(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateGraphqlratelimitingadvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateGraphqlratelimitingadvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -724,13 +736,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Read(ctx context.Cont
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetGraphqlratelimitingadvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetGraphqlratelimitingadvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -778,13 +790,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Update(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateGraphqlratelimitingadvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateGraphqlratelimitingadvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -838,13 +850,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Delete(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteGraphqlratelimitingadvancedPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteGraphqlratelimitingadvancedPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -872,10 +884,11 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) ImportState(ctx conte
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -889,4 +902,15 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) ImportState(ctx conte
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayplugingraphqlratelimitingadvancedStateUpgraderV0},
+	}
 }

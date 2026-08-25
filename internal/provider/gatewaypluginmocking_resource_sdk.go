@@ -116,11 +116,14 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginMockingResourceModel) ToOperationsCreateMockingPluginRequest(ctx context.Context) (*operations.CreateMockingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMockingResourceModel) ToOperationsCreateMockingPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateMockingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	mockingPlugin, mockingPluginDiags := r.ToSharedMockingPlugin(ctx)
 	diags.Append(mockingPluginDiags...)
@@ -129,15 +132,16 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsCreateMockingPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateMockingPluginRequest{
+	out := operations.CreateMockingPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		MockingPlugin:  *mockingPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginMockingResourceModel) ToOperationsDeleteMockingPluginRequest(ctx context.Context) (*operations.DeleteMockingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMockingResourceModel) ToOperationsDeleteMockingPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteMockingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -146,15 +150,19 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsDeleteMockingPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteMockingPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteMockingPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginMockingResourceModel) ToOperationsGetMockingPluginRequest(ctx context.Context) (*operations.GetMockingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMockingResourceModel) ToOperationsGetMockingPluginInWorkspaceRequest(ctx context.Context) (*operations.GetMockingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -163,15 +171,19 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsGetMockingPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetMockingPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetMockingPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginRequest(ctx context.Context) (*operations.UpdateMockingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateMockingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -179,6 +191,9 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	mockingPlugin, mockingPluginDiags := r.ToSharedMockingPlugin(ctx)
 	diags.Append(mockingPluginDiags...)
@@ -187,9 +202,10 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateMockingPluginRequest{
+	out := operations.UpdateMockingPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		MockingPlugin:  *mockingPlugin,
 	}
 

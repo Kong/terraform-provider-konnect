@@ -114,11 +114,14 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 	return diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheaderPluginRequest(ctx context.Context) (*operations.CreateRoutebyheaderPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	routeByHeaderPlugin, routeByHeaderPluginDiags := r.ToSharedRouteByHeaderPlugin(ctx)
 	diags.Append(routeByHeaderPluginDiags...)
@@ -127,15 +130,16 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheade
 		return nil, diags
 	}
 
-	out := operations.CreateRoutebyheaderPluginRequest{
+	out := operations.CreateRoutebyheaderPluginInWorkspaceRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		RouteByHeaderPlugin: *routeByHeaderPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheaderPluginRequest(ctx context.Context) (*operations.DeleteRoutebyheaderPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -144,15 +148,19 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheade
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRoutebyheaderPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRoutebyheaderPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPluginRequest(ctx context.Context) (*operations.GetRoutebyheaderPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -161,15 +169,19 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRoutebyheaderPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRoutebyheaderPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheaderPluginRequest(ctx context.Context) (*operations.UpdateRoutebyheaderPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -177,6 +189,9 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheade
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	routeByHeaderPlugin, routeByHeaderPluginDiags := r.ToSharedRouteByHeaderPlugin(ctx)
 	diags.Append(routeByHeaderPluginDiags...)
@@ -185,9 +200,10 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheade
 		return nil, diags
 	}
 
-	out := operations.UpdateRoutebyheaderPluginRequest{
+	out := operations.UpdateRoutebyheaderPluginInWorkspaceRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		RouteByHeaderPlugin: *routeByHeaderPlugin,
 	}
 

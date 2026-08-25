@@ -362,11 +362,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 	return diags
 }
 
-func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsCreateRequestcalloutPluginRequest(ctx context.Context) (*operations.CreateRequestcalloutPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsCreateRequestcalloutPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRequestcalloutPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestCalloutPlugin, requestCalloutPluginDiags := r.ToSharedRequestCalloutPlugin(ctx)
 	diags.Append(requestCalloutPluginDiags...)
@@ -375,15 +378,16 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsCreateRequestcall
 		return nil, diags
 	}
 
-	out := operations.CreateRequestcalloutPluginRequest{
+	out := operations.CreateRequestcalloutPluginInWorkspaceRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		RequestCalloutPlugin: *requestCalloutPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsDeleteRequestcalloutPluginRequest(ctx context.Context) (*operations.DeleteRequestcalloutPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsDeleteRequestcalloutPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRequestcalloutPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -392,15 +396,19 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsDeleteRequestcall
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteRequestcalloutPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteRequestcalloutPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsGetRequestcalloutPluginRequest(ctx context.Context) (*operations.GetRequestcalloutPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsGetRequestcalloutPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRequestcalloutPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -409,15 +417,19 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsGetRequestcallout
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetRequestcalloutPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetRequestcalloutPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcalloutPluginRequest(ctx context.Context) (*operations.UpdateRequestcalloutPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcalloutPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRequestcalloutPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -425,6 +437,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcall
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestCalloutPlugin, requestCalloutPluginDiags := r.ToSharedRequestCalloutPlugin(ctx)
 	diags.Append(requestCalloutPluginDiags...)
@@ -433,9 +448,10 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcall
 		return nil, diags
 	}
 
-	out := operations.UpdateRequestcalloutPluginRequest{
+	out := operations.UpdateRequestcalloutPluginInWorkspaceRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		RequestCalloutPlugin: *requestCalloutPlugin,
 	}
 

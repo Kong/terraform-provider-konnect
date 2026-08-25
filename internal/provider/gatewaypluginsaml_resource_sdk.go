@@ -250,11 +250,14 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 	return diags
 }
 
-func (r *GatewayPluginSamlResourceModel) ToOperationsCreateSamlPluginRequest(ctx context.Context) (*operations.CreateSamlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSamlResourceModel) ToOperationsCreateSamlPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateSamlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	samlPlugin, samlPluginDiags := r.ToSharedSamlPlugin(ctx)
 	diags.Append(samlPluginDiags...)
@@ -263,15 +266,16 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsCreateSamlPluginRequest(ctx
 		return nil, diags
 	}
 
-	out := operations.CreateSamlPluginRequest{
+	out := operations.CreateSamlPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SamlPlugin:     *samlPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSamlResourceModel) ToOperationsDeleteSamlPluginRequest(ctx context.Context) (*operations.DeleteSamlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSamlResourceModel) ToOperationsDeleteSamlPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteSamlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -280,15 +284,19 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsDeleteSamlPluginRequest(ctx
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteSamlPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteSamlPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSamlResourceModel) ToOperationsGetSamlPluginRequest(ctx context.Context) (*operations.GetSamlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSamlResourceModel) ToOperationsGetSamlPluginInWorkspaceRequest(ctx context.Context) (*operations.GetSamlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -297,15 +305,19 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsGetSamlPluginRequest(ctx co
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetSamlPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetSamlPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSamlResourceModel) ToOperationsUpdateSamlPluginRequest(ctx context.Context) (*operations.UpdateSamlPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSamlResourceModel) ToOperationsUpdateSamlPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateSamlPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -313,6 +325,9 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsUpdateSamlPluginRequest(ctx
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	samlPlugin, samlPluginDiags := r.ToSharedSamlPlugin(ctx)
 	diags.Append(samlPluginDiags...)
@@ -321,9 +336,10 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsUpdateSamlPluginRequest(ctx
 		return nil, diags
 	}
 
-	out := operations.UpdateSamlPluginRequest{
+	out := operations.UpdateSamlPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SamlPlugin:     *samlPlugin,
 	}
 

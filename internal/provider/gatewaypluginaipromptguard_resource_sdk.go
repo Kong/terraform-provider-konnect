@@ -134,11 +134,14 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 	return diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguardPluginRequest(ctx context.Context) (*operations.CreateAipromptguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiPromptGuardPlugin, aiPromptGuardPluginDiags := r.ToSharedAiPromptGuardPlugin(ctx)
 	diags.Append(aiPromptGuardPluginDiags...)
@@ -147,15 +150,16 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguar
 		return nil, diags
 	}
 
-	out := operations.CreateAipromptguardPluginRequest{
+	out := operations.CreateAipromptguardPluginInWorkspaceRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiPromptGuardPlugin: *aiPromptGuardPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguardPluginRequest(ctx context.Context) (*operations.DeleteAipromptguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,15 +168,19 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguar
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAipromptguardPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAipromptguardPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPluginRequest(ctx context.Context) (*operations.GetAipromptguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -181,15 +189,19 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAipromptguardPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAipromptguardPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguardPluginRequest(ctx context.Context) (*operations.UpdateAipromptguardPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -197,6 +209,9 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguar
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiPromptGuardPlugin, aiPromptGuardPluginDiags := r.ToSharedAiPromptGuardPlugin(ctx)
 	diags.Append(aiPromptGuardPluginDiags...)
@@ -205,9 +220,10 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguar
 		return nil, diags
 	}
 
-	out := operations.UpdateAipromptguardPluginRequest{
+	out := operations.UpdateAipromptguardPluginInWorkspaceRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiPromptGuardPlugin: *aiPromptGuardPlugin,
 	}
 

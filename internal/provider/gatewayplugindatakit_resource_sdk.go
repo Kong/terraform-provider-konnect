@@ -469,11 +469,14 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginDatakitResourceModel) ToOperationsCreateDatakitPluginRequest(ctx context.Context) (*operations.CreateDatakitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatakitResourceModel) ToOperationsCreateDatakitPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateDatakitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	datakitPlugin, datakitPluginDiags := r.ToSharedDatakitPlugin(ctx)
 	diags.Append(datakitPluginDiags...)
@@ -482,15 +485,16 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsCreateDatakitPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateDatakitPluginRequest{
+	out := operations.CreateDatakitPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatakitPlugin:  *datakitPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDatakitResourceModel) ToOperationsDeleteDatakitPluginRequest(ctx context.Context) (*operations.DeleteDatakitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatakitResourceModel) ToOperationsDeleteDatakitPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteDatakitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -499,15 +503,19 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsDeleteDatakitPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteDatakitPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteDatakitPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDatakitResourceModel) ToOperationsGetDatakitPluginRequest(ctx context.Context) (*operations.GetDatakitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatakitResourceModel) ToOperationsGetDatakitPluginInWorkspaceRequest(ctx context.Context) (*operations.GetDatakitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -516,15 +524,19 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsGetDatakitPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetDatakitPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetDatakitPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDatakitResourceModel) ToOperationsUpdateDatakitPluginRequest(ctx context.Context) (*operations.UpdateDatakitPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatakitResourceModel) ToOperationsUpdateDatakitPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateDatakitPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -532,6 +544,9 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsUpdateDatakitPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	datakitPlugin, datakitPluginDiags := r.ToSharedDatakitPlugin(ctx)
 	diags.Append(datakitPluginDiags...)
@@ -540,9 +555,10 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsUpdateDatakitPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateDatakitPluginRequest{
+	out := operations.UpdateDatakitPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatakitPlugin:  *datakitPlugin,
 	}
 

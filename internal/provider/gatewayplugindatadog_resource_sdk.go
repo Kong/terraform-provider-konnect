@@ -146,11 +146,14 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginDatadogResourceModel) ToOperationsCreateDatadogPluginRequest(ctx context.Context) (*operations.CreateDatadogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatadogResourceModel) ToOperationsCreateDatadogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateDatadogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	datadogPlugin, datadogPluginDiags := r.ToSharedDatadogPlugin(ctx)
 	diags.Append(datadogPluginDiags...)
@@ -159,15 +162,16 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsCreateDatadogPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateDatadogPluginRequest{
+	out := operations.CreateDatadogPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatadogPlugin:  *datadogPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDatadogResourceModel) ToOperationsDeleteDatadogPluginRequest(ctx context.Context) (*operations.DeleteDatadogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatadogResourceModel) ToOperationsDeleteDatadogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteDatadogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -176,15 +180,19 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsDeleteDatadogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteDatadogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteDatadogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDatadogResourceModel) ToOperationsGetDatadogPluginRequest(ctx context.Context) (*operations.GetDatadogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatadogResourceModel) ToOperationsGetDatadogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetDatadogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -193,15 +201,19 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsGetDatadogPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetDatadogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetDatadogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginRequest(ctx context.Context) (*operations.UpdateDatadogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateDatadogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -209,6 +221,9 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	datadogPlugin, datadogPluginDiags := r.ToSharedDatadogPlugin(ctx)
 	diags.Append(datadogPluginDiags...)
@@ -217,9 +232,10 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateDatadogPluginRequest{
+	out := operations.UpdateDatadogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatadogPlugin:  *datadogPlugin,
 	}
 

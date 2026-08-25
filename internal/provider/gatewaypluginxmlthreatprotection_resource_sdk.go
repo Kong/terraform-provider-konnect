@@ -128,11 +128,14 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThre
 	return diags
 }
 
-func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsCreateXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.CreateXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsCreateXmlthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateXmlthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	xmlThreatProtectionPlugin, xmlThreatProtectionPluginDiags := r.ToSharedXMLThreatProtectionPlugin(ctx)
 	diags.Append(xmlThreatProtectionPluginDiags...)
@@ -141,15 +144,16 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsCreateXmlthr
 		return nil, diags
 	}
 
-	out := operations.CreateXmlthreatprotectionPluginRequest{
+	out := operations.CreateXmlthreatprotectionPluginInWorkspaceRequest{
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		XMLThreatProtectionPlugin: *xmlThreatProtectionPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsDeleteXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.DeleteXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsDeleteXmlthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteXmlthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -158,15 +162,19 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsDeleteXmlthr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteXmlthreatprotectionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteXmlthreatprotectionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsGetXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.GetXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsGetXmlthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetXmlthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -175,15 +183,19 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsGetXmlthreat
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetXmlthreatprotectionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetXmlthreatprotectionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsUpdateXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.UpdateXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsUpdateXmlthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateXmlthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -191,6 +203,9 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsUpdateXmlthr
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	xmlThreatProtectionPlugin, xmlThreatProtectionPluginDiags := r.ToSharedXMLThreatProtectionPlugin(ctx)
 	diags.Append(xmlThreatProtectionPluginDiags...)
@@ -199,9 +214,10 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsUpdateXmlthr
 		return nil, diags
 	}
 
-	out := operations.UpdateXmlthreatprotectionPluginRequest{
+	out := operations.UpdateXmlthreatprotectionPluginInWorkspaceRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		XMLThreatProtectionPlugin: *xmlThreatProtectionPlugin,
 	}
 

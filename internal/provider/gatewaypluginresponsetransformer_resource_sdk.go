@@ -182,11 +182,14 @@ func (r *GatewayPluginResponseTransformerResourceModel) RefreshFromSharedRespons
 	return diags
 }
 
-func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsCreateResponsetransformerPluginRequest(ctx context.Context) (*operations.CreateResponsetransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsCreateResponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateResponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	responseTransformerPlugin, responseTransformerPluginDiags := r.ToSharedResponseTransformerPlugin(ctx)
 	diags.Append(responseTransformerPluginDiags...)
@@ -195,15 +198,16 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsCreateRespon
 		return nil, diags
 	}
 
-	out := operations.CreateResponsetransformerPluginRequest{
+	out := operations.CreateResponsetransformerPluginInWorkspaceRequest{
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		ResponseTransformerPlugin: *responseTransformerPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsDeleteResponsetransformerPluginRequest(ctx context.Context) (*operations.DeleteResponsetransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsDeleteResponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteResponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -212,15 +216,19 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsDeleteRespon
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteResponsetransformerPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteResponsetransformerPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsGetResponsetransformerPluginRequest(ctx context.Context) (*operations.GetResponsetransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsGetResponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.GetResponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -229,15 +237,19 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsGetResponset
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetResponsetransformerPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetResponsetransformerPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsUpdateResponsetransformerPluginRequest(ctx context.Context) (*operations.UpdateResponsetransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsUpdateResponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateResponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -245,6 +257,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsUpdateRespon
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	responseTransformerPlugin, responseTransformerPluginDiags := r.ToSharedResponseTransformerPlugin(ctx)
 	diags.Append(responseTransformerPluginDiags...)
@@ -253,9 +268,10 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsUpdateRespon
 		return nil, diags
 	}
 
-	out := operations.UpdateResponsetransformerPluginRequest{
+	out := operations.UpdateResponsetransformerPluginInWorkspaceRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		ResponseTransformerPlugin: *responseTransformerPlugin,
 	}
 

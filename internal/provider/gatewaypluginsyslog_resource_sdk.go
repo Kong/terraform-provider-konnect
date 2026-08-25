@@ -130,11 +130,14 @@ func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(ctx con
 	return diags
 }
 
-func (r *GatewayPluginSyslogResourceModel) ToOperationsCreateSyslogPluginRequest(ctx context.Context) (*operations.CreateSyslogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSyslogResourceModel) ToOperationsCreateSyslogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateSyslogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	syslogPlugin, syslogPluginDiags := r.ToSharedSyslogPlugin(ctx)
 	diags.Append(syslogPluginDiags...)
@@ -143,15 +146,16 @@ func (r *GatewayPluginSyslogResourceModel) ToOperationsCreateSyslogPluginRequest
 		return nil, diags
 	}
 
-	out := operations.CreateSyslogPluginRequest{
+	out := operations.CreateSyslogPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SyslogPlugin:   *syslogPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSyslogResourceModel) ToOperationsDeleteSyslogPluginRequest(ctx context.Context) (*operations.DeleteSyslogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSyslogResourceModel) ToOperationsDeleteSyslogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteSyslogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -160,15 +164,19 @@ func (r *GatewayPluginSyslogResourceModel) ToOperationsDeleteSyslogPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteSyslogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteSyslogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSyslogResourceModel) ToOperationsGetSyslogPluginRequest(ctx context.Context) (*operations.GetSyslogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSyslogResourceModel) ToOperationsGetSyslogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetSyslogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -177,15 +185,19 @@ func (r *GatewayPluginSyslogResourceModel) ToOperationsGetSyslogPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetSyslogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetSyslogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSyslogResourceModel) ToOperationsUpdateSyslogPluginRequest(ctx context.Context) (*operations.UpdateSyslogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSyslogResourceModel) ToOperationsUpdateSyslogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateSyslogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -193,6 +205,9 @@ func (r *GatewayPluginSyslogResourceModel) ToOperationsUpdateSyslogPluginRequest
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	syslogPlugin, syslogPluginDiags := r.ToSharedSyslogPlugin(ctx)
 	diags.Append(syslogPluginDiags...)
@@ -201,9 +216,10 @@ func (r *GatewayPluginSyslogResourceModel) ToOperationsUpdateSyslogPluginRequest
 		return nil, diags
 	}
 
-	out := operations.UpdateSyslogPluginRequest{
+	out := operations.UpdateSyslogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SyslogPlugin:   *syslogPlugin,
 	}
 

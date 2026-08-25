@@ -334,11 +334,14 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 	return diags
 }
 
-func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsCreateAiraginjectorPluginRequest(ctx context.Context) (*operations.CreateAiraginjectorPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsCreateAiraginjectorPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAiraginjectorPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiRagInjectorPlugin, aiRagInjectorPluginDiags := r.ToSharedAiRagInjectorPlugin(ctx)
 	diags.Append(aiRagInjectorPluginDiags...)
@@ -347,15 +350,16 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsCreateAiraginjecto
 		return nil, diags
 	}
 
-	out := operations.CreateAiraginjectorPluginRequest{
+	out := operations.CreateAiraginjectorPluginInWorkspaceRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiRagInjectorPlugin: *aiRagInjectorPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsDeleteAiraginjectorPluginRequest(ctx context.Context) (*operations.DeleteAiraginjectorPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsDeleteAiraginjectorPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAiraginjectorPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -364,15 +368,19 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsDeleteAiraginjecto
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAiraginjectorPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAiraginjectorPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsGetAiraginjectorPluginRequest(ctx context.Context) (*operations.GetAiraginjectorPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsGetAiraginjectorPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAiraginjectorPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -381,15 +389,19 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsGetAiraginjectorPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAiraginjectorPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAiraginjectorPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsUpdateAiraginjectorPluginRequest(ctx context.Context) (*operations.UpdateAiraginjectorPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsUpdateAiraginjectorPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAiraginjectorPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -397,6 +409,9 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsUpdateAiraginjecto
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiRagInjectorPlugin, aiRagInjectorPluginDiags := r.ToSharedAiRagInjectorPlugin(ctx)
 	diags.Append(aiRagInjectorPluginDiags...)
@@ -405,9 +420,10 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsUpdateAiraginjecto
 		return nil, diags
 	}
 
-	out := operations.UpdateAiraginjectorPluginRequest{
+	out := operations.UpdateAiraginjectorPluginInWorkspaceRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiRagInjectorPlugin: *aiRagInjectorPlugin,
 	}
 

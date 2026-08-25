@@ -173,11 +173,14 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginSolaceLogResourceModel) ToOperationsCreateSolacelogPluginRequest(ctx context.Context) (*operations.CreateSolacelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceLogResourceModel) ToOperationsCreateSolacelogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateSolacelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	solaceLogPlugin, solaceLogPluginDiags := r.ToSharedSolaceLogPlugin(ctx)
 	diags.Append(solaceLogPluginDiags...)
@@ -186,15 +189,16 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsCreateSolacelogPluginR
 		return nil, diags
 	}
 
-	out := operations.CreateSolacelogPluginRequest{
+	out := operations.CreateSolacelogPluginInWorkspaceRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		SolaceLogPlugin: *solaceLogPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceLogResourceModel) ToOperationsDeleteSolacelogPluginRequest(ctx context.Context) (*operations.DeleteSolacelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceLogResourceModel) ToOperationsDeleteSolacelogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteSolacelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -203,15 +207,19 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsDeleteSolacelogPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteSolacelogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteSolacelogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceLogResourceModel) ToOperationsGetSolacelogPluginRequest(ctx context.Context) (*operations.GetSolacelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceLogResourceModel) ToOperationsGetSolacelogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetSolacelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -220,15 +228,19 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsGetSolacelogPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetSolacelogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetSolacelogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceLogResourceModel) ToOperationsUpdateSolacelogPluginRequest(ctx context.Context) (*operations.UpdateSolacelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceLogResourceModel) ToOperationsUpdateSolacelogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateSolacelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -236,6 +248,9 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsUpdateSolacelogPluginR
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	solaceLogPlugin, solaceLogPluginDiags := r.ToSharedSolaceLogPlugin(ctx)
 	diags.Append(solaceLogPluginDiags...)
@@ -244,9 +259,10 @@ func (r *GatewayPluginSolaceLogResourceModel) ToOperationsUpdateSolacelogPluginR
 		return nil, diags
 	}
 
-	out := operations.UpdateSolacelogPluginRequest{
+	out := operations.UpdateSolacelogPluginInWorkspaceRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		SolaceLogPlugin: *solaceLogPlugin,
 	}
 

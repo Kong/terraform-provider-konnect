@@ -129,11 +129,14 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx con
 	return diags
 }
 
-func (r *GatewayPluginLogglyResourceModel) ToOperationsCreateLogglyPluginRequest(ctx context.Context) (*operations.CreateLogglyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginLogglyResourceModel) ToOperationsCreateLogglyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateLogglyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	logglyPlugin, logglyPluginDiags := r.ToSharedLogglyPlugin(ctx)
 	diags.Append(logglyPluginDiags...)
@@ -142,15 +145,16 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsCreateLogglyPluginRequest
 		return nil, diags
 	}
 
-	out := operations.CreateLogglyPluginRequest{
+	out := operations.CreateLogglyPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		LogglyPlugin:   *logglyPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginLogglyResourceModel) ToOperationsDeleteLogglyPluginRequest(ctx context.Context) (*operations.DeleteLogglyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginLogglyResourceModel) ToOperationsDeleteLogglyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteLogglyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -159,15 +163,19 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsDeleteLogglyPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteLogglyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteLogglyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginLogglyResourceModel) ToOperationsGetLogglyPluginRequest(ctx context.Context) (*operations.GetLogglyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginLogglyResourceModel) ToOperationsGetLogglyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetLogglyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -176,15 +184,19 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsGetLogglyPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetLogglyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetLogglyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginRequest(ctx context.Context) (*operations.UpdateLogglyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateLogglyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -192,6 +204,9 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginRequest
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	logglyPlugin, logglyPluginDiags := r.ToSharedLogglyPlugin(ctx)
 	diags.Append(logglyPluginDiags...)
@@ -200,9 +215,10 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginRequest
 		return nil, diags
 	}
 
-	out := operations.UpdateLogglyPluginRequest{
+	out := operations.UpdateLogglyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		LogglyPlugin:   *logglyPlugin,
 	}
 

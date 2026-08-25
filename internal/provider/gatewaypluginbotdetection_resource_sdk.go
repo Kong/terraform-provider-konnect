@@ -101,11 +101,14 @@ func (r *GatewayPluginBotDetectionResourceModel) RefreshFromSharedBotDetectionPl
 	return diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionPluginRequest(ctx context.Context) (*operations.CreateBotdetectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	botDetectionPlugin, botDetectionPluginDiags := r.ToSharedBotDetectionPlugin(ctx)
 	diags.Append(botDetectionPluginDiags...)
@@ -114,15 +117,16 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionP
 		return nil, diags
 	}
 
-	out := operations.CreateBotdetectionPluginRequest{
+	out := operations.CreateBotdetectionPluginInWorkspaceRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		BotDetectionPlugin: *botDetectionPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionPluginRequest(ctx context.Context) (*operations.DeleteBotdetectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -131,15 +135,19 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteBotdetectionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteBotdetectionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPluginRequest(ctx context.Context) (*operations.GetBotdetectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -148,15 +156,19 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetBotdetectionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetBotdetectionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionPluginRequest(ctx context.Context) (*operations.UpdateBotdetectionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,6 +176,9 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionP
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	botDetectionPlugin, botDetectionPluginDiags := r.ToSharedBotDetectionPlugin(ctx)
 	diags.Append(botDetectionPluginDiags...)
@@ -172,9 +187,10 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionP
 		return nil, diags
 	}
 
-	out := operations.UpdateBotdetectionPluginRequest{
+	out := operations.UpdateBotdetectionPluginInWorkspaceRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		BotDetectionPlugin: *botDetectionPlugin,
 	}
 

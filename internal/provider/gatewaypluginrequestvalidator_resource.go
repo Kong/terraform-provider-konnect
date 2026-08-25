@@ -24,6 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/boolvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -31,7 +32,7 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginRequestValidatorResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginRequestValidatorResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginRequestValidatorResource{}
 
 func NewGatewayPluginRequestValidatorResource() resource.Resource {
 	return &GatewayPluginRequestValidatorResource{}
@@ -60,6 +61,7 @@ type GatewayPluginRequestValidatorResourceModel struct {
 	Service        *tfTypes.Set                          `tfsdk:"service"`
 	Tags           []types.String                        `tfsdk:"tags"`
 	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Workspace      types.String                          `tfsdk:"workspace"`
 }
 
 func (r *GatewayPluginRequestValidatorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -69,6 +71,7 @@ func (r *GatewayPluginRequestValidatorResource) Metadata(ctx context.Context, re
 func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginRequestValidator Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -358,6 +361,15 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -400,13 +412,13 @@ func (r *GatewayPluginRequestValidatorResource) Create(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRequestvalidatorPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRequestvalidatorPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRequestvalidatorPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateRequestvalidatorPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -460,13 +472,13 @@ func (r *GatewayPluginRequestValidatorResource) Read(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRequestvalidatorPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRequestvalidatorPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRequestvalidatorPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetRequestvalidatorPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -514,13 +526,13 @@ func (r *GatewayPluginRequestValidatorResource) Update(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRequestvalidatorPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRequestvalidatorPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRequestvalidatorPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateRequestvalidatorPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -574,13 +586,13 @@ func (r *GatewayPluginRequestValidatorResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRequestvalidatorPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRequestvalidatorPluginInWorkspaceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRequestvalidatorPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteRequestvalidatorPluginInWorkspace(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -608,10 +620,11 @@ func (r *GatewayPluginRequestValidatorResource) ImportState(ctx context.Context,
 	var data struct {
 		ID             string `json:"id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		Workspace      string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -625,4 +638,15 @@ func (r *GatewayPluginRequestValidatorResource) ImportState(ctx context.Context,
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Workspace) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginRequestValidatorResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginrequestvalidatorStateUpgraderV0},
+	}
 }

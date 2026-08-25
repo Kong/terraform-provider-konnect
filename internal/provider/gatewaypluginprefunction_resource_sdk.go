@@ -133,11 +133,14 @@ func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlug
 	return diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPluginRequest(ctx context.Context) (*operations.CreatePrefunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreatePrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	preFunctionPlugin, preFunctionPluginDiags := r.ToSharedPreFunctionPlugin(ctx)
 	diags.Append(preFunctionPluginDiags...)
@@ -146,15 +149,16 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPlu
 		return nil, diags
 	}
 
-	out := operations.CreatePrefunctionPluginRequest{
+	out := operations.CreatePrefunctionPluginInWorkspaceRequest{
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		PreFunctionPlugin: *preFunctionPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPluginRequest(ctx context.Context) (*operations.DeletePrefunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeletePrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -163,15 +167,19 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeletePrefunctionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeletePrefunctionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPluginRequest(ctx context.Context) (*operations.GetPrefunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetPrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -180,15 +188,19 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPlugin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetPrefunctionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetPrefunctionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPluginRequest(ctx context.Context) (*operations.UpdatePrefunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdatePrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -196,6 +208,9 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPlu
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	preFunctionPlugin, preFunctionPluginDiags := r.ToSharedPreFunctionPlugin(ctx)
 	diags.Append(preFunctionPluginDiags...)
@@ -204,9 +219,10 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPlu
 		return nil, diags
 	}
 
-	out := operations.UpdatePrefunctionPluginRequest{
+	out := operations.UpdatePrefunctionPluginInWorkspaceRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		PreFunctionPlugin: *preFunctionPlugin,
 	}
 

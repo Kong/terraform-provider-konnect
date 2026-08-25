@@ -147,11 +147,14 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginHTTPLogResourceModel) ToOperationsCreateHttplogPluginRequest(ctx context.Context) (*operations.CreateHttplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHTTPLogResourceModel) ToOperationsCreateHttplogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateHttplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	httpLogPlugin, httpLogPluginDiags := r.ToSharedHTTPLogPlugin(ctx)
 	diags.Append(httpLogPluginDiags...)
@@ -160,15 +163,16 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsCreateHttplogPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateHttplogPluginRequest{
+	out := operations.CreateHttplogPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		HTTPLogPlugin:  *httpLogPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginHTTPLogResourceModel) ToOperationsDeleteHttplogPluginRequest(ctx context.Context) (*operations.DeleteHttplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHTTPLogResourceModel) ToOperationsDeleteHttplogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteHttplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -177,15 +181,19 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsDeleteHttplogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteHttplogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteHttplogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginHTTPLogResourceModel) ToOperationsGetHttplogPluginRequest(ctx context.Context) (*operations.GetHttplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHTTPLogResourceModel) ToOperationsGetHttplogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetHttplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -194,15 +202,19 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsGetHttplogPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetHttplogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetHttplogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginHTTPLogResourceModel) ToOperationsUpdateHttplogPluginRequest(ctx context.Context) (*operations.UpdateHttplogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginHTTPLogResourceModel) ToOperationsUpdateHttplogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateHttplogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -210,6 +222,9 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsUpdateHttplogPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	httpLogPlugin, httpLogPluginDiags := r.ToSharedHTTPLogPlugin(ctx)
 	diags.Append(httpLogPluginDiags...)
@@ -218,9 +233,10 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsUpdateHttplogPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateHttplogPluginRequest{
+	out := operations.UpdateHttplogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		HTTPLogPlugin:  *httpLogPlugin,
 	}
 

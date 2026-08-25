@@ -145,11 +145,14 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) RefreshFromSharedMetering
 	return diags
 }
 
-func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsCreateMeteringandbillingPluginRequest(ctx context.Context) (*operations.CreateMeteringandbillingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsCreateMeteringandbillingPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateMeteringandbillingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	meteringAndBillingPlugin, meteringAndBillingPluginDiags := r.ToSharedMeteringAndBillingPlugin(ctx)
 	diags.Append(meteringAndBillingPluginDiags...)
@@ -158,15 +161,16 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsCreateMeterin
 		return nil, diags
 	}
 
-	out := operations.CreateMeteringandbillingPluginRequest{
+	out := operations.CreateMeteringandbillingPluginInWorkspaceRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		MeteringAndBillingPlugin: *meteringAndBillingPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsDeleteMeteringandbillingPluginRequest(ctx context.Context) (*operations.DeleteMeteringandbillingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsDeleteMeteringandbillingPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteMeteringandbillingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -175,15 +179,19 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsDeleteMeterin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteMeteringandbillingPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteMeteringandbillingPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsGetMeteringandbillingPluginRequest(ctx context.Context) (*operations.GetMeteringandbillingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsGetMeteringandbillingPluginInWorkspaceRequest(ctx context.Context) (*operations.GetMeteringandbillingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -192,15 +200,19 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsGetMeteringan
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetMeteringandbillingPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetMeteringandbillingPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsUpdateMeteringandbillingPluginRequest(ctx context.Context) (*operations.UpdateMeteringandbillingPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsUpdateMeteringandbillingPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateMeteringandbillingPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -208,6 +220,9 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsUpdateMeterin
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	meteringAndBillingPlugin, meteringAndBillingPluginDiags := r.ToSharedMeteringAndBillingPlugin(ctx)
 	diags.Append(meteringAndBillingPluginDiags...)
@@ -216,9 +231,10 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsUpdateMeterin
 		return nil, diags
 	}
 
-	out := operations.UpdateMeteringandbillingPluginRequest{
+	out := operations.UpdateMeteringandbillingPluginInWorkspaceRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		MeteringAndBillingPlugin: *meteringAndBillingPlugin,
 	}
 

@@ -103,11 +103,14 @@ func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginFileLogResourceModel) ToOperationsCreateFilelogPluginRequest(ctx context.Context) (*operations.CreateFilelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginFileLogResourceModel) ToOperationsCreateFilelogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateFilelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	fileLogPlugin, fileLogPluginDiags := r.ToSharedFileLogPlugin(ctx)
 	diags.Append(fileLogPluginDiags...)
@@ -116,15 +119,16 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsCreateFilelogPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateFilelogPluginRequest{
+	out := operations.CreateFilelogPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		FileLogPlugin:  *fileLogPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginFileLogResourceModel) ToOperationsDeleteFilelogPluginRequest(ctx context.Context) (*operations.DeleteFilelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginFileLogResourceModel) ToOperationsDeleteFilelogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteFilelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -133,15 +137,19 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsDeleteFilelogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteFilelogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteFilelogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginFileLogResourceModel) ToOperationsGetFilelogPluginRequest(ctx context.Context) (*operations.GetFilelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginFileLogResourceModel) ToOperationsGetFilelogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetFilelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -150,15 +158,19 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsGetFilelogPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetFilelogPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetFilelogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginRequest(ctx context.Context) (*operations.UpdateFilelogPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateFilelogPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -166,6 +178,9 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	fileLogPlugin, fileLogPluginDiags := r.ToSharedFileLogPlugin(ctx)
 	diags.Append(fileLogPluginDiags...)
@@ -174,9 +189,10 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateFilelogPluginRequest{
+	out := operations.UpdateFilelogPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		FileLogPlugin:  *fileLogPlugin,
 	}
 

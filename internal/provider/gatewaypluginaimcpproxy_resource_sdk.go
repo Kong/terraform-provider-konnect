@@ -367,11 +367,14 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 	return diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPluginRequest(ctx context.Context) (*operations.CreateAimcpproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiMcpProxyPlugin, aiMcpProxyPluginDiags := r.ToSharedAiMcpProxyPlugin(ctx)
 	diags.Append(aiMcpProxyPluginDiags...)
@@ -380,15 +383,16 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.CreateAimcpproxyPluginRequest{
+	out := operations.CreateAimcpproxyPluginInWorkspaceRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiMcpProxyPlugin: *aiMcpProxyPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPluginRequest(ctx context.Context) (*operations.DeleteAimcpproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -397,15 +401,19 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAimcpproxyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAimcpproxyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginRequest(ctx context.Context) (*operations.GetAimcpproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -414,15 +422,19 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAimcpproxyPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAimcpproxyPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPluginRequest(ctx context.Context) (*operations.UpdateAimcpproxyPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -430,6 +442,9 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPlugi
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiMcpProxyPlugin, aiMcpProxyPluginDiags := r.ToSharedAiMcpProxyPlugin(ctx)
 	diags.Append(aiMcpProxyPluginDiags...)
@@ -438,9 +453,10 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdateAimcpproxyPluginRequest{
+	out := operations.UpdateAimcpproxyPluginInWorkspaceRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiMcpProxyPlugin: *aiMcpProxyPlugin,
 	}
 

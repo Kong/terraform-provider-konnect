@@ -101,11 +101,14 @@ func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransfo
 	return diags
 }
 
-func (r *GatewayPluginExitTransformerResourceModel) ToOperationsCreateExittransformerPluginRequest(ctx context.Context) (*operations.CreateExittransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsCreateExittransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateExittransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	exitTransformerPlugin, exitTransformerPluginDiags := r.ToSharedExitTransformerPlugin(ctx)
 	diags.Append(exitTransformerPluginDiags...)
@@ -114,15 +117,16 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsCreateExittransf
 		return nil, diags
 	}
 
-	out := operations.CreateExittransformerPluginRequest{
+	out := operations.CreateExittransformerPluginInWorkspaceRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		ExitTransformerPlugin: *exitTransformerPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginExitTransformerResourceModel) ToOperationsDeleteExittransformerPluginRequest(ctx context.Context) (*operations.DeleteExittransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsDeleteExittransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteExittransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -131,15 +135,19 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsDeleteExittransf
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteExittransformerPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteExittransformerPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginExitTransformerResourceModel) ToOperationsGetExittransformerPluginRequest(ctx context.Context) (*operations.GetExittransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsGetExittransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.GetExittransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -148,15 +156,19 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsGetExittransform
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetExittransformerPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetExittransformerPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginExitTransformerResourceModel) ToOperationsUpdateExittransformerPluginRequest(ctx context.Context) (*operations.UpdateExittransformerPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsUpdateExittransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateExittransformerPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,6 +176,9 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsUpdateExittransf
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	exitTransformerPlugin, exitTransformerPluginDiags := r.ToSharedExitTransformerPlugin(ctx)
 	diags.Append(exitTransformerPluginDiags...)
@@ -172,9 +187,10 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsUpdateExittransf
 		return nil, diags
 	}
 
-	out := operations.UpdateExittransformerPluginRequest{
+	out := operations.UpdateExittransformerPluginInWorkspaceRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		ExitTransformerPlugin: *exitTransformerPlugin,
 	}
 

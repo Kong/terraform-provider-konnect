@@ -125,11 +125,14 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 	return diags
 }
 
-func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsCreateAiawsguardrailsPluginRequest(ctx context.Context) (*operations.CreateAiawsguardrailsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsCreateAiawsguardrailsPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAiawsguardrailsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiAwsGuardrailsPlugin, aiAwsGuardrailsPluginDiags := r.ToSharedAiAwsGuardrailsPlugin(ctx)
 	diags.Append(aiAwsGuardrailsPluginDiags...)
@@ -138,15 +141,16 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsCreateAiawsguard
 		return nil, diags
 	}
 
-	out := operations.CreateAiawsguardrailsPluginRequest{
+	out := operations.CreateAiawsguardrailsPluginInWorkspaceRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiAwsGuardrailsPlugin: *aiAwsGuardrailsPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsDeleteAiawsguardrailsPluginRequest(ctx context.Context) (*operations.DeleteAiawsguardrailsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsDeleteAiawsguardrailsPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAiawsguardrailsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -155,15 +159,19 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsDeleteAiawsguard
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAiawsguardrailsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAiawsguardrailsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsGetAiawsguardrailsPluginRequest(ctx context.Context) (*operations.GetAiawsguardrailsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsGetAiawsguardrailsPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAiawsguardrailsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -172,15 +180,19 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsGetAiawsguardrai
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAiawsguardrailsPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAiawsguardrailsPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsUpdateAiawsguardrailsPluginRequest(ctx context.Context) (*operations.UpdateAiawsguardrailsPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsUpdateAiawsguardrailsPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAiawsguardrailsPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -188,6 +200,9 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsUpdateAiawsguard
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiAwsGuardrailsPlugin, aiAwsGuardrailsPluginDiags := r.ToSharedAiAwsGuardrailsPlugin(ctx)
 	diags.Append(aiAwsGuardrailsPluginDiags...)
@@ -196,9 +211,10 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToOperationsUpdateAiawsguard
 		return nil, diags
 	}
 
-	out := operations.UpdateAiawsguardrailsPluginRequest{
+	out := operations.UpdateAiawsguardrailsPluginInWorkspaceRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiAwsGuardrailsPlugin: *aiAwsGuardrailsPlugin,
 	}
 

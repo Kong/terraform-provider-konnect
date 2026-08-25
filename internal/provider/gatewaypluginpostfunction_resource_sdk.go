@@ -133,11 +133,14 @@ func (r *GatewayPluginPostFunctionResourceModel) RefreshFromSharedPostFunctionPl
 	return diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionPluginRequest(ctx context.Context) (*operations.CreatePostfunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreatePostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	postFunctionPlugin, postFunctionPluginDiags := r.ToSharedPostFunctionPlugin(ctx)
 	diags.Append(postFunctionPluginDiags...)
@@ -146,15 +149,16 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionP
 		return nil, diags
 	}
 
-	out := operations.CreatePostfunctionPluginRequest{
+	out := operations.CreatePostfunctionPluginInWorkspaceRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		PostFunctionPlugin: *postFunctionPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionPluginRequest(ctx context.Context) (*operations.DeletePostfunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeletePostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -163,15 +167,19 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeletePostfunctionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeletePostfunctionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPluginRequest(ctx context.Context) (*operations.GetPostfunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetPostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -180,15 +188,19 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetPostfunctionPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetPostfunctionPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionPluginRequest(ctx context.Context) (*operations.UpdatePostfunctionPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdatePostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -196,6 +208,9 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionP
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	postFunctionPlugin, postFunctionPluginDiags := r.ToSharedPostFunctionPlugin(ctx)
 	diags.Append(postFunctionPluginDiags...)
@@ -204,9 +219,10 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionP
 		return nil, diags
 	}
 
-	out := operations.UpdatePostfunctionPluginRequest{
+	out := operations.UpdatePostfunctionPluginInWorkspaceRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		PostFunctionPlugin: *postFunctionPlugin,
 	}
 

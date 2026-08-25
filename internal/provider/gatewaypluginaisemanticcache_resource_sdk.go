@@ -297,11 +297,14 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 	return diags
 }
 
-func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemanticcachePluginRequest(ctx context.Context) (*operations.CreateAisemanticcachePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemanticcachePluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAisemanticcachePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
 	diags.Append(aiSemanticCachePluginDiags...)
@@ -310,15 +313,16 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemantic
 		return nil, diags
 	}
 
-	out := operations.CreateAisemanticcachePluginRequest{
+	out := operations.CreateAisemanticcachePluginInWorkspaceRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiSemanticCachePlugin: *aiSemanticCachePlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsDeleteAisemanticcachePluginRequest(ctx context.Context) (*operations.DeleteAisemanticcachePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsDeleteAisemanticcachePluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAisemanticcachePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -327,15 +331,19 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsDeleteAisemantic
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteAisemanticcachePluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteAisemanticcachePluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsGetAisemanticcachePluginRequest(ctx context.Context) (*operations.GetAisemanticcachePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsGetAisemanticcachePluginInWorkspaceRequest(ctx context.Context) (*operations.GetAisemanticcachePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -344,15 +352,19 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsGetAisemanticcac
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetAisemanticcachePluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetAisemanticcachePluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemanticcachePluginRequest(ctx context.Context) (*operations.UpdateAisemanticcachePluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemanticcachePluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAisemanticcachePluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -360,6 +372,9 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemantic
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
 	diags.Append(aiSemanticCachePluginDiags...)
@@ -368,9 +383,10 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemantic
 		return nil, diags
 	}
 
-	out := operations.UpdateAisemanticcachePluginRequest{
+	out := operations.UpdateAisemanticcachePluginInWorkspaceRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiSemanticCachePlugin: *aiSemanticCachePlugin,
 	}
 

@@ -102,11 +102,14 @@ func (r *GatewayPluginGrpcWebResourceModel) RefreshFromSharedGrpcWebPlugin(ctx c
 	return diags
 }
 
-func (r *GatewayPluginGrpcWebResourceModel) ToOperationsCreateGrpcwebPluginRequest(ctx context.Context) (*operations.CreateGrpcwebPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsCreateGrpcwebPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateGrpcwebPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	grpcWebPlugin, grpcWebPluginDiags := r.ToSharedGrpcWebPlugin(ctx)
 	diags.Append(grpcWebPluginDiags...)
@@ -115,15 +118,16 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsCreateGrpcwebPluginReque
 		return nil, diags
 	}
 
-	out := operations.CreateGrpcwebPluginRequest{
+	out := operations.CreateGrpcwebPluginInWorkspaceRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		GrpcWebPlugin:  *grpcWebPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcWebResourceModel) ToOperationsDeleteGrpcwebPluginRequest(ctx context.Context) (*operations.DeleteGrpcwebPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsDeleteGrpcwebPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteGrpcwebPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -132,15 +136,19 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsDeleteGrpcwebPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteGrpcwebPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.DeleteGrpcwebPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcWebResourceModel) ToOperationsGetGrpcwebPluginRequest(ctx context.Context) (*operations.GetGrpcwebPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsGetGrpcwebPluginInWorkspaceRequest(ctx context.Context) (*operations.GetGrpcwebPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -149,15 +157,19 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsGetGrpcwebPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetGrpcwebPluginRequest{
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	out := operations.GetGrpcwebPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcWebResourceModel) ToOperationsUpdateGrpcwebPluginRequest(ctx context.Context) (*operations.UpdateGrpcwebPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsUpdateGrpcwebPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateGrpcwebPluginInWorkspaceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -165,6 +177,9 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsUpdateGrpcwebPluginReque
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	grpcWebPlugin, grpcWebPluginDiags := r.ToSharedGrpcWebPlugin(ctx)
 	diags.Append(grpcWebPluginDiags...)
@@ -173,9 +188,10 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsUpdateGrpcwebPluginReque
 		return nil, diags
 	}
 
-	out := operations.UpdateGrpcwebPluginRequest{
+	out := operations.UpdateGrpcwebPluginInWorkspaceRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		GrpcWebPlugin:  *grpcWebPlugin,
 	}
 
