@@ -6,8 +6,8 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// SAMLIdentityProviderConfig - The identity provider that contains configuration data for the SAML authentication integration.
-type SAMLIdentityProviderConfig struct {
+// SAMLIdentityProviderConfig1 - The identity provider that contains configuration data for the SAML authentication integration.
+type SAMLIdentityProviderConfig1 struct {
 	// The identity provider's metadata URL where the identity provider's metadata can be obtained.
 	IdpMetadataURL *string `default:"" json:"idp_metadata_url"`
 	// The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
@@ -16,61 +16,55 @@ type SAMLIdentityProviderConfig struct {
 	SpMetadataURL  *string `json:"sp_metadata_url,omitempty"`
 	// The entity ID of the service provider (SP).
 	SpEntityID *string `json:"sp_entity_id,omitempty"`
-	// The URL to redirect users to for initiating login with the identity provider.
-	LoginURL *string `json:"login_url,omitempty"`
-	// The URL where the SAML identity provider sends authentication responses after successful login attempts.
+	// The path URL where the SAML identity provider sends authentication responses after successful login attempts.
 	CallbackURL *string `json:"callback_url,omitempty"`
 }
 
-func (s SAMLIdentityProviderConfig) MarshalJSON() ([]byte, error) {
+func (s SAMLIdentityProviderConfig1) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(s, "", false)
 }
 
-func (s *SAMLIdentityProviderConfig) UnmarshalJSON(data []byte) error {
+func (s *SAMLIdentityProviderConfig1) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SAMLIdentityProviderConfig) GetIdpMetadataURL() *string {
+func (s *SAMLIdentityProviderConfig1) GetIdpMetadataURL() *string {
 	if s == nil {
 		return nil
 	}
 	return s.IdpMetadataURL
 }
 
-func (s *SAMLIdentityProviderConfig) GetIdpMetadataXML() *string {
+func (s *SAMLIdentityProviderConfig1) GetIdpMetadataXML() *string {
 	if s == nil {
 		return nil
 	}
 	return s.IdpMetadataXML
 }
 
-func (s *SAMLIdentityProviderConfig) GetSpMetadataURL() *string {
+func (s *SAMLIdentityProviderConfig1) GetSpMetadataURL() *string {
 	if s == nil {
 		return nil
 	}
 	return s.SpMetadataURL
 }
 
-func (s *SAMLIdentityProviderConfig) GetSpEntityID() *string {
+func (s *SAMLIdentityProviderConfig1) GetSpEntityID() *string {
 	if s == nil {
 		return nil
 	}
 	return s.SpEntityID
 }
 
-func (s *SAMLIdentityProviderConfig) GetLoginURL() *string {
-	if s == nil {
-		return nil
-	}
-	return s.LoginURL
-}
-
-func (s *SAMLIdentityProviderConfig) GetCallbackURL() *string {
+func (s *SAMLIdentityProviderConfig1) GetCallbackURL() *string {
 	if s == nil {
 		return nil
 	}
 	return s.CallbackURL
 }
+
+// #region class-body-samlidentityproviderconfig1
+// #endregion class-body-samlidentityproviderconfig1

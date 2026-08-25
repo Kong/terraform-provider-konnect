@@ -13,6 +13,8 @@ type LegacyStringFieldFilterWithExists struct {
 	// The field contains the provided value.
 	Contains *string `default:"null" queryParam:"name=contains"`
 	// Filters on whether the given field exists.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	Exists *bool `default:"null" queryParam:"name=exists"`
 }
 

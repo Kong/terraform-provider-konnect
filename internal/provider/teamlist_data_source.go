@@ -98,8 +98,9 @@ func (r *TeamListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 									Description: `The field exactly matches the provided value.`,
 								},
 								"exists": schema.BoolAttribute{
-									Optional:    true,
-									Description: `Filters on whether the given field exists.`,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Filters on whether the given field exists.`,
 								},
 							},
 						},
