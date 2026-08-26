@@ -28,6 +28,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_float64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/float64validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -225,22 +226,6 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 					"balancer": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"algorithm":       types.StringType,
-							"connect_timeout": types.Int64Type,
-							"fail_timeout":    types.Int64Type,
-							"failover_criteria": types.ListType{
-								ElemType: types.StringType,
-							},
-							"hash_on_header":        types.StringType,
-							"latency_strategy":      types.StringType,
-							"max_fails":             types.Int64Type,
-							"read_timeout":          types.Int64Type,
-							"retries":               types.Int64Type,
-							"slots":                 types.Int64Type,
-							"tokens_count_strategy": types.StringType,
-							"write_timeout":         types.Int64Type,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"algorithm": schema.StringAttribute{
 								Computed:    true,
@@ -828,10 +813,6 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								"logging": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
-									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-										"log_payloads":   types.BoolType,
-										"log_statistics": types.BoolType,
-									})),
 									Attributes: map[string]schema.Attribute{
 										"log_payloads": schema.BoolAttribute{
 											Computed:    true,
@@ -880,10 +861,29 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 														`video_output_s3_uri`:        types.StringType,
 													},
 												},
+												"cache_read_cost":  types.Float64Type,
+												"cache_write_cost": types.Float64Type,
+												"cache_write_cost_list": types.ListType{
+													ElemType: types.ObjectType{
+														AttrTypes: map[string]attr.Type{
+															`cost`: types.Float64Type,
+															`ttl`:  types.StringType,
+														},
+													},
+												},
 												"cohere": types.ObjectType{
 													AttrTypes: map[string]attr.Type{
 														`embedding_input_type`: types.StringType,
 														`wait_for_model`:       types.BoolType,
+													},
+												},
+												"context_window_factor": types.ListType{
+													ElemType: types.ObjectType{
+														AttrTypes: map[string]attr.Type{
+															`above`:         types.StringType,
+															`input_factor`:  types.Float64Type,
+															`output_factor`: types.Float64Type,
+														},
 													},
 												},
 												"dashscope": types.ObjectType{
@@ -916,11 +916,19 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"max_tokens":     types.Int64Type,
 												"mistral_format": types.StringType,
 												"output_cost":    types.Float64Type,
-												"temperature":    types.Float64Type,
-												"top_k":          types.Int64Type,
-												"top_p":          types.Float64Type,
-												"upstream_path":  types.StringType,
-												"upstream_url":   types.StringType,
+												"service_tier_factor": types.ListType{
+													ElemType: types.ObjectType{
+														AttrTypes: map[string]attr.Type{
+															`factor`: types.Float64Type,
+															`tier`:   types.StringType,
+														},
+													},
+												},
+												"temperature":   types.Float64Type,
+												"top_k":         types.Int64Type,
+												"top_p":         types.Float64Type,
+												"upstream_path": types.StringType,
+												"upstream_url":  types.StringType,
 											})),
 											Attributes: map[string]schema.Attribute{
 												"anthropic_version": schema.StringAttribute{
@@ -996,6 +1004,41 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 														},
 													},
 												},
+												"cache_read_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Defines the cost per 1M cache-read (cached) prompt tokens.`,
+												},
+												"cache_write_cost": schema.Float64Attribute{
+													Optional:    true,
+													Description: `Defines the cost per 1M cache-write prompt tokens.`,
+												},
+												"cache_write_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																},
+															},
+															"ttl": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													Description: `Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.`,
+												},
 												"cohere": schema.SingleNestedAttribute{
 													Computed: true,
 													Optional: true,
@@ -1015,6 +1058,41 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 															Description: `Wait for the model if it is not ready`,
 														},
 													},
+												},
+												"context_window_factor": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"above": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+															"input_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																},
+															},
+															"output_factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																},
+															},
+														},
+													},
+													Description: `Above an input-token threshold, scale input/output pricing with the corresponding factor.`,
 												},
 												"dashscope": schema.SingleNestedAttribute{
 													Computed: true,
@@ -1117,6 +1195,34 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Defines the cost per 1M tokens in the output of the AI.`,
+												},
+												"service_tier_factor": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"factor": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																},
+															},
+															"tier": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `A word matched case-insensitively as a substring of the vendor's reported service tier (e.g. 'priority', 'flex', or 'throughput' for Gemini/Vertex's PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn't matter. Configure 'priority' will also match 'fast' (whole word) as OpenAI returns either 'priority' or 'fast' for priority service tier. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													Description: `Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.`,
 												},
 												"temperature": schema.Float64Attribute{
 													Optional:    true,

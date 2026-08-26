@@ -22,7 +22,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponse.Active)
 			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs = &tfTypes.AppAuthStrategyKeyAuthRequestConfigs{}
+			r.KeyAuth.Configs = &tfTypes.Configs{}
 			r.KeyAuth.Configs.KeyAuth = &tfTypes.AppAuthStrategyConfigKeyAuth{}
 			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames != nil {
 				r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
@@ -41,15 +41,6 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			}
 			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
 			r.CreatedAt = r.KeyAuth.CreatedAt
-			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
-				r.KeyAuth.DcrProvider = nil
-			} else {
-				r.KeyAuth.DcrProvider = &tfTypes.AppAuthStrategyKeyAuthResponseDcrProvider{}
-				r.KeyAuth.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.DisplayName)
-				r.KeyAuth.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.ID)
-				r.KeyAuth.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.Name)
-				r.KeyAuth.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.DcrProvider.ProviderType))
-			}
 			r.KeyAuth.DisplayName = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.DisplayName)
 			r.DisplayName = r.KeyAuth.DisplayName
 			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.ID)
@@ -102,15 +93,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			}
 			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.CreatedAt))
 			r.CreatedAt = r.OpenidConnect.CreatedAt
-			if resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider == nil {
-				r.OpenidConnect.DcrProvider = nil
-			} else {
-				r.OpenidConnect.DcrProvider = &tfTypes.AppAuthStrategyKeyAuthResponseDcrProvider{}
-				r.OpenidConnect.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.DisplayName)
-				r.OpenidConnect.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.ID)
-				r.OpenidConnect.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.Name)
-				r.OpenidConnect.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider.ProviderType))
-			}
+			r.OpenidConnect.DcrProviderID = types.StringPointerValue(resp.AppAuthStrategyOpenIDConnectResponse.DcrProviderID)
 			r.OpenidConnect.DisplayName = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.DisplayName)
 			r.DisplayName = r.OpenidConnect.DisplayName
 			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.ID)
@@ -167,22 +150,22 @@ func (r *ApplicationAuthStrategyResourceModel) ToOperationsGetAppAuthStrategyReq
 	return &out, diags
 }
 
-func (r *ApplicationAuthStrategyResourceModel) ToOperationsUpdateAppAuthStrategyRequest(ctx context.Context) (*operations.UpdateAppAuthStrategyRequest, diag.Diagnostics) {
+func (r *ApplicationAuthStrategyResourceModel) ToOperationsReplaceAppAuthStrategyRequest(ctx context.Context) (*operations.ReplaceAppAuthStrategyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var authStrategyID string
 	authStrategyID = r.ID.ValueString()
 
-	updateAppAuthStrategyRequest, updateAppAuthStrategyRequestDiags := r.ToSharedUpdateAppAuthStrategyRequest(ctx)
-	diags.Append(updateAppAuthStrategyRequestDiags...)
+	createAppAuthStrategyRequest, createAppAuthStrategyRequestDiags := r.ToSharedCreateAppAuthStrategyRequest(ctx)
+	diags.Append(createAppAuthStrategyRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.UpdateAppAuthStrategyRequest{
+	out := operations.ReplaceAppAuthStrategyRequest{
 		AuthStrategyID:               authStrategyID,
-		UpdateAppAuthStrategyRequest: *updateAppAuthStrategyRequest,
+		CreateAppAuthStrategyRequest: *createAppAuthStrategyRequest,
 	}
 
 	return &out, diags
@@ -223,7 +206,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			KeyNames: keyNames,
 			TTL:      ttl,
 		}
-		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
+		configs := shared.Configs{
 			KeyAuth: keyAuth,
 		}
 		labels := make(map[string]*string)
@@ -342,29 +325,6 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		out = shared.CreateAppAuthStrategyRequest{
 			AppAuthStrategyOpenIDConnectRequest: appAuthStrategyOpenIDConnectRequest,
 		}
-	}
-
-	return &out, diags
-}
-
-func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequest(ctx context.Context) (*shared.UpdateAppAuthStrategyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	out := shared.UpdateAppAuthStrategyRequest{
-		Name:        name,
-		DisplayName: displayName,
 	}
 
 	return &out, diags

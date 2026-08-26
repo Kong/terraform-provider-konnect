@@ -23,12 +23,12 @@ resource "konnect_portal_page" "my_portalpage" {
 }
 
 resource "konnect_portal_logo" "my_portal_logo" {
-  data      = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=="
+  data      = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAMUlEQVR4nOzNMREAIAwEQYbB7fuviYl8tyfg9v3kNLvVOwAAAAAAAAAAAFhsAgAA///pYwIYmsB+qQAAAABJRU5ErkJggg=="
   portal_id = konnect_portal.my_portal.id
 }
 
 resource "konnect_portal_favicon" "my_portal_favicon" {
-  data      = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=="
+  data      = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAMUlEQVR4nOzNMREAIAwEQYbB7fuviYl8tyfg9v3kNLvVOwAAAAAAAAAAAFhsAgAA///pYwIYmsB+qQAAAABJRU5ErkJggg=="
   portal_id = konnect_portal.my_portal.id
 }
 

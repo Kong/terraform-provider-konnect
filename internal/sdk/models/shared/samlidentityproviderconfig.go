@@ -9,10 +9,10 @@ import (
 // SAMLIdentityProviderConfig - The identity provider that contains configuration data for the SAML authentication integration.
 type SAMLIdentityProviderConfig struct {
 	// The identity provider's metadata URL where the identity provider's metadata can be obtained.
-	IdpMetadataURL *string `json:"idp_metadata_url,omitempty"`
+	IdpMetadataURL *string `default:"" json:"idp_metadata_url"`
 	// The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
 	//
-	IdpMetadataXML *string `json:"idp_metadata_xml,omitempty"`
+	IdpMetadataXML *string `default:"" json:"idp_metadata_xml"`
 	SpMetadataURL  *string `json:"sp_metadata_url,omitempty"`
 	// The entity ID of the service provider (SP).
 	SpEntityID *string `json:"sp_entity_id,omitempty"`

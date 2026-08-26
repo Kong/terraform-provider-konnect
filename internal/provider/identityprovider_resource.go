@@ -146,12 +146,14 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 							"idp_metadata_url": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained.`,
+								Default:     stringdefault.StaticString(``),
+								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""`,
 							},
 							"idp_metadata_xml": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the ` + "`" + `idp_metadata_url` + "`" + ` field instead.`,
+								Default:     stringdefault.StaticString(``),
+								Description: `The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the ` + "`" + `idp_metadata_url` + "`" + ` field instead. Default: ""`,
 							},
 							"login_url": schema.StringAttribute{
 								Computed: true,

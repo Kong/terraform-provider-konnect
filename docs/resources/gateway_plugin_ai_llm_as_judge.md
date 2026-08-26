@@ -68,10 +68,25 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
+          cache_read_cost  = 9.03
+          cache_write_cost = 6.55
+          cache_write_cost_list = [
+            {
+              cost = 4.72
+              ttl  = "...my_ttl..."
+            }
+          ]
           cohere = {
             embedding_input_type = "classification"
             wait_for_model       = false
           }
+          context_window_factor = [
+            {
+              above         = "...my_above..."
+              input_factor  = 5.29
+              output_factor = 1.14
+            }
+          ]
           dashscope = {
             international = true
           }
@@ -94,11 +109,17 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
           max_tokens     = 0
           mistral_format = "openai"
           output_cost    = 2.67
-          temperature    = 4.9
-          top_k          = 155
-          top_p          = 0.54
-          upstream_path  = "...my_upstream_path..."
-          upstream_url   = "...my_upstream_url..."
+          service_tier_factor = [
+            {
+              factor = 1.27
+              tier   = "...my_tier..."
+            }
+          ]
+          temperature   = 4.9
+          top_k         = 155
+          top_p         = 0.54
+          upstream_path = "...my_upstream_path..."
+          upstream_url  = "...my_upstream_url..."
         }
         provider = "deepseek"
       }
@@ -263,7 +284,11 @@ Optional:
 - `azure_deployment_id` (String) Deployment ID for Azure OpenAI instances.
 - `azure_instance` (String) Instance name for Azure OpenAI hosted models.
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--bedrock))
+- `cache_read_cost` (Number) Defines the cost per 1M cache-read (cached) prompt tokens.
+- `cache_write_cost` (Number) Defines the cost per 1M cache-write prompt tokens.
+- `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs. (see [below for nested schema](#nestedatt--config--llm--model--options--cache_write_cost_list))
 - `cohere` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--cohere))
+- `context_window_factor` (Attributes List) Above an input-token threshold, scale input/output pricing with the corresponding factor. (see [below for nested schema](#nestedatt--config--llm--model--options--context_window_factor))
 - `dashscope` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--dashscope))
 - `databricks` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--databricks))
 - `embeddings_dimensions` (Number) If using embeddings models, set the number of dimensions to generate.
@@ -274,6 +299,7 @@ Optional:
 - `max_tokens` (Number) Defines the max_tokens, if using chat or completion models.
 - `mistral_format` (String) If using mistral provider, select the upstream message format. possible known values include one of ["ollama", "openai"]
 - `output_cost` (Number) Defines the cost per 1M tokens in the output of the AI.
+- `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched. (see [below for nested schema](#nestedatt--config--llm--model--options--service_tier_factor))
 - `temperature` (Number) Defines the matching temperature, if using chat or completion models.
 - `top_k` (Number) Defines the top-k most likely tokens, if supported.
 - `top_p` (Number) Defines the top-p probability mass, if supported.
@@ -296,6 +322,15 @@ Optional:
 - `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
 
 
+<a id="nestedatt--config--llm--model--options--cache_write_cost_list"></a>
+### Nested Schema for `config.llm.model.options.cache_write_cost_list`
+
+Optional:
+
+- `cost` (Number) Not Null
+- `ttl` (String) Not Null
+
+
 <a id="nestedatt--config--llm--model--options--cohere"></a>
 ### Nested Schema for `config.llm.model.options.cohere`
 
@@ -303,6 +338,16 @@ Optional:
 
 - `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
+
+
+<a id="nestedatt--config--llm--model--options--context_window_factor"></a>
+### Nested Schema for `config.llm.model.options.context_window_factor`
+
+Optional:
+
+- `above` (String) Not Null
+- `input_factor` (Number) Not Null
+- `output_factor` (Number) Not Null
 
 
 <a id="nestedatt--config--llm--model--options--dashscope"></a>
@@ -341,6 +386,15 @@ Optional:
 
 - `use_cache` (Boolean) Use the cache layer on the inference API
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
+
+
+<a id="nestedatt--config--llm--model--options--service_tier_factor"></a>
+### Nested Schema for `config.llm.model.options.service_tier_factor`
+
+Optional:
+
+- `factor` (Number) Not Null
+- `tier` (String) A word matched case-insensitively as a substring of the vendor's reported service tier (e.g. 'priority', 'flex', or 'throughput' for Gemini/Vertex's PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn't matter. Configure 'priority' will also match 'fast' (whole word) as OpenAI returns either 'priority' or 'fast' for priority service tier. Not Null
 
 
 

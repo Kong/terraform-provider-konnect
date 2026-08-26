@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.915.0
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.932.9
 
 import (
 	"bytes"
@@ -291,6 +291,11 @@ type Konnect struct {
 	// DP Certificates
 	DPCertificates     *DPCertificates
 	ControlPlaneGroups *ControlPlaneGroups
+	// Dynamic Client Registration Providers are configurations representing an external Identity Provider whose clients (i.e. Applications) Konnect will be authorized to manage.
+	// For instance, they will be able to perform dynamic client registration (DCR) with the provider.
+	// The DCR provider provides credentials to each DCR-enabled application in Konnect that can be used to access Product Versions that the app is registered for.
+	//
+	DCRProviders *DCRProviders
 	// APIs related to Konnect Developer Portal Appearance Settings.
 	PortalAppearance *PortalAppearance
 	// Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
@@ -417,9 +422,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.21.0",
+		SDKVersion: "3.22.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.21.0 2.915.0 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.22.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -503,6 +508,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Vaults = newVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DPCertificates = newDPCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.DCRProviders = newDCRProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAppearance = newPortalAppearance(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalProductVersions = newPortalProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)

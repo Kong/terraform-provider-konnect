@@ -166,8 +166,8 @@ func (e *StrategyType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AppAuthStrategyKeyAuthRequestConfigs - JSON-B object containing the configuration for the Key Auth strategy
-type AppAuthStrategyKeyAuthRequestConfigs struct {
+// Configs - JSON-B object containing the configuration for the Key Auth strategy
+type Configs struct {
 	// The most basic mode to configure an Application Auth Strategy for an API Product Version.
 	// Using this mode will allow developers to generate API keys that will authenticate their application requests.
 	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
@@ -175,22 +175,22 @@ type AppAuthStrategyKeyAuthRequestConfigs struct {
 	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
 }
 
-func (a AppAuthStrategyKeyAuthRequestConfigs) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (c Configs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
 }
 
-func (a *AppAuthStrategyKeyAuthRequestConfigs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"key-auth"}); err != nil {
+func (c *Configs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"key-auth"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AppAuthStrategyKeyAuthRequestConfigs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
-	if a == nil {
+func (c *Configs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
+	if c == nil {
 		return AppAuthStrategyConfigKeyAuth{}
 	}
-	return a.KeyAuth
+	return c.KeyAuth
 }
 
 // AppAuthStrategyKeyAuthRequest - Request for creating a Key Auth Application Auth Strategy
@@ -203,7 +203,7 @@ type AppAuthStrategyKeyAuthRequest struct {
 	DisplayName  string       `json:"display_name"`
 	StrategyType StrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the Key Auth strategy
-	Configs AppAuthStrategyKeyAuthRequestConfigs `json:"configs"`
+	Configs Configs `json:"configs"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -247,9 +247,9 @@ func (a *AppAuthStrategyKeyAuthRequest) GetStrategyType() StrategyType {
 	return a.StrategyType
 }
 
-func (a *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthRequestConfigs {
+func (a *AppAuthStrategyKeyAuthRequest) GetConfigs() Configs {
 	if a == nil {
-		return AppAuthStrategyKeyAuthRequestConfigs{}
+		return Configs{}
 	}
 	return a.Configs
 }

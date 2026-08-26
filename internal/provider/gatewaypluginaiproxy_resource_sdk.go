@@ -85,6 +85,22 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 				r.Config.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Model.Options.Bedrock.PerformanceConfigLatency)
 				r.Config.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Model.Options.Bedrock.VideoOutputS3URI)
 			}
+			r.Config.Model.Options.CacheReadCost = types.Float64PointerValue(resp.Config.Model.Options.CacheReadCost)
+			r.Config.Model.Options.CacheWriteCost = types.Float64PointerValue(resp.Config.Model.Options.CacheWriteCost)
+			if resp.Config.Model.Options.CacheWriteCostList != nil {
+				r.Config.Model.Options.CacheWriteCostList = []tfTypes.PartialModelCacheWriteCostList{}
+
+				for _, cacheWriteCostListItem := range resp.Config.Model.Options.CacheWriteCostList {
+					var cacheWriteCostList tfTypes.PartialModelCacheWriteCostList
+
+					cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
+					cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
+
+					r.Config.Model.Options.CacheWriteCostList = append(r.Config.Model.Options.CacheWriteCostList, cacheWriteCostList)
+				}
+			} else {
+				r.Config.Model.Options.CacheWriteCostList = nil
+			}
 			if resp.Config.Model.Options.Cohere == nil {
 				r.Config.Model.Options.Cohere = nil
 			} else {
@@ -95,6 +111,21 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 					r.Config.Model.Options.Cohere.EmbeddingInputType = types.StringNull()
 				}
 				r.Config.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Cohere.WaitForModel)
+			}
+			if resp.Config.Model.Options.ContextWindowFactor != nil {
+				r.Config.Model.Options.ContextWindowFactor = []tfTypes.PartialModelContextWindowFactor{}
+
+				for _, contextWindowFactorItem := range resp.Config.Model.Options.ContextWindowFactor {
+					var contextWindowFactor tfTypes.PartialModelContextWindowFactor
+
+					contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
+					contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
+					contextWindowFactor.OutputFactor = types.Float64Value(contextWindowFactorItem.OutputFactor)
+
+					r.Config.Model.Options.ContextWindowFactor = append(r.Config.Model.Options.ContextWindowFactor, contextWindowFactor)
+				}
+			} else {
+				r.Config.Model.Options.ContextWindowFactor = nil
 			}
 			if resp.Config.Model.Options.Dashscope == nil {
 				r.Config.Model.Options.Dashscope = nil
@@ -138,6 +169,20 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 				r.Config.Model.Options.MistralFormat = types.StringNull()
 			}
 			r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
+			if resp.Config.Model.Options.ServiceTierFactor != nil {
+				r.Config.Model.Options.ServiceTierFactor = []tfTypes.PartialModelServiceTierFactor{}
+
+				for _, serviceTierFactorItem := range resp.Config.Model.Options.ServiceTierFactor {
+					var serviceTierFactor tfTypes.PartialModelServiceTierFactor
+
+					serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
+					serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)
+
+					r.Config.Model.Options.ServiceTierFactor = append(r.Config.Model.Options.ServiceTierFactor, serviceTierFactor)
+				}
+			} else {
+				r.Config.Model.Options.ServiceTierFactor = nil
+			}
 			r.Config.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Model.Options.Temperature)
 			r.Config.Model.Options.TopK = types.Int64PointerValue(resp.Config.Model.Options.TopK)
 			r.Config.Model.Options.TopP = types.Float64PointerValue(resp.Config.Model.Options.TopP)
@@ -675,6 +720,34 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 				VideoOutputS3URI:         videoOutputS3URI,
 			}
 		}
+		cacheReadCost := new(float64)
+		if !r.Config.Model.Options.CacheReadCost.IsUnknown() && !r.Config.Model.Options.CacheReadCost.IsNull() {
+			*cacheReadCost = r.Config.Model.Options.CacheReadCost.ValueFloat64()
+		} else {
+			cacheReadCost = nil
+		}
+		cacheWriteCost := new(float64)
+		if !r.Config.Model.Options.CacheWriteCost.IsUnknown() && !r.Config.Model.Options.CacheWriteCost.IsNull() {
+			*cacheWriteCost = r.Config.Model.Options.CacheWriteCost.ValueFloat64()
+		} else {
+			cacheWriteCost = nil
+		}
+		var cacheWriteCostList []shared.CacheWriteCostList
+		if r.Config.Model.Options.CacheWriteCostList != nil {
+			cacheWriteCostList = make([]shared.CacheWriteCostList, 0, len(r.Config.Model.Options.CacheWriteCostList))
+			for cacheWriteCostListIndex := range r.Config.Model.Options.CacheWriteCostList {
+				var cost float64
+				cost = r.Config.Model.Options.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
+
+				var ttl string
+				ttl = r.Config.Model.Options.CacheWriteCostList[cacheWriteCostListIndex].TTL.ValueString()
+
+				cacheWriteCostList = append(cacheWriteCostList, shared.CacheWriteCostList{
+					Cost: cost,
+					TTL:  ttl,
+				})
+			}
+		}
 		var cohere *shared.Cohere
 		if r.Config.Model.Options.Cohere != nil {
 			embeddingInputType := new(shared.EmbeddingInputType)
@@ -692,6 +765,26 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			cohere = &shared.Cohere{
 				EmbeddingInputType: embeddingInputType,
 				WaitForModel:       waitForModel,
+			}
+		}
+		var contextWindowFactor []shared.ContextWindowFactor
+		if r.Config.Model.Options.ContextWindowFactor != nil {
+			contextWindowFactor = make([]shared.ContextWindowFactor, 0, len(r.Config.Model.Options.ContextWindowFactor))
+			for contextWindowFactorIndex := range r.Config.Model.Options.ContextWindowFactor {
+				var above string
+				above = r.Config.Model.Options.ContextWindowFactor[contextWindowFactorIndex].Above.ValueString()
+
+				var inputFactor float64
+				inputFactor = r.Config.Model.Options.ContextWindowFactor[contextWindowFactorIndex].InputFactor.ValueFloat64()
+
+				var outputFactor float64
+				outputFactor = r.Config.Model.Options.ContextWindowFactor[contextWindowFactorIndex].OutputFactor.ValueFloat64()
+
+				contextWindowFactor = append(contextWindowFactor, shared.ContextWindowFactor{
+					Above:        above,
+					InputFactor:  inputFactor,
+					OutputFactor: outputFactor,
+				})
 			}
 		}
 		var dashscope *shared.Dashscope
@@ -806,6 +899,22 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		} else {
 			outputCost = nil
 		}
+		var serviceTierFactor []shared.ServiceTierFactor
+		if r.Config.Model.Options.ServiceTierFactor != nil {
+			serviceTierFactor = make([]shared.ServiceTierFactor, 0, len(r.Config.Model.Options.ServiceTierFactor))
+			for serviceTierFactorIndex := range r.Config.Model.Options.ServiceTierFactor {
+				var factor float64
+				factor = r.Config.Model.Options.ServiceTierFactor[serviceTierFactorIndex].Factor.ValueFloat64()
+
+				var tier string
+				tier = r.Config.Model.Options.ServiceTierFactor[serviceTierFactorIndex].Tier.ValueString()
+
+				serviceTierFactor = append(serviceTierFactor, shared.ServiceTierFactor{
+					Factor: factor,
+					Tier:   tier,
+				})
+			}
+		}
 		temperature := new(float64)
 		if !r.Config.Model.Options.Temperature.IsUnknown() && !r.Config.Model.Options.Temperature.IsNull() {
 			*temperature = r.Config.Model.Options.Temperature.ValueFloat64()
@@ -842,7 +951,11 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			AzureDeploymentID:    azureDeploymentID,
 			AzureInstance:        azureInstance,
 			Bedrock:              bedrock,
+			CacheReadCost:        cacheReadCost,
+			CacheWriteCost:       cacheWriteCost,
+			CacheWriteCostList:   cacheWriteCostList,
 			Cohere:               cohere,
+			ContextWindowFactor:  contextWindowFactor,
 			Dashscope:            dashscope,
 			Databricks:           databricks,
 			EmbeddingsDimensions: embeddingsDimensions,
@@ -853,6 +966,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			MaxTokens:            maxTokens,
 			MistralFormat:        mistralFormat,
 			OutputCost:           outputCost,
+			ServiceTierFactor:    serviceTierFactor,
 			Temperature:          temperature,
 			TopK:                 topK,
 			TopP:                 topP,

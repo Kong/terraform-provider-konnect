@@ -8,7 +8,9 @@ import (
 
 // PortalUpdateTeamRequest - Properties to update on a team.
 type PortalUpdateTeamRequest struct {
-	Name        *string `default:"null" json:"name"`
+	// The name of the team.
+	Name *string `default:"null" json:"name"`
+	// The description of the team.
 	Description *string `default:"null" json:"description"`
 	// Whether the team is allowed to own applications.
 	CanOwnApplications *bool `default:"null" json:"can_own_applications"`

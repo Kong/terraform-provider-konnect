@@ -80,8 +80,8 @@ Optional:
 
 Optional:
 
-- `idp_metadata_url` (String) The identity provider's metadata URL where the identity provider's metadata can be obtained.
-- `idp_metadata_xml` (String) The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
+- `idp_metadata_url` (String) The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""
+- `idp_metadata_xml` (String) The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead. Default: ""
 
 Read-Only:
 

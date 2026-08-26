@@ -4056,18 +4056,18 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - App Auth Strategies
-    patch:
+    put:
       x-speakeasy-entity-operation:
         terraform-resource: ApplicationAuthStrategy#update
         terraform-datasource: null
-      operationId: update-app-auth-strategy
-      summary: Update App Auth Strategy
-      description: Updates an application auth strategy.
+      operationId: replace-app-auth-strategy
+      summary: Replace App Auth Strategy
+      description: Replaces an application auth strategy.
       requestBody:
-        $ref: '#/components/requestBodies/UpdateAppAuthStrategy'
+        $ref: '#/components/requestBodies/CreateAppAuthStrategy'
       responses:
         '200':
-          $ref: '#/components/responses/UpdateAppAuthStrategy'
+          $ref: '#/components/responses/CreateAppAuthStrategy'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -17590,6 +17590,94 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Plane Groups
+  /v2/dcr-providers:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: DcrProvider#create
+        terraform-datasource: null
+      operationId: create-dcr-provider
+      summary: Create DCR provider
+      description: Creates a DCR provider.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDcrProvider'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateDcrProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - DCR Providers
+  '/v2/dcr-providers/{dcrProviderId}':
+    parameters:
+      - name: dcrProviderId
+        in: path
+        description: DCR provider identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: DcrProvider#read
+        terraform-datasource: null
+      operationId: get-dcr-provider
+      summary: Get a DCR provider
+      description: Returns a DCR provider.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDcrProvider'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: DcrProvider#update
+        terraform-datasource: null
+      operationId: update-dcr-provider
+      summary: Update DCR provider
+      description: Updates a DCR provider.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateDcrProvider'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDcrProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: DcrProvider#delete
+        terraform-datasource: null
+      operationId: delete-dcr-provider
+      summary: Delete DCR provider
+      description: Deletes a DCR provider.
+      responses:
+        '204':
+          description: No Content.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
   '/v2/portals/{portalId}/appearance':
     get:
       x-speakeasy-entity-operation:
@@ -19511,6 +19599,180 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Developers
+  '/v3/portals/{portalId}/identity-providers':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation: PortalIdentityProvider#create
+      operationId: create-portal-identity-provider
+      summary: Create Identity Provider
+      description: |
+        Creates a new identity provider. This operation allows the creation of a new identity provider for
+        authentication purposes.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalCreateIdentityProviderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/IdentityProviderId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIdentityProvider#read
+        terraform-datasource: null
+      operationId: get-portal-identity-provider
+      summary: Get Identity Provider
+      description: |
+        Retrieves the configuration of a single identity provider. This operation returns information about a
+        specific identity provider's settings and authentication integration details.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    patch:
+      x-speakeasy-entity-operation: PortalIdentityProvider#update
+      operationId: update-portal-identity-provider
+      summary: Update Identity Provider
+      description: |
+        Updates the configuration of an existing identity provider. This operation allows modifications to be made
+        to an existing identity provider's configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalUpdateIdentityProviderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdentityProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+    delete:
+      x-speakeasy-entity-operation: PortalIdentityProvider#delete
+      operationId: delete-portal-identity-provider
+      summary: Delete Identity Provider
+      description: |
+        Deletes an existing identity provider configuration. This operation removes a specific identity provider
+        from the portal.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}/team-group-mappings':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/PortalIdentityProviderId'
+    post:
+      x-speakeasy-entity-operation: PortalIdentityProviderTeamGroupMapping#create
+      operationId: create-portal-idp-team-group-mapping
+      summary: Create Team Group Mapping
+      description: |
+        Creates a new team group mapping for the specified identity provider.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalIdpTeamGroupMapping'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalIdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/identity-providers/{id}/team-group-mappings/{mappingId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/PortalIdentityProviderId'
+      - name: mappingId
+        in: path
+        description: ID of the team group mapping.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIdentityProviderTeamGroupMapping#read
+        terraform-datasource: null
+      operationId: get-portal-idp-team-group-mapping
+      summary: Get Team Group Mapping
+      description: Returns the team group mapping for the specified ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalIdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
+    delete:
+      x-speakeasy-entity-operation: PortalIdentityProviderTeamGroupMapping#delete
+      operationId: delete-portal-idp-team-group-mapping
+      summary: Delete Team Group Mapping
+      description: |
+        Deletes a team group mapping by ID.
+        Returns 204 if the mapping was deleted, or 404 if the mapping was not found.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Auth Settings
   '/v3/portals/{portalId}/ip-allow-list':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -20332,17 +20594,24 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
         - name: filter
           in: query
-          description: Filter teams returned in the response.
+          description: |-
+            Filter teams returned in the response. Supports filtering by label value using
+            dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
+            `eq`, `contains`, or `exists`.
           required: false
           schema:
             type: object
             properties:
               name:
                 $ref: '#/components/schemas/LegacyStringFieldFilter'
+              labels:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/LegacyStringFieldFilterWithExists'
           style: deepObject
       responses:
         '200':
-          $ref: '#/components/responses/TeamCollection'
+          $ref: '#/components/responses/TeamCollectionResponse'
         '400':
           $ref: '#/components/responses/IdentityBadRequest'
         '404':
@@ -21271,6 +21540,15 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    IdentityProviderId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: id
+      in: path
+      required: true
+      description: ID of the identity provider.
     ImplementationId:
       schema:
         type: string
@@ -21422,6 +21700,16 @@ components:
       in: path
       required: true
       description: The Portal identifier
+    PortalIdentityProviderId:
+      name: id
+      in: path
+      required: true
+      description: ID of the identity provider.
+      schema:
+        type: string
+        format: uuid
+      example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      x-speakeasy-name-override: identityProviderId
     PrivateDnsId:
       name: privateDnsId
       in: path
@@ -22810,6 +23098,7 @@ components:
         - `ready`: The network is fully provisioned and available for data plane groups.
         - `terminating`: The network is being deleted and is no longer accepting new resources.
         - `terminated`: The network has been fully deleted and is no longer available.
+      type: string
       enum:
         - created
         - initializing
@@ -26010,6 +26299,458 @@ components:
         - published
         - unpublished
       x-speakeasy-unknown-values: allow
+    DcrConfigPropertyInitialClientId:
+      description: |
+        This ID should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialClientId
+    DcrConfigPropertyInitialClientSecret:
+      description: |
+        This secret should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialClientSecret
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
+    DcrConfigPropertyDcrToken:
+      description: |
+        This secret should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialDcrToken
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
+    DcrConfigPropertyInitialClientAudience:
+      description: |
+        This is the audience value used for the initial client.
+        If using a custom domain on Auth0, this must be set as to the Auth0 Management API audience value.
+        If left blank, the issuer will be used instead.
+      type: string
+      default: null
+      maxLength: 256
+      nullable: true
+      title: DcrConfigPropertyInitialClientAudience
+      x-speakeasy-param-computed: false
+    DcrConfigPropertyApiKey:
+      description: |
+        This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
+        verified on the server to ensure that incoming requests are coming from Konnect.
+      type: string
+      maxLength: 256
+      minLength: 12
+      pattern: '^[a-zA-Z0-9_]+$'
+      title: DcrConfigPropertyApiKey
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
+    DcrConfigPropertyDisableEventHooks:
+      description: This flag disables all the event-hooks on the application flow for the DCR provider.
+      type: boolean
+      title: DcrConfigPropertyDisableEventHooks
+    DcrConfigPropertyDisableRefreshSecret:
+      description: This flag disable the refresh-secret endpoint on the application flow for the DCR provider.
+      type: boolean
+      title: DcrConfigPropertyDisableRefreshSecret
+    DcrConfigPropertyAllowMultipleCredentials:
+      description: 'When enabled, indicates that the DCR provider supports creating and managing multiple credentials per application.'
+      type: boolean
+      default: false
+      title: DcrConfigPropertyAllowMultipleCredentials
+    DcrConfigAuth0InResponse:
+      description: A DCR provider configuration for Auth0
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_audience
+        - use_developer_managed_scopes
+      title: DcrConfigAuth0InResponse
+    CreateDcrConfigAuth0InRequest:
+      description: Payload to create an Auth0 DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+          default: false
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_secret
+      title: DcrConfigAuth0InRequest
+    UpdateDcrConfigAuth0InRequest:
+      description: Payload to update an Auth0 DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+          default: false
+      additionalProperties: false
+      title: DcrConfigAuth0InRequest
+    DcrConfigAzureAdInResponse:
+      description: A DCR provider configuration for Azure AD
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+      additionalProperties: false
+      required:
+        - initial_client_id
+      title: DcrConfigAzureAdInResponse
+    CreateDcrConfigAzureAdInRequest:
+      description: Payload to create an Azure AD DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_secret
+      title: DcrConfigAzureAdInRequest
+    UpdateDcrConfigAzureAdInRequest:
+      description: Payload to update an Azure AD DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      title: DcrConfigAzureAdInRequest
+    DcrConfigCurityInResponse:
+      description: A DCR provider configuration for Curity
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+      additionalProperties: false
+      required:
+        - initial_client_id
+      title: DcrConfigCurityInResponse
+    CreateDcrConfigCurityInRequest:
+      description: Payload to create a Curity DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_secret
+      title: DcrConfigCurityInRequest
+    UpdateDcrConfigCurityInRequest:
+      description: Payload to update a Curity DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      title: DcrConfigCurityInRequest
+    DcrConfigKongIdentityInResponse:
+      description: A DCR provider configuration for Kong Identity
+      type: object
+      properties: {}
+      additionalProperties: false
+      title: DcrConfigKongIdentityInResponse
+    DcrConfigOktaInResponse:
+      description: A DCR provider configuration for Okta
+      type: object
+      properties: {}
+      additionalProperties: false
+      title: DcrConfigOktaInResponse
+    CreateDcrConfigKongIdentityInRequest:
+      description: Payload to create a Kong Identity DCR provider.
+      type: object
+      additionalProperties: false
+      title: CreateDcrConfigKongIdentityInRequest
+    CreateDcrConfigOktaInRequest:
+      description: Payload to create an Okta DCR provider.
+      type: object
+      properties:
+        dcr_token:
+          $ref: '#/components/schemas/DcrConfigPropertyDcrToken'
+      additionalProperties: false
+      required:
+        - dcr_token
+      title: DcrConfigOktaInRequest
+    UpdateDcrConfigOktaInRequest:
+      description: Payload to update an Okta DCR provider.
+      type: object
+      properties:
+        dcr_token:
+          $ref: '#/components/schemas/DcrConfigPropertyDcrToken'
+      additionalProperties: false
+      title: DcrConfigOktaInRequest
+    DcrConfigHttpInResponse:
+      description: A DCR provider configuration for HTTP
+      type: object
+      properties:
+        dcr_base_url:
+          type: string
+          format: url
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
+        allow_multiple_credentials:
+          $ref: '#/components/schemas/DcrConfigPropertyAllowMultipleCredentials'
+      additionalProperties: false
+      required:
+        - dcr_base_url
+      title: DcrConfigHttpInResponse
+    CreateDcrConfigHttpInRequest:
+      description: Payload to create an HTTP DCR provider.
+      type: object
+      properties:
+        dcr_base_url:
+          $ref: '#/components/schemas/DcrBaseUrl'
+        api_key:
+          $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
+        allow_multiple_credentials:
+          $ref: '#/components/schemas/DcrConfigPropertyAllowMultipleCredentials'
+      additionalProperties: false
+      required:
+        - dcr_base_url
+        - api_key
+      title: CreateDcrConfigHttpInRequest
+    UpdateDcrConfigHttpInRequest:
+      description: Payload to update an HTTP DCR provider.
+      type: object
+      properties:
+        dcr_base_url:
+          $ref: '#/components/schemas/DcrBaseUrl'
+        api_key:
+          $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
+        allow_multiple_credentials:
+          $ref: '#/components/schemas/DcrConfigPropertyAllowMultipleCredentials'
+      additionalProperties: false
+      title: CreateDcrConfigHttpInRequest
+    CreateDcrProviderRequestAuth0:
+      description: Request body for creating an Auth0 DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          const: auth0
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigAuth0InRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestAuth0
+    CreateDcrProviderRequestAzureAd:
+      description: Request body for creating an Azure AD DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          const: azureAd
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigAzureAdInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestAzureAd
+    CreateDcrProviderRequestCurity:
+      description: Request body for creating a Curity DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          const: curity
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigCurityInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestCurity
+    CreateDcrProviderRequestOkta:
+      description: Request body for creating an Okta DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          const: okta
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigOktaInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestOkta
+    CreateDcrProviderRequestKongIdentity:
+      description: Request body for creating a Kong Identity DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          const: kongIdentity
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigKongIdentityInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - name
+        - issuer
+      title: CreateDcrProviderRequestKongIdentity
+    CreateDcrProviderRequestHttp:
+      description: Request body for creating an HTTP DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          const: http
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigHttpInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestHttp
+    CreateDcrProviderRequest:
+      description: Request body for creating a DCR provider. The provider_type cannot be updated after creation.
+      type: object
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/CreateDcrProviderRequestAuth0'
+          azureAd: '#/components/schemas/CreateDcrProviderRequestAzureAd'
+          curity: '#/components/schemas/CreateDcrProviderRequestCurity'
+          okta: '#/components/schemas/CreateDcrProviderRequestOkta'
+          http: '#/components/schemas/CreateDcrProviderRequestHttp'
+          kongIdentity: '#/components/schemas/CreateDcrProviderRequestKongIdentity'
+      oneOf:
+        - $ref: '#/components/schemas/CreateDcrProviderRequestAuth0'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestAzureAd'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestCurity'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestOkta'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestHttp'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestKongIdentity'
+      title: CreateDcrProviderRequest
+    UpdateDcrProviderRequest:
+      description: A set of updates to a DCR provider. The provider_type cannot be updated after creation.
+      type: object
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/UpdateDcrProviderRequestAuth0'
+          azureAd: '#/components/schemas/UpdateDcrProviderRequestAzureAd'
+          curity: '#/components/schemas/UpdateDcrProviderRequestCurity'
+          okta: '#/components/schemas/UpdateDcrProviderRequestOkta'
+          http: '#/components/schemas/UpdateDcrProviderRequestHttp'
+      oneOf:
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestAuth0'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestAzureAd'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestCurity'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestOkta'
+        - $ref: '#/components/schemas/UpdateDcrProviderRequestHttp'
+      title: UpdateDcrProviderRequest
     AuthStrategyPrincipals:
       description: |
         Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
@@ -26062,89 +26803,6 @@ components:
             - unit
       additionalProperties: false
       title: AppAuthStrategyConfigKeyAuth
-    PartialAppAuthStrategyConfigKeyAuth:
-      description: |
-        Key Auth configuration for updating an Application Auth Strategy.
-        The ttl field can be set to null to unset the Time-To-Live.
-      type: object
-      properties:
-        key_names:
-          description: The names of the headers containing the API key. You can specify multiple header names.
-          type: array
-          items:
-            type: string
-            maxLength: 256
-          default: null
-          maxItems: 10
-          minItems: 1
-          nullable: true
-          x-speakeasy-param-computed: false
-        ttl:
-          description: Default maximum Time-To-Live for keys created under this strategy. Set to null to unset.
-          type: object
-          default: null
-          nullable: true
-          properties:
-            value:
-              type: integer
-              minimum: 1
-            unit:
-              type: string
-              enum:
-                - days
-                - weeks
-                - years
-              x-speakeasy-unknown-values: allow
-          required:
-            - value
-            - unit
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      title: PartialAppAuthStrategyConfigKeyAuth
-    PartialAppAuthStrategyConfigOpenIDConnect:
-      description: |
-        A more advanced mode to configure an API Product Version’s Application Auth Strategy.
-        Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
-        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
-        An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
-      type: object
-      properties:
-        issuer:
-          type: string
-          format: url
-          default: null
-          maxLength: 256
-          nullable: true
-          x-speakeasy-param-computed: false
-        credential_claim:
-          type: array
-          items:
-            type: string
-            maxLength: 128
-          default: null
-          maxItems: 10
-          nullable: true
-          x-speakeasy-param-computed: false
-        scopes:
-          type: array
-          items:
-            type: string
-            maxLength: 128
-          default: null
-          maxItems: 50
-          nullable: true
-          x-speakeasy-param-computed: false
-        auth_methods:
-          type: array
-          items:
-            type: string
-            maxLength: 64
-          default: null
-          maxItems: 10
-          nullable: true
-          x-speakeasy-param-computed: false
-      additionalProperties: true
-      title: PartialAppAuthStrategyConfigOpenIDConnect
     AppAuthStrategyConfigOpenIDConnect:
       description: |
         A more advanced mode to configure an API Product Version’s Application Auth Strategy.
@@ -26242,7 +26900,6 @@ components:
           type: boolean
         dcr_provider:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -26268,8 +26925,8 @@ components:
             - id
             - name
             - provider_type
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-terraform-ignore: true
         labels:
           $ref: '#/components/schemas/Labels'
         created_at:
@@ -26365,7 +27022,6 @@ components:
           type: boolean
         dcr_provider:
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -26391,8 +27047,8 @@ components:
             - id
             - name
             - provider_type
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-terraform-ignore: true
         labels:
           $ref: '#/components/schemas/Labels'
         created_at:
@@ -26409,6 +27065,12 @@ components:
           x-speakeasy-param-suppress-computed-diff: true
         principals:
           $ref: '#/components/schemas/AuthStrategyPrincipals'
+        dcr_provider_id:
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - id
@@ -26422,6 +27084,11 @@ components:
         - created_at
         - updated_at
       title: AppAuthStrategyOpenIDConnectResponse
+      x-speakeasy-transform-from-api:
+        jq: |
+          . + {
+            dcr_provider_id: .dcr_provider.id
+          }
     CreateAppAuthStrategyRequest:
       x-speakeasy-entity: ApplicationAuthStrategy
       description: Request body for creating an Application Auth Strategy
@@ -26452,58 +27119,26 @@ components:
       required:
         - strategy_type
       title: AppAuthStrategy
-    UpdateAppAuthStrategyRequest:
-      x-speakeasy-entity: ApplicationAuthStrategy
-      description: Request body for updating an Application Auth Strategy
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/AuthStrategyName'
-        display_name:
-          $ref: '#/components/schemas/AuthStrategyDisplayName'
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
-        dcr_provider_id:
-          type: string
-          format: uuid
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        configs:
-          description: JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIdConnect'
-            - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
-        principals:
-          $ref: '#/components/schemas/AuthStrategyPrincipals'
-      additionalProperties: false
-      title: UpdateAppAuthStrategyRequest
-    UpdateAppAuthStrategyRequestOpenIdConnect:
-      type: object
-      properties:
-        openid-connect:
-          $ref: '#/components/schemas/PartialAppAuthStrategyConfigOpenIDConnect'
-      additionalProperties: false
-      required:
-        - openid-connect
-    UpdateAppAuthStrategyRequestKeyAuth:
-      type: object
-      properties:
-        key-auth:
-          $ref: '#/components/schemas/PartialAppAuthStrategyConfigKeyAuth'
-      additionalProperties: false
-      required:
-        - key-auth
     CreateAppAuthStrategyResponse:
-      $ref: '#/components/schemas/AppAuthStrategy'
-    UpdateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
     GetAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
+    DcrBaseUrl:
+      description: |
+        The base URL of the DCR server. This is the URL that will be used to make the HTTP requests from Konnect to the DCR provider.
+        This URL must be accessible from the Konnect service.
+      type: string
+      format: url
+      maxLength: 256
     DcrProviderDisplayName:
       description: |
         The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+      type: string
+      maxLength: 256
+      minLength: 1
+    DcrProviderName:
+      description: |
+        The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
       type: string
       maxLength: 256
       minLength: 1
@@ -26594,6 +27229,7 @@ components:
       type: string
       format: uri
       example: 'https://mocksaml.com/api/saml/metadata'
+      default: ''
       title: SAML Identity Provider Metadata URL
     SAMLIdentityProviderMetadata:
       description: |
@@ -26604,6 +27240,7 @@ components:
         <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
           <!-- SAML metadata content here -->
         </EntityDescriptor>
+      default: ''
       title: SAML Identity Provider Metadata
     CreateIdentityProvider:
       x-speakeasy-entity: IdentityProvider
@@ -26727,20 +27364,14 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          description: The name of the team.
-          type: string
-          example: IDM - Developers
-          default: null
-          maxLength: 250
-          nullable: true
-          pattern: '^[\w \W]+$'
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/TeamName'
         description:
-          description: The team description in Konnect.
+          description: The description of the team.
           type: string
           example: The developers for the IDM API.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
         system_team:
@@ -26776,6 +27407,18 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       title: Team
+    TeamResponse:
+      allOf:
+        - $ref: '#/components/schemas/Team'
+        - type: object
+          required:
+            - id
+            - name
+            - description
+            - system_team
+            - labels
+            - created_at
+            - updated_at
     IdpTeamGroupMapping:
       description: A mapping between a Konnect team and an identity provider group.
       type: object
@@ -26976,6 +27619,38 @@ components:
           description: The field contains the provided value.
           type: string
       additionalProperties: false
+    LegacyStringFieldFilterWithExists:
+      description: 'Filter using **one** of the following operators: `eq`, `contains`, `exists`'
+      type: object
+      properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        contains:
+          description: The field contains the provided value.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        exists:
+          description: Filters on whether the given field exists.
+          type: boolean
+          default: null
+          deprecated: true
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: StringFieldFilterWithExists
+    TeamName:
+      description: The name of the team.
+      type: string
+      example: IDM - Developers
+      maxLength: 250
+      minLength: 1
+      pattern: '^[\w \W]+$'
     ServerlessCloudGateway:
       x-speakeasy-entity: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -29138,6 +29813,60 @@ components:
       required:
         - title
         - items
+    CreatePortalIdpTeamGroupMappingRequest:
+      type: object
+      properties:
+        team_id:
+          description: The Konnect team ID.
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+        group:
+          description: The IdP group name.
+          type: string
+          example: API Engineers
+      required:
+        - team_id
+        - group
+    PortalIdpTeamGroupMapping:
+      type: object
+      properties:
+        id:
+          description: The mapping ID.
+          type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-4a8b-9c0d-1e2f3a4b5c6d
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        team_id:
+          description: The Konnect team ID.
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+        group:
+          description: The IdP group name.
+          type: string
+          example: API Engineers
+        created_at:
+          description: Creation timestamp.
+          type: string
+          format: date-time
+          example: '2024-01-15T10:30:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: Last update timestamp.
+          type: string
+          format: date-time
+          example: '2024-01-15T10:30:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - id
+        - team_id
+        - group
+        - created_at
+        - updated_at
     PortalImageDataUri:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       type: string
@@ -30367,18 +31096,23 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
           default: null
+          maxLength: 250
+          minLength: 1
           nullable: true
           pattern: '^[\w \W]+$'
           writeOnly: true
           x-speakeasy-param-computed: false
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) API team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -30401,15 +31135,20 @@ components:
       type: object
       properties:
         name:
+          description: The name of the team.
           type: string
           example: IDM - Developers
+          maxLength: 250
+          minLength: 1
           pattern: '^[\w \W]+$'
           writeOnly: true
         description:
+          description: The description of the team.
           type: string
           example: The Identity Management (IDM) team.
           default: null
           maxLength: 250
+          minLength: 1
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
@@ -30437,14 +31176,13 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          type: string
-          example: IDM - Developers
-          maxLength: 250
-          pattern: '^[\w \W]+$'
+          $ref: '#/components/schemas/TeamName'
         description:
+          description: The description of the team.
           type: string
           example: The developers for the IDM API.
           maxLength: 250
+          minLength: 1
         created_at:
           type: string
           format: date-time
@@ -30676,6 +31414,82 @@ components:
         - api_package
       title: Entity Type
       x-speakeasy-unknown-values: allow
+    PortalSAMLIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the SAML authentication integration.
+      type: object
+      properties:
+        idp_metadata_url:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadataURL'
+        idp_metadata_xml:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadata'
+        sp_metadata_url:
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/metadata
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        sp_entity_id:
+          description: The entity ID of the service provider (SP).
+          type: string
+          example: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        callback_url:
+          description: The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/acs
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      title: Portal SAML Identity Provider Config
+      x-speakeasy-name-override: SAMLIdentityProviderConfig
+    PortalIdentityProvider:
+      description: The identity provider that contains configuration data for authentication integration.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      title: Portal Identity Provider
+    PortalCreateIdentityProvider:
+      description: The identity provider that contains configuration data for creating an authentication integration.
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Identity Provider
+    PortalUpdateIdentityProvider:
+      description: The identity provider that contains configuration data for updating an authentication integration.
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+      title: Portal Identity Provider
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -37156,6 +37970,7 @@ components:
               enum:
                 - concatenate_all_content
                 - concatenate_user_content
+                - last_message
               x-speakeasy-unknown-values: allow
             timeout:
               description: Connection timeout with the bedrock service
@@ -37348,6 +38163,7 @@ components:
               enum:
                 - concatenate_all_content
                 - concatenate_user_content
+                - last_message
               x-speakeasy-unknown-values: allow
           required:
             - content_safety_url
@@ -38123,8 +38939,6 @@ components:
                   x-speakeasy-param-computed: false
                 logging:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     log_payloads:
                       description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -38134,7 +38948,7 @@ components:
                       description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                       type: boolean
                       default: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 metadata:
                   description: 'For internal use only. '
                   type: object
@@ -38243,6 +39057,34 @@ components:
                               nullable: true
                               x-speakeasy-param-computed: false
                           x-speakeasy-param-computed: false
+                        cache_read_cost:
+                          description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost:
+                          description: Defines the cost per 1M cache-write prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost_list:
+                          description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                          type: array
+                          items:
+                            properties:
+                              cost:
+                                type: number
+                              ttl:
+                                type: string
+                            required:
+                              - cost
+                              - ttl
+                            type: object
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
                         cohere:
                           type: object
                           default: null
@@ -38265,6 +39107,25 @@ components:
                               default: null
                               nullable: true
                               x-speakeasy-param-computed: false
+                          x-speakeasy-param-computed: false
+                        context_window_factor:
+                          description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                          type: array
+                          items:
+                            properties:
+                              above:
+                                type: string
+                              input_factor:
+                                type: number
+                              output_factor:
+                                type: number
+                            required:
+                              - above
+                              - input_factor
+                              - output_factor
+                            type: object
+                          default: null
+                          nullable: true
                           x-speakeasy-param-computed: false
                         dashscope:
                           type: object
@@ -38374,6 +39235,24 @@ components:
                         output_cost:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        service_tier_factor:
+                          description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                          type: array
+                          items:
+                            properties:
+                              factor:
+                                type: number
+                              tier:
+                                description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                type: string
+                                minLength: 1
+                            required:
+                              - factor
+                              - tier
+                            type: object
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
@@ -40271,8 +41150,6 @@ components:
               x-speakeasy-param-computed: false
             balancer:
               type: object
-              default: null
-              nullable: true
               properties:
                 algorithm:
                   description: Which load balancing algorithm to use.
@@ -40370,7 +41247,7 @@ components:
                   default: 60000
                   maximum: 2147483646
                   minimum: 1
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             embeddings:
               type: object
               default: null
@@ -40819,8 +41696,6 @@ components:
                     x-speakeasy-param-computed: false
                   logging:
                     type: object
-                    default: null
-                    nullable: true
                     properties:
                       log_payloads:
                         description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -40830,7 +41705,7 @@ components:
                         description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                         type: boolean
                         default: false
-                    x-speakeasy-param-computed: false
+                    x-speakeasy-param-computed: true
                   metadata:
                     description: 'For internal use only. '
                     type: object
@@ -40939,6 +41814,34 @@ components:
                                 nullable: true
                                 x-speakeasy-param-computed: false
                             x-speakeasy-param-computed: false
+                          cache_read_cost:
+                            description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                            type: number
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
+                          cache_write_cost:
+                            description: Defines the cost per 1M cache-write prompt tokens.
+                            type: number
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
+                          cache_write_cost_list:
+                            description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                            type: array
+                            items:
+                              properties:
+                                cost:
+                                  type: number
+                                ttl:
+                                  type: string
+                              required:
+                                - cost
+                                - ttl
+                              type: object
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
                           cohere:
                             type: object
                             default: null
@@ -40961,6 +41864,25 @@ components:
                                 default: null
                                 nullable: true
                                 x-speakeasy-param-computed: false
+                            x-speakeasy-param-computed: false
+                          context_window_factor:
+                            description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                            type: array
+                            items:
+                              properties:
+                                above:
+                                  type: string
+                                input_factor:
+                                  type: number
+                                output_factor:
+                                  type: number
+                              required:
+                                - above
+                                - input_factor
+                                - output_factor
+                              type: object
+                            default: null
+                            nullable: true
                             x-speakeasy-param-computed: false
                           dashscope:
                             type: object
@@ -41070,6 +41992,24 @@ components:
                           output_cost:
                             description: Defines the cost per 1M tokens in the output of the AI.
                             type: number
+                            default: null
+                            nullable: true
+                            x-speakeasy-param-computed: false
+                          service_tier_factor:
+                            description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                            type: array
+                            items:
+                              properties:
+                                factor:
+                                  type: number
+                                tier:
+                                  description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                  type: string
+                                  minLength: 1
+                              required:
+                                - factor
+                                - tier
+                              type: object
                             default: null
                             nullable: true
                             x-speakeasy-param-computed: false
@@ -41757,8 +42697,6 @@ components:
               x-speakeasy-unknown-values: allow
             logging:
               type: object
-              default: null
-              nullable: true
               properties:
                 log_payloads:
                   description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -41768,7 +42706,7 @@ components:
                   description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             max_request_body_size:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
@@ -41874,6 +42812,34 @@ components:
                           nullable: true
                           x-speakeasy-param-computed: false
                       x-speakeasy-param-computed: false
+                    cache_read_cost:
+                      description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost:
+                      description: Defines the cost per 1M cache-write prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost_list:
+                      description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                      type: array
+                      items:
+                        properties:
+                          cost:
+                            type: number
+                          ttl:
+                            type: string
+                        required:
+                          - cost
+                          - ttl
+                        type: object
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
                     cohere:
                       type: object
                       default: null
@@ -41896,6 +42862,25 @@ components:
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                    context_window_factor:
+                      description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                      type: array
+                      items:
+                        properties:
+                          above:
+                            type: string
+                          input_factor:
+                            type: number
+                          output_factor:
+                            type: number
+                        required:
+                          - above
+                          - input_factor
+                          - output_factor
+                        type: object
+                      default: null
+                      nullable: true
                       x-speakeasy-param-computed: false
                     dashscope:
                       type: object
@@ -42005,6 +42990,24 @@ components:
                     output_cost:
                       description: Defines the cost per 1M tokens in the output of the AI.
                       type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    service_tier_factor:
+                      description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                      type: array
+                      items:
+                        properties:
+                          factor:
+                            type: number
+                          tier:
+                            description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                            type: string
+                            minLength: 1
+                        required:
+                          - factor
+                          - tier
+                        type: object
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
@@ -43740,8 +44743,6 @@ components:
                   x-speakeasy-param-computed: false
                 logging:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     log_payloads:
                       description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -43751,7 +44752,7 @@ components:
                       description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                       type: boolean
                       default: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 metadata:
                   description: 'For internal use only. '
                   type: object
@@ -43860,6 +44861,34 @@ components:
                               nullable: true
                               x-speakeasy-param-computed: false
                           x-speakeasy-param-computed: false
+                        cache_read_cost:
+                          description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost:
+                          description: Defines the cost per 1M cache-write prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost_list:
+                          description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                          type: array
+                          items:
+                            properties:
+                              cost:
+                                type: number
+                              ttl:
+                                type: string
+                            required:
+                              - cost
+                              - ttl
+                            type: object
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
                         cohere:
                           type: object
                           default: null
@@ -43882,6 +44911,25 @@ components:
                               default: null
                               nullable: true
                               x-speakeasy-param-computed: false
+                          x-speakeasy-param-computed: false
+                        context_window_factor:
+                          description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                          type: array
+                          items:
+                            properties:
+                              above:
+                                type: string
+                              input_factor:
+                                type: number
+                              output_factor:
+                                type: number
+                            required:
+                              - above
+                              - input_factor
+                              - output_factor
+                            type: object
+                          default: null
+                          nullable: true
                           x-speakeasy-param-computed: false
                         dashscope:
                           type: object
@@ -43991,6 +45039,24 @@ components:
                         output_cost:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        service_tier_factor:
+                          description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                          type: array
+                          items:
+                            properties:
+                              factor:
+                                type: number
+                              tier:
+                                description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                type: string
+                                minLength: 1
+                            required:
+                              - factor
+                              - tier
+                            type: object
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
@@ -44325,8 +45391,6 @@ components:
                   x-speakeasy-param-computed: false
                 logging:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     log_payloads:
                       description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -44336,7 +45400,7 @@ components:
                       description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                       type: boolean
                       default: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 metadata:
                   description: 'For internal use only. '
                   type: object
@@ -44445,6 +45509,34 @@ components:
                               nullable: true
                               x-speakeasy-param-computed: false
                           x-speakeasy-param-computed: false
+                        cache_read_cost:
+                          description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost:
+                          description: Defines the cost per 1M cache-write prompt tokens.
+                          type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        cache_write_cost_list:
+                          description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                          type: array
+                          items:
+                            properties:
+                              cost:
+                                type: number
+                              ttl:
+                                type: string
+                            required:
+                              - cost
+                              - ttl
+                            type: object
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
                         cohere:
                           type: object
                           default: null
@@ -44467,6 +45559,25 @@ components:
                               default: null
                               nullable: true
                               x-speakeasy-param-computed: false
+                          x-speakeasy-param-computed: false
+                        context_window_factor:
+                          description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                          type: array
+                          items:
+                            properties:
+                              above:
+                                type: string
+                              input_factor:
+                                type: number
+                              output_factor:
+                                type: number
+                            required:
+                              - above
+                              - input_factor
+                              - output_factor
+                            type: object
+                          default: null
+                          nullable: true
                           x-speakeasy-param-computed: false
                         dashscope:
                           type: object
@@ -44576,6 +45687,24 @@ components:
                         output_cost:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
+                          default: null
+                          nullable: true
+                          x-speakeasy-param-computed: false
+                        service_tier_factor:
+                          description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                          type: array
+                          items:
+                            properties:
+                              factor:
+                                type: number
+                              tier:
+                                description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                                type: string
+                                minLength: 1
+                            required:
+                              - factor
+                              - tier
+                            type: object
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
@@ -48421,10 +49550,18 @@ components:
           x-referenceable: true
           x-speakeasy-param-computed: false
         managed_by:
-          description: 'Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.'
+          description: |-
+            Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+            Keys must be 1–63 characters long and start with an alphanumeric character.
           type: object
           default: null
-          additionalProperties: true
+          additionalProperties:
+            maxLength: 63
+            minLength: 1
+            pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+            type: string
+          maxProperties: 5
           nullable: true
           x-speakeasy-param-computed: false
         snis:
@@ -62527,8 +63664,6 @@ components:
               x-speakeasy-param-computed: false
             logging:
               type: object
-              default: null
-              nullable: true
               properties:
                 log_payloads:
                   description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.'
@@ -62538,7 +63673,7 @@ components:
                   description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             metadata:
               description: 'For internal use only. '
               type: object
@@ -62648,6 +63783,34 @@ components:
                           nullable: true
                           x-speakeasy-param-computed: false
                       x-speakeasy-param-computed: false
+                    cache_read_cost:
+                      description: Defines the cost per 1M cache-read (cached) prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost:
+                      description: Defines the cost per 1M cache-write prompt tokens.
+                      type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    cache_write_cost_list:
+                      description: 'Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this if the upstream provider charges differently for different cache TTLs, as Anthropic does for 5m and 1h TTLs.'
+                      type: array
+                      items:
+                        properties:
+                          cost:
+                            type: number
+                          ttl:
+                            type: string
+                        required:
+                          - cost
+                          - ttl
+                        type: object
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
                     cohere:
                       type: object
                       default: null
@@ -62670,6 +63833,25 @@ components:
                           default: null
                           nullable: true
                           x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                    context_window_factor:
+                      description: 'Above an input-token threshold, scale input/output pricing with the corresponding factor.'
+                      type: array
+                      items:
+                        properties:
+                          above:
+                            type: string
+                          input_factor:
+                            type: number
+                          output_factor:
+                            type: number
+                        required:
+                          - above
+                          - input_factor
+                          - output_factor
+                        type: object
+                      default: null
+                      nullable: true
                       x-speakeasy-param-computed: false
                     dashscope:
                       type: object
@@ -62779,6 +63961,24 @@ components:
                     output_cost:
                       description: Defines the cost per 1M tokens in the output of the AI.
                       type: number
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    service_tier_factor:
+                      description: 'Multiplier applied to the whole request for a service tier. No need to configure a standard/default tier, as the default factor is 1.0 if none of the tier is matched.'
+                      type: array
+                      items:
+                        properties:
+                          factor:
+                            type: number
+                          tier:
+                            description: 'A word matched case-insensitively as a substring of the vendor''s reported service tier (e.g. ''priority'', ''flex'', or ''throughput'' for Gemini/Vertex''s PROVISIONED_THROUGHPUT). If several entries match, the longest (most specific) wins; array order doesn''t matter. Configure ''priority'' will also match ''fast'' (whole word) as OpenAI returns either ''priority'' or ''fast'' for priority service tier.'
+                            type: string
+                            minLength: 1
+                        required:
+                          - factor
+                          - tier
+                        type: object
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
@@ -69215,7 +70415,7 @@ components:
               type: boolean
               default: false
             validate_assertion_signature:
-              description: Enable signature validation for SAML responses.
+              description: 'Controls SAML response signature validation. When enabled (the default), the `saml:Assertion` signature is validated and a valid `idp_certificate` is required. When disabled, the signature is still validated as long as an `idp_certificate` is configured, but the `samlp:Response` signature is checked instead of the assertion. Disabling it without an `idp_certificate` skips signature validation entirely, which is insecure (unsigned responses are accepted) and logs a warning.'
               type: boolean
               default: true
           required:
@@ -74534,6 +75734,437 @@ components:
         - created_at
         - updated_at
         - config
+    DcrProviderResponseUnion:
+      x-speakeasy-entity: DcrProvider
+      description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
+      type: object
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/DcrProviderResponseAuth0'
+          azureAd: '#/components/schemas/DcrProviderResponseAzureAd'
+          curity: '#/components/schemas/DcrProviderResponseCurity'
+          okta: '#/components/schemas/DcrProviderResponseOkta'
+          kongIdentity: '#/components/schemas/DcrProviderResponseKongIdentity'
+          http: '#/components/schemas/DcrProviderResponseHttp'
+      oneOf:
+        - $ref: '#/components/schemas/DcrProviderResponseAuth0'
+        - $ref: '#/components/schemas/DcrProviderResponseAzureAd'
+        - $ref: '#/components/schemas/DcrProviderResponseCurity'
+        - $ref: '#/components/schemas/DcrProviderResponseOkta'
+        - $ref: '#/components/schemas/DcrProviderResponseKongIdentity'
+        - $ref: '#/components/schemas/DcrProviderResponseHttp'
+    DcrProviderResponseAuth0:
+      description: A DCR provider for Auth0 -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          allOf:
+            - $ref: '#/components/schemas/DcrProviderDisplayName'
+          x-speakeasy-terraform-ignore: true
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          const: auth0
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigAuth0InResponse'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - active
+        - created_at
+        - updated_at
+        - dcr_config
+      title: DCR provider - Auth0
+      x-speakeasy-name-override: auth0
+    DcrProviderResponseAzureAd:
+      description: A DCR provider for Azure AD -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          allOf:
+            - $ref: '#/components/schemas/DcrProviderDisplayName'
+          x-speakeasy-terraform-ignore: true
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          const: azureAd
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - active
+        - created_at
+        - updated_at
+        - dcr_config
+      title: DCR provider - Azure AD
+      x-speakeasy-name-override: azureAd
+    DcrProviderResponseCurity:
+      description: A DCR provider for Curity -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          allOf:
+            - $ref: '#/components/schemas/DcrProviderDisplayName'
+          x-speakeasy-terraform-ignore: true
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          const: curity
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigCurityInResponse'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - active
+        - created_at
+        - updated_at
+        - dcr_config
+      title: DCR provider - Curity
+      x-speakeasy-name-override: curity
+    DcrProviderResponseOkta:
+      description: A DCR provider for Okta -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          allOf:
+            - $ref: '#/components/schemas/DcrProviderDisplayName'
+          x-speakeasy-terraform-ignore: true
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          const: okta
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigOktaInResponse'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - active
+        - created_at
+        - updated_at
+        - dcr_config
+      title: DCR provider - OKTA
+      x-speakeasy-name-override: okta
+    DcrProviderResponseKongIdentity:
+      description: A DCR provider for Kong Identity -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          allOf:
+            - $ref: '#/components/schemas/DcrProviderDisplayName'
+          x-speakeasy-terraform-ignore: true
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          const: kongIdentity
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigKongIdentityInResponse'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - active
+        - created_at
+        - updated_at
+        - dcr_config
+      title: DCR provider - Kong Identity
+      x-speakeasy-name-override: kongIdentity
+    DcrProviderResponseHttp:
+      description: A DCR provider for HTTP -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          allOf:
+            - $ref: '#/components/schemas/DcrProviderDisplayName'
+          x-speakeasy-terraform-ignore: true
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          const: http
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigHttpInResponse'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - active
+        - created_at
+        - updated_at
+        - dcr_config
+      title: DCR provider - HTTP
+      x-speakeasy-name-override: http
+    UpdateDcrProviderRequestAuth0:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        provider_type:
+          type: string
+          enum:
+            - auth0
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigAuth0InRequest'
+      additionalProperties: false
+      required:
+        - provider_type
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestAzureAd:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        provider_type:
+          type: string
+          enum:
+            - azureAd
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigAzureAdInRequest'
+      additionalProperties: false
+      required:
+        - provider_type
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestCurity:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        provider_type:
+          type: string
+          enum:
+            - curity
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigCurityInRequest'
+      additionalProperties: false
+      required:
+        - provider_type
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestOkta:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        provider_type:
+          type: string
+          enum:
+            - okta
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigOktaInRequest'
+      additionalProperties: false
+      required:
+        - provider_type
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
+    UpdateDcrProviderRequestHttp:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          default: null
+          maxLength: 256
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        provider_type:
+          type: string
+          enum:
+            - http
+        dcr_config:
+          $ref: '#/components/schemas/UpdateDcrConfigHttpInRequest'
+      additionalProperties: false
+      required:
+        - provider_type
+      x-speakeasy-transform-to-api:
+        jq: del(.provider_type)
   requestBodies:
     GroupMembershipAdd:
       content:
@@ -74597,18 +76228,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAPIProductVersionSpecDTO'
+    CreateDcrProvider:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDcrProviderRequest'
+    UpdateDcrProvider:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDcrProviderRequest'
     CreateAppAuthStrategy:
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateAppAuthStrategyRequest'
-    UpdateAppAuthStrategy:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateAppAuthStrategyRequest'
     CreateTeam:
       description: |-
         The request schema for the create team request.
@@ -74621,17 +76258,20 @@ components:
             type: object
             properties:
               name:
-                description: A name for the team being created.
+                description: The name of the team.
                 type: string
                 example: IDM - Developers
+                maxLength: 250
+                minLength: 1
                 pattern: '^[\w \W]+$'
                 writeOnly: true
               description:
-                description: The description of the new team.
+                description: The description of the team.
                 type: string
                 example: The Identity Management (IDM) team.
                 default: null
                 maxLength: 250
+                minLength: 1
                 nullable: true
                 writeOnly: true
                 x-speakeasy-param-computed: false
@@ -74652,6 +76292,8 @@ components:
                 type: string
                 example: IDM - Developers
                 default: null
+                maxLength: 250
+                minLength: 1
                 nullable: true
                 pattern: '^[\w \W]+$'
                 writeOnly: true
@@ -74662,6 +76304,7 @@ components:
                 example: The Identity Management (IDM) API team.
                 default: null
                 maxLength: 250
+                minLength: 1
                 nullable: true
                 writeOnly: true
                 x-speakeasy-param-computed: false
@@ -75167,6 +76810,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V2UpdatePortalAppearanceRequest'
+    CreatePortalIdpTeamGroupMapping:
+      description: Create a team group mapping for an identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalIdpTeamGroupMappingRequest'
     CreatePortalCustomDomain:
       description: Create a portal custom domain.
       required: true
@@ -75514,6 +77164,22 @@ components:
             additionalProperties: false
             required:
               - allowed_ips
+    PortalCreateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for creating a new identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCreateIdentityProvider'
+    PortalUpdateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for updating an identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalUpdateIdentityProvider'
     CreateApiRequest:
       required: true
       content:
@@ -76995,6 +78661,18 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    CreateDcrProvider:
+      description: A response containing the newly created DCR provider object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DcrProviderResponseUnion'
+    GetDcrProvider:
+      description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DcrProviderResponseUnion'
     CreateAppAuthStrategy:
       description: A response containing the newly created application auth strategy object.
       content:
@@ -77007,20 +78685,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GetAppAuthStrategyResponse'
-    UpdateAppAuthStrategy:
-      description: A response containing a single updated application auth strategy object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateAppAuthStrategyResponse'
     TeamSingle:
       description: A response including a single team.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Team'
-    TeamCollection:
-      description: A paginated list response for a collection of users.
+            $ref: '#/components/schemas/TeamResponse'
+    TeamCollectionResponse:
+      description: A paginated list response for a collection of teams.
       content:
         application/json:
           schema:
@@ -77031,7 +78703,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Team'
+                  $ref: '#/components/schemas/TeamResponse'
                 default: null
                 nullable: true
                 x-speakeasy-param-computed: false
@@ -77376,6 +79048,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V2UpdatePortalAppearanceResponse'
+    PortalIdpTeamGroupMapping:
+      description: A team group mapping for an identity provider.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalIdpTeamGroupMapping'
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
       content:
@@ -77732,6 +79410,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IPEntry'
+    PortalIdentityProvider:
+      description: |
+        An identity provider configuration. This response represents the configuration of a specific identity provider, which can be either OIDC or SAML.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalIdentityProvider'
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
       content:
@@ -78275,6 +79960,11 @@ tags:
   - name: API Product Documentation
   - name: API Product Versions
   - name: API Product Version Specification
+  - name: DCR Providers
+    description: |
+      Dynamic Client Registration Providers are configurations representing an external Identity Provider whose clients (i.e. Applications) Konnect will be authorized to manage.
+      For instance, they will be able to perform dynamic client registration (DCR) with the provider.
+      The DCR provider provides credentials to each DCR-enabled application in Konnect that can be used to access Product Versions that the app is registered for.
   - name: App Auth Strategies
     description: |
       Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.

@@ -21,9 +21,11 @@ type CertificateRequest struct {
 	Key *string `default:"null" json:"key"`
 	// PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
 	KeyAlt *string `default:"null" json:"key_alt"`
-	// Arbitrary JSON data for client responsible for managing the entity. Konnect only field, not synced to the Gateway.
-	ManagedBy map[string]any `json:"managed_by,omitempty"`
-	Snis      []string       `json:"snis"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	Snis      []string          `json:"snis"`
 	// An optional set of strings associated with the Certificate for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
@@ -94,7 +96,7 @@ func (c *CertificateRequest) GetKeyAlt() *string {
 	return c.KeyAlt
 }
 
-func (c *CertificateRequest) GetManagedBy() map[string]any {
+func (c *CertificateRequest) GetManagedBy() map[string]string {
 	if c == nil {
 		return nil
 	}

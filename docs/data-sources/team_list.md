@@ -15,6 +15,13 @@ TeamList DataSource
 ```terraform
 data "konnect_team_list" "my_teamlist" {
   filter = {
+    labels = {
+      key = {
+        contains = "...my_contains..."
+        eq       = "...my_eq..."
+        exists   = true
+      }
+    }
     name = {
       contains = "...my_contains..."
       eq       = "...my_eq..."
@@ -28,7 +35,9 @@ data "konnect_team_list" "my_teamlist" {
 
 ### Optional
 
-- `filter` (Attributes) Filter teams returned in the response. (see [below for nested schema](#nestedatt--filter))
+- `filter` (Attributes) Filter teams returned in the response. Supports filtering by label value using
+dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
+`eq`, `contains`, or `exists`. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -39,7 +48,18 @@ data "konnect_team_list" "my_teamlist" {
 
 Optional:
 
+- `labels` (Attributes Map) (see [below for nested schema](#nestedatt--filter--labels))
 - `name` (Attributes) Filter using **one** of the following operators: `eq`, `contains` (see [below for nested schema](#nestedatt--filter--name))
+
+<a id="nestedatt--filter--labels"></a>
+### Nested Schema for `filter.labels`
+
+Optional:
+
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `exists` (Boolean, Deprecated) Filters on whether the given field exists.
+
 
 <a id="nestedatt--filter--name"></a>
 ### Nested Schema for `filter.name`
@@ -57,7 +77,7 @@ Optional:
 Read-Only:
 
 - `created_at` (String) A Unix timestamp representation of team creation.
-- `description` (String) The team description in Konnect.
+- `description` (String) The description of the team.
 - `id` (String) The team ID.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

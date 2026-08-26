@@ -44,8 +44,8 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
 
 ### Optional
 
-- `key_auth` (Attributes) Response payload from creating or updating a Key Auth Application Auth Strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth))
-- `openid_connect` (Attributes) Response payload from creating an OIDC Application Auth Strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect))
+- `key_auth` (Attributes) Request for creating a Key Auth Application Auth Strategy (see [below for nested schema](#nestedatt--key_auth))
+- `openid_connect` (Attributes) Payload for creating an OIDC Application Auth Strategy (see [below for nested schema](#nestedatt--openid_connect))
 
 ### Read-Only
 
@@ -64,23 +64,20 @@ Always `true` for KEY_AUTH.
 
 Optional:
 
-- `configs` (Attributes) JSON-B object containing the configuration for the Key Auth strategy. Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth--configs))
-- `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.
+- `configs` (Attributes) JSON-B object containing the configuration for the Key Auth strategy. Not Null (see [below for nested schema](#nestedatt--key_auth--configs))
+- `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
-- `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.
+- `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null
 - `principals` (Attributes) Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
-applications; stored values may be set for any auth strategy in the organization.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth--principals))
-- `strategy_type` (String) Not Null; must be "key_auth"; Requires replacement if changed.
+applications; stored values may be set for any auth strategy in the organization. (see [below for nested schema](#nestedatt--key_auth--principals))
+- `strategy_type` (String) Not Null; must be "key_auth"
 
 Read-Only:
 
 - `active` (Boolean) At least one published entity is using this auth strategy.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--key_auth--dcr_provider))
 - `id` (String) Contains a unique identifier used for this resource.
 - `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
 Always `true` for KEY_AUTH.
@@ -95,23 +92,23 @@ Optional:
 - `key_auth` (Attributes) The most basic mode to configure an Application Auth Strategy for an API Product Version.
 Using this mode will allow developers to generate API keys that will authenticate their application requests.
 Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
-Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth--configs--key_auth))
+Not Null (see [below for nested schema](#nestedatt--key_auth--configs--key_auth))
 
 <a id="nestedatt--key_auth--configs--key_auth"></a>
 ### Nested Schema for `key_auth.configs.key_auth`
 
 Optional:
 
-- `key_names` (List of String) The names of the headers containing the API key. You can specify multiple header names. Requires replacement if changed.
-- `ttl` (Attributes) Default maximum Time-To-Live for keys created under this strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth--configs--key_auth--ttl))
+- `key_names` (List of String) The names of the headers containing the API key. You can specify multiple header names.
+- `ttl` (Attributes) Default maximum Time-To-Live for keys created under this strategy. (see [below for nested schema](#nestedatt--key_auth--configs--key_auth--ttl))
 
 <a id="nestedatt--key_auth--configs--key_auth--ttl"></a>
 ### Nested Schema for `key_auth.configs.key_auth.ttl`
 
 Optional:
 
-- `unit` (String) possible known values include one of ["days", "weeks", "years"]; Not Null; Requires replacement if changed.
-- `value` (Number) Not Null; Requires replacement if changed.
+- `unit` (String) possible known values include one of ["days", "weeks", "years"]; Not Null
+- `value` (Number) Not Null
 
 
 
@@ -121,18 +118,7 @@ Optional:
 
 Optional:
 
-- `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.
-
-
-<a id="nestedatt--key_auth--dcr_provider"></a>
-### Nested Schema for `key_auth.dcr_provider`
-
-Read-Only:
-
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-- `id` (String) Contains a unique identifier used for this resource.
-- `name` (String)
-- `provider_type` (String) The type of DCR provider.
+- `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false
 
 
 
@@ -141,24 +127,21 @@ Read-Only:
 
 Optional:
 
-- `configs` (Attributes) JSON-B object containing the configuration for the OIDC strategy. Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect--configs))
-- `dcr_provider_id` (String) Requires replacement if changed.
-- `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.
+- `configs` (Attributes) JSON-B object containing the configuration for the OIDC strategy. Not Null (see [below for nested schema](#nestedatt--openid_connect--configs))
+- `dcr_provider_id` (String)
+- `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
-- `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.
+- `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null
 - `principals` (Attributes) Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and
-applications; stored values may be set for any auth strategy in the organization.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect--principals))
-- `strategy_type` (String) Not Null; must be "openid_connect"; Requires replacement if changed.
+applications; stored values may be set for any auth strategy in the organization. (see [below for nested schema](#nestedatt--openid_connect--principals))
+- `strategy_type` (String) Not Null; must be "openid_connect"
 
 Read-Only:
 
 - `active` (Boolean) At least one published entity is using this auth strategy.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--openid_connect--dcr_provider))
 - `id` (String) Contains a unique identifier used for this resource.
 - `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
 - `true` for Key Auth strategies and when supported for Client Credentials strategies
@@ -174,18 +157,18 @@ Optional:
 Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
 Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
 An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
-Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect--configs--openid_connect))
+Not Null (see [below for nested schema](#nestedatt--openid_connect--configs--openid_connect))
 
 <a id="nestedatt--openid_connect--configs--openid_connect"></a>
 ### Nested Schema for `openid_connect.configs.openid_connect`
 
 Optional:
 
-- `additional_properties` (String) Requires replacement if changed.; Parsed as JSON.
-- `auth_methods` (List of String) Not Null; Requires replacement if changed.
-- `credential_claim` (List of String) Not Null; Requires replacement if changed.
-- `issuer` (String) Not Null; Requires replacement if changed.
-- `scopes` (List of String) Not Null; Requires replacement if changed.
+- `additional_properties` (String) Parsed as JSON.
+- `auth_methods` (List of String) Not Null
+- `credential_claim` (List of String) Not Null
+- `issuer` (String) Not Null
+- `scopes` (List of String) Not Null
 
 
 
@@ -194,18 +177,7 @@ Optional:
 
 Optional:
 
-- `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.
-
-
-<a id="nestedatt--openid_connect--dcr_provider"></a>
-### Nested Schema for `openid_connect.dcr_provider`
-
-Read-Only:
-
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-- `id` (String) Contains a unique identifier used for this resource.
-- `name` (String)
-- `provider_type` (String) The type of DCR provider.
+- `enabled` (Boolean) Whether application principals are enabled for this auth strategy. Default: false
 
 ## Import
 

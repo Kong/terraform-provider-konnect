@@ -3,6 +3,11 @@ data "konnect_team" "my_team" {
     name = {
       eq = "portal-admin"
     }
+    labels = {
+      my_label_key = {
+        eq = "here"
+      }
+    }
   }
 }
 

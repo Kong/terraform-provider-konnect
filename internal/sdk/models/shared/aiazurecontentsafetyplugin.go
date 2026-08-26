@@ -203,6 +203,7 @@ type AiAzureContentSafetyPluginTextSource string
 const (
 	AiAzureContentSafetyPluginTextSourceConcatenateAllContent  AiAzureContentSafetyPluginTextSource = "concatenate_all_content"
 	AiAzureContentSafetyPluginTextSourceConcatenateUserContent AiAzureContentSafetyPluginTextSource = "concatenate_user_content"
+	AiAzureContentSafetyPluginTextSourceLastMessage            AiAzureContentSafetyPluginTextSource = "last_message"
 )
 
 func (e AiAzureContentSafetyPluginTextSource) ToPointer() *AiAzureContentSafetyPluginTextSource {
@@ -213,7 +214,7 @@ func (e AiAzureContentSafetyPluginTextSource) ToPointer() *AiAzureContentSafetyP
 func (e *AiAzureContentSafetyPluginTextSource) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "concatenate_all_content", "concatenate_user_content":
+		case "concatenate_all_content", "concatenate_user_content", "last_message":
 			return true
 		}
 	}
