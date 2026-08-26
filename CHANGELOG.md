@@ -8,6 +8,9 @@
 * Add support for cost-accounting fields (`cache_read_cost`, `cache_write_cost`, `cache_write_cost_list`, `context_window_factor`, `service_tier_factor`) in `konnect_gateway_plugin_ai_proxy_advanced`, `konnect_gateway_plugin_ai_response_transformer` and `konnect_gateway_plugin_ai_llm_as_judge` resources.
 * Add support for `konnect_portal_identity_provider` and `konnect_portal_identity_provider_team_group_mapping` resources, using which you can manage Developer Portal Identity Providers, as well as Identity Provider Group <> Portal Team mapping.
 
+# Bug Fixes
+* Fixed in-place update for `konnect_application_auth_strategy` resource.
+
 ## 3.21.0
 > Released 2026/08/04
 

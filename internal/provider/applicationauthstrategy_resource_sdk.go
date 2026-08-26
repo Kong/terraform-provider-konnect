@@ -22,7 +22,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponse.Active)
 			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs = &tfTypes.AppAuthStrategyKeyAuthRequestConfigs{}
+			r.KeyAuth.Configs = &tfTypes.Configs{}
 			r.KeyAuth.Configs.KeyAuth = &tfTypes.AppAuthStrategyConfigKeyAuth{}
 			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames != nil {
 				r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
@@ -150,22 +150,22 @@ func (r *ApplicationAuthStrategyResourceModel) ToOperationsGetAppAuthStrategyReq
 	return &out, diags
 }
 
-func (r *ApplicationAuthStrategyResourceModel) ToOperationsUpdateAppAuthStrategyRequest(ctx context.Context) (*operations.UpdateAppAuthStrategyRequest, diag.Diagnostics) {
+func (r *ApplicationAuthStrategyResourceModel) ToOperationsReplaceAppAuthStrategyRequest(ctx context.Context) (*operations.ReplaceAppAuthStrategyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var authStrategyID string
 	authStrategyID = r.ID.ValueString()
 
-	updateAppAuthStrategyRequest, updateAppAuthStrategyRequestDiags := r.ToSharedUpdateAppAuthStrategyRequest(ctx)
-	diags.Append(updateAppAuthStrategyRequestDiags...)
+	createAppAuthStrategyRequest, createAppAuthStrategyRequestDiags := r.ToSharedCreateAppAuthStrategyRequest(ctx)
+	diags.Append(createAppAuthStrategyRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.UpdateAppAuthStrategyRequest{
+	out := operations.ReplaceAppAuthStrategyRequest{
 		AuthStrategyID:               authStrategyID,
-		UpdateAppAuthStrategyRequest: *updateAppAuthStrategyRequest,
+		CreateAppAuthStrategyRequest: *createAppAuthStrategyRequest,
 	}
 
 	return &out, diags
@@ -206,7 +206,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			KeyNames: keyNames,
 			TTL:      ttl,
 		}
-		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
+		configs := shared.Configs{
 			KeyAuth: keyAuth,
 		}
 		labels := make(map[string]*string)
@@ -325,29 +325,6 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		out = shared.CreateAppAuthStrategyRequest{
 			AppAuthStrategyOpenIDConnectRequest: appAuthStrategyOpenIDConnectRequest,
 		}
-	}
-
-	return &out, diags
-}
-
-func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequest(ctx context.Context) (*shared.UpdateAppAuthStrategyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	out := shared.UpdateAppAuthStrategyRequest{
-		Name:        name,
-		DisplayName: displayName,
 	}
 
 	return &out, diags

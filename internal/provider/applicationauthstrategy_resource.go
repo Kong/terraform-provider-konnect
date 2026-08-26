@@ -14,13 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -101,9 +95,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
 					"active": schema.BoolAttribute{
 						Computed:    true,
@@ -112,24 +103,15 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					"configs": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"key_auth": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
-								},
 								Attributes: map[string]schema.Attribute{
 									"key_names": schema.ListAttribute{
-										Optional: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-										},
+										Optional:    true,
 										ElementType: types.StringType,
-										Description: `The names of the headers containing the API key. You can specify multiple header names. Requires replacement if changed.`,
+										Description: `The names of the headers containing the API key. You can specify multiple header names.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtLeast(1),
 											listvalidator.SizeAtMost(10),
@@ -138,47 +120,38 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									"ttl": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
-										PlanModifiers: []planmodifier.Object{
-											objectplanmodifier.RequiresReplaceIfConfigured(),
-										},
 										Attributes: map[string]schema.Attribute{
 											"unit": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												PlanModifiers: []planmodifier.String{
-													stringplanmodifier.RequiresReplaceIfConfigured(),
-												},
-												Description: `possible known values include one of ["days", "weeks", "years"]; Not Null; Requires replacement if changed.`,
+												Computed:    true,
+												Optional:    true,
+												Description: `possible known values include one of ["days", "weeks", "years"]; Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
 												},
 											},
 											"value": schema.Int64Attribute{
-												Computed: true,
-												Optional: true,
-												PlanModifiers: []planmodifier.Int64{
-													int64planmodifier.RequiresReplaceIfConfigured(),
-												},
-												Description: `Not Null; Requires replacement if changed.`,
+												Computed:    true,
+												Optional:    true,
+												Description: `Not Null`,
 												Validators: []validator.Int64{
 													speakeasy_int64validators.NotNull(),
 													int64validator.AtLeast(1),
 												},
 											},
 										},
-										Description: `Default maximum Time-To-Live for keys created under this strategy. Requires replacement if changed.`,
+										Description: `Default maximum Time-To-Live for keys created under this strategy.`,
 									},
 								},
 								MarkdownDescription: `The most basic mode to configure an Application Auth Strategy for an API Product Version.` + "\n" +
 									`Using this mode will allow developers to generate API keys that will authenticate their application requests.` + "\n" +
 									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.` + "\n" +
-									`Not Null; Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.Object{
 									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `JSON-B object containing the configuration for the Key Auth strategy. Not Null; Requires replacement if changed.`,
+						Description: `JSON-B object containing the configuration for the Key Auth strategy. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -191,12 +164,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"display_name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
@@ -210,24 +180,17 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`Requires replacement if changed.`,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
@@ -236,31 +199,21 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					"principals": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"enabled": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
-								Default:  booldefault.StaticBool(false),
-								PlanModifiers: []planmodifier.Bool{
-									boolplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.`,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Whether application principals are enabled for this auth strategy. Default: false`,
 							},
 						},
 						MarkdownDescription: `Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and` + "\n" +
-							`applications; stored values may be set for any auth strategy in the organization.` + "\n" +
-							`Requires replacement if changed.`,
+							`applications; stored values may be set for any auth strategy in the organization.`,
 					},
 					"strategy_type": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Not Null; must be "key_auth"; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `Not Null; must be "key_auth"`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("key_auth"),
@@ -284,7 +237,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `Response payload from creating or updating a Key Auth Application Auth Strategy. Requires replacement if changed.`,
+				Description: `Request for creating a Key Auth Application Auth Strategy`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("openid_connect"),
@@ -300,9 +253,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			},
 			"openid_connect": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
 					"active": schema.BoolAttribute{
 						Computed:    true,
@@ -311,72 +261,51 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					"configs": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"openid_connect": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
-								},
 								Attributes: map[string]schema.Attribute{
 									"additional_properties": schema.StringAttribute{
-										CustomType: jsontypes.NormalizedType{},
-										Computed:   true,
-										Optional:   true,
-										PlanModifiers: []planmodifier.String{
-											stringplanmodifier.RequiresReplaceIfConfigured(),
-										},
-										Description: `Requires replacement if changed.; Parsed as JSON.`,
+										CustomType:  jsontypes.NormalizedType{},
+										Computed:    true,
+										Optional:    true,
+										Description: `Parsed as JSON.`,
 									},
 									"auth_methods": schema.ListAttribute{
-										Computed: true,
-										Optional: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-										},
+										Computed:    true,
+										Optional:    true,
 										ElementType: types.StringType,
-										Description: `Not Null; Requires replacement if changed.`,
+										Description: `Not Null`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
 											listvalidator.SizeAtMost(10),
 										},
 									},
 									"credential_claim": schema.ListAttribute{
-										Computed: true,
-										Optional: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-										},
+										Computed:    true,
+										Optional:    true,
 										ElementType: types.StringType,
-										Description: `Not Null; Requires replacement if changed.`,
+										Description: `Not Null`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
 											listvalidator.SizeAtMost(10),
 										},
 									},
 									"issuer": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										PlanModifiers: []planmodifier.String{
-											stringplanmodifier.RequiresReplaceIfConfigured(),
-										},
-										Description: `Not Null; Requires replacement if changed.`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
 											stringvalidator.UTF8LengthAtMost(256),
 										},
 									},
 									"scopes": schema.ListAttribute{
-										Computed: true,
-										Optional: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
-										},
+										Computed:    true,
+										Optional:    true,
 										ElementType: types.StringType,
-										Description: `Not Null; Requires replacement if changed.`,
+										Description: `Not Null`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
 											listvalidator.SizeAtMost(50),
@@ -387,13 +316,13 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									`Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.` + "\n" +
 									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.` + "\n" +
 									`An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.` + "\n" +
-									`Not Null; Requires replacement if changed.`,
+									`Not Null`,
 								Validators: []validator.Object{
 									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `JSON-B object containing the configuration for the OIDC strategy. Not Null; Requires replacement if changed.`,
+						Description: `JSON-B object containing the configuration for the OIDC strategy. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -407,18 +336,11 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"dcr_provider_id": schema.StringAttribute{
 						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Requires replacement if changed.`,
 					},
 					"display_name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
@@ -432,24 +354,17 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.Map{
-							mapplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`Requires replacement if changed.`,
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
@@ -458,31 +373,21 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					"principals": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"enabled": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
-								Default:  booldefault.StaticBool(false),
-								PlanModifiers: []planmodifier.Bool{
-									boolplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `Whether application principals are enabled for this auth strategy. Default: false; Requires replacement if changed.`,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Whether application principals are enabled for this auth strategy. Default: false`,
 							},
 						},
 						MarkdownDescription: `Application principal settings for this auth strategy. Runtime effect applies to V3 API Catalog (ACE) portals and` + "\n" +
-							`applications; stored values may be set for any auth strategy in the organization.` + "\n" +
-							`Requires replacement if changed.`,
+							`applications; stored values may be set for any auth strategy in the organization.`,
 					},
 					"strategy_type": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Not Null; must be "openid_connect"; Requires replacement if changed.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `Not Null; must be "openid_connect"`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf(
@@ -507,7 +412,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `Response payload from creating an OIDC Application Auth Strategy. Requires replacement if changed.`,
+				Description: `Payload for creating an OIDC Application Auth Strategy`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("key_auth"),
@@ -691,13 +596,13 @@ func (r *ApplicationAuthStrategyResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAppAuthStrategyRequest(ctx)
+	request, requestDiags := data.ToOperationsReplaceAppAuthStrategyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AppAuthStrategies.UpdateAppAuthStrategy(ctx, *request)
+	res, err := r.client.AppAuthStrategies.ReplaceAppAuthStrategy(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
