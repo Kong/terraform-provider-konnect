@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 5351e4b52b0dcd1bbd1cecefb17a00de
+  docChecksum: 5c8e0e68b04aa2b228d47f8c34f4342c
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.22.0
   configChecksum: c84339f673b5d852241f4b48815b69cb
 persistentEdits:
-  generation_id: e3f838f1-d4dd-4037-8d71-9d224e206e70
-  pristine_commit_hash: 90d3ab80bc8b6786094e42e5d7509d514932e559
-  pristine_tree_hash: 2e697243aa15f60eb8f60a46022f55846a3d76de
+  generation_id: 102b38cd-7f33-4cc9-bd80-1942762f8979
+  pristine_commit_hash: 285217eb3a1ce4bc38466c988b8ae3ca240b3003
+  pristine_tree_hash: 20b67c8ad694a1e75c11945518b9934807cf94f4
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2989,12 +2989,12 @@ trackedFiles:
     pristine_git_object: c906e5122a94bc20fbf344398e68a3b1a0277382
   internal/provider/applicationauthstrategy_resource.go:
     id: dae521341198
-    last_write_checksum: sha1:7ba00f3a35d6f54baf1c5c7b4d683b659311969c
-    pristine_git_object: 17123126e6194a9f982213560907c752e288d867
+    last_write_checksum: sha1:090517a79abd6a18e527f8f99c5aedeb9a0cd951
+    pristine_git_object: 7a89de855402025064a64684e32a8db3e05adc3b
   internal/provider/applicationauthstrategy_resource_sdk.go:
     id: 472d3e2e1a86
-    last_write_checksum: sha1:60101d14c38037d4b189762aeffdd79490deeb31
-    pristine_git_object: 79b8c3092bb4544918c8e7d2154c720b8604173d
+    last_write_checksum: sha1:67044f3a1ab1056882ea7a60868f47a954169677
+    pristine_git_object: e4e3800c5d9cdedbfb17f046afdcf9ad960055d3
   internal/provider/auditlog_resource.go:
     id: bff320f58666
     last_write_checksum: sha1:de8bd6610f76b32e6d8257af1884deea5c7a8903
@@ -7061,8 +7061,8 @@ trackedFiles:
     pristine_git_object: 58b80056e484cccc5302c7f014add11a564c2bd6
   internal/sdk/appauthstrategies.go:
     id: 6f960d857fef
-    last_write_checksum: sha1:fafd050c31de66348886e58cf4512ed13ab86230
-    pristine_git_object: 985a40d0584927c695cffaaac7745d4c8a8dcd0d
+    last_write_checksum: sha1:fcf46d28593429c6b562a8a90e76adf754d001f6
+    pristine_git_object: 15ec942569944fe370d1ceef59f489a6bad94a16
   internal/sdk/applicationregistrations.go:
     id: c1cfb0820163
     last_write_checksum: sha1:b81b74ae699d3530d6c5bf8255315e778fe85d53
@@ -10023,6 +10023,10 @@ trackedFiles:
     id: aa1a16a269a4
     last_write_checksum: sha1:9427984a085e8522d6fb06d0a6972c18a8b216dd
     pristine_git_object: c4246013bf21c23d11384fe967a392c99e322d8b
+  internal/sdk/models/operations/replaceappauthstrategy.go:
+    id: 14b67d04b26c
+    last_write_checksum: sha1:59d2356e92d7f90a3d522167d70bb9aafbf7daf0
+    pristine_git_object: 251efe435af858ce2dc66d065c552480a2440c6b
   internal/sdk/models/operations/replaceauthserverclient.go:
     id: 5617389e5829
     last_write_checksum: sha1:fa5f224e51615286bce15a67dbfcad286257166a
@@ -10195,10 +10199,6 @@ trackedFiles:
     id: 374f7604be3e
     last_write_checksum: sha1:cf13757a37a10887818987b69ccd9f9164540222
     pristine_git_object: 8a07645691bb4f406e782d35d6a5b46f3114df05
-  internal/sdk/models/operations/updateappauthstrategy.go:
-    id: 20e11ed03f98
-    last_write_checksum: sha1:12bbc0e9f093debf21f75bada9735deef560601d
-    pristine_git_object: a8b9e22f723beca91633363e058c8aeaa5664b4a
   internal/sdk/models/operations/updateappdynamicsplugin.go:
     id: 2e36d69863f1
     last_write_checksum: sha1:d0cc09a2cc16de3b97d1013b43042f92b0bed517
@@ -12635,14 +12635,6 @@ trackedFiles:
     id: 8b3e30a616ef
     last_write_checksum: sha1:a2e008232609245a7d12b6c632e2c67f533bc76a
     pristine_git_object: bd4e7c1ee506614f2d6de0d0bc6264b4bcdc5a50
-  internal/sdk/models/shared/partialappauthstrategyconfigkeyauth.go:
-    id: ab0e7e1e58ae
-    last_write_checksum: sha1:18e8af038162bd94ddc1b51c43af55e5b2fff6b1
-    pristine_git_object: eba411a83ae0d5c1eb68ebb026e217b2af99ddcb
-  internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go:
-    id: e83ef546b530
-    last_write_checksum: sha1:516e8d332b8bed493eb6e4bebb78dd63d7bb647d
-    pristine_git_object: b788b080bc558820d23f25425de851bcbecd0824
   internal/sdk/models/shared/patchnetworkrequest.go:
     id: 455b9f9fd010
     last_write_checksum: sha1:e2335285824c90ff43d0cd668daa233bec8e8a2f
@@ -13203,10 +13195,6 @@ trackedFiles:
     id: 070ace279bd4
     last_write_checksum: sha1:72c85c64be4414dd84c82a2918a7087ef56ecabe
     pristine_git_object: c3ba81bcf2f175ba119398e66bc611615e2ead8d
-  internal/sdk/models/shared/updateappauthstrategyrequest.go:
-    id: bab5a2a417ee
-    last_write_checksum: sha1:c75ce9f82c6f8832595ab4e0fc1e4154eac8ae60
-    pristine_git_object: 23ce8ac1ba9571ab5c132bc2f6af95c973c66f60
   internal/sdk/models/shared/updateapplicationregistrationrequest.go:
     id: 0ecda2a1fa96
     last_write_checksum: sha1:f289bcce5846a8a4c1c5b2c2889fac7b23af23bf
@@ -14310,7 +14298,7 @@ examples:
         path:
           authStrategyId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       requestBody:
-        application/json: {"strategy_type": "key_auth", "configs": null}
+        application/json: {"labels": {"env": "test"}, "dcr_provider_id": null}
       responses:
         "200":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Ora_MacGyver-Waelchi", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": {"value": 431390, "unit": "years"}}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "supports_multiple_credentials": true}
@@ -29014,6 +29002,24 @@ examples:
       responses:
         "400":
           application/problem+json: {"status": 234999, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  replace-app-auth-strategy:
+    speakeasy-default-replace-app-auth-strategy:
+      parameters:
+        path:
+          authStrategyId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      requestBody:
+        application/json: {"name": "<value>", "display_name": "Dannie77", "strategy_type": "openid_connect", "configs": {"openid-connect": {"issuer": "https://tedious-tinderbox.org/", "credential_claim": ["<value 1>", "<value 2>", "<value 3>"], "scopes": [], "auth_methods": []}}, "dcr_provider_id": null}
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Deondre.Walter", "strategy_type": "openid_connect", "configs": {"openid-connect": {"issuer": "https://tedious-tinderbox.org/", "credential_claim": ["<value 1>", "<value 2>", "<value 3>"], "scopes": [], "auth_methods": []}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "curity"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "dcr_provider_id": null}
+        "400":
+          application/problem+json: {"status": 566206, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

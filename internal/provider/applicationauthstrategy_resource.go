@@ -237,7 +237,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `Response payload from creating or updating a Key Auth Application Auth Strategy`,
+				Description: `Request for creating a Key Auth Application Auth Strategy`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("openid_connect"),
@@ -412,7 +412,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `Response payload from creating an OIDC Application Auth Strategy`,
+				Description: `Payload for creating an OIDC Application Auth Strategy`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("key_auth"),
@@ -596,13 +596,13 @@ func (r *ApplicationAuthStrategyResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAppAuthStrategyRequest(ctx)
+	request, requestDiags := data.ToOperationsReplaceAppAuthStrategyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AppAuthStrategies.UpdateAppAuthStrategy(ctx, *request)
+	res, err := r.client.AppAuthStrategies.ReplaceAppAuthStrategy(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

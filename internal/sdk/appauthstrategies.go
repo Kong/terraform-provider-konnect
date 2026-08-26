@@ -578,9 +578,9 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 
 }
 
-// UpdateAppAuthStrategy - Update App Auth Strategy
-// Updates an application auth strategy.
-func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request operations.UpdateAppAuthStrategyRequest, opts ...operations.Option) (*operations.UpdateAppAuthStrategyResponse, error) {
+// ReplaceAppAuthStrategy - Replace App Auth Strategy
+// Replaces an application auth strategy.
+func (s *AppAuthStrategies) ReplaceAppAuthStrategy(ctx context.Context, request operations.ReplaceAppAuthStrategyRequest, opts ...operations.Option) (*operations.ReplaceAppAuthStrategyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -610,11 +610,11 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-app-auth-strategy",
+		OperationID:      "replace-app-auth-strategy",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAppAuthStrategyRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAppAuthStrategyRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -630,7 +630,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		defer cancel()
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -750,7 +750,7 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateAppAuthStrategyResponse{
+	res := &operations.ReplaceAppAuthStrategyResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
