@@ -9,7 +9,7 @@
 * Add support for `konnect_portal_identity_provider` and `konnect_portal_identity_provider_team_group_mapping` resources, using which you can manage Developer Portal Identity Providers, as well as Identity Provider Group <> Portal Team mapping.
 
 # Bug Fixes
-* Fixed `konnect_application_auth_strategy` resource to support update-in-place operation.
+* Fixed in-place update for `konnect_application_auth_strategy` resource.
 
 ## 3.21.0
 > Released 2026/08/04
