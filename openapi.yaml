@@ -4056,18 +4056,18 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - App Auth Strategies
-    patch:
+    put:
       x-speakeasy-entity-operation:
         terraform-resource: ApplicationAuthStrategy#update
         terraform-datasource: null
-      operationId: update-app-auth-strategy
-      summary: Update App Auth Strategy
-      description: Updates an application auth strategy.
+      operationId: replace-app-auth-strategy
+      summary: Replace App Auth Strategy
+      description: Replaces an application auth strategy.
       requestBody:
-        $ref: '#/components/requestBodies/UpdateAppAuthStrategy'
+        $ref: '#/components/requestBodies/CreateAppAuthStrategy'
       responses:
         '200':
-          $ref: '#/components/responses/UpdateAppAuthStrategy'
+          $ref: '#/components/responses/CreateAppAuthStrategy'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -26803,89 +26803,6 @@ components:
             - unit
       additionalProperties: false
       title: AppAuthStrategyConfigKeyAuth
-    PartialAppAuthStrategyConfigKeyAuth:
-      description: |
-        Key Auth configuration for updating an Application Auth Strategy.
-        The ttl field can be set to null to unset the Time-To-Live.
-      type: object
-      properties:
-        key_names:
-          description: The names of the headers containing the API key. You can specify multiple header names.
-          type: array
-          items:
-            type: string
-            maxLength: 256
-          default: null
-          maxItems: 10
-          minItems: 1
-          nullable: true
-          x-speakeasy-param-computed: false
-        ttl:
-          description: Default maximum Time-To-Live for keys created under this strategy. Set to null to unset.
-          type: object
-          default: null
-          nullable: true
-          properties:
-            value:
-              type: integer
-              minimum: 1
-            unit:
-              type: string
-              enum:
-                - days
-                - weeks
-                - years
-              x-speakeasy-unknown-values: allow
-          required:
-            - value
-            - unit
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      title: PartialAppAuthStrategyConfigKeyAuth
-    PartialAppAuthStrategyConfigOpenIDConnect:
-      description: |
-        A more advanced mode to configure an API Product Version’s Application Auth Strategy.
-        Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
-        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
-        An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
-      type: object
-      properties:
-        issuer:
-          type: string
-          format: url
-          default: null
-          maxLength: 256
-          nullable: true
-          x-speakeasy-param-computed: false
-        credential_claim:
-          type: array
-          items:
-            type: string
-            maxLength: 128
-          default: null
-          maxItems: 10
-          nullable: true
-          x-speakeasy-param-computed: false
-        scopes:
-          type: array
-          items:
-            type: string
-            maxLength: 128
-          default: null
-          maxItems: 50
-          nullable: true
-          x-speakeasy-param-computed: false
-        auth_methods:
-          type: array
-          items:
-            type: string
-            maxLength: 64
-          default: null
-          maxItems: 10
-          nullable: true
-          x-speakeasy-param-computed: false
-      additionalProperties: true
-      title: PartialAppAuthStrategyConfigOpenIDConnect
     AppAuthStrategyConfigOpenIDConnect:
       description: |
         A more advanced mode to configure an API Product Version’s Application Auth Strategy.
@@ -27202,22 +27119,7 @@ components:
       required:
         - strategy_type
       title: AppAuthStrategy
-    UpdateAppAuthStrategyRequest:
-      x-speakeasy-entity: ApplicationAuthStrategy
-      description: Request body for updating an Application Auth Strategy
-      type: object
-      discriminator:
-        propertyName: strategy_type
-        mapping:
-          key_auth: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
-          openid_connect: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIDConnect'
-      oneOf:
-        - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
-        - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIDConnect'
-      title: UpdateAppAuthStrategyRequest
     CreateAppAuthStrategyResponse:
-      $ref: '#/components/schemas/AppAuthStrategy'
-    UpdateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
     GetAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
@@ -75657,72 +75559,6 @@ components:
           properties:
             message:
               example: Conflict
-    UpdateAppAuthStrategyRequestKeyAuth:
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/AuthStrategyName'
-        display_name:
-          $ref: '#/components/schemas/AuthStrategyDisplayName'
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
-        principals:
-          $ref: '#/components/schemas/AuthStrategyPrincipals'
-        strategy_type:
-          type: string
-          enum:
-            - key_auth
-        configs:
-          description: JSON-B object containing the configuration for the Key Auth strategy
-          type: object
-          default: null
-          additionalProperties: false
-          nullable: true
-          properties:
-            key-auth:
-              $ref: '#/components/schemas/PartialAppAuthStrategyConfigKeyAuth'
-          required:
-            - key-auth
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      x-speakeasy-transform-to-api:
-        jq: del(.strategy_type)
-    UpdateAppAuthStrategyRequestOpenIDConnect:
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/AuthStrategyName'
-        display_name:
-          $ref: '#/components/schemas/AuthStrategyDisplayName'
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
-        principals:
-          $ref: '#/components/schemas/AuthStrategyPrincipals'
-        strategy_type:
-          type: string
-          enum:
-            - openid_connect
-        dcr_provider_id:
-          type: string
-          format: uuid
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        configs:
-          description: JSON-B object containing the configuration for the OIDC strategy
-          type: object
-          default: null
-          additionalProperties: false
-          nullable: true
-          properties:
-            openid-connect:
-              $ref: '#/components/schemas/PartialAppAuthStrategyConfigOpenIDConnect'
-          required:
-            - openid-connect
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      x-speakeasy-transform-to-api:
-        jq: del(.strategy_type)
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -76410,12 +76246,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateAppAuthStrategyRequest'
-    UpdateAppAuthStrategy:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateAppAuthStrategyRequest'
     CreateTeam:
       description: |-
         The request schema for the create team request.
@@ -78855,12 +78685,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GetAppAuthStrategyResponse'
-    UpdateAppAuthStrategy:
-      description: A response containing a single updated application auth strategy object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateAppAuthStrategyResponse'
     TeamSingle:
       description: A response including a single team.
       content:
