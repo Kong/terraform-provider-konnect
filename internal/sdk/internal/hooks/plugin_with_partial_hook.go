@@ -20,12 +20,9 @@ var konnectMatchPlugin = func(req *http.Request) bool {
 		return false
 	}
 
-	match, err := regexp.MatchString(`^/v2/control-planes/[^/]+/core-entities/plugins`, req.URL.Path)
-	if err != nil {
-		return false
-	}
-
-	return match && (req.Method == http.MethodPost || req.Method == http.MethodPut)
+	var pluginPathRe = regexp.MustCompile(`^/v2/control-planes/[^/]+/core-entities/(?:[^/]+/)?plugins(?:/|$)`)
+	return pluginPathRe.MatchString(req.URL.Path) &&
+		(req.Method == http.MethodPost || req.Method == http.MethodPut)
 }
 
 // BeforeRequest removes any fields from the request body that are covered by
