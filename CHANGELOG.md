@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.22.0
-> Released 2026/08/??
+> Released 2026/08/26
 
 # Features
 * Add support for `konnect_dcr_provider` resource, using which you can manage Dynamic Client Registration (DCR) providers in Konnect. This allows you to configure DCR providers for use with OpenID Connect (OIDC) authentication strategies in Konnect.
