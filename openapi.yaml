@@ -27206,45 +27206,15 @@ components:
       x-speakeasy-entity: ApplicationAuthStrategy
       description: Request body for updating an Application Auth Strategy
       type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/AuthStrategyName'
-        display_name:
-          $ref: '#/components/schemas/AuthStrategyDisplayName'
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
-        dcr_provider_id:
-          type: string
-          format: uuid
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        configs:
-          description: JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIdConnect'
-            - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
-        principals:
-          $ref: '#/components/schemas/AuthStrategyPrincipals'
-      additionalProperties: false
+      discriminator:
+        propertyName: strategy_type
+        mapping:
+          key_auth: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
+          openid_connect: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIDConnect'
+      oneOf:
+        - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
+        - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIDConnect'
       title: UpdateAppAuthStrategyRequest
-    UpdateAppAuthStrategyRequestOpenIdConnect:
-      type: object
-      properties:
-        openid-connect:
-          $ref: '#/components/schemas/PartialAppAuthStrategyConfigOpenIDConnect'
-      additionalProperties: false
-      required:
-        - openid-connect
-    UpdateAppAuthStrategyRequestKeyAuth:
-      type: object
-      properties:
-        key-auth:
-          $ref: '#/components/schemas/PartialAppAuthStrategyConfigKeyAuth'
-      additionalProperties: false
-      required:
-        - key-auth
     CreateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
     UpdateAppAuthStrategyResponse:
@@ -75687,6 +75657,72 @@ components:
           properties:
             message:
               example: Conflict
+    UpdateAppAuthStrategyRequestKeyAuth:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AuthStrategyName'
+        display_name:
+          $ref: '#/components/schemas/AuthStrategyDisplayName'
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        principals:
+          $ref: '#/components/schemas/AuthStrategyPrincipals'
+        strategy_type:
+          type: string
+          enum:
+            - key_auth
+        configs:
+          description: JSON-B object containing the configuration for the Key Auth strategy
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            key-auth:
+              $ref: '#/components/schemas/PartialAppAuthStrategyConfigKeyAuth'
+          required:
+            - key-auth
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      x-speakeasy-transform-to-api:
+        jq: del(.strategy_type)
+    UpdateAppAuthStrategyRequestOpenIDConnect:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AuthStrategyName'
+        display_name:
+          $ref: '#/components/schemas/AuthStrategyDisplayName'
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        principals:
+          $ref: '#/components/schemas/AuthStrategyPrincipals'
+        strategy_type:
+          type: string
+          enum:
+            - openid_connect
+        dcr_provider_id:
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        configs:
+          description: JSON-B object containing the configuration for the OIDC strategy
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            openid-connect:
+              $ref: '#/components/schemas/PartialAppAuthStrategyConfigOpenIDConnect'
+          required:
+            - openid-connect
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      x-speakeasy-transform-to-api:
+        jq: del(.strategy_type)
     CreatePortalCustomDomainSSL:
       type: object
       properties:
