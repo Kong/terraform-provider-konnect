@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 2945ffd658d2506dde86969ef68b77d8
+  docChecksum: 5351e4b52b0dcd1bbd1cecefb17a00de
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.22.0
   configChecksum: c84339f673b5d852241f4b48815b69cb
 persistentEdits:
-  generation_id: 66df9086-35c2-4e3c-a3e0-ea680baa9cae
-  pristine_commit_hash: 96420791ee5c6d4d7e660e13b0f5b043fe37f0c5
-  pristine_tree_hash: 09e45372657705d4158e5c07d0cfbf3d54423ec5
+  generation_id: e3f838f1-d4dd-4037-8d71-9d224e206e70
+  pristine_commit_hash: 90d3ab80bc8b6786094e42e5d7509d514932e559
+  pristine_tree_hash: 2e697243aa15f60eb8f60a46022f55846a3d76de
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2989,12 +2989,12 @@ trackedFiles:
     pristine_git_object: c906e5122a94bc20fbf344398e68a3b1a0277382
   internal/provider/applicationauthstrategy_resource.go:
     id: dae521341198
-    last_write_checksum: sha1:ad284b641af434cb7282b0ec5479c53a1e5d3d23
-    pristine_git_object: 30e576acd1e17e991ccff632901ec9acdf70b8dd
+    last_write_checksum: sha1:7ba00f3a35d6f54baf1c5c7b4d683b659311969c
+    pristine_git_object: 17123126e6194a9f982213560907c752e288d867
   internal/provider/applicationauthstrategy_resource_sdk.go:
     id: 472d3e2e1a86
-    last_write_checksum: sha1:b1a063040e51de0a0b8d2fbf6be6b507bb2ec703
-    pristine_git_object: c8b8b97a7eca6707aec7228de2e6d61f3c91b8ca
+    last_write_checksum: sha1:60101d14c38037d4b189762aeffdd79490deeb31
+    pristine_git_object: 79b8c3092bb4544918c8e7d2154c720b8604173d
   internal/provider/auditlog_resource.go:
     id: bff320f58666
     last_write_checksum: sha1:de8bd6610f76b32e6d8257af1884deea5c7a8903
@@ -5125,12 +5125,8 @@ trackedFiles:
     pristine_git_object: 04b9475e13fe1d361c3f55b20176bd73d345124b
   internal/provider/types/app_auth_strategy_key_auth_request.go:
     id: 93554d649808
-    last_write_checksum: sha1:48087778c671fee0501d01c60d43522fa433a1bf
-    pristine_git_object: 04c48b75a9707d4356e8b669a6ac87042df204ef
-  internal/provider/types/app_auth_strategy_key_auth_request_configs.go:
-    id: 374514075a9f
-    last_write_checksum: sha1:a24c5776cf547a7e4ad3acf7f0b0a5e965b530d3
-    pristine_git_object: 2415cba8a78c7c0220888b96086189f44f384129
+    last_write_checksum: sha1:96a6987f0247a24e2a199f8b4330cf71d0d7518e
+    pristine_git_object: ae2e529292d3a7925d3da7f957465fcbe6081ce8
   internal/provider/types/app_auth_strategy_open_id_connect_request.go:
     id: 428f43c7b7a0
     last_write_checksum: sha1:9870eaa652b1261e227e57507a0ce9251c70c13f
@@ -5423,6 +5419,10 @@ trackedFiles:
     id: e174d8020556
     last_write_checksum: sha1:32a2e117f68c970a72f2eba8187f4bf27fd20776
     pristine_git_object: 8ad2a06448805bfda0e71846f821b13dfa33110f
+  internal/provider/types/configs.go:
+    id: e863276d5758
+    last_write_checksum: sha1:0164feac6da546ac14a6e33a7ee4ee47003b6583
+    pristine_git_object: 0fb8fb7401f76c32e1aacdf402393760aa9296a9
   internal/provider/types/configuration_data_plane_group.go:
     id: 038148793aa6
     last_write_checksum: sha1:0cb3158908640b5d9a2f9093befac6d5f9ce9c04
@@ -10197,8 +10197,8 @@ trackedFiles:
     pristine_git_object: 8a07645691bb4f406e782d35d6a5b46f3114df05
   internal/sdk/models/operations/updateappauthstrategy.go:
     id: 20e11ed03f98
-    last_write_checksum: sha1:cbb6287d2240009becf57da888888ef712f51718
-    pristine_git_object: 4830cc0c4aff5d7556578d8d1599895ca1a9834e
+    last_write_checksum: sha1:12bbc0e9f093debf21f75bada9735deef560601d
+    pristine_git_object: a8b9e22f723beca91633363e058c8aeaa5664b4a
   internal/sdk/models/operations/updateappdynamicsplugin.go:
     id: 2e36d69863f1
     last_write_checksum: sha1:d0cc09a2cc16de3b97d1013b43042f92b0bed517
@@ -11597,8 +11597,8 @@ trackedFiles:
     pristine_git_object: aa0d62fbe6933f0b5aae54c309cda742b2a9e516
   internal/sdk/models/shared/createappauthstrategyrequest.go:
     id: 7c5394e27224
-    last_write_checksum: sha1:56148be1425e60fda32a1db8239c67ab03b4060a
-    pristine_git_object: 96845d6c2180abb0676f6bfd2e58f46b20dbb29d
+    last_write_checksum: sha1:e2f5ebf8ef068860e84ef8a1b801501e495444d3
+    pristine_git_object: 3fc16e386d4030ac9bdebdb97b3e4beb777abe06
   internal/sdk/models/shared/createappauthstrategyresponse.go:
     id: fd5f40b5a4a4
     last_write_checksum: sha1:320e4024a7d555ec0f562e15496fe86f7618f78e
@@ -13205,16 +13205,8 @@ trackedFiles:
     pristine_git_object: c3ba81bcf2f175ba119398e66bc611615e2ead8d
   internal/sdk/models/shared/updateappauthstrategyrequest.go:
     id: bab5a2a417ee
-    last_write_checksum: sha1:fc7d5f57e4c25e4b2d8a3d8f7521a57e52dae37b
-    pristine_git_object: efdb1271ef45676691e6c26c3f36793c4a91426d
-  internal/sdk/models/shared/updateappauthstrategyrequestkeyauth.go:
-    id: 47f1268681f8
-    last_write_checksum: sha1:9bb0ba5a6ccfe0b582f7514483aa7a2ae47e54d4
-    pristine_git_object: d40ef64c896d14ab0c771b5db1904b0c94333f0d
-  internal/sdk/models/shared/updateappauthstrategyrequestopenidconnect.go:
-    id: 956dcd8e13eb
-    last_write_checksum: sha1:f40d5dc9ca7b1edff77ca22482faf00ca10bf8a0
-    pristine_git_object: 5981184b40cbdf58fe74d2a352e5907337163e7a
+    last_write_checksum: sha1:c75ce9f82c6f8832595ab4e0fc1e4154eac8ae60
+    pristine_git_object: 23ce8ac1ba9571ab5c132bc2f6af95c973c66f60
   internal/sdk/models/shared/updateapplicationregistrationrequest.go:
     id: 0ecda2a1fa96
     last_write_checksum: sha1:f289bcce5846a8a4c1c5b2c2889fac7b23af23bf
@@ -14318,7 +14310,7 @@ examples:
         path:
           authStrategyId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       requestBody:
-        application/json: {"labels": {"env": "test"}, "dcr_provider_id": null}
+        application/json: {"strategy_type": "key_auth", "configs": null}
       responses:
         "200":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Ora_MacGyver-Waelchi", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": {"value": 431390, "unit": "years"}}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "supports_multiple_credentials": true}
