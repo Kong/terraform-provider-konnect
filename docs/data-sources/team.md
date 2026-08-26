@@ -66,7 +66,7 @@ Optional:
 
 - `contains` (String) The field contains the provided value.
 - `eq` (String) The field exactly matches the provided value.
-- `exists` (Boolean) Filters on whether the given field exists.
+- `exists` (Boolean, Deprecated) Filters on whether the given field exists.
 
 
 <a id="nestedatt--filter--name"></a>

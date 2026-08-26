@@ -369,6 +369,8 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewPortalDeveloperResource,
 		NewPortalFaviconResource,
 		NewPortalIPAllowListResource,
+		NewPortalIdentityProviderResource,
+		NewPortalIdentityProviderTeamGroupMappingResource,
 		NewPortalLogoResource,
 		NewPortalPageResource,
 		NewPortalProductVersionResource,

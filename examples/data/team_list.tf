@@ -4,7 +4,7 @@ data "konnect_team_list" "my_teamlist" {
       eq = "portal-admin"
     }
     labels = {
-      example = {
+      my_label_key = {
         eq = "here"
       }
     }
