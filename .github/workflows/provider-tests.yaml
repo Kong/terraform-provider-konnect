@@ -8,6 +8,8 @@ on:
       - "Makefile"
       - "scripts/**"
       - "tests/e2e/**"
+      # .tf fixtures are not matched by "**.go"
+      - "tests/migration/**"
 
 permissions:
   contents: read
@@ -59,7 +61,7 @@ jobs:
   # Slow tier: real provider binaries, real state file, real plan. Runs after
   # the unit tier so an unwired upgrader fails cheaply first.
   migration-e2e:
-    name: State Migration (${{ github.base_ref || 'main' }} -> PR)
+    name: State Migration (main -> PR)
     runs-on: ubuntu-latest
     needs: migration-unit
     # Fork PRs cannot read secrets, so the job could only ever fail.
@@ -77,7 +79,7 @@ jobs:
           egress-policy: audit
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
         with:
-          # The baseline provider is built from the target branch, so the
+          # The baseline provider is built from a worktree of main, so the
           # shallow default checkout is not enough.
           fetch-depth: 0
       - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
@@ -87,12 +89,11 @@ jobs:
         with:
           terraform_version: "1.13.*"
           terraform_wrapper: false
-      # A PR checkout lands on the merge ref; make sure the base branch is
-      # present as a local remote-tracking ref regardless of checkout details.
-      - name: Fetch baseline branch
-        run: |
-          git fetch --no-tags origin \
-            "+refs/heads/${{ github.base_ref || 'main' }}:refs/remotes/origin/${{ github.base_ref || 'main' }}"
+      # Always measure the upgrade from main, not from the PR's base branch:
+      # a stacked PR can target a branch that already carries `workspace`,
+      # which would leave no migration to exercise.
+      - name: Fetch main
+        run: git fetch --no-tags origin "+refs/heads/main:refs/remotes/origin/main"
       - env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
-        run: make migration-e2e BASELINE_REF=origin/${{ github.base_ref || 'main' }}
+        run: make migration-e2e BASELINE_REF=origin/main
