@@ -5,6 +5,9 @@ on:
     paths:
       - ".github/workflows/provider-tests.yaml"
       - "**.go"
+      - "Makefile"
+      - "scripts/**"
+      - "tests/e2e/**"
 
 permissions:
   contents: read
@@ -36,3 +39,60 @@ jobs:
       - env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
         run: make acceptance
+
+  # Fast tier: drives every registered state upgrader in-process. No
+  # credentials, so it also runs on forks.
+  migration-unit:
+    name: State Migration (unit)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - run: make migration-unit
+
+  # Slow tier: real provider binaries, real state file, real plan. Runs after
+  # the unit tier so an unwired upgrader fails cheaply first.
+  migration-e2e:
+    name: State Migration (${{ github.base_ref || 'main' }} -> PR)
+    runs-on: ubuntu-latest
+    needs: migration-unit
+    # Fork PRs cannot read secrets, so the job could only ever fail.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    # The fixture names its control plane, and Konnect scopes names per org -
+    # two runs at once would collide. Never cancel in progress: that would kill
+    # the run before `terraform destroy` and leak real resources.
+    concurrency:
+      group: konnect-migration-e2e
+      cancel-in-progress: false
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+        with:
+          # The baseline provider is built from the target branch, so the
+          # shallow default checkout is not enough.
+          fetch-depth: 0
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2
+        with:
+          terraform_version: "1.13.*"
+          terraform_wrapper: false
+      # A PR checkout lands on the merge ref; make sure the base branch is
+      # present as a local remote-tracking ref regardless of checkout details.
+      - name: Fetch baseline branch
+        run: |
+          git fetch --no-tags origin \
+            "+refs/heads/${{ github.base_ref || 'main' }}:refs/remotes/origin/${{ github.base_ref || 'main' }}"
+      - env:
+          KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
+        run: make migration-e2e BASELINE_REF=origin/${{ github.base_ref || 'main' }}

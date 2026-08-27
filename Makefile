@@ -34,3 +34,17 @@ test-cleanup:
 
 acceptance:
 	@TF_ACC=1 go test -v ./tests/resources
+
+# Drives every registered state upgrader in-process. No credentials, no
+# Terraform CLI - safe to run on every PR.
+migration-unit:
+	@go test -v ./tests/migration
+
+# Applies a fixture with the provider built from BASELINE_REF, swaps in the
+# provider built from this tree, and asserts the plan is empty and `workspace`
+# is backfilled. Creates real Konnect resources; needs KONNECT_SPAT.
+BASELINE_REF?=main
+migration-e2e:
+	@./scripts/workspace-migration-test.sh --baseline-ref $(BASELINE_REF) $(MIGRATION_ARGS)
+
+migration: migration-unit migration-e2e
