@@ -20,12 +20,14 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	"github.com/kong/terraform-provider-konnect/v3/src/utils"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &CustomPluginResource{}
 var _ resource.ResourceWithImportState = &CustomPluginResource{}
+var _ resource.ResourceWithUpgradeState = &CustomPluginResource{}
 
 func NewCustomPluginResource() resource.Resource {
 	return &CustomPluginResource{}
@@ -42,6 +44,7 @@ func (r *CustomPluginResource) Metadata(ctx context.Context, req resource.Metada
 func (r *CustomPluginResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Gateway Custom Plugin Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -391,6 +394,12 @@ func (r *CustomPluginResource) Delete(ctx context.Context, req resource.DeleteRe
 
 func (r *CustomPluginResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource gateway_custom_plugin.")
+}
+
+func (r *CustomPluginResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaycustompluginStateUpgraderV0},
+	}
 }
 
 func pointerToId[T any](obj *T) *ForeignKeyWithId {

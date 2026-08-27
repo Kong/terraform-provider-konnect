@@ -36,6 +36,11 @@ func GatewayconsumergroupmemberStateUpgraderV0(ctx context.Context, req resource
 	upgradeToCurrentSchema("konnect_gateway_consumer_group_member", req, resp, defaultWorkspaceIfMissing)
 }
 
+// Hand-written resource (src/custom_plugin_resource.go), not Speakeasy-generated.
+func GatewaycustompluginStateUpgraderV0(ctx context.Context, req resource.UpgradeStateRequest, resp *resource.UpgradeStateResponse) {
+	upgradeToCurrentSchema("konnect_gateway_custom_plugin", req, resp, defaultWorkspaceIfMissing)
+}
+
 func GatewayhmacauthStateUpgraderV0(ctx context.Context, req resource.UpgradeStateRequest, resp *resource.UpgradeStateResponse) {
 	upgradeToCurrentSchema("konnect_gateway_hmac_auth", req, resp, defaultWorkspaceIfMissing)
 }
