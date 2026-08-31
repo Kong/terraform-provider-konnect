@@ -288,6 +288,7 @@ type Konnect struct {
 	CustomPlugins *CustomPlugins
 	// Custom Plugin Schemas
 	CustomPluginSchemas *CustomPluginSchemas
+	Workspaces          *Workspaces
 	// DP Certificates
 	DPCertificates     *DPCertificates
 	ControlPlaneGroups *ControlPlaneGroups
@@ -506,6 +507,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ClonedPlugins = newClonedPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CustomPlugins = newCustomPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Workspaces = newWorkspaces(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DPCertificates = newDPCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DCRProviders = newDCRProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
