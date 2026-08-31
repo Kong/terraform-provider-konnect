@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.23.0
+> Released YYYY/MM/DD
+
+# Features
+* Add support for `konnect_organization_ip_allow_list` resource, using which you can view, set, and disable the list of IP addresses/CIDR ranges allowed to reach your Konnect organization's Admin API.
+
 ## 3.22.0
 > Released 2026/08/26
 

@@ -18789,6 +18789,82 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Auth Settings
+  '/v3/organizations/{organizationId}/ip-allow-list':
+    parameters:
+      - name: organizationId
+        in: path
+        description: A UUID representing an organization.
+        required: true
+        schema:
+          description: UUID representing an organization
+          type: string
+          format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrganizationIPAllowList#create
+        terraform-datasource: null
+      operationId: put-ip-allow-list
+      summary: Set the ip allow list for organization
+      description: |
+        Sets the ip allow list for an organization.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrganizationSourceIPRestriction'
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationSourceIPRestriction'
+        '201':
+          $ref: '#/components/responses/OrganizationSourceIPRestriction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Organizations
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrganizationIPAllowList#update
+        terraform-datasource: null
+      operationId: patch-ip-allow-list
+      summary: Update the ip allow list for organization
+      description: |
+        Updates the ip allow list configuration for an organization.
+      requestBody:
+        $ref: '#/components/requestBodies/PatchOrganizationSourceIPRestriction'
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationSourceIPRestriction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Organizations
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrganizationIPAllowList#read
+        terraform-datasource: null
+      operationId: get-ip-allow-list
+      summary: Get the ip allow list for organization
+      description: |
+        Gets the ip allow list configuration for an organization.
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationSourceIPRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Organizations
   '/v3/organizations/{organizationId}/personal-access-token-settings':
     parameters:
       - name: organizationId
@@ -21106,6 +21182,34 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Audit Logs
+  '/v3/organizations/{organizationId}/ip-allow-list#delete':
+    patch:
+      x-speakeasy-entity-operation: OrganizationIPAllowList#delete
+      operationId: reset-organization-ip-allow-list
+      summary: Reset organization IP allow list
+      description: Disable the IP allow list.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationIdParameter'
+      requestBody:
+        description: Reset the IP allow list to disabled
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  default: null
+                  const: false
+                  nullable: true
+                  x-speakeasy-param-computed: false
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganizationSourceIPRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
   /v3/authentication-settings#delete:
     patch:
       x-speakeasy-entity-operation: AuthenticationSettings#delete
@@ -21643,6 +21747,13 @@ components:
       schema:
         $ref: '#/components/schemas/NetworksFilterParameters'
       style: deepObject
+    OrganizationIdParameter:
+      name: organizationId
+      in: path
+      description: UUID representing an organization.
+      required: true
+      schema:
+        $ref: '#/components/schemas/OrganizationId'
     PageId:
       schema:
         type: string
@@ -31260,6 +31371,11 @@ components:
         - entity_type_name
         - entity_region
       title: PortalAssignedRoleResponse
+    SourceIPEnabled:
+      description: Whether ip allow list is enabled for the organization.
+      type: boolean
+      example: true
+      default: false
     SnippetName:
       description: The unique name of a snippet in a portal.
       type: string
@@ -31842,8 +31958,8 @@ components:
         The visibility of the API in the portal.
         Public API publications do not require authentication to view and retrieve information about them.
         Private API publications require authentication to retrieve information about them.
+        If omitted, this defaults to the target portal's configured default API visibility.
       type: string
-      default: private
       enum:
         - public
         - private
@@ -36354,6 +36470,7 @@ components:
       enum:
         - implicit
         - client_credentials
+        - 'urn:ietf:params:oauth:grant-type:jwt-bearer'
       x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
@@ -36445,6 +36562,7 @@ components:
       type: string
       default: client_secret_post
       enum:
+        - private_key_jwt
         - client_secret_post
         - none
       x-speakeasy-unknown-values: allow
@@ -36706,6 +36824,35 @@ components:
       type: integer
       maximum: 365
       minimum: 1
+    OrganizationId:
+      description: UUID representing an organization.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+    OrganizationAllowedIPs:
+      description: The list of allowed IPs for the organization.
+      type: array
+      items:
+        type: string
+      format: set
+      example:
+        - 192.168.1.1
+        - 192.168.1.0/22
+    OrganizationSourceIPRestriction:
+      x-speakeasy-entity: OrganizationIPAllowList
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/SourceIPEnabled'
+        allowed_ips:
+          $ref: '#/components/schemas/OrganizationAllowedIPs'
+      additionalProperties: false
+      required:
+        - enabled
+        - allowed_ips
+      title: Organization Source IP Restriction
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -78099,6 +78246,38 @@ components:
                 $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
             additionalProperties: false
             minProperties: 1
+    CreateOrganizationSourceIPRestriction:
+      description: The request schema to set an organization's ip allow list configuration.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationIPAllowList
+            type: object
+            properties:
+              enabled:
+                $ref: '#/components/schemas/SourceIPEnabled'
+              allowed_ips:
+                $ref: '#/components/schemas/OrganizationAllowedIPs'
+                minItems: 1
+            additionalProperties: false
+            required:
+              - enabled
+              - allowed_ips
+            title: Organization Source IP Restriction
+    PatchOrganizationSourceIPRestriction:
+      description: The request schema to update an organization's ip allow list configuration.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationIPAllowList
+            type: object
+            properties:
+              enabled:
+                $ref: '#/components/schemas/SourceIPEnabled'
+              allowed_ips:
+                $ref: '#/components/schemas/OrganizationAllowedIPs'
+            additionalProperties: false
+            minProperties: 1
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -79765,6 +79944,12 @@ components:
             required:
               - pats_enabled
               - max_expiration_period_days
+    OrganizationSourceIPRestriction:
+      description: The organization's ip allow list configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganizationSourceIPRestriction'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -80135,6 +80320,8 @@ tags:
     description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
   - name: Auth Server Scopes
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
+  - name: Organizations
+    description: API related to the management of Konnect Organizations
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
