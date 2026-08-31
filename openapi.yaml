@@ -147,6 +147,389 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
+  /v1/ai-models:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModel#create
+        terraform-datasource: null
+      operationId: create-ai-model
+      summary: Create AI Model
+      description: |
+        Creates a bare AI Model. No `target_models` are accepted here — create the version separately with `POST /ai-models/{aiModelId}/versions`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiModelCreate'
+      responses:
+        '201':
+          description: The created AI Model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModel'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog AI Models
+  '/v1/ai-models/{aiModelId}':
+    parameters:
+      - $ref: '#/components/parameters/AiModelIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModel#read
+        terraform-datasource: null
+      operationId: get-ai-model
+      summary: Get AI Model
+      description: Returns a single AI Model.
+      responses:
+        '200':
+          description: AI Model details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModel'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Models
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModel#update
+        terraform-datasource: null
+      operationId: upsert-ai-model
+      summary: Replace AI Model
+      description: |
+        Replaces an AI Model.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiModelReplace'
+      responses:
+        '200':
+          description: The replaced AI Model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModel'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog AI Models
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModel#delete
+        terraform-datasource: null
+      operationId: delete-ai-model
+      summary: Delete AI Model
+      description: |
+        Deletes an AI Model.
+      responses:
+        '204':
+          description: Successfully deleted the AI Model
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Models
+  '/v1/ai-models/{aiModelId}/implementations':
+    parameters:
+      - $ref: '#/components/parameters/AiModelIdPath'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelImplementation#create
+        terraform-datasource: null
+      operationId: create-ai-model-implementation
+      summary: Create AI Model implementation
+      description: |
+        Creates an implementation record for the AI Model. Returns `409` if the model has an existing implementation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiModelImplementationCreate'
+      responses:
+        '201':
+          description: The created implementation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelImplementation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog AI Model Implementations
+  '/v1/ai-models/{aiModelId}/implementations/{implementationId}':
+    parameters:
+      - $ref: '#/components/parameters/AiModelIdPath'
+      - $ref: '#/components/parameters/AiModelImplementationIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelImplementation#read
+        terraform-datasource: null
+      operationId: get-ai-model-implementation
+      summary: Get AI Model implementation
+      description: Returns a single AI Model implementation record.
+      responses:
+        '200':
+          description: AI Model implementation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelImplementation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Implementations
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelImplementation#delete
+        terraform-datasource: null
+      operationId: delete-ai-model-implementation
+      summary: Delete AI Model implementation
+      description: Removes a single AI Model implementation (link) record by identifier.
+      responses:
+        '204':
+          description: Successfully deleted the AI Model implementation
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Implementations
+  '/v1/ai-models/{aiModelId}/versions':
+    parameters:
+      - $ref: '#/components/parameters/AiModelIdPath'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelVersion#create
+        terraform-datasource: null
+      operationId: create-ai-model-version
+      summary: Create AI Model version
+      description: |
+        Creates the `latest` version with its `target_models`. Currently, a model only has a single version. Returns `409` if a version already exists.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiModelVersionCreate'
+      responses:
+        '201':
+          description: The created version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelVersion'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog AI Model Versions
+  '/v1/ai-models/{aiModelId}/versions/latest':
+    parameters:
+      - $ref: '#/components/parameters/AiModelIdPath'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelVersion#read
+        terraform-datasource: null
+      operationId: get-latest-ai-model-version
+      summary: Get latest AI Model version
+      description: |
+        Returns the AI Model's `latest` version, including its `target_models`.
+      responses:
+        '200':
+          description: The latest version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelVersion'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Versions
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelVersion#update
+        terraform-datasource: null
+      operationId: upsert-latest-ai-model-version
+      summary: Replace latest AI Model version
+      description: |
+        Replaces the `latest` version.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiModelVersionReplace'
+      responses:
+        '200':
+          description: The replaced version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelVersion'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Versions
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelVersion#delete
+        terraform-datasource: null
+      operationId: delete-latest-ai-model-version
+      summary: Delete latest AI Model version
+      description: |
+        Deletes the AI Model's `latest` version. Returns `404` if no version exists yet.
+      responses:
+        '204':
+          description: Successfully deleted the version
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Versions
+  '/v1/ai-models/{aiModelId}/versions/latest/spec':
+    parameters:
+      - $ref: '#/components/parameters/AiModelIdPath'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelVersionSpec#read
+        terraform-datasource: null
+      operationId: get-ai-model-version-spec
+      summary: Get AI Model version spec
+      description: |
+        Returns the `latest` version's oas specification contents along with metadata.
+      responses:
+        '200':
+          description: The version's oas specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelVersionSpec'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Specs
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'AiModelVersionSpec#create,update'
+        terraform-datasource: null
+      operationId: upsert-ai-model-version-spec
+      summary: Upsert AI Model version spec
+      description: |
+        Creates or replaces the `latest` version's oas specification (upsert).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiModelVersionSpecWrite'
+      responses:
+        '200':
+          description: The replaced spec
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelVersionSpec'
+        '201':
+          description: The created spec
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiModelVersionSpec'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Specs
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: AiModelVersionSpec#delete
+        terraform-datasource: null
+      operationId: delete-ai-model-version-spec
+      summary: Delete AI Model version spec
+      description: |
+        Deletes the `latest` version's oas specification.
+      responses:
+        '204':
+          description: Successfully deleted the spec
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog AI Model Specs
   /v1/auth-servers:
     post:
       x-speakeasy-entity-operation:
@@ -3090,6 +3473,255 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Integration Instance Auth Credentials
+  /v1/mcp-servers:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCP#create
+        terraform-datasource: null
+      operationId: create-mcp
+      summary: Create MCP
+      description: |
+        Creates a bare MCP.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCatalogMCPRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CatalogMCPResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog MCPs
+  '/v1/mcp-servers/{mcpId}':
+    parameters:
+      - $ref: '#/components/parameters/CatalogMCPIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCP#read
+        terraform-datasource: null
+      operationId: get-mcp
+      summary: Get MCP
+      description: Returns a single MCP.
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogMCPResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog MCPs
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCP#update
+        terraform-datasource: null
+      operationId: upsert-mcp
+      summary: Replace MCP
+      description: |
+        Replaces an MCP.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceCatalogMCPRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogMCPResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog MCPs
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCP#delete
+        terraform-datasource: null
+      operationId: delete-mcp
+      summary: Delete MCP
+      description: |
+        Deletes an MCP.
+      responses:
+        '204':
+          description: Successfully deleted the MCP
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog MCPs
+  '/v1/mcp-servers/{mcpId}/implementations':
+    parameters:
+      - $ref: '#/components/parameters/CatalogMCPIdPath'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCPImplementation#create
+        terraform-datasource: null
+      operationId: create-mcp-implementation
+      summary: Create MCP implementation
+      description: |
+        Creates an implementation record for the MCP. Returns `409` if the MCP has an existing implementation.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCatalogMCPImplementationRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CatalogMCPImplementationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog MCP Implementations
+  '/v1/mcp-servers/{mcpId}/implementations/{implementationId}':
+    parameters:
+      - $ref: '#/components/parameters/CatalogMCPIdPath'
+      - $ref: '#/components/parameters/CatalogMCPImplementationIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCPImplementation#read
+        terraform-datasource: null
+      operationId: get-mcp-implementation
+      summary: Get MCP implementation
+      description: Returns a single MCP implementation record.
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogMCPImplementationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog MCP Implementations
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCPImplementation#delete
+        terraform-datasource: null
+      operationId: delete-mcp-implementation
+      summary: Delete MCP implementation
+      description: Removes a single MCP implementation (link) record by identifier.
+      responses:
+        '204':
+          description: Successfully deleted the MCP implementation
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog MCP Implementations
+  '/v1/mcp-servers/{mcpId}/versions':
+    parameters:
+      - $ref: '#/components/parameters/CatalogMCPIdPath'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCPVersion#create
+        terraform-datasource: null
+      operationId: create-mcp-version
+      summary: Create MCP version
+      description: |
+        Creates the `latest` version. Currently, a MCP only has a single version. Returns `409` if a version already exists.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCatalogMCPVersionRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CatalogMCPVersionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog MCP Versions
+  '/v1/mcp-servers/{mcpId}/versions/latest':
+    parameters:
+      - $ref: '#/components/parameters/CatalogMCPIdPath'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCPVersion#read
+        terraform-datasource: null
+      operationId: get-latest-mcp-version
+      summary: Get latest MCP version
+      description: |
+        Returns the MCP's `latest` version.
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogMCPVersionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog MCP Versions
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCPVersion#update
+        terraform-datasource: null
+      operationId: upsert-latest-mcp-version
+      summary: Replace latest MCP version
+      description: |
+        Replaces the `latest` version.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceCatalogMCPVersionRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogMCPVersionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog MCP Versions
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogMCPVersion#delete
+        terraform-datasource: null
+      operationId: delete-latest-mcp-version
+      summary: Delete latest MCP version
+      description: |
+        Deletes the MCP's `latest` version. Returns `404` if no version exists yet.
+      responses:
+        '204':
+          description: Successfully deleted the version
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog MCP Versions
   /v1/mesh/control-planes:
     get:
       x-speakeasy-entity-operation: MeshControlPlanes#get
@@ -21171,6 +21803,35 @@ components:
       schema:
         $ref: '#/components/schemas/AddOnId'
       x-speakeasy-match: id
+    AiModelIdMatchingParam:
+      name: aiModelId
+      in: path
+      required: true
+      description: The unique identifier of the AI Model.
+      example: 123e4567-e89b-12d3-a456-426614174000
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    AiModelIdPath:
+      name: aiModelId
+      in: path
+      required: true
+      description: The unique identifier of the AI Model.
+      schema:
+        type: string
+        format: uuid
+        example: 123e4567-e89b-12d3-a456-426614174000
+    AiModelImplementationIdMatchingParam:
+      name: implementationId
+      in: path
+      required: true
+      description: The unique identifier of the AI Model implementation.
+      example: d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
     ApiId:
       schema:
         type: string
@@ -21252,6 +21913,35 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    CatalogMCPIdMatchingParam:
+      name: mcpId
+      in: path
+      required: true
+      description: The unique identifier of the MCP.
+      example: a0119846-f179-4d9f-a168-d701facce7fb
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+    CatalogMCPIdPath:
+      name: mcpId
+      in: path
+      required: true
+      description: The unique identifier of the MCP.
+      schema:
+        type: string
+        format: uuid
+        example: a0119846-f179-4d9f-a168-d701facce7fb
+    CatalogMCPImplementationIdMatchingParam:
+      name: implementationId
+      in: path
+      required: true
+      description: The unique identifier of the MCP implementation.
+      example: 7703e2f2-f9c0-47e3-9146-5fa50486b871
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
     centralizedConsumerIdForChildren:
       name: consumerId
       in: path
@@ -22266,6 +22956,21 @@ components:
         - page
       title: PaginatedMeta
       x-speakeasy-terraform-ignore: true
+    ManagedBy:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 5
+      title: ManagedBy
     BaseError:
       description: standard error
       type: object
@@ -31842,8 +32547,8 @@ components:
         The visibility of the API in the portal.
         Public API publications do not require authentication to view and retrieve information about them.
         Private API publications require authentication to retrieve information about them.
+        If omitted, this defaults to the target portal's configured default API visibility.
       type: string
-      default: private
       enum:
         - public
         - private
@@ -36354,6 +37059,7 @@ components:
       enum:
         - implicit
         - client_credentials
+        - 'urn:ietf:params:oauth:grant-type:jwt-bearer'
       x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
@@ -36445,6 +37151,7 @@ components:
       type: string
       default: client_secret_post
       enum:
+        - private_key_jwt
         - client_secret_post
         - none
       x-speakeasy-unknown-values: allow
@@ -36706,6 +37413,1141 @@ components:
       type: integer
       maximum: 365
       minimum: 1
+    TargetModel:
+      description: An upstream LLM target the AI Model proxies.
+      type: object
+      properties:
+        provider:
+          description: The upstream model provider.
+          type: string
+          example: openai
+        name:
+          description: The upstream model name for the given provider.
+          type: string
+          example: gpt-4o
+      required:
+        - provider
+        - name
+    AiModel:
+      description: An AI Model catalog resource.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the AI Model.
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          description: |
+            The machine name of the AI Model that uniquely identifies it within the catalog.
+          type: string
+          example: my-ai-model
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the AI Model.
+          type: string
+          example: My AI Model
+          maxLength: 120
+          minLength: 1
+        description:
+          description: A description of the AI Model.
+          type: string
+          example: Customer support triage model
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - display_name
+        - description
+        - labels
+        - managed_by
+        - created_at
+        - updated_at
+    AiModelCreate:
+      description: Request body for creating or replacing an AI Model.
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the AI Model that uniquely identifies it within the catalog.
+          type: string
+          example: my-ai-model
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the AI Model.
+          type: string
+          example: My AI Model
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the AI Model.
+          type: string
+          example: Customer support triage model
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+    AiModelReplace:
+      description: Request body for creating or replacing an AI Model.
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the AI Model that uniquely identifies it within the catalog.
+          type: string
+          example: my-ai-model
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the AI Model.
+          type: string
+          example: My AI Model
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the AI Model.
+          type: string
+          example: Customer support triage model
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+    AiModelVersion:
+      description: |
+        A version of an AI Model, holding its `target_models`. Currently only exactly one version (`latest`) per model exists.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the version.
+          type: string
+          format: uuid
+          example: 9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8
+        ai_model_id:
+          description: The identifier of the parent AI Model.
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        version:
+          description: An optional user-supplied version label. `null` when unset.
+          type: string
+          example: 1.0.0
+          default: null
+          maxLength: 120
+          minLength: 1
+          nullable: true
+          pattern: .*\S.*
+          x-speakeasy-param-computed: false
+        target_models:
+          description: The upstream LLM targets for this version.
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetModel'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - ai_model_id
+        - version
+        - target_models
+        - created_at
+        - updated_at
+    AiModelVersionCreate:
+      description: Request body for creating an AI Model Version.
+      type: object
+      properties:
+        version:
+          description: |
+            An optional user-supplied version label.
+          type: string
+          example: 1.0.0
+          default: null
+          maxLength: 120
+          minLength: 1
+          nullable: true
+          pattern: .*\S.*
+          x-speakeasy-param-computed: false
+        target_models:
+          description: The upstream LLM targets (full set).
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetModel'
+      additionalProperties: false
+      required:
+        - target_models
+    AiModelVersionReplace:
+      description: Request body for replacing an AI Model Version.
+      allOf:
+        - $ref: '#/components/schemas/AiModelVersionCreate'
+    SpecProvider:
+      description: |
+        Client-supplied provenance for the oas specification. Omit it (or send `null`) for a user-uploaded spec. `{ "source": "ai_gateway" }` indicates the content came from the linked AI Gateway model, and is rejected with `400` (`invalid_parameters`) if the model is not linked. `{ "source": "provider" }` is reserved for provider/target-model generation.
+      type: object
+      properties:
+        source:
+          type: string
+          example: ai_gateway
+          enum:
+            - ai_gateway
+            - provider
+          x-speakeasy-unknown-values: allow
+      required:
+        - source
+    AiModelVersionSpec:
+      description: The oas specification document for an AI Model version.
+      type: object
+      properties:
+        spec_content:
+          description: |
+            The raw content of the oas specification, in json or yaml format (for example, an
+            OpenAPI document).
+          type: string
+          example: '{"openapi":"3.1.0","info":{"title":"My AI Model","version":"1.0.0"},"paths":{}}'
+        spec_type:
+          description: |
+            The type of specification document. Currently always `oas` (OpenAPI Specification).
+          type: string
+          example: oas
+          enum:
+            - oas
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        spec_provider:
+          description: |
+            Provenance of the specification. `null` (or absent) for a user-uploaded specification.
+          type: object
+          default: null
+          nullable: true
+          properties:
+            source:
+              type: string
+              example: ai_gateway
+              enum:
+                - ai_gateway
+                - provider
+              x-speakeasy-unknown-values: allow
+          required:
+            - source
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - spec_content
+        - spec_type
+        - created_at
+        - updated_at
+    AiModelVersionSpecWrite:
+      description: |
+        Request body for creating or replacing a version's spec (upsert). The request body has a maximum size limit of 8MB.
+      type: object
+      properties:
+        spec_content:
+          description: |
+            The raw content of the oas specification, in json or yaml format (for example, an
+            OpenAPI document).
+          type: string
+          example: '{"openapi":"3.1.0","info":{"title":"My AI Model","version":"1.0.0"},"paths":{}}'
+        spec_provider:
+          description: |
+            Optional provenance. Omit (or `null`) for a user-uploaded specification.
+          allOf:
+            - $ref: '#/components/schemas/SpecProvider'
+          nullable: true
+      additionalProperties: false
+      required:
+        - spec_content
+    AiModelImplementation:
+      description: AI Model Implementation.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the implementation (link) record.
+          type: string
+          format: uuid
+          example: d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a
+        ai_model_id:
+          description: The identifier of the parent AI Model.
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        gateway_control_plane_id:
+          description: The AI Gateway control plane uuid the linked model belongs to.
+          type: string
+          format: uuid
+          example: 223e4567-e89b-12d3-a456-426614174999
+        gateway_model_id:
+          description: The text or uuid identifier of the linked AI Gateway model.
+          type: string
+          example: gw-model-abc
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - ai_model_id
+        - gateway_control_plane_id
+        - gateway_model_id
+        - created_at
+        - updated_at
+    AiModelImplementationCreate:
+      description: Request body for linking an AI Model to an AI Gateway model.
+      type: object
+      properties:
+        gateway_control_plane_id:
+          description: The AI Gateway control plane uuid the model belongs to.
+          type: string
+          format: uuid
+          example: 223e4567-e89b-12d3-a456-426614174999
+        gateway_model_id:
+          description: The text or uuid identifier of the AI Gateway model to link.
+          type: string
+          example: gw-model-abc
+      additionalProperties: false
+      required:
+        - gateway_control_plane_id
+        - gateway_model_id
+    CreateCatalogMCP:
+      description: Request body for creating an MCP.
+      type: object
+      properties:
+        name:
+          description: The machine name of the MCP that uniquely identifies it within the catalog.
+          type: string
+          example: my-mcp
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the MCP.
+          type: string
+          example: My MCP
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the MCP.
+          type: string
+          example: Customer support triage model
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+    ReplaceCatalogMCP:
+      allOf:
+        - $ref: '#/components/schemas/CreateCatalogMCP'
+    CatalogMCP:
+      description: An MCP catalog resource.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the MCP.
+          type: string
+          format: uuid
+          example: 7703e2f2-f9c0-47e3-9146-5fa50486b871
+        name:
+          description: The machine name of the MCP that uniquely identifies it within the catalog.
+          type: string
+          example: my-mcp
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the MCP.
+          type: string
+          example: My MCP
+          maxLength: 120
+          minLength: 1
+        description:
+          description: A description of the MCP.
+          type: string
+          example: Description of MCP.
+          default: null
+          maxLength: 2048
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - display_name
+        - description
+        - labels
+        - managed_by
+        - created_at
+        - updated_at
+    CatalogMCPToolInputSchema:
+      description: Input schema for an MCP tool.
+      type: object
+      additionalProperties: true
+      x-speakeasy-type-override: any
+    CatalogMCPToolOutputSchema:
+      description: Output schema for an MCP tool.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CatalogMCPToolInputSchema'
+        - description: Output schema for an MCP tool.
+    CatalogMCPToolAnnotations:
+      type: object
+      properties:
+        title:
+          description: Human-readable name of the tool.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        destructive_hint:
+          description: Indicates if the tool performs destructive actions.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        idempotent_hint:
+          description: Indicates if the tool is idempotent.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        open_world_hint:
+          description: Indicates if the tool interacts with external entities.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        read_only_hint:
+          description: Indicates if the tool is read-only.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+    CatalogMCPAnnotations:
+      type: object
+      properties:
+        audience:
+          description: Describes the intended customer of the annotated object/data.
+          type: array
+          items:
+            type: string
+            enum:
+              - user
+              - assistant
+            x-speakeasy-unknown-values: allow
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        priority:
+          description: |
+            Describes how important the data is for operating the MCP.
+
+            A value of 1 means "most important," and indicates the data is effectively required, while 0 means
+            "least important," and indicates the data is entirely optional.
+          type: number
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        last_modified:
+          description: 'The moment the resource was last modified, in ISO-8601 format.'
+          type: string
+          format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+    CatalogMCPPromptArgument:
+      type: object
+      properties:
+        name:
+          description: Machine/programmatic name of the prompt argument.
+          type: string
+        title:
+          description: Human-readable name of the prompt argument.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          description: Detailed description of the prompt argument.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        required:
+          description: Indicates if the prompt argument is required.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - name
+    CatalogMCPTool:
+      description: MCP tool definition.
+      type: object
+      properties:
+        name:
+          description: Machine/programmatic name of the tool.
+          type: string
+          example: my-tool
+        title:
+          description: Human-readable name of the tool.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          description: Detailed description of the tool's functionality.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        input_schema:
+          $ref: '#/components/schemas/CatalogMCPToolInputSchema'
+        output_schema:
+          $ref: '#/components/schemas/CatalogMCPToolOutputSchema'
+        annotations:
+          $ref: '#/components/schemas/CatalogMCPToolAnnotations'
+      additionalProperties: false
+      required:
+        - name
+        - input_schema
+    CatalogMCPResource:
+      description: MCP Resource definition.
+      type: object
+      properties:
+        name:
+          description: Machine/programmatic name of the resource.
+          type: string
+          example: my-resource
+        title:
+          description: Human-readable name of the resource.
+          type: string
+        uri:
+          description: The URI of the resource.
+          type: string
+        description:
+          description: Detailed description of what the resource represents.
+          type: string
+        mime_type:
+          description: 'The MIME type of the resource, if known.'
+          type: string
+        annotations:
+          $ref: '#/components/schemas/CatalogMCPAnnotations'
+        size:
+          description: 'The size of the raw resource content, in bytes, if known.'
+          type: number
+      additionalProperties: false
+      required:
+        - name
+        - uri
+      x-terraform-no-default-null: true
+    CatalogMCPPrompt:
+      description: MCP Prompt definition.
+      type: object
+      properties:
+        name:
+          description: Machine/programmatic name of the prompt.
+          type: string
+        title:
+          description: Human-readable name of the prompt.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          description: Detailed description of the prompt's purpose and usage.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        arguments:
+          description: List of arguments to use for templating the prompt.
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogMCPPromptArgument'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - name
+    CatalogMCPVersionVersion:
+      description: User-supplied version label.
+      type: string
+      example: 1.0.0
+      maxLength: 120
+      minLength: 1
+      pattern: .*\S.*
+    CatalogMCPVersion:
+      description: An MCP version resource.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the version.
+          type: string
+          format: uuid
+          example: 9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8
+        version:
+          $ref: '#/components/schemas/CatalogMCPVersionVersion'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogMCPTool'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogMCPResource'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        prompts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogMCPPrompt'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        remotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPRemoteTransport'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPPackage'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - version
+        - tools
+        - resources
+        - prompts
+        - remotes
+        - packages
+        - created_at
+        - updated_at
+    CreateCatalogMCPVersion:
+      description: Schema to create an MCP version.
+      type: object
+      properties:
+        version:
+          $ref: '#/components/schemas/CatalogMCPVersionVersion'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogMCPTool'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogMCPResource'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        prompts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogMCPPrompt'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        remotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPRemoteTransport'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPPackage'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      required:
+        - version
+        - tools
+        - resources
+        - prompts
+        - remotes
+        - packages
+    ReplaceCatalogMCPVersion:
+      allOf:
+        - $ref: '#/components/schemas/CreateCatalogMCPVersion'
+    BaseCatalogMCPImplementation:
+      description: Base schema for MCP implementations.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the implementation (link) record.
+          type: string
+          format: uuid
+          example: d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+    CatalogMCPGatewayImplementationConfig:
+      description: Configuration for an MCP implementation linked to an AI Gateway MCP Server.
+      type: object
+      properties:
+        gateway_control_plane_id:
+          description: The AI Gateway control plane the linked model belongs to.
+          type: string
+          format: uuid
+          example: 223e4567-e89b-12d3-a456-426614174999
+        gateway_mcp_server_id:
+          description: The identifier of the linked AI Gateway MCP server.
+          type: string
+          example: 79087145-0159-4811-9042-6a9365f234bc
+      additionalProperties: false
+      required:
+        - gateway_control_plane_id
+        - gateway_mcp_server_id
+    CatalogMCPGatewayImplementationBlock:
+      description: |
+        Schema to describe the type and configuration typing for an MCP implementation linked to an AI Gateway MCP
+        Server.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ai-gateway
+        config:
+          $ref: '#/components/schemas/CatalogMCPGatewayImplementationConfig'
+      additionalProperties: false
+      required:
+        - type
+        - config
+    CatalogMCPImplementation:
+      description: An MCP implementation resource.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/CatalogMCPGatewayImplementation'
+    CatalogMCPGatewayImplementation:
+      description: An MCP implementation resource linked to an AI Gateway MCP Server.
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/BaseCatalogMCPImplementation'
+        - type: object
+          required:
+            - implementation
+          properties:
+            implementation:
+              $ref: '#/components/schemas/CatalogMCPGatewayImplementationBlock'
+    CreateCatalogMCPImplementation:
+      description: Request body for creating an MCP implementation.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/CreateCatalogMCPGatewayImplementation'
+    CreateCatalogMCPGatewayImplementation:
+      description: Request body for creating an MCP implementation linked to an AI Gateway MCP Server.
+      type: object
+      properties:
+        implementation:
+          $ref: '#/components/schemas/CatalogMCPGatewayImplementationBlock'
+      additionalProperties: false
+      required:
+        - implementation
+    MCPInput:
+      type: object
+      properties:
+        description:
+          description: A description of the input.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        is_required:
+          type: boolean
+          default: false
+        format:
+          description: Specifies the input format.
+          type: string
+          default: string
+          enum:
+            - string
+            - number
+            - boolean
+            - filepath
+          x-speakeasy-unknown-values: allow
+        value:
+          description: The value for the input.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        is_secret:
+          description: Indicates whether the input is a secret value.
+          type: boolean
+          default: false
+        default:
+          description: The default value for the input.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        placeholder:
+          description: A placeholder for the input to be displayed during configuration.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        choices:
+          description: A list of possible values for the input.
+          type: array
+          items:
+            type: string
+          example: []
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      title: MCPInput
+    MCPInputWithVariables:
+      allOf:
+        - $ref: '#/components/schemas/MCPInput'
+        - type: object
+          properties:
+            variables:
+              description: A map of variable names to their values.
+              type: object
+              default: null
+              additionalProperties:
+                $ref: '#/components/schemas/MCPInput'
+              nullable: true
+              x-speakeasy-param-computed: false
+      title: MCPInputWithVariables
+    MCPKeyValueInput:
+      allOf:
+        - $ref: '#/components/schemas/MCPInputWithVariables'
+        - type: object
+          required:
+            - name
+          properties:
+            name:
+              description: Name of the header or environment variable.
+              type: string
+              example: SOME_VARIABLE
+      title: MCPKeyValueInput
+    MCPStreamableHttpTransport:
+      type: object
+      properties:
+        type:
+          description: Transport type
+          type: string
+          example: streamable-http
+          enum:
+            - streamable-http
+        url:
+          description: URL template for the streamable-http transport.
+          type: string
+          example: 'https://api.example.com/mcp'
+          pattern: '^https?://[^\s]+$'
+        headers:
+          description: HTTP headers to include
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPKeyValueInput'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      example:
+        type: streamable-http
+        url: 'https://api.example.com/mcp'
+      required:
+        - type
+        - url
+      title: MCPStreamableHttpTransport
+    MCPSseTransport:
+      type: object
+      properties:
+        type:
+          description: Transport type
+          type: string
+          example: sse
+          enum:
+            - sse
+        url:
+          description: Server-Sent Events endpoint URL template.
+          type: string
+          example: 'https://mcp-fs.example.com/sse'
+          pattern: '^https?://[^\s]+$'
+        headers:
+          description: HTTP headers to include
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPKeyValueInput'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      example:
+        type: sse
+        url: 'https://mcp-fs.example.com/sse'
+      required:
+        - type
+        - url
+      title: MCPSseTransport
+    MCPRemoteTransport:
+      description: Transport protocol configuration for remote context
+      allOf:
+        - anyOf:
+            - $ref: '#/components/schemas/MCPStreamableHttpTransport'
+            - $ref: '#/components/schemas/MCPSseTransport'
+        - type: object
+          properties:
+            variables:
+              description: 'Configuration variables that can be referenced in URL template {curly_braces}.'
+              type: object
+              default: null
+              additionalProperties:
+                $ref: '#/components/schemas/MCPInput'
+              nullable: true
+              x-speakeasy-param-computed: false
+      title: MCPRemoteTransport
+    MCPStdioTransport:
+      type: object
+      properties:
+        type:
+          description: Transport type
+          type: string
+          example: stdio
+          enum:
+            - stdio
+      example:
+        type: stdio
+      required:
+        - type
+      title: MCPStdioTransport
+    MCPTransport:
+      description: Transport protocol configuration for local/package context
+      anyOf:
+        - $ref: '#/components/schemas/MCPStdioTransport'
+        - $ref: '#/components/schemas/MCPStreamableHttpTransport'
+        - $ref: '#/components/schemas/MCPSseTransport'
+      title: MCPTransport
+    MCPPositionalArgument:
+      description: A positional input is a value inserted verbatim into the command line.
+      example:
+        type: positional
+        value_hint: file_path
+      allOf:
+        - $ref: '#/components/schemas/MCPInputWithVariables'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              example: positional
+              enum:
+                - positional
+            value_hint:
+              description: An identifier for the positional argument.
+              type: string
+              example: file_path
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            is_repeated:
+              description: Whether the argument can be repeated multiple times.
+              type: boolean
+              default: false
+        - anyOf:
+            - type: object
+              required:
+                - value_hint
+            - type: object
+              required:
+                - value
+      title: MCPPositionalArgument
+    MCPNamedArgument:
+      description: 'A command-line `--flag={value}`.'
+      example:
+        type: named
+        name: '--port'
+      allOf:
+        - $ref: '#/components/schemas/MCPInputWithVariables'
+        - type: object
+          required:
+            - type
+            - name
+          properties:
+            type:
+              type: string
+              example: named
+              enum:
+                - named
+            name:
+              description: 'The flag name, including any leading dashes.'
+              type: string
+              example: '--port'
+            is_repeated:
+              description: Whether the argument can be repeated multiple times.
+              type: boolean
+              default: false
+      title: MCPNamedArgument
+    MCPArgument:
+      anyOf:
+        - $ref: '#/components/schemas/MCPPositionalArgument'
+        - $ref: '#/components/schemas/MCPNamedArgument'
+      title: MCPArgument
+    MCPPackage:
+      type: object
+      properties:
+        registry:
+          description: Package registry details
+          type: object
+          properties:
+            type:
+              description: 'Registry type indicating how to download packages (e.g., ''npm'', ''pypi'', ''oci'', ''nuget'', ''mcpb'')'
+              type: string
+              example: npm
+            base_url:
+              description: Base URL of the package registry
+              type: string
+              format: uri
+              example: 'https://registry.npmjs.org'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          required:
+            - type
+        identifier:
+          description: Package identifier — either a package name or URL
+          type: string
+          example: '@modelcontextprotocol/server-brave-search'
+        version:
+          description: Package version. Must be a specific version.
+          type: string
+          example: 1.0.2
+          default: null
+          minLength: 1
+          not:
+            enum:
+              - latest
+          nullable: true
+          x-speakeasy-param-computed: false
+        file_sha256:
+          description: SHA-256 hash of the package file for integrity verification.
+          type: string
+          example: fe333e598595000ae021bd27117db32ec69af6987f507ba7a63c90638ff633ce
+          default: null
+          nullable: true
+          pattern: '^[a-f0-9]{64}$'
+          x-speakeasy-param-computed: false
+        transport:
+          allOf:
+            - $ref: '#/components/schemas/MCPTransport'
+            - description: Transport protocol configuration for the package
+        runtime:
+          description: Runtime configuration for executing the package
+          type: object
+          default: null
+          nullable: true
+          properties:
+            hint:
+              description: A hint to help clients determine the appropriate runtime for the package.
+              type: string
+              example: npx
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            arguments:
+              description: A list of arguments to be passed to the package's runtime command.
+              type: array
+              items:
+                $ref: '#/components/schemas/MCPArgument'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+        package_arguments:
+          description: A list of arguments to be passed to the package's binary.
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPArgument'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        environment_variables:
+          description: Environment variables to be set when running the package.
+          type: array
+          items:
+            $ref: '#/components/schemas/MCPKeyValueInput'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      required:
+        - registry
+        - identifier
+        - transport
+      title: MCPPackage
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -78099,6 +79941,36 @@ components:
                 $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
             additionalProperties: false
             minProperties: 1
+    CreateCatalogMCPRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCatalogMCP'
+    ReplaceCatalogMCPRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceCatalogMCP'
+    CreateCatalogMCPVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCatalogMCPVersion'
+    ReplaceCatalogMCPVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceCatalogMCPVersion'
+    CreateCatalogMCPImplementationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCatalogMCPImplementation'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -79765,6 +81637,24 @@ components:
             required:
               - pats_enabled
               - max_expiration_period_days
+    CatalogMCPResponse:
+      description: Response schema for MCPs.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogMCP'
+    CatalogMCPVersionResponse:
+      description: Response schema for MCP versions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogMCPVersion'
+    CatalogMCPImplementationResponse:
+      description: Response schema for MCP implementations.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogMCPImplementation'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -80135,6 +82025,20 @@ tags:
     description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
   - name: Auth Server Scopes
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
+  - name: Catalog AI Models
+    description: Manage AI Models - a catalogable proxy for AI Gateway models
+  - name: Catalog AI Model Versions
+    description: Manage an AI Model's version.
+  - name: Catalog AI Model Specs
+    description: Manage an AI Model version's oas specification.
+  - name: Catalog AI Model Implementations
+    description: Link an AI Model to an AI Gateway model.
+  - name: Catalog MCPs
+    description: Manage MCPs - a catalogable proxy for AI Gateway MCPs
+  - name: Catalog MCP Versions
+    description: Manage an MCP's version.
+  - name: Catalog MCP Implementations
+    description: Link an MCP to an AI Gateway MCP.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
