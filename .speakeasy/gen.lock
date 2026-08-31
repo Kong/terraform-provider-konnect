@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 5c8e0e68b04aa2b228d47f8c34f4342c
+  docChecksum: f1d70e9edb7022265fe870448abe5425
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.22.0
   configChecksum: c84339f673b5d852241f4b48815b69cb
 persistentEdits:
-  generation_id: 102b38cd-7f33-4cc9-bd80-1942762f8979
-  pristine_commit_hash: 285217eb3a1ce4bc38466c988b8ae3ca240b3003
-  pristine_tree_hash: 20b67c8ad694a1e75c11945518b9934807cf94f4
+  generation_id: 3543bd51-b642-4f8a-8e35-f172699f8da5
+  pristine_commit_hash: ff84ef26b753d201efbeaae28048217ce68b1c6b
+  pristine_tree_hash: 406c7a52d101a5e684393c03f62ecc42de200591
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -95,6 +95,54 @@ trackedFiles:
     id: 954e955c0240
     last_write_checksum: sha1:4f9e1f8fb9218a3dc07ba852e55615e87c383429
     pristine_git_object: 325bb9038bdcb6c6acabea76fca870e04f47f5b3
+  examples/resources/konnect_ai_model/import-by-string-id.tf:
+    id: 80c4040ba1be
+    last_write_checksum: sha1:1ad316cc2000462fbdc28455ca84384e77cb040b
+    pristine_git_object: 4be36cd15b43d67862d188e96de9a4a502b5087b
+  examples/resources/konnect_ai_model/import.sh:
+    id: 408cebd244dd
+    last_write_checksum: sha1:7c2b5f323a1a11ebfeb3f8e651f164fa75a964c3
+    pristine_git_object: 49f7ac3e9dea118d78ea7a1053c71ca09c1167e5
+  examples/resources/konnect_ai_model/resource.tf:
+    id: 7a52ee7f2a22
+    last_write_checksum: sha1:c15186c3fa1a7e24e7f8841dbaa5bec2c7b4e41c
+    pristine_git_object: f901a72221d7cc3250a4b64be0b0e33fc3c04ba0
+  examples/resources/konnect_ai_model_implementation/import-by-string-id.tf:
+    id: 5cbbd9dfb048
+    last_write_checksum: sha1:9ccfd99d8e21b29477a7dd7fe54f91559643584d
+    pristine_git_object: badb4b1ef6b6c1d24aa061d01c9ae49222def31a
+  examples/resources/konnect_ai_model_implementation/import.sh:
+    id: 24d8e355ecfc
+    last_write_checksum: sha1:da3944bfae0f3525e924aa3276800ea79d6dd314
+    pristine_git_object: c1d6912dbfdb86f0658395ff0829ff56ef816103
+  examples/resources/konnect_ai_model_implementation/resource.tf:
+    id: 99fbb8444b54
+    last_write_checksum: sha1:e87c2efa34976238f7de30bbe33e711d9805d5b3
+    pristine_git_object: 7b380feadab614988809fcc3d3f456557f7dd0b0
+  examples/resources/konnect_ai_model_version/import-by-string-id.tf:
+    id: ffb6ece06ab2
+    last_write_checksum: sha1:40546d20d3d004b48dff241663be30214efe6129
+    pristine_git_object: 61a25a8a2e55fdeb16863516fe9d7abec06359ec
+  examples/resources/konnect_ai_model_version/import.sh:
+    id: 430be203fc55
+    last_write_checksum: sha1:ece6cdb32eebd172c4d1ac8eb7a63f1ee832e2cd
+    pristine_git_object: b8b44ae969ed90785e54292babf7a9911ee4b159
+  examples/resources/konnect_ai_model_version/resource.tf:
+    id: f36a8ffc49d8
+    last_write_checksum: sha1:9b7ee517095e17b34d0650b3c7524d93f277e435
+    pristine_git_object: 1ca99a9bbf9ee531194568183c0ee2001ab0c5ba
+  examples/resources/konnect_ai_model_version_spec/import-by-string-id.tf:
+    id: 7ee25ac6b816
+    last_write_checksum: sha1:33db7bf72c0f55f5fac67e659edd1cb268ac3016
+    pristine_git_object: 30d4ee66b78db660ea398a415ec0d220e995de39
+  examples/resources/konnect_ai_model_version_spec/import.sh:
+    id: c7604839cf4e
+    last_write_checksum: sha1:7b6436dd0e6b4a6aeffa2448bdb671cbb15efd79
+    pristine_git_object: e9fcc7eb3dedb93ae3f919acb325e575434d2de5
+  examples/resources/konnect_ai_model_version_spec/resource.tf:
+    id: 37d23b1556a3
+    last_write_checksum: sha1:20df651ede43c3c1251afe160eb9a426af4c0804
+    pristine_git_object: 6cf7380303abd0cc3faef81f61bbcc22466045cf
   examples/resources/konnect_api/import-by-string-id.tf:
     id: e25021eb02aa
     last_write_checksum: sha1:eebc7303e7bf3a0d24405c29160a914665d4cf17
@@ -247,6 +295,30 @@ trackedFiles:
     id: 91cdc17b079e
     last_write_checksum: sha1:a4b9c79e806c3f9120ef007cbccf838b325a96aa
     pristine_git_object: 350594937d79b959f893b699caef223f4a01bd77
+  examples/resources/konnect_catalog_mcp/import-by-string-id.tf:
+    id: b285307e0d32
+    last_write_checksum: sha1:5d7fe7b2aa97fb4f39c4ee465eb85237ecf79153
+    pristine_git_object: 615f29f10e48c6bd29c3220c078b75e1fc70971e
+  examples/resources/konnect_catalog_mcp/import.sh:
+    id: dbce0995e1c2
+    last_write_checksum: sha1:3ed243dcad4e055d4dabe23bc99dbf76199adab6
+    pristine_git_object: 7d76d24a9546886c11498ca2c09c6b2d771101a3
+  examples/resources/konnect_catalog_mcp/resource.tf:
+    id: b3d293a21531
+    last_write_checksum: sha1:24a8575b945d5bc199bfdc196df80e55da6c7eef
+    pristine_git_object: ff07bfd51d1871a02b8689e6087a1dd08310b406
+  examples/resources/konnect_catalog_mcp_implementation/import-by-string-id.tf:
+    id: 199c3771871f
+    last_write_checksum: sha1:e6728ceab1471f83ac491b94a8ae2b3daf7be399
+    pristine_git_object: 6d559cfda72b7b837551b8ddec33026ba857582f
+  examples/resources/konnect_catalog_mcp_implementation/import.sh:
+    id: 1c50e1ef3585
+    last_write_checksum: sha1:e96bcec25692c8d66b05834e4032da89c22be02f
+    pristine_git_object: f968ce742558119c33cd3778b136a8afffa2bba9
+  examples/resources/konnect_catalog_mcp_implementation/resource.tf:
+    id: fe38ea382628
+    last_write_checksum: sha1:003c8f2cb08813537184151f8fd16556ced378b3
+    pristine_git_object: a08c248ae18555a2dfeff67f2fc39a64ba0bba62
   examples/resources/konnect_catalog_service/import-by-string-id.tf:
     id: 610b8fc7cecf
     last_write_checksum: sha1:3331f7a7f8822698a3aec647f3ee3b2c81f991d8
@@ -2317,8 +2389,8 @@ trackedFiles:
     pristine_git_object: ec12bd23a469320465266989f34f178a5f620b80
   examples/resources/konnect_identity_auth_server_client/resource.tf:
     id: c5fb430c1583
-    last_write_checksum: sha1:a3783845c1bf18c74358c1d16b11faf824e012f8
-    pristine_git_object: ed6bec8dc6dfb48a48428f2d1b84411b79619abb
+    last_write_checksum: sha1:b7f024c6dce88a1a0127aa51b515710a349b92a4
+    pristine_git_object: 4c66ce8478c4664a8bec1b32a79ddc2db6969fb9
   examples/resources/konnect_identity_auth_server_client_secret/import-by-string-id.tf:
     id: bb96036ed750
     last_write_checksum: sha1:e5b1c24fcc227d7aa12cb9519c24cfa887183b4e
@@ -2907,6 +2979,38 @@ trackedFiles:
     id: ead742412d0f
     last_write_checksum: sha1:acc38ad698bf4fa8c51aa662076cf57b79024bd5
     pristine_git_object: 0ea64fbeb1fd7709d7241a8e06d34bfe9d0323d3
+  internal/provider/aimodel_resource.go:
+    id: e0e985eb504f
+    last_write_checksum: sha1:acef1339c06ecc10f788838abfd8b03c4c5083fc
+    pristine_git_object: cdf9e43ad619f2f769e3c64c1c2be70ff9cac49b
+  internal/provider/aimodel_resource_sdk.go:
+    id: bccd68fcb0ee
+    last_write_checksum: sha1:cff5acd21aaebb41acf16406c883146671fd3cae
+    pristine_git_object: 582b4142bc9723775106016b992056e00cb1ff6a
+  internal/provider/aimodelimplementation_resource.go:
+    id: 94aacae95807
+    last_write_checksum: sha1:2d45a5022f7c7cbc4f94c51a316c297b97fd513b
+    pristine_git_object: 7639408019563a7b7e8d45250ad17ca61444c62a
+  internal/provider/aimodelimplementation_resource_sdk.go:
+    id: 6cdb46f940e2
+    last_write_checksum: sha1:8139aff621ff50fe333366a969d6b3eae263c3e7
+    pristine_git_object: dc11c056dad58deeb97c4f33722e0d02ab3cb907
+  internal/provider/aimodelversion_resource.go:
+    id: 0c4926be5501
+    last_write_checksum: sha1:c20094e5a9a441172961bfee9b8358db9f2f08d1
+    pristine_git_object: 2c1f4c098d15bf66ce1b676d493050212980ad90
+  internal/provider/aimodelversion_resource_sdk.go:
+    id: 075bc34b3666
+    last_write_checksum: sha1:2972eeffee84c5502f46234066c642dcf2947a3d
+    pristine_git_object: f35edea87183ece08a7bcb994f2689de1d5197ba
+  internal/provider/aimodelversionspec_resource.go:
+    id: 32709c54381e
+    last_write_checksum: sha1:0e9903bf1cca13dc8f67aa72a0aa86f8ba535006
+    pristine_git_object: fcdda3c6e0557526d8b965f7b127854df38e2fa6
+  internal/provider/aimodelversionspec_resource_sdk.go:
+    id: 903d4e1adb4f
+    last_write_checksum: sha1:ddd958fb21f1c8d8228ee779a021658faef323f5
+    pristine_git_object: 3fe3ee94632dec2b30b015aba4ae9adb30054876
   internal/provider/api_resource.go:
     id: f96dc710e11a
     last_write_checksum: sha1:6cf63cb74a717dc24c791b4b3a786a1484833aa6
@@ -2965,12 +3069,12 @@ trackedFiles:
     pristine_git_object: bfaff527b1b837c2d6aab1548448f802d309ab05
   internal/provider/apipublication_resource.go:
     id: 9fb18a2621f9
-    last_write_checksum: sha1:e340210e0302355bb9f01bc662ff6c3f586c5313
-    pristine_git_object: 1c313cdf546888e30444f611d27433ee5a6fc18a
+    last_write_checksum: sha1:ed7a1700081e333edb07b77e81b03500875c8f7e
+    pristine_git_object: e273f46674b0c85d2450ac96289cba170ef8d813
   internal/provider/apipublication_resource_sdk.go:
     id: 41a3d21d2778
-    last_write_checksum: sha1:0cf69c02072db4d6f83dad508f6f5d509152afa3
-    pristine_git_object: a699b05f967f53c4156b6a2ccc96ff10c06c73d9
+    last_write_checksum: sha1:ccb068ee977453100036dc0d49a91fd7cb8a3308
+    pristine_git_object: 09bb07958ed07c71ab8e0f3d08fb2b416274830c
   internal/provider/apispecification_resource.go:
     id: 20d3ed08f1ce
     last_write_checksum: sha1:fd0087299e3bf560b6fda181f0603267fd0e801e
@@ -3019,6 +3123,22 @@ trackedFiles:
     id: 094261a584bd
     last_write_checksum: sha1:69727b5352d49ca66816878d673aca0dbc0d453e
     pristine_git_object: 15d572d5e1b128fc9682cbacdbe3ae7344acf01f
+  internal/provider/catalogmcp_resource.go:
+    id: 752ffb21a4df
+    last_write_checksum: sha1:06a84c8604e7f0f97c877865d809d7884a9a9221
+    pristine_git_object: d5537c5778462fba35296125e25742f057c77fa8
+  internal/provider/catalogmcp_resource_sdk.go:
+    id: 497dfcdd7bf1
+    last_write_checksum: sha1:72d719ae43616e3429321befea0da24b649198da
+    pristine_git_object: e8df2c1f247d68cec43dd0424b03e99e20000965
+  internal/provider/catalogmcpimplementation_resource.go:
+    id: 8dfc882e7508
+    last_write_checksum: sha1:cb0910a1c2540d05f2660505d0cd51735f1ed185
+    pristine_git_object: 380d5678aa87413e7f1b5a4d03c77a29706caa72
+  internal/provider/catalogmcpimplementation_resource_sdk.go:
+    id: ebb63dd70d42
+    last_write_checksum: sha1:e550810f5c2f867a6e7c41aed8ce216656f09e46
+    pristine_git_object: bd718f009fbfc630dbdd26184fb2efd590de39d0
   internal/provider/catalogservice_resource.go:
     id: 4ceecf80aecd
     last_write_checksum: sha1:a2c8eaf2833b941c201c892d9f838e8e12012de8
@@ -3985,8 +4105,8 @@ trackedFiles:
     pristine_git_object: c4dfe1e6ab888111ae797f597e9859bfa26c60ab
   internal/provider/gatewaypluginmeteringandbilling_resource_sdk.go:
     id: c0e94d7c8e91
-    last_write_checksum: sha1:b133455aff5c211e8ad9d3632a24f6ce8e7ee8e6
-    pristine_git_object: fd2908e96243beacf2b90bb1d1fc26e31ffff7bb
+    last_write_checksum: sha1:3ab19002a4a06969d44309386c2b7668f6e29cfb
+    pristine_git_object: 23e9f19769b6d9652a80bf1ee9d16c2c111adb3d
   internal/provider/gatewaypluginmocking_resource.go:
     id: 5d878ee138f1
     last_write_checksum: sha1:69d8f0133b90dda20fb44a8ccde5a3aa027200cc
@@ -4437,8 +4557,8 @@ trackedFiles:
     pristine_git_object: 400233e9ab3af40dbc42af00d38076637997e282
   internal/provider/identityauthserverclient_resource.go:
     id: 60a33c26672e
-    last_write_checksum: sha1:906cfdb42d524bc06246de9fa30c90f3e3dd9cee
-    pristine_git_object: 886c099cdff47c80c6019fcd02a48c005df14e61
+    last_write_checksum: sha1:8b623cb916434d4b28d840380e4a1e8eb2240485
+    pristine_git_object: 2500cd56649ff7ef0ab7f715d74f068920004cff
   internal/provider/identityauthserverclient_resource_sdk.go:
     id: 811cb5a3fc49
     last_write_checksum: sha1:a80f8652582879df488b28c9c1075c9ddab5c315
@@ -4505,8 +4625,8 @@ trackedFiles:
     pristine_git_object: 8a9ba33b36d0b56d73799408875a76d4aaa9d743
   internal/provider/meshcontrolplane_resource_sdk.go:
     id: 970bbda9c9f2
-    last_write_checksum: sha1:a2159e85ab714892a96d9114a92d0740890b09ce
-    pristine_git_object: 1d17c3c769687f177961acb2e66ce7ee0c6ca226
+    last_write_checksum: sha1:adbf442fd7687c7906b7c34e0334aff0c6749f1e
+    pristine_git_object: badd19f57e5569eca370969df6b8551b14c92c6e
   internal/provider/meshcontrolplanes_data_source.go:
     id: "787364299751"
     last_write_checksum: sha1:be819ce75e1660cb55bd28c3fda5689b8b82a93c
@@ -4709,8 +4829,8 @@ trackedFiles:
     pristine_git_object: 47ecfc7393d52fb98a5bac2c40c6c49e8d4b4d1e
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:8be60c67fb9a0eb7295350c7bf8080980eafd685
-    pristine_git_object: f55b9bd50f71d81602f6e5eb3b8fb100992827a3
+    last_write_checksum: sha1:307d04333e8dc7bd14250cf72b76615710f4ab02
+    pristine_git_object: 5341d6a49355c4ce944a2ac01859483ed2e10d28
   internal/provider/realm_resource.go:
     id: 288745fe66d4
     last_write_checksum: sha1:84cfafee418c410926378f7ecbd147dd45e933e8
@@ -5003,6 +5123,10 @@ trackedFiles:
     id: 536aaab4975a
     last_write_checksum: sha1:fec4e9b8b5a903cfd3fcd962c925077039345157
     pristine_git_object: f45104e8f805a11c43986bfb7018b0027e320c69
+  internal/provider/types/ai_model_version_spec_write_spec_provider.go:
+    id: bbe16dd3f903
+    last_write_checksum: sha1:9cb7a06d252fd8c83ff17e4f7a8a0b08ba6c2827
+    pristine_git_object: 4e432a02055b79111564e07a64dec3331da5cfae
   internal/provider/types/ai_prompt_compressor_plugin_config.go:
     id: e80a4de4568c
     last_write_checksum: sha1:62eefe535bfa7e5653d02e69efcec5889c6049c5
@@ -5367,6 +5491,18 @@ trackedFiles:
     id: 7b176679eb18
     last_write_checksum: sha1:657a00e32dd05d71e373dfebef1a23499be298d5
     pristine_git_object: 3bfac70dd4dfb50b3ba2515597be036ab245ba6d
+  internal/provider/types/catalog_mcp_gateway_implementation.go:
+    id: 2492ed1045e9
+    last_write_checksum: sha1:94cb81fa3dbf9f882e159fc4fb66b9ff708abd2d
+    pristine_git_object: 0999f5ae8ea36aab91c84c512816542f9517c9f4
+  internal/provider/types/catalog_mcp_gateway_implementation_block.go:
+    id: ab6579cd4725
+    last_write_checksum: sha1:ae5bdead0648611709dcde22e78dee05de2d3d94
+    pristine_git_object: 044c0dc59038b0ab910eca0fe21c155acb3031b5
+  internal/provider/types/catalog_mcp_gateway_implementation_config.go:
+    id: 3bd8f11a5a19
+    last_write_checksum: sha1:83a6ee906f9982abe9a7e2b81faedeca74e3482f
+    pristine_git_object: 9e5225ff14d4b547df8bae9c07c695a24487a041
   internal/provider/types/categories.go:
     id: 611f97f13c26
     last_write_checksum: sha1:9ed03de696a70281d190015682588685ff719e7c
@@ -5531,6 +5667,10 @@ trackedFiles:
     id: c133e5763764
     last_write_checksum: sha1:7f46f6c7bdb126c7da49ad185c137a1c0843f6f2
     pristine_git_object: 98f61053edefb944441429584638047e7135d6d3
+  internal/provider/types/create_catalog_mcp_gateway_implementation.go:
+    id: a1ec3f7523e0
+    last_write_checksum: sha1:47da7f6c476252be99f12b2bc56054dc98481aa3
+    pristine_git_object: 3215c764e77eda916be575f9fa94671c5408f1b7
   internal/provider/types/create_dcr_config_auth0_in_request.go:
     id: b056a62a1fd4
     last_write_checksum: sha1:5641fd8b146dd3f363974f32c71336e07944e49a
@@ -6743,6 +6883,10 @@ trackedFiles:
     id: e5c96ad82aa8
     last_write_checksum: sha1:ae4a6df4200fd1890f093359d9dc19eb29ecaa8c
     pristine_git_object: 6f2910458f54469e6f82fc3147a8731999d0a038
+  internal/provider/types/target_model.go:
+    id: 17b080eb1948
+    last_write_checksum: sha1:6253eb2473c17f33f8eb1780f820c6fb6dcf3679
+    pristine_git_object: fdf89f6434a06673c2403d778c42cee6f6c909c3
   internal/provider/types/tcp_log_plugin_config.go:
     id: 5a3e637663f4
     last_write_checksum: sha1:864f999fbda819c8eb1c8f2735d579f9f8455fb1
@@ -7107,6 +7251,34 @@ trackedFiles:
     id: 200ec4322d87
     last_write_checksum: sha1:fb0a4463cf4369c30bfe3c225553a2e0a45010fd
     pristine_git_object: 94889486dd4e83f28db1702ad96b3e163b92810d
+  internal/sdk/catalogaimodelimplementations.go:
+    id: 2485ef84dc16
+    last_write_checksum: sha1:1d495fd6bf655de0d94dc84558925322fba4079f
+    pristine_git_object: 8ec6a1e506f2e002d6c1b30ac6cf8ffa68f64606
+  internal/sdk/catalogaimodels.go:
+    id: 7c4f93640710
+    last_write_checksum: sha1:72d00dbed0fcba3fe4507fb01b24624dec8673d7
+    pristine_git_object: 5185a097ed735f9cc5f4837e2a2e3d50b2b4c2a3
+  internal/sdk/catalogaimodelspecs.go:
+    id: 7bcd0e7d6d6e
+    last_write_checksum: sha1:c4f377a4d726cb34284a7524b5e5af11449bb5ef
+    pristine_git_object: 079728bda432f48184379933df7c79b06b7ef391
+  internal/sdk/catalogaimodelversions.go:
+    id: bc840f74f32a
+    last_write_checksum: sha1:0eed47b0e2ef69139d735f6585c038dbe249405a
+    pristine_git_object: 6ce8c9bf3e26ec8f9d0f2552dca7fd17dcff1e69
+  internal/sdk/catalogmcpimplementations.go:
+    id: 283c25110066
+    last_write_checksum: sha1:95798ea4bd1e212a873c95b163bef0b40d31a771
+    pristine_git_object: 80b662f696f51b2027d03b07ce7377753a3d3424
+  internal/sdk/catalogmcps.go:
+    id: 9c1ac3b9af56
+    last_write_checksum: sha1:cc399ad0ceccdef9899f0bde56929c51dd8d9e9b
+    pristine_git_object: 8cc7bab19323f22ffe5c8ace5f720453d034831c
+  internal/sdk/catalogmcpversions.go:
+    id: a619cacfcb57
+    last_write_checksum: sha1:1b9e95458d93a71c5336bfa917d9403ca42fee6b
+    pristine_git_object: 74fab1f862d0dbc636b33f87f43da7e47260a663
   internal/sdk/catalogservices.go:
     id: 6d3a7c6d0e50
     last_write_checksum: sha1:7078007a13cd911a6f910577511d6969c03a56aa
@@ -7325,8 +7497,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:85990c57168f39ca2dc928bd03eea45a984c1a4f
-    pristine_git_object: bef60af9e2d7ab8dba61137a4dfd8d0f1d6e6829
+    last_write_checksum: sha1:de741e3c90227d9eca3777d859771394c012e958
+    pristine_git_object: a108f5dbfb20349e697f6e2385db16be37057bfd
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
@@ -7403,6 +7575,18 @@ trackedFiles:
     id: a11a0423909d
     last_write_checksum: sha1:1cb1a77cec35a93f543b371ac430b85bdefc8952
     pristine_git_object: dc6cede9b3411238a72d18f3d399a916e928da32
+  internal/sdk/models/operations/createaimodel.go:
+    id: 826c3c785b05
+    last_write_checksum: sha1:9c64174660154176fc9121855d53ce208476a4a4
+    pristine_git_object: 870e9c513b386479a87ed401458079a40e94404c
+  internal/sdk/models/operations/createaimodelimplementation.go:
+    id: 352a6f3afb91
+    last_write_checksum: sha1:fae1f08fe200c80ca6c6fa10af2f3fbc9be1f08a
+    pristine_git_object: cfd8d655a0b62021310970e45228b52385086deb
+  internal/sdk/models/operations/createaimodelversion.go:
+    id: ff962565ff30
+    last_write_checksum: sha1:e491ad9b8b0874d0824f9a318b89f3818154027b
+    pristine_git_object: 27952ad2d123e84c570b6603f03e66863586495c
   internal/sdk/models/operations/createaipromptcompressorplugin.go:
     id: e034879eabed
     last_write_checksum: sha1:5576883b7f8bdc8357c6a878237467720a9f4728
@@ -7871,6 +8055,14 @@ trackedFiles:
     id: 3a3df621ca63
     last_write_checksum: sha1:abd13c1572d38bffe251f5ebecf86c74c2b79669
     pristine_git_object: 68c5e2ea11d82362d7856884244aebf7ceba4148
+  internal/sdk/models/operations/createmcp.go:
+    id: 97ae4688dc78
+    last_write_checksum: sha1:9486ac6d3a25ebb62498c521d8d6837f0004cc07
+    pristine_git_object: b36b7ea91959b115919dd8bfc400b23464468a4a
+  internal/sdk/models/operations/createmcpimplementation.go:
+    id: 8f08f2a283b1
+    last_write_checksum: sha1:c0f99c93cfe62ecdcf3e33d6b6556055dfa049b9
+    pristine_git_object: 6b0334570f651e9e272dcd055eadac0ac06a3913
   internal/sdk/models/operations/createmeteringandbillingplugin.go:
     id: 39a1bb776856
     last_write_checksum: sha1:ed7e99883833dd8392d5aa1093cd41e527743b15
@@ -8223,6 +8415,18 @@ trackedFiles:
     id: c62829cda5d0
     last_write_checksum: sha1:179fa67fc580126edf83145ecbcb4b17fdcf894c
     pristine_git_object: 8694a071788e546e20730a2b5f3c7d6654e90a40
+  internal/sdk/models/operations/deleteaimodel.go:
+    id: 3c0e6e18556c
+    last_write_checksum: sha1:2f714fc4d9949d0ddc6d772a8e0c8a7046e3f207
+    pristine_git_object: bc96b1b4099eaa85b306730441987657d908b348
+  internal/sdk/models/operations/deleteaimodelimplementation.go:
+    id: b8aa11cd63f0
+    last_write_checksum: sha1:d40978b7fdb5ec50a00396fc8a3b1d7242b10b8a
+    pristine_git_object: ff6f0eedc0f13196b1eec13a0d69f01365953b90
+  internal/sdk/models/operations/deleteaimodelversionspec.go:
+    id: ad8b790a8ca8
+    last_write_checksum: sha1:64bf88631b351915167cd3b088af83e0a4e3ce5b
+    pristine_git_object: f3e85e1cd5ba97af73eb45633f022ae9370f16da
   internal/sdk/models/operations/deleteaipromptcompressorplugin.go:
     id: e9ae03cc5d2b
     last_write_checksum: sha1:3dc2b5f4cdd95d79ff9058f71306410859c9369f
@@ -8683,6 +8887,14 @@ trackedFiles:
     id: c84efa581ab1
     last_write_checksum: sha1:dc0faa6396349374164ccfca99a7a4a1d7509eda
     pristine_git_object: e7b9fc9272eb8f0ba55d788d6f7054c21bdbbd5b
+  internal/sdk/models/operations/deletelatestaimodelversion.go:
+    id: b3ce2b49bb2d
+    last_write_checksum: sha1:c31422f49f84de9589f88b0860baa4d3cbfccf1d
+    pristine_git_object: 53c1d428eda7ed11cc1af5a08338abc6826e4580
+  internal/sdk/models/operations/deletelatestmcpversion.go:
+    id: 5b4d7dfd110d
+    last_write_checksum: sha1:3435735ce88040b345a43a6dce8730b1d1a8d30f
+    pristine_git_object: 18df617c6c534644b516c2b3a796951f38345960
   internal/sdk/models/operations/deleteldapauthadvancedplugin.go:
     id: 1de4242d6df8
     last_write_checksum: sha1:6fda56921d9db146e7f5a08aeeb0162c9a005072
@@ -8695,6 +8907,14 @@ trackedFiles:
     id: c331a182f1cd
     last_write_checksum: sha1:a2ee5f75c4865c8f965a7e2afaadcad6fc2b92e8
     pristine_git_object: 8d3aeca8724618e460266d4e63be55dbd21f23d0
+  internal/sdk/models/operations/deletemcp.go:
+    id: 47d341d1967a
+    last_write_checksum: sha1:64b82a37aa015349383243e75f992d85a6265c7f
+    pristine_git_object: 8dfc2786bd5f487f866c89601bb096b32b558fe1
+  internal/sdk/models/operations/deletemcpimplementation.go:
+    id: cd06d8eddab8
+    last_write_checksum: sha1:99743b124d4fdb80efd27b749279077262d54832
+    pristine_git_object: 2f7f4018cda875f33c2267cd078e1a54053ce143
   internal/sdk/models/operations/deletemeshcontrolplane.go:
     id: 961da2809d91
     last_write_checksum: sha1:ec0e77412ee907b992d7549c149f4d479f2aad86
@@ -9115,6 +9335,18 @@ trackedFiles:
     id: db801d129021
     last_write_checksum: sha1:b94971096830ae8ca2c60d678e620c65fb86e8cb
     pristine_git_object: 9ccc94d64d6940337efe608a463062171468dfd5
+  internal/sdk/models/operations/getaimodel.go:
+    id: 360ea455fb8f
+    last_write_checksum: sha1:e077b9b6a7a9057fb60d07c0172664669562ffc9
+    pristine_git_object: 35867b37fb806517bd44fc47924f4f9b953d221d
+  internal/sdk/models/operations/getaimodelimplementation.go:
+    id: e3e80fbf21db
+    last_write_checksum: sha1:babba7a8ff02c76b8179a5a266ced2a49a5f9289
+    pristine_git_object: baf1ba0948c5cc09946d2910d373d6ff5f701214
+  internal/sdk/models/operations/getaimodelversionspec.go:
+    id: fc63bf61facf
+    last_write_checksum: sha1:940b309aad27ea6cc237847866d9c6e4fe80b807
+    pristine_git_object: 6eaadfcdc95bc9d55643afeb9b0eac4dfa8625b9
   internal/sdk/models/operations/getaipromptcompressorplugin.go:
     id: 599858ac9d17
     last_write_checksum: sha1:0416f2ca9d80224d0db6ce9b85f2c3185c9d5918
@@ -9559,6 +9791,10 @@ trackedFiles:
     id: b8c1f2a51567
     last_write_checksum: sha1:a8d5740c6b216402da4bc5f525abab9cf1d648ee
     pristine_git_object: e273d64e32f16f40adcb24c5d009b245ba3a1c7d
+  internal/sdk/models/operations/getlatestaimodelversion.go:
+    id: 9f0502af47d0
+    last_write_checksum: sha1:0696e43104f9273f71477219d842100e74d9ed6d
+    pristine_git_object: c9f585a613456951201686d0adbf85b92ca0c1dd
   internal/sdk/models/operations/getldapauthadvancedplugin.go:
     id: 9acf49c1aed4
     last_write_checksum: sha1:c652c55bf05cf730386ff7855e3453e7143d7b22
@@ -9571,6 +9807,14 @@ trackedFiles:
     id: f5f22c3aca39
     last_write_checksum: sha1:1cabeb91b9999ab6e606c9d185206eea4f4d822b
     pristine_git_object: 60d9f1fa04159b1ce2791c50239ace03e2aae43a
+  internal/sdk/models/operations/getmcp.go:
+    id: 162e2850871e
+    last_write_checksum: sha1:29b8d3f7b2aa7c543ea1295b2660b79f5cfbf203
+    pristine_git_object: 5a3db87317f8fb5d50c73527b44fa98f4b0a31bd
+  internal/sdk/models/operations/getmcpimplementation.go:
+    id: 141af716d3db
+    last_write_checksum: sha1:e119b575f3fea486498db63d9a9c2d48ae898f12
+    pristine_git_object: 3d2a15793e26f8cc1b85fe469ba4fcc197238695
   internal/sdk/models/operations/getmeshcontrolplane.go:
     id: 31cd40b27507
     last_write_checksum: sha1:a4fa6e7fe9a2526997cffd4c1a12dd1d6e6f3843
@@ -10759,6 +11003,14 @@ trackedFiles:
     id: 8372b7904f8c
     last_write_checksum: sha1:798e816ac8f0ec7ec2170975bb221f6ffbf92085
     pristine_git_object: 682bfe127d20e84d9422be6d629800ad57431081
+  internal/sdk/models/operations/upsertaimodel.go:
+    id: 45080cd2ff81
+    last_write_checksum: sha1:be126d901cf2e08a47f9e4e6fe53eada44716434
+    pristine_git_object: 4802c585181c0ff20d759fd5fd79badfc5227e63
+  internal/sdk/models/operations/upsertaimodelversionspec.go:
+    id: 94a5e43beed8
+    last_write_checksum: sha1:b270b40a946538f7e5b705bda1a6c37e0af9c912
+    pristine_git_object: 3e74c6a8bb31b368a5c6ef92b4da6ed0b6271411
   internal/sdk/models/operations/upsertcacertificate.go:
     id: 874fb6ae7b59
     last_write_checksum: sha1:527924a84f5e25b64323b247b222a5d8ff747dff
@@ -10795,6 +11047,14 @@ trackedFiles:
     id: 9b3f3d36117d
     last_write_checksum: sha1:16a0d7b9ad76a73170400641aa84f9fec49cb5eb
     pristine_git_object: d213ab0687df3c7ff557fb4a0cbb0710d48c9739
+  internal/sdk/models/operations/upsertlatestaimodelversion.go:
+    id: b0e95cdf1738
+    last_write_checksum: sha1:a9b14aeeea19ae4a8bba08939abc57f739e1c0b6
+    pristine_git_object: 82ba57c12ea59c9e2b31ef1ee99bbf05b5a58633
+  internal/sdk/models/operations/upsertmcp.go:
+    id: 9afe5ccee430
+    last_write_checksum: sha1:32dc7f2bd7749f5097a78d31f615d0182e5b6927
+    pristine_git_object: 5ea3c4994bd5e643c004ca78f20763c11a3bc3b5
   internal/sdk/models/operations/upsertpartial.go:
     id: 14afe9403226
     last_write_checksum: sha1:42d629e51069e5a40c675d7967f64cd40b34118c
@@ -10915,6 +11175,42 @@ trackedFiles:
     id: 86c0906cba8d
     last_write_checksum: sha1:7ba669047d5f0f40268206500eabae9430503869
     pristine_git_object: ec1edf57c33cc4643c38b9118f2a48baa579ac90
+  internal/sdk/models/shared/aimodel.go:
+    id: 381848cc1205
+    last_write_checksum: sha1:2e38ba7e7853b30995189cb48a2656d0a1a784c5
+    pristine_git_object: c4a9d5a08f51003fc851905fd9fa2217f111ae30
+  internal/sdk/models/shared/aimodelcreate.go:
+    id: 6719974c22ac
+    last_write_checksum: sha1:6e75dd3793923ebffc5b60496f35f16db93c9aa0
+    pristine_git_object: 4c94c412eef27f59494e46205135c08522b28078
+  internal/sdk/models/shared/aimodelimplementation.go:
+    id: d2b5e79dbd14
+    last_write_checksum: sha1:fdf49408a38499706eda7e9ad2b902880e826b95
+    pristine_git_object: 4ffd8da23456d884943d2fb0e8651f380497b12f
+  internal/sdk/models/shared/aimodelimplementationcreate.go:
+    id: 3744a6466ac8
+    last_write_checksum: sha1:93bc3db028ce9778aa4b536a0cf27cb254b86db7
+    pristine_git_object: 5d41f73cab8acd6a48888cb314a9d96c91cef7f5
+  internal/sdk/models/shared/aimodelreplace.go:
+    id: 191e97683cd3
+    last_write_checksum: sha1:ce02f2251a6c52e3ae7c98e89adb3213933dc582
+    pristine_git_object: 398a2435fa61c8f083f803a820d02b3b3a98728e
+  internal/sdk/models/shared/aimodelversion.go:
+    id: ff7c318dcb3a
+    last_write_checksum: sha1:f6e812e5ff163e46323148b1333230672a22dd66
+    pristine_git_object: 2d17c7df92487dda136f37a5871db5bdb5a0331f
+  internal/sdk/models/shared/aimodelversioncreate.go:
+    id: 80068abed171
+    last_write_checksum: sha1:050bfeb47b4869592d7241a552fb8c786e405a47
+    pristine_git_object: edebcb60a355a7d879284ca44b871d6bb9bc82c5
+  internal/sdk/models/shared/aimodelversionspec.go:
+    id: 98f1b69a058b
+    last_write_checksum: sha1:4a2b8b03d4a253aa507803c8b473ba54998deafc
+    pristine_git_object: 71af2efb2a2e56a18a35ce1360cc4a7c4ee34624
+  internal/sdk/models/shared/aimodelversionspecwrite.go:
+    id: 2041ba9b3ecc
+    last_write_checksum: sha1:b00199c9392d701706f222e9059a253d35dd78df
+    pristine_git_object: 553b4e3f41d77badfc569146d378f5dc0be2638b
   internal/sdk/models/shared/aipromptcompressorplugin.go:
     id: e399d86d982c
     last_write_checksum: sha1:0866f24e04f288854d7c0eb92e1995e6ba5214c0
@@ -11049,16 +11345,16 @@ trackedFiles:
     pristine_git_object: 77258b8a2b45a13f7bc4d65947b9f0e7322f69b4
   internal/sdk/models/shared/apipublication.go:
     id: 954100bd09a0
-    last_write_checksum: sha1:94b288a391a10f9323d161de1bf6ffd035bba1d2
-    pristine_git_object: 96d860d2a933f2a33129aa8f273984cafe346b1d
+    last_write_checksum: sha1:e9a6a45de68497a4328c21e9b0a8962ff8a8eb3d
+    pristine_git_object: aeeb982242e765ae06426e7e9291c80a26308b07
   internal/sdk/models/shared/apipublicationresponse.go:
     id: beca9eedcc05
-    last_write_checksum: sha1:e235577bfb5deb1d4f5f84f3d41789ccbf813621
-    pristine_git_object: 7b169d6f9b780ea566825a92737a2c4d417045c6
+    last_write_checksum: sha1:1c4e7e7ad6ae50a3821c72e99ed8d103606f07a3
+    pristine_git_object: 532c2f7bdf5af3f3b81a50c3b8fefaeab9f333ed
   internal/sdk/models/shared/apipublicationvisibility.go:
     id: ee9c11ed30be
-    last_write_checksum: sha1:dc3fbaead463deb7bc12921addabdeac0974d398
-    pristine_git_object: 793989c197a24bad0bf575cf380532f954008137
+    last_write_checksum: sha1:8f0107db23e19c35644ad3d80af46a5388637ffd
+    pristine_git_object: 605a112d796982088c62c0e00e6ee8960cc33d79
   internal/sdk/models/shared/apiresponseschema.go:
     id: fbb93a7a6763
     last_write_checksum: sha1:af709f094fabd6d9fb7238571c19075059b2eb75
@@ -11363,6 +11659,26 @@ trackedFiles:
     id: 2cafefdb5de5
     last_write_checksum: sha1:ddf2d58dff0782e64e586f8582868447d22794ad
     pristine_git_object: 0d1f1094eb9aed4131cbfe497d731aa2ff3c22ae
+  internal/sdk/models/shared/catalogmcp.go:
+    id: ee326af56d45
+    last_write_checksum: sha1:d80ac872b496cdb494a4abaa86a3084880a6fddf
+    pristine_git_object: 6fb37dc0d2b4e13bc224de375687c57049e4e203
+  internal/sdk/models/shared/catalogmcpgatewayimplementation.go:
+    id: 2261f20e6e61
+    last_write_checksum: sha1:8c7cece563a255b0e64169f8783eab55ae4ba3c9
+    pristine_git_object: ea5c104c350d5db6bd417a15bb3ecbbe9e201427
+  internal/sdk/models/shared/catalogmcpgatewayimplementationblock.go:
+    id: ba1c303710b2
+    last_write_checksum: sha1:59d552637a31e88888795cb52f49451effda8704
+    pristine_git_object: dd4382045168127d5eb2feef5a017f32a91243bb
+  internal/sdk/models/shared/catalogmcpgatewayimplementationconfig.go:
+    id: accecc622912
+    last_write_checksum: sha1:bd1fa2cf29d02d461ebeaa2cbef1896e9107a60a
+    pristine_git_object: c9f666f00b7d7b8b3915b8f4a77419219f338250
+  internal/sdk/models/shared/catalogmcpimplementation.go:
+    id: cace4d486be0
+    last_write_checksum: sha1:1adb1818af7c146b145217ef03ff3436df55b2e9
+    pristine_git_object: 7e9c9c4d7e5c86b18cfa9fb0099654244c3a26d7
   internal/sdk/models/shared/catalogservice.go:
     id: 8c5f5397fd50
     last_write_checksum: sha1:01bf4b99ef4bb71ae05595bca39eff3074c18e86
@@ -11623,6 +11939,18 @@ trackedFiles:
     id: 2ddf802cbb5d
     last_write_checksum: sha1:a835b1a0d019921cbd754df57e0e76a46d82f2e3
     pristine_git_object: 2e5d810d1e30a759389dc7f952c8e1a41f66d032
+  internal/sdk/models/shared/createcatalogmcp.go:
+    id: dfab6a72478e
+    last_write_checksum: sha1:5758aa5186dcfe52ca8314fd474b05f438b2fad4
+    pristine_git_object: 29d1fb981bc8e2898f3990813210cf9747579822
+  internal/sdk/models/shared/createcatalogmcpgatewayimplementation.go:
+    id: c62193078932
+    last_write_checksum: sha1:86e0459292101648e874d13f84f3e04f366bced8
+    pristine_git_object: 20357077c5c4ca314fb26b9d6e92c23ca9891e52
+  internal/sdk/models/shared/createcatalogmcpimplementation.go:
+    id: 4b031b4c27a3
+    last_write_checksum: sha1:ee88e84adeef7412f1a90991a649d4d7ab2320ff
+    pristine_git_object: 3f1efce9800d76274f44e4ef2d00a33086b30825
   internal/sdk/models/shared/createcatalogservice.go:
     id: e689c238a7b8
     last_write_checksum: sha1:201b0c08be0ef7abf6b239d0489fc50660801418
@@ -12213,8 +12541,8 @@ trackedFiles:
     pristine_git_object: e6dacb9c047535922fd0b7d9c91df0c68627c091
   internal/sdk/models/shared/granttype.go:
     id: 18782ffd03f6
-    last_write_checksum: sha1:1404a3a41fefd7c00f1dd0ca33e4d938a9718c01
-    pristine_git_object: 9bd5cc3274c59f1631f52c0d02100c60c0e91550
+    last_write_checksum: sha1:7c547b3b646f61f596b68009a5447d1e78736edb
+    pristine_git_object: ed30631dc0a655facebb05e93a3eb52741621406
   internal/sdk/models/shared/graphqlcostdecoration.go:
     id: 053d53eefd26
     last_write_checksum: sha1:dfd8bd47582fcc9910d122c5d1c0d2fa31f48414
@@ -12497,8 +12825,8 @@ trackedFiles:
     pristine_git_object: b2f93ad2c66835c85abb1129a4657feb5e114f19
   internal/sdk/models/shared/meshcontrolplanefeature.go:
     id: a2046333d0ba
-    last_write_checksum: sha1:edc38d010cd9fb03c513c4be0acf8be40e94cf22
-    pristine_git_object: 495f950e8b3d6d76428f77252e7d761a280881ac
+    last_write_checksum: sha1:4f200ee9902036ac936d34d6368d786d4147516f
+    pristine_git_object: 64d2310c8ecca397e3b9e3d528aecca1f1d6aaf6
   internal/sdk/models/shared/meshcontrolplanefeaturehostnamegenerationcreation.go:
     id: 5ca967ace0ff
     last_write_checksum: sha1:032b017ebd8eef2779850a251781d8d968cbaf9e
@@ -12513,8 +12841,8 @@ trackedFiles:
     pristine_git_object: 6b891bcad26a0e4b692ccc2632e9c165ae8e60fe
   internal/sdk/models/shared/meteringandbillingplugin.go:
     id: 76ace7edd934
-    last_write_checksum: sha1:1d4df25eb1075e7a8fe4242bebb2593d40fb9c30
-    pristine_git_object: c50fc731a0368aa0a95e9ce8e5d80b351df705ee
+    last_write_checksum: sha1:bdc51948394a3d0386b228bc68f5995e6d908bb2
+    pristine_git_object: f8ffbe56a9f41909600c92100f53fff7e51b306d
   internal/sdk/models/shared/missingpermission.go:
     id: 350b016e0186
     last_write_checksum: sha1:c744a88ddb24f7ce2943585073b71ee337473ad2
@@ -13083,6 +13411,10 @@ trackedFiles:
     id: 28dabbb6ef44
     last_write_checksum: sha1:2e1b897c39f36ec0e3ad2a777fee5a2772b10f3c
     pristine_git_object: 7305709dffa846e259cd4eb8033ca73c33c5ab37
+  internal/sdk/models/shared/targetmodel.go:
+    id: c9fb3ee91554
+    last_write_checksum: sha1:8c76209cbcd22f1ef163590f0613e58d144ab762
+    pristine_git_object: e5084f9bf3d32d8de5d24cdf43534de99fadfdcf
   internal/sdk/models/shared/targetwithoutparents.go:
     id: 65a597c6371a
     last_write_checksum: sha1:dccef14122d8d1874aec5a7c92471f54aac1b227
@@ -13137,8 +13469,8 @@ trackedFiles:
     pristine_git_object: d9807ec9fd974a2b809006c6b8183f9b83ee47a9
   internal/sdk/models/shared/tokenendpointauthmethod.go:
     id: 36426c18ae27
-    last_write_checksum: sha1:254071b7e485b12fa5596604f40cfafb2cce45f1
-    pristine_git_object: e321edf9125ae87a7df6ac8655af2e5d86095a00
+    last_write_checksum: sha1:ab98396ca9b8538553e7eb3fc902f66e304aecec
+    pristine_git_object: 8b16485104b3219adc04735e6f03dbea72572c06
   internal/sdk/models/shared/transitgatewaydnsconfig.go:
     id: 7aa6b437b749
     last_write_checksum: sha1:41c6941fd7ad9173c482f6d382d6e54a6a16865f
@@ -25496,7 +25828,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"auth_strategy_ids": null, "visibility": "private"}
+        application/json: {"auth_strategy_ids": null}
       responses:
         "200":
           application/json: {"auth_strategy_ids": null, "visibility": "private", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -29020,6 +29352,396 @@ examples:
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Deondre.Walter", "strategy_type": "openid_connect", "configs": {"openid-connect": {"issuer": "https://tedious-tinderbox.org/", "credential_claim": ["<value 1>", "<value 2>", "<value 3>"], "scopes": [], "auth_methods": []}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "curity"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "dcr_provider_id": null}
         "400":
           application/problem+json: {"status": 566206, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-ai-model:
+    speakeasy-default-create-ai-model:
+      requestBody:
+        application/json: {"name": "my-ai-model", "display_name": "My AI Model", "description": "Customer support triage model", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "123e4567-e89b-12d3-a456-426614174000", "name": "my-ai-model", "display_name": "My AI Model", "description": "Customer support triage model", "labels": {"env": "test"}, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 879246, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-ai-model:
+    speakeasy-default-get-ai-model:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "200":
+          application/json: {"id": "123e4567-e89b-12d3-a456-426614174000", "name": "my-ai-model", "display_name": "My AI Model", "description": "Customer support triage model", "labels": {"env": "test"}, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  upsert-ai-model:
+    speakeasy-default-upsert-ai-model:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      requestBody:
+        application/json: {"name": "my-ai-model", "display_name": "My AI Model", "description": "Customer support triage model", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "123e4567-e89b-12d3-a456-426614174000", "name": "my-ai-model", "display_name": "My AI Model", "description": "Customer support triage model", "labels": {"env": "test"}, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 90150, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  delete-ai-model:
+    speakeasy-default-delete-ai-model:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-ai-model-implementation:
+    speakeasy-default-create-ai-model-implementation:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      requestBody:
+        application/json: {"gateway_control_plane_id": "223e4567-e89b-12d3-a456-426614174999", "gateway_model_id": "gw-model-abc"}
+      responses:
+        "201":
+          application/json: {"id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a", "ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "gateway_control_plane_id": "223e4567-e89b-12d3-a456-426614174999", "gateway_model_id": "gw-model-abc", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 357218, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-ai-model-implementation:
+    speakeasy-default-get-ai-model-implementation:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+          implementationId: "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"
+      responses:
+        "200":
+          application/json: {"id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a", "ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "gateway_control_plane_id": "223e4567-e89b-12d3-a456-426614174999", "gateway_model_id": "gw-model-abc", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-ai-model-implementation:
+    speakeasy-default-delete-ai-model-implementation:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+          implementationId: "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-ai-model-version:
+    speakeasy-default-create-ai-model-version:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      requestBody:
+        application/json: {"version": "1.0.0", "target_models": []}
+      responses:
+        "201":
+          application/json: {"id": "9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8", "ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "version": "1.0.0", "target_models": [{"provider": "openai", "name": "gpt-4o"}], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 420195, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-latest-ai-model-version:
+    speakeasy-default-get-latest-ai-model-version:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "200":
+          application/json: {"id": "9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8", "ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "version": "1.0.0", "target_models": [{"provider": "openai", "name": "gpt-4o"}], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  upsert-latest-ai-model-version:
+    speakeasy-default-upsert-latest-ai-model-version:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      requestBody:
+        application/json: {"version": "1.0.0", "target_models": []}
+      responses:
+        "200":
+          application/json: {"id": "9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8", "ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "version": "1.0.0", "target_models": [], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 696596, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-latest-ai-model-version:
+    speakeasy-default-delete-latest-ai-model-version:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-ai-model-version-spec:
+    speakeasy-default-get-ai-model-version-spec:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "200":
+          application/json: {"spec_content": "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"My AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}", "spec_type": "oas", "spec_provider": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  upsert-ai-model-version-spec:
+    speakeasy-default-upsert-ai-model-version-spec:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      requestBody:
+        application/json: {"spec_content": "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"My AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}", "spec_provider": null}
+      responses:
+        "200":
+          application/json: {"spec_content": "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"My AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}", "spec_type": "oas", "spec_provider": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 900982, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-ai-model-version-spec:
+    speakeasy-default-delete-ai-model-version-spec:
+      parameters:
+        path:
+          aiModelId: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-mcp:
+    speakeasy-default-create-mcp:
+      requestBody:
+        application/json: {"name": "my-mcp", "display_name": "My MCP", "description": "Customer support triage model", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "7703e2f2-f9c0-47e3-9146-5fa50486b871", "name": "my-mcp", "display_name": "My MCP", "description": "Description of MCP.", "labels": {"env": "test"}, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 139984, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-mcp:
+    speakeasy-default-get-mcp:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      responses:
+        "200":
+          application/json: {"id": "7703e2f2-f9c0-47e3-9146-5fa50486b871", "name": "my-mcp", "display_name": "My MCP", "description": "Description of MCP.", "labels": {"env": "test"}, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  upsert-mcp:
+    speakeasy-default-upsert-mcp:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      requestBody:
+        application/json: {"name": "my-mcp", "display_name": "My MCP", "description": "Customer support triage model", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "7703e2f2-f9c0-47e3-9146-5fa50486b871", "name": "my-mcp", "display_name": "My MCP", "description": "Description of MCP.", "labels": {"env": "test"}, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 390570, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  delete-mcp:
+    speakeasy-default-delete-mcp:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-mcp-implementation:
+    speakeasy-default-create-mcp-implementation:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      requestBody:
+        application/json: {"implementation": {"type": "ai-gateway", "config": {"gateway_control_plane_id": "223e4567-e89b-12d3-a456-426614174999", "gateway_mcp_server_id": "79087145-0159-4811-9042-6a9365f234bc"}}}
+      responses:
+        "201":
+          application/json: {"id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "implementation": {"type": "ai-gateway", "config": {"gateway_control_plane_id": "223e4567-e89b-12d3-a456-426614174999", "gateway_mcp_server_id": "79087145-0159-4811-9042-6a9365f234bc"}}}
+        "400":
+          application/problem+json: {"status": 770173, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-mcp-implementation:
+    speakeasy-default-get-mcp-implementation:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+          implementationId: "7703e2f2-f9c0-47e3-9146-5fa50486b871"
+      responses:
+        "200":
+          application/json: {"id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "implementation": {"type": "ai-gateway", "config": {"gateway_control_plane_id": "223e4567-e89b-12d3-a456-426614174999", "gateway_mcp_server_id": "79087145-0159-4811-9042-6a9365f234bc"}}}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-mcp-implementation:
+    speakeasy-default-delete-mcp-implementation:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+          implementationId: "7703e2f2-f9c0-47e3-9146-5fa50486b871"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-latest-mcp-version:
+    speakeasy-default-delete-latest-mcp-version:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-mcp-version:
+    speakeasy-default-create-mcp-version:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      requestBody:
+        application/json: {"version": "1.0.0", "tools": null, "resources": null, "prompts": null, "remotes": null, "packages": null}
+      responses:
+        "201":
+          application/json: {"id": "9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8", "version": "1.0.0", "tools": null, "resources": null, "prompts": null, "remotes": null, "packages": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 519853, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-latest-mcp-version:
+    speakeasy-default-get-latest-mcp-version:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      responses:
+        "200":
+          application/json: {"id": "9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8", "version": "1.0.0", "tools": null, "resources": null, "prompts": null, "remotes": null, "packages": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  upsert-latest-mcp-version:
+    speakeasy-default-upsert-latest-mcp-version:
+      parameters:
+        path:
+          mcpId: "a0119846-f179-4d9f-a168-d701facce7fb"
+      requestBody:
+        application/json: {"version": "1.0.0", "tools": null, "resources": null, "prompts": null, "remotes": null, "packages": null}
+      responses:
+        "200":
+          application/json: {"id": "9c4a1b2c-3d4e-5f60-7182-93a4b5c6d7e8", "version": "1.0.0", "tools": null, "resources": null, "prompts": null, "remotes": null, "packages": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 40728, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
