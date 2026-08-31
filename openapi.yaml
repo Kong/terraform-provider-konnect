@@ -18457,6 +18457,150 @@ paths:
         schema:
           type: string
       - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/workspaces':
+    parameters:
+      - name: controlPlaneId
+        in: path
+        description: ID of a control plane
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayWorkspace#create
+        terraform-datasource: null
+      operationId: create-workspace
+      summary: Create a Workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkspaceRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateWorkspaceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+      tags:
+        - Workspaces
+  '/v2/control-planes/{controlPlaneId}/core-entities/workspaces/{workspaceIdOrName}':
+    parameters:
+      - name: controlPlaneId
+        in: path
+        description: ID of a control plane
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workspaceIdOrName
+        in: path
+        description: ID or name of the workspace to retreive
+        required: true
+        schema:
+          type: string
+          example: 2747d1e5-8246-4f65-a939-b392f1ee17f8
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayWorkspace#read
+        terraform-datasource: null
+      operationId: get-workspace
+      summary: Get a Workspace
+      description: Get a Workspace using ID or name.
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveWorkspaceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Workspaces
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayWorkspace#delete
+        terraform-datasource: null
+      operationId: delete-workspace
+      summary: Delete a Workspace
+      description: Delete an individual workspace.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Workspaces
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayWorkspace#update
+        terraform-datasource: null
+      operationId: upsert-workspace
+      summary: Upsert a Workspace
+      description: Create or Update Workspace using ID or name.
+      requestBody:
+        description: Description of the Workspace
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workspace'
+      responses:
+        '200':
+          description: Successfully upserted Workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Workspaces
   '/v2/control-planes/{controlPlaneId}/dp-client-certificates':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -23056,6 +23200,62 @@ components:
           $ref: '#/components/schemas/BooleanFieldFilter'
       additionalProperties: false
       title: ControlPlaneFilterParameters
+    Workspace:
+      x-speakeasy-entity: GatewayWorkspace
+      description: Workspaces provide a way to segment Kong entities.
+      type: object
+      properties:
+        id:
+          description: The unique UUID for this resource.
+          type: string
+        name:
+          type: string
+        comment:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - name
+    CreateWorkspaceRequest:
+      description: The request schema for the create a workspace request.
+      type: object
+      properties:
+        name:
+          description: The name of the workspace.
+          type: string
+          example: team-1
+        comment:
+          description: The description of the workspace.
+          type: string
+          example: A test workspace for team 1
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        description:
+          description: The description of the workspace.
+          type: string
+          example: A test workspace for team 1
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+      title: CreateWorkspaceRequest
     BooleanFieldFilter:
       description: Filter by a boolean value (true/false).
       type: boolean
@@ -23099,6 +23299,21 @@ components:
         - page
       title: PaginatedMeta
       x-speakeasy-terraform-ignore: true
+    ManagedBy:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 5
+      title: ManagedBy
     BaseError:
       description: standard error
       type: object
@@ -23448,6 +23663,21 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Not found
+    NotImplementedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 501
+            title:
+              example: Not Implemented
+            type:
+              example: 'https://httpstatuses.com/501'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not Implemented
     CreatedAt:
       description: An ISO-8601 timestamp representation of entity creation date.
       type: string
@@ -79307,6 +79537,18 @@ components:
               - title
               - instance
             title: ServiceUnavailableError
+    CreateWorkspaceResponse:
+      description: A response to creating a workspace.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Workspace'
+    RetrieveWorkspaceResponse:
+      description: A response to retrieving a single workspace.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Workspace'
     Internal:
       description: Internal
       content:
@@ -79369,6 +79611,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
+    NotImplemented:
+      description: Not Implemented
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotImplementedError'
     NotAvailable:
       description: Service not available
       content:
