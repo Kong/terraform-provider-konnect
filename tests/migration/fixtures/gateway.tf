@@ -240,3 +240,193 @@ resource "konnect_gateway_vault" "my_vault" {
   })
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
+
+# ---------------------------------------------------------------------------
+# Structural coverage.
+#
+# Everything above exercises flat strings, numbers and shallow objects. The
+# upgrader round-trips state through map[string]any, so the shapes that can
+# actually break are the awkward ones: multi-line strings, deeply nested
+# objects, lists of numbers, and JSON embedded in a string attribute. The
+# resources below exist to put those shapes in a real state file.
+#
+# All of them are supported by the baseline provider - nothing here may use
+# post-migration syntax.
+# ---------------------------------------------------------------------------
+
+# PEM bodies are multi-line strings. If newline handling regressed anywhere in
+# the JSON round-trip, this is where it surfaces as a diff.
+resource "konnect_gateway_certificate" "migration_cert" {
+  cert = <<EOF
+-----BEGIN CERTIFICATE-----
+MIIBxjCCAUygAwIBAgIUX9TaLbWF76yQc8IGR+YRbeiDlHkwCgYIKoZIzj0EAwIw
+GjEYMBYGA1UEAwwPa29uZ19jbHVzdGVyaW5nMB4XDTI0MDMwMTE0MzkxNloXDTI3
+MDMwMTE0MzkxNlowGjEYMBYGA1UEAwwPa29uZ19jbHVzdGVyaW5nMHYwEAYHKoZI
+zj0CAQYFK4EEACIDYgAEcMndCotXzeZ9vGAMfDfZ7UxUuP5bcIrwwUOI8YlpMdvB
+12HvjtS7O0/ONr3fBeCWagRuitPEqd4b3EJuD8kuFUMt+2A09N6KY1YDJWgKHei7
+rzKgrefzVt11XgBiDsUBo1MwUTAdBgNVHQ4EFgQUIrdAC8p02h60GZW0Jlh2Vcg/
+WeMwHwYDVR0jBBgwFoAUIrdAC8p02h60GZW0Jlh2Vcg/WeMwDwYDVR0TAQH/BAUw
+AwEB/zAKBggqhkjOPQQDAgNoADBlAjBYb+yQf33sItlmsONLc41Agtx73FMEN7Lf
+WA85OtlkMie1N1x0mj08pzS/Xc1VONwCMQDN9sBn3Kody0gse+EXYSuPPj1oo9jm
+FB9/xrpz35YpDATvuyhH8xwSJ4xMuxQiduc=
+-----END CERTIFICATE-----
+EOF
+  key  = <<EOF
+-----BEGIN PRIVATE KEY-----
+MIG2AgEAMBAGByqGSM49AgEGBSuBBAAiBIGeMIGbAgEBBDDLuRX+uzSbstvLWsQr
+WwuGK4AdjLU/tN9A/fn03gxNvppKw++SBtnLyB+9YZ29YA+hZANiAARwyd0Ki1fN
+5n28YAx8N9ntTFS4/ltwivDBQ4jxiWkx28HXYe+O1Ls7T842vd8F4JZqBG6K08Sp
+3hvcQm4PyS4VQy37YDT03opjVgMlaAod6LuvMqCt5/NW3XVeAGIOxQE=
+-----END PRIVATE KEY-----
+EOF
+
+  tags             = ["tf-migration", "structural"]
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+# A required nested object referencing another resource's computed id.
+resource "konnect_gateway_sni" "migration_sni" {
+  name = "migration.example.com"
+  certificate = {
+    id = konnect_gateway_certificate.migration_cert.id
+  }
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+# The deepest nesting in the provider: healthchecks.active.healthy.http_statuses
+# is an object -> object -> object -> list-of-number, four levels down.
+resource "konnect_gateway_upstream" "migration_upstream" {
+  name           = "migration-upstream.example.com"
+  algorithm      = "round-robin"
+  slots          = 10000
+  hash_on        = "header"
+  hash_on_header = "x-migration"
+
+  healthchecks = {
+    active = {
+      concurrency              = 10
+      http_path                = "/health"
+      https_verify_certificate = true
+      timeout                  = 1
+      type                     = "http"
+      healthy = {
+        http_statuses = [200, 302]
+        interval      = 5
+        successes     = 2
+      }
+      unhealthy = {
+        http_failures = 2
+        http_statuses = [429, 500, 503]
+        interval      = 5
+        tcp_failures  = 2
+        timeouts      = 2
+      }
+    }
+    passive = {
+      type = "http"
+      healthy = {
+        http_statuses = [200, 201, 302]
+        successes     = 3
+      }
+      unhealthy = {
+        http_failures = 3
+        http_statuses = [500, 503]
+        tcp_failures  = 3
+        timeouts      = 3
+      }
+    }
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_target" "migration_target" {
+  target      = "192.0.2.10:8080"
+  weight      = 100
+  upstream_id = konnect_gateway_upstream.migration_upstream.id
+  tags        = ["tf-migration"]
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_key_set" "migration_key_set" {
+  name             = "migration-key-set"
+  tags             = ["tf-migration"]
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+# `jwk` is JSON stored inside a string attribute - the quote- and
+# brace-escaping case, distinct from the heredoc above.
+resource "konnect_gateway_key" "migration_key" {
+  kid  = "migration-kid-1"
+  name = "migration-key"
+  jwk = jsonencode({
+    kty = "RSA"
+    kid = "migration-kid-1"
+    use = "sig"
+    alg = "RS256"
+    e   = "AQAB"
+    n   = "tk5VuZUPrDvdDgS_Fouj2q1PXWyuYC0vEdKE6uZVrUrsoJlBAQZXNiMt3YtBvBUjXOEtRCXn7giRbHfqPxTFvNwKsiCIJZC7rsN6OCeQgC2hbiE77yAQtlWk_mWwvcVrg1Xo-ZcoxG592iJo9dTKRqpVmEWePNqIbUXJH4s3jjyPdkTqgfY9NZrBezilnAGgRlvDKJIye6iOqpw4KFqYaWcoiBTfgnTYhKGbhPrPRDFhspEfu6deTx069i84exMcExiaGRM-Bco7WfemnstkwGfi4u5jrVCQBg7r7TaBv37I4DY7uqOoWv1swobhM2Jk3vGRoLEZTiiIjPkTb2ZH6Q"
+  })
+
+  set = {
+    id = konnect_gateway_key_set.migration_key_set.id
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+# Plugin config that is mostly lists of strings.
+resource "konnect_gateway_plugin_cors" "migration_cors" {
+  enabled = true
+  config = {
+    origins            = ["https://example.com", "https://*.example.org"]
+    headers            = ["Accept", "Content-Type", "Authorization"]
+    exposed_headers    = ["X-Migration-Test"]
+    methods            = ["GET", "POST", "OPTIONS"]
+    credentials        = true
+    max_age            = 3600
+    preflight_continue = false
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+# Nested objects whose every field is a list of strings.
+resource "konnect_gateway_plugin_request_transformer" "migration_rt" {
+  enabled = true
+  config = {
+    http_method = "POST"
+    add = {
+      headers     = ["x-migration:added"]
+      querystring = ["migration=added"]
+      body        = ["migration_body:added"]
+    }
+    append = {
+      headers     = ["x-migration-append:appended"]
+      querystring = ["appended=true"]
+      body        = []
+    }
+    remove = {
+      headers     = ["x-remove-me"]
+      querystring = ["removeme"]
+      body        = []
+    }
+    rename = {
+      headers     = ["x-old:x-new"]
+      querystring = []
+      body        = []
+    }
+    replace = {
+      headers     = ["x-migration:replaced"]
+      querystring = []
+      body        = []
+      uri         = "/anything"
+    }
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+  route = {
+    id = konnect_gateway_route.hello.id
+  }
+}

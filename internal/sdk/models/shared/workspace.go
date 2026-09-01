@@ -4,7 +4,6 @@ package shared
 
 import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
-	"time"
 )
 
 // Workspace - Workspaces provide a way to segment Kong entities.
@@ -19,10 +18,10 @@ type Workspace struct {
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// An ISO-8601 timestamp representation of entity creation date.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// An ISO-8601 timestamp representation of entity update date.
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	// Unix epoch timestamp (in seconds) representation of entity creation date.
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// Unix epoch timestamp (in seconds) representation of entity update date.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (w Workspace) MarshalJSON() ([]byte, error) {
@@ -71,14 +70,14 @@ func (w *Workspace) GetManagedBy() map[string]string {
 	return w.ManagedBy
 }
 
-func (w *Workspace) GetCreatedAt() *time.Time {
+func (w *Workspace) GetCreatedAt() *int64 {
 	if w == nil {
 		return nil
 	}
 	return w.CreatedAt
 }
 
-func (w *Workspace) GetUpdatedAt() *time.Time {
+func (w *Workspace) GetUpdatedAt() *int64 {
 	if w == nil {
 		return nil
 	}

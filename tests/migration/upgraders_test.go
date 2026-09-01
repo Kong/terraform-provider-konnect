@@ -154,6 +154,87 @@ func TestUpgradeBackfillsWorkspace(t *testing.T) {
 	}
 }
 
+// workspaceScopedEntityTypes are the entity types exercised by
+// test-terraform/workspace-resources and test-terraform/gateway-workspace:
+// resources that live inside a control plane and can be pinned to a named
+// workspace instead of "default". Named explicitly (rather than only relying
+// on the generic sweep above) so a resource silently dropping its `workspace`
+// attribute during regeneration fails here with the fixture it breaks, not
+// just an anonymous count.
+var workspaceScopedEntityTypes = []string{
+	"konnect_gateway_service",
+	"konnect_gateway_route",
+	"konnect_gateway_route_expression",
+	"konnect_gateway_consumer",
+	"konnect_gateway_acl",
+	"konnect_gateway_key_auth",
+	"konnect_gateway_consumer_group",
+	"konnect_gateway_vault",
+	"konnect_gateway_plugin_cors",
+}
+
+// TestWorkspaceScopedEntitiesPreserveNamedWorkspace runs the v0 upgrader for
+// every entity type in workspaceScopedEntityTypes against state that already
+// names a non-default workspace, mirroring workspace_scoped.tf: a config
+// written against a named workspace must come back as that same workspace,
+// not get silently reset to "default".
+func TestWorkspaceScopedEntitiesPreserveNamedWorkspace(t *testing.T) {
+	t.Parallel()
+
+	byType := make(map[string]resourceUnderTest)
+	for _, r := range discoverResources(t) {
+		byType[r.typeName] = r
+	}
+
+	const namedWorkspace = "team-payments"
+	for _, typeName := range workspaceScopedEntityTypes {
+		t.Run(typeName, func(t *testing.T) {
+			r, ok := byType[typeName]
+			if !ok {
+				t.Fatalf("resource %q not found - test-terraform/workspace-resources fixture is stale", typeName)
+			}
+			if !r.hasWorkspace {
+				t.Fatalf("resource %q has no %q attribute - it can no longer be workspace-scoped", typeName, workspaceAttr)
+			}
+			upgrader, ok := r.upgraders[0]
+			if !ok {
+				t.Fatalf("no v0 upgrader registered for %q", typeName)
+			}
+
+			prior := priorState(r.schema)
+			prior[workspaceAttr] = namedWorkspace
+
+			got := runUpgrader(t, upgrader, r.schemaType, prior)
+			if got != namedWorkspace {
+				t.Errorf("workspace = %q, want %q", got, namedWorkspace)
+			}
+		})
+	}
+}
+
+// TestGatewayWorkspaceResourceIsNotSelfScoped guards the newly added
+// konnect_gateway_workspace resource (test-terraform/gateway-workspace):
+// a workspace is addressed by (control_plane_id, name), not by a `workspace`
+// attribute of its own, so it must never gain one or a state upgrader.
+func TestGatewayWorkspaceResourceIsNotSelfScoped(t *testing.T) {
+	t.Parallel()
+
+	const typeName = "konnect_gateway_workspace"
+	for _, r := range discoverResources(t) {
+		if r.typeName != typeName {
+			continue
+		}
+		if r.hasWorkspace {
+			t.Errorf("%q has a %q attribute - it should be scoped only by control_plane_id and name", typeName, workspaceAttr)
+		}
+		if len(r.upgraders) > 0 {
+			t.Errorf("%q has a state upgrader but is not workspace-scoped - stale wrapper?", typeName)
+		}
+		return
+	}
+	t.Fatalf("resource %q not found - has it been renamed?", typeName)
+}
+
 // priorState builds the JSON shape the previous provider wrote: every
 // top-level attribute present and null. Nulls are enough - the upgrader only
 // reads and writes `workspace`, and everything else just has to survive the

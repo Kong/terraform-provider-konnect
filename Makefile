@@ -35,6 +35,12 @@ test-cleanup:
 acceptance:
 	@TF_ACC=1 go test -v ./tests/resources
 
+# Type-checks every acceptance fixture against the provider built from this
+# tree. No credentials and no API calls, so it also runs on fork PRs - where
+# the credentialed jobs cannot run at all.
+validate-testdata:
+	@./scripts/validate-testdata.sh $(VALIDATE_DIRS)
+
 # Drives every registered state upgrader in-process. No credentials, no
 # Terraform CLI - safe to run on every PR.
 migration-unit:

@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
@@ -35,12 +35,12 @@ type GatewayWorkspaceResource struct {
 type GatewayWorkspaceResourceModel struct {
 	Comment        types.String            `tfsdk:"comment"`
 	ControlPlaneID types.String            `tfsdk:"control_plane_id"`
-	CreatedAt      types.String            `tfsdk:"created_at"`
+	CreatedAt      types.Int64             `tfsdk:"created_at"`
 	Description    types.String            `tfsdk:"description"`
 	ID             types.String            `tfsdk:"id"`
 	ManagedBy      map[string]types.String `tfsdk:"managed_by"`
 	Name           types.String            `tfsdk:"name"`
-	UpdatedAt      types.String            `tfsdk:"updated_at"`
+	UpdatedAt      types.Int64             `tfsdk:"updated_at"`
 }
 
 func (r *GatewayWorkspaceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,12 +59,12 @@ func (r *GatewayWorkspaceResource) Schema(ctx context.Context, req resource.Sche
 				Required:    true,
 				Description: `ID of a control plane`,
 			},
-			"created_at": schema.StringAttribute{
+			"created_at": schema.Int64Attribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 				},
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+				Description: `Unix epoch timestamp (in seconds) representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
 				Optional:    true,
@@ -86,12 +86,12 @@ func (r *GatewayWorkspaceResource) Schema(ctx context.Context, req resource.Sche
 				Required:    true,
 				Description: `The name of the workspace.`,
 			},
-			"updated_at": schema.StringAttribute{
+			"updated_at": schema.Int64Attribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 				},
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
+				Description: `Unix epoch timestamp (in seconds) representation of entity update date.`,
 			},
 		},
 	}

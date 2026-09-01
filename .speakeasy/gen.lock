@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 23bd69a1-68c9-4548-8b7e-9c998c94ec05
 management:
-  docChecksum: 2920991b5f68827f5e65839d2939ccae
+  docChecksum: 6f5a51c10ee718a7c760a7a57b85ac97
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.21.0
   configChecksum: 7a39f0691cbc4f366c3e558ffcf65d92
 persistentEdits:
-  generation_id: e26e6c55-1004-4d2a-8908-98eadb04ac30
-  pristine_commit_hash: 67db612887b1630a9763daf3a7c57eb5469ec584
-  pristine_tree_hash: b6f38fca988dd957786ca390964d7e46b553f0ad
+  generation_id: 4804bc8a-5e93-44c1-9ca8-cd3558f8df5c
+  pristine_commit_hash: ed897d7608312013e3cbd8108830f00610d282a5
+  pristine_tree_hash: 35783da51a5db4a029e177aff09f33a26cebda01
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4409,12 +4409,12 @@ trackedFiles:
     pristine_git_object: 4c680a8be87b512342ca942ea97bc00766a6380e
   internal/provider/gatewayworkspace_resource.go:
     id: a6dfce243d8c
-    last_write_checksum: sha1:25212eb26cb0057fe2d273689ec6b77c0ad4a47e
-    pristine_git_object: a4f1f9404f04fef0f50a96cb348770e66c99740c
+    last_write_checksum: sha1:07462126cf0c17da532a6337994e92a9eee25dca
+    pristine_git_object: a50390633644508d629944a3081548d93a5cc473
   internal/provider/gatewayworkspace_resource_sdk.go:
     id: 4eac45d79b68
-    last_write_checksum: sha1:85906c83bcd4f6dd43d6be87010261b3751b7e21
-    pristine_git_object: a6a0ff2785f0a3aa36ea1e1cd766befd67dcd4a0
+    last_write_checksum: sha1:0099aa863d1245a5e5ebaa0c2411f1bd1cd8bef7
+    pristine_git_object: 995dde10772e0422dd4ea61c66c8c50c5d92319c
   internal/provider/identityauthserver_resource.go:
     id: b6b8acbec0ba
     last_write_checksum: sha1:16ec7cf5111dbf91719abe94132d1ef1cccfa4a4
@@ -13553,8 +13553,8 @@ trackedFiles:
     pristine_git_object: 0860d704f8957e6ec3e3c3e6ae576aad0c609feb
   internal/sdk/models/shared/workspace.go:
     id: e51ad67224b2
-    last_write_checksum: sha1:8548c3e8358993ae0d859f4a6076fbb3a7ff3903
-    pristine_git_object: 7455e404e5348573b86281f58d78c079d7ddc8c5
+    last_write_checksum: sha1:d6945cb64fe093e70daf5bfa1618b8214b98d673
+    pristine_git_object: 745b26ece5ae5c33d1a3584178815e9627682133
   internal/sdk/models/shared/workspaceinput.go:
     id: 2c2d5856d0b4
     last_write_checksum: sha1:805b165987a73a2ae2a59d79011d3dd0bbe347d6
@@ -30418,7 +30418,7 @@ examples:
         application/json: {"name": "team-1", "comment": "A test workspace for team 1", "description": "A test workspace for team 1", "managed_by": {"owner": "terraform"}}
       responses:
         "201":
-          application/json: {"name": "<value>", "comment": null, "description": null, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "comment": null, "description": null, "managed_by": {"owner": "terraform"}, "created_at": 2022, "updated_at": 2022}
         "400":
           application/problem+json: {"status": 618439, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -30439,7 +30439,7 @@ examples:
           workspaceIdOrName: "2747d1e5-8246-4f65-a939-b392f1ee17f8"
       responses:
         "200":
-          application/json: {"name": "<value>", "comment": null, "description": null, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "comment": null, "description": null, "managed_by": {"owner": "terraform"}, "created_at": 2022, "updated_at": 2022}
         "400":
           application/problem+json: {"status": 241776, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -30485,7 +30485,7 @@ examples:
         application/json: {"name": "<value>", "comment": null, "description": null, "managed_by": {"owner": "terraform"}}
       responses:
         "200":
-          application/json: {"name": "<value>", "comment": null, "description": null, "managed_by": {"owner": "terraform"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "comment": null, "description": null, "managed_by": {"owner": "terraform"}, "created_at": 2022, "updated_at": 2022}
         "400":
           application/problem+json: {"status": 140361, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

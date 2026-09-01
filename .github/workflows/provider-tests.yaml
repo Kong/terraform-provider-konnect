@@ -10,6 +10,7 @@ on:
       - "tests/e2e/**"
       # .tf fixtures are not matched by "**.go"
       - "tests/migration/**"
+      - "tests/resources/**"
 
 permissions:
   contents: read
@@ -41,6 +42,29 @@ jobs:
       - env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
         run: make acceptance
+
+  # Type-checks every acceptance fixture against the provider built from this
+  # PR. The acceptance suite needs credentials and takes tens of minutes, so a
+  # stale attribute in a testdata .tf otherwise surfaces deep inside that run -
+  # or, on a fork PR where the credentialed jobs are skipped entirely, not at
+  # all. Needs no secrets, so it is the only fixture check forks ever get.
+  validate-testdata:
+    name: Validate Test Fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2
+        with:
+          terraform_version: "1.13.*"
+          terraform_wrapper: false
+      - run: make validate-testdata
 
   # Fast tier: drives every registered state upgrader in-process. No
   # credentials, so it also runs on forks.

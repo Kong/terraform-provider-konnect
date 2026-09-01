@@ -23223,9 +23223,19 @@ components:
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
         created_at:
-          $ref: '#/components/schemas/CreatedAt'
+          description: Unix epoch timestamp (in seconds) representation of entity creation date.
+          type: integer
+          format: int64
+          example: 1667592606
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+          description: Unix epoch timestamp (in seconds) representation of entity update date.
+          type: integer
+          format: int64
+          example: 1667592606
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       required:
         - name
     CreateWorkspaceRequest:
