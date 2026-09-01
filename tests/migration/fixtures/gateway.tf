@@ -399,12 +399,12 @@ resource "konnect_gateway_plugin_request_transformer" "migration_rt" {
     http_method = "POST"
     add = {
       headers     = ["x-migration:added"]
-      querystring = ["migration=added"]
+      querystring = ["migration:added"]
       body        = ["migration_body:added"]
     }
     append = {
       headers     = ["x-migration-append:appended"]
-      querystring = ["appended=true"]
+      querystring = ["appended:true"]
       body        = []
     }
     remove = {

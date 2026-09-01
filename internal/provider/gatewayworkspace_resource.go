@@ -52,6 +52,7 @@ func (r *GatewayWorkspaceResource) Schema(ctx context.Context, req resource.Sche
 		MarkdownDescription: "GatewayWorkspace Resource",
 		Attributes: map[string]schema.Attribute{
 			"comment": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `The description of the workspace.`,
 			},
@@ -67,6 +68,7 @@ func (r *GatewayWorkspaceResource) Schema(ctx context.Context, req resource.Sche
 				Description: `Unix epoch timestamp (in seconds) representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `The description of the workspace.`,
 			},

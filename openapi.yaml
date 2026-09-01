@@ -23212,14 +23212,10 @@ components:
           type: string
         comment:
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         description:
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
         created_at:
@@ -23250,16 +23246,12 @@ components:
           description: The description of the workspace.
           type: string
           example: A test workspace for team 1
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         description:
           description: The description of the workspace.
           type: string
           example: A test workspace for team 1
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         managed_by:
           $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
