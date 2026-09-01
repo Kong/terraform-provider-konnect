@@ -150,7 +150,7 @@ paths:
   /v1/ai-models:
     post:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModel#create
+        terraform-resource: CatalogAiModel#create
         terraform-datasource: null
       operationId: create-ai-model
       summary: Create AI Model
@@ -184,7 +184,7 @@ paths:
       - $ref: '#/components/parameters/AiModelIdMatchingParam'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModel#read
+        terraform-resource: CatalogAiModel#read
         terraform-datasource: null
       operationId: get-ai-model
       summary: Get AI Model
@@ -206,7 +206,7 @@ paths:
         - Catalog AI Models
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModel#update
+        terraform-resource: CatalogAiModel#update
         terraform-datasource: null
       operationId: upsert-ai-model
       summary: Replace AI Model
@@ -239,7 +239,7 @@ paths:
         - Catalog AI Models
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModel#delete
+        terraform-resource: CatalogAiModel#delete
         terraform-datasource: null
       operationId: delete-ai-model
       summary: Delete AI Model
@@ -261,7 +261,7 @@ paths:
       - $ref: '#/components/parameters/AiModelIdPath'
     post:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelImplementation#create
+        terraform-resource: CatalogAiModelImplementation#create
         terraform-datasource: null
       operationId: create-ai-model-implementation
       summary: Create AI Model implementation
@@ -298,7 +298,7 @@ paths:
       - $ref: '#/components/parameters/AiModelImplementationIdMatchingParam'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelImplementation#read
+        terraform-resource: CatalogAiModelImplementation#read
         terraform-datasource: null
       operationId: get-ai-model-implementation
       summary: Get AI Model implementation
@@ -320,7 +320,7 @@ paths:
         - Catalog AI Model Implementations
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelImplementation#delete
+        terraform-resource: CatalogAiModelImplementation#delete
         terraform-datasource: null
       operationId: delete-ai-model-implementation
       summary: Delete AI Model implementation
@@ -341,7 +341,7 @@ paths:
       - $ref: '#/components/parameters/AiModelIdPath'
     post:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelVersion#create
+        terraform-resource: CatalogAiModelVersion#create
         terraform-datasource: null
       operationId: create-ai-model-version
       summary: Create AI Model version
@@ -377,7 +377,7 @@ paths:
       - $ref: '#/components/parameters/AiModelIdPath'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelVersion#read
+        terraform-resource: CatalogAiModelVersion#read
         terraform-datasource: null
       operationId: get-latest-ai-model-version
       summary: Get latest AI Model version
@@ -400,7 +400,7 @@ paths:
         - Catalog AI Model Versions
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelVersion#update
+        terraform-resource: CatalogAiModelVersion#update
         terraform-datasource: null
       operationId: upsert-latest-ai-model-version
       summary: Replace latest AI Model version
@@ -431,7 +431,7 @@ paths:
         - Catalog AI Model Versions
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelVersion#delete
+        terraform-resource: CatalogAiModelVersion#delete
         terraform-datasource: null
       operationId: delete-latest-ai-model-version
       summary: Delete latest AI Model version
@@ -453,7 +453,7 @@ paths:
       - $ref: '#/components/parameters/AiModelIdPath'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelVersionSpec#read
+        terraform-resource: CatalogAiModelVersionSpec#read
         terraform-datasource: null
       operationId: get-ai-model-version-spec
       summary: Get AI Model version spec
@@ -476,7 +476,7 @@ paths:
         - Catalog AI Model Specs
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'AiModelVersionSpec#create,update'
+        terraform-resource: 'CatalogAiModelVersionSpec#create,update'
         terraform-datasource: null
       operationId: upsert-ai-model-version-spec
       summary: Upsert AI Model version spec
@@ -513,7 +513,7 @@ paths:
         - Catalog AI Model Specs
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AiModelVersionSpec#delete
+        terraform-resource: CatalogAiModelVersionSpec#delete
         terraform-datasource: null
       operationId: delete-ai-model-version-spec
       summary: Delete AI Model version spec
@@ -38488,9 +38488,6 @@ components:
           example: 1.0.2
           default: null
           minLength: 1
-          not:
-            enum:
-              - latest
           nullable: true
           x-speakeasy-param-computed: false
         file_sha256:
