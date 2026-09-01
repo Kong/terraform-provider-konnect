@@ -1914,12 +1914,10 @@ func (r *CatalogMCPVersionResource) Schema(ctx context.Context, req resource.Sch
 							},
 						},
 						"description": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `Detailed description of what the resource represents.`,
 						},
 						"mime_type": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `The MIME type of the resource, if known.`,
 						},
@@ -1932,12 +1930,10 @@ func (r *CatalogMCPVersionResource) Schema(ctx context.Context, req resource.Sch
 							},
 						},
 						"size": schema.Float64Attribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `The size of the raw resource content, in bytes, if known.`,
 						},
 						"title": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `Human-readable name of the resource.`,
 						},

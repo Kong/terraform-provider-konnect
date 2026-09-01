@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e9915f82b49656268702d6cfcfe8dffb
+  docChecksum: 5fcbc0a88085f7a42eedbca200cbb901
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.22.0
   configChecksum: c84339f673b5d852241f4b48815b69cb
 persistentEdits:
-  generation_id: 7bdd3ba1-acc8-4542-9434-366c8cb85766
-  pristine_commit_hash: b32b68e4f76cfc5d6eadbf525ccd6423ffafedd9
-  pristine_tree_hash: 121f139e210e2a18211aecf84925f680da4c68f3
+  generation_id: 68eaefd0-1ea9-4fcf-8a9e-4c6b5511c713
+  pristine_commit_hash: 547e6d49490582b1cb93336cd05f9080d995fd54
+  pristine_tree_hash: 8eb31dc5f23f21ee2191aa2082868c0926671776
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3153,8 +3153,8 @@ trackedFiles:
     pristine_git_object: bd718f009fbfc630dbdd26184fb2efd590de39d0
   internal/provider/catalogmcpversion_resource.go:
     id: 4b59e6d152c6
-    last_write_checksum: sha1:7cf85b642f41e1aa4e60f1c9d5aac77904176f9a
-    pristine_git_object: b15cf17ffadae44855631b8d45baa51303e41bdf
+    last_write_checksum: sha1:9686651b8559e8a0afd98c846429802f48e27290
+    pristine_git_object: 5f57a2e0d70e972a15e27f09885e3813ca57721b
   internal/provider/catalogmcpversion_resource_sdk.go:
     id: d9adba403870
     last_write_checksum: sha1:39be4fe1be975cff6549490c4e2ce806bc9db35b
@@ -11801,8 +11801,8 @@ trackedFiles:
     pristine_git_object: 1db5f7fb7a93f3cde749189004e9383dfac22070
   internal/sdk/models/shared/catalogmcpresource.go:
     id: 149278164f52
-    last_write_checksum: sha1:f91536e6ac058e01aa2a84c20cb54a20606df342
-    pristine_git_object: 8a4d7955b6687fb0b2a6ed5533c0faa8b28617c6
+    last_write_checksum: sha1:645ea27217caee7afd9312b4611220811e37d74e
+    pristine_git_object: 0e599bb8baa8da03ac1d7cc88e8506852125195b
   internal/sdk/models/shared/catalogmcptool.go:
     id: d6ef815d4e9c
     last_write_checksum: sha1:5677ed7a6f1b867dbb851097ef828130dd17b729
