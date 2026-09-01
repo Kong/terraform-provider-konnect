@@ -37966,25 +37966,36 @@ components:
         title:
           description: Human-readable name of the resource.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         uri:
           description: The URI of the resource.
           type: string
         description:
           description: Detailed description of what the resource represents.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         mime_type:
           description: 'The MIME type of the resource, if known.'
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         annotations:
           $ref: '#/components/schemas/CatalogMCPAnnotations'
         size:
           description: 'The size of the raw resource content, in bytes, if known.'
           type: number
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - name
         - uri
-      x-terraform-no-default-null: true
     CatalogMCPPrompt:
       description: MCP Prompt definition.
       type: object
