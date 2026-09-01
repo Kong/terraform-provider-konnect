@@ -12,7 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *AiModelVersionSpecResourceModel) RefreshFromSharedAiModelVersionSpec(ctx context.Context, resp *shared.AiModelVersionSpec) diag.Diagnostics {
+func (r *CatalogAiModelVersionSpecResourceModel) RefreshFromSharedAiModelVersionSpec(ctx context.Context, resp *shared.AiModelVersionSpec) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -31,7 +31,7 @@ func (r *AiModelVersionSpecResourceModel) RefreshFromSharedAiModelVersionSpec(ct
 	return diags
 }
 
-func (r *AiModelVersionSpecResourceModel) ToOperationsDeleteAiModelVersionSpecRequest(ctx context.Context) (*operations.DeleteAiModelVersionSpecRequest, diag.Diagnostics) {
+func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsDeleteAiModelVersionSpecRequest(ctx context.Context) (*operations.DeleteAiModelVersionSpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -44,7 +44,7 @@ func (r *AiModelVersionSpecResourceModel) ToOperationsDeleteAiModelVersionSpecRe
 	return &out, diags
 }
 
-func (r *AiModelVersionSpecResourceModel) ToOperationsGetAiModelVersionSpecRequest(ctx context.Context) (*operations.GetAiModelVersionSpecRequest, diag.Diagnostics) {
+func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsGetAiModelVersionSpecRequest(ctx context.Context) (*operations.GetAiModelVersionSpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -57,7 +57,7 @@ func (r *AiModelVersionSpecResourceModel) ToOperationsGetAiModelVersionSpecReque
 	return &out, diags
 }
 
-func (r *AiModelVersionSpecResourceModel) ToOperationsUpsertAiModelVersionSpecRequest(ctx context.Context) (*operations.UpsertAiModelVersionSpecRequest, diag.Diagnostics) {
+func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsUpsertAiModelVersionSpecRequest(ctx context.Context) (*operations.UpsertAiModelVersionSpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -78,7 +78,7 @@ func (r *AiModelVersionSpecResourceModel) ToOperationsUpsertAiModelVersionSpecRe
 	return &out, diags
 }
 
-func (r *AiModelVersionSpecResourceModel) ToSharedAiModelVersionSpecWrite(ctx context.Context) (*shared.AiModelVersionSpecWrite, diag.Diagnostics) {
+func (r *CatalogAiModelVersionSpecResourceModel) ToSharedAiModelVersionSpecWrite(ctx context.Context) (*shared.AiModelVersionSpecWrite, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var specContent string

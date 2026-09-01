@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *AiModelResourceModel) RefreshFromSharedAiModel(ctx context.Context, resp *shared.AiModel) diag.Diagnostics {
+func (r *CatalogAiModelResourceModel) RefreshFromSharedAiModel(ctx context.Context, resp *shared.AiModel) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -38,7 +38,7 @@ func (r *AiModelResourceModel) RefreshFromSharedAiModel(ctx context.Context, res
 	return diags
 }
 
-func (r *AiModelResourceModel) ToOperationsDeleteAiModelRequest(ctx context.Context) (*operations.DeleteAiModelRequest, diag.Diagnostics) {
+func (r *CatalogAiModelResourceModel) ToOperationsDeleteAiModelRequest(ctx context.Context) (*operations.DeleteAiModelRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -51,7 +51,7 @@ func (r *AiModelResourceModel) ToOperationsDeleteAiModelRequest(ctx context.Cont
 	return &out, diags
 }
 
-func (r *AiModelResourceModel) ToOperationsGetAiModelRequest(ctx context.Context) (*operations.GetAiModelRequest, diag.Diagnostics) {
+func (r *CatalogAiModelResourceModel) ToOperationsGetAiModelRequest(ctx context.Context) (*operations.GetAiModelRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -64,7 +64,7 @@ func (r *AiModelResourceModel) ToOperationsGetAiModelRequest(ctx context.Context
 	return &out, diags
 }
 
-func (r *AiModelResourceModel) ToOperationsUpsertAiModelRequest(ctx context.Context) (*operations.UpsertAiModelRequest, diag.Diagnostics) {
+func (r *CatalogAiModelResourceModel) ToOperationsUpsertAiModelRequest(ctx context.Context) (*operations.UpsertAiModelRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -85,7 +85,7 @@ func (r *AiModelResourceModel) ToOperationsUpsertAiModelRequest(ctx context.Cont
 	return &out, diags
 }
 
-func (r *AiModelResourceModel) ToSharedAiModelCreate(ctx context.Context) (*shared.AiModelCreate, diag.Diagnostics) {
+func (r *CatalogAiModelResourceModel) ToSharedAiModelCreate(ctx context.Context) (*shared.AiModelCreate, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string
@@ -120,7 +120,7 @@ func (r *AiModelResourceModel) ToSharedAiModelCreate(ctx context.Context) (*shar
 	return &out, diags
 }
 
-func (r *AiModelResourceModel) ToSharedAiModelReplace(ctx context.Context) (*shared.AiModelReplace, diag.Diagnostics) {
+func (r *CatalogAiModelResourceModel) ToSharedAiModelReplace(ctx context.Context) (*shared.AiModelReplace, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string

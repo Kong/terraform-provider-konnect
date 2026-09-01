@@ -22,21 +22,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AiModelVersionResource{}
-var _ resource.ResourceWithImportState = &AiModelVersionResource{}
+var _ resource.Resource = &CatalogAiModelVersionResource{}
+var _ resource.ResourceWithImportState = &CatalogAiModelVersionResource{}
 
-func NewAiModelVersionResource() resource.Resource {
-	return &AiModelVersionResource{}
+func NewCatalogAiModelVersionResource() resource.Resource {
+	return &CatalogAiModelVersionResource{}
 }
 
-// AiModelVersionResource defines the resource implementation.
-type AiModelVersionResource struct {
+// CatalogAiModelVersionResource defines the resource implementation.
+type CatalogAiModelVersionResource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// AiModelVersionResourceModel describes the resource data model.
-type AiModelVersionResourceModel struct {
+// CatalogAiModelVersionResourceModel describes the resource data model.
+type CatalogAiModelVersionResourceModel struct {
 	AiModelID    types.String          `tfsdk:"ai_model_id"`
 	CreatedAt    types.String          `tfsdk:"created_at"`
 	ID           types.String          `tfsdk:"id"`
@@ -45,13 +45,13 @@ type AiModelVersionResourceModel struct {
 	Version      types.String          `tfsdk:"version"`
 }
 
-func (r *AiModelVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_ai_model_version"
+func (r *CatalogAiModelVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_catalog_ai_model_version"
 }
 
-func (r *AiModelVersionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *CatalogAiModelVersionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "AiModelVersion Resource",
+		MarkdownDescription: "CatalogAiModelVersion Resource",
 		Attributes: map[string]schema.Attribute{
 			"ai_model_id": schema.StringAttribute{
 				Required:    true,
@@ -114,7 +114,7 @@ func (r *AiModelVersionResource) Schema(ctx context.Context, req resource.Schema
 	}
 }
 
-func (r *AiModelVersionResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *CatalogAiModelVersionResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -134,8 +134,8 @@ func (r *AiModelVersionResource) Configure(ctx context.Context, req resource.Con
 	r.client = client
 }
 
-func (r *AiModelVersionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *AiModelVersionResourceModel
+func (r *CatalogAiModelVersionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *CatalogAiModelVersionResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -201,8 +201,8 @@ func (r *AiModelVersionResource) Create(ctx context.Context, req resource.Create
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AiModelVersionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *AiModelVersionResourceModel
+func (r *CatalogAiModelVersionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *CatalogAiModelVersionResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -259,8 +259,8 @@ func (r *AiModelVersionResource) Read(ctx context.Context, req resource.ReadRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AiModelVersionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *AiModelVersionResourceModel
+func (r *CatalogAiModelVersionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *CatalogAiModelVersionResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -315,8 +315,8 @@ func (r *AiModelVersionResource) Update(ctx context.Context, req resource.Update
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AiModelVersionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *AiModelVersionResourceModel
+func (r *CatalogAiModelVersionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *CatalogAiModelVersionResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -361,6 +361,6 @@ func (r *AiModelVersionResource) Delete(ctx context.Context, req resource.Delete
 
 }
 
-func (r *AiModelVersionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *CatalogAiModelVersionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ai_model_id"), req.ID)...)
 }

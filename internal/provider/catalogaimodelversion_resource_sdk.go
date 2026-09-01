@@ -12,7 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *AiModelVersionResourceModel) RefreshFromSharedAiModelVersion(ctx context.Context, resp *shared.AiModelVersion) diag.Diagnostics {
+func (r *CatalogAiModelVersionResourceModel) RefreshFromSharedAiModelVersion(ctx context.Context, resp *shared.AiModelVersion) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -36,7 +36,7 @@ func (r *AiModelVersionResourceModel) RefreshFromSharedAiModelVersion(ctx contex
 	return diags
 }
 
-func (r *AiModelVersionResourceModel) ToOperationsCreateAiModelVersionRequest(ctx context.Context) (*operations.CreateAiModelVersionRequest, diag.Diagnostics) {
+func (r *CatalogAiModelVersionResourceModel) ToOperationsCreateAiModelVersionRequest(ctx context.Context) (*operations.CreateAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -57,7 +57,7 @@ func (r *AiModelVersionResourceModel) ToOperationsCreateAiModelVersionRequest(ct
 	return &out, diags
 }
 
-func (r *AiModelVersionResourceModel) ToOperationsDeleteLatestAiModelVersionRequest(ctx context.Context) (*operations.DeleteLatestAiModelVersionRequest, diag.Diagnostics) {
+func (r *CatalogAiModelVersionResourceModel) ToOperationsDeleteLatestAiModelVersionRequest(ctx context.Context) (*operations.DeleteLatestAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -70,7 +70,7 @@ func (r *AiModelVersionResourceModel) ToOperationsDeleteLatestAiModelVersionRequ
 	return &out, diags
 }
 
-func (r *AiModelVersionResourceModel) ToOperationsGetLatestAiModelVersionRequest(ctx context.Context) (*operations.GetLatestAiModelVersionRequest, diag.Diagnostics) {
+func (r *CatalogAiModelVersionResourceModel) ToOperationsGetLatestAiModelVersionRequest(ctx context.Context) (*operations.GetLatestAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -83,7 +83,7 @@ func (r *AiModelVersionResourceModel) ToOperationsGetLatestAiModelVersionRequest
 	return &out, diags
 }
 
-func (r *AiModelVersionResourceModel) ToOperationsUpsertLatestAiModelVersionRequest(ctx context.Context) (*operations.UpsertLatestAiModelVersionRequest, diag.Diagnostics) {
+func (r *CatalogAiModelVersionResourceModel) ToOperationsUpsertLatestAiModelVersionRequest(ctx context.Context) (*operations.UpsertLatestAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -104,7 +104,7 @@ func (r *AiModelVersionResourceModel) ToOperationsUpsertLatestAiModelVersionRequ
 	return &out, diags
 }
 
-func (r *AiModelVersionResourceModel) ToSharedAiModelVersionCreate(ctx context.Context) (*shared.AiModelVersionCreate, diag.Diagnostics) {
+func (r *CatalogAiModelVersionResourceModel) ToSharedAiModelVersionCreate(ctx context.Context) (*shared.AiModelVersionCreate, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	version := new(string)

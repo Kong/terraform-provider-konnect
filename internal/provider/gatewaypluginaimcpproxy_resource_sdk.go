@@ -210,7 +210,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				if toolsItem.Annotations == nil {
 					tools.Annotations = nil
 				} else {
-					tools.Annotations = &tfTypes.Annotations{}
+					tools.Annotations = &tfTypes.CatalogMCPToolAnnotations{}
 					tools.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem.Annotations.DestructiveHint)
 					tools.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem.Annotations.IdempotentHint)
 					tools.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem.Annotations.OpenWorldHint)

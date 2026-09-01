@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *AiModelImplementationResourceModel) RefreshFromSharedAiModelImplementation(ctx context.Context, resp *shared.AiModelImplementation) diag.Diagnostics {
+func (r *CatalogAiModelImplementationResourceModel) RefreshFromSharedAiModelImplementation(ctx context.Context, resp *shared.AiModelImplementation) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -26,7 +26,7 @@ func (r *AiModelImplementationResourceModel) RefreshFromSharedAiModelImplementat
 	return diags
 }
 
-func (r *AiModelImplementationResourceModel) ToOperationsCreateAiModelImplementationRequest(ctx context.Context) (*operations.CreateAiModelImplementationRequest, diag.Diagnostics) {
+func (r *CatalogAiModelImplementationResourceModel) ToOperationsCreateAiModelImplementationRequest(ctx context.Context) (*operations.CreateAiModelImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -47,7 +47,7 @@ func (r *AiModelImplementationResourceModel) ToOperationsCreateAiModelImplementa
 	return &out, diags
 }
 
-func (r *AiModelImplementationResourceModel) ToOperationsDeleteAiModelImplementationRequest(ctx context.Context) (*operations.DeleteAiModelImplementationRequest, diag.Diagnostics) {
+func (r *CatalogAiModelImplementationResourceModel) ToOperationsDeleteAiModelImplementationRequest(ctx context.Context) (*operations.DeleteAiModelImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -64,7 +64,7 @@ func (r *AiModelImplementationResourceModel) ToOperationsDeleteAiModelImplementa
 	return &out, diags
 }
 
-func (r *AiModelImplementationResourceModel) ToOperationsGetAiModelImplementationRequest(ctx context.Context) (*operations.GetAiModelImplementationRequest, diag.Diagnostics) {
+func (r *CatalogAiModelImplementationResourceModel) ToOperationsGetAiModelImplementationRequest(ctx context.Context) (*operations.GetAiModelImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var aiModelID string
@@ -81,7 +81,7 @@ func (r *AiModelImplementationResourceModel) ToOperationsGetAiModelImplementatio
 	return &out, diags
 }
 
-func (r *AiModelImplementationResourceModel) ToSharedAiModelImplementationCreate(ctx context.Context) (*shared.AiModelImplementationCreate, diag.Diagnostics) {
+func (r *CatalogAiModelImplementationResourceModel) ToSharedAiModelImplementationCreate(ctx context.Context) (*shared.AiModelImplementationCreate, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var gatewayControlPlaneID string

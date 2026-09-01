@@ -3,60 +3,54 @@
 package provider
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AiModelImplementationResource{}
-var _ resource.ResourceWithImportState = &AiModelImplementationResource{}
+var _ resource.Resource = &CatalogAiModelVersionSpecResource{}
+var _ resource.ResourceWithImportState = &CatalogAiModelVersionSpecResource{}
 
-func NewAiModelImplementationResource() resource.Resource {
-	return &AiModelImplementationResource{}
+func NewCatalogAiModelVersionSpecResource() resource.Resource {
+	return &CatalogAiModelVersionSpecResource{}
 }
 
-// AiModelImplementationResource defines the resource implementation.
-type AiModelImplementationResource struct {
+// CatalogAiModelVersionSpecResource defines the resource implementation.
+type CatalogAiModelVersionSpecResource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// AiModelImplementationResourceModel describes the resource data model.
-type AiModelImplementationResourceModel struct {
-	AiModelID             types.String `tfsdk:"ai_model_id"`
-	CreatedAt             types.String `tfsdk:"created_at"`
-	GatewayControlPlaneID types.String `tfsdk:"gateway_control_plane_id"`
-	GatewayModelID        types.String `tfsdk:"gateway_model_id"`
-	ID                    types.String `tfsdk:"id"`
-	UpdatedAt             types.String `tfsdk:"updated_at"`
+// CatalogAiModelVersionSpecResourceModel describes the resource data model.
+type CatalogAiModelVersionSpecResourceModel struct {
+	AiModelID    types.String                                 `tfsdk:"ai_model_id"`
+	CreatedAt    types.String                                 `tfsdk:"created_at"`
+	SpecContent  types.String                                 `tfsdk:"spec_content"`
+	SpecProvider *tfTypes.AiModelVersionSpecWriteSpecProvider `tfsdk:"spec_provider"`
+	SpecType     types.String                                 `tfsdk:"spec_type"`
+	UpdatedAt    types.String                                 `tfsdk:"updated_at"`
 }
 
-func (r *AiModelImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_ai_model_implementation"
+func (r *CatalogAiModelVersionSpecResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_catalog_ai_model_version_spec"
 }
 
-func (r *AiModelImplementationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *CatalogAiModelVersionSpecResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "AiModelImplementation Resource",
+		MarkdownDescription: "CatalogAiModelVersionSpec Resource",
 		Attributes: map[string]schema.Attribute{
 			"ai_model_id": schema.StringAttribute{
-				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Description: `The unique identifier of the AI Model. Requires replacement if changed.`,
+				Required:    true,
+				Description: `The unique identifier of the AI Model.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -65,25 +59,27 @@ func (r *AiModelImplementationResource) Schema(ctx context.Context, req resource
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
-			"gateway_control_plane_id": schema.StringAttribute{
+			"spec_content": schema.StringAttribute{
 				Required: true,
+				MarkdownDescription: `The raw content of the oas specification, in json or yaml format (for example, an` + "\n" +
+					`OpenAPI document).`,
+			},
+			"spec_provider": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"source": schema.StringAttribute{
+						Required:    true,
+						Description: `possible known values include one of ["ai_gateway", "provider"]`,
+					},
+				},
+				Description: `Optional provenance. Omit (or ` + "`" + `null` + "`" + `) for a user-uploaded specification.`,
+			},
+			"spec_type": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The AI Gateway control plane uuid the model belongs to. Requires replacement if changed.`,
-			},
-			"gateway_model_id": schema.StringAttribute{
-				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Description: `The text or uuid identifier of the AI Gateway model to link. Requires replacement if changed.`,
-			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The unique identifier of the implementation (link) record.`,
+				Description: `The type of specification document. Currently always ` + "`" + `oas` + "`" + ` (OpenAPI Specification).`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -96,7 +92,7 @@ func (r *AiModelImplementationResource) Schema(ctx context.Context, req resource
 	}
 }
 
-func (r *AiModelImplementationResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *CatalogAiModelVersionSpecResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -116,8 +112,8 @@ func (r *AiModelImplementationResource) Configure(ctx context.Context, req resou
 	r.client = client
 }
 
-func (r *AiModelImplementationResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *AiModelImplementationResourceModel
+func (r *CatalogAiModelVersionSpecResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *CatalogAiModelVersionSpecResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -134,13 +130,13 @@ func (r *AiModelImplementationResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAiModelImplementationRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertAiModelVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CatalogAIModelImplementations.CreateAiModelImplementation(ctx, *request)
+	res, err := r.client.CatalogAIModelSpecs.UpsertAiModelVersionSpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -152,22 +148,18 @@ func (r *AiModelImplementationResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 409 {
-		resp.Diagnostics.AddError(
-			"Resource Already Exists",
-			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
-		)
-		return
-	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AiModelImplementation != nil) {
+	if !(res.AiModelVersionSpec != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAiModelImplementation(ctx, res.AiModelImplementation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiModelVersionSpec(ctx, res.AiModelVersionSpec)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -183,8 +175,8 @@ func (r *AiModelImplementationResource) Create(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AiModelImplementationResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *AiModelImplementationResourceModel
+func (r *CatalogAiModelVersionSpecResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *CatalogAiModelVersionSpecResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -201,13 +193,13 @@ func (r *AiModelImplementationResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAiModelImplementationRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAiModelVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CatalogAIModelImplementations.GetAiModelImplementation(ctx, *request)
+	res, err := r.client.CatalogAIModelSpecs.GetAiModelVersionSpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -227,11 +219,11 @@ func (r *AiModelImplementationResource) Read(ctx context.Context, req resource.R
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AiModelImplementation != nil) {
+	if !(res.AiModelVersionSpec != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAiModelImplementation(ctx, res.AiModelImplementation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiModelVersionSpec(ctx, res.AiModelVersionSpec)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -241,8 +233,8 @@ func (r *AiModelImplementationResource) Read(ctx context.Context, req resource.R
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AiModelImplementationResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *AiModelImplementationResourceModel
+func (r *CatalogAiModelVersionSpecResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *CatalogAiModelVersionSpecResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -255,14 +247,53 @@ func (r *AiModelImplementationResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	request, requestDiags := data.ToOperationsUpsertAiModelVersionSpecRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.CatalogAIModelSpecs.UpsertAiModelVersionSpec(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.AiModelVersionSpec != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedAiModelVersionSpec(ctx, res.AiModelVersionSpec)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AiModelImplementationResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *AiModelImplementationResourceModel
+func (r *CatalogAiModelVersionSpecResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *CatalogAiModelVersionSpecResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -279,13 +310,13 @@ func (r *AiModelImplementationResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAiModelImplementationRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAiModelVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CatalogAIModelImplementations.DeleteAiModelImplementation(ctx, *request)
+	res, err := r.client.CatalogAIModelSpecs.DeleteAiModelVersionSpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -307,27 +338,6 @@ func (r *AiModelImplementationResource) Delete(ctx context.Context, req resource
 
 }
 
-func (r *AiModelImplementationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
-	dec.DisallowUnknownFields()
-	var data struct {
-		AiModelID string `json:"ai_model_id"`
-		ID        string `json:"id"`
-	}
-
-	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"}': `+err.Error())
-		return
-	}
-
-	if len(data.AiModelID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field ai_model_id is required but was not found in the json encoded ID. It's expected to be a value alike '"123e4567-e89b-12d3-a456-426614174000"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ai_model_id"), data.AiModelID)...)
-	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+func (r *CatalogAiModelVersionSpecResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ai_model_id"), req.ID)...)
 }
