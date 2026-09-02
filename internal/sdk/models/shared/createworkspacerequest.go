@@ -11,9 +11,9 @@ type CreateWorkspaceRequest struct {
 	// The name of the workspace.
 	Name string `json:"name"`
 	// The description of the workspace.
-	Comment *string `default:"null" json:"comment"`
+	Comment *string `json:"comment,omitempty"`
 	// The description of the workspace.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
