@@ -237,9 +237,21 @@ case $plan_rc in
   *) fail "terraform plan errored (exit $plan_rc)" ;;
 esac
 
+step "Phase 2b: confirm workspace is absent from the state file before apply"
+if grep -q '"workspace": "default"' "$WORK_DIR/terraform.tfstate"; then
+  fail "state file already contains \"workspace\": \"default\" before apply - phase ordering is broken"
+fi
+pass "state file has no \"workspace\": \"default\" before apply"
+
 step "Phase 3: apply with the candidate provider"
 terraform -chdir="$WORK_DIR" apply -auto-approve -input=false "$WORK_DIR/migration.tfplan" >/dev/null
 info "applied"
+
+step "Phase 3b: confirm workspace was backfilled in the state file after apply"
+if ! grep -q '"workspace": "default"' "$WORK_DIR/terraform.tfstate"; then
+  fail "state file does not contain \"workspace\": \"default\" after apply"
+fi
+pass "state file contains \"workspace\": \"default\" after apply"
 
 step "Phase 4: assert workspace was backfilled in state"
 # Ask the candidate provider itself which resource types gained `workspace`,

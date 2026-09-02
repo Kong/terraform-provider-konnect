@@ -225,6 +225,38 @@ resource "konnect_gateway_mtls_auth" "my_mtlsauth" {
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
 
+# A CA certificate, trusted independently of the leaf certificate above
+resource "konnect_gateway_ca_certificate" "migration_ca_cert" {
+  cert             = <<EOF
+-----BEGIN CERTIFICATE-----
+MIIBxjCCAUygAwIBAgIUX9TaLbWF76yQc8IGR+YRbeiDlHkwCgYIKoZIzj0EAwIw
+GjEYMBYGA1UEAwwPa29uZ19jbHVzdGVyaW5nMB4XDTI0MDMwMTE0MzkxNloXDTI3
+MDMwMTE0MzkxNlowGjEYMBYGA1UEAwwPa29uZ19jbHVzdGVyaW5nMHYwEAYHKoZI
+zj0CAQYFK4EEACIDYgAEcMndCotXzeZ9vGAMfDfZ7UxUuP5bcIrwwUOI8YlpMdvB
+12HvjtS7O0/ONr3fBeCWagRuitPEqd4b3EJuD8kuFUMt+2A09N6KY1YDJWgKHei7
+rzKgrefzVt11XgBiDsUBo1MwUTAdBgNVHQ4EFgQUIrdAC8p02h60GZW0Jlh2Vcg/
+WeMwHwYDVR0jBBgwFoAUIrdAC8p02h60GZW0Jlh2Vcg/WeMwDwYDVR0TAQH/BAUw
+AwEB/zAKBggqhkjOPQQDAgNoADBlAjBYb+yQf33sItlmsONLc41Agtx73FMEN7Lf
+WA85OtlkMie1N1x0mj08pzS/Xc1VONwCMQDN9sBn3Kody0gse+EXYSuPPj1oo9jm
+FB9/xrpz35YpDATvuyhH8xwSJ4xMuxQiduc=
+-----END CERTIFICATE-----
+EOF
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+# A partial: reusable plugin config shared across multiple plugin instances
+resource "konnect_gateway_partial" "migration_redis_partial" {
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+  redis_ce = {
+    name = "migration-redis-ce-partial"
+    tags = ["tf-migration"]
+    config = {
+      host = "127.0.0.1"
+      port = 6379
+    }
+  }
+}
+
 # Config store and vault
 resource "konnect_gateway_config_store" "my_configstore" {
   name = "tf-config-store"
@@ -361,7 +393,7 @@ resource "konnect_gateway_key" "migration_key" {
   kid  = "migration-kid-1"
   name = "migration-key"
 
-  pem              = {
+  pem = {
     private_key = <<-EOT
           -----BEGIN RSA PRIVATE KEY-----
           MIICXAIBAAKBgG79jfVbRQHMEV/qaskL6WVeClxYD17q3hWBr6xLpVENedhky8ps
