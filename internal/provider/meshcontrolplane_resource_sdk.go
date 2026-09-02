@@ -114,7 +114,7 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest(ct
 	}
 	features := make([]shared.MeshControlPlaneFeature, 0, len(r.Features))
 	for featuresIndex := range r.Features {
-		typeVar := shared.Type(r.Features[featuresIndex].Type.ValueString())
+		typeVar := shared.MeshControlPlaneFeatureType(r.Features[featuresIndex].Type.ValueString())
 		var hostnameGeneratorCreation *shared.MeshControlPlaneFeatureHostnameGenerationCreation
 		if r.Features[featuresIndex].HostnameGeneratorCreation != nil {
 			var enabled bool

@@ -64,6 +64,14 @@ type Konnect struct {
 	// Konnect IP inventory
 	PlatformIPs             *PlatformIPs
 	ServerlessCloudGateways *ServerlessCloudGateways
+	// Manage AI Models - a catalogable proxy for AI Gateway models
+	CatalogAIModels *CatalogAIModels
+	// Link an AI Model to an AI Gateway model.
+	CatalogAIModelImplementations *CatalogAIModelImplementations
+	// Manage an AI Model's version.
+	CatalogAIModelVersions *CatalogAIModelVersions
+	// Manage an AI Model version's oas specification.
+	CatalogAIModelSpecs *CatalogAIModelSpecs
 	// Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
 	AuthServer *AuthServer
 	// Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.
@@ -165,7 +173,13 @@ type Konnect struct {
 	// The integration instance's auth credentials can be removed or updated while retaining all resources which have already been discovered.
 	//
 	IntegrationInstanceAuthCredentials *IntegrationInstanceAuthCredentials
-	Mesh                               *Mesh
+	// Manage MCPs - a catalogable proxy for AI Gateway MCPs
+	CatalogMCPs *CatalogMCPs
+	// Link an MCP to an AI Gateway MCP.
+	CatalogMCPImplementations *CatalogMCPImplementations
+	// Manage an MCP's version.
+	CatalogMCPVersions *CatalogMCPVersions
+	Mesh               *Mesh
 	// Use a realm to group consumers around an identity, defined by organizational boundaries, such as a production realm or a development realm. Realms are connected to a [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in realms can be used across multiple control planes.
 	//
 	Realms *Realms
@@ -447,6 +461,10 @@ func New(opts ...SDKOption) *Konnect {
 
 	sdk.PlatformIPs = newPlatformIPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModels = newCatalogAIModels(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModelImplementations = newCatalogAIModelImplementations(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModelVersions = newCatalogAIModelVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModelSpecs = newCatalogAIModelSpecs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClaims = newAuthServerClaims(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -468,6 +486,9 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.IntegrationInstances = newIntegrationInstances(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.IntegrationInstanceAuthConfig = newIntegrationInstanceAuthConfig(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.IntegrationInstanceAuthCredentials = newIntegrationInstanceAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogMCPs = newCatalogMCPs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogMCPImplementations = newCatalogMCPImplementations(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogMCPVersions = newCatalogMCPVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Realms = newRealms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CentrallyManagedConsumers = newCentrallyManagedConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)

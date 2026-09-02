@@ -120,20 +120,20 @@ func (m *MeteringAndBillingPluginPartials) GetPath() string {
 	return m.Path
 }
 
-// Source - Where to find this attribute in the request.
-type Source string
+// MeteringAndBillingPluginSource - Where to find this attribute in the request.
+type MeteringAndBillingPluginSource string
 
 const (
-	SourceHeader Source = "header"
-	SourceQuery  Source = "query"
+	MeteringAndBillingPluginSourceHeader MeteringAndBillingPluginSource = "header"
+	MeteringAndBillingPluginSourceQuery  MeteringAndBillingPluginSource = "query"
 )
 
-func (e Source) ToPointer() *Source {
+func (e MeteringAndBillingPluginSource) ToPointer() *MeteringAndBillingPluginSource {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Source) IsExact() bool {
+func (e *MeteringAndBillingPluginSource) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "header", "query":
@@ -149,7 +149,7 @@ type Attributes struct {
 	// The header name or query parameter that contains the value, e.g 'x-department-id'
 	LookUpValueIn string `json:"look_up_value_in"`
 	// Where to find this attribute in the request.
-	Source Source `json:"source"`
+	Source MeteringAndBillingPluginSource `json:"source"`
 }
 
 func (a Attributes) MarshalJSON() ([]byte, error) {
@@ -177,9 +177,9 @@ func (a *Attributes) GetLookUpValueIn() string {
 	return a.LookUpValueIn
 }
 
-func (a *Attributes) GetSource() Source {
+func (a *Attributes) GetSource() MeteringAndBillingPluginSource {
 	if a == nil {
-		return Source("")
+		return MeteringAndBillingPluginSource("")
 	}
 	return a.Source
 }

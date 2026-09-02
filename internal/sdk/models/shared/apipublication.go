@@ -19,8 +19,9 @@ type APIPublication struct {
 	// The visibility of the API in the portal.
 	// Public API publications do not require authentication to view and retrieve information about them.
 	// Private API publications require authentication to retrieve information about them.
+	// If omitted, this defaults to the target portal's configured default API visibility.
 	//
-	Visibility *APIPublicationVisibility `default:"private" json:"visibility"`
+	Visibility *APIPublicationVisibility `json:"visibility,omitempty"`
 }
 
 func (a APIPublication) MarshalJSON() ([]byte, error) {

@@ -42,7 +42,8 @@ DCR support for application registration is currently in development.
 - `visibility` (String) The visibility of the API in the portal.
 Public API publications do not require authentication to view and retrieve information about them.
 Private API publications require authentication to retrieve information about them.
-possible known values include one of ["public", "private"]; Default: "private"
+If omitted, this defaults to the target portal's configured default API visibility.
+possible known values include one of ["public", "private"]
 
 ### Read-Only
 

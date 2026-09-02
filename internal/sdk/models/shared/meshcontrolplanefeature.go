@@ -6,19 +6,19 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type Type string
+type MeshControlPlaneFeatureType string
 
 const (
-	TypeMeshCreation              Type = "MeshCreation"
-	TypeHostnameGeneratorCreation Type = "HostnameGeneratorCreation"
+	MeshControlPlaneFeatureTypeMeshCreation              MeshControlPlaneFeatureType = "MeshCreation"
+	MeshControlPlaneFeatureTypeHostnameGeneratorCreation MeshControlPlaneFeatureType = "HostnameGeneratorCreation"
 )
 
-func (e Type) ToPointer() *Type {
+func (e MeshControlPlaneFeatureType) ToPointer() *MeshControlPlaneFeatureType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Type) IsExact() bool {
+func (e *MeshControlPlaneFeatureType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "MeshCreation", "HostnameGeneratorCreation":
@@ -30,7 +30,7 @@ func (e *Type) IsExact() bool {
 
 // MeshControlPlaneFeature - Features to be enabled in the control plane. Currently only defaults are supported.
 type MeshControlPlaneFeature struct {
-	Type                      Type                                               `json:"type"`
+	Type                      MeshControlPlaneFeatureType                        `json:"type"`
 	HostnameGeneratorCreation *MeshControlPlaneFeatureHostnameGenerationCreation `json:"hostnameGeneratorCreation,omitempty"`
 	MeshCreation              *MeshControlPlaneFeatureMeshCreation               `json:"meshCreation,omitempty"`
 }
@@ -46,9 +46,9 @@ func (m *MeshControlPlaneFeature) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (m *MeshControlPlaneFeature) GetType() Type {
+func (m *MeshControlPlaneFeature) GetType() MeshControlPlaneFeatureType {
 	if m == nil {
-		return Type("")
+		return MeshControlPlaneFeatureType("")
 	}
 	return m.Type
 }

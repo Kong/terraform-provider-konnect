@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type Annotations struct {
+type CatalogMCPToolAnnotations struct {
 	DestructiveHint types.Bool   `tfsdk:"destructive_hint"`
 	IdempotentHint  types.Bool   `tfsdk:"idempotent_hint"`
 	OpenWorldHint   types.Bool   `tfsdk:"open_world_hint"`
