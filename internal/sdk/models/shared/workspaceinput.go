@@ -11,8 +11,8 @@ type WorkspaceInput struct {
 	// The unique UUID for this resource.
 	ID          *string `json:"id,omitempty"`
 	Name        string  `json:"name"`
-	Comment     *string `default:"null" json:"comment"`
-	Description *string `default:"null" json:"description"`
+	Comment     *string `json:"comment,omitempty"`
+	Description *string `json:"description,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.

@@ -42,9 +42,9 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 
 ### Read-Only
 
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `created_at` (Number) Unix epoch timestamp (in seconds) representation of entity creation date.
 - `id` (String) The unique UUID for this resource.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+- `updated_at` (Number) Unix epoch timestamp (in seconds) representation of entity update date.
 
 ## Import
 

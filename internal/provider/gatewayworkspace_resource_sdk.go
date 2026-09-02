@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -16,7 +15,7 @@ func (r *GatewayWorkspaceResourceModel) RefreshFromSharedWorkspace(ctx context.C
 
 	if resp != nil {
 		r.Comment = types.StringPointerValue(resp.Comment)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
 		if len(resp.ManagedBy) > 0 {
@@ -26,7 +25,7 @@ func (r *GatewayWorkspaceResourceModel) RefreshFromSharedWorkspace(ctx context.C
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 
 	return diags
