@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.23.0
+> Released 2026/09/??
+
+# Features
+* Add support for AI Model and MCP catalog resource
+  * `konnect_catalog_ai_model`
+  * `konnect_catalog_ai_model_implementation`
+  * `konnect_catalog_ai_model_version`
+  * `konnect_catalog_ai_model_version_spec`
+  * `konnect_catalog_mcp`
+  * `konnect_catalog_mcp_version`
+  * `konnect_catalog_mcp_implementation`
+
 ## 3.22.0
 > Released 2026/08/26
 
