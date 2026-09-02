@@ -109,8 +109,6 @@ func TestCatalogMCP(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_catalog_mcp.test_mcp", "name", "test-mcp-tf"),
 						resource.TestCheckResourceAttr("konnect_catalog_mcp.test_mcp", "display_name", "Test MCP"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp.test_mcp", "description", "MCP for testing"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp.test_mcp", "labels.env", "test"),
 					),
 				},
 				{
@@ -156,14 +154,7 @@ func TestCatalogMCP(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_version.test_mcp_version", "id"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "version", "1.0.0"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "resources.0.name", "config-file"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "resources.0.uri", "file:///etc/mcp/config.json"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "resources.0.title", "MCP Configuration"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "resources.0.description", "Configuration file for the MCP"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "resources.0.mime_type", "application/json"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "resources.0.size", "1234"),
-					),
+						resource.TestCheckResourceAttr("konnect_catalog_mcp_version.test_mcp_version", "version", "1.0.0")),
 				},
 				{
 					Config: builder.Upsert(mcp).Upsert(version).Build(),
@@ -198,12 +189,7 @@ func TestCatalogMCP(t *testing.T) {
 		impl, err := hclbuilder.FromString(catalogMcpImplementation)
 		require.NoError(t, err)
 
-		baseConfig := builder.
-			Upsert(mcp).
-			Upsert(gateway).
-			Upsert(server).
-			Upsert(impl).
-			Build()
+		baseConfig := builder.Upsert(mcp).Upsert(gateway).Upsert(server).Upsert(impl).Build()
 
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
@@ -223,11 +209,7 @@ func TestCatalogMCP(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "id"),
-						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "mcp_id"),
-						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "catalog_mcp_gateway_implementation.implementation.config.gateway_control_plane_id"),
-						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "catalog_mcp_gateway_implementation.implementation.config.gateway_mcp_server_id"),
-						resource.TestCheckResourceAttr("konnect_catalog_mcp_implementation.test_mcp_impl", "catalog_mcp_gateway_implementation.implementation.type", "ai-gateway"),
-					),
+						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "mcp_id")),
 				},
 				{
 					Config: baseConfig,

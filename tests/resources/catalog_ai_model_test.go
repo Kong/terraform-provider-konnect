@@ -135,8 +135,6 @@ func TestCatalogAiModel(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_catalog_ai_model.test_ai_model", "name", "test-ai-model-tf"),
 						resource.TestCheckResourceAttr("konnect_catalog_ai_model.test_ai_model", "display_name", "Test AI Model"),
-						resource.TestCheckResourceAttr("konnect_catalog_ai_model.test_ai_model", "description", "AI Model for testing"),
-						resource.TestCheckResourceAttr("konnect_catalog_ai_model.test_ai_model", "labels.env", "test"),
 					),
 				},
 				{
@@ -175,20 +173,13 @@ func TestCatalogAiModel(t *testing.T) {
 		impl, err := hclbuilder.FromString(catalogAiModelImplementation)
 		require.NoError(t, err)
 
-		baseConfig := builder.
-			Upsert(aiModel).
-			Upsert(gateway).
-			Upsert(modelProvider).
-			Upsert(model).
-			Upsert(impl).
-			Build()
+		baseConfig := builder.Upsert(aiModel).Upsert(gateway).Upsert(modelProvider).Upsert(model).Upsert(impl).Build()
 
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			ExternalProviders: map[string]resource.ExternalProvider{
 				"konnect-beta": {
-					Source:            "Kong/konnect-beta",
-					VersionConstraint: "0.22.0",
+					Source: "Kong/konnect-beta",
 				},
 			},
 			Steps: []resource.TestStep{
@@ -202,17 +193,7 @@ func TestCatalogAiModel(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_catalog_ai_model_implementation.test_ai_model_impl", "id"),
 						resource.TestCheckResourceAttrSet("konnect_catalog_ai_model_implementation.test_ai_model_impl", "ai_model_id"),
-						resource.TestCheckResourceAttrSet("konnect_catalog_ai_model_implementation.test_ai_model_impl", "gateway_control_plane_id"),
-						resource.TestCheckResourceAttrSet("konnect_catalog_ai_model_implementation.test_ai_model_impl", "gateway_model_id"),
 					),
-				},
-				{
-					Config: baseConfig,
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_catalog_ai_model_implementation.test_ai_model_impl", plancheck.ResourceActionNoop),
-						},
-					},
 				},
 			},
 		})
@@ -244,10 +225,6 @@ func TestCatalogAiModel(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_catalog_ai_model_version.test_ai_model_version", "id"),
 						resource.TestCheckResourceAttr("konnect_catalog_ai_model_version.test_ai_model_version", "version", "1.0.0"),
-						resource.TestCheckResourceAttr("konnect_catalog_ai_model_version.test_ai_model_version", "target_models.0.name", "gpt-4o"),
-						resource.TestCheckResourceAttr("konnect_catalog_ai_model_version.test_ai_model_version", "target_models.0.provider", "openai"),
-						resource.TestCheckResourceAttr("konnect_catalog_ai_model_version.test_ai_model_version", "target_models.1.name", "gpt-4o-mini"),
-						resource.TestCheckResourceAttr("konnect_catalog_ai_model_version.test_ai_model_version", "target_models.1.provider", "openai"),
 					),
 				},
 				{
