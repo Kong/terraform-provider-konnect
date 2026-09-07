@@ -258,7 +258,7 @@ paths:
         - Catalog AI Models
   '/v1/ai-models/{aiModelId}/implementations':
     parameters:
-      - $ref: '#/components/parameters/AiModelIdPath'
+      - $ref: '#/components/parameters/AiModelIdForChildren'
     post:
       x-speakeasy-entity-operation:
         terraform-resource: CatalogAiModelImplementation#create
@@ -294,7 +294,7 @@ paths:
         - Catalog AI Model Implementations
   '/v1/ai-models/{aiModelId}/implementations/{implementationId}':
     parameters:
-      - $ref: '#/components/parameters/AiModelIdPath'
+      - $ref: '#/components/parameters/AiModelIdForChildren'
       - $ref: '#/components/parameters/AiModelImplementationIdMatchingParam'
     get:
       x-speakeasy-entity-operation:
@@ -338,7 +338,7 @@ paths:
         - Catalog AI Model Implementations
   '/v1/ai-models/{aiModelId}/versions':
     parameters:
-      - $ref: '#/components/parameters/AiModelIdPath'
+      - $ref: '#/components/parameters/AiModelIdForChildren'
     post:
       x-speakeasy-entity-operation:
         terraform-resource: CatalogAiModelVersion#create
@@ -374,7 +374,7 @@ paths:
         - Catalog AI Model Versions
   '/v1/ai-models/{aiModelId}/versions/latest':
     parameters:
-      - $ref: '#/components/parameters/AiModelIdPath'
+      - $ref: '#/components/parameters/AiModelIdForChildren'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: CatalogAiModelVersion#read
@@ -450,7 +450,7 @@ paths:
         - Catalog AI Model Versions
   '/v1/ai-models/{aiModelId}/versions/latest/spec':
     parameters:
-      - $ref: '#/components/parameters/AiModelIdPath'
+      - $ref: '#/components/parameters/AiModelIdForChildren'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: CatalogAiModelVersionSpec#read
@@ -3564,7 +3564,7 @@ paths:
         - Catalog MCPs
   '/v1/mcp-servers/{mcpId}/implementations':
     parameters:
-      - $ref: '#/components/parameters/CatalogMCPIdPath'
+      - $ref: '#/components/parameters/CatalogMCPIdForChildren'
     post:
       x-speakeasy-entity-operation:
         terraform-resource: CatalogMCPImplementation#create
@@ -3592,7 +3592,7 @@ paths:
         - Catalog MCP Implementations
   '/v1/mcp-servers/{mcpId}/implementations/{implementationId}':
     parameters:
-      - $ref: '#/components/parameters/CatalogMCPIdPath'
+      - $ref: '#/components/parameters/CatalogMCPIdForChildren'
       - $ref: '#/components/parameters/CatalogMCPImplementationIdMatchingParam'
     get:
       x-speakeasy-entity-operation:
@@ -3632,7 +3632,7 @@ paths:
         - Catalog MCP Implementations
   '/v1/mcp-servers/{mcpId}/versions':
     parameters:
-      - $ref: '#/components/parameters/CatalogMCPIdPath'
+      - $ref: '#/components/parameters/CatalogMCPIdForChildren'
     post:
       x-speakeasy-entity-operation:
         terraform-resource: CatalogMCPVersion#create
@@ -3660,7 +3660,7 @@ paths:
         - Catalog MCP Versions
   '/v1/mcp-servers/{mcpId}/versions/latest':
     parameters:
-      - $ref: '#/components/parameters/CatalogMCPIdPath'
+      - $ref: '#/components/parameters/CatalogMCPIdForChildren'
     get:
       x-speakeasy-entity-operation:
         terraform-resource: CatalogMCPVersion#read
@@ -21803,6 +21803,16 @@ components:
       schema:
         $ref: '#/components/schemas/AddOnId'
       x-speakeasy-match: id
+    AiModelIdForChildren:
+      name: aiModelId
+      in: path
+      required: true
+      description: The unique identifier of the AI Model.
+      x-speakeasy-name-override: catalogAiModelId
+      schema:
+        type: string
+        format: uuid
+        example: 123e4567-e89b-12d3-a456-426614174000
     AiModelIdMatchingParam:
       name: aiModelId
       in: path
@@ -21813,15 +21823,6 @@ components:
       schema:
         type: string
         format: uuid
-    AiModelIdPath:
-      name: aiModelId
-      in: path
-      required: true
-      description: The unique identifier of the AI Model.
-      schema:
-        type: string
-        format: uuid
-        example: 123e4567-e89b-12d3-a456-426614174000
     AiModelImplementationIdMatchingParam:
       name: implementationId
       in: path
@@ -21913,6 +21914,16 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    CatalogMCPIdForChildren:
+      name: mcpId
+      in: path
+      required: true
+      description: The unique identifier of the MCP.
+      x-speakeasy-name-override: catalogMCPId
+      schema:
+        type: string
+        format: uuid
+        example: a0119846-f179-4d9f-a168-d701facce7fb
     CatalogMCPIdMatchingParam:
       name: mcpId
       in: path
@@ -21923,15 +21934,6 @@ components:
       schema:
         type: string
         format: uuid
-    CatalogMCPIdPath:
-      name: mcpId
-      in: path
-      required: true
-      description: The unique identifier of the MCP.
-      schema:
-        type: string
-        format: uuid
-        example: a0119846-f179-4d9f-a168-d701facce7fb
     CatalogMCPImplementationIdMatchingParam:
       name: implementationId
       in: path
@@ -30620,6 +30622,11 @@ components:
           description: 'When true, sends an invitation email to the developer. Default is false; no emails are sent unless explicitly requested.'
           type: boolean
           default: false
+        additional_data:
+          description: |
+            The developer's answers to the portal's `developer_registration` form, if it has one, as a map from each field's `name` to its value. Optional. Built-in fields like `full_name` and `email` go in their own top-level properties, not here. Ignored if the portal doesn't have a `developer_registration` form.
+          allOf:
+            - $ref: '#/components/schemas/FormResponseInput'
       example:
         email: developer@example.com
         full_name: Developer Name
@@ -30655,6 +30662,16 @@ components:
           maxLength: 255
         status:
           $ref: '#/components/schemas/DeveloperStatus'
+        additional_data:
+          description: |
+            The developer's answers to the portal's `developer_registration`
+            form, captured when they registered.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FormResponseData'
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       example:
         id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
         email: developer@example.com
@@ -31166,6 +31183,11 @@ components:
             - approved
             - pending
           x-speakeasy-unknown-values: allow
+        additional_data:
+          description: |
+            The developer's answers to the `api_registration` form linked to this API, as a map from each field's `name` to its value. Optional, and ignored if no form is linked to the publication.
+          allOf:
+            - $ref: '#/components/schemas/FormResponseInput'
       example:
         api_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       additionalProperties: false
@@ -31184,6 +31206,15 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         status:
           $ref: '#/components/schemas/ApplicationRegistrationStatus'
+        additional_data:
+          description: |
+            The developer's answers to the `api_registration` form linked to this API, captured when they registered.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FormResponseData'
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         api:
           description: Details about the API the application is registered to.
           type: object
@@ -32040,9 +32071,11 @@ components:
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         spec_renderer:
+          description: The spec renderer settings of this portal
           type: object
+          default: null
           additionalProperties: false
-          nullable: false
+          nullable: true
           properties:
             try_it_ui:
               description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
@@ -32072,6 +32105,23 @@ components:
               description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
               type: boolean
               default: true
+            try_it_ui_audience:
+              description: |
+                The audience for the Try It UI feature.
+
+                `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+                `authenticated` means that the Try It UI will only be available to authenticated users.
+
+                `registered` means that the Try It UI will only be available to users who have registered for the API.
+              type: string
+              default: all
+              enum:
+                - all
+                - authenticated
+                - registered
+              x-speakeasy-unknown-values: allow
+          title: PortalCustomizationSpecRenderer
           x-speakeasy-param-computed: false
         robots:
           type: string
@@ -32110,6 +32160,92 @@ components:
       type: string
       maxLength: 255
       nullable: false
+    CustomFormFieldName:
+      description: |
+        A stable, URL-safe slug identifying the field (letters, digits,
+        underscores, or hyphens). When omitted, `label` is slugified instead.
+
+        Used to match up stored responses across edits.
+      type: string
+      example: full-name
+      maxLength: 128
+      pattern: '^[\w-]+$'
+    FormResponseEntry:
+      description: |
+        One field's submitted answer, along with a snapshot of that field's details as they appeared when submitted.
+      type: object
+      properties:
+        name:
+          description: The field's `name`. Matches the parent object's key.
+          allOf:
+            - $ref: '#/components/schemas/CustomFormFieldName'
+        label:
+          description: The field's label at the time it was submitted.
+          type: string
+          example: Full Name
+        type:
+          description: The field's type at the time it was submitted.
+          type: string
+          example: text
+          enum:
+            - text
+            - email
+            - number
+            - textarea
+            - select
+            - checkbox
+          x-speakeasy-unknown-values: allow
+        value:
+          description: |
+            The submitted value. Its type matches the field's type:
+
+            * `text`, `email`, `textarea` — string
+            * `number` — number
+            * `checkbox` — boolean
+            * `select` — string for single-select fields, or an array of strings for multi-select fields
+          oneOf:
+            - type: string
+              example: Ada Lovelace
+            - type: number
+              example: 42
+            - type: boolean
+              example: true
+            - type: array
+              items:
+                type: string
+              example:
+                - api
+                - portal
+      additionalProperties: false
+      required:
+        - name
+        - label
+        - type
+        - value
+    FormResponseData:
+      description: |
+        A developer's submitted answers to a form, as a map from each field's `name` to a record of that answer. Each record captures the field's `label`, `type`, and `value` exactly as they appeared when the developer submitted the form. Encrypted at rest.
+      type: object
+      example:
+        full_name:
+          name: full_name
+          label: Full Name
+          type: text
+          value: Ada Lovelace
+        email:
+          name: email
+          label: Email Address
+          type: email
+          value: ada@example.com
+        topics:
+          name: topics
+          label: Topics of Interest
+          type: select
+          value:
+            - api
+            - portal
+      additionalProperties:
+        $ref: '#/components/schemas/FormResponseEntry'
     EntityType:
       description: The type of entity that is being published. Can be either an API or an API Package.
       type: string
@@ -32119,6 +32255,26 @@ components:
         - api_package
       title: Entity Type
       x-speakeasy-unknown-values: allow
+    FormResponseInput:
+      description: |
+        The developer's answers to a custom form, as a map from each field's `name` to its value. Built-in fields like `full_name` and `email` go in their own top-level properties, not here.
+      type: object
+      example:
+        department: engineering
+        age: 35
+        accepted_terms: true
+        topics:
+          - api
+          - portal
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: number
+          - type: boolean
+          - type: array
+            items:
+              type: string
+      x-speakeasy-terraform-ignore: true
     PortalSAMLIdentityProviderConfig:
       description: The identity provider that contains configuration data for the SAML authentication integration.
       type: object
@@ -32584,6 +32740,13 @@ components:
           $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
         visibility:
           $ref: '#/components/schemas/ApiPublicationVisibility'
+        form_id:
+          description: |
+            UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
+          type: string
+          format: uuid
+          nullable: true
+          x-speakeasy-param-computed: true
         warnings:
           description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
           type: array
@@ -37730,10 +37893,12 @@ components:
           type: string
           format: uuid
           example: 223e4567-e89b-12d3-a456-426614174999
+          x-speakeasy-name-override: ai_gateway_id
         gateway_model_id:
           description: The text or uuid identifier of the AI Gateway model to link.
           type: string
           example: gw-model-abc
+          x-speakeasy-name-override: ai_gateway_model_id
       additionalProperties: false
       required:
         - gateway_control_plane_id
@@ -37837,32 +38002,22 @@ components:
         title:
           description: Human-readable name of the tool.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         destructive_hint:
           description: Indicates if the tool performs destructive actions.
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         idempotent_hint:
           description: Indicates if the tool is idempotent.
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         open_world_hint:
           description: Indicates if the tool interacts with external entities.
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         read_only_hint:
           description: Indicates if the tool is read-only.
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
     CatalogMCPAnnotations:
@@ -37877,8 +38032,6 @@ components:
               - user
               - assistant
             x-speakeasy-unknown-values: allow
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         priority:
           description: |
@@ -37887,15 +38040,11 @@ components:
             A value of 1 means "most important," and indicates the data is effectively required, while 0 means
             "least important," and indicates the data is entirely optional.
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         last_modified:
           description: 'The moment the resource was last modified, in ISO-8601 format.'
           type: string
           format: date-time
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
     CatalogMCPPromptArgument:
@@ -37907,20 +38056,14 @@ components:
         title:
           description: Human-readable name of the prompt argument.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         description:
           description: Detailed description of the prompt argument.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         required:
           description: Indicates if the prompt argument is required.
           type: boolean
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
@@ -37936,14 +38079,10 @@ components:
         title:
           description: Human-readable name of the tool.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         description:
           description: Detailed description of the tool's functionality.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         input_schema:
           $ref: '#/components/schemas/CatalogMCPToolInputSchema'
@@ -37966,8 +38105,6 @@ components:
         title:
           description: Human-readable name of the resource.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         uri:
           description: The URI of the resource.
@@ -37975,22 +38112,16 @@ components:
         description:
           description: Detailed description of what the resource represents.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         mime_type:
           description: 'The MIME type of the resource, if known.'
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         annotations:
           $ref: '#/components/schemas/CatalogMCPAnnotations'
         size:
           description: 'The size of the raw resource content, in bytes, if known.'
           type: number
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
@@ -38006,22 +38137,16 @@ components:
         title:
           description: Human-readable name of the prompt.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         description:
           description: Detailed description of the prompt's purpose and usage.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         arguments:
           description: List of arguments to use for templating the prompt.
           type: array
           items:
             $ref: '#/components/schemas/CatalogMCPPromptArgument'
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
       required:
@@ -38171,10 +38296,12 @@ components:
           type: string
           format: uuid
           example: 223e4567-e89b-12d3-a456-426614174999
+          x-speakeasy-name-override: ai_gateway_id
         gateway_mcp_server_id:
           description: The identifier of the linked AI Gateway MCP server.
           type: string
           example: 79087145-0159-4811-9042-6a9365f234bc
+          x-speakeasy-name-override: ai_gateway_mcp_server_id
       additionalProperties: false
       required:
         - gateway_control_plane_id
@@ -38226,18 +38353,18 @@ components:
       additionalProperties: false
       required:
         - implementation
+      x-speakeasy-name-override: AIGatewayMCPCatalog
     MCPInput:
       type: object
       properties:
         description:
           description: A description of the input.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         is_required:
           type: boolean
           default: false
+          x-speakeasy-param-computed: false
         format:
           description: Specifies the input format.
           type: string
@@ -38247,28 +38374,24 @@ components:
             - number
             - boolean
             - filepath
+          x-speakeasy-param-computed: false
           x-speakeasy-unknown-values: allow
         value:
           description: The value for the input.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         is_secret:
           description: Indicates whether the input is a secret value.
           type: boolean
           default: false
+          x-speakeasy-param-computed: false
         default:
           description: The default value for the input.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         placeholder:
           description: A placeholder for the input to be displayed during configuration.
           type: string
-          default: null
-          nullable: true
           x-speakeasy-param-computed: false
         choices:
           description: A list of possible values for the input.
@@ -38276,9 +38399,8 @@ components:
           items:
             type: string
           example: []
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
+          x-speakeasy-param-computed: true
       title: MCPInput
     MCPInputWithVariables:
       allOf:
@@ -38313,8 +38435,7 @@ components:
           description: Transport type
           type: string
           example: streamable-http
-          enum:
-            - streamable-http
+          const: streamable-http
         url:
           description: URL template for the streamable-http transport.
           type: string
@@ -38342,8 +38463,7 @@ components:
           description: Transport type
           type: string
           example: sse
-          enum:
-            - sse
+          const: sse
         url:
           description: Server-Sent Events endpoint URL template.
           type: string
@@ -38388,8 +38508,7 @@ components:
           description: Transport type
           type: string
           example: stdio
-          enum:
-            - stdio
+          const: stdio
       example:
         type: stdio
       required:
@@ -38416,8 +38535,7 @@ components:
             type:
               type: string
               example: positional
-              enum:
-                - positional
+              const: positional
             value_hint:
               description: An identifier for the positional argument.
               type: string
@@ -38429,13 +38547,6 @@ components:
               description: Whether the argument can be repeated multiple times.
               type: boolean
               default: false
-        - anyOf:
-            - type: object
-              required:
-                - value_hint
-            - type: object
-              required:
-                - value
       title: MCPPositionalArgument
     MCPNamedArgument:
       description: 'A command-line `--flag={value}`.'
@@ -38452,8 +38563,7 @@ components:
             type:
               type: string
               example: named
-              enum:
-                - named
+              const: named
             name:
               description: 'The flag name, including any leading dashes.'
               type: string
@@ -38516,23 +38626,17 @@ components:
         runtime:
           description: Runtime configuration for executing the package
           type: object
-          default: null
-          nullable: true
           properties:
             hint:
               description: A hint to help clients determine the appropriate runtime for the package.
               type: string
               example: npx
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
             arguments:
               description: A list of arguments to be passed to the package's runtime command.
               type: array
               items:
                 $ref: '#/components/schemas/MCPArgument'
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         package_arguments:
@@ -81547,6 +81651,13 @@ components:
                 $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
               visibility:
                 $ref: '#/components/schemas/ApiPublicationVisibility'
+              form_id:
+                description: |
+                  UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
+                type: string
+                format: uuid
+                nullable: true
+                x-speakeasy-param-computed: true
               warnings:
                 description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
                 type: array
@@ -81564,6 +81675,7 @@ components:
               - created_at
               - updated_at
               - auth_strategy_ids
+              - form_id
             title: API Publication
     ApiImplementationResponse:
       description: An API implementation
