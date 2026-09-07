@@ -10,7 +10,7 @@ resource "konnect_catalog_mcp" "test_mcp" {
 
 #example of creating a version for the MCP in the catalog with a resource
 resource "konnect_catalog_mcp_version" "test_mcp_version" {
-  mcp_id  = konnect_catalog_mcp.test_mcp.id
+  catalog_mcp_id  = konnect_catalog_mcp.test_mcp.id
   version = "1.0.0"
   resources = [
     {
@@ -51,12 +51,12 @@ resource "konnect_ai_gateway_mcp_server" "test_mcp_server" {
 
 #example of creating a MCP implementation in the catalog that uses the AI Gateway and MCP Server
 resource "konnect_catalog_mcp_implementation" "test_mcp_impl" {
-  mcp_id = konnect_catalog_mcp.test_mcp.id
-  create_catalog_mcp_gateway_implementation = {
+  catalog_mcp_id = konnect_catalog_mcp.test_mcp.id
+  ai_gateway_mcp_catalog = {
     implementation = {
       config = {
-        gateway_control_plane_id = konnect_ai_gateway.test_ai_gateway_mcp.id
-        gateway_mcp_server_id    = konnect_ai_gateway_mcp_server.test_mcp_server.id
+        ai_gateway_id =            konnect_ai_gateway.test_ai_gateway_mcp.id
+        ai_gateway_mcp_server_id    = konnect_ai_gateway_mcp_server.test_mcp_server.id
       }
       type = "ai-gateway"
     }

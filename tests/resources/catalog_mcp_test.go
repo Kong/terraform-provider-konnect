@@ -24,7 +24,7 @@ const (
 
 	catalogMcpVersion = `
 		resource "konnect_catalog_mcp_version" "test_mcp_version" {
-			mcp_id  = konnect_catalog_mcp.test_mcp.id
+			catalog_mcp_id  = konnect_catalog_mcp.test_mcp.id
 			version = "1.0.0"
 			resources = [
 				{
@@ -68,12 +68,12 @@ const (
 
 	catalogMcpImplementation = `
 		resource "konnect_catalog_mcp_implementation" "test_mcp_impl" {
-			mcp_id = konnect_catalog_mcp.test_mcp.id
-			create_catalog_mcp_gateway_implementation = {
+			catalog_mcp_id = konnect_catalog_mcp.test_mcp.id
+			ai_gateway_mcp_catalog = {
 				implementation = {
 					config = {
-						gateway_control_plane_id = konnect_ai_gateway.test_ai_gateway_mcp.id
-						gateway_mcp_server_id    = konnect_ai_gateway_mcp_server.test_mcp_server.id
+						ai_gateway_id =            konnect_ai_gateway.test_ai_gateway_mcp.id
+						ai_gateway_mcp_server_id    = konnect_ai_gateway_mcp_server.test_mcp_server.id
 					}
 					type = "ai-gateway"
 				}
@@ -209,7 +209,7 @@ func TestCatalogMCP(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "id"),
-						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "mcp_id")),
+						resource.TestCheckResourceAttrSet("konnect_catalog_mcp_implementation.test_mcp_impl", "catalog_mcp_id")),
 				},
 				{
 					Config: baseConfig,

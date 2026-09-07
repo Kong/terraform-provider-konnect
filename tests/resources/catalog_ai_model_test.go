@@ -76,15 +76,15 @@ const (
 
 	catalogAiModelImplementation = `
 		resource "konnect_catalog_ai_model_implementation" "test_ai_model_impl" {
-			ai_model_id              = konnect_catalog_ai_model.test_ai_model.id
-			gateway_control_plane_id = konnect_ai_gateway.test_ai_gateway.id
-			gateway_model_id         = konnect_ai_gateway_model.test_ai_gateway_model.id
+			catalog_ai_model_id      = konnect_catalog_ai_model.test_ai_model.id
+			ai_gateway_id            = konnect_ai_gateway.test_ai_gateway.id
+			ai_gateway_model_id      = konnect_ai_gateway_model.test_ai_gateway_model.id
 		}
 	`
 
 	catalogAiModelVersion = `
 		resource "konnect_catalog_ai_model_version" "test_ai_model_version" {
-			ai_model_id = konnect_catalog_ai_model.test_ai_model.id
+			catalog_ai_model_id = konnect_catalog_ai_model.test_ai_model.id
 			version     = "1.0.0"
 			target_models = [
 				{
@@ -101,7 +101,7 @@ const (
 
 	catalogAiModelVersionSpec = `
 		resource "konnect_catalog_ai_model_version_spec" "test_ai_model_version_spec" {
-			ai_model_id  = konnect_catalog_ai_model.test_ai_model.id
+			catalog_ai_model_id  = konnect_catalog_ai_model.test_ai_model.id
 			spec_content = "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Test AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}"
 			depends_on = [konnect_catalog_ai_model_version.test_ai_model_version]
 		}
@@ -272,7 +272,7 @@ func TestCatalogAiModel(t *testing.T) {
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttrSet("konnect_catalog_ai_model_version_spec.test_ai_model_version_spec", "ai_model_id"),
+						resource.TestCheckResourceAttrSet("konnect_catalog_ai_model_version_spec.test_ai_model_version_spec", "catalog_ai_model_id"),
 						resource.TestCheckResourceAttr("konnect_catalog_ai_model_version_spec.test_ai_model_version_spec", "spec_content", "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Test AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}"),
 					),
 				},
