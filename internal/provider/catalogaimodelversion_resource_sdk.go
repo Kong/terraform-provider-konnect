@@ -39,8 +39,8 @@ func (r *CatalogAiModelVersionResourceModel) RefreshFromSharedAiModelVersion(ctx
 func (r *CatalogAiModelVersionResourceModel) ToOperationsCreateAiModelVersionRequest(ctx context.Context) (*operations.CreateAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	aiModelVersionCreate, aiModelVersionCreateDiags := r.ToSharedAiModelVersionCreate(ctx)
 	diags.Append(aiModelVersionCreateDiags...)
@@ -50,7 +50,7 @@ func (r *CatalogAiModelVersionResourceModel) ToOperationsCreateAiModelVersionReq
 	}
 
 	out := operations.CreateAiModelVersionRequest{
-		AiModelID:            aiModelID,
+		CatalogAiModelID:     catalogAiModelID,
 		AiModelVersionCreate: *aiModelVersionCreate,
 	}
 
@@ -60,11 +60,11 @@ func (r *CatalogAiModelVersionResourceModel) ToOperationsCreateAiModelVersionReq
 func (r *CatalogAiModelVersionResourceModel) ToOperationsDeleteLatestAiModelVersionRequest(ctx context.Context) (*operations.DeleteLatestAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	out := operations.DeleteLatestAiModelVersionRequest{
-		AiModelID: aiModelID,
+		CatalogAiModelID: catalogAiModelID,
 	}
 
 	return &out, diags
@@ -73,11 +73,11 @@ func (r *CatalogAiModelVersionResourceModel) ToOperationsDeleteLatestAiModelVers
 func (r *CatalogAiModelVersionResourceModel) ToOperationsGetLatestAiModelVersionRequest(ctx context.Context) (*operations.GetLatestAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	out := operations.GetLatestAiModelVersionRequest{
-		AiModelID: aiModelID,
+		CatalogAiModelID: catalogAiModelID,
 	}
 
 	return &out, diags
@@ -86,8 +86,8 @@ func (r *CatalogAiModelVersionResourceModel) ToOperationsGetLatestAiModelVersion
 func (r *CatalogAiModelVersionResourceModel) ToOperationsUpsertLatestAiModelVersionRequest(ctx context.Context) (*operations.UpsertLatestAiModelVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	aiModelVersionCreate, aiModelVersionCreateDiags := r.ToSharedAiModelVersionCreate(ctx)
 	diags.Append(aiModelVersionCreateDiags...)
@@ -97,7 +97,7 @@ func (r *CatalogAiModelVersionResourceModel) ToOperationsUpsertLatestAiModelVers
 	}
 
 	out := operations.UpsertLatestAiModelVersionRequest{
-		AiModelID:            aiModelID,
+		CatalogAiModelID:     catalogAiModelID,
 		AiModelVersionCreate: *aiModelVersionCreate,
 	}
 

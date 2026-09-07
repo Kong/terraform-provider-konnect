@@ -42,9 +42,9 @@ func (r *Registry) GetBaseURL() *string {
 // Runtime configuration for executing the package
 type Runtime struct {
 	// A hint to help clients determine the appropriate runtime for the package.
-	Hint *string `default:"null" json:"hint"`
+	Hint *string `json:"hint,omitempty"`
 	// A list of arguments to be passed to the package's runtime command.
-	Arguments []MCPArgument `json:"arguments"`
+	Arguments []MCPArgument `json:"arguments,omitempty"`
 }
 
 func (r Runtime) MarshalJSON() ([]byte, error) {
@@ -83,7 +83,7 @@ type MCPPackage struct {
 	FileSha256 *string      `default:"null" json:"file_sha256"`
 	Transport  MCPTransport `json:"transport"`
 	// Runtime configuration for executing the package
-	Runtime *Runtime `json:"runtime"`
+	Runtime *Runtime `json:"runtime,omitempty"`
 	// A list of arguments to be passed to the package's binary.
 	PackageArguments []MCPArgument `json:"package_arguments"`
 	// Environment variables to be set when running the package.

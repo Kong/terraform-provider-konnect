@@ -10,7 +10,7 @@ import (
 
 type DeleteLatestMcpVersionRequest struct {
 	// The unique identifier of the MCP.
-	McpID string `pathParam:"style=simple,explode=false,name=mcpId"`
+	CatalogMCPID string `pathParam:"style=simple,explode=false,name=mcpId"`
 }
 
 func (d DeleteLatestMcpVersionRequest) MarshalJSON() ([]byte, error) {
@@ -24,11 +24,11 @@ func (d *DeleteLatestMcpVersionRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (d *DeleteLatestMcpVersionRequest) GetMcpID() string {
+func (d *DeleteLatestMcpVersionRequest) GetCatalogMCPID() string {
 	if d == nil {
 		return ""
 	}
-	return d.McpID
+	return d.CatalogMCPID
 }
 
 type DeleteLatestMcpVersionResponse struct {

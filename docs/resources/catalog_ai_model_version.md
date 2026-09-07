@@ -14,7 +14,7 @@ CatalogAiModelVersion Resource
 
 ```terraform
 resource "konnect_catalog_ai_model_version" "my_catalogaimodelversion" {
-  ai_model_id = "123e4567-e89b-12d3-a456-426614174000"
+  catalog_ai_model_id = "123e4567-e89b-12d3-a456-426614174000"
   target_models = [
     {
       name     = "gpt-4o"
@@ -30,7 +30,7 @@ resource "konnect_catalog_ai_model_version" "my_catalogaimodelversion" {
 
 ### Required
 
-- `ai_model_id` (String) The unique identifier of the AI Model.
+- `catalog_ai_model_id` (String) The unique identifier of the AI Model.
 - `target_models` (Attributes List) The upstream LLM targets (full set). (see [below for nested schema](#nestedatt--target_models))
 
 ### Optional
@@ -39,6 +39,7 @@ resource "konnect_catalog_ai_model_version" "my_catalogaimodelversion" {
 
 ### Read-Only
 
+- `ai_model_id` (String) The identifier of the parent AI Model.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The unique identifier of the version.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

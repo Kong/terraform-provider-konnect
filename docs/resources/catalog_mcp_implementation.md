@@ -14,16 +14,16 @@ CatalogMCPImplementation Resource
 
 ```terraform
 resource "konnect_catalog_mcp_implementation" "my_catalogmcpimplementation" {
-  create_catalog_mcp_gateway_implementation = {
+  ai_gateway_mcp_catalog = {
     implementation = {
       config = {
-        gateway_control_plane_id = "223e4567-e89b-12d3-a456-426614174999"
-        gateway_mcp_server_id    = "79087145-0159-4811-9042-6a9365f234bc"
+        ai_gateway_id            = "223e4567-e89b-12d3-a456-426614174999"
+        ai_gateway_mcp_server_id = "79087145-0159-4811-9042-6a9365f234bc"
       }
       type = "ai-gateway"
     }
   }
-  mcp_id = "a0119846-f179-4d9f-a168-d701facce7fb"
+  catalog_mcp_id = "a0119846-f179-4d9f-a168-d701facce7fb"
 }
 ```
 
@@ -32,11 +32,11 @@ resource "konnect_catalog_mcp_implementation" "my_catalogmcpimplementation" {
 
 ### Required
 
-- `mcp_id` (String) The unique identifier of the MCP. Requires replacement if changed.
+- `catalog_mcp_id` (String) The unique identifier of the MCP. Requires replacement if changed.
 
 ### Optional
 
-- `create_catalog_mcp_gateway_implementation` (Attributes) Request body for creating an MCP implementation linked to an AI Gateway MCP Server. Requires replacement if changed. (see [below for nested schema](#nestedatt--create_catalog_mcp_gateway_implementation))
+- `ai_gateway_mcp_catalog` (Attributes) Request body for creating an MCP implementation linked to an AI Gateway MCP Server. Requires replacement if changed. (see [below for nested schema](#nestedatt--ai_gateway_mcp_catalog))
 
 ### Read-Only
 
@@ -47,30 +47,30 @@ resource "konnect_catalog_mcp_implementation" "my_catalogmcpimplementation" {
 Server. (see [below for nested schema](#nestedatt--implementation))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
-<a id="nestedatt--create_catalog_mcp_gateway_implementation"></a>
-### Nested Schema for `create_catalog_mcp_gateway_implementation`
+<a id="nestedatt--ai_gateway_mcp_catalog"></a>
+### Nested Schema for `ai_gateway_mcp_catalog`
 
 Required:
 
 - `implementation` (Attributes) Schema to describe the type and configuration typing for an MCP implementation linked to an AI Gateway MCP
 Server.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--create_catalog_mcp_gateway_implementation--implementation))
+Requires replacement if changed. (see [below for nested schema](#nestedatt--ai_gateway_mcp_catalog--implementation))
 
-<a id="nestedatt--create_catalog_mcp_gateway_implementation--implementation"></a>
-### Nested Schema for `create_catalog_mcp_gateway_implementation.implementation`
+<a id="nestedatt--ai_gateway_mcp_catalog--implementation"></a>
+### Nested Schema for `ai_gateway_mcp_catalog.implementation`
 
 Required:
 
-- `config` (Attributes) Configuration for an MCP implementation linked to an AI Gateway MCP Server. Requires replacement if changed. (see [below for nested schema](#nestedatt--create_catalog_mcp_gateway_implementation--implementation--config))
+- `config` (Attributes) Configuration for an MCP implementation linked to an AI Gateway MCP Server. Requires replacement if changed. (see [below for nested schema](#nestedatt--ai_gateway_mcp_catalog--implementation--config))
 - `type` (String) must be "ai-gateway"; Requires replacement if changed.
 
-<a id="nestedatt--create_catalog_mcp_gateway_implementation--implementation--config"></a>
-### Nested Schema for `create_catalog_mcp_gateway_implementation.implementation.config`
+<a id="nestedatt--ai_gateway_mcp_catalog--implementation--config"></a>
+### Nested Schema for `ai_gateway_mcp_catalog.implementation.config`
 
 Required:
 
-- `gateway_control_plane_id` (String) The AI Gateway control plane the linked model belongs to. Requires replacement if changed.
-- `gateway_mcp_server_id` (String) The identifier of the linked AI Gateway MCP server. Requires replacement if changed.
+- `ai_gateway_id` (String) The AI Gateway control plane the linked model belongs to. Requires replacement if changed.
+- `ai_gateway_mcp_server_id` (String) The identifier of the linked AI Gateway MCP server. Requires replacement if changed.
 
 
 
@@ -99,8 +99,8 @@ Read-Only:
 
 Read-Only:
 
-- `gateway_control_plane_id` (String) The AI Gateway control plane the linked model belongs to.
-- `gateway_mcp_server_id` (String) The identifier of the linked AI Gateway MCP server.
+- `ai_gateway_id` (String) The AI Gateway control plane the linked model belongs to.
+- `ai_gateway_mcp_server_id` (String) The identifier of the linked AI Gateway MCP server.
 
 
 
@@ -118,8 +118,8 @@ Read-Only:
 
 Read-Only:
 
-- `gateway_control_plane_id` (String) The AI Gateway control plane the linked model belongs to.
-- `gateway_mcp_server_id` (String) The identifier of the linked AI Gateway MCP server.
+- `ai_gateway_id` (String) The AI Gateway control plane the linked model belongs to.
+- `ai_gateway_mcp_server_id` (String) The identifier of the linked AI Gateway MCP server.
 
 ## Import
 
@@ -131,8 +131,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_catalog_mcp_implementation.my_konnect_catalog_mcp_implementation
   id = jsonencode({
-    id     = "7703e2f2-f9c0-47e3-9146-5fa50486b871"
-    mcp_id = "a0119846-f179-4d9f-a168-d701facce7fb"
+    catalog_mcp_id = "a0119846-f179-4d9f-a168-d701facce7fb"
+    id             = "7703e2f2-f9c0-47e3-9146-5fa50486b871"
   })
 }
 ```
@@ -140,5 +140,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_catalog_mcp_implementation.my_konnect_catalog_mcp_implementation '{"id": "7703e2f2-f9c0-47e3-9146-5fa50486b871", "mcp_id": "a0119846-f179-4d9f-a168-d701facce7fb"}'
+terraform import konnect_catalog_mcp_implementation.my_konnect_catalog_mcp_implementation '{"catalog_mcp_id": "a0119846-f179-4d9f-a168-d701facce7fb", "id": "7703e2f2-f9c0-47e3-9146-5fa50486b871"}'
 ```

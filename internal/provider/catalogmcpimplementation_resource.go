@@ -41,13 +41,13 @@ type CatalogMCPImplementationResource struct {
 
 // CatalogMCPImplementationResourceModel describes the resource data model.
 type CatalogMCPImplementationResourceModel struct {
-	CatalogMCPGatewayImplementation       *tfTypes.CatalogMCPGatewayImplementation       `queryParam:"inline" tfsdk:"catalog_mcp_gateway_implementation"`
-	CreateCatalogMCPGatewayImplementation *tfTypes.CreateCatalogMCPGatewayImplementation `queryParam:"inline" tfsdk:"create_catalog_mcp_gateway_implementation"`
-	CreatedAt                             types.String                                   `tfsdk:"created_at"`
-	ID                                    types.String                                   `tfsdk:"id"`
-	Implementation                        *tfTypes.CatalogMCPGatewayImplementationBlock  `tfsdk:"implementation"`
-	McpID                                 types.String                                   `tfsdk:"mcp_id"`
-	UpdatedAt                             types.String                                   `tfsdk:"updated_at"`
+	AIGatewayMCPCatalog             *tfTypes.AIGatewayMCPCatalog                  `queryParam:"inline" tfsdk:"ai_gateway_mcp_catalog"`
+	CatalogMCPGatewayImplementation *tfTypes.CatalogMCPGatewayImplementation      `queryParam:"inline" tfsdk:"catalog_mcp_gateway_implementation"`
+	CatalogMCPID                    types.String                                  `tfsdk:"catalog_mcp_id"`
+	CreatedAt                       types.String                                  `tfsdk:"created_at"`
+	ID                              types.String                                  `tfsdk:"id"`
+	Implementation                  *tfTypes.CatalogMCPGatewayImplementationBlock `tfsdk:"implementation"`
+	UpdatedAt                       types.String                                  `tfsdk:"updated_at"`
 }
 
 func (r *CatalogMCPImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,55 +58,7 @@ func (r *CatalogMCPImplementationResource) Schema(ctx context.Context, req resou
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "CatalogMCPImplementation Resource",
 		Attributes: map[string]schema.Attribute{
-			"catalog_mcp_gateway_implementation": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
-					"id": schema.StringAttribute{
-						Computed:    true,
-						Description: `The unique identifier of the implementation (link) record.`,
-					},
-					"implementation": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"config": schema.SingleNestedAttribute{
-								Computed: true,
-								Attributes: map[string]schema.Attribute{
-									"gateway_control_plane_id": schema.StringAttribute{
-										Computed:    true,
-										Description: `The AI Gateway control plane the linked model belongs to.`,
-									},
-									"gateway_mcp_server_id": schema.StringAttribute{
-										Computed:    true,
-										Description: `The identifier of the linked AI Gateway MCP server.`,
-									},
-								},
-								Description: `Configuration for an MCP implementation linked to an AI Gateway MCP Server.`,
-							},
-							"type": schema.StringAttribute{
-								Computed: true,
-							},
-						},
-						MarkdownDescription: `Schema to describe the type and configuration typing for an MCP implementation linked to an AI Gateway MCP` + "\n" +
-							`Server.`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-					},
-				},
-				Description: `An MCP implementation resource linked to an AI Gateway MCP Server.`,
-			},
-			"create_catalog_mcp_gateway_implementation": schema.SingleNestedAttribute{
+			"ai_gateway_mcp_catalog": schema.SingleNestedAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -124,14 +76,14 @@ func (r *CatalogMCPImplementationResource) Schema(ctx context.Context, req resou
 									objectplanmodifier.RequiresReplaceIfConfigured(),
 								},
 								Attributes: map[string]schema.Attribute{
-									"gateway_control_plane_id": schema.StringAttribute{
+									"ai_gateway_id": schema.StringAttribute{
 										Required: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
 										},
 										Description: `The AI Gateway control plane the linked model belongs to. Requires replacement if changed.`,
 									},
-									"gateway_mcp_server_id": schema.StringAttribute{
+									"ai_gateway_mcp_server_id": schema.StringAttribute{
 										Required: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
@@ -166,6 +118,61 @@ func (r *CatalogMCPImplementationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
+			"catalog_mcp_gateway_implementation": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The unique identifier of the implementation (link) record.`,
+					},
+					"implementation": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"config": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"ai_gateway_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The AI Gateway control plane the linked model belongs to.`,
+									},
+									"ai_gateway_mcp_server_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The identifier of the linked AI Gateway MCP server.`,
+									},
+								},
+								Description: `Configuration for an MCP implementation linked to an AI Gateway MCP Server.`,
+							},
+							"type": schema.StringAttribute{
+								Computed: true,
+							},
+						},
+						MarkdownDescription: `Schema to describe the type and configuration typing for an MCP implementation linked to an AI Gateway MCP` + "\n" +
+							`Server.`,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
+				},
+				Description: `An MCP implementation resource linked to an AI Gateway MCP Server.`,
+			},
+			"catalog_mcp_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The unique identifier of the MCP. Requires replacement if changed.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -189,11 +196,11 @@ func (r *CatalogMCPImplementationResource) Schema(ctx context.Context, req resou
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"gateway_control_plane_id": schema.StringAttribute{
+							"ai_gateway_id": schema.StringAttribute{
 								Computed:    true,
 								Description: `The AI Gateway control plane the linked model belongs to.`,
 							},
-							"gateway_mcp_server_id": schema.StringAttribute{
+							"ai_gateway_mcp_server_id": schema.StringAttribute{
 								Computed:    true,
 								Description: `The identifier of the linked AI Gateway MCP server.`,
 							},
@@ -206,13 +213,6 @@ func (r *CatalogMCPImplementationResource) Schema(ctx context.Context, req resou
 				},
 				MarkdownDescription: `Schema to describe the type and configuration typing for an MCP implementation linked to an AI Gateway MCP` + "\n" +
 					`Server.`,
-			},
-			"mcp_id": schema.StringAttribute{
-				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `The unique identifier of the MCP. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -440,23 +440,23 @@ func (r *CatalogMCPImplementationResource) ImportState(ctx context.Context, req 
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID    string `json:"id"`
-		McpID string `json:"mcp_id"`
+		CatalogMCPID string `json:"catalog_mcp_id"`
+		ID           string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "7703e2f2-f9c0-47e3-9146-5fa50486b871", "mcp_id": "a0119846-f179-4d9f-a168-d701facce7fb"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"catalog_mcp_id": "a0119846-f179-4d9f-a168-d701facce7fb", "id": "7703e2f2-f9c0-47e3-9146-5fa50486b871"}': `+err.Error())
 		return
 	}
 
+	if len(data.CatalogMCPID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field catalog_mcp_id is required but was not found in the json encoded ID. It's expected to be a value alike '"a0119846-f179-4d9f-a168-d701facce7fb"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("catalog_mcp_id"), data.CatalogMCPID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"7703e2f2-f9c0-47e3-9146-5fa50486b871"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-	if len(data.McpID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field mcp_id is required but was not found in the json encoded ID. It's expected to be a value alike '"a0119846-f179-4d9f-a168-d701facce7fb"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("mcp_id"), data.McpID)...)
 }

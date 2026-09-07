@@ -10,7 +10,7 @@ import (
 
 type CreateMcpImplementationRequest struct {
 	// The unique identifier of the MCP.
-	McpID                          string                                `pathParam:"style=simple,explode=false,name=mcpId"`
+	CatalogMCPID                   string                                `pathParam:"style=simple,explode=false,name=mcpId"`
 	CreateCatalogMCPImplementation shared.CreateCatalogMCPImplementation `request:"mediaType=application/json"`
 }
 
@@ -25,11 +25,11 @@ func (c *CreateMcpImplementationRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateMcpImplementationRequest) GetMcpID() string {
+func (c *CreateMcpImplementationRequest) GetCatalogMCPID() string {
 	if c == nil {
 		return ""
 	}
-	return c.McpID
+	return c.CatalogMCPID
 }
 
 func (c *CreateMcpImplementationRequest) GetCreateCatalogMCPImplementation() shared.CreateCatalogMCPImplementation {

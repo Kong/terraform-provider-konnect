@@ -10,7 +10,7 @@ import (
 
 type DeleteMcpImplementationRequest struct {
 	// The unique identifier of the MCP.
-	McpID string `pathParam:"style=simple,explode=false,name=mcpId"`
+	CatalogMCPID string `pathParam:"style=simple,explode=false,name=mcpId"`
 	// The unique identifier of the MCP implementation.
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
 }
@@ -26,11 +26,11 @@ func (d *DeleteMcpImplementationRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (d *DeleteMcpImplementationRequest) GetMcpID() string {
+func (d *DeleteMcpImplementationRequest) GetCatalogMCPID() string {
 	if d == nil {
 		return ""
 	}
-	return d.McpID
+	return d.CatalogMCPID
 }
 
 func (d *DeleteMcpImplementationRequest) GetImplementationID() string {

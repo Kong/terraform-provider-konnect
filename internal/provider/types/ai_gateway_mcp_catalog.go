@@ -2,6 +2,6 @@
 
 package types
 
-type CreateCatalogMCPGatewayImplementation struct {
+type AIGatewayMCPCatalog struct {
 	Implementation *CatalogMCPGatewayImplementationBlock `tfsdk:"implementation"`
 }

@@ -9,9 +9,9 @@ import (
 // AiModelImplementationCreate - Request body for linking an AI Model to an AI Gateway model.
 type AiModelImplementationCreate struct {
 	// The AI Gateway control plane uuid the model belongs to.
-	GatewayControlPlaneID string `json:"gateway_control_plane_id"`
+	AiGatewayID string `json:"gateway_control_plane_id"`
 	// The text or uuid identifier of the AI Gateway model to link.
-	GatewayModelID string `json:"gateway_model_id"`
+	AiGatewayModelID string `json:"gateway_model_id"`
 }
 
 func (a AiModelImplementationCreate) MarshalJSON() ([]byte, error) {
@@ -25,16 +25,16 @@ func (a *AiModelImplementationCreate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AiModelImplementationCreate) GetGatewayControlPlaneID() string {
+func (a *AiModelImplementationCreate) GetAiGatewayID() string {
 	if a == nil {
 		return ""
 	}
-	return a.GatewayControlPlaneID
+	return a.AiGatewayID
 }
 
-func (a *AiModelImplementationCreate) GetGatewayModelID() string {
+func (a *AiModelImplementationCreate) GetAiGatewayModelID() string {
 	if a == nil {
 		return ""
 	}
-	return a.GatewayModelID
+	return a.AiGatewayModelID
 }

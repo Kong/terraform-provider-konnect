@@ -9,9 +9,9 @@ import (
 // CatalogMCPGatewayImplementationConfig - Configuration for an MCP implementation linked to an AI Gateway MCP Server.
 type CatalogMCPGatewayImplementationConfig struct {
 	// The AI Gateway control plane the linked model belongs to.
-	GatewayControlPlaneID string `json:"gateway_control_plane_id"`
+	AiGatewayID string `json:"gateway_control_plane_id"`
 	// The identifier of the linked AI Gateway MCP server.
-	GatewayMcpServerID string `json:"gateway_mcp_server_id"`
+	AiGatewayMcpServerID string `json:"gateway_mcp_server_id"`
 }
 
 func (c CatalogMCPGatewayImplementationConfig) MarshalJSON() ([]byte, error) {
@@ -25,16 +25,16 @@ func (c *CatalogMCPGatewayImplementationConfig) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-func (c *CatalogMCPGatewayImplementationConfig) GetGatewayControlPlaneID() string {
+func (c *CatalogMCPGatewayImplementationConfig) GetAiGatewayID() string {
 	if c == nil {
 		return ""
 	}
-	return c.GatewayControlPlaneID
+	return c.AiGatewayID
 }
 
-func (c *CatalogMCPGatewayImplementationConfig) GetGatewayMcpServerID() string {
+func (c *CatalogMCPGatewayImplementationConfig) GetAiGatewayMcpServerID() string {
 	if c == nil {
 		return ""
 	}
-	return c.GatewayMcpServerID
+	return c.AiGatewayMcpServerID
 }

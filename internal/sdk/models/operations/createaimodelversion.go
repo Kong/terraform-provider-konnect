@@ -10,7 +10,7 @@ import (
 
 type CreateAiModelVersionRequest struct {
 	// The unique identifier of the AI Model.
-	AiModelID            string                      `pathParam:"style=simple,explode=false,name=aiModelId"`
+	CatalogAiModelID     string                      `pathParam:"style=simple,explode=false,name=aiModelId"`
 	AiModelVersionCreate shared.AiModelVersionCreate `request:"mediaType=application/json"`
 }
 
@@ -25,11 +25,11 @@ func (c *CreateAiModelVersionRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateAiModelVersionRequest) GetAiModelID() string {
+func (c *CreateAiModelVersionRequest) GetCatalogAiModelID() string {
 	if c == nil {
 		return ""
 	}
-	return c.AiModelID
+	return c.CatalogAiModelID
 }
 
 func (c *CreateAiModelVersionRequest) GetAiModelVersionCreate() shared.AiModelVersionCreate {

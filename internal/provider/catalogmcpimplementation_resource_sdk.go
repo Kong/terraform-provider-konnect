@@ -24,8 +24,8 @@ func (r *CatalogMCPImplementationResourceModel) RefreshFromSharedCatalogMCPImple
 			r.ID = r.CatalogMCPGatewayImplementation.ID
 			r.CatalogMCPGatewayImplementation.Implementation = &tfTypes.CatalogMCPGatewayImplementationBlock{}
 			r.CatalogMCPGatewayImplementation.Implementation.Config = &tfTypes.CatalogMCPGatewayImplementationConfig{}
-			r.CatalogMCPGatewayImplementation.Implementation.Config.GatewayControlPlaneID = types.StringValue(resp.CatalogMCPGatewayImplementation.Implementation.Config.GatewayControlPlaneID)
-			r.CatalogMCPGatewayImplementation.Implementation.Config.GatewayMcpServerID = types.StringValue(resp.CatalogMCPGatewayImplementation.Implementation.Config.GatewayMcpServerID)
+			r.CatalogMCPGatewayImplementation.Implementation.Config.AiGatewayID = types.StringValue(resp.CatalogMCPGatewayImplementation.Implementation.Config.AiGatewayID)
+			r.CatalogMCPGatewayImplementation.Implementation.Config.AiGatewayMcpServerID = types.StringValue(resp.CatalogMCPGatewayImplementation.Implementation.Config.AiGatewayMcpServerID)
 			r.CatalogMCPGatewayImplementation.Implementation.Type = types.StringValue(string(resp.CatalogMCPGatewayImplementation.Implementation.Type))
 			r.CatalogMCPGatewayImplementation.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.CatalogMCPGatewayImplementation.UpdatedAt))
 			r.UpdatedAt = r.CatalogMCPGatewayImplementation.UpdatedAt
@@ -38,8 +38,8 @@ func (r *CatalogMCPImplementationResourceModel) RefreshFromSharedCatalogMCPImple
 func (r *CatalogMCPImplementationResourceModel) ToOperationsCreateMcpImplementationRequest(ctx context.Context) (*operations.CreateMcpImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var mcpID string
-	mcpID = r.McpID.ValueString()
+	var catalogMCPID string
+	catalogMCPID = r.CatalogMCPID.ValueString()
 
 	createCatalogMCPImplementation, createCatalogMCPImplementationDiags := r.ToSharedCreateCatalogMCPImplementation(ctx)
 	diags.Append(createCatalogMCPImplementationDiags...)
@@ -49,7 +49,7 @@ func (r *CatalogMCPImplementationResourceModel) ToOperationsCreateMcpImplementat
 	}
 
 	out := operations.CreateMcpImplementationRequest{
-		McpID:                          mcpID,
+		CatalogMCPID:                   catalogMCPID,
 		CreateCatalogMCPImplementation: *createCatalogMCPImplementation,
 	}
 
@@ -59,14 +59,14 @@ func (r *CatalogMCPImplementationResourceModel) ToOperationsCreateMcpImplementat
 func (r *CatalogMCPImplementationResourceModel) ToOperationsDeleteMcpImplementationRequest(ctx context.Context) (*operations.DeleteMcpImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var mcpID string
-	mcpID = r.McpID.ValueString()
+	var catalogMCPID string
+	catalogMCPID = r.CatalogMCPID.ValueString()
 
 	var implementationID string
 	implementationID = r.ID.ValueString()
 
 	out := operations.DeleteMcpImplementationRequest{
-		McpID:            mcpID,
+		CatalogMCPID:     catalogMCPID,
 		ImplementationID: implementationID,
 	}
 
@@ -76,14 +76,14 @@ func (r *CatalogMCPImplementationResourceModel) ToOperationsDeleteMcpImplementat
 func (r *CatalogMCPImplementationResourceModel) ToOperationsGetMcpImplementationRequest(ctx context.Context) (*operations.GetMcpImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var mcpID string
-	mcpID = r.McpID.ValueString()
+	var catalogMCPID string
+	catalogMCPID = r.CatalogMCPID.ValueString()
 
 	var implementationID string
 	implementationID = r.ID.ValueString()
 
 	out := operations.GetMcpImplementationRequest{
-		McpID:            mcpID,
+		CatalogMCPID:     catalogMCPID,
 		ImplementationID: implementationID,
 	}
 
@@ -94,30 +94,30 @@ func (r *CatalogMCPImplementationResourceModel) ToSharedCreateCatalogMCPImplemen
 	var diags diag.Diagnostics
 
 	var out shared.CreateCatalogMCPImplementation
-	var createCatalogMCPGatewayImplementation *shared.CreateCatalogMCPGatewayImplementation
-	if r.CreateCatalogMCPGatewayImplementation != nil {
-		typeVar := shared.Type(r.CreateCatalogMCPGatewayImplementation.Implementation.Type.ValueString())
-		var gatewayControlPlaneID string
-		gatewayControlPlaneID = r.CreateCatalogMCPGatewayImplementation.Implementation.Config.GatewayControlPlaneID.ValueString()
+	var aiGatewayMCPCatalog *shared.AIGatewayMCPCatalog
+	if r.AIGatewayMCPCatalog != nil {
+		typeVar := shared.Type(r.AIGatewayMCPCatalog.Implementation.Type.ValueString())
+		var aiGatewayID string
+		aiGatewayID = r.AIGatewayMCPCatalog.Implementation.Config.AiGatewayID.ValueString()
 
-		var gatewayMcpServerID string
-		gatewayMcpServerID = r.CreateCatalogMCPGatewayImplementation.Implementation.Config.GatewayMcpServerID.ValueString()
+		var aiGatewayMcpServerID string
+		aiGatewayMcpServerID = r.AIGatewayMCPCatalog.Implementation.Config.AiGatewayMcpServerID.ValueString()
 
 		config := shared.CatalogMCPGatewayImplementationConfig{
-			GatewayControlPlaneID: gatewayControlPlaneID,
-			GatewayMcpServerID:    gatewayMcpServerID,
+			AiGatewayID:          aiGatewayID,
+			AiGatewayMcpServerID: aiGatewayMcpServerID,
 		}
 		implementation := shared.CatalogMCPGatewayImplementationBlock{
 			Type:   typeVar,
 			Config: config,
 		}
-		createCatalogMCPGatewayImplementation = &shared.CreateCatalogMCPGatewayImplementation{
+		aiGatewayMCPCatalog = &shared.AIGatewayMCPCatalog{
 			Implementation: implementation,
 		}
 	}
-	if createCatalogMCPGatewayImplementation != nil {
+	if aiGatewayMCPCatalog != nil {
 		out = shared.CreateCatalogMCPImplementation{
-			CreateCatalogMCPGatewayImplementation: createCatalogMCPGatewayImplementation,
+			AIGatewayMCPCatalog: aiGatewayMCPCatalog,
 		}
 	}
 

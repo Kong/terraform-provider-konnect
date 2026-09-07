@@ -14,7 +14,7 @@ CatalogMCPVersion Resource
 
 ```terraform
 resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
-  mcp_id = "a0119846-f179-4d9f-a168-d701facce7fb"
+  catalog_mcp_id = "a0119846-f179-4d9f-a168-d701facce7fb"
   packages = [
     {
       environment_variables = [
@@ -49,31 +49,28 @@ resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
       package_arguments = [
         {
           mcp_positional_argument = {
-            two = {
-              choices = [
-              ]
-              default     = "...my_default..."
-              description = "...my_description..."
-              format      = "string"
-              is_repeated = false
-              is_required = false
-              is_secret   = false
-              placeholder = "...my_placeholder..."
-              type        = "positional"
-              value       = "...my_value..."
-              value_hint  = "file_path"
-              variables = {
-                key = {
-                  choices = [
-                  ]
-                  default     = "...my_default..."
-                  description = "...my_description..."
-                  format      = "string"
-                  is_required = false
-                  is_secret   = false
-                  placeholder = "...my_placeholder..."
-                  value       = "...my_value..."
-                }
+            choices = [
+            ]
+            default     = "...my_default..."
+            description = "...my_description..."
+            format      = "string"
+            is_repeated = false
+            is_required = false
+            is_secret   = false
+            placeholder = "...my_placeholder..."
+            value       = "...my_value..."
+            value_hint  = "file_path"
+            variables = {
+              key = {
+                choices = [
+                ]
+                default     = "...my_default..."
+                description = "...my_description..."
+                format      = "string"
+                is_required = false
+                is_secret   = false
+                placeholder = "...my_placeholder..."
+                value       = "...my_value..."
               }
             }
           }
@@ -87,31 +84,28 @@ resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
         arguments = [
           {
             mcp_positional_argument = {
-              two = {
-                choices = [
-                ]
-                default     = "...my_default..."
-                description = "...my_description..."
-                format      = "string"
-                is_repeated = false
-                is_required = false
-                is_secret   = false
-                placeholder = "...my_placeholder..."
-                type        = "positional"
-                value       = "...my_value..."
-                value_hint  = "file_path"
-                variables = {
-                  key = {
-                    choices = [
-                    ]
-                    default     = "...my_default..."
-                    description = "...my_description..."
-                    format      = "string"
-                    is_required = false
-                    is_secret   = false
-                    placeholder = "...my_placeholder..."
-                    value       = "...my_value..."
-                  }
+              choices = [
+              ]
+              default     = "...my_default..."
+              description = "...my_description..."
+              format      = "string"
+              is_repeated = false
+              is_required = false
+              is_secret   = false
+              placeholder = "...my_placeholder..."
+              value       = "...my_value..."
+              value_hint  = "file_path"
+              variables = {
+                key = {
+                  choices = [
+                  ]
+                  default     = "...my_default..."
+                  description = "...my_description..."
+                  format      = "string"
+                  is_required = false
+                  is_secret   = false
+                  placeholder = "...my_placeholder..."
+                  value       = "...my_value..."
                 }
               }
             }
@@ -148,8 +142,7 @@ resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
               }
             }
           ]
-          type = "streamable-http"
-          url  = "https://api.example.com/mcp"
+          url = "https://api.example.com/mcp"
         }
       }
       version = "1.0.2"
@@ -200,8 +193,7 @@ resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
             }
           }
         ]
-        type = "sse"
-        url  = "https://mcp-fs.example.com/sse"
+        url = "https://mcp-fs.example.com/sse"
         variables = {
           key = {
             choices = [
@@ -260,7 +252,7 @@ resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
 
 ### Required
 
-- `mcp_id` (String) The unique identifier of the MCP.
+- `catalog_mcp_id` (String) The unique identifier of the MCP.
 - `version` (String) User-supplied version label.
 
 ### Optional
@@ -345,7 +337,6 @@ Optional:
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `name` (String) The flag name, including any leading dashes. Not Null
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `type` (String) Not Null; must be "named"
 - `value` (String) The value for the input.
 - `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_named_argument--variables))
 
@@ -370,14 +361,6 @@ Optional:
 
 Optional:
 
-- `one` (Attributes) (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--one))
-- `two` (Attributes) (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--two))
-
-<a id="nestedatt--packages--package_arguments--mcp_positional_argument--one"></a>
-### Nested Schema for `packages.package_arguments.mcp_positional_argument.one`
-
-Optional:
-
 - `choices` (List of String) A list of possible values for the input.
 - `default` (String) The default value for the input.
 - `description` (String) A description of the input.
@@ -386,47 +369,12 @@ Optional:
 - `is_required` (Boolean) Default: false
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `type` (String) Not Null; must be "positional"
 - `value` (String) The value for the input.
 - `value_hint` (String) An identifier for the positional argument.
-- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--one--variables))
+- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--variables))
 
-<a id="nestedatt--packages--package_arguments--mcp_positional_argument--one--variables"></a>
-### Nested Schema for `packages.package_arguments.mcp_positional_argument.one.variables`
-
-Optional:
-
-- `choices` (List of String) A list of possible values for the input.
-- `default` (String) The default value for the input.
-- `description` (String) A description of the input.
-- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
-- `is_required` (Boolean) Default: false
-- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
-- `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `value` (String) The value for the input.
-
-
-
-<a id="nestedatt--packages--package_arguments--mcp_positional_argument--two"></a>
-### Nested Schema for `packages.package_arguments.mcp_positional_argument.two`
-
-Optional:
-
-- `choices` (List of String) A list of possible values for the input.
-- `default` (String) The default value for the input.
-- `description` (String) A description of the input.
-- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
-- `is_repeated` (Boolean) Whether the argument can be repeated multiple times. Default: false
-- `is_required` (Boolean) Default: false
-- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
-- `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `type` (String) Not Null; must be "positional"
-- `value` (String) The value for the input.
-- `value_hint` (String) An identifier for the positional argument.
-- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--two--variables))
-
-<a id="nestedatt--packages--package_arguments--mcp_positional_argument--two--variables"></a>
-### Nested Schema for `packages.package_arguments.mcp_positional_argument.two.variables`
+<a id="nestedatt--packages--package_arguments--mcp_positional_argument--variables"></a>
+### Nested Schema for `packages.package_arguments.mcp_positional_argument.variables`
 
 Optional:
 
@@ -438,7 +386,6 @@ Optional:
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
 - `value` (String) The value for the input.
-
 
 
 
@@ -482,7 +429,6 @@ Optional:
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `name` (String) The flag name, including any leading dashes. Not Null
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `type` (String) Not Null; must be "named"
 - `value` (String) The value for the input.
 - `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_named_argument--variables))
 
@@ -507,14 +453,6 @@ Optional:
 
 Optional:
 
-- `one` (Attributes) (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--one))
-- `two` (Attributes) (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--two))
-
-<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--one"></a>
-### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.one`
-
-Optional:
-
 - `choices` (List of String) A list of possible values for the input.
 - `default` (String) The default value for the input.
 - `description` (String) A description of the input.
@@ -523,47 +461,12 @@ Optional:
 - `is_required` (Boolean) Default: false
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `type` (String) Not Null; must be "positional"
 - `value` (String) The value for the input.
 - `value_hint` (String) An identifier for the positional argument.
-- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--one--variables))
+- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--variables))
 
-<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--one--variables"></a>
-### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.one.variables`
-
-Optional:
-
-- `choices` (List of String) A list of possible values for the input.
-- `default` (String) The default value for the input.
-- `description` (String) A description of the input.
-- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
-- `is_required` (Boolean) Default: false
-- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
-- `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `value` (String) The value for the input.
-
-
-
-<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--two"></a>
-### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.two`
-
-Optional:
-
-- `choices` (List of String) A list of possible values for the input.
-- `default` (String) The default value for the input.
-- `description` (String) A description of the input.
-- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
-- `is_repeated` (Boolean) Whether the argument can be repeated multiple times. Default: false
-- `is_required` (Boolean) Default: false
-- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
-- `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `type` (String) Not Null; must be "positional"
-- `value` (String) The value for the input.
-- `value_hint` (String) An identifier for the positional argument.
-- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--two--variables))
-
-<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--two--variables"></a>
-### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.two.variables`
+<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--variables"></a>
+### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.variables`
 
 Optional:
 
@@ -575,7 +478,6 @@ Optional:
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
 - `value` (String) The value for the input.
-
 
 
 
@@ -596,7 +498,6 @@ Optional:
 Optional:
 
 - `headers` (Attributes List) HTTP headers to include (see [below for nested schema](#nestedatt--packages--transport--mcp_sse_transport--headers))
-- `type` (String) Transport type. Not Null; must be "sse"
 - `url` (String) Server-Sent Events endpoint URL template. Not Null
 
 <a id="nestedatt--packages--transport--mcp_sse_transport--headers"></a>
@@ -635,10 +536,6 @@ Optional:
 <a id="nestedatt--packages--transport--mcp_stdio_transport"></a>
 ### Nested Schema for `packages.transport.mcp_stdio_transport`
 
-Optional:
-
-- `type` (String) Transport type. Not Null; must be "stdio"
-
 
 <a id="nestedatt--packages--transport--mcp_streamable_http_transport"></a>
 ### Nested Schema for `packages.transport.mcp_streamable_http_transport`
@@ -646,7 +543,6 @@ Optional:
 Optional:
 
 - `headers` (Attributes List) HTTP headers to include (see [below for nested schema](#nestedatt--packages--transport--mcp_streamable_http_transport--headers))
-- `type` (String) Transport type. Not Null; must be "streamable-http"
 - `url` (String) URL template for the streamable-http transport. Not Null
 
 <a id="nestedatt--packages--transport--mcp_streamable_http_transport--headers"></a>
@@ -720,7 +616,6 @@ Optional:
 Optional:
 
 - `headers` (Attributes List) HTTP headers to include (see [below for nested schema](#nestedatt--remotes--mcp_sse_transport--headers))
-- `type` (String) Transport type. Not Null; must be "sse"
 - `url` (String) Server-Sent Events endpoint URL template. Not Null
 - `variables` (Attributes Map) Configuration variables that can be referenced in URL template {curly_braces}. (see [below for nested schema](#nestedatt--remotes--mcp_sse_transport--variables))
 
@@ -778,7 +673,6 @@ Optional:
 Optional:
 
 - `headers` (Attributes List) HTTP headers to include (see [below for nested schema](#nestedatt--remotes--mcp_streamable_http_transport--headers))
-- `type` (String) Transport type. Not Null; must be "streamable-http"
 - `url` (String) URL template for the streamable-http transport. Not Null
 - `variables` (Attributes Map) Configuration variables that can be referenced in URL template {curly_braces}. (see [below for nested schema](#nestedatt--remotes--mcp_streamable_http_transport--variables))
 

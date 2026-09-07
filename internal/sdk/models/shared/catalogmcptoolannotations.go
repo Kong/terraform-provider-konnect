@@ -8,15 +8,15 @@ import (
 
 type CatalogMCPToolAnnotations struct {
 	// Human-readable name of the tool.
-	Title *string `default:"null" json:"title"`
+	Title *string `json:"title,omitempty"`
 	// Indicates if the tool performs destructive actions.
-	DestructiveHint *bool `default:"null" json:"destructive_hint"`
+	DestructiveHint *bool `json:"destructive_hint,omitempty"`
 	// Indicates if the tool is idempotent.
-	IdempotentHint *bool `default:"null" json:"idempotent_hint"`
+	IdempotentHint *bool `json:"idempotent_hint,omitempty"`
 	// Indicates if the tool interacts with external entities.
-	OpenWorldHint *bool `default:"null" json:"open_world_hint"`
+	OpenWorldHint *bool `json:"open_world_hint,omitempty"`
 	// Indicates if the tool is read-only.
-	ReadOnlyHint *bool `default:"null" json:"read_only_hint"`
+	ReadOnlyHint *bool `json:"read_only_hint,omitempty"`
 }
 
 func (c CatalogMCPToolAnnotations) MarshalJSON() ([]byte, error) {

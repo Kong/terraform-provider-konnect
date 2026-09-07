@@ -32,12 +32,12 @@ type CatalogAiModelVersionSpecResource struct {
 
 // CatalogAiModelVersionSpecResourceModel describes the resource data model.
 type CatalogAiModelVersionSpecResourceModel struct {
-	AiModelID    types.String                                 `tfsdk:"ai_model_id"`
-	CreatedAt    types.String                                 `tfsdk:"created_at"`
-	SpecContent  types.String                                 `tfsdk:"spec_content"`
-	SpecProvider *tfTypes.AiModelVersionSpecWriteSpecProvider `tfsdk:"spec_provider"`
-	SpecType     types.String                                 `tfsdk:"spec_type"`
-	UpdatedAt    types.String                                 `tfsdk:"updated_at"`
+	CatalogAiModelID types.String                                 `tfsdk:"catalog_ai_model_id"`
+	CreatedAt        types.String                                 `tfsdk:"created_at"`
+	SpecContent      types.String                                 `tfsdk:"spec_content"`
+	SpecProvider     *tfTypes.AiModelVersionSpecWriteSpecProvider `tfsdk:"spec_provider"`
+	SpecType         types.String                                 `tfsdk:"spec_type"`
+	UpdatedAt        types.String                                 `tfsdk:"updated_at"`
 }
 
 func (r *CatalogAiModelVersionSpecResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -48,7 +48,7 @@ func (r *CatalogAiModelVersionSpecResource) Schema(ctx context.Context, req reso
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "CatalogAiModelVersionSpec Resource",
 		Attributes: map[string]schema.Attribute{
-			"ai_model_id": schema.StringAttribute{
+			"catalog_ai_model_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The unique identifier of the AI Model.`,
 			},
@@ -339,5 +339,5 @@ func (r *CatalogAiModelVersionSpecResource) Delete(ctx context.Context, req reso
 }
 
 func (r *CatalogAiModelVersionSpecResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ai_model_id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("catalog_ai_model_id"), req.ID)...)
 }

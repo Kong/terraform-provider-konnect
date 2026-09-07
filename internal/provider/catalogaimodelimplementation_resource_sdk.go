@@ -29,8 +29,8 @@ func (r *CatalogAiModelImplementationResourceModel) RefreshFromSharedAiModelImpl
 func (r *CatalogAiModelImplementationResourceModel) ToOperationsCreateAiModelImplementationRequest(ctx context.Context) (*operations.CreateAiModelImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	aiModelImplementationCreate, aiModelImplementationCreateDiags := r.ToSharedAiModelImplementationCreate(ctx)
 	diags.Append(aiModelImplementationCreateDiags...)
@@ -40,7 +40,7 @@ func (r *CatalogAiModelImplementationResourceModel) ToOperationsCreateAiModelImp
 	}
 
 	out := operations.CreateAiModelImplementationRequest{
-		AiModelID:                   aiModelID,
+		CatalogAiModelID:            catalogAiModelID,
 		AiModelImplementationCreate: *aiModelImplementationCreate,
 	}
 
@@ -50,14 +50,14 @@ func (r *CatalogAiModelImplementationResourceModel) ToOperationsCreateAiModelImp
 func (r *CatalogAiModelImplementationResourceModel) ToOperationsDeleteAiModelImplementationRequest(ctx context.Context) (*operations.DeleteAiModelImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	var implementationID string
 	implementationID = r.ID.ValueString()
 
 	out := operations.DeleteAiModelImplementationRequest{
-		AiModelID:        aiModelID,
+		CatalogAiModelID: catalogAiModelID,
 		ImplementationID: implementationID,
 	}
 
@@ -67,14 +67,14 @@ func (r *CatalogAiModelImplementationResourceModel) ToOperationsDeleteAiModelImp
 func (r *CatalogAiModelImplementationResourceModel) ToOperationsGetAiModelImplementationRequest(ctx context.Context) (*operations.GetAiModelImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	var implementationID string
 	implementationID = r.ID.ValueString()
 
 	out := operations.GetAiModelImplementationRequest{
-		AiModelID:        aiModelID,
+		CatalogAiModelID: catalogAiModelID,
 		ImplementationID: implementationID,
 	}
 
@@ -84,15 +84,15 @@ func (r *CatalogAiModelImplementationResourceModel) ToOperationsGetAiModelImplem
 func (r *CatalogAiModelImplementationResourceModel) ToSharedAiModelImplementationCreate(ctx context.Context) (*shared.AiModelImplementationCreate, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var gatewayControlPlaneID string
-	gatewayControlPlaneID = r.GatewayControlPlaneID.ValueString()
+	var aiGatewayID string
+	aiGatewayID = r.AiGatewayID.ValueString()
 
-	var gatewayModelID string
-	gatewayModelID = r.GatewayModelID.ValueString()
+	var aiGatewayModelID string
+	aiGatewayModelID = r.AiGatewayModelID.ValueString()
 
 	out := shared.AiModelImplementationCreate{
-		GatewayControlPlaneID: gatewayControlPlaneID,
-		GatewayModelID:        gatewayModelID,
+		AiGatewayID:      aiGatewayID,
+		AiGatewayModelID: aiGatewayModelID,
 	}
 
 	return &out, diags

@@ -37,12 +37,13 @@ type CatalogAiModelVersionResource struct {
 
 // CatalogAiModelVersionResourceModel describes the resource data model.
 type CatalogAiModelVersionResourceModel struct {
-	AiModelID    types.String          `tfsdk:"ai_model_id"`
-	CreatedAt    types.String          `tfsdk:"created_at"`
-	ID           types.String          `tfsdk:"id"`
-	TargetModels []tfTypes.TargetModel `tfsdk:"target_models"`
-	UpdatedAt    types.String          `tfsdk:"updated_at"`
-	Version      types.String          `tfsdk:"version"`
+	AiModelID        types.String          `tfsdk:"ai_model_id"`
+	CatalogAiModelID types.String          `tfsdk:"catalog_ai_model_id"`
+	CreatedAt        types.String          `tfsdk:"created_at"`
+	ID               types.String          `tfsdk:"id"`
+	TargetModels     []tfTypes.TargetModel `tfsdk:"target_models"`
+	UpdatedAt        types.String          `tfsdk:"updated_at"`
+	Version          types.String          `tfsdk:"version"`
 }
 
 func (r *CatalogAiModelVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -54,6 +55,10 @@ func (r *CatalogAiModelVersionResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "CatalogAiModelVersion Resource",
 		Attributes: map[string]schema.Attribute{
 			"ai_model_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The identifier of the parent AI Model.`,
+			},
+			"catalog_ai_model_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The unique identifier of the AI Model.`,
 			},
@@ -362,5 +367,5 @@ func (r *CatalogAiModelVersionResource) Delete(ctx context.Context, req resource
 }
 
 func (r *CatalogAiModelVersionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ai_model_id"), req.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("catalog_ai_model_id"), req.ID)...)
 }

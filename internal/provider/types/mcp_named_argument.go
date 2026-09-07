@@ -16,7 +16,6 @@ type MCPNamedArgument struct {
 	IsSecret    types.Bool          `tfsdk:"is_secret"`
 	Name        types.String        `tfsdk:"name"`
 	Placeholder types.String        `tfsdk:"placeholder"`
-	Type        types.String        `tfsdk:"type"`
 	Value       types.String        `tfsdk:"value"`
 	Variables   map[string]MCPInput `tfsdk:"variables"`
 }

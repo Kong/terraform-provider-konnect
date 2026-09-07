@@ -34,11 +34,11 @@ func (r *CatalogAiModelVersionSpecResourceModel) RefreshFromSharedAiModelVersion
 func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsDeleteAiModelVersionSpecRequest(ctx context.Context) (*operations.DeleteAiModelVersionSpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	out := operations.DeleteAiModelVersionSpecRequest{
-		AiModelID: aiModelID,
+		CatalogAiModelID: catalogAiModelID,
 	}
 
 	return &out, diags
@@ -47,11 +47,11 @@ func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsDeleteAiModelVersio
 func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsGetAiModelVersionSpecRequest(ctx context.Context) (*operations.GetAiModelVersionSpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	out := operations.GetAiModelVersionSpecRequest{
-		AiModelID: aiModelID,
+		CatalogAiModelID: catalogAiModelID,
 	}
 
 	return &out, diags
@@ -60,8 +60,8 @@ func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsGetAiModelVersionSp
 func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsUpsertAiModelVersionSpecRequest(ctx context.Context) (*operations.UpsertAiModelVersionSpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var aiModelID string
-	aiModelID = r.AiModelID.ValueString()
+	var catalogAiModelID string
+	catalogAiModelID = r.CatalogAiModelID.ValueString()
 
 	aiModelVersionSpecWrite, aiModelVersionSpecWriteDiags := r.ToSharedAiModelVersionSpecWrite(ctx)
 	diags.Append(aiModelVersionSpecWriteDiags...)
@@ -71,7 +71,7 @@ func (r *CatalogAiModelVersionSpecResourceModel) ToOperationsUpsertAiModelVersio
 	}
 
 	out := operations.UpsertAiModelVersionSpecRequest{
-		AiModelID:               aiModelID,
+		CatalogAiModelID:        catalogAiModelID,
 		AiModelVersionSpecWrite: *aiModelVersionSpecWrite,
 	}
 

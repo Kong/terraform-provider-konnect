@@ -11,22 +11,22 @@ import (
 type CreateCatalogMCPImplementationType string
 
 const (
-	CreateCatalogMCPImplementationTypeCreateCatalogMCPGatewayImplementation CreateCatalogMCPImplementationType = "CreateCatalogMCPGatewayImplementation"
+	CreateCatalogMCPImplementationTypeAIGatewayMCPCatalog CreateCatalogMCPImplementationType = "AIGatewayMCPCatalog"
 )
 
 // CreateCatalogMCPImplementation - Request body for creating an MCP implementation.
 type CreateCatalogMCPImplementation struct {
-	CreateCatalogMCPGatewayImplementation *CreateCatalogMCPGatewayImplementation `queryParam:"inline" union:"member"`
+	AIGatewayMCPCatalog *AIGatewayMCPCatalog `queryParam:"inline" union:"member"`
 
 	Type CreateCatalogMCPImplementationType
 }
 
-func CreateCreateCatalogMCPImplementationCreateCatalogMCPGatewayImplementation(createCatalogMCPGatewayImplementation CreateCatalogMCPGatewayImplementation) CreateCatalogMCPImplementation {
-	typ := CreateCatalogMCPImplementationTypeCreateCatalogMCPGatewayImplementation
+func CreateCreateCatalogMCPImplementationAIGatewayMCPCatalog(aiGatewayMCPCatalog AIGatewayMCPCatalog) CreateCatalogMCPImplementation {
+	typ := CreateCatalogMCPImplementationTypeAIGatewayMCPCatalog
 
 	return CreateCatalogMCPImplementation{
-		CreateCatalogMCPGatewayImplementation: &createCatalogMCPGatewayImplementation,
-		Type:                                  typ,
+		AIGatewayMCPCatalog: &aiGatewayMCPCatalog,
+		Type:                typ,
 	}
 }
 
@@ -35,11 +35,11 @@ func (u *CreateCatalogMCPImplementation) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var createCatalogMCPGatewayImplementation CreateCatalogMCPGatewayImplementation = CreateCatalogMCPGatewayImplementation{}
-	if err := utils.UnmarshalJSON(data, &createCatalogMCPGatewayImplementation, "", true, nil); err == nil {
+	var aiGatewayMCPCatalog AIGatewayMCPCatalog = AIGatewayMCPCatalog{}
+	if err := utils.UnmarshalJSON(data, &aiGatewayMCPCatalog, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CreateCatalogMCPImplementationTypeCreateCatalogMCPGatewayImplementation,
-			Value: &createCatalogMCPGatewayImplementation,
+			Type:  CreateCatalogMCPImplementationTypeAIGatewayMCPCatalog,
+			Value: &aiGatewayMCPCatalog,
 		})
 	}
 
@@ -56,8 +56,8 @@ func (u *CreateCatalogMCPImplementation) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(CreateCatalogMCPImplementationType)
 	switch best.Type {
-	case CreateCatalogMCPImplementationTypeCreateCatalogMCPGatewayImplementation:
-		u.CreateCatalogMCPGatewayImplementation = best.Value.(*CreateCatalogMCPGatewayImplementation)
+	case CreateCatalogMCPImplementationTypeAIGatewayMCPCatalog:
+		u.AIGatewayMCPCatalog = best.Value.(*AIGatewayMCPCatalog)
 		return nil
 	}
 
@@ -65,8 +65,8 @@ func (u *CreateCatalogMCPImplementation) UnmarshalJSON(data []byte) error {
 }
 
 func (u CreateCatalogMCPImplementation) MarshalJSON() ([]byte, error) {
-	if u.CreateCatalogMCPGatewayImplementation != nil {
-		return utils.MarshalJSON(u.CreateCatalogMCPGatewayImplementation, "", true)
+	if u.AIGatewayMCPCatalog != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPCatalog, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type CreateCatalogMCPImplementation: all fields are null")

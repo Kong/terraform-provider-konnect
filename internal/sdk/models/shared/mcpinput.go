@@ -33,20 +33,20 @@ func (e *MCPInputFormat) IsExact() bool {
 
 type MCPInput struct {
 	// A description of the input.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	IsRequired  *bool   `default:"false" json:"is_required"`
 	// Specifies the input format.
 	Format *MCPInputFormat `default:"string" json:"format"`
 	// The value for the input.
-	Value *string `default:"null" json:"value"`
+	Value *string `json:"value,omitempty"`
 	// Indicates whether the input is a secret value.
 	IsSecret *bool `default:"false" json:"is_secret"`
 	// The default value for the input.
-	Default *string `default:"null" json:"default"`
+	Default *string `json:"default,omitempty"`
 	// A placeholder for the input to be displayed during configuration.
-	Placeholder *string `default:"null" json:"placeholder"`
+	Placeholder *string `json:"placeholder,omitempty"`
 	// A list of possible values for the input.
-	Choices []string `json:"choices"`
+	Choices []string `json:"choices,omitempty"`
 }
 
 func (m MCPInput) MarshalJSON() ([]byte, error) {

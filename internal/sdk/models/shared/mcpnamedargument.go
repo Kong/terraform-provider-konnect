@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -33,49 +31,27 @@ func (e *MCPNamedArgumentFormat) IsExact() bool {
 	return false
 }
 
-type MCPNamedArgumentType string
-
-const (
-	MCPNamedArgumentTypeNamed MCPNamedArgumentType = "named"
-)
-
-func (e MCPNamedArgumentType) ToPointer() *MCPNamedArgumentType {
-	return &e
-}
-func (e *MCPNamedArgumentType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "named":
-		*e = MCPNamedArgumentType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MCPNamedArgumentType: %v", v)
-	}
-}
-
 // MCPNamedArgument - A command-line `--flag={value}`.
 type MCPNamedArgument struct {
 	// A description of the input.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	IsRequired  *bool   `default:"false" json:"is_required"`
 	// Specifies the input format.
 	Format *MCPNamedArgumentFormat `default:"string" json:"format"`
 	// The value for the input.
-	Value *string `default:"null" json:"value"`
+	Value *string `json:"value,omitempty"`
 	// Indicates whether the input is a secret value.
 	IsSecret *bool `default:"false" json:"is_secret"`
 	// The default value for the input.
-	Default *string `default:"null" json:"default"`
+	Default *string `json:"default,omitempty"`
 	// A placeholder for the input to be displayed during configuration.
-	Placeholder *string `default:"null" json:"placeholder"`
+	Placeholder *string `json:"placeholder,omitempty"`
 	// A list of possible values for the input.
-	Choices []string `json:"choices"`
+	Choices []string `json:"choices,omitempty"`
 	// A map of variable names to their values.
-	Variables map[string]MCPInput  `json:"variables,omitempty"`
-	Type      MCPNamedArgumentType `json:"type"`
+	Variables map[string]MCPInput `json:"variables,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"named" json:"type"`
 	// The flag name, including any leading dashes.
 	Name string `json:"name"`
 	// Whether the argument can be repeated multiple times.
@@ -156,11 +132,8 @@ func (m *MCPNamedArgument) GetVariables() map[string]MCPInput {
 	return m.Variables
 }
 
-func (m *MCPNamedArgument) GetType() MCPNamedArgumentType {
-	if m == nil {
-		return MCPNamedArgumentType("")
-	}
-	return m.Type
+func (m *MCPNamedArgument) GetType() string {
+	return "named"
 }
 
 func (m *MCPNamedArgument) GetName() string {

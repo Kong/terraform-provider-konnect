@@ -11,16 +11,16 @@ type CatalogMCPResource struct {
 	// Machine/programmatic name of the resource.
 	Name string `json:"name"`
 	// Human-readable name of the resource.
-	Title *string `default:"null" json:"title"`
+	Title *string `json:"title,omitempty"`
 	// The URI of the resource.
 	URI string `json:"uri"`
 	// Detailed description of what the resource represents.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// The MIME type of the resource, if known.
-	MimeType    *string                `default:"null" json:"mime_type"`
+	MimeType    *string                `json:"mime_type,omitempty"`
 	Annotations *CatalogMCPAnnotations `json:"annotations,omitempty"`
 	// The size of the raw resource content, in bytes, if known.
-	Size *float64 `default:"null" json:"size"`
+	Size *float64 `json:"size,omitempty"`
 }
 
 func (c CatalogMCPResource) MarshalJSON() ([]byte, error) {

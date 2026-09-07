@@ -34,7 +34,10 @@ type CatalogAiModelImplementationResource struct {
 
 // CatalogAiModelImplementationResourceModel describes the resource data model.
 type CatalogAiModelImplementationResourceModel struct {
+	AiGatewayID           types.String `tfsdk:"ai_gateway_id"`
+	AiGatewayModelID      types.String `tfsdk:"ai_gateway_model_id"`
 	AiModelID             types.String `tfsdk:"ai_model_id"`
+	CatalogAiModelID      types.String `tfsdk:"catalog_ai_model_id"`
 	CreatedAt             types.String `tfsdk:"created_at"`
 	GatewayControlPlaneID types.String `tfsdk:"gateway_control_plane_id"`
 	GatewayModelID        types.String `tfsdk:"gateway_model_id"`
@@ -50,11 +53,28 @@ func (r *CatalogAiModelImplementationResource) Schema(ctx context.Context, req r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "CatalogAiModelImplementation Resource",
 		Attributes: map[string]schema.Attribute{
-			"ai_model_id": schema.StringAttribute{
+			"ai_gateway_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The AI Gateway control plane uuid the model belongs to. Requires replacement if changed.`,
+			},
+			"ai_gateway_model_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The text or uuid identifier of the AI Gateway model to link. Requires replacement if changed.`,
+			},
+			"ai_model_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The identifier of the parent AI Model.`,
+			},
+			"catalog_ai_model_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Description: `The unique identifier of the AI Model. Requires replacement if changed.`,
 			},
@@ -66,20 +86,12 @@ func (r *CatalogAiModelImplementationResource) Schema(ctx context.Context, req r
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"gateway_control_plane_id": schema.StringAttribute{
-				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Description: `The AI Gateway control plane uuid the model belongs to. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The AI Gateway control plane uuid the linked model belongs to.`,
 			},
 			"gateway_model_id": schema.StringAttribute{
-				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Description: `The text or uuid identifier of the AI Gateway model to link. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The text or uuid identifier of the linked AI Gateway model.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -311,20 +323,20 @@ func (r *CatalogAiModelImplementationResource) ImportState(ctx context.Context, 
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		AiModelID string `json:"ai_model_id"`
-		ID        string `json:"id"`
+		CatalogAiModelID string `json:"catalog_ai_model_id"`
+		ID               string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"catalog_ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"}': `+err.Error())
 		return
 	}
 
-	if len(data.AiModelID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field ai_model_id is required but was not found in the json encoded ID. It's expected to be a value alike '"123e4567-e89b-12d3-a456-426614174000"'`)
+	if len(data.CatalogAiModelID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field catalog_ai_model_id is required but was not found in the json encoded ID. It's expected to be a value alike '"123e4567-e89b-12d3-a456-426614174000"'`)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ai_model_id"), data.AiModelID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("catalog_ai_model_id"), data.CatalogAiModelID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"'`)
 		return

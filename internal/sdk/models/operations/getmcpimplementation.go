@@ -10,7 +10,7 @@ import (
 
 type GetMcpImplementationRequest struct {
 	// The unique identifier of the MCP.
-	McpID string `pathParam:"style=simple,explode=false,name=mcpId"`
+	CatalogMCPID string `pathParam:"style=simple,explode=false,name=mcpId"`
 	// The unique identifier of the MCP implementation.
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
 }
@@ -26,11 +26,11 @@ func (g *GetMcpImplementationRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (g *GetMcpImplementationRequest) GetMcpID() string {
+func (g *GetMcpImplementationRequest) GetCatalogMCPID() string {
 	if g == nil {
 		return ""
 	}
-	return g.McpID
+	return g.CatalogMCPID
 }
 
 func (g *GetMcpImplementationRequest) GetImplementationID() string {

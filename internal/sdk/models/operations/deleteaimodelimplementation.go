@@ -10,7 +10,7 @@ import (
 
 type DeleteAiModelImplementationRequest struct {
 	// The unique identifier of the AI Model.
-	AiModelID string `pathParam:"style=simple,explode=false,name=aiModelId"`
+	CatalogAiModelID string `pathParam:"style=simple,explode=false,name=aiModelId"`
 	// The unique identifier of the AI Model implementation.
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
 }
@@ -26,11 +26,11 @@ func (d *DeleteAiModelImplementationRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (d *DeleteAiModelImplementationRequest) GetAiModelID() string {
+func (d *DeleteAiModelImplementationRequest) GetCatalogAiModelID() string {
 	if d == nil {
 		return ""
 	}
-	return d.AiModelID
+	return d.CatalogAiModelID
 }
 
 func (d *DeleteAiModelImplementationRequest) GetImplementationID() string {

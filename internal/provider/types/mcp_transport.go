@@ -3,7 +3,7 @@
 package types
 
 type MCPTransport struct {
-	MCPSseTransport            *MCPSseTransport   `queryParam:"inline" tfsdk:"mcp_sse_transport"`
-	MCPStdioTransport          *MCPStdioTransport `queryParam:"inline" tfsdk:"mcp_stdio_transport"`
-	MCPStreamableHTTPTransport *MCPSseTransport   `queryParam:"inline" tfsdk:"mcp_streamable_http_transport"`
+	MCPSseTransport            *MCPSseTransport `queryParam:"inline" tfsdk:"mcp_sse_transport"`
+	MCPStdioTransport          *Metadata        `queryParam:"inline" tfsdk:"mcp_stdio_transport"`
+	MCPStreamableHTTPTransport *MCPSseTransport `queryParam:"inline" tfsdk:"mcp_streamable_http_transport"`
 }

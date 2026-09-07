@@ -31,15 +31,15 @@ func (e *Audience) IsExact() bool {
 
 type CatalogMCPAnnotations struct {
 	// Describes the intended customer of the annotated object/data.
-	Audience []Audience `json:"audience"`
+	Audience []Audience `json:"audience,omitempty"`
 	// Describes how important the data is for operating the MCP.
 	//
 	// A value of 1 means "most important," and indicates the data is effectively required, while 0 means
 	// "least important," and indicates the data is entirely optional.
 	//
-	Priority *float64 `default:"null" json:"priority"`
+	Priority *float64 `json:"priority,omitempty"`
 	// The moment the resource was last modified, in ISO-8601 format.
-	LastModified *time.Time `default:"null" json:"last_modified"`
+	LastModified *time.Time `json:"last_modified,omitempty"`
 }
 
 func (c CatalogMCPAnnotations) MarshalJSON() ([]byte, error) {

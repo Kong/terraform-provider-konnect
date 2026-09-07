@@ -10,7 +10,7 @@ import (
 
 type GetAiModelImplementationRequest struct {
 	// The unique identifier of the AI Model.
-	AiModelID string `pathParam:"style=simple,explode=false,name=aiModelId"`
+	CatalogAiModelID string `pathParam:"style=simple,explode=false,name=aiModelId"`
 	// The unique identifier of the AI Model implementation.
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
 }
@@ -26,11 +26,11 @@ func (g *GetAiModelImplementationRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (g *GetAiModelImplementationRequest) GetAiModelID() string {
+func (g *GetAiModelImplementationRequest) GetCatalogAiModelID() string {
 	if g == nil {
 		return ""
 	}
-	return g.AiModelID
+	return g.CatalogAiModelID
 }
 
 func (g *GetAiModelImplementationRequest) GetImplementationID() string {

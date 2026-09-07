@@ -14,8 +14,8 @@ CatalogAiModelVersionSpec Resource
 
 ```terraform
 resource "konnect_catalog_ai_model_version_spec" "my_catalogaimodelversionspec" {
-  ai_model_id  = "123e4567-e89b-12d3-a456-426614174000"
-  spec_content = "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"My AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}"
+  catalog_ai_model_id = "123e4567-e89b-12d3-a456-426614174000"
+  spec_content        = "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"My AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}"
   spec_provider = {
     source = "ai_gateway"
   }
@@ -27,7 +27,7 @@ resource "konnect_catalog_ai_model_version_spec" "my_catalogaimodelversionspec" 
 
 ### Required
 
-- `ai_model_id` (String) The unique identifier of the AI Model.
+- `catalog_ai_model_id` (String) The unique identifier of the AI Model.
 - `spec_content` (String) The raw content of the oas specification, in json or yaml format (for example, an
 OpenAPI document).
 

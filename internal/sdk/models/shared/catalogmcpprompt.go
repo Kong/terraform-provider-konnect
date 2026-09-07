@@ -11,11 +11,11 @@ type CatalogMCPPrompt struct {
 	// Machine/programmatic name of the prompt.
 	Name string `json:"name"`
 	// Human-readable name of the prompt.
-	Title *string `default:"null" json:"title"`
+	Title *string `json:"title,omitempty"`
 	// Detailed description of the prompt's purpose and usage.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// List of arguments to use for templating the prompt.
-	Arguments []CatalogMCPPromptArgument `json:"arguments"`
+	Arguments []CatalogMCPPromptArgument `json:"arguments,omitempty"`
 }
 
 func (c CatalogMCPPrompt) MarshalJSON() ([]byte, error) {

@@ -11,9 +11,9 @@ type CatalogMCPTool struct {
 	// Machine/programmatic name of the tool.
 	Name string `json:"name"`
 	// Human-readable name of the tool.
-	Title *string `default:"null" json:"title"`
+	Title *string `json:"title,omitempty"`
 	// Detailed description of the tool's functionality.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Input schema for an MCP tool.
 	InputSchema any `json:"input_schema"`
 	// Output schema for an MCP tool.

@@ -7,6 +7,6 @@ import (
 )
 
 type CatalogMCPGatewayImplementationConfig struct {
-	GatewayControlPlaneID types.String `tfsdk:"gateway_control_plane_id"`
-	GatewayMcpServerID    types.String `tfsdk:"gateway_mcp_server_id"`
+	AiGatewayID          types.String `tfsdk:"ai_gateway_id"`
+	AiGatewayMcpServerID types.String `tfsdk:"ai_gateway_mcp_server_id"`
 }

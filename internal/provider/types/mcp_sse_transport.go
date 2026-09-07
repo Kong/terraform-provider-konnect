@@ -8,6 +8,5 @@ import (
 
 type MCPSseTransport struct {
 	Headers []MCPKeyValueInput `tfsdk:"headers"`
-	Type    types.String       `tfsdk:"type"`
 	URL     types.String       `tfsdk:"url"`
 }

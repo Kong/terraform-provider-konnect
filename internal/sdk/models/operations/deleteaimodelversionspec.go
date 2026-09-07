@@ -10,7 +10,7 @@ import (
 
 type DeleteAiModelVersionSpecRequest struct {
 	// The unique identifier of the AI Model.
-	AiModelID string `pathParam:"style=simple,explode=false,name=aiModelId"`
+	CatalogAiModelID string `pathParam:"style=simple,explode=false,name=aiModelId"`
 }
 
 func (d DeleteAiModelVersionSpecRequest) MarshalJSON() ([]byte, error) {
@@ -24,11 +24,11 @@ func (d *DeleteAiModelVersionSpecRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (d *DeleteAiModelVersionSpecRequest) GetAiModelID() string {
+func (d *DeleteAiModelVersionSpecRequest) GetCatalogAiModelID() string {
 	if d == nil {
 		return ""
 	}
-	return d.AiModelID
+	return d.CatalogAiModelID
 }
 
 type DeleteAiModelVersionSpecResponse struct {

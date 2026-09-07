@@ -14,9 +14,9 @@ CatalogAiModelImplementation Resource
 
 ```terraform
 resource "konnect_catalog_ai_model_implementation" "my_catalogaimodelimplementation" {
-  ai_model_id              = "123e4567-e89b-12d3-a456-426614174000"
-  gateway_control_plane_id = "223e4567-e89b-12d3-a456-426614174999"
-  gateway_model_id         = "gw-model-abc"
+  ai_gateway_id       = "223e4567-e89b-12d3-a456-426614174999"
+  ai_gateway_model_id = "gw-model-abc"
+  catalog_ai_model_id = "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
@@ -25,13 +25,16 @@ resource "konnect_catalog_ai_model_implementation" "my_catalogaimodelimplementat
 
 ### Required
 
-- `ai_model_id` (String) The unique identifier of the AI Model. Requires replacement if changed.
-- `gateway_control_plane_id` (String) The AI Gateway control plane uuid the model belongs to. Requires replacement if changed.
-- `gateway_model_id` (String) The text or uuid identifier of the AI Gateway model to link. Requires replacement if changed.
+- `ai_gateway_id` (String) The AI Gateway control plane uuid the model belongs to. Requires replacement if changed.
+- `ai_gateway_model_id` (String) The text or uuid identifier of the AI Gateway model to link. Requires replacement if changed.
+- `catalog_ai_model_id` (String) The unique identifier of the AI Model. Requires replacement if changed.
 
 ### Read-Only
 
+- `ai_model_id` (String) The identifier of the parent AI Model.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `gateway_control_plane_id` (String) The AI Gateway control plane uuid the linked model belongs to.
+- `gateway_model_id` (String) The text or uuid identifier of the linked AI Gateway model.
 - `id` (String) The unique identifier of the implementation (link) record.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -45,8 +48,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_catalog_ai_model_implementation.my_konnect_catalog_ai_model_implementation
   id = jsonencode({
-    ai_model_id = "123e4567-e89b-12d3-a456-426614174000"
-    id          = "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"
+    catalog_ai_model_id = "123e4567-e89b-12d3-a456-426614174000"
+    id                  = "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"
   })
 }
 ```
@@ -54,5 +57,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_catalog_ai_model_implementation.my_konnect_catalog_ai_model_implementation '{"ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"}'
+terraform import konnect_catalog_ai_model_implementation.my_konnect_catalog_ai_model_implementation '{"catalog_ai_model_id": "123e4567-e89b-12d3-a456-426614174000", "id": "d2e1f0a9-8b7c-6d5e-4f3a-2b1c0d9e8f7a"}'
 ```
