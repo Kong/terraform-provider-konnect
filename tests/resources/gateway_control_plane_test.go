@@ -79,6 +79,25 @@ func TestGatewayControlPlane(t *testing.T) {
 		})
 	})
 
+	t.Run("import", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+				},
+				{
+					Config:            providerConfigUs,
+					ConfigDirectory:   config.TestNameDirectory(),
+					ResourceName:      "konnect_gateway_control_plane.tfdemo",
+					ImportState:       true,
+					ImportStateVerify: true,
+				},
+			},
+		})
+	})
+
 	t.Run("data source", func(t *testing.T) {
 
 		resource.Test(t, resource.TestCase{
