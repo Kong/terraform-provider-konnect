@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -41,6 +40,7 @@ type APIPublicationResourceModel struct {
 	AuthStrategyIds          []types.String `tfsdk:"auth_strategy_ids"`
 	AutoApproveRegistrations types.Bool     `tfsdk:"auto_approve_registrations"`
 	CreatedAt                types.String   `tfsdk:"created_at"`
+	FormID                   types.String   `tfsdk:"form_id"`
 	PortalID                 types.String   `tfsdk:"portal_id"`
 	UpdatedAt                types.String   `tfsdk:"updated_at"`
 	Visibility               types.String   `tfsdk:"visibility"`
@@ -83,6 +83,11 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
+			"form_id": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'`,
+			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The Portal identifier`,
@@ -97,11 +102,11 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 			"visibility": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
-				Default:  stringdefault.StaticString(`private`),
 				MarkdownDescription: `The visibility of the API in the portal.` + "\n" +
 					`Public API publications do not require authentication to view and retrieve information about them.` + "\n" +
 					`Private API publications require authentication to retrieve information about them.` + "\n" +
-					`possible known values include one of ["public", "private"]; Default: "private"`,
+					`If omitted, this defaults to the target portal's configured default API visibility.` + "\n" +
+					`possible known values include one of ["public", "private"]`,
 			},
 			"warnings": schema.ListAttribute{
 				Computed: true,

@@ -58,11 +58,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 <a id="nestedatt--proxy_urls"></a>
 ### Nested Schema for `proxy_urls`
 
-Required:
+Optional:
 
-- `host` (String) Hostname of the proxy URL.
-- `port` (Number) Port of the proxy URL.
-- `protocol` (String) Protocol of the proxy URL.
+- `host` (String) Hostname of the proxy URL. Not Null
+- `port` (Number) Port of the proxy URL. Not Null
+- `protocol` (String) Protocol of the proxy URL. Not Null
 
 
 <a id="nestedatt--config"></a>

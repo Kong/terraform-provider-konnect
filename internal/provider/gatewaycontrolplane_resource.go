@@ -21,6 +21,9 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -168,27 +171,37 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"proxy_urls": schema.SetNestedAttribute{
+				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"host": schema.StringAttribute{
-							Required:    true,
-							Description: `Hostname of the proxy URL.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `Hostname of the proxy URL. Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthBetween(1, 120),
 							},
 						},
 						"port": schema.Int64Attribute{
-							Required:    true,
-							Description: `Port of the proxy URL.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `Port of the proxy URL. Not Null`,
 							Validators: []validator.Int64{
+								speakeasy_int64validators.NotNull(),
 								int64validator.AtLeast(1),
 							},
 						},
 						"protocol": schema.StringAttribute{
-							Required:    true,
-							Description: `Protocol of the proxy URL.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `Protocol of the proxy URL. Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthBetween(1, 32),
 							},
 						},

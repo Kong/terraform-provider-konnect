@@ -15,6 +15,17 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane1(ctx co
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AuthType != nil {
+			r.AuthType = types.StringValue(string(*resp.AuthType))
+		} else {
+			r.AuthType = types.StringNull()
+		}
+		r.CloudGateway = types.BoolPointerValue(resp.CloudGateway)
+		if resp.ClusterType != nil {
+			r.ClusterType = types.StringValue(string(*resp.ClusterType))
+		} else {
+			r.ClusterType = types.StringNull()
+		}
 		r.Config = &tfTypes.ControlPlaneConfig{}
 		r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
 		r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
@@ -41,6 +52,17 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane1(ctx co
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
+		r.ProxyUrls = []tfTypes.ProxyURL{}
+
+		for _, proxyUrlsItem1 := range resp.ProxyUrls {
+			var proxyUrls1 tfTypes.ProxyURL
+
+			proxyUrls1.Host = types.StringValue(proxyUrlsItem1.Host)
+			proxyUrls1.Port = types.Int64Value(proxyUrlsItem1.Port)
+			proxyUrls1.Protocol = types.StringValue(proxyUrlsItem1.Protocol)
+
+			r.ProxyUrls = append(r.ProxyUrls, proxyUrls1)
+		}
 	}
 
 	return diags
