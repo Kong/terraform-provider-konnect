@@ -38540,13 +38540,20 @@ components:
               description: An identifier for the positional argument.
               type: string
               example: file_path
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
             is_repeated:
               description: Whether the argument can be repeated multiple times.
               type: boolean
               default: false
+        - anyOf:
+            - type: object
+              required:
+                - value_hint
+              title: MCPPositionalArgumentWithValueHint
+            - type: object
+              required:
+                - value
+              title: MCPPositionalArgumentWithValue
       title: MCPPositionalArgument
     MCPNamedArgument:
       description: 'A command-line `--flag={value}`.'
