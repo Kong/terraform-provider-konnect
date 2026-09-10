@@ -131,44 +131,93 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 						}
 						if packageArgumentsItem.MCPPositionalArgument != nil {
 							packageArguments.MCPPositionalArgument = &tfTypes.MCPPositionalArgument{}
-							packageArguments.MCPPositionalArgument.Choices = make([]types.String, 0, len(packageArgumentsItem.MCPPositionalArgument.Choices))
-							for _, v := range packageArgumentsItem.MCPPositionalArgument.Choices {
-								packageArguments.MCPPositionalArgument.Choices = append(packageArguments.MCPPositionalArgument.Choices, types.StringValue(v))
+							if packageArguments.MCPPositionalArgument == nil {
+								packageArguments.MCPPositionalArgument = &tfTypes.MCPPositionalArgument{}
 							}
-							packageArguments.MCPPositionalArgument.Default = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.Default)
-							packageArguments.MCPPositionalArgument.Description = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.Description)
-							if packageArgumentsItem.MCPPositionalArgument.Format != nil {
-								packageArguments.MCPPositionalArgument.Format = types.StringValue(string(*packageArgumentsItem.MCPPositionalArgument.Format))
-							} else {
-								packageArguments.MCPPositionalArgument.Format = types.StringNull()
-							}
-							packageArguments.MCPPositionalArgument.IsRepeated = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.IsRepeated)
-							packageArguments.MCPPositionalArgument.IsRequired = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.IsRequired)
-							packageArguments.MCPPositionalArgument.IsSecret = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.IsSecret)
-							packageArguments.MCPPositionalArgument.Placeholder = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.Placeholder)
-							packageArguments.MCPPositionalArgument.Value = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.Value)
-							packageArguments.MCPPositionalArgument.ValueHint = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.ValueHint)
-							if packageArgumentsItem.MCPPositionalArgument.Variables != nil {
-								packageArguments.MCPPositionalArgument.Variables = make(map[string]tfTypes.MCPInput, len(packageArgumentsItem.MCPPositionalArgument.Variables))
-								for mcpInputKey2, mcpInputValue2 := range packageArgumentsItem.MCPPositionalArgument.Variables {
-									var mcpInputResult2 tfTypes.MCPInput
-									mcpInputResult2.Choices = make([]types.String, 0, len(mcpInputValue2.Choices))
-									for _, v := range mcpInputValue2.Choices {
-										mcpInputResult2.Choices = append(mcpInputResult2.Choices, types.StringValue(v))
-									}
-									mcpInputResult2.Default = types.StringPointerValue(mcpInputValue2.Default)
-									mcpInputResult2.Description = types.StringPointerValue(mcpInputValue2.Description)
-									if mcpInputValue2.Format != nil {
-										mcpInputResult2.Format = types.StringValue(string(*mcpInputValue2.Format))
-									} else {
-										mcpInputResult2.Format = types.StringNull()
-									}
-									mcpInputResult2.IsRequired = types.BoolPointerValue(mcpInputValue2.IsRequired)
-									mcpInputResult2.IsSecret = types.BoolPointerValue(mcpInputValue2.IsSecret)
-									mcpInputResult2.Placeholder = types.StringPointerValue(mcpInputValue2.Placeholder)
-									mcpInputResult2.Value = types.StringPointerValue(mcpInputValue2.Value)
+							if packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue != nil {
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue = &tfTypes.MCPPositionalArgumentWithValue{}
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices = make([]types.String, 0, len(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices))
+								for _, v := range packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices = append(packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices, types.StringValue(v))
+								}
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Default = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Default)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Description = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Description)
+								if packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format != nil {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format = types.StringValue(string(*packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format))
+								} else {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format = types.StringNull()
+								}
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Value = types.StringValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Value)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint)
+								if packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables != nil {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables = make(map[string]tfTypes.MCPInput, len(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables))
+									for mcpInputKey2, mcpInputValue2 := range packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables {
+										var mcpInputResult2 tfTypes.MCPInput
+										mcpInputResult2.Choices = make([]types.String, 0, len(mcpInputValue2.Choices))
+										for _, v := range mcpInputValue2.Choices {
+											mcpInputResult2.Choices = append(mcpInputResult2.Choices, types.StringValue(v))
+										}
+										mcpInputResult2.Default = types.StringPointerValue(mcpInputValue2.Default)
+										mcpInputResult2.Description = types.StringPointerValue(mcpInputValue2.Description)
+										if mcpInputValue2.Format != nil {
+											mcpInputResult2.Format = types.StringValue(string(*mcpInputValue2.Format))
+										} else {
+											mcpInputResult2.Format = types.StringNull()
+										}
+										mcpInputResult2.IsRequired = types.BoolPointerValue(mcpInputValue2.IsRequired)
+										mcpInputResult2.IsSecret = types.BoolPointerValue(mcpInputValue2.IsSecret)
+										mcpInputResult2.Placeholder = types.StringPointerValue(mcpInputValue2.Placeholder)
+										mcpInputResult2.Value = types.StringPointerValue(mcpInputValue2.Value)
 
-									packageArguments.MCPPositionalArgument.Variables[mcpInputKey2] = mcpInputResult2
+										packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[mcpInputKey2] = mcpInputResult2
+									}
+								}
+							}
+							if packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint != nil {
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint = &tfTypes.MCPPositionalArgumentWithValueHint{}
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices = make([]types.String, 0, len(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices))
+								for _, v := range packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices = append(packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices, types.StringValue(v))
+								}
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description)
+								if packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format != nil {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format = types.StringValue(string(*packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format))
+								} else {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format = types.StringNull()
+								}
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret = types.BoolPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value = types.StringPointerValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value)
+								packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.ValueHint = types.StringValue(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.ValueHint)
+								if packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables != nil {
+									packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables = make(map[string]tfTypes.MCPInput, len(packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables))
+									for mcpInputKey3, mcpInputValue3 := range packageArgumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables {
+										var mcpInputResult3 tfTypes.MCPInput
+										mcpInputResult3.Choices = make([]types.String, 0, len(mcpInputValue3.Choices))
+										for _, v := range mcpInputValue3.Choices {
+											mcpInputResult3.Choices = append(mcpInputResult3.Choices, types.StringValue(v))
+										}
+										mcpInputResult3.Default = types.StringPointerValue(mcpInputValue3.Default)
+										mcpInputResult3.Description = types.StringPointerValue(mcpInputValue3.Description)
+										if mcpInputValue3.Format != nil {
+											mcpInputResult3.Format = types.StringValue(string(*mcpInputValue3.Format))
+										} else {
+											mcpInputResult3.Format = types.StringNull()
+										}
+										mcpInputResult3.IsRequired = types.BoolPointerValue(mcpInputValue3.IsRequired)
+										mcpInputResult3.IsSecret = types.BoolPointerValue(mcpInputValue3.IsSecret)
+										mcpInputResult3.Placeholder = types.StringPointerValue(mcpInputValue3.Placeholder)
+										mcpInputResult3.Value = types.StringPointerValue(mcpInputValue3.Value)
+
+										packageArguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[mcpInputKey3] = mcpInputResult3
+									}
 								}
 							}
 						}
@@ -211,50 +260,7 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 							arguments.MCPNamedArgument.Value = types.StringPointerValue(argumentsItem.MCPNamedArgument.Value)
 							if argumentsItem.MCPNamedArgument.Variables != nil {
 								arguments.MCPNamedArgument.Variables = make(map[string]tfTypes.MCPInput, len(argumentsItem.MCPNamedArgument.Variables))
-								for mcpInputKey3, mcpInputValue3 := range argumentsItem.MCPNamedArgument.Variables {
-									var mcpInputResult3 tfTypes.MCPInput
-									mcpInputResult3.Choices = make([]types.String, 0, len(mcpInputValue3.Choices))
-									for _, v := range mcpInputValue3.Choices {
-										mcpInputResult3.Choices = append(mcpInputResult3.Choices, types.StringValue(v))
-									}
-									mcpInputResult3.Default = types.StringPointerValue(mcpInputValue3.Default)
-									mcpInputResult3.Description = types.StringPointerValue(mcpInputValue3.Description)
-									if mcpInputValue3.Format != nil {
-										mcpInputResult3.Format = types.StringValue(string(*mcpInputValue3.Format))
-									} else {
-										mcpInputResult3.Format = types.StringNull()
-									}
-									mcpInputResult3.IsRequired = types.BoolPointerValue(mcpInputValue3.IsRequired)
-									mcpInputResult3.IsSecret = types.BoolPointerValue(mcpInputValue3.IsSecret)
-									mcpInputResult3.Placeholder = types.StringPointerValue(mcpInputValue3.Placeholder)
-									mcpInputResult3.Value = types.StringPointerValue(mcpInputValue3.Value)
-
-									arguments.MCPNamedArgument.Variables[mcpInputKey3] = mcpInputResult3
-								}
-							}
-						}
-						if argumentsItem.MCPPositionalArgument != nil {
-							arguments.MCPPositionalArgument = &tfTypes.MCPPositionalArgument{}
-							arguments.MCPPositionalArgument.Choices = make([]types.String, 0, len(argumentsItem.MCPPositionalArgument.Choices))
-							for _, v := range argumentsItem.MCPPositionalArgument.Choices {
-								arguments.MCPPositionalArgument.Choices = append(arguments.MCPPositionalArgument.Choices, types.StringValue(v))
-							}
-							arguments.MCPPositionalArgument.Default = types.StringPointerValue(argumentsItem.MCPPositionalArgument.Default)
-							arguments.MCPPositionalArgument.Description = types.StringPointerValue(argumentsItem.MCPPositionalArgument.Description)
-							if argumentsItem.MCPPositionalArgument.Format != nil {
-								arguments.MCPPositionalArgument.Format = types.StringValue(string(*argumentsItem.MCPPositionalArgument.Format))
-							} else {
-								arguments.MCPPositionalArgument.Format = types.StringNull()
-							}
-							arguments.MCPPositionalArgument.IsRepeated = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.IsRepeated)
-							arguments.MCPPositionalArgument.IsRequired = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.IsRequired)
-							arguments.MCPPositionalArgument.IsSecret = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.IsSecret)
-							arguments.MCPPositionalArgument.Placeholder = types.StringPointerValue(argumentsItem.MCPPositionalArgument.Placeholder)
-							arguments.MCPPositionalArgument.Value = types.StringPointerValue(argumentsItem.MCPPositionalArgument.Value)
-							arguments.MCPPositionalArgument.ValueHint = types.StringPointerValue(argumentsItem.MCPPositionalArgument.ValueHint)
-							if argumentsItem.MCPPositionalArgument.Variables != nil {
-								arguments.MCPPositionalArgument.Variables = make(map[string]tfTypes.MCPInput, len(argumentsItem.MCPPositionalArgument.Variables))
-								for mcpInputKey4, mcpInputValue4 := range argumentsItem.MCPPositionalArgument.Variables {
+								for mcpInputKey4, mcpInputValue4 := range argumentsItem.MCPNamedArgument.Variables {
 									var mcpInputResult4 tfTypes.MCPInput
 									mcpInputResult4.Choices = make([]types.String, 0, len(mcpInputValue4.Choices))
 									for _, v := range mcpInputValue4.Choices {
@@ -272,7 +278,99 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 									mcpInputResult4.Placeholder = types.StringPointerValue(mcpInputValue4.Placeholder)
 									mcpInputResult4.Value = types.StringPointerValue(mcpInputValue4.Value)
 
-									arguments.MCPPositionalArgument.Variables[mcpInputKey4] = mcpInputResult4
+									arguments.MCPNamedArgument.Variables[mcpInputKey4] = mcpInputResult4
+								}
+							}
+						}
+						if argumentsItem.MCPPositionalArgument != nil {
+							arguments.MCPPositionalArgument = &tfTypes.MCPPositionalArgument{}
+							if arguments.MCPPositionalArgument == nil {
+								arguments.MCPPositionalArgument = &tfTypes.MCPPositionalArgument{}
+							}
+							if argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue != nil {
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue = &tfTypes.MCPPositionalArgumentWithValue{}
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices = make([]types.String, 0, len(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices))
+								for _, v := range argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices = append(arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices, types.StringValue(v))
+								}
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Default = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Default)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Description = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Description)
+								if argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format != nil {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format = types.StringValue(string(*argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format))
+								} else {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Format = types.StringNull()
+								}
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Value = types.StringValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Value)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint)
+								if argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables != nil {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables = make(map[string]tfTypes.MCPInput, len(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables))
+									for mcpInputKey5, mcpInputValue5 := range argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables {
+										var mcpInputResult5 tfTypes.MCPInput
+										mcpInputResult5.Choices = make([]types.String, 0, len(mcpInputValue5.Choices))
+										for _, v := range mcpInputValue5.Choices {
+											mcpInputResult5.Choices = append(mcpInputResult5.Choices, types.StringValue(v))
+										}
+										mcpInputResult5.Default = types.StringPointerValue(mcpInputValue5.Default)
+										mcpInputResult5.Description = types.StringPointerValue(mcpInputValue5.Description)
+										if mcpInputValue5.Format != nil {
+											mcpInputResult5.Format = types.StringValue(string(*mcpInputValue5.Format))
+										} else {
+											mcpInputResult5.Format = types.StringNull()
+										}
+										mcpInputResult5.IsRequired = types.BoolPointerValue(mcpInputValue5.IsRequired)
+										mcpInputResult5.IsSecret = types.BoolPointerValue(mcpInputValue5.IsSecret)
+										mcpInputResult5.Placeholder = types.StringPointerValue(mcpInputValue5.Placeholder)
+										mcpInputResult5.Value = types.StringPointerValue(mcpInputValue5.Value)
+
+										arguments.MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[mcpInputKey5] = mcpInputResult5
+									}
+								}
+							}
+							if argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint != nil {
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint = &tfTypes.MCPPositionalArgumentWithValueHint{}
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices = make([]types.String, 0, len(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices))
+								for _, v := range argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices = append(arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices, types.StringValue(v))
+								}
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description)
+								if argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format != nil {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format = types.StringValue(string(*argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format))
+								} else {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format = types.StringNull()
+								}
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret = types.BoolPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value = types.StringPointerValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value)
+								arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.ValueHint = types.StringValue(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.ValueHint)
+								if argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables != nil {
+									arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables = make(map[string]tfTypes.MCPInput, len(argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables))
+									for mcpInputKey6, mcpInputValue6 := range argumentsItem.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables {
+										var mcpInputResult6 tfTypes.MCPInput
+										mcpInputResult6.Choices = make([]types.String, 0, len(mcpInputValue6.Choices))
+										for _, v := range mcpInputValue6.Choices {
+											mcpInputResult6.Choices = append(mcpInputResult6.Choices, types.StringValue(v))
+										}
+										mcpInputResult6.Default = types.StringPointerValue(mcpInputValue6.Default)
+										mcpInputResult6.Description = types.StringPointerValue(mcpInputValue6.Description)
+										if mcpInputValue6.Format != nil {
+											mcpInputResult6.Format = types.StringValue(string(*mcpInputValue6.Format))
+										} else {
+											mcpInputResult6.Format = types.StringNull()
+										}
+										mcpInputResult6.IsRequired = types.BoolPointerValue(mcpInputValue6.IsRequired)
+										mcpInputResult6.IsSecret = types.BoolPointerValue(mcpInputValue6.IsSecret)
+										mcpInputResult6.Placeholder = types.StringPointerValue(mcpInputValue6.Placeholder)
+										mcpInputResult6.Value = types.StringPointerValue(mcpInputValue6.Value)
+
+										arguments.MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[mcpInputKey6] = mcpInputResult6
+									}
 								}
 							}
 						}
@@ -310,25 +408,25 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 							headers.Value = types.StringPointerValue(headersItem.Value)
 							if headersItem.Variables != nil {
 								headers.Variables = make(map[string]tfTypes.MCPInput, len(headersItem.Variables))
-								for mcpInputKey5, mcpInputValue5 := range headersItem.Variables {
-									var mcpInputResult5 tfTypes.MCPInput
-									mcpInputResult5.Choices = make([]types.String, 0, len(mcpInputValue5.Choices))
-									for _, v := range mcpInputValue5.Choices {
-										mcpInputResult5.Choices = append(mcpInputResult5.Choices, types.StringValue(v))
+								for mcpInputKey7, mcpInputValue7 := range headersItem.Variables {
+									var mcpInputResult7 tfTypes.MCPInput
+									mcpInputResult7.Choices = make([]types.String, 0, len(mcpInputValue7.Choices))
+									for _, v := range mcpInputValue7.Choices {
+										mcpInputResult7.Choices = append(mcpInputResult7.Choices, types.StringValue(v))
 									}
-									mcpInputResult5.Default = types.StringPointerValue(mcpInputValue5.Default)
-									mcpInputResult5.Description = types.StringPointerValue(mcpInputValue5.Description)
-									if mcpInputValue5.Format != nil {
-										mcpInputResult5.Format = types.StringValue(string(*mcpInputValue5.Format))
+									mcpInputResult7.Default = types.StringPointerValue(mcpInputValue7.Default)
+									mcpInputResult7.Description = types.StringPointerValue(mcpInputValue7.Description)
+									if mcpInputValue7.Format != nil {
+										mcpInputResult7.Format = types.StringValue(string(*mcpInputValue7.Format))
 									} else {
-										mcpInputResult5.Format = types.StringNull()
+										mcpInputResult7.Format = types.StringNull()
 									}
-									mcpInputResult5.IsRequired = types.BoolPointerValue(mcpInputValue5.IsRequired)
-									mcpInputResult5.IsSecret = types.BoolPointerValue(mcpInputValue5.IsSecret)
-									mcpInputResult5.Placeholder = types.StringPointerValue(mcpInputValue5.Placeholder)
-									mcpInputResult5.Value = types.StringPointerValue(mcpInputValue5.Value)
+									mcpInputResult7.IsRequired = types.BoolPointerValue(mcpInputValue7.IsRequired)
+									mcpInputResult7.IsSecret = types.BoolPointerValue(mcpInputValue7.IsSecret)
+									mcpInputResult7.Placeholder = types.StringPointerValue(mcpInputValue7.Placeholder)
+									mcpInputResult7.Value = types.StringPointerValue(mcpInputValue7.Value)
 
-									headers.Variables[mcpInputKey5] = mcpInputResult5
+									headers.Variables[mcpInputKey7] = mcpInputResult7
 								}
 							}
 
@@ -368,25 +466,25 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 							headers1.Value = types.StringPointerValue(headersItem1.Value)
 							if headersItem1.Variables != nil {
 								headers1.Variables = make(map[string]tfTypes.MCPInput, len(headersItem1.Variables))
-								for mcpInputKey6, mcpInputValue6 := range headersItem1.Variables {
-									var mcpInputResult6 tfTypes.MCPInput
-									mcpInputResult6.Choices = make([]types.String, 0, len(mcpInputValue6.Choices))
-									for _, v := range mcpInputValue6.Choices {
-										mcpInputResult6.Choices = append(mcpInputResult6.Choices, types.StringValue(v))
+								for mcpInputKey8, mcpInputValue8 := range headersItem1.Variables {
+									var mcpInputResult8 tfTypes.MCPInput
+									mcpInputResult8.Choices = make([]types.String, 0, len(mcpInputValue8.Choices))
+									for _, v := range mcpInputValue8.Choices {
+										mcpInputResult8.Choices = append(mcpInputResult8.Choices, types.StringValue(v))
 									}
-									mcpInputResult6.Default = types.StringPointerValue(mcpInputValue6.Default)
-									mcpInputResult6.Description = types.StringPointerValue(mcpInputValue6.Description)
-									if mcpInputValue6.Format != nil {
-										mcpInputResult6.Format = types.StringValue(string(*mcpInputValue6.Format))
+									mcpInputResult8.Default = types.StringPointerValue(mcpInputValue8.Default)
+									mcpInputResult8.Description = types.StringPointerValue(mcpInputValue8.Description)
+									if mcpInputValue8.Format != nil {
+										mcpInputResult8.Format = types.StringValue(string(*mcpInputValue8.Format))
 									} else {
-										mcpInputResult6.Format = types.StringNull()
+										mcpInputResult8.Format = types.StringNull()
 									}
-									mcpInputResult6.IsRequired = types.BoolPointerValue(mcpInputValue6.IsRequired)
-									mcpInputResult6.IsSecret = types.BoolPointerValue(mcpInputValue6.IsSecret)
-									mcpInputResult6.Placeholder = types.StringPointerValue(mcpInputValue6.Placeholder)
-									mcpInputResult6.Value = types.StringPointerValue(mcpInputValue6.Value)
+									mcpInputResult8.IsRequired = types.BoolPointerValue(mcpInputValue8.IsRequired)
+									mcpInputResult8.IsSecret = types.BoolPointerValue(mcpInputValue8.IsSecret)
+									mcpInputResult8.Placeholder = types.StringPointerValue(mcpInputValue8.Placeholder)
+									mcpInputResult8.Value = types.StringPointerValue(mcpInputValue8.Value)
 
-									headers1.Variables[mcpInputKey6] = mcpInputResult6
+									headers1.Variables[mcpInputKey8] = mcpInputResult8
 								}
 							}
 
@@ -463,25 +561,25 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 							headers2.Value = types.StringPointerValue(headersItem2.Value)
 							if headersItem2.Variables != nil {
 								headers2.Variables = make(map[string]tfTypes.MCPInput, len(headersItem2.Variables))
-								for mcpInputKey7, mcpInputValue7 := range headersItem2.Variables {
-									var mcpInputResult7 tfTypes.MCPInput
-									mcpInputResult7.Choices = make([]types.String, 0, len(mcpInputValue7.Choices))
-									for _, v := range mcpInputValue7.Choices {
-										mcpInputResult7.Choices = append(mcpInputResult7.Choices, types.StringValue(v))
+								for mcpInputKey9, mcpInputValue9 := range headersItem2.Variables {
+									var mcpInputResult9 tfTypes.MCPInput
+									mcpInputResult9.Choices = make([]types.String, 0, len(mcpInputValue9.Choices))
+									for _, v := range mcpInputValue9.Choices {
+										mcpInputResult9.Choices = append(mcpInputResult9.Choices, types.StringValue(v))
 									}
-									mcpInputResult7.Default = types.StringPointerValue(mcpInputValue7.Default)
-									mcpInputResult7.Description = types.StringPointerValue(mcpInputValue7.Description)
-									if mcpInputValue7.Format != nil {
-										mcpInputResult7.Format = types.StringValue(string(*mcpInputValue7.Format))
+									mcpInputResult9.Default = types.StringPointerValue(mcpInputValue9.Default)
+									mcpInputResult9.Description = types.StringPointerValue(mcpInputValue9.Description)
+									if mcpInputValue9.Format != nil {
+										mcpInputResult9.Format = types.StringValue(string(*mcpInputValue9.Format))
 									} else {
-										mcpInputResult7.Format = types.StringNull()
+										mcpInputResult9.Format = types.StringNull()
 									}
-									mcpInputResult7.IsRequired = types.BoolPointerValue(mcpInputValue7.IsRequired)
-									mcpInputResult7.IsSecret = types.BoolPointerValue(mcpInputValue7.IsSecret)
-									mcpInputResult7.Placeholder = types.StringPointerValue(mcpInputValue7.Placeholder)
-									mcpInputResult7.Value = types.StringPointerValue(mcpInputValue7.Value)
+									mcpInputResult9.IsRequired = types.BoolPointerValue(mcpInputValue9.IsRequired)
+									mcpInputResult9.IsSecret = types.BoolPointerValue(mcpInputValue9.IsSecret)
+									mcpInputResult9.Placeholder = types.StringPointerValue(mcpInputValue9.Placeholder)
+									mcpInputResult9.Value = types.StringPointerValue(mcpInputValue9.Value)
 
-									headers2.Variables[mcpInputKey7] = mcpInputResult7
+									headers2.Variables[mcpInputKey9] = mcpInputResult9
 								}
 							}
 
@@ -493,25 +591,25 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 					remotes.MCPSseTransport.URL = types.StringValue(remotesItem.MCPSseTransportMCPSseTransport.URL)
 					if remotesItem.MCPSseTransportMCPSseTransport.Variables != nil {
 						remotes.MCPSseTransport.Variables = make(map[string]tfTypes.MCPInput, len(remotesItem.MCPSseTransportMCPSseTransport.Variables))
-						for mcpInputKey8, mcpInputValue8 := range remotesItem.MCPSseTransportMCPSseTransport.Variables {
-							var mcpInputResult8 tfTypes.MCPInput
-							mcpInputResult8.Choices = make([]types.String, 0, len(mcpInputValue8.Choices))
-							for _, v := range mcpInputValue8.Choices {
-								mcpInputResult8.Choices = append(mcpInputResult8.Choices, types.StringValue(v))
+						for mcpInputKey10, mcpInputValue10 := range remotesItem.MCPSseTransportMCPSseTransport.Variables {
+							var mcpInputResult10 tfTypes.MCPInput
+							mcpInputResult10.Choices = make([]types.String, 0, len(mcpInputValue10.Choices))
+							for _, v := range mcpInputValue10.Choices {
+								mcpInputResult10.Choices = append(mcpInputResult10.Choices, types.StringValue(v))
 							}
-							mcpInputResult8.Default = types.StringPointerValue(mcpInputValue8.Default)
-							mcpInputResult8.Description = types.StringPointerValue(mcpInputValue8.Description)
-							if mcpInputValue8.Format != nil {
-								mcpInputResult8.Format = types.StringValue(string(*mcpInputValue8.Format))
+							mcpInputResult10.Default = types.StringPointerValue(mcpInputValue10.Default)
+							mcpInputResult10.Description = types.StringPointerValue(mcpInputValue10.Description)
+							if mcpInputValue10.Format != nil {
+								mcpInputResult10.Format = types.StringValue(string(*mcpInputValue10.Format))
 							} else {
-								mcpInputResult8.Format = types.StringNull()
+								mcpInputResult10.Format = types.StringNull()
 							}
-							mcpInputResult8.IsRequired = types.BoolPointerValue(mcpInputValue8.IsRequired)
-							mcpInputResult8.IsSecret = types.BoolPointerValue(mcpInputValue8.IsSecret)
-							mcpInputResult8.Placeholder = types.StringPointerValue(mcpInputValue8.Placeholder)
-							mcpInputResult8.Value = types.StringPointerValue(mcpInputValue8.Value)
+							mcpInputResult10.IsRequired = types.BoolPointerValue(mcpInputValue10.IsRequired)
+							mcpInputResult10.IsSecret = types.BoolPointerValue(mcpInputValue10.IsSecret)
+							mcpInputResult10.Placeholder = types.StringPointerValue(mcpInputValue10.Placeholder)
+							mcpInputResult10.Value = types.StringPointerValue(mcpInputValue10.Value)
 
-							remotes.MCPSseTransport.Variables[mcpInputKey8] = mcpInputResult8
+							remotes.MCPSseTransport.Variables[mcpInputKey10] = mcpInputResult10
 						}
 					}
 				}
@@ -541,25 +639,25 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 							headers3.Value = types.StringPointerValue(headersItem3.Value)
 							if headersItem3.Variables != nil {
 								headers3.Variables = make(map[string]tfTypes.MCPInput, len(headersItem3.Variables))
-								for mcpInputKey9, mcpInputValue9 := range headersItem3.Variables {
-									var mcpInputResult9 tfTypes.MCPInput
-									mcpInputResult9.Choices = make([]types.String, 0, len(mcpInputValue9.Choices))
-									for _, v := range mcpInputValue9.Choices {
-										mcpInputResult9.Choices = append(mcpInputResult9.Choices, types.StringValue(v))
+								for mcpInputKey11, mcpInputValue11 := range headersItem3.Variables {
+									var mcpInputResult11 tfTypes.MCPInput
+									mcpInputResult11.Choices = make([]types.String, 0, len(mcpInputValue11.Choices))
+									for _, v := range mcpInputValue11.Choices {
+										mcpInputResult11.Choices = append(mcpInputResult11.Choices, types.StringValue(v))
 									}
-									mcpInputResult9.Default = types.StringPointerValue(mcpInputValue9.Default)
-									mcpInputResult9.Description = types.StringPointerValue(mcpInputValue9.Description)
-									if mcpInputValue9.Format != nil {
-										mcpInputResult9.Format = types.StringValue(string(*mcpInputValue9.Format))
+									mcpInputResult11.Default = types.StringPointerValue(mcpInputValue11.Default)
+									mcpInputResult11.Description = types.StringPointerValue(mcpInputValue11.Description)
+									if mcpInputValue11.Format != nil {
+										mcpInputResult11.Format = types.StringValue(string(*mcpInputValue11.Format))
 									} else {
-										mcpInputResult9.Format = types.StringNull()
+										mcpInputResult11.Format = types.StringNull()
 									}
-									mcpInputResult9.IsRequired = types.BoolPointerValue(mcpInputValue9.IsRequired)
-									mcpInputResult9.IsSecret = types.BoolPointerValue(mcpInputValue9.IsSecret)
-									mcpInputResult9.Placeholder = types.StringPointerValue(mcpInputValue9.Placeholder)
-									mcpInputResult9.Value = types.StringPointerValue(mcpInputValue9.Value)
+									mcpInputResult11.IsRequired = types.BoolPointerValue(mcpInputValue11.IsRequired)
+									mcpInputResult11.IsSecret = types.BoolPointerValue(mcpInputValue11.IsSecret)
+									mcpInputResult11.Placeholder = types.StringPointerValue(mcpInputValue11.Placeholder)
+									mcpInputResult11.Value = types.StringPointerValue(mcpInputValue11.Value)
 
-									headers3.Variables[mcpInputKey9] = mcpInputResult9
+									headers3.Variables[mcpInputKey11] = mcpInputResult11
 								}
 							}
 
@@ -571,25 +669,25 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 					remotes.MCPStreamableHTTPTransport.URL = types.StringValue(remotesItem.MCPStreamableHTTPTransportMCPStreamableHTTPTransport.URL)
 					if remotesItem.MCPStreamableHTTPTransportMCPStreamableHTTPTransport.Variables != nil {
 						remotes.MCPStreamableHTTPTransport.Variables = make(map[string]tfTypes.MCPInput, len(remotesItem.MCPStreamableHTTPTransportMCPStreamableHTTPTransport.Variables))
-						for mcpInputKey10, mcpInputValue10 := range remotesItem.MCPStreamableHTTPTransportMCPStreamableHTTPTransport.Variables {
-							var mcpInputResult10 tfTypes.MCPInput
-							mcpInputResult10.Choices = make([]types.String, 0, len(mcpInputValue10.Choices))
-							for _, v := range mcpInputValue10.Choices {
-								mcpInputResult10.Choices = append(mcpInputResult10.Choices, types.StringValue(v))
+						for mcpInputKey12, mcpInputValue12 := range remotesItem.MCPStreamableHTTPTransportMCPStreamableHTTPTransport.Variables {
+							var mcpInputResult12 tfTypes.MCPInput
+							mcpInputResult12.Choices = make([]types.String, 0, len(mcpInputValue12.Choices))
+							for _, v := range mcpInputValue12.Choices {
+								mcpInputResult12.Choices = append(mcpInputResult12.Choices, types.StringValue(v))
 							}
-							mcpInputResult10.Default = types.StringPointerValue(mcpInputValue10.Default)
-							mcpInputResult10.Description = types.StringPointerValue(mcpInputValue10.Description)
-							if mcpInputValue10.Format != nil {
-								mcpInputResult10.Format = types.StringValue(string(*mcpInputValue10.Format))
+							mcpInputResult12.Default = types.StringPointerValue(mcpInputValue12.Default)
+							mcpInputResult12.Description = types.StringPointerValue(mcpInputValue12.Description)
+							if mcpInputValue12.Format != nil {
+								mcpInputResult12.Format = types.StringValue(string(*mcpInputValue12.Format))
 							} else {
-								mcpInputResult10.Format = types.StringNull()
+								mcpInputResult12.Format = types.StringNull()
 							}
-							mcpInputResult10.IsRequired = types.BoolPointerValue(mcpInputValue10.IsRequired)
-							mcpInputResult10.IsSecret = types.BoolPointerValue(mcpInputValue10.IsSecret)
-							mcpInputResult10.Placeholder = types.StringPointerValue(mcpInputValue10.Placeholder)
-							mcpInputResult10.Value = types.StringPointerValue(mcpInputValue10.Value)
+							mcpInputResult12.IsRequired = types.BoolPointerValue(mcpInputValue12.IsRequired)
+							mcpInputResult12.IsSecret = types.BoolPointerValue(mcpInputValue12.IsSecret)
+							mcpInputResult12.Placeholder = types.StringPointerValue(mcpInputValue12.Placeholder)
+							mcpInputResult12.Value = types.StringPointerValue(mcpInputValue12.Value)
 
-							remotes.MCPStreamableHTTPTransport.Variables[mcpInputKey10] = mcpInputResult10
+							remotes.MCPStreamableHTTPTransport.Variables[mcpInputKey12] = mcpInputResult12
 						}
 					}
 				}
@@ -1704,275 +1802,420 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 				arguments1 := make([]shared.MCPArgument, 0, len(r.Packages[packagesIndex].Runtime.Arguments))
 				for argumentsItem := range r.Packages[packagesIndex].Runtime.Arguments {
 					if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument != nil {
-						description14 := new(string)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Description.IsNull() {
-							*description14 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Description.ValueString()
-						} else {
-							description14 = nil
-						}
-						isRequired10 := new(bool)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsRequired.IsNull() {
-							*isRequired10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsRequired.ValueBool()
-						} else {
-							isRequired10 = nil
-						}
-						format10 := new(shared.MCPPositionalArgumentFormat)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Format.IsNull() {
-							*format10 = shared.MCPPositionalArgumentFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Format.ValueString())
-						} else {
-							format10 = nil
-						}
-						value10 := new(string)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Value.IsNull() {
-							*value10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Value.ValueString()
-						} else {
-							value10 = nil
-						}
-						isSecret10 := new(bool)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsSecret.IsNull() {
-							*isSecret10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsSecret.ValueBool()
-						} else {
-							isSecret10 = nil
-						}
-						defaultVar7 := new(string)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Default.IsNull() {
-							*defaultVar7 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Default.ValueString()
-						} else {
-							defaultVar7 = nil
-						}
-						placeholder10 := new(string)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Placeholder.IsNull() {
-							*placeholder10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Placeholder.ValueString()
-						} else {
-							placeholder10 = nil
-						}
-						choices10 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Choices))
-						for choicesIndex10 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Choices {
-							choices10 = append(choices10, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Choices[choicesIndex10].ValueString())
-						}
-						var variables6 map[string]shared.MCPInput
-						if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables != nil {
-							variables6 = make(map[string]shared.MCPInput)
-							for variablesKey6 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables {
-								description15 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Description.IsNull() {
-									*description15 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Description.ValueString()
-								} else {
-									description15 = nil
+						var mcpPositionalArgument shared.MCPPositionalArgument
+						var mcpPositionalArgumentWithValueHint *shared.MCPPositionalArgumentWithValueHint
+						if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint != nil {
+							description14 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description.IsNull() {
+								*description14 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description.ValueString()
+							} else {
+								description14 = nil
+							}
+							isRequired10 := new(bool)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired.IsNull() {
+								*isRequired10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired.ValueBool()
+							} else {
+								isRequired10 = nil
+							}
+							format10 := new(shared.MCPPositionalArgumentFormat)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format.IsNull() {
+								*format10 = shared.MCPPositionalArgumentFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format.ValueString())
+							} else {
+								format10 = nil
+							}
+							value10 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value.IsNull() {
+								*value10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value.ValueString()
+							} else {
+								value10 = nil
+							}
+							isSecret10 := new(bool)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret.IsNull() {
+								*isSecret10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret.ValueBool()
+							} else {
+								isSecret10 = nil
+							}
+							defaultVar7 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default.IsNull() {
+								*defaultVar7 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default.ValueString()
+							} else {
+								defaultVar7 = nil
+							}
+							placeholder10 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder.IsNull() {
+								*placeholder10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder.ValueString()
+							} else {
+								placeholder10 = nil
+							}
+							choices10 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices))
+							for choicesIndex10 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices {
+								choices10 = append(choices10, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices[choicesIndex10].ValueString())
+							}
+							var variables6 map[string]shared.MCPInput
+							if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables != nil {
+								variables6 = make(map[string]shared.MCPInput)
+								for variablesKey6 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables {
+									description15 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Description.IsNull() {
+										*description15 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Description.ValueString()
+									} else {
+										description15 = nil
+									}
+									isRequired11 := new(bool)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].IsRequired.IsNull() {
+										*isRequired11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].IsRequired.ValueBool()
+									} else {
+										isRequired11 = nil
+									}
+									format11 := new(shared.MCPInputFormat)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Format.IsNull() {
+										*format11 = shared.MCPInputFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Format.ValueString())
+									} else {
+										format11 = nil
+									}
+									value11 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Value.IsNull() {
+										*value11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Value.ValueString()
+									} else {
+										value11 = nil
+									}
+									isSecret11 := new(bool)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].IsSecret.IsNull() {
+										*isSecret11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].IsSecret.ValueBool()
+									} else {
+										isSecret11 = nil
+									}
+									defaultVar8 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Default.IsNull() {
+										*defaultVar8 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Default.ValueString()
+									} else {
+										defaultVar8 = nil
+									}
+									placeholder11 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Placeholder.IsNull() {
+										*placeholder11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Placeholder.ValueString()
+									} else {
+										placeholder11 = nil
+									}
+									choices11 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Choices))
+									for choicesIndex11 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Choices {
+										choices11 = append(choices11, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey6].Choices[choicesIndex11].ValueString())
+									}
+									variablesInst6 := shared.MCPInput{
+										Description: description15,
+										IsRequired:  isRequired11,
+										Format:      format11,
+										Value:       value11,
+										IsSecret:    isSecret11,
+										Default:     defaultVar8,
+										Placeholder: placeholder11,
+										Choices:     choices11,
+									}
+									variables6[variablesKey6] = variablesInst6
 								}
-								isRequired11 := new(bool)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].IsRequired.IsNull() {
-									*isRequired11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].IsRequired.ValueBool()
-								} else {
-									isRequired11 = nil
-								}
-								format11 := new(shared.MCPInputFormat)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Format.IsNull() {
-									*format11 = shared.MCPInputFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Format.ValueString())
-								} else {
-									format11 = nil
-								}
-								value11 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Value.IsNull() {
-									*value11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Value.ValueString()
-								} else {
-									value11 = nil
-								}
-								isSecret11 := new(bool)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].IsSecret.IsNull() {
-									*isSecret11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].IsSecret.ValueBool()
-								} else {
-									isSecret11 = nil
-								}
-								defaultVar8 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Default.IsNull() {
-									*defaultVar8 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Default.ValueString()
-								} else {
-									defaultVar8 = nil
-								}
-								placeholder11 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Placeholder.IsNull() {
-									*placeholder11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Placeholder.ValueString()
-								} else {
-									placeholder11 = nil
-								}
-								choices11 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Choices))
-								for choicesIndex11 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Choices {
-									choices11 = append(choices11, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.Variables[variablesKey6].Choices[choicesIndex11].ValueString())
-								}
-								variablesInst6 := shared.MCPInput{
-									Description: description15,
-									IsRequired:  isRequired11,
-									Format:      format11,
-									Value:       value11,
-									IsSecret:    isSecret11,
-									Default:     defaultVar8,
-									Placeholder: placeholder11,
-									Choices:     choices11,
-								}
-								variables6[variablesKey6] = variablesInst6
+							}
+							var valueHint string
+							valueHint = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.ValueHint.ValueString()
+
+							isRepeated := new(bool)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated.IsNull() {
+								*isRepeated = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated.ValueBool()
+							} else {
+								isRepeated = nil
+							}
+							mcpPositionalArgumentWithValueHint = &shared.MCPPositionalArgumentWithValueHint{
+								Description: description14,
+								IsRequired:  isRequired10,
+								Format:      format10,
+								Value:       value10,
+								IsSecret:    isSecret10,
+								Default:     defaultVar7,
+								Placeholder: placeholder10,
+								Choices:     choices10,
+								Variables:   variables6,
+								ValueHint:   valueHint,
+								IsRepeated:  isRepeated,
 							}
 						}
-						valueHint := new(string)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.ValueHint.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.ValueHint.IsNull() {
-							*valueHint = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.ValueHint.ValueString()
-						} else {
-							valueHint = nil
+						if mcpPositionalArgumentWithValueHint != nil {
+							mcpPositionalArgument = shared.MCPPositionalArgument{
+								MCPPositionalArgumentWithValueHint: mcpPositionalArgumentWithValueHint,
+							}
 						}
-						isRepeated := new(bool)
-						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsRepeated.IsNull() {
-							*isRepeated = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.IsRepeated.ValueBool()
-						} else {
-							isRepeated = nil
+						var mcpPositionalArgumentWithValue *shared.MCPPositionalArgumentWithValue
+						if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue != nil {
+							description16 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Description.IsNull() {
+								*description16 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Description.ValueString()
+							} else {
+								description16 = nil
+							}
+							isRequired12 := new(bool)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired.IsNull() {
+								*isRequired12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired.ValueBool()
+							} else {
+								isRequired12 = nil
+							}
+							format12 := new(shared.MCPPositionalArgument2Format)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Format.IsNull() {
+								*format12 = shared.MCPPositionalArgument2Format(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Format.ValueString())
+							} else {
+								format12 = nil
+							}
+							var value12 string
+							value12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Value.ValueString()
+
+							isSecret12 := new(bool)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret.IsNull() {
+								*isSecret12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret.ValueBool()
+							} else {
+								isSecret12 = nil
+							}
+							defaultVar9 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Default.IsNull() {
+								*defaultVar9 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Default.ValueString()
+							} else {
+								defaultVar9 = nil
+							}
+							placeholder12 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder.IsNull() {
+								*placeholder12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder.ValueString()
+							} else {
+								placeholder12 = nil
+							}
+							choices12 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices))
+							for choicesIndex12 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices {
+								choices12 = append(choices12, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices[choicesIndex12].ValueString())
+							}
+							var variables7 map[string]shared.MCPInput
+							if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables != nil {
+								variables7 = make(map[string]shared.MCPInput)
+								for variablesKey7 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables {
+									description17 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Description.IsNull() {
+										*description17 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Description.ValueString()
+									} else {
+										description17 = nil
+									}
+									isRequired13 := new(bool)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].IsRequired.IsNull() {
+										*isRequired13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].IsRequired.ValueBool()
+									} else {
+										isRequired13 = nil
+									}
+									format13 := new(shared.MCPInputFormat)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Format.IsNull() {
+										*format13 = shared.MCPInputFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Format.ValueString())
+									} else {
+										format13 = nil
+									}
+									value13 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Value.IsNull() {
+										*value13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Value.ValueString()
+									} else {
+										value13 = nil
+									}
+									isSecret13 := new(bool)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].IsSecret.IsNull() {
+										*isSecret13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].IsSecret.ValueBool()
+									} else {
+										isSecret13 = nil
+									}
+									defaultVar10 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Default.IsNull() {
+										*defaultVar10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Default.ValueString()
+									} else {
+										defaultVar10 = nil
+									}
+									placeholder13 := new(string)
+									if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Placeholder.IsNull() {
+										*placeholder13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Placeholder.ValueString()
+									} else {
+										placeholder13 = nil
+									}
+									choices13 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Choices))
+									for choicesIndex13 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Choices {
+										choices13 = append(choices13, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey7].Choices[choicesIndex13].ValueString())
+									}
+									variablesInst7 := shared.MCPInput{
+										Description: description17,
+										IsRequired:  isRequired13,
+										Format:      format13,
+										Value:       value13,
+										IsSecret:    isSecret13,
+										Default:     defaultVar10,
+										Placeholder: placeholder13,
+										Choices:     choices13,
+									}
+									variables7[variablesKey7] = variablesInst7
+								}
+							}
+							valueHint1 := new(string)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint.IsNull() {
+								*valueHint1 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint.ValueString()
+							} else {
+								valueHint1 = nil
+							}
+							isRepeated1 := new(bool)
+							if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated.IsNull() {
+								*isRepeated1 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated.ValueBool()
+							} else {
+								isRepeated1 = nil
+							}
+							mcpPositionalArgumentWithValue = &shared.MCPPositionalArgumentWithValue{
+								Description: description16,
+								IsRequired:  isRequired12,
+								Format:      format12,
+								Value:       value12,
+								IsSecret:    isSecret12,
+								Default:     defaultVar9,
+								Placeholder: placeholder12,
+								Choices:     choices12,
+								Variables:   variables7,
+								ValueHint:   valueHint1,
+								IsRepeated:  isRepeated1,
+							}
 						}
-						mcpPositionalArgument := shared.MCPPositionalArgument{
-							Description: description14,
-							IsRequired:  isRequired10,
-							Format:      format10,
-							Value:       value10,
-							IsSecret:    isSecret10,
-							Default:     defaultVar7,
-							Placeholder: placeholder10,
-							Choices:     choices10,
-							Variables:   variables6,
-							ValueHint:   valueHint,
-							IsRepeated:  isRepeated,
+						if mcpPositionalArgumentWithValue != nil {
+							mcpPositionalArgument = shared.MCPPositionalArgument{
+								MCPPositionalArgumentWithValue: mcpPositionalArgumentWithValue,
+							}
 						}
 						arguments1 = append(arguments1, shared.MCPArgument{
 							MCPPositionalArgument: &mcpPositionalArgument,
 						})
 					}
 					if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument != nil {
-						description16 := new(string)
+						description18 := new(string)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Description.IsNull() {
-							*description16 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Description.ValueString()
+							*description18 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Description.ValueString()
 						} else {
-							description16 = nil
+							description18 = nil
 						}
-						isRequired12 := new(bool)
+						isRequired14 := new(bool)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRequired.IsNull() {
-							*isRequired12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRequired.ValueBool()
+							*isRequired14 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRequired.ValueBool()
 						} else {
-							isRequired12 = nil
+							isRequired14 = nil
 						}
-						format12 := new(shared.MCPNamedArgumentFormat)
+						format14 := new(shared.MCPNamedArgumentFormat)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Format.IsNull() {
-							*format12 = shared.MCPNamedArgumentFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Format.ValueString())
+							*format14 = shared.MCPNamedArgumentFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Format.ValueString())
 						} else {
-							format12 = nil
+							format14 = nil
 						}
-						value12 := new(string)
+						value14 := new(string)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Value.IsNull() {
-							*value12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Value.ValueString()
+							*value14 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Value.ValueString()
 						} else {
-							value12 = nil
+							value14 = nil
 						}
-						isSecret12 := new(bool)
+						isSecret14 := new(bool)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsSecret.IsNull() {
-							*isSecret12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsSecret.ValueBool()
+							*isSecret14 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsSecret.ValueBool()
 						} else {
-							isSecret12 = nil
+							isSecret14 = nil
 						}
-						defaultVar9 := new(string)
+						defaultVar11 := new(string)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Default.IsNull() {
-							*defaultVar9 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Default.ValueString()
+							*defaultVar11 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Default.ValueString()
 						} else {
-							defaultVar9 = nil
+							defaultVar11 = nil
 						}
-						placeholder12 := new(string)
+						placeholder14 := new(string)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Placeholder.IsNull() {
-							*placeholder12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Placeholder.ValueString()
+							*placeholder14 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Placeholder.ValueString()
 						} else {
-							placeholder12 = nil
+							placeholder14 = nil
 						}
-						choices12 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Choices))
-						for choicesIndex12 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Choices {
-							choices12 = append(choices12, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Choices[choicesIndex12].ValueString())
+						choices14 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Choices))
+						for choicesIndex14 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Choices {
+							choices14 = append(choices14, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Choices[choicesIndex14].ValueString())
 						}
-						var variables7 map[string]shared.MCPInput
+						var variables8 map[string]shared.MCPInput
 						if r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables != nil {
-							variables7 = make(map[string]shared.MCPInput)
-							for variablesKey7 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables {
-								description17 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Description.IsNull() {
-									*description17 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Description.ValueString()
+							variables8 = make(map[string]shared.MCPInput)
+							for variablesKey8 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables {
+								description19 := new(string)
+								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Description.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Description.IsNull() {
+									*description19 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Description.ValueString()
 								} else {
-									description17 = nil
+									description19 = nil
 								}
-								isRequired13 := new(bool)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].IsRequired.IsNull() {
-									*isRequired13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].IsRequired.ValueBool()
+								isRequired15 := new(bool)
+								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].IsRequired.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].IsRequired.IsNull() {
+									*isRequired15 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].IsRequired.ValueBool()
 								} else {
-									isRequired13 = nil
+									isRequired15 = nil
 								}
-								format13 := new(shared.MCPInputFormat)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Format.IsNull() {
-									*format13 = shared.MCPInputFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Format.ValueString())
+								format15 := new(shared.MCPInputFormat)
+								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Format.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Format.IsNull() {
+									*format15 = shared.MCPInputFormat(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Format.ValueString())
 								} else {
-									format13 = nil
+									format15 = nil
 								}
-								value13 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Value.IsNull() {
-									*value13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Value.ValueString()
+								value15 := new(string)
+								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Value.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Value.IsNull() {
+									*value15 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Value.ValueString()
 								} else {
-									value13 = nil
+									value15 = nil
 								}
-								isSecret13 := new(bool)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].IsSecret.IsNull() {
-									*isSecret13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].IsSecret.ValueBool()
+								isSecret15 := new(bool)
+								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].IsSecret.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].IsSecret.IsNull() {
+									*isSecret15 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].IsSecret.ValueBool()
 								} else {
-									isSecret13 = nil
+									isSecret15 = nil
 								}
-								defaultVar10 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Default.IsNull() {
-									*defaultVar10 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Default.ValueString()
+								defaultVar12 := new(string)
+								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Default.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Default.IsNull() {
+									*defaultVar12 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Default.ValueString()
 								} else {
-									defaultVar10 = nil
+									defaultVar12 = nil
 								}
-								placeholder13 := new(string)
-								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Placeholder.IsNull() {
-									*placeholder13 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Placeholder.ValueString()
+								placeholder15 := new(string)
+								if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Placeholder.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Placeholder.IsNull() {
+									*placeholder15 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Placeholder.ValueString()
 								} else {
-									placeholder13 = nil
+									placeholder15 = nil
 								}
-								choices13 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Choices))
-								for choicesIndex13 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Choices {
-									choices13 = append(choices13, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey7].Choices[choicesIndex13].ValueString())
+								choices15 := make([]string, 0, len(r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Choices))
+								for choicesIndex15 := range r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Choices {
+									choices15 = append(choices15, r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Variables[variablesKey8].Choices[choicesIndex15].ValueString())
 								}
-								variablesInst7 := shared.MCPInput{
-									Description: description17,
-									IsRequired:  isRequired13,
-									Format:      format13,
-									Value:       value13,
-									IsSecret:    isSecret13,
-									Default:     defaultVar10,
-									Placeholder: placeholder13,
-									Choices:     choices13,
+								variablesInst8 := shared.MCPInput{
+									Description: description19,
+									IsRequired:  isRequired15,
+									Format:      format15,
+									Value:       value15,
+									IsSecret:    isSecret15,
+									Default:     defaultVar12,
+									Placeholder: placeholder15,
+									Choices:     choices15,
 								}
-								variables7[variablesKey7] = variablesInst7
+								variables8[variablesKey8] = variablesInst8
 							}
 						}
 						var name8 string
 						name8 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.Name.ValueString()
 
-						isRepeated1 := new(bool)
+						isRepeated2 := new(bool)
 						if !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRepeated.IsNull() {
-							*isRepeated1 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRepeated.ValueBool()
+							*isRepeated2 = r.Packages[packagesIndex].Runtime.Arguments[argumentsItem].MCPNamedArgument.IsRepeated.ValueBool()
 						} else {
-							isRepeated1 = nil
+							isRepeated2 = nil
 						}
 						mcpNamedArgument := shared.MCPNamedArgument{
-							Description: description16,
-							IsRequired:  isRequired12,
-							Format:      format12,
-							Value:       value12,
-							IsSecret:    isSecret12,
-							Default:     defaultVar9,
-							Placeholder: placeholder12,
-							Choices:     choices12,
-							Variables:   variables7,
+							Description: description18,
+							IsRequired:  isRequired14,
+							Format:      format14,
+							Value:       value14,
+							IsSecret:    isSecret14,
+							Default:     defaultVar11,
+							Placeholder: placeholder14,
+							Choices:     choices14,
+							Variables:   variables8,
 							Name:        name8,
-							IsRepeated:  isRepeated1,
+							IsRepeated:  isRepeated2,
 						}
 						arguments1 = append(arguments1, shared.MCPArgument{
 							MCPNamedArgument: &mcpNamedArgument,
@@ -1989,275 +2232,420 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 				packageArguments = make([]shared.MCPArgument, 0, len(r.Packages[packagesIndex].PackageArguments))
 				for packageArgumentsItem := range r.Packages[packagesIndex].PackageArguments {
 					if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument != nil {
-						description18 := new(string)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Description.IsNull() {
-							*description18 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Description.ValueString()
-						} else {
-							description18 = nil
-						}
-						isRequired14 := new(bool)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsRequired.IsNull() {
-							*isRequired14 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsRequired.ValueBool()
-						} else {
-							isRequired14 = nil
-						}
-						format14 := new(shared.MCPPositionalArgumentFormat)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Format.IsNull() {
-							*format14 = shared.MCPPositionalArgumentFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Format.ValueString())
-						} else {
-							format14 = nil
-						}
-						value14 := new(string)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Value.IsNull() {
-							*value14 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Value.ValueString()
-						} else {
-							value14 = nil
-						}
-						isSecret14 := new(bool)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsSecret.IsNull() {
-							*isSecret14 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsSecret.ValueBool()
-						} else {
-							isSecret14 = nil
-						}
-						defaultVar11 := new(string)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Default.IsNull() {
-							*defaultVar11 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Default.ValueString()
-						} else {
-							defaultVar11 = nil
-						}
-						placeholder14 := new(string)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Placeholder.IsNull() {
-							*placeholder14 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Placeholder.ValueString()
-						} else {
-							placeholder14 = nil
-						}
-						choices14 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Choices))
-						for choicesIndex14 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Choices {
-							choices14 = append(choices14, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Choices[choicesIndex14].ValueString())
-						}
-						var variables8 map[string]shared.MCPInput
-						if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables != nil {
-							variables8 = make(map[string]shared.MCPInput)
-							for variablesKey8 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables {
-								description19 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Description.IsNull() {
-									*description19 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Description.ValueString()
-								} else {
-									description19 = nil
+						var mcpPositionalArgument1 shared.MCPPositionalArgument
+						var mcpPositionalArgumentWithValueHint1 *shared.MCPPositionalArgumentWithValueHint
+						if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint != nil {
+							description20 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description.IsNull() {
+								*description20 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Description.ValueString()
+							} else {
+								description20 = nil
+							}
+							isRequired16 := new(bool)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired.IsNull() {
+								*isRequired16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRequired.ValueBool()
+							} else {
+								isRequired16 = nil
+							}
+							format16 := new(shared.MCPPositionalArgumentFormat)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format.IsNull() {
+								*format16 = shared.MCPPositionalArgumentFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Format.ValueString())
+							} else {
+								format16 = nil
+							}
+							value16 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value.IsNull() {
+								*value16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Value.ValueString()
+							} else {
+								value16 = nil
+							}
+							isSecret16 := new(bool)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret.IsNull() {
+								*isSecret16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsSecret.ValueBool()
+							} else {
+								isSecret16 = nil
+							}
+							defaultVar13 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default.IsNull() {
+								*defaultVar13 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Default.ValueString()
+							} else {
+								defaultVar13 = nil
+							}
+							placeholder16 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder.IsNull() {
+								*placeholder16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Placeholder.ValueString()
+							} else {
+								placeholder16 = nil
+							}
+							choices16 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices))
+							for choicesIndex16 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices {
+								choices16 = append(choices16, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Choices[choicesIndex16].ValueString())
+							}
+							var variables9 map[string]shared.MCPInput
+							if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables != nil {
+								variables9 = make(map[string]shared.MCPInput)
+								for variablesKey9 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables {
+									description21 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Description.IsNull() {
+										*description21 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Description.ValueString()
+									} else {
+										description21 = nil
+									}
+									isRequired17 := new(bool)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].IsRequired.IsNull() {
+										*isRequired17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].IsRequired.ValueBool()
+									} else {
+										isRequired17 = nil
+									}
+									format17 := new(shared.MCPInputFormat)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Format.IsNull() {
+										*format17 = shared.MCPInputFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Format.ValueString())
+									} else {
+										format17 = nil
+									}
+									value17 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Value.IsNull() {
+										*value17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Value.ValueString()
+									} else {
+										value17 = nil
+									}
+									isSecret17 := new(bool)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].IsSecret.IsNull() {
+										*isSecret17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].IsSecret.ValueBool()
+									} else {
+										isSecret17 = nil
+									}
+									defaultVar14 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Default.IsNull() {
+										*defaultVar14 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Default.ValueString()
+									} else {
+										defaultVar14 = nil
+									}
+									placeholder17 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Placeholder.IsNull() {
+										*placeholder17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Placeholder.ValueString()
+									} else {
+										placeholder17 = nil
+									}
+									choices17 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Choices))
+									for choicesIndex17 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Choices {
+										choices17 = append(choices17, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.Variables[variablesKey9].Choices[choicesIndex17].ValueString())
+									}
+									variablesInst9 := shared.MCPInput{
+										Description: description21,
+										IsRequired:  isRequired17,
+										Format:      format17,
+										Value:       value17,
+										IsSecret:    isSecret17,
+										Default:     defaultVar14,
+										Placeholder: placeholder17,
+										Choices:     choices17,
+									}
+									variables9[variablesKey9] = variablesInst9
 								}
-								isRequired15 := new(bool)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].IsRequired.IsNull() {
-									*isRequired15 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].IsRequired.ValueBool()
-								} else {
-									isRequired15 = nil
-								}
-								format15 := new(shared.MCPInputFormat)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Format.IsNull() {
-									*format15 = shared.MCPInputFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Format.ValueString())
-								} else {
-									format15 = nil
-								}
-								value15 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Value.IsNull() {
-									*value15 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Value.ValueString()
-								} else {
-									value15 = nil
-								}
-								isSecret15 := new(bool)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].IsSecret.IsNull() {
-									*isSecret15 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].IsSecret.ValueBool()
-								} else {
-									isSecret15 = nil
-								}
-								defaultVar12 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Default.IsNull() {
-									*defaultVar12 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Default.ValueString()
-								} else {
-									defaultVar12 = nil
-								}
-								placeholder15 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Placeholder.IsNull() {
-									*placeholder15 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Placeholder.ValueString()
-								} else {
-									placeholder15 = nil
-								}
-								choices15 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Choices))
-								for choicesIndex15 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Choices {
-									choices15 = append(choices15, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.Variables[variablesKey8].Choices[choicesIndex15].ValueString())
-								}
-								variablesInst8 := shared.MCPInput{
-									Description: description19,
-									IsRequired:  isRequired15,
-									Format:      format15,
-									Value:       value15,
-									IsSecret:    isSecret15,
-									Default:     defaultVar12,
-									Placeholder: placeholder15,
-									Choices:     choices15,
-								}
-								variables8[variablesKey8] = variablesInst8
+							}
+							var valueHint2 string
+							valueHint2 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.ValueHint.ValueString()
+
+							isRepeated3 := new(bool)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated.IsNull() {
+								*isRepeated3 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValueHint.IsRepeated.ValueBool()
+							} else {
+								isRepeated3 = nil
+							}
+							mcpPositionalArgumentWithValueHint1 = &shared.MCPPositionalArgumentWithValueHint{
+								Description: description20,
+								IsRequired:  isRequired16,
+								Format:      format16,
+								Value:       value16,
+								IsSecret:    isSecret16,
+								Default:     defaultVar13,
+								Placeholder: placeholder16,
+								Choices:     choices16,
+								Variables:   variables9,
+								ValueHint:   valueHint2,
+								IsRepeated:  isRepeated3,
 							}
 						}
-						valueHint1 := new(string)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.ValueHint.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.ValueHint.IsNull() {
-							*valueHint1 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.ValueHint.ValueString()
-						} else {
-							valueHint1 = nil
+						if mcpPositionalArgumentWithValueHint1 != nil {
+							mcpPositionalArgument1 = shared.MCPPositionalArgument{
+								MCPPositionalArgumentWithValueHint: mcpPositionalArgumentWithValueHint1,
+							}
 						}
-						isRepeated2 := new(bool)
-						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsRepeated.IsNull() {
-							*isRepeated2 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.IsRepeated.ValueBool()
-						} else {
-							isRepeated2 = nil
+						var mcpPositionalArgumentWithValue1 *shared.MCPPositionalArgumentWithValue
+						if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue != nil {
+							description22 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Description.IsNull() {
+								*description22 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Description.ValueString()
+							} else {
+								description22 = nil
+							}
+							isRequired18 := new(bool)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired.IsNull() {
+								*isRequired18 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRequired.ValueBool()
+							} else {
+								isRequired18 = nil
+							}
+							format18 := new(shared.MCPPositionalArgument2Format)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Format.IsNull() {
+								*format18 = shared.MCPPositionalArgument2Format(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Format.ValueString())
+							} else {
+								format18 = nil
+							}
+							var value18 string
+							value18 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Value.ValueString()
+
+							isSecret18 := new(bool)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret.IsNull() {
+								*isSecret18 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsSecret.ValueBool()
+							} else {
+								isSecret18 = nil
+							}
+							defaultVar15 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Default.IsNull() {
+								*defaultVar15 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Default.ValueString()
+							} else {
+								defaultVar15 = nil
+							}
+							placeholder18 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder.IsNull() {
+								*placeholder18 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Placeholder.ValueString()
+							} else {
+								placeholder18 = nil
+							}
+							choices18 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices))
+							for choicesIndex18 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices {
+								choices18 = append(choices18, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Choices[choicesIndex18].ValueString())
+							}
+							var variables10 map[string]shared.MCPInput
+							if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables != nil {
+								variables10 = make(map[string]shared.MCPInput)
+								for variablesKey10 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables {
+									description23 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Description.IsNull() {
+										*description23 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Description.ValueString()
+									} else {
+										description23 = nil
+									}
+									isRequired19 := new(bool)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].IsRequired.IsNull() {
+										*isRequired19 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].IsRequired.ValueBool()
+									} else {
+										isRequired19 = nil
+									}
+									format19 := new(shared.MCPInputFormat)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Format.IsNull() {
+										*format19 = shared.MCPInputFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Format.ValueString())
+									} else {
+										format19 = nil
+									}
+									value19 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Value.IsNull() {
+										*value19 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Value.ValueString()
+									} else {
+										value19 = nil
+									}
+									isSecret19 := new(bool)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].IsSecret.IsNull() {
+										*isSecret19 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].IsSecret.ValueBool()
+									} else {
+										isSecret19 = nil
+									}
+									defaultVar16 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Default.IsNull() {
+										*defaultVar16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Default.ValueString()
+									} else {
+										defaultVar16 = nil
+									}
+									placeholder19 := new(string)
+									if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Placeholder.IsNull() {
+										*placeholder19 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Placeholder.ValueString()
+									} else {
+										placeholder19 = nil
+									}
+									choices19 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Choices))
+									for choicesIndex19 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Choices {
+										choices19 = append(choices19, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.Variables[variablesKey10].Choices[choicesIndex19].ValueString())
+									}
+									variablesInst10 := shared.MCPInput{
+										Description: description23,
+										IsRequired:  isRequired19,
+										Format:      format19,
+										Value:       value19,
+										IsSecret:    isSecret19,
+										Default:     defaultVar16,
+										Placeholder: placeholder19,
+										Choices:     choices19,
+									}
+									variables10[variablesKey10] = variablesInst10
+								}
+							}
+							valueHint3 := new(string)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint.IsNull() {
+								*valueHint3 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.ValueHint.ValueString()
+							} else {
+								valueHint3 = nil
+							}
+							isRepeated4 := new(bool)
+							if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated.IsNull() {
+								*isRepeated4 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPPositionalArgument.MCPPositionalArgumentWithValue.IsRepeated.ValueBool()
+							} else {
+								isRepeated4 = nil
+							}
+							mcpPositionalArgumentWithValue1 = &shared.MCPPositionalArgumentWithValue{
+								Description: description22,
+								IsRequired:  isRequired18,
+								Format:      format18,
+								Value:       value18,
+								IsSecret:    isSecret18,
+								Default:     defaultVar15,
+								Placeholder: placeholder18,
+								Choices:     choices18,
+								Variables:   variables10,
+								ValueHint:   valueHint3,
+								IsRepeated:  isRepeated4,
+							}
 						}
-						mcpPositionalArgument1 := shared.MCPPositionalArgument{
-							Description: description18,
-							IsRequired:  isRequired14,
-							Format:      format14,
-							Value:       value14,
-							IsSecret:    isSecret14,
-							Default:     defaultVar11,
-							Placeholder: placeholder14,
-							Choices:     choices14,
-							Variables:   variables8,
-							ValueHint:   valueHint1,
-							IsRepeated:  isRepeated2,
+						if mcpPositionalArgumentWithValue1 != nil {
+							mcpPositionalArgument1 = shared.MCPPositionalArgument{
+								MCPPositionalArgumentWithValue: mcpPositionalArgumentWithValue1,
+							}
 						}
 						packageArguments = append(packageArguments, shared.MCPArgument{
 							MCPPositionalArgument: &mcpPositionalArgument1,
 						})
 					}
 					if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument != nil {
-						description20 := new(string)
+						description24 := new(string)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Description.IsNull() {
-							*description20 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Description.ValueString()
+							*description24 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Description.ValueString()
 						} else {
-							description20 = nil
+							description24 = nil
 						}
-						isRequired16 := new(bool)
+						isRequired20 := new(bool)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRequired.IsNull() {
-							*isRequired16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRequired.ValueBool()
+							*isRequired20 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRequired.ValueBool()
 						} else {
-							isRequired16 = nil
+							isRequired20 = nil
 						}
-						format16 := new(shared.MCPNamedArgumentFormat)
+						format20 := new(shared.MCPNamedArgumentFormat)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Format.IsNull() {
-							*format16 = shared.MCPNamedArgumentFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Format.ValueString())
+							*format20 = shared.MCPNamedArgumentFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Format.ValueString())
 						} else {
-							format16 = nil
+							format20 = nil
 						}
-						value16 := new(string)
+						value20 := new(string)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Value.IsNull() {
-							*value16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Value.ValueString()
+							*value20 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Value.ValueString()
 						} else {
-							value16 = nil
+							value20 = nil
 						}
-						isSecret16 := new(bool)
+						isSecret20 := new(bool)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsSecret.IsNull() {
-							*isSecret16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsSecret.ValueBool()
+							*isSecret20 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsSecret.ValueBool()
 						} else {
-							isSecret16 = nil
+							isSecret20 = nil
 						}
-						defaultVar13 := new(string)
+						defaultVar17 := new(string)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Default.IsNull() {
-							*defaultVar13 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Default.ValueString()
+							*defaultVar17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Default.ValueString()
 						} else {
-							defaultVar13 = nil
+							defaultVar17 = nil
 						}
-						placeholder16 := new(string)
+						placeholder20 := new(string)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Placeholder.IsNull() {
-							*placeholder16 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Placeholder.ValueString()
+							*placeholder20 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Placeholder.ValueString()
 						} else {
-							placeholder16 = nil
+							placeholder20 = nil
 						}
-						choices16 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Choices))
-						for choicesIndex16 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Choices {
-							choices16 = append(choices16, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Choices[choicesIndex16].ValueString())
+						choices20 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Choices))
+						for choicesIndex20 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Choices {
+							choices20 = append(choices20, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Choices[choicesIndex20].ValueString())
 						}
-						var variables9 map[string]shared.MCPInput
+						var variables11 map[string]shared.MCPInput
 						if r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables != nil {
-							variables9 = make(map[string]shared.MCPInput)
-							for variablesKey9 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables {
-								description21 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Description.IsNull() {
-									*description21 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Description.ValueString()
+							variables11 = make(map[string]shared.MCPInput)
+							for variablesKey11 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables {
+								description25 := new(string)
+								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Description.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Description.IsNull() {
+									*description25 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Description.ValueString()
 								} else {
-									description21 = nil
+									description25 = nil
 								}
-								isRequired17 := new(bool)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].IsRequired.IsNull() {
-									*isRequired17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].IsRequired.ValueBool()
+								isRequired21 := new(bool)
+								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].IsRequired.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].IsRequired.IsNull() {
+									*isRequired21 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].IsRequired.ValueBool()
 								} else {
-									isRequired17 = nil
+									isRequired21 = nil
 								}
-								format17 := new(shared.MCPInputFormat)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Format.IsNull() {
-									*format17 = shared.MCPInputFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Format.ValueString())
+								format21 := new(shared.MCPInputFormat)
+								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Format.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Format.IsNull() {
+									*format21 = shared.MCPInputFormat(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Format.ValueString())
 								} else {
-									format17 = nil
+									format21 = nil
 								}
-								value17 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Value.IsNull() {
-									*value17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Value.ValueString()
+								value21 := new(string)
+								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Value.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Value.IsNull() {
+									*value21 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Value.ValueString()
 								} else {
-									value17 = nil
+									value21 = nil
 								}
-								isSecret17 := new(bool)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].IsSecret.IsNull() {
-									*isSecret17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].IsSecret.ValueBool()
+								isSecret21 := new(bool)
+								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].IsSecret.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].IsSecret.IsNull() {
+									*isSecret21 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].IsSecret.ValueBool()
 								} else {
-									isSecret17 = nil
+									isSecret21 = nil
 								}
-								defaultVar14 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Default.IsNull() {
-									*defaultVar14 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Default.ValueString()
+								defaultVar18 := new(string)
+								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Default.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Default.IsNull() {
+									*defaultVar18 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Default.ValueString()
 								} else {
-									defaultVar14 = nil
+									defaultVar18 = nil
 								}
-								placeholder17 := new(string)
-								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Placeholder.IsNull() {
-									*placeholder17 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Placeholder.ValueString()
+								placeholder21 := new(string)
+								if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Placeholder.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Placeholder.IsNull() {
+									*placeholder21 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Placeholder.ValueString()
 								} else {
-									placeholder17 = nil
+									placeholder21 = nil
 								}
-								choices17 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Choices))
-								for choicesIndex17 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Choices {
-									choices17 = append(choices17, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey9].Choices[choicesIndex17].ValueString())
+								choices21 := make([]string, 0, len(r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Choices))
+								for choicesIndex21 := range r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Choices {
+									choices21 = append(choices21, r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Variables[variablesKey11].Choices[choicesIndex21].ValueString())
 								}
-								variablesInst9 := shared.MCPInput{
-									Description: description21,
-									IsRequired:  isRequired17,
-									Format:      format17,
-									Value:       value17,
-									IsSecret:    isSecret17,
-									Default:     defaultVar14,
-									Placeholder: placeholder17,
-									Choices:     choices17,
+								variablesInst11 := shared.MCPInput{
+									Description: description25,
+									IsRequired:  isRequired21,
+									Format:      format21,
+									Value:       value21,
+									IsSecret:    isSecret21,
+									Default:     defaultVar18,
+									Placeholder: placeholder21,
+									Choices:     choices21,
 								}
-								variables9[variablesKey9] = variablesInst9
+								variables11[variablesKey11] = variablesInst11
 							}
 						}
 						var name9 string
 						name9 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.Name.ValueString()
 
-						isRepeated3 := new(bool)
+						isRepeated5 := new(bool)
 						if !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRepeated.IsUnknown() && !r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRepeated.IsNull() {
-							*isRepeated3 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRepeated.ValueBool()
+							*isRepeated5 = r.Packages[packagesIndex].PackageArguments[packageArgumentsItem].MCPNamedArgument.IsRepeated.ValueBool()
 						} else {
-							isRepeated3 = nil
+							isRepeated5 = nil
 						}
 						mcpNamedArgument1 := shared.MCPNamedArgument{
-							Description: description20,
-							IsRequired:  isRequired16,
-							Format:      format16,
-							Value:       value16,
-							IsSecret:    isSecret16,
-							Default:     defaultVar13,
-							Placeholder: placeholder16,
-							Choices:     choices16,
-							Variables:   variables9,
+							Description: description24,
+							IsRequired:  isRequired20,
+							Format:      format20,
+							Value:       value20,
+							IsSecret:    isSecret20,
+							Default:     defaultVar17,
+							Placeholder: placeholder20,
+							Choices:     choices20,
+							Variables:   variables11,
 							Name:        name9,
-							IsRepeated:  isRepeated3,
+							IsRepeated:  isRepeated5,
 						}
 						packageArguments = append(packageArguments, shared.MCPArgument{
 							MCPNamedArgument: &mcpNamedArgument1,
@@ -2269,35 +2657,35 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 			if r.Packages[packagesIndex].EnvironmentVariables != nil {
 				environmentVariables = make([]shared.MCPKeyValueInput, 0, len(r.Packages[packagesIndex].EnvironmentVariables))
 				for environmentVariablesIndex := range r.Packages[packagesIndex].EnvironmentVariables {
-					description22 := new(string)
+					description26 := new(string)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Description.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Description.IsNull() {
-						*description22 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Description.ValueString()
+						*description26 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Description.ValueString()
 					} else {
-						description22 = nil
+						description26 = nil
 					}
-					isRequired18 := new(bool)
+					isRequired22 := new(bool)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsRequired.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsRequired.IsNull() {
-						*isRequired18 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsRequired.ValueBool()
+						*isRequired22 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsRequired.ValueBool()
 					} else {
-						isRequired18 = nil
+						isRequired22 = nil
 					}
-					format18 := new(shared.Format)
+					format22 := new(shared.Format)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.IsNull() {
-						*format18 = shared.Format(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.ValueString())
+						*format22 = shared.Format(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.ValueString())
 					} else {
-						format18 = nil
+						format22 = nil
 					}
-					value18 := new(string)
+					value22 := new(string)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Value.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Value.IsNull() {
-						*value18 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Value.ValueString()
+						*value22 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Value.ValueString()
 					} else {
-						value18 = nil
+						value22 = nil
 					}
-					isSecret18 := new(bool)
+					isSecret22 := new(bool)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsSecret.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsSecret.IsNull() {
-						*isSecret18 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsSecret.ValueBool()
+						*isSecret22 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].IsSecret.ValueBool()
 					} else {
-						isSecret18 = nil
+						isSecret22 = nil
 					}
 					default4 := new(string)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Default.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Default.IsNull() {
@@ -2305,92 +2693,92 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 					} else {
 						default4 = nil
 					}
-					placeholder18 := new(string)
+					placeholder22 := new(string)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Placeholder.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Placeholder.IsNull() {
-						*placeholder18 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Placeholder.ValueString()
+						*placeholder22 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Placeholder.ValueString()
 					} else {
-						placeholder18 = nil
+						placeholder22 = nil
 					}
-					choices18 := make([]string, 0, len(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Choices))
-					for choicesIndex18 := range r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Choices {
-						choices18 = append(choices18, r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Choices[choicesIndex18].ValueString())
+					choices22 := make([]string, 0, len(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Choices))
+					for choicesIndex22 := range r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Choices {
+						choices22 = append(choices22, r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Choices[choicesIndex22].ValueString())
 					}
-					var variables10 map[string]shared.MCPInput
+					var variables12 map[string]shared.MCPInput
 					if r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables != nil {
-						variables10 = make(map[string]shared.MCPInput)
-						for variablesKey10 := range r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables {
-							description23 := new(string)
-							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Description.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Description.IsNull() {
-								*description23 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Description.ValueString()
+						variables12 = make(map[string]shared.MCPInput)
+						for variablesKey12 := range r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables {
+							description27 := new(string)
+							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Description.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Description.IsNull() {
+								*description27 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Description.ValueString()
 							} else {
-								description23 = nil
+								description27 = nil
 							}
-							isRequired19 := new(bool)
-							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].IsRequired.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].IsRequired.IsNull() {
-								*isRequired19 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].IsRequired.ValueBool()
+							isRequired23 := new(bool)
+							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].IsRequired.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].IsRequired.IsNull() {
+								*isRequired23 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].IsRequired.ValueBool()
 							} else {
-								isRequired19 = nil
+								isRequired23 = nil
 							}
-							format19 := new(shared.MCPInputFormat)
-							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Format.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Format.IsNull() {
-								*format19 = shared.MCPInputFormat(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Format.ValueString())
+							format23 := new(shared.MCPInputFormat)
+							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Format.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Format.IsNull() {
+								*format23 = shared.MCPInputFormat(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Format.ValueString())
 							} else {
-								format19 = nil
+								format23 = nil
 							}
-							value19 := new(string)
-							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Value.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Value.IsNull() {
-								*value19 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Value.ValueString()
+							value23 := new(string)
+							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Value.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Value.IsNull() {
+								*value23 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Value.ValueString()
 							} else {
-								value19 = nil
+								value23 = nil
 							}
-							isSecret19 := new(bool)
-							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].IsSecret.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].IsSecret.IsNull() {
-								*isSecret19 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].IsSecret.ValueBool()
+							isSecret23 := new(bool)
+							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].IsSecret.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].IsSecret.IsNull() {
+								*isSecret23 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].IsSecret.ValueBool()
 							} else {
-								isSecret19 = nil
+								isSecret23 = nil
 							}
-							defaultVar15 := new(string)
-							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Default.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Default.IsNull() {
-								*defaultVar15 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Default.ValueString()
+							defaultVar19 := new(string)
+							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Default.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Default.IsNull() {
+								*defaultVar19 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Default.ValueString()
 							} else {
-								defaultVar15 = nil
+								defaultVar19 = nil
 							}
-							placeholder19 := new(string)
-							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Placeholder.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Placeholder.IsNull() {
-								*placeholder19 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Placeholder.ValueString()
+							placeholder23 := new(string)
+							if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Placeholder.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Placeholder.IsNull() {
+								*placeholder23 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Placeholder.ValueString()
 							} else {
-								placeholder19 = nil
+								placeholder23 = nil
 							}
-							choices19 := make([]string, 0, len(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Choices))
-							for choicesIndex19 := range r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Choices {
-								choices19 = append(choices19, r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey10].Choices[choicesIndex19].ValueString())
+							choices23 := make([]string, 0, len(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Choices))
+							for choicesIndex23 := range r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Choices {
+								choices23 = append(choices23, r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Variables[variablesKey12].Choices[choicesIndex23].ValueString())
 							}
-							variablesInst10 := shared.MCPInput{
-								Description: description23,
-								IsRequired:  isRequired19,
-								Format:      format19,
-								Value:       value19,
-								IsSecret:    isSecret19,
-								Default:     defaultVar15,
-								Placeholder: placeholder19,
-								Choices:     choices19,
+							variablesInst12 := shared.MCPInput{
+								Description: description27,
+								IsRequired:  isRequired23,
+								Format:      format23,
+								Value:       value23,
+								IsSecret:    isSecret23,
+								Default:     defaultVar19,
+								Placeholder: placeholder23,
+								Choices:     choices23,
 							}
-							variables10[variablesKey10] = variablesInst10
+							variables12[variablesKey12] = variablesInst12
 						}
 					}
 					var name10 string
 					name10 = r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Name.ValueString()
 
 					environmentVariables = append(environmentVariables, shared.MCPKeyValueInput{
-						Description: description22,
-						IsRequired:  isRequired18,
-						Format:      format18,
-						Value:       value18,
-						IsSecret:    isSecret18,
+						Description: description26,
+						IsRequired:  isRequired22,
+						Format:      format22,
+						Value:       value22,
+						IsSecret:    isSecret22,
 						Default:     default4,
-						Placeholder: placeholder18,
-						Choices:     choices18,
-						Variables:   variables10,
+						Placeholder: placeholder22,
+						Choices:     choices22,
+						Variables:   variables12,
 						Name:        name10,
 					})
 				}

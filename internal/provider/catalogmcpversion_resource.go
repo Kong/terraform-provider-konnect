@@ -335,106 +335,233 @@ func (r *CatalogMCPVersionResource) Schema(ctx context.Context, req resource.Sch
 									"mcp_positional_argument": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"choices": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `A list of possible values for the input.`,
-											},
-											"default": schema.StringAttribute{
-												Optional:    true,
-												Description: `The default value for the input.`,
-											},
-											"description": schema.StringAttribute{
-												Optional:    true,
-												Description: `A description of the input.`,
-											},
-											"format": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Default:     stringdefault.StaticString(`string`),
-												Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
-											},
-											"is_repeated": schema.BoolAttribute{
-												Computed:    true,
-												Optional:    true,
-												Default:     booldefault.StaticBool(false),
-												Description: `Whether the argument can be repeated multiple times. Default: false`,
-											},
-											"is_required": schema.BoolAttribute{
-												Computed:    true,
-												Optional:    true,
-												Default:     booldefault.StaticBool(false),
-												Description: `Default: false`,
-											},
-											"is_secret": schema.BoolAttribute{
-												Computed:    true,
-												Optional:    true,
-												Default:     booldefault.StaticBool(false),
-												Description: `Indicates whether the input is a secret value. Default: false`,
-											},
-											"placeholder": schema.StringAttribute{
-												Optional:    true,
-												Description: `A placeholder for the input to be displayed during configuration.`,
-											},
-											"value": schema.StringAttribute{
-												Optional:    true,
-												Description: `The value for the input.`,
-											},
-											"value_hint": schema.StringAttribute{
-												Optional:    true,
-												Description: `An identifier for the positional argument.`,
-											},
-											"variables": schema.MapNestedAttribute{
+											"mcp_positional_argument_with_value": schema.SingleNestedAttribute{
 												Optional: true,
-												NestedObject: schema.NestedAttributeObject{
-													Validators: []validator.Object{
-														speakeasy_objectvalidators.NotNull(),
+												Attributes: map[string]schema.Attribute{
+													"choices": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														Description: `A list of possible values for the input.`,
 													},
-													Attributes: map[string]schema.Attribute{
-														"choices": schema.ListAttribute{
-															Computed:    true,
-															Optional:    true,
-															ElementType: types.StringType,
-															Description: `A list of possible values for the input.`,
+													"default": schema.StringAttribute{
+														Optional:    true,
+														Description: `The default value for the input.`,
+													},
+													"description": schema.StringAttribute{
+														Optional:    true,
+														Description: `A description of the input.`,
+													},
+													"format": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     stringdefault.StaticString(`string`),
+														Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+													},
+													"is_repeated": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(false),
+														Description: `Whether the argument can be repeated multiple times. Default: false`,
+													},
+													"is_required": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(false),
+														Description: `Default: false`,
+													},
+													"is_secret": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(false),
+														Description: `Indicates whether the input is a secret value. Default: false`,
+													},
+													"placeholder": schema.StringAttribute{
+														Optional:    true,
+														Description: `A placeholder for the input to be displayed during configuration.`,
+													},
+													"value": schema.StringAttribute{
+														Optional:    true,
+														Description: `The value for the input. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
 														},
-														"default": schema.StringAttribute{
-															Optional:    true,
-															Description: `The default value for the input.`,
+													},
+													"value_hint": schema.StringAttribute{
+														Optional:    true,
+														Description: `An identifier for the positional argument.`,
+													},
+													"variables": schema.MapNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"choices": schema.ListAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	ElementType: types.StringType,
+																	Description: `A list of possible values for the input.`,
+																},
+																"default": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `The default value for the input.`,
+																},
+																"description": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `A description of the input.`,
+																},
+																"format": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`string`),
+																	Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+																},
+																"is_required": schema.BoolAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     booldefault.StaticBool(false),
+																	Description: `Default: false`,
+																},
+																"is_secret": schema.BoolAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     booldefault.StaticBool(false),
+																	Description: `Indicates whether the input is a secret value. Default: false`,
+																},
+																"placeholder": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `A placeholder for the input to be displayed during configuration.`,
+																},
+																"value": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `The value for the input.`,
+																},
+															},
 														},
-														"description": schema.StringAttribute{
-															Optional:    true,
-															Description: `A description of the input.`,
-														},
-														"format": schema.StringAttribute{
-															Computed:    true,
-															Optional:    true,
-															Default:     stringdefault.StaticString(`string`),
-															Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
-														},
-														"is_required": schema.BoolAttribute{
-															Computed:    true,
-															Optional:    true,
-															Default:     booldefault.StaticBool(false),
-															Description: `Default: false`,
-														},
-														"is_secret": schema.BoolAttribute{
-															Computed:    true,
-															Optional:    true,
-															Default:     booldefault.StaticBool(false),
-															Description: `Indicates whether the input is a secret value. Default: false`,
-														},
-														"placeholder": schema.StringAttribute{
-															Optional:    true,
-															Description: `A placeholder for the input to be displayed during configuration.`,
-														},
-														"value": schema.StringAttribute{
-															Optional:    true,
-															Description: `The value for the input.`,
-														},
+														Description: `A map of variable names to their values.`,
 													},
 												},
-												Description: `A map of variable names to their values.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("mcp_positional_argument_with_value_hint"),
+													}...),
+												},
+											},
+											"mcp_positional_argument_with_value_hint": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"choices": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														Description: `A list of possible values for the input.`,
+													},
+													"default": schema.StringAttribute{
+														Optional:    true,
+														Description: `The default value for the input.`,
+													},
+													"description": schema.StringAttribute{
+														Optional:    true,
+														Description: `A description of the input.`,
+													},
+													"format": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     stringdefault.StaticString(`string`),
+														Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+													},
+													"is_repeated": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(false),
+														Description: `Whether the argument can be repeated multiple times. Default: false`,
+													},
+													"is_required": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(false),
+														Description: `Default: false`,
+													},
+													"is_secret": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(false),
+														Description: `Indicates whether the input is a secret value. Default: false`,
+													},
+													"placeholder": schema.StringAttribute{
+														Optional:    true,
+														Description: `A placeholder for the input to be displayed during configuration.`,
+													},
+													"value": schema.StringAttribute{
+														Optional:    true,
+														Description: `The value for the input.`,
+													},
+													"value_hint": schema.StringAttribute{
+														Optional:    true,
+														Description: `An identifier for the positional argument. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"variables": schema.MapNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"choices": schema.ListAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	ElementType: types.StringType,
+																	Description: `A list of possible values for the input.`,
+																},
+																"default": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `The default value for the input.`,
+																},
+																"description": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `A description of the input.`,
+																},
+																"format": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`string`),
+																	Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+																},
+																"is_required": schema.BoolAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     booldefault.StaticBool(false),
+																	Description: `Default: false`,
+																},
+																"is_secret": schema.BoolAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     booldefault.StaticBool(false),
+																	Description: `Indicates whether the input is a secret value. Default: false`,
+																},
+																"placeholder": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `A placeholder for the input to be displayed during configuration.`,
+																},
+																"value": schema.StringAttribute{
+																	Optional:    true,
+																	Description: `The value for the input.`,
+																},
+															},
+														},
+														Description: `A map of variable names to their values.`,
+													},
+												},
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("mcp_positional_argument_with_value"),
+													}...),
+												},
 											},
 										},
 										Description: `A positional input is a value inserted verbatim into the command line.`,
@@ -599,106 +726,233 @@ func (r *CatalogMCPVersionResource) Schema(ctx context.Context, req resource.Sch
 											"mcp_positional_argument": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"choices": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														Description: `A list of possible values for the input.`,
-													},
-													"default": schema.StringAttribute{
-														Optional:    true,
-														Description: `The default value for the input.`,
-													},
-													"description": schema.StringAttribute{
-														Optional:    true,
-														Description: `A description of the input.`,
-													},
-													"format": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Default:     stringdefault.StaticString(`string`),
-														Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
-													},
-													"is_repeated": schema.BoolAttribute{
-														Computed:    true,
-														Optional:    true,
-														Default:     booldefault.StaticBool(false),
-														Description: `Whether the argument can be repeated multiple times. Default: false`,
-													},
-													"is_required": schema.BoolAttribute{
-														Computed:    true,
-														Optional:    true,
-														Default:     booldefault.StaticBool(false),
-														Description: `Default: false`,
-													},
-													"is_secret": schema.BoolAttribute{
-														Computed:    true,
-														Optional:    true,
-														Default:     booldefault.StaticBool(false),
-														Description: `Indicates whether the input is a secret value. Default: false`,
-													},
-													"placeholder": schema.StringAttribute{
-														Optional:    true,
-														Description: `A placeholder for the input to be displayed during configuration.`,
-													},
-													"value": schema.StringAttribute{
-														Optional:    true,
-														Description: `The value for the input.`,
-													},
-													"value_hint": schema.StringAttribute{
-														Optional:    true,
-														Description: `An identifier for the positional argument.`,
-													},
-													"variables": schema.MapNestedAttribute{
+													"mcp_positional_argument_with_value": schema.SingleNestedAttribute{
 														Optional: true,
-														NestedObject: schema.NestedAttributeObject{
-															Validators: []validator.Object{
-																speakeasy_objectvalidators.NotNull(),
+														Attributes: map[string]schema.Attribute{
+															"choices": schema.ListAttribute{
+																Computed:    true,
+																Optional:    true,
+																ElementType: types.StringType,
+																Description: `A list of possible values for the input.`,
 															},
-															Attributes: map[string]schema.Attribute{
-																"choices": schema.ListAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	ElementType: types.StringType,
-																	Description: `A list of possible values for the input.`,
+															"default": schema.StringAttribute{
+																Optional:    true,
+																Description: `The default value for the input.`,
+															},
+															"description": schema.StringAttribute{
+																Optional:    true,
+																Description: `A description of the input.`,
+															},
+															"format": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     stringdefault.StaticString(`string`),
+																Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+															},
+															"is_repeated": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(false),
+																Description: `Whether the argument can be repeated multiple times. Default: false`,
+															},
+															"is_required": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(false),
+																Description: `Default: false`,
+															},
+															"is_secret": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(false),
+																Description: `Indicates whether the input is a secret value. Default: false`,
+															},
+															"placeholder": schema.StringAttribute{
+																Optional:    true,
+																Description: `A placeholder for the input to be displayed during configuration.`,
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `The value for the input. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
 																},
-																"default": schema.StringAttribute{
-																	Optional:    true,
-																	Description: `The default value for the input.`,
+															},
+															"value_hint": schema.StringAttribute{
+																Optional:    true,
+																Description: `An identifier for the positional argument.`,
+															},
+															"variables": schema.MapNestedAttribute{
+																Optional: true,
+																NestedObject: schema.NestedAttributeObject{
+																	Validators: []validator.Object{
+																		speakeasy_objectvalidators.NotNull(),
+																	},
+																	Attributes: map[string]schema.Attribute{
+																		"choices": schema.ListAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Description: `A list of possible values for the input.`,
+																		},
+																		"default": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `The default value for the input.`,
+																		},
+																		"description": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `A description of the input.`,
+																		},
+																		"format": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     stringdefault.StaticString(`string`),
+																			Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+																		},
+																		"is_required": schema.BoolAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     booldefault.StaticBool(false),
+																			Description: `Default: false`,
+																		},
+																		"is_secret": schema.BoolAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     booldefault.StaticBool(false),
+																			Description: `Indicates whether the input is a secret value. Default: false`,
+																		},
+																		"placeholder": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `A placeholder for the input to be displayed during configuration.`,
+																		},
+																		"value": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `The value for the input.`,
+																		},
+																	},
 																},
-																"description": schema.StringAttribute{
-																	Optional:    true,
-																	Description: `A description of the input.`,
-																},
-																"format": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     stringdefault.StaticString(`string`),
-																	Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
-																},
-																"is_required": schema.BoolAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     booldefault.StaticBool(false),
-																	Description: `Default: false`,
-																},
-																"is_secret": schema.BoolAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Default:     booldefault.StaticBool(false),
-																	Description: `Indicates whether the input is a secret value. Default: false`,
-																},
-																"placeholder": schema.StringAttribute{
-																	Optional:    true,
-																	Description: `A placeholder for the input to be displayed during configuration.`,
-																},
-																"value": schema.StringAttribute{
-																	Optional:    true,
-																	Description: `The value for the input.`,
-																},
+																Description: `A map of variable names to their values.`,
 															},
 														},
-														Description: `A map of variable names to their values.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("mcp_positional_argument_with_value_hint"),
+															}...),
+														},
+													},
+													"mcp_positional_argument_with_value_hint": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"choices": schema.ListAttribute{
+																Computed:    true,
+																Optional:    true,
+																ElementType: types.StringType,
+																Description: `A list of possible values for the input.`,
+															},
+															"default": schema.StringAttribute{
+																Optional:    true,
+																Description: `The default value for the input.`,
+															},
+															"description": schema.StringAttribute{
+																Optional:    true,
+																Description: `A description of the input.`,
+															},
+															"format": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     stringdefault.StaticString(`string`),
+																Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+															},
+															"is_repeated": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(false),
+																Description: `Whether the argument can be repeated multiple times. Default: false`,
+															},
+															"is_required": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(false),
+																Description: `Default: false`,
+															},
+															"is_secret": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(false),
+																Description: `Indicates whether the input is a secret value. Default: false`,
+															},
+															"placeholder": schema.StringAttribute{
+																Optional:    true,
+																Description: `A placeholder for the input to be displayed during configuration.`,
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `The value for the input.`,
+															},
+															"value_hint": schema.StringAttribute{
+																Optional:    true,
+																Description: `An identifier for the positional argument. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+															"variables": schema.MapNestedAttribute{
+																Optional: true,
+																NestedObject: schema.NestedAttributeObject{
+																	Validators: []validator.Object{
+																		speakeasy_objectvalidators.NotNull(),
+																	},
+																	Attributes: map[string]schema.Attribute{
+																		"choices": schema.ListAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			ElementType: types.StringType,
+																			Description: `A list of possible values for the input.`,
+																		},
+																		"default": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `The default value for the input.`,
+																		},
+																		"description": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `A description of the input.`,
+																		},
+																		"format": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     stringdefault.StaticString(`string`),
+																			Description: `Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"`,
+																		},
+																		"is_required": schema.BoolAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     booldefault.StaticBool(false),
+																			Description: `Default: false`,
+																		},
+																		"is_secret": schema.BoolAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Default:     booldefault.StaticBool(false),
+																			Description: `Indicates whether the input is a secret value. Default: false`,
+																		},
+																		"placeholder": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `A placeholder for the input to be displayed during configuration.`,
+																		},
+																		"value": schema.StringAttribute{
+																			Optional:    true,
+																			Description: `The value for the input.`,
+																		},
+																	},
+																},
+																Description: `A map of variable names to their values.`,
+															},
+														},
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("mcp_positional_argument_with_value"),
+															}...),
+														},
 													},
 												},
 												Description: `A positional input is a value inserted verbatim into the command line.`,

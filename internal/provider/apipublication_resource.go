@@ -40,6 +40,7 @@ type APIPublicationResourceModel struct {
 	AuthStrategyIds          []types.String `tfsdk:"auth_strategy_ids"`
 	AutoApproveRegistrations types.Bool     `tfsdk:"auto_approve_registrations"`
 	CreatedAt                types.String   `tfsdk:"created_at"`
+	FormID                   types.String   `tfsdk:"form_id"`
 	PortalID                 types.String   `tfsdk:"portal_id"`
 	UpdatedAt                types.String   `tfsdk:"updated_at"`
 	Visibility               types.String   `tfsdk:"visibility"`
@@ -81,6 +82,11 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
+			"form_id": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,

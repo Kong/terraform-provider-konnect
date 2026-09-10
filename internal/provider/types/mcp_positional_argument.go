@@ -2,20 +2,7 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type MCPPositionalArgument struct {
-	Choices     []types.String      `tfsdk:"choices"`
-	Default     types.String        `tfsdk:"default"`
-	Description types.String        `tfsdk:"description"`
-	Format      types.String        `tfsdk:"format"`
-	IsRepeated  types.Bool          `tfsdk:"is_repeated"`
-	IsRequired  types.Bool          `tfsdk:"is_required"`
-	IsSecret    types.Bool          `tfsdk:"is_secret"`
-	Placeholder types.String        `tfsdk:"placeholder"`
-	Value       types.String        `tfsdk:"value"`
-	ValueHint   types.String        `tfsdk:"value_hint"`
-	Variables   map[string]MCPInput `tfsdk:"variables"`
+	MCPPositionalArgumentWithValue     *MCPPositionalArgumentWithValue     `queryParam:"inline" tfsdk:"mcp_positional_argument_with_value"`
+	MCPPositionalArgumentWithValueHint *MCPPositionalArgumentWithValueHint `queryParam:"inline" tfsdk:"mcp_positional_argument_with_value_hint"`
 }

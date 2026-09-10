@@ -19,6 +19,10 @@ type PortalDeveloper struct {
 	FullName  string    `json:"full_name"`
 	// The status of a developer in a portal. Approved developers can log in, create applications, and view and register for products they have access to. Pending, revoked, and rejected developers cannot login or view any non-public portal information, or create or modify applications or registrations.
 	Status DeveloperStatus `json:"status"`
+	// The developer's answers to the portal's `developer_registration`
+	// form, captured when they registered.
+	//
+	AdditionalData map[string]FormResponseEntry `json:"additional_data,omitempty"`
 }
 
 func (p PortalDeveloper) MarshalJSON() ([]byte, error) {
@@ -72,4 +76,11 @@ func (p *PortalDeveloper) GetStatus() DeveloperStatus {
 		return DeveloperStatus("")
 	}
 	return p.Status
+}
+
+func (p *PortalDeveloper) GetAdditionalData() map[string]FormResponseEntry {
+	if p == nil {
+		return nil
+	}
+	return p.AdditionalData
 }

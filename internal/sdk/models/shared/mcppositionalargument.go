@@ -3,8 +3,153 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
+
+// MCPPositionalArgument2Format - Specifies the input format.
+type MCPPositionalArgument2Format string
+
+const (
+	MCPPositionalArgument2FormatString   MCPPositionalArgument2Format = "string"
+	MCPPositionalArgument2FormatNumber   MCPPositionalArgument2Format = "number"
+	MCPPositionalArgument2FormatBoolean  MCPPositionalArgument2Format = "boolean"
+	MCPPositionalArgument2FormatFilepath MCPPositionalArgument2Format = "filepath"
+)
+
+func (e MCPPositionalArgument2Format) ToPointer() *MCPPositionalArgument2Format {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MCPPositionalArgument2Format) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "string", "number", "boolean", "filepath":
+			return true
+		}
+	}
+	return false
+}
+
+type MCPPositionalArgumentWithValue struct {
+	// A description of the input.
+	Description *string `json:"description,omitempty"`
+	IsRequired  *bool   `default:"false" json:"is_required"`
+	// Specifies the input format.
+	Format *MCPPositionalArgument2Format `default:"string" json:"format"`
+	// The value for the input.
+	Value string `json:"value"`
+	// Indicates whether the input is a secret value.
+	IsSecret *bool `default:"false" json:"is_secret"`
+	// The default value for the input.
+	Default *string `json:"default,omitempty"`
+	// A placeholder for the input to be displayed during configuration.
+	Placeholder *string `json:"placeholder,omitempty"`
+	// A list of possible values for the input.
+	Choices []string `json:"choices,omitempty"`
+	// A map of variable names to their values.
+	Variables map[string]MCPInput `json:"variables,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"positional" json:"type"`
+	// An identifier for the positional argument.
+	ValueHint *string `json:"value_hint,omitempty"`
+	// Whether the argument can be repeated multiple times.
+	IsRepeated *bool `default:"false" json:"is_repeated"`
+}
+
+func (m MCPPositionalArgumentWithValue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MCPPositionalArgumentWithValue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"value", "type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *MCPPositionalArgumentWithValue) GetDescription() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Description
+}
+
+func (m *MCPPositionalArgumentWithValue) GetIsRequired() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.IsRequired
+}
+
+func (m *MCPPositionalArgumentWithValue) GetFormat() *MCPPositionalArgument2Format {
+	if m == nil {
+		return nil
+	}
+	return m.Format
+}
+
+func (m *MCPPositionalArgumentWithValue) GetValue() string {
+	if m == nil {
+		return ""
+	}
+	return m.Value
+}
+
+func (m *MCPPositionalArgumentWithValue) GetIsSecret() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.IsSecret
+}
+
+func (m *MCPPositionalArgumentWithValue) GetDefault() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Default
+}
+
+func (m *MCPPositionalArgumentWithValue) GetPlaceholder() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Placeholder
+}
+
+func (m *MCPPositionalArgumentWithValue) GetChoices() []string {
+	if m == nil {
+		return nil
+	}
+	return m.Choices
+}
+
+func (m *MCPPositionalArgumentWithValue) GetVariables() map[string]MCPInput {
+	if m == nil {
+		return nil
+	}
+	return m.Variables
+}
+
+func (m *MCPPositionalArgumentWithValue) GetType() string {
+	return "positional"
+}
+
+func (m *MCPPositionalArgumentWithValue) GetValueHint() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ValueHint
+}
+
+func (m *MCPPositionalArgumentWithValue) GetIsRepeated() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.IsRepeated
+}
 
 // MCPPositionalArgumentFormat - Specifies the input format.
 type MCPPositionalArgumentFormat string
@@ -31,8 +176,7 @@ func (e *MCPPositionalArgumentFormat) IsExact() bool {
 	return false
 }
 
-// MCPPositionalArgument - A positional input is a value inserted verbatim into the command line.
-type MCPPositionalArgument struct {
+type MCPPositionalArgumentWithValueHint struct {
 	// A description of the input.
 	Description *string `json:"description,omitempty"`
 	IsRequired  *bool   `default:"false" json:"is_required"`
@@ -53,99 +197,189 @@ type MCPPositionalArgument struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"positional" json:"type"`
 	// An identifier for the positional argument.
-	ValueHint *string `default:"null" json:"value_hint"`
+	ValueHint string `json:"value_hint"`
 	// Whether the argument can be repeated multiple times.
 	IsRepeated *bool `default:"false" json:"is_repeated"`
 }
 
-func (m MCPPositionalArgument) MarshalJSON() ([]byte, error) {
+func (m MCPPositionalArgumentWithValueHint) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(m, "", false)
 }
 
-func (m *MCPPositionalArgument) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+func (m *MCPPositionalArgumentWithValueHint) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "value_hint"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MCPPositionalArgument) GetDescription() *string {
+func (m *MCPPositionalArgumentWithValueHint) GetDescription() *string {
 	if m == nil {
 		return nil
 	}
 	return m.Description
 }
 
-func (m *MCPPositionalArgument) GetIsRequired() *bool {
+func (m *MCPPositionalArgumentWithValueHint) GetIsRequired() *bool {
 	if m == nil {
 		return nil
 	}
 	return m.IsRequired
 }
 
-func (m *MCPPositionalArgument) GetFormat() *MCPPositionalArgumentFormat {
+func (m *MCPPositionalArgumentWithValueHint) GetFormat() *MCPPositionalArgumentFormat {
 	if m == nil {
 		return nil
 	}
 	return m.Format
 }
 
-func (m *MCPPositionalArgument) GetValue() *string {
+func (m *MCPPositionalArgumentWithValueHint) GetValue() *string {
 	if m == nil {
 		return nil
 	}
 	return m.Value
 }
 
-func (m *MCPPositionalArgument) GetIsSecret() *bool {
+func (m *MCPPositionalArgumentWithValueHint) GetIsSecret() *bool {
 	if m == nil {
 		return nil
 	}
 	return m.IsSecret
 }
 
-func (m *MCPPositionalArgument) GetDefault() *string {
+func (m *MCPPositionalArgumentWithValueHint) GetDefault() *string {
 	if m == nil {
 		return nil
 	}
 	return m.Default
 }
 
-func (m *MCPPositionalArgument) GetPlaceholder() *string {
+func (m *MCPPositionalArgumentWithValueHint) GetPlaceholder() *string {
 	if m == nil {
 		return nil
 	}
 	return m.Placeholder
 }
 
-func (m *MCPPositionalArgument) GetChoices() []string {
+func (m *MCPPositionalArgumentWithValueHint) GetChoices() []string {
 	if m == nil {
 		return nil
 	}
 	return m.Choices
 }
 
-func (m *MCPPositionalArgument) GetVariables() map[string]MCPInput {
+func (m *MCPPositionalArgumentWithValueHint) GetVariables() map[string]MCPInput {
 	if m == nil {
 		return nil
 	}
 	return m.Variables
 }
 
-func (m *MCPPositionalArgument) GetType() string {
+func (m *MCPPositionalArgumentWithValueHint) GetType() string {
 	return "positional"
 }
 
-func (m *MCPPositionalArgument) GetValueHint() *string {
+func (m *MCPPositionalArgumentWithValueHint) GetValueHint() string {
 	if m == nil {
-		return nil
+		return ""
 	}
 	return m.ValueHint
 }
 
-func (m *MCPPositionalArgument) GetIsRepeated() *bool {
+func (m *MCPPositionalArgumentWithValueHint) GetIsRepeated() *bool {
 	if m == nil {
 		return nil
 	}
 	return m.IsRepeated
+}
+
+type MCPPositionalArgumentType string
+
+const (
+	MCPPositionalArgumentTypeMCPPositionalArgumentWithValueHint MCPPositionalArgumentType = "MCPPositionalArgumentWithValueHint"
+	MCPPositionalArgumentTypeMCPPositionalArgumentWithValue     MCPPositionalArgumentType = "MCPPositionalArgumentWithValue"
+)
+
+// MCPPositionalArgument - A positional input is a value inserted verbatim into the command line.
+type MCPPositionalArgument struct {
+	MCPPositionalArgumentWithValueHint *MCPPositionalArgumentWithValueHint `queryParam:"inline" union:"member"`
+	MCPPositionalArgumentWithValue     *MCPPositionalArgumentWithValue     `queryParam:"inline" union:"member"`
+
+	Type MCPPositionalArgumentType
+}
+
+func CreateMCPPositionalArgumentMCPPositionalArgumentWithValueHint(mcpPositionalArgumentWithValueHint MCPPositionalArgumentWithValueHint) MCPPositionalArgument {
+	typ := MCPPositionalArgumentTypeMCPPositionalArgumentWithValueHint
+
+	return MCPPositionalArgument{
+		MCPPositionalArgumentWithValueHint: &mcpPositionalArgumentWithValueHint,
+		Type:                               typ,
+	}
+}
+
+func CreateMCPPositionalArgumentMCPPositionalArgumentWithValue(mcpPositionalArgumentWithValue MCPPositionalArgumentWithValue) MCPPositionalArgument {
+	typ := MCPPositionalArgumentTypeMCPPositionalArgumentWithValue
+
+	return MCPPositionalArgument{
+		MCPPositionalArgumentWithValue: &mcpPositionalArgumentWithValue,
+		Type:                           typ,
+	}
+}
+
+func (u *MCPPositionalArgument) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var mcpPositionalArgumentWithValueHint MCPPositionalArgumentWithValueHint = MCPPositionalArgumentWithValueHint{}
+	if err := utils.UnmarshalJSON(data, &mcpPositionalArgumentWithValueHint, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  MCPPositionalArgumentTypeMCPPositionalArgumentWithValueHint,
+			Value: &mcpPositionalArgumentWithValueHint,
+		})
+	}
+
+	var mcpPositionalArgumentWithValue MCPPositionalArgumentWithValue = MCPPositionalArgumentWithValue{}
+	if err := utils.UnmarshalJSON(data, &mcpPositionalArgumentWithValue, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  MCPPositionalArgumentTypeMCPPositionalArgumentWithValue,
+			Value: &mcpPositionalArgumentWithValue,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MCPPositionalArgument", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MCPPositionalArgument", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(MCPPositionalArgumentType)
+	switch best.Type {
+	case MCPPositionalArgumentTypeMCPPositionalArgumentWithValueHint:
+		u.MCPPositionalArgumentWithValueHint = best.Value.(*MCPPositionalArgumentWithValueHint)
+		return nil
+	case MCPPositionalArgumentTypeMCPPositionalArgumentWithValue:
+		u.MCPPositionalArgumentWithValue = best.Value.(*MCPPositionalArgumentWithValue)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MCPPositionalArgument", string(data))
+}
+
+func (u MCPPositionalArgument) MarshalJSON() ([]byte, error) {
+	if u.MCPPositionalArgumentWithValueHint != nil {
+		return utils.MarshalJSON(u.MCPPositionalArgumentWithValueHint, "", true)
+	}
+
+	if u.MCPPositionalArgumentWithValue != nil {
+		return utils.MarshalJSON(u.MCPPositionalArgumentWithValue, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MCPPositionalArgument: all fields are null")
 }

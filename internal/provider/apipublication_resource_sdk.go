@@ -25,6 +25,7 @@ func (r *APIPublicationResourceModel) RefreshFromSharedAPIPublicationResponse(ct
 		}
 		r.AutoApproveRegistrations = types.BoolPointerValue(resp.AutoApproveRegistrations)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.FormID = types.StringPointerValue(resp.FormID)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		r.Visibility = types.StringValue(string(resp.Visibility))
 		r.Warnings = make([]types.String, 0, len(resp.Warnings))
@@ -117,10 +118,17 @@ func (r *APIPublicationResourceModel) ToSharedAPIPublication(ctx context.Context
 	} else {
 		visibility = nil
 	}
+	formID := new(string)
+	if !r.FormID.IsUnknown() && !r.FormID.IsNull() {
+		*formID = r.FormID.ValueString()
+	} else {
+		formID = nil
+	}
 	out := shared.APIPublication{
 		AutoApproveRegistrations: autoApproveRegistrations,
 		AuthStrategyIds:          authStrategyIds,
 		Visibility:               visibility,
+		FormID:                   formID,
 	}
 
 	return &out, diags

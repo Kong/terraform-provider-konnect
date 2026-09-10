@@ -49,41 +49,7 @@ resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
       package_arguments = [
         {
           mcp_positional_argument = {
-            choices = [
-            ]
-            default     = "...my_default..."
-            description = "...my_description..."
-            format      = "string"
-            is_repeated = false
-            is_required = false
-            is_secret   = false
-            placeholder = "...my_placeholder..."
-            value       = "...my_value..."
-            value_hint  = "file_path"
-            variables = {
-              key = {
-                choices = [
-                ]
-                default     = "...my_default..."
-                description = "...my_description..."
-                format      = "string"
-                is_required = false
-                is_secret   = false
-                placeholder = "...my_placeholder..."
-                value       = "...my_value..."
-              }
-            }
-          }
-        }
-      ]
-      registry = {
-        base_url = "https://registry.npmjs.org"
-        type     = "npm"
-      }
-      runtime = {
-        arguments = [
-          {
-            mcp_positional_argument = {
+            mcp_positional_argument_with_value_hint = {
               choices = [
               ]
               default     = "...my_default..."
@@ -106,6 +72,44 @@ resource "konnect_catalog_mcp_version" "my_catalogmcpversion" {
                   is_secret   = false
                   placeholder = "...my_placeholder..."
                   value       = "...my_value..."
+                }
+              }
+            }
+          }
+        }
+      ]
+      registry = {
+        base_url = "https://registry.npmjs.org"
+        type     = "npm"
+      }
+      runtime = {
+        arguments = [
+          {
+            mcp_positional_argument = {
+              mcp_positional_argument_with_value_hint = {
+                choices = [
+                ]
+                default     = "...my_default..."
+                description = "...my_description..."
+                format      = "string"
+                is_repeated = false
+                is_required = false
+                is_secret   = false
+                placeholder = "...my_placeholder..."
+                value       = "...my_value..."
+                value_hint  = "file_path"
+                variables = {
+                  key = {
+                    choices = [
+                    ]
+                    default     = "...my_default..."
+                    description = "...my_description..."
+                    format      = "string"
+                    is_required = false
+                    is_secret   = false
+                    placeholder = "...my_placeholder..."
+                    value       = "...my_value..."
+                  }
                 }
               }
             }
@@ -361,6 +365,14 @@ Optional:
 
 Optional:
 
+- `mcp_positional_argument_with_value` (Attributes) (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value))
+- `mcp_positional_argument_with_value_hint` (Attributes) (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint))
+
+<a id="nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value"></a>
+### Nested Schema for `packages.package_arguments.mcp_positional_argument.mcp_positional_argument_with_value`
+
+Optional:
+
 - `choices` (List of String) A list of possible values for the input.
 - `default` (String) The default value for the input.
 - `description` (String) A description of the input.
@@ -369,12 +381,12 @@ Optional:
 - `is_required` (Boolean) Default: false
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `value` (String) The value for the input.
+- `value` (String) The value for the input. Not Null
 - `value_hint` (String) An identifier for the positional argument.
-- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--variables))
+- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value--variables))
 
-<a id="nestedatt--packages--package_arguments--mcp_positional_argument--variables"></a>
-### Nested Schema for `packages.package_arguments.mcp_positional_argument.variables`
+<a id="nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value--variables"></a>
+### Nested Schema for `packages.package_arguments.mcp_positional_argument.mcp_positional_argument_with_value.variables`
 
 Optional:
 
@@ -386,6 +398,40 @@ Optional:
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
 - `value` (String) The value for the input.
+
+
+
+<a id="nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint"></a>
+### Nested Schema for `packages.package_arguments.mcp_positional_argument.mcp_positional_argument_with_value_hint`
+
+Optional:
+
+- `choices` (List of String) A list of possible values for the input.
+- `default` (String) The default value for the input.
+- `description` (String) A description of the input.
+- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
+- `is_repeated` (Boolean) Whether the argument can be repeated multiple times. Default: false
+- `is_required` (Boolean) Default: false
+- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
+- `placeholder` (String) A placeholder for the input to be displayed during configuration.
+- `value` (String) The value for the input.
+- `value_hint` (String) An identifier for the positional argument. Not Null
+- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint--variables))
+
+<a id="nestedatt--packages--package_arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint--variables"></a>
+### Nested Schema for `packages.package_arguments.mcp_positional_argument.mcp_positional_argument_with_value_hint.variables`
+
+Optional:
+
+- `choices` (List of String) A list of possible values for the input.
+- `default` (String) The default value for the input.
+- `description` (String) A description of the input.
+- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
+- `is_required` (Boolean) Default: false
+- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
+- `placeholder` (String) A placeholder for the input to be displayed during configuration.
+- `value` (String) The value for the input.
+
 
 
 
@@ -453,6 +499,14 @@ Optional:
 
 Optional:
 
+- `mcp_positional_argument_with_value` (Attributes) (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value))
+- `mcp_positional_argument_with_value_hint` (Attributes) (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint))
+
+<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value"></a>
+### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.mcp_positional_argument_with_value`
+
+Optional:
+
 - `choices` (List of String) A list of possible values for the input.
 - `default` (String) The default value for the input.
 - `description` (String) A description of the input.
@@ -461,12 +515,12 @@ Optional:
 - `is_required` (Boolean) Default: false
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
-- `value` (String) The value for the input.
+- `value` (String) The value for the input. Not Null
 - `value_hint` (String) An identifier for the positional argument.
-- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--variables))
+- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value--variables))
 
-<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--variables"></a>
-### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.variables`
+<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value--variables"></a>
+### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.mcp_positional_argument_with_value.variables`
 
 Optional:
 
@@ -478,6 +532,40 @@ Optional:
 - `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
 - `placeholder` (String) A placeholder for the input to be displayed during configuration.
 - `value` (String) The value for the input.
+
+
+
+<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint"></a>
+### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.mcp_positional_argument_with_value_hint`
+
+Optional:
+
+- `choices` (List of String) A list of possible values for the input.
+- `default` (String) The default value for the input.
+- `description` (String) A description of the input.
+- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
+- `is_repeated` (Boolean) Whether the argument can be repeated multiple times. Default: false
+- `is_required` (Boolean) Default: false
+- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
+- `placeholder` (String) A placeholder for the input to be displayed during configuration.
+- `value` (String) The value for the input.
+- `value_hint` (String) An identifier for the positional argument. Not Null
+- `variables` (Attributes Map) A map of variable names to their values. (see [below for nested schema](#nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint--variables))
+
+<a id="nestedatt--packages--runtime--arguments--mcp_positional_argument--mcp_positional_argument_with_value_hint--variables"></a>
+### Nested Schema for `packages.runtime.arguments.mcp_positional_argument.mcp_positional_argument_with_value_hint.variables`
+
+Optional:
+
+- `choices` (List of String) A list of possible values for the input.
+- `default` (String) The default value for the input.
+- `description` (String) A description of the input.
+- `format` (String) Specifies the input format. possible known values include one of ["string", "number", "boolean", "filepath"]; Default: "string"
+- `is_required` (Boolean) Default: false
+- `is_secret` (Boolean) Indicates whether the input is a secret value. Default: false
+- `placeholder` (String) A placeholder for the input to be displayed during configuration.
+- `value` (String) The value for the input.
+
 
 
 

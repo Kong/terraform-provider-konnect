@@ -23,6 +23,9 @@ type APIPublicationResponse struct {
 	// If omitted, this defaults to the target portal's configured default API visibility.
 	//
 	Visibility APIPublicationVisibility `json:"visibility"`
+	// UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
+	//
+	FormID *string `json:"form_id"`
 	// Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
 	Warnings []string `json:"warnings,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -61,6 +64,13 @@ func (a *APIPublicationResponse) GetVisibility() APIPublicationVisibility {
 		return APIPublicationVisibility("")
 	}
 	return a.Visibility
+}
+
+func (a *APIPublicationResponse) GetFormID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.FormID
 }
 
 func (a *APIPublicationResponse) GetWarnings() []string {

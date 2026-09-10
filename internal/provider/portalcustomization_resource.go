@@ -6,10 +6,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -38,13 +41,13 @@ type PortalCustomizationResource struct {
 
 // PortalCustomizationResourceModel describes the resource data model.
 type PortalCustomizationResourceModel struct {
-	CSS          types.String          `tfsdk:"css"`
-	Layout       types.String          `tfsdk:"layout"`
-	Menu         *tfTypes.Menu         `tfsdk:"menu"`
-	PortalID     types.String          `tfsdk:"portal_id"`
-	Robots       types.String          `tfsdk:"robots"`
-	SpecRenderer *tfTypes.SpecRenderer `tfsdk:"spec_renderer"`
-	Theme        *tfTypes.Theme        `tfsdk:"theme"`
+	CSS          types.String                             `tfsdk:"css"`
+	Layout       types.String                             `tfsdk:"layout"`
+	Menu         *tfTypes.Menu                            `tfsdk:"menu"`
+	PortalID     types.String                             `tfsdk:"portal_id"`
+	Robots       types.String                             `tfsdk:"robots"`
+	SpecRenderer *tfTypes.PortalCustomizationSpecRenderer `tfsdk:"spec_renderer"`
+	Theme        *tfTypes.Theme                           `tfsdk:"theme"`
 }
 
 func (r *PortalCustomizationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -227,7 +230,18 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Optional: true,
 			},
 			"spec_renderer": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_custom_server_urls": types.BoolType,
+					"hide_deprecated":          types.BoolType,
+					"hide_internal":            types.BoolType,
+					"infinite_scroll":          types.BoolType,
+					"show_schemas":             types.BoolType,
+					"try_it_insomnia":          types.BoolType,
+					"try_it_ui":                types.BoolType,
+					"try_it_ui_audience":       types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_custom_server_urls": schema.BoolAttribute{
 						Computed:    true,
@@ -271,7 +285,21 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Default:     booldefault.StaticBool(true),
 						Description: `Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true`,
 					},
+					"try_it_ui_audience": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						Default:  stringdefault.StaticString(`all`),
+						MarkdownDescription: `The audience for the Try It UI feature.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `all` + "`" + ` means that the Try It UI will be available to all users, including unauthenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `authenticated` + "`" + ` means that the Try It UI will only be available to authenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `registered` + "`" + ` means that the Try It UI will only be available to users who have registered for the API.` + "\n" +
+							`possible known values include one of ["all", "authenticated", "registered"]; Default: "all"`,
+					},
 				},
+				Description: `The spec renderer settings of this portal`,
 			},
 			"theme": schema.SingleNestedAttribute{
 				Optional: true,
