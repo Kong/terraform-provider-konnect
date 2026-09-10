@@ -146,11 +146,11 @@ type ControlPlane1 struct {
 	// An ISO-8604 timestamp representation of control plane update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	// The auth type value of the cluster associated with the Runtime Group.
-	AuthType *string `default:"null" json:"auth_type"`
+	AuthType *string `json:"auth_type,omitempty"`
 	// The ClusterType value of the cluster associated with the Control Plane.
-	ClusterType *string `default:"null" json:"cluster_type"`
+	ClusterType *string `json:"cluster_type,omitempty"`
 	// Whether this control-plane can be used for cloud-gateways.
-	CloudGateway *bool `default:"null" json:"cloud_gateway"`
+	CloudGateway *bool `json:"cloud_gateway,omitempty"`
 	// Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
 	ProxyUrls []ProxyURL `json:"proxy_urls,omitempty"`
 }

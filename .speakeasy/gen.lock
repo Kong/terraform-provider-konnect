@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: c01036a7ab37394900741cbcdb13682e
+  docChecksum: f2f70217bbbfd9353569ce14ec7a4993
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.22.0
   configChecksum: c84339f673b5d852241f4b48815b69cb
 persistentEdits:
-  generation_id: c278c4f3-d13e-47cb-8e9c-b4d8512a807f
-  pristine_commit_hash: e9616d0f76663f4ddec9b89da5c080f35266af49
-  pristine_tree_hash: d92cfb2490348f60035e688aed8236250ef0bdc6
+  generation_id: 9ffe7f72-5cf6-45bd-ae96-a0d588563471
+  pristine_commit_hash: 5aa044f2975927fba717711f911d7cddb8767e73
+  pristine_tree_hash: a7ef409352af95f6a5a7a5e01aec98c630d93fcf
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3373,8 +3373,8 @@ trackedFiles:
     pristine_git_object: 5f6797e9fff76c678194fa31a774a9940d63feb0
   internal/provider/gatewaycontrolplane_resource.go:
     id: 0abb61c802fc
-    last_write_checksum: sha1:5cc6896d7284613cfb892084b95b945b5ec6b5a7
-    pristine_git_object: f0653820079fcda2b6dc893d0996e3f9e1bcd325
+    last_write_checksum: sha1:19c4abb554865a1f6b97a9b93279767139acfb99
+    pristine_git_object: b64213a4d09a4af961226d6c300bd633441e37fc
   internal/provider/gatewaycontrolplane_resource_sdk.go:
     id: ea4c55b8de9e
     last_write_checksum: sha1:d8da75f9e2832df1484e1f2d2301b4b71cdb0ac1
@@ -11517,8 +11517,8 @@ trackedFiles:
     pristine_git_object: 456af9cca0b083a43c58eeea9d85053586ce711c
   internal/sdk/models/shared/controlplane1.go:
     id: e523ada5ef28
-    last_write_checksum: sha1:0d718e272924e0aa98496590bfaeea90bae000cf
-    pristine_git_object: fecd7ca1bc8145b284dd2a17e0c07f960509c0bf
+    last_write_checksum: sha1:04355c75ea28ee9d7c5c7f2b1544b71816537a4d
+    pristine_git_object: f830f70d93f130ce2c8ccf919ab3ebfb7d833c9b
   internal/sdk/models/shared/controlplanefilterparameters.go:
     id: 4ce48f874a6d
     last_write_checksum: sha1:2afa4c293864ddf2c0feadf56e89de1586c5d6ab
@@ -14635,7 +14635,7 @@ examples:
           sort: "created_at desc"
       responses:
         "200":
-          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": null, "cloud_gateway": false}, {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": null, "cloud_gateway": false}, {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": null, "cloud_gateway": false}]}
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": "<value>", "cloud_gateway": false}, {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": "<value>", "cloud_gateway": false}, {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": "<value>", "cloud_gateway": false}]}
         "400":
           application/problem+json: {"status": 484470, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -14652,7 +14652,7 @@ examples:
         application/json: {"name": "Test Control Plane", "description": "A test control plane for exploration.", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}], "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": null, "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}
         "400":
           application/problem+json: {"status": 704087, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -14673,7 +14673,7 @@ examples:
           controlPlaneId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": null, "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}
         "400":
           application/problem+json: {"status": 210677, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -14696,7 +14696,7 @@ examples:
         application/json: {"name": "Test Control Plane", "description": "A test control plane for exploration.", "auth_type": "pinned_client_certs", "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}], "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cluster_type": null, "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}
         "400":
           application/problem+json: {"status": 817049, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
