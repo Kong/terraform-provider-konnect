@@ -22116,24 +22116,19 @@ components:
           description: The auth type value of the cluster associated with the Runtime Group.
           type: string
           example: pinned_client_certs
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         cluster_type:
           description: The ClusterType value of the cluster associated with the Control Plane.
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         cloud_gateway:
           description: Whether this control-plane can be used for cloud-gateways.
           type: boolean
           example: false
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         proxy_urls:
           $ref: '#/components/schemas/ProxyURLs'
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - id
