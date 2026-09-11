@@ -735,13 +735,13 @@ func (r *GatewayPluginAceResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAcePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAcePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAcePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAcePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -795,13 +795,13 @@ func (r *GatewayPluginAceResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAcePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAcePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAcePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAcePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -849,13 +849,13 @@ func (r *GatewayPluginAceResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAcePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAcePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAcePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAcePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -909,13 +909,13 @@ func (r *GatewayPluginAceResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAcePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAcePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAcePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAcePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

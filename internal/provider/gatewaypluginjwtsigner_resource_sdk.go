@@ -644,7 +644,7 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginRequest(ctx context.Context) (*operations.CreateJwtsignerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -660,7 +660,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginI
 		return nil, diags
 	}
 
-	out := operations.CreateJwtsignerPluginInWorkspaceRequest{
+	out := operations.CreateJwtsignerPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
 		JwtSignerPlugin: *jwtSignerPlugin,
@@ -669,7 +669,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginRequest(ctx context.Context) (*operations.DeleteJwtsignerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -681,7 +681,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginI
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteJwtsignerPluginInWorkspaceRequest{
+	out := operations.DeleteJwtsignerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -690,7 +690,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.GetJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginRequest(ctx context.Context) (*operations.GetJwtsignerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -702,7 +702,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginInWo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetJwtsignerPluginInWorkspaceRequest{
+	out := operations.GetJwtsignerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -711,7 +711,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginInWo
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateJwtsignerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginRequest(ctx context.Context) (*operations.UpdateJwtsignerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -730,7 +730,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginI
 		return nil, diags
 	}
 
-	out := operations.UpdateJwtsignerPluginInWorkspaceRequest{
+	out := operations.UpdateJwtsignerPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,

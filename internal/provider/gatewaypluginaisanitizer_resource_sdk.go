@@ -144,7 +144,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 	return diags
 }
 
-func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsCreateAisanitizerPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAisanitizerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsCreateAisanitizerPluginRequest(ctx context.Context) (*operations.CreateAisanitizerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -160,7 +160,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsCreateAisanitizerPlu
 		return nil, diags
 	}
 
-	out := operations.CreateAisanitizerPluginInWorkspaceRequest{
+	out := operations.CreateAisanitizerPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,
 		AiSanitizerPlugin: *aiSanitizerPlugin,
@@ -169,7 +169,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsCreateAisanitizerPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsDeleteAisanitizerPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAisanitizerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsDeleteAisanitizerPluginRequest(ctx context.Context) (*operations.DeleteAisanitizerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -181,7 +181,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsDeleteAisanitizerPlu
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAisanitizerPluginInWorkspaceRequest{
+	out := operations.DeleteAisanitizerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -190,7 +190,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsDeleteAisanitizerPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsGetAisanitizerPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAisanitizerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsGetAisanitizerPluginRequest(ctx context.Context) (*operations.GetAisanitizerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -202,7 +202,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsGetAisanitizerPlugin
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAisanitizerPluginInWorkspaceRequest{
+	out := operations.GetAisanitizerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -211,7 +211,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsGetAisanitizerPlugin
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsUpdateAisanitizerPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAisanitizerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsUpdateAisanitizerPluginRequest(ctx context.Context) (*operations.UpdateAisanitizerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -230,7 +230,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsUpdateAisanitizerPlu
 		return nil, diags
 	}
 
-	out := operations.UpdateAisanitizerPluginInWorkspaceRequest{
+	out := operations.UpdateAisanitizerPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,

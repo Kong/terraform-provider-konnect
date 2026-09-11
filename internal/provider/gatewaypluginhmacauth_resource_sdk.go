@@ -106,7 +106,7 @@ func (r *GatewayPluginHmacAuthResourceModel) RefreshFromSharedHmacAuthPlugin(ctx
 	return diags
 }
 
-func (r *GatewayPluginHmacAuthResourceModel) ToOperationsCreateHmacauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateHmacauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsCreateHmacauthPluginRequest(ctx context.Context) (*operations.CreateHmacauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -122,7 +122,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsCreateHmacauthPluginInW
 		return nil, diags
 	}
 
-	out := operations.CreateHmacauthPluginInWorkspaceRequest{
+	out := operations.CreateHmacauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		HmacAuthPlugin: *hmacAuthPlugin,
@@ -131,7 +131,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsCreateHmacauthPluginInW
 	return &out, diags
 }
 
-func (r *GatewayPluginHmacAuthResourceModel) ToOperationsDeleteHmacauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteHmacauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsDeleteHmacauthPluginRequest(ctx context.Context) (*operations.DeleteHmacauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -143,7 +143,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsDeleteHmacauthPluginInW
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteHmacauthPluginInWorkspaceRequest{
+	out := operations.DeleteHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -152,7 +152,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsDeleteHmacauthPluginInW
 	return &out, diags
 }
 
-func (r *GatewayPluginHmacAuthResourceModel) ToOperationsGetHmacauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetHmacauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsGetHmacauthPluginRequest(ctx context.Context) (*operations.GetHmacauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,7 +164,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsGetHmacauthPluginInWork
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetHmacauthPluginInWorkspaceRequest{
+	out := operations.GetHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -173,7 +173,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsGetHmacauthPluginInWork
 	return &out, diags
 }
 
-func (r *GatewayPluginHmacAuthResourceModel) ToOperationsUpdateHmacauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateHmacauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsUpdateHmacauthPluginRequest(ctx context.Context) (*operations.UpdateHmacauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -192,7 +192,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsUpdateHmacauthPluginInW
 		return nil, diags
 	}
 
-	out := operations.UpdateHmacauthPluginInWorkspaceRequest{
+	out := operations.UpdateHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

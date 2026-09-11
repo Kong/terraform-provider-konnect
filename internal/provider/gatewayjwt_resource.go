@@ -186,13 +186,13 @@ func (r *GatewayJWTResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJwtWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJwtWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.JWTs.CreateJwtWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.JWTs.CreateJwtWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -246,13 +246,13 @@ func (r *GatewayJWTResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJwtWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJwtWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.JWTs.GetJwtWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.JWTs.GetJwtWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -324,13 +324,13 @@ func (r *GatewayJWTResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJwtWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJwtWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.JWTs.DeleteJwtWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.JWTs.DeleteJwtWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

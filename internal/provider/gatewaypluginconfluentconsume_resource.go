@@ -1313,13 +1313,13 @@ func (r *GatewayPluginConfluentConsumeResource) Create(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateConfluentconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateConfluentconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1373,13 +1373,13 @@ func (r *GatewayPluginConfluentConsumeResource) Read(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetConfluentconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetConfluentconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1427,13 +1427,13 @@ func (r *GatewayPluginConfluentConsumeResource) Update(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateConfluentconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateConfluentconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1487,13 +1487,13 @@ func (r *GatewayPluginConfluentConsumeResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteConfluentconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteConfluentconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

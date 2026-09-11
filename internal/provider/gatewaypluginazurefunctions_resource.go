@@ -357,13 +357,13 @@ func (r *GatewayPluginAzureFunctionsResource) Create(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAzurefunctionsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAzurefunctionsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAzurefunctionsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -417,13 +417,13 @@ func (r *GatewayPluginAzureFunctionsResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAzurefunctionsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAzurefunctionsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAzurefunctionsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -471,13 +471,13 @@ func (r *GatewayPluginAzureFunctionsResource) Update(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAzurefunctionsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAzurefunctionsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAzurefunctionsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -531,13 +531,13 @@ func (r *GatewayPluginAzureFunctionsResource) Delete(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAzurefunctionsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAzurefunctionsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAzurefunctionsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

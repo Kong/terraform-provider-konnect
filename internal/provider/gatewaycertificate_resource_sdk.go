@@ -42,7 +42,7 @@ func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(ctx conte
 	return diags
 }
 
-func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateInWorkspaceRequest(ctx context.Context) (*operations.CreateCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateRequest(ctx context.Context) (*operations.CreateCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -58,7 +58,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateInWorkspa
 		return nil, diags
 	}
 
-	out := operations.CreateCertificateInWorkspaceRequest{
+	out := operations.CreateCertificateRequest{
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,
 		CertificateRequest: *certificateRequest,
@@ -67,7 +67,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateInWorkspa
 	return &out, diags
 }
 
-func (r *GatewayCertificateResourceModel) ToOperationsDeleteCertificateInWorkspaceRequest(ctx context.Context) (*operations.DeleteCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCertificateResourceModel) ToOperationsDeleteCertificateRequest(ctx context.Context) (*operations.DeleteCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -79,7 +79,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsDeleteCertificateInWorkspa
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteCertificateInWorkspaceRequest{
+	out := operations.DeleteCertificateRequest{
 		ControlPlaneID: controlPlaneID,
 		CertificateID:  certificateID,
 		Workspace:      workspace,
@@ -88,7 +88,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsDeleteCertificateInWorkspa
 	return &out, diags
 }
 
-func (r *GatewayCertificateResourceModel) ToOperationsGetCertificateInWorkspaceRequest(ctx context.Context) (*operations.GetCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCertificateResourceModel) ToOperationsGetCertificateRequest(ctx context.Context) (*operations.GetCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var certificateID string
@@ -100,7 +100,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsGetCertificateInWorkspaceR
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetCertificateInWorkspaceRequest{
+	out := operations.GetCertificateRequest{
 		CertificateID:  certificateID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -109,7 +109,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsGetCertificateInWorkspaceR
 	return &out, diags
 }
 
-func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateInWorkspaceRequest(ctx context.Context) (*operations.UpsertCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(ctx context.Context) (*operations.UpsertCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var certificateID string
@@ -128,7 +128,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateInWorkspa
 		return nil, diags
 	}
 
-	out := operations.UpsertCertificateInWorkspaceRequest{
+	out := operations.UpsertCertificateRequest{
 		CertificateID:      certificateID,
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,

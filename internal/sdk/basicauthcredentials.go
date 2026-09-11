@@ -30,9 +30,9 @@ func newBasicAuthCredentials(rootSDK *Konnect, sdkConfig config.SDKConfiguration
 	}
 }
 
-// CreateBasicAuthWithConsumerInWorkspace - Create a new Basic-auth credential associated with a Consumer in a workspace
+// CreateBasicAuthWithConsumer - Create a new Basic-auth credential associated with a Consumer in a workspace
 // Create a new Basic-auth credential associated with a Consumer in a workspace
-func (s *BasicAuthCredentials) CreateBasicAuthWithConsumerInWorkspace(ctx context.Context, request operations.CreateBasicAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateBasicAuthWithConsumerInWorkspaceResponse, error) {
+func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, request operations.CreateBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateBasicAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61,7 +61,7 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumerInWorkspace(ctx contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-basic-auth-with-consumer-in-workspace",
+		OperationID:      "create-basic-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumerInWorkspace(ctx contex
 		}
 	}
 
-	res := &operations.CreateBasicAuthWithConsumerInWorkspaceResponse{
+	res := &operations.CreateBasicAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumerInWorkspace(ctx contex
 
 }
 
-// DeleteBasicAuthWithConsumerInWorkspace - Delete a a Basic-auth credential associated with a Consumer in a workspace
+// DeleteBasicAuthWithConsumer - Delete a a Basic-auth credential associated with a Consumer in a workspace
 // Delete a a Basic-auth credential associated with a Consumer using ID in a workspace.
-func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumerInWorkspace(ctx context.Context, request operations.DeleteBasicAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteBasicAuthWithConsumerInWorkspaceResponse, error) {
+func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, request operations.DeleteBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteBasicAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -267,7 +267,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumerInWorkspace(ctx contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-basic-auth-with-consumer-in-workspace",
+		OperationID:      "delete-basic-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumerInWorkspace(ctx contex
 		}
 	}
 
-	res := &operations.DeleteBasicAuthWithConsumerInWorkspaceResponse{
+	res := &operations.DeleteBasicAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumerInWorkspace(ctx contex
 
 }
 
-// GetBasicAuthWithConsumerInWorkspace - Get a Basic-auth credential associated with a Consumer in a workspace
+// GetBasicAuthWithConsumer - Get a Basic-auth credential associated with a Consumer in a workspace
 // Get a Basic-auth credential associated with a Consumer using ID in a workspace.
-func (s *BasicAuthCredentials) GetBasicAuthWithConsumerInWorkspace(ctx context.Context, request operations.GetBasicAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetBasicAuthWithConsumerInWorkspaceResponse, error) {
+func (s *BasicAuthCredentials) GetBasicAuthWithConsumer(ctx context.Context, request operations.GetBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetBasicAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -449,7 +449,7 @@ func (s *BasicAuthCredentials) GetBasicAuthWithConsumerInWorkspace(ctx context.C
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-basic-auth-with-consumer-in-workspace",
+		OperationID:      "get-basic-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *BasicAuthCredentials) GetBasicAuthWithConsumerInWorkspace(ctx context.C
 		}
 	}
 
-	res := &operations.GetBasicAuthWithConsumerInWorkspaceResponse{
+	res := &operations.GetBasicAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

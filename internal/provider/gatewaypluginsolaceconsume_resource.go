@@ -600,13 +600,13 @@ func (r *GatewayPluginSolaceConsumeResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateSolaceconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateSolaceconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateSolaceconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateSolaceconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -660,13 +660,13 @@ func (r *GatewayPluginSolaceConsumeResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetSolaceconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetSolaceconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetSolaceconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetSolaceconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -714,13 +714,13 @@ func (r *GatewayPluginSolaceConsumeResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateSolaceconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateSolaceconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateSolaceconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateSolaceconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -774,13 +774,13 @@ func (r *GatewayPluginSolaceConsumeResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteSolaceconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteSolaceconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteSolaceconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteSolaceconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

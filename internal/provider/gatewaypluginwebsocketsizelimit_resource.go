@@ -320,13 +320,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateWebsocketsizelimitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateWebsocketsizelimitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateWebsocketsizelimitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -380,13 +380,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetWebsocketsizelimitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetWebsocketsizelimitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetWebsocketsizelimitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -434,13 +434,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateWebsocketsizelimitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateWebsocketsizelimitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateWebsocketsizelimitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -494,13 +494,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteWebsocketsizelimitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteWebsocketsizelimitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteWebsocketsizelimitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

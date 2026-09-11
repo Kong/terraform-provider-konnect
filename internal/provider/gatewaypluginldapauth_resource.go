@@ -371,13 +371,13 @@ func (r *GatewayPluginLdapAuthResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateLdapauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateLdapauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateLdapauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -431,13 +431,13 @@ func (r *GatewayPluginLdapAuthResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetLdapauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetLdapauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetLdapauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -485,13 +485,13 @@ func (r *GatewayPluginLdapAuthResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateLdapauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateLdapauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateLdapauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -545,13 +545,13 @@ func (r *GatewayPluginLdapAuthResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteLdapauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteLdapauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteLdapauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

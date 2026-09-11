@@ -1093,13 +1093,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Create(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAisemanticcachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAisemanticcachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAisemanticcachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1153,13 +1153,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Read(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAisemanticcachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAisemanticcachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAisemanticcachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1207,13 +1207,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Update(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAisemanticcachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAisemanticcachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAisemanticcachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1267,13 +1267,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAisemanticcachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAisemanticcachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAisemanticcachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

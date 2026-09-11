@@ -2014,13 +2014,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Create(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAiproxyadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAiproxyadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAiproxyadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2074,13 +2074,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Read(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAiproxyadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAiproxyadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAiproxyadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2128,13 +2128,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Update(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAiproxyadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAiproxyadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAiproxyadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2188,13 +2188,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAiproxyadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAiproxyadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAiproxyadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -399,13 +399,13 @@ func (r *GatewayPluginHeaderCertAuthResource) Create(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateHeadercertauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateHeadercertauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateHeadercertauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -459,13 +459,13 @@ func (r *GatewayPluginHeaderCertAuthResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetHeadercertauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetHeadercertauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetHeadercertauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -513,13 +513,13 @@ func (r *GatewayPluginHeaderCertAuthResource) Update(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateHeadercertauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateHeadercertauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateHeadercertauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -573,13 +573,13 @@ func (r *GatewayPluginHeaderCertAuthResource) Delete(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteHeadercertauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteHeadercertauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteHeadercertauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

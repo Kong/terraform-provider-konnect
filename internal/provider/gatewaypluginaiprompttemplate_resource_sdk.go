@@ -114,7 +114,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTe
 	return diags
 }
 
-func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsCreateAiprompttemplatePluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAiprompttemplatePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsCreateAiprompttemplatePluginRequest(ctx context.Context) (*operations.CreateAiprompttemplatePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -130,7 +130,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsCreateAipromptt
 		return nil, diags
 	}
 
-	out := operations.CreateAiprompttemplatePluginInWorkspaceRequest{
+	out := operations.CreateAiprompttemplatePluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,
 		AiPromptTemplatePlugin: *aiPromptTemplatePlugin,
@@ -139,7 +139,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsCreateAipromptt
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsDeleteAiprompttemplatePluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAiprompttemplatePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsDeleteAiprompttemplatePluginRequest(ctx context.Context) (*operations.DeleteAiprompttemplatePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -151,7 +151,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsDeleteAipromptt
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAiprompttemplatePluginInWorkspaceRequest{
+	out := operations.DeleteAiprompttemplatePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -160,7 +160,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsDeleteAipromptt
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsGetAiprompttemplatePluginInWorkspaceRequest(ctx context.Context) (*operations.GetAiprompttemplatePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsGetAiprompttemplatePluginRequest(ctx context.Context) (*operations.GetAiprompttemplatePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -172,7 +172,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsGetAiprompttemp
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAiprompttemplatePluginInWorkspaceRequest{
+	out := operations.GetAiprompttemplatePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -181,7 +181,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsGetAiprompttemp
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsUpdateAiprompttemplatePluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAiprompttemplatePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsUpdateAiprompttemplatePluginRequest(ctx context.Context) (*operations.UpdateAiprompttemplatePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -200,7 +200,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsUpdateAipromptt
 		return nil, diags
 	}
 
-	out := operations.UpdateAiprompttemplatePluginInWorkspaceRequest{
+	out := operations.UpdateAiprompttemplatePluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,

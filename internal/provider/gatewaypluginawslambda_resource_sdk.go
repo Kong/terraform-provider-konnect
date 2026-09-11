@@ -149,7 +149,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginRequest(ctx context.Context) (*operations.CreateAwslambdaPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -165,7 +165,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginI
 		return nil, diags
 	}
 
-	out := operations.CreateAwslambdaPluginInWorkspaceRequest{
+	out := operations.CreateAwslambdaPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
 		AwsLambdaPlugin: *awsLambdaPlugin,
@@ -174,7 +174,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginRequest(ctx context.Context) (*operations.DeleteAwslambdaPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -186,7 +186,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginI
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAwslambdaPluginInWorkspaceRequest{
+	out := operations.DeleteAwslambdaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -195,7 +195,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginRequest(ctx context.Context) (*operations.GetAwslambdaPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -207,7 +207,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginInWo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAwslambdaPluginInWorkspaceRequest{
+	out := operations.GetAwslambdaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -216,7 +216,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginInWo
 	return &out, diags
 }
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAwslambdaPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginRequest(ctx context.Context) (*operations.UpdateAwslambdaPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -235,7 +235,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginI
 		return nil, diags
 	}
 
-	out := operations.UpdateAwslambdaPluginInWorkspaceRequest{
+	out := operations.UpdateAwslambdaPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,

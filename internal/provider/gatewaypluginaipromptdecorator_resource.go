@@ -433,13 +433,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Create(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAipromptdecoratorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAipromptdecoratorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -493,13 +493,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Read(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAipromptdecoratorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAipromptdecoratorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -547,13 +547,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Update(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAipromptdecoratorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAipromptdecoratorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -607,13 +607,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Delete(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAipromptdecoratorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAipromptdecoratorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

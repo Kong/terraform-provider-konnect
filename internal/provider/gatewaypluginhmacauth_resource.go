@@ -352,13 +352,13 @@ func (r *GatewayPluginHmacAuthResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateHmacauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateHmacauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -412,13 +412,13 @@ func (r *GatewayPluginHmacAuthResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetHmacauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetHmacauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -466,13 +466,13 @@ func (r *GatewayPluginHmacAuthResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateHmacauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateHmacauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -526,13 +526,13 @@ func (r *GatewayPluginHmacAuthResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteHmacauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteHmacauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

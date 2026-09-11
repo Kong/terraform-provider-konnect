@@ -358,13 +358,13 @@ func (r *GatewayPluginOpaResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateOpaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateOpaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateOpaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateOpaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -418,13 +418,13 @@ func (r *GatewayPluginOpaResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetOpaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetOpaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetOpaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetOpaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -472,13 +472,13 @@ func (r *GatewayPluginOpaResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateOpaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateOpaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateOpaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateOpaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -532,13 +532,13 @@ func (r *GatewayPluginOpaResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteOpaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteOpaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteOpaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteOpaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

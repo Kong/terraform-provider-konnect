@@ -982,13 +982,13 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAillmasjudgePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAillmasjudgePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAillmasjudgePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1042,13 +1042,13 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAillmasjudgePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAillmasjudgePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAillmasjudgePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1096,13 +1096,13 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAillmasjudgePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAillmasjudgePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAillmasjudgePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1156,13 +1156,13 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAillmasjudgePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAillmasjudgePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAillmasjudgePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

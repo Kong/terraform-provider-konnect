@@ -378,13 +378,13 @@ func (r *GatewayPluginForwardProxyResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateForwardproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateForwardproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateForwardproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -438,13 +438,13 @@ func (r *GatewayPluginForwardProxyResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetForwardproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetForwardproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetForwardproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -492,13 +492,13 @@ func (r *GatewayPluginForwardProxyResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateForwardproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateForwardproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateForwardproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -552,13 +552,13 @@ func (r *GatewayPluginForwardProxyResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteForwardproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteForwardproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteForwardproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

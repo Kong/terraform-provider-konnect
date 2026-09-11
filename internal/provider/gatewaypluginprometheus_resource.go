@@ -353,13 +353,13 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreatePrometheusPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreatePrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreatePrometheusPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreatePrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -413,13 +413,13 @@ func (r *GatewayPluginPrometheusResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetPrometheusPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetPrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetPrometheusPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetPrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -467,13 +467,13 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdatePrometheusPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdatePrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdatePrometheusPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdatePrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -527,13 +527,13 @@ func (r *GatewayPluginPrometheusResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeletePrometheusPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeletePrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeletePrometheusPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeletePrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

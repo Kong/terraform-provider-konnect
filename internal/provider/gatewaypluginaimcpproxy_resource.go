@@ -1040,13 +1040,13 @@ func (r *GatewayPluginAiMcpProxyResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAimcpproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAimcpproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAimcpproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAimcpproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1100,13 +1100,13 @@ func (r *GatewayPluginAiMcpProxyResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAimcpproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAimcpproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAimcpproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAimcpproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1154,13 +1154,13 @@ func (r *GatewayPluginAiMcpProxyResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAimcpproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAimcpproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAimcpproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAimcpproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1214,13 +1214,13 @@ func (r *GatewayPluginAiMcpProxyResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAimcpproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAimcpproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAimcpproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAimcpproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

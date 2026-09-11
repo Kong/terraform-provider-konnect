@@ -32,9 +32,9 @@ func newConsumers(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *ho
 	}
 }
 
-// CreateConsumerInWorkspace - Create a new Consumer in a workspace
+// CreateConsumer - Create a new Consumer in a workspace
 // Create a new Consumer in a workspace
-func (s *Consumers) CreateConsumerInWorkspace(ctx context.Context, request operations.CreateConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateConsumerInWorkspaceResponse, error) {
+func (s *Consumers) CreateConsumer(ctx context.Context, request operations.CreateConsumerRequest, opts ...operations.Option) (*operations.CreateConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -63,7 +63,7 @@ func (s *Consumers) CreateConsumerInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-consumer-in-workspace",
+		OperationID:      "create-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -198,7 +198,7 @@ func (s *Consumers) CreateConsumerInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.CreateConsumerInWorkspaceResponse{
+	res := &operations.CreateConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -259,9 +259,9 @@ func (s *Consumers) CreateConsumerInWorkspace(ctx context.Context, request opera
 
 }
 
-// DeleteConsumerInWorkspace - Delete a Consumer in a workspace
+// DeleteConsumer - Delete a Consumer in a workspace
 // Delete a Consumer in a workspace
-func (s *Consumers) DeleteConsumerInWorkspace(ctx context.Context, request operations.DeleteConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteConsumerInWorkspaceResponse, error) {
+func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.DeleteConsumerRequest, opts ...operations.Option) (*operations.DeleteConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -290,7 +290,7 @@ func (s *Consumers) DeleteConsumerInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-consumer-in-workspace",
+		OperationID:      "delete-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -418,7 +418,7 @@ func (s *Consumers) DeleteConsumerInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.DeleteConsumerInWorkspaceResponse{
+	res := &operations.DeleteConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -462,9 +462,9 @@ func (s *Consumers) DeleteConsumerInWorkspace(ctx context.Context, request opera
 
 }
 
-// GetConsumerInWorkspace - Get a Consumer in a workspace
+// GetConsumer - Get a Consumer in a workspace
 // Get a Consumer using ID or username in a workspace.
-func (s *Consumers) GetConsumerInWorkspace(ctx context.Context, request operations.GetConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetConsumerInWorkspaceResponse, error) {
+func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsumerRequest, opts ...operations.Option) (*operations.GetConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -493,7 +493,7 @@ func (s *Consumers) GetConsumerInWorkspace(ctx context.Context, request operatio
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-consumer-in-workspace",
+		OperationID:      "get-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -621,7 +621,7 @@ func (s *Consumers) GetConsumerInWorkspace(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.GetConsumerInWorkspaceResponse{
+	res := &operations.GetConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -684,9 +684,9 @@ func (s *Consumers) GetConsumerInWorkspace(ctx context.Context, request operatio
 
 }
 
-// UpsertConsumerInWorkspace - Upsert a Consumer in a workspace
+// UpsertConsumer - Upsert a Consumer in a workspace
 // Create or Update Consumer using ID or username in a workspace.
-func (s *Consumers) UpsertConsumerInWorkspace(ctx context.Context, request operations.UpsertConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertConsumerInWorkspaceResponse, error) {
+func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.UpsertConsumerRequest, opts ...operations.Option) (*operations.UpsertConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -715,7 +715,7 @@ func (s *Consumers) UpsertConsumerInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-consumer-in-workspace",
+		OperationID:      "upsert-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -850,7 +850,7 @@ func (s *Consumers) UpsertConsumerInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.UpsertConsumerInWorkspaceResponse{
+	res := &operations.UpsertConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

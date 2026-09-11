@@ -106,7 +106,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) RefreshFromSharedCorrelationID
 	return diags
 }
 
-func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsCreateCorrelationidPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateCorrelationidPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsCreateCorrelationidPluginRequest(ctx context.Context) (*operations.CreateCorrelationidPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -122,7 +122,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsCreateCorrelationi
 		return nil, diags
 	}
 
-	out := operations.CreateCorrelationidPluginInWorkspaceRequest{
+	out := operations.CreateCorrelationidPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		CorrelationIDPlugin: *correlationIDPlugin,
@@ -131,7 +131,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsCreateCorrelationi
 	return &out, diags
 }
 
-func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsDeleteCorrelationidPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteCorrelationidPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsDeleteCorrelationidPluginRequest(ctx context.Context) (*operations.DeleteCorrelationidPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -143,7 +143,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsDeleteCorrelationi
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteCorrelationidPluginInWorkspaceRequest{
+	out := operations.DeleteCorrelationidPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -152,7 +152,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsDeleteCorrelationi
 	return &out, diags
 }
 
-func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsGetCorrelationidPluginInWorkspaceRequest(ctx context.Context) (*operations.GetCorrelationidPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsGetCorrelationidPluginRequest(ctx context.Context) (*operations.GetCorrelationidPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,7 +164,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsGetCorrelationidPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetCorrelationidPluginInWorkspaceRequest{
+	out := operations.GetCorrelationidPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -173,7 +173,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsGetCorrelationidPl
 	return &out, diags
 }
 
-func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsUpdateCorrelationidPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateCorrelationidPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsUpdateCorrelationidPluginRequest(ctx context.Context) (*operations.UpdateCorrelationidPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -192,7 +192,7 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToOperationsUpdateCorrelationi
 		return nil, diags
 	}
 
-	out := operations.UpdateCorrelationidPluginInWorkspaceRequest{
+	out := operations.UpdateCorrelationidPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

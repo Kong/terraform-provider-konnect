@@ -103,7 +103,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlug
 	return diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPluginRequest(ctx context.Context) (*operations.CreateAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -119,7 +119,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPlu
 		return nil, diags
 	}
 
-	out := operations.CreateAppdynamicsPluginInWorkspaceRequest{
+	out := operations.CreateAppdynamicsPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,
 		AppDynamicsPlugin: *appDynamicsPlugin,
@@ -128,7 +128,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPluginRequest(ctx context.Context) (*operations.DeleteAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -140,7 +140,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPlu
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAppdynamicsPluginInWorkspaceRequest{
+	out := operations.DeleteAppdynamicsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -149,7 +149,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPluginRequest(ctx context.Context) (*operations.GetAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -161,7 +161,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPlugin
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAppdynamicsPluginInWorkspaceRequest{
+	out := operations.GetAppdynamicsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -170,7 +170,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPlugin
 	return &out, diags
 }
 
-func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAppdynamicsPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPluginRequest(ctx context.Context) (*operations.UpdateAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -189,7 +189,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPlu
 		return nil, diags
 	}
 
-	out := operations.UpdateAppdynamicsPluginInWorkspaceRequest{
+	out := operations.UpdateAppdynamicsPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,

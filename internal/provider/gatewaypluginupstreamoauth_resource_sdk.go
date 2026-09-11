@@ -269,7 +269,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 	return diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoauthPluginRequest(ctx context.Context) (*operations.CreateUpstreamoauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -285,7 +285,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoaut
 		return nil, diags
 	}
 
-	out := operations.CreateUpstreamoauthPluginInWorkspaceRequest{
+	out := operations.CreateUpstreamoauthPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		UpstreamOauthPlugin: *upstreamOauthPlugin,
@@ -294,7 +294,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoaut
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoauthPluginRequest(ctx context.Context) (*operations.DeleteUpstreamoauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -306,7 +306,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoaut
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteUpstreamoauthPluginInWorkspaceRequest{
+	out := operations.DeleteUpstreamoauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -315,7 +315,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoaut
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPluginRequest(ctx context.Context) (*operations.GetUpstreamoauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -327,7 +327,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetUpstreamoauthPluginInWorkspaceRequest{
+	out := operations.GetUpstreamoauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -336,7 +336,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPl
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateUpstreamoauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoauthPluginRequest(ctx context.Context) (*operations.UpdateUpstreamoauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -355,7 +355,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoaut
 		return nil, diags
 	}
 
-	out := operations.UpdateUpstreamoauthPluginInWorkspaceRequest{
+	out := operations.UpdateUpstreamoauthPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

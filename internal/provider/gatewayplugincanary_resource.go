@@ -386,13 +386,13 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateCanaryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateCanaryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -446,13 +446,13 @@ func (r *GatewayPluginCanaryResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetCanaryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetCanaryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -500,13 +500,13 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateCanaryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateCanaryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -560,13 +560,13 @@ func (r *GatewayPluginCanaryResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteCanaryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteCanaryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

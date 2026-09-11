@@ -385,7 +385,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 	return diags
 }
 
-func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsCreateConfluentconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.CreateConfluentconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsCreateConfluentconsumePluginRequest(ctx context.Context) (*operations.CreateConfluentconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -401,7 +401,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsCreateConfluent
 		return nil, diags
 	}
 
-	out := operations.CreateConfluentconsumePluginInWorkspaceRequest{
+	out := operations.CreateConfluentconsumePluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,
 		ConfluentConsumePlugin: *confluentConsumePlugin,
@@ -410,7 +410,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsCreateConfluent
 	return &out, diags
 }
 
-func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsDeleteConfluentconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteConfluentconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsDeleteConfluentconsumePluginRequest(ctx context.Context) (*operations.DeleteConfluentconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -422,7 +422,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsDeleteConfluent
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteConfluentconsumePluginInWorkspaceRequest{
+	out := operations.DeleteConfluentconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -431,7 +431,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsDeleteConfluent
 	return &out, diags
 }
 
-func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsGetConfluentconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.GetConfluentconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsGetConfluentconsumePluginRequest(ctx context.Context) (*operations.GetConfluentconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -443,7 +443,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsGetConfluentcon
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetConfluentconsumePluginInWorkspaceRequest{
+	out := operations.GetConfluentconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -452,7 +452,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsGetConfluentcon
 	return &out, diags
 }
 
-func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsUpdateConfluentconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateConfluentconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsUpdateConfluentconsumePluginRequest(ctx context.Context) (*operations.UpdateConfluentconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -471,7 +471,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsUpdateConfluent
 		return nil, diags
 	}
 
-	out := operations.UpdateConfluentconsumePluginInWorkspaceRequest{
+	out := operations.UpdateConfluentconsumePluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,

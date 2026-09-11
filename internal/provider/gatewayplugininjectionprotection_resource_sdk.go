@@ -122,7 +122,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 	return diags
 }
 
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInjectionprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateInjectionprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInjectionprotectionPluginRequest(ctx context.Context) (*operations.CreateInjectionprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -138,7 +138,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInject
 		return nil, diags
 	}
 
-	out := operations.CreateInjectionprotectionPluginInWorkspaceRequest{
+	out := operations.CreateInjectionprotectionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		Workspace:                 workspace,
 		InjectionProtectionPlugin: *injectionProtectionPlugin,
@@ -147,7 +147,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInject
 	return &out, diags
 }
 
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInjectionprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteInjectionprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInjectionprotectionPluginRequest(ctx context.Context) (*operations.DeleteInjectionprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -159,7 +159,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInject
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteInjectionprotectionPluginInWorkspaceRequest{
+	out := operations.DeleteInjectionprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -168,7 +168,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInject
 	return &out, diags
 }
 
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjectionprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetInjectionprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjectionprotectionPluginRequest(ctx context.Context) (*operations.GetInjectionprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -180,7 +180,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjection
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetInjectionprotectionPluginInWorkspaceRequest{
+	out := operations.GetInjectionprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -189,7 +189,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjection
 	return &out, diags
 }
 
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInjectionprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateInjectionprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInjectionprotectionPluginRequest(ctx context.Context) (*operations.UpdateInjectionprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -208,7 +208,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInject
 		return nil, diags
 	}
 
-	out := operations.UpdateInjectionprotectionPluginInWorkspaceRequest{
+	out := operations.UpdateInjectionprotectionPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
 		Workspace:                 workspace,

@@ -152,7 +152,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptD
 	return diags
 }
 
-func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsCreateAipromptdecoratorPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAipromptdecoratorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsCreateAipromptdecoratorPluginRequest(ctx context.Context) (*operations.CreateAipromptdecoratorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -168,7 +168,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsCreateAiprompt
 		return nil, diags
 	}
 
-	out := operations.CreateAipromptdecoratorPluginInWorkspaceRequest{
+	out := operations.CreateAipromptdecoratorPluginRequest{
 		ControlPlaneID:          controlPlaneID,
 		Workspace:               workspace,
 		AiPromptDecoratorPlugin: *aiPromptDecoratorPlugin,
@@ -177,7 +177,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsCreateAiprompt
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsDeleteAipromptdecoratorPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAipromptdecoratorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsDeleteAipromptdecoratorPluginRequest(ctx context.Context) (*operations.DeleteAipromptdecoratorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -189,7 +189,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsDeleteAiprompt
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAipromptdecoratorPluginInWorkspaceRequest{
+	out := operations.DeleteAipromptdecoratorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -198,7 +198,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsDeleteAiprompt
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsGetAipromptdecoratorPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAipromptdecoratorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsGetAipromptdecoratorPluginRequest(ctx context.Context) (*operations.GetAipromptdecoratorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -210,7 +210,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsGetAipromptdec
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAipromptdecoratorPluginInWorkspaceRequest{
+	out := operations.GetAipromptdecoratorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -219,7 +219,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsGetAipromptdec
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsUpdateAipromptdecoratorPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAipromptdecoratorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsUpdateAipromptdecoratorPluginRequest(ctx context.Context) (*operations.UpdateAipromptdecoratorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -238,7 +238,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsUpdateAiprompt
 		return nil, diags
 	}
 
-	out := operations.UpdateAipromptdecoratorPluginInWorkspaceRequest{
+	out := operations.UpdateAipromptdecoratorPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,
 		Workspace:               workspace,

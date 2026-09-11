@@ -393,13 +393,13 @@ func (r *GatewayPluginPostFunctionResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreatePostfunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreatePostfunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreatePostfunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreatePostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -453,13 +453,13 @@ func (r *GatewayPluginPostFunctionResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetPostfunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetPostfunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetPostfunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetPostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -507,13 +507,13 @@ func (r *GatewayPluginPostFunctionResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdatePostfunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdatePostfunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdatePostfunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdatePostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -567,13 +567,13 @@ func (r *GatewayPluginPostFunctionResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeletePostfunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeletePostfunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeletePostfunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeletePostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -30,9 +30,9 @@ func newHMACAuthCredentials(rootSDK *Konnect, sdkConfig config.SDKConfiguration,
 	}
 }
 
-// CreateHmacAuthWithConsumerInWorkspace - Create a new HMAC-auth credential associated with a Consumer in a workspace
+// CreateHmacAuthWithConsumer - Create a new HMAC-auth credential associated with a Consumer in a workspace
 // Create a new HMAC-auth credential associated with a Consumer in a workspace
-func (s *HMACAuthCredentials) CreateHmacAuthWithConsumerInWorkspace(ctx context.Context, request operations.CreateHmacAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateHmacAuthWithConsumerInWorkspaceResponse, error) {
+func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, request operations.CreateHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateHmacAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61,7 +61,7 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumerInWorkspace(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-hmac-auth-with-consumer-in-workspace",
+		OperationID:      "create-hmac-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumerInWorkspace(ctx context.
 		}
 	}
 
-	res := &operations.CreateHmacAuthWithConsumerInWorkspaceResponse{
+	res := &operations.CreateHmacAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumerInWorkspace(ctx context.
 
 }
 
-// DeleteHmacAuthWithConsumerInWorkspace - Delete a a HMAC-auth credential associated with a Consumer in a workspace
+// DeleteHmacAuthWithConsumer - Delete a a HMAC-auth credential associated with a Consumer in a workspace
 // Delete a a HMAC-auth credential associated with a Consumer using ID in a workspace.
-func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumerInWorkspace(ctx context.Context, request operations.DeleteHmacAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteHmacAuthWithConsumerInWorkspaceResponse, error) {
+func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, request operations.DeleteHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteHmacAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -267,7 +267,7 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumerInWorkspace(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-hmac-auth-with-consumer-in-workspace",
+		OperationID:      "delete-hmac-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumerInWorkspace(ctx context.
 		}
 	}
 
-	res := &operations.DeleteHmacAuthWithConsumerInWorkspaceResponse{
+	res := &operations.DeleteHmacAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumerInWorkspace(ctx context.
 
 }
 
-// GetHmacAuthWithConsumerInWorkspace - Get a HMAC-auth credential associated with a Consumer in a workspace
+// GetHmacAuthWithConsumer - Get a HMAC-auth credential associated with a Consumer in a workspace
 // Get a HMAC-auth credential associated with a Consumer using ID in a workspace.
-func (s *HMACAuthCredentials) GetHmacAuthWithConsumerInWorkspace(ctx context.Context, request operations.GetHmacAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetHmacAuthWithConsumerInWorkspaceResponse, error) {
+func (s *HMACAuthCredentials) GetHmacAuthWithConsumer(ctx context.Context, request operations.GetHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetHmacAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -449,7 +449,7 @@ func (s *HMACAuthCredentials) GetHmacAuthWithConsumerInWorkspace(ctx context.Con
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-hmac-auth-with-consumer-in-workspace",
+		OperationID:      "get-hmac-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *HMACAuthCredentials) GetHmacAuthWithConsumerInWorkspace(ctx context.Con
 		}
 	}
 
-	res := &operations.GetHmacAuthWithConsumerInWorkspaceResponse{
+	res := &operations.GetHmacAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

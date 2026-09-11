@@ -112,7 +112,7 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 	return diags
 }
 
-func (r *GatewayPluginACLResourceModel) ToOperationsCreateACLPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateACLPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginACLResourceModel) ToOperationsCreateACLPluginRequest(ctx context.Context) (*operations.CreateACLPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -128,7 +128,7 @@ func (r *GatewayPluginACLResourceModel) ToOperationsCreateACLPluginInWorkspaceRe
 		return nil, diags
 	}
 
-	out := operations.CreateACLPluginInWorkspaceRequest{
+	out := operations.CreateACLPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		ACLPlugin:      *aclPlugin,
@@ -137,7 +137,7 @@ func (r *GatewayPluginACLResourceModel) ToOperationsCreateACLPluginInWorkspaceRe
 	return &out, diags
 }
 
-func (r *GatewayPluginACLResourceModel) ToOperationsDeleteACLPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteACLPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginACLResourceModel) ToOperationsDeleteACLPluginRequest(ctx context.Context) (*operations.DeleteACLPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -149,7 +149,7 @@ func (r *GatewayPluginACLResourceModel) ToOperationsDeleteACLPluginInWorkspaceRe
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteACLPluginInWorkspaceRequest{
+	out := operations.DeleteACLPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -158,7 +158,7 @@ func (r *GatewayPluginACLResourceModel) ToOperationsDeleteACLPluginInWorkspaceRe
 	return &out, diags
 }
 
-func (r *GatewayPluginACLResourceModel) ToOperationsGetACLPluginInWorkspaceRequest(ctx context.Context) (*operations.GetACLPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginACLResourceModel) ToOperationsGetACLPluginRequest(ctx context.Context) (*operations.GetACLPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -170,7 +170,7 @@ func (r *GatewayPluginACLResourceModel) ToOperationsGetACLPluginInWorkspaceReque
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetACLPluginInWorkspaceRequest{
+	out := operations.GetACLPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -179,7 +179,7 @@ func (r *GatewayPluginACLResourceModel) ToOperationsGetACLPluginInWorkspaceReque
 	return &out, diags
 }
 
-func (r *GatewayPluginACLResourceModel) ToOperationsUpdateACLPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateACLPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginACLResourceModel) ToOperationsUpdateACLPluginRequest(ctx context.Context) (*operations.UpdateACLPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -198,7 +198,7 @@ func (r *GatewayPluginACLResourceModel) ToOperationsUpdateACLPluginInWorkspaceRe
 		return nil, diags
 	}
 
-	out := operations.UpdateACLPluginInWorkspaceRequest{
+	out := operations.UpdateACLPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

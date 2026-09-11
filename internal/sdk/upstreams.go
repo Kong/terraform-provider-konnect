@@ -34,9 +34,9 @@ func newUpstreams(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *ho
 	}
 }
 
-// CreateUpstreamInWorkspace - Create a new Upstream in a workspace
+// CreateUpstream - Create a new Upstream in a workspace
 // Create a new Upstream in a workspace
-func (s *Upstreams) CreateUpstreamInWorkspace(ctx context.Context, request operations.CreateUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.CreateUpstreamInWorkspaceResponse, error) {
+func (s *Upstreams) CreateUpstream(ctx context.Context, request operations.CreateUpstreamRequest, opts ...operations.Option) (*operations.CreateUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -65,7 +65,7 @@ func (s *Upstreams) CreateUpstreamInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-upstream-in-workspace",
+		OperationID:      "create-upstream",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -200,7 +200,7 @@ func (s *Upstreams) CreateUpstreamInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.CreateUpstreamInWorkspaceResponse{
+	res := &operations.CreateUpstreamResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -261,9 +261,9 @@ func (s *Upstreams) CreateUpstreamInWorkspace(ctx context.Context, request opera
 
 }
 
-// DeleteUpstreamInWorkspace - Delete an Upstream in a workspace
+// DeleteUpstream - Delete an Upstream in a workspace
 // Delete an Upstream in a workspace
-func (s *Upstreams) DeleteUpstreamInWorkspace(ctx context.Context, request operations.DeleteUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteUpstreamInWorkspaceResponse, error) {
+func (s *Upstreams) DeleteUpstream(ctx context.Context, request operations.DeleteUpstreamRequest, opts ...operations.Option) (*operations.DeleteUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -292,7 +292,7 @@ func (s *Upstreams) DeleteUpstreamInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-upstream-in-workspace",
+		OperationID:      "delete-upstream",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -420,7 +420,7 @@ func (s *Upstreams) DeleteUpstreamInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.DeleteUpstreamInWorkspaceResponse{
+	res := &operations.DeleteUpstreamResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -464,9 +464,9 @@ func (s *Upstreams) DeleteUpstreamInWorkspace(ctx context.Context, request opera
 
 }
 
-// GetUpstreamInWorkspace - Get an Upstream in a workspace
+// GetUpstream - Get an Upstream in a workspace
 // Get an Upstream using ID or name in a workspace.
-func (s *Upstreams) GetUpstreamInWorkspace(ctx context.Context, request operations.GetUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.GetUpstreamInWorkspaceResponse, error) {
+func (s *Upstreams) GetUpstream(ctx context.Context, request operations.GetUpstreamRequest, opts ...operations.Option) (*operations.GetUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -495,7 +495,7 @@ func (s *Upstreams) GetUpstreamInWorkspace(ctx context.Context, request operatio
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-upstream-in-workspace",
+		OperationID:      "get-upstream",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -623,7 +623,7 @@ func (s *Upstreams) GetUpstreamInWorkspace(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.GetUpstreamInWorkspaceResponse{
+	res := &operations.GetUpstreamResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -686,9 +686,9 @@ func (s *Upstreams) GetUpstreamInWorkspace(ctx context.Context, request operatio
 
 }
 
-// UpsertUpstreamInWorkspace - Upsert a Upstream in a workspace
+// UpsertUpstream - Upsert a Upstream in a workspace
 // Create or Update Upstream using ID or name in a workspace.
-func (s *Upstreams) UpsertUpstreamInWorkspace(ctx context.Context, request operations.UpsertUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertUpstreamInWorkspaceResponse, error) {
+func (s *Upstreams) UpsertUpstream(ctx context.Context, request operations.UpsertUpstreamRequest, opts ...operations.Option) (*operations.UpsertUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -717,7 +717,7 @@ func (s *Upstreams) UpsertUpstreamInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-upstream-in-workspace",
+		OperationID:      "upsert-upstream",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -852,7 +852,7 @@ func (s *Upstreams) UpsertUpstreamInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.UpsertUpstreamInWorkspaceResponse{
+	res := &operations.UpsertUpstreamResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

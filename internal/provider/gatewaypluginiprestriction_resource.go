@@ -350,13 +350,13 @@ func (r *GatewayPluginIPRestrictionResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateIprestrictionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateIprestrictionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -410,13 +410,13 @@ func (r *GatewayPluginIPRestrictionResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetIprestrictionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetIprestrictionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -464,13 +464,13 @@ func (r *GatewayPluginIPRestrictionResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateIprestrictionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateIprestrictionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -524,13 +524,13 @@ func (r *GatewayPluginIPRestrictionResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteIprestrictionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteIprestrictionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

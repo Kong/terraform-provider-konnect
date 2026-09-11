@@ -187,7 +187,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 	return diags
 }
 
-func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsCreateServiceprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateServiceprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsCreateServiceprotectionPluginRequest(ctx context.Context) (*operations.CreateServiceprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -203,7 +203,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsCreateServicep
 		return nil, diags
 	}
 
-	out := operations.CreateServiceprotectionPluginInWorkspaceRequest{
+	out := operations.CreateServiceprotectionPluginRequest{
 		ControlPlaneID:          controlPlaneID,
 		Workspace:               workspace,
 		ServiceProtectionPlugin: *serviceProtectionPlugin,
@@ -212,7 +212,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsCreateServicep
 	return &out, diags
 }
 
-func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsDeleteServiceprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteServiceprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsDeleteServiceprotectionPluginRequest(ctx context.Context) (*operations.DeleteServiceprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -224,7 +224,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsDeleteServicep
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteServiceprotectionPluginInWorkspaceRequest{
+	out := operations.DeleteServiceprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -233,7 +233,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsDeleteServicep
 	return &out, diags
 }
 
-func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsGetServiceprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetServiceprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsGetServiceprotectionPluginRequest(ctx context.Context) (*operations.GetServiceprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -245,7 +245,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsGetServiceprot
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetServiceprotectionPluginInWorkspaceRequest{
+	out := operations.GetServiceprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -254,7 +254,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsGetServiceprot
 	return &out, diags
 }
 
-func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsUpdateServiceprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateServiceprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsUpdateServiceprotectionPluginRequest(ctx context.Context) (*operations.UpdateServiceprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -273,7 +273,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsUpdateServicep
 		return nil, diags
 	}
 
-	out := operations.UpdateServiceprotectionPluginInWorkspaceRequest{
+	out := operations.UpdateServiceprotectionPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,
 		Workspace:               workspace,

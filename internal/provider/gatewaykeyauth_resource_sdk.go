@@ -31,7 +31,7 @@ func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(ctx context.Conte
 	return diags
 }
 
-func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.CreateKeyAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerRequest(ctx context.Context) (*operations.CreateKeyAuthWithConsumerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -50,7 +50,7 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerInWor
 		return nil, diags
 	}
 
-	out := operations.CreateKeyAuthWithConsumerInWorkspaceRequest{
+	out := operations.CreateKeyAuthWithConsumerRequest{
 		ControlPlaneID:        controlPlaneID,
 		ConsumerID:            consumerID,
 		Workspace:             workspace,
@@ -60,7 +60,7 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerInWor
 	return &out, diags
 }
 
-func (r *GatewayKeyAuthResourceModel) ToOperationsDeleteKeyAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.DeleteKeyAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayKeyAuthResourceModel) ToOperationsDeleteKeyAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteKeyAuthWithConsumerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -75,7 +75,7 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsDeleteKeyAuthWithConsumerInWor
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteKeyAuthWithConsumerInWorkspaceRequest{
+	out := operations.DeleteKeyAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		KeyAuthID:      keyAuthID,
@@ -85,7 +85,7 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsDeleteKeyAuthWithConsumerInWor
 	return &out, diags
 }
 
-func (r *GatewayKeyAuthResourceModel) ToOperationsGetKeyAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.GetKeyAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayKeyAuthResourceModel) ToOperationsGetKeyAuthWithConsumerRequest(ctx context.Context) (*operations.GetKeyAuthWithConsumerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -100,7 +100,7 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsGetKeyAuthWithConsumerInWorksp
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetKeyAuthWithConsumerInWorkspaceRequest{
+	out := operations.GetKeyAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		KeyAuthID:      keyAuthID,

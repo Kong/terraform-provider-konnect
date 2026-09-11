@@ -315,13 +315,13 @@ func (r *GatewayPluginStandardWebhooksResource) Create(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateStandardwebhooksPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateStandardwebhooksPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -375,13 +375,13 @@ func (r *GatewayPluginStandardWebhooksResource) Read(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetStandardwebhooksPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetStandardwebhooksPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -429,13 +429,13 @@ func (r *GatewayPluginStandardWebhooksResource) Update(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateStandardwebhooksPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateStandardwebhooksPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -489,13 +489,13 @@ func (r *GatewayPluginStandardWebhooksResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteStandardwebhooksPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteStandardwebhooksPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

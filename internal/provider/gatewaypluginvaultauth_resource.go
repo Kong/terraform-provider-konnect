@@ -351,13 +351,13 @@ func (r *GatewayPluginVaultAuthResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateVaultauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateVaultauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateVaultauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateVaultauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -411,13 +411,13 @@ func (r *GatewayPluginVaultAuthResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetVaultauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetVaultauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetVaultauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetVaultauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -465,13 +465,13 @@ func (r *GatewayPluginVaultAuthResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateVaultauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateVaultauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateVaultauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateVaultauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -525,13 +525,13 @@ func (r *GatewayPluginVaultAuthResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteVaultauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteVaultauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteVaultauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteVaultauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

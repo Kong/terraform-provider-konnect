@@ -139,7 +139,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 	return diags
 }
 
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsCreateAiazurecontentsafetyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAiazurecontentsafetyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsCreateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.CreateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -155,7 +155,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsCreateAiazu
 		return nil, diags
 	}
 
-	out := operations.CreateAiazurecontentsafetyPluginInWorkspaceRequest{
+	out := operations.CreateAiazurecontentsafetyPluginRequest{
 		ControlPlaneID:             controlPlaneID,
 		Workspace:                  workspace,
 		AiAzureContentSafetyPlugin: *aiAzureContentSafetyPlugin,
@@ -164,7 +164,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsCreateAiazu
 	return &out, diags
 }
 
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsDeleteAiazurecontentsafetyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAiazurecontentsafetyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsDeleteAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.DeleteAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -176,7 +176,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsDeleteAiazu
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAiazurecontentsafetyPluginInWorkspaceRequest{
+	out := operations.DeleteAiazurecontentsafetyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -185,7 +185,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsDeleteAiazu
 	return &out, diags
 }
 
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsGetAiazurecontentsafetyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAiazurecontentsafetyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsGetAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.GetAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -197,7 +197,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsGetAiazurec
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAiazurecontentsafetyPluginInWorkspaceRequest{
+	out := operations.GetAiazurecontentsafetyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -206,7 +206,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsGetAiazurec
 	return &out, diags
 }
 
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsUpdateAiazurecontentsafetyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAiazurecontentsafetyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsUpdateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.UpdateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -225,7 +225,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsUpdateAiazu
 		return nil, diags
 	}
 
-	out := operations.UpdateAiazurecontentsafetyPluginInWorkspaceRequest{
+	out := operations.UpdateAiazurecontentsafetyPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
 		Workspace:                  workspace,

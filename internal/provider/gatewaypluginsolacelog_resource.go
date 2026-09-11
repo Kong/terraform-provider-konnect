@@ -563,13 +563,13 @@ func (r *GatewayPluginSolaceLogResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateSolacelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateSolacelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateSolacelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateSolacelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -623,13 +623,13 @@ func (r *GatewayPluginSolaceLogResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetSolacelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetSolacelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetSolacelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetSolacelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -677,13 +677,13 @@ func (r *GatewayPluginSolaceLogResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateSolacelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateSolacelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateSolacelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateSolacelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -737,13 +737,13 @@ func (r *GatewayPluginSolaceLogResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteSolacelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteSolacelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteSolacelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteSolacelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -332,13 +332,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateTlsmetadataheadersPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateTlsmetadataheadersPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -392,13 +392,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetTlsmetadataheadersPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetTlsmetadataheadersPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -446,13 +446,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateTlsmetadataheadersPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateTlsmetadataheadersPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -506,13 +506,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteTlsmetadataheadersPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteTlsmetadataheadersPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

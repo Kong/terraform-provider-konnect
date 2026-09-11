@@ -568,7 +568,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 	return diags
 }
 
-func (r *GatewayPartialResourceModel) ToOperationsCreatePartialInWorkspaceRequest(ctx context.Context) (*operations.CreatePartialInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPartialResourceModel) ToOperationsCreatePartialRequest(ctx context.Context) (*operations.CreatePartialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -584,7 +584,7 @@ func (r *GatewayPartialResourceModel) ToOperationsCreatePartialInWorkspaceReques
 		return nil, diags
 	}
 
-	out := operations.CreatePartialInWorkspaceRequest{
+	out := operations.CreatePartialRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		Partial:        *partial,
@@ -593,7 +593,7 @@ func (r *GatewayPartialResourceModel) ToOperationsCreatePartialInWorkspaceReques
 	return &out, diags
 }
 
-func (r *GatewayPartialResourceModel) ToOperationsDeletePartialInWorkspaceRequest(ctx context.Context) (*operations.DeletePartialInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPartialResourceModel) ToOperationsDeletePartialRequest(ctx context.Context) (*operations.DeletePartialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -605,7 +605,7 @@ func (r *GatewayPartialResourceModel) ToOperationsDeletePartialInWorkspaceReques
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeletePartialInWorkspaceRequest{
+	out := operations.DeletePartialRequest{
 		ControlPlaneID: controlPlaneID,
 		PartialID:      partialID,
 		Workspace:      workspace,
@@ -614,7 +614,7 @@ func (r *GatewayPartialResourceModel) ToOperationsDeletePartialInWorkspaceReques
 	return &out, diags
 }
 
-func (r *GatewayPartialResourceModel) ToOperationsGetPartialInWorkspaceRequest(ctx context.Context) (*operations.GetPartialInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPartialResourceModel) ToOperationsGetPartialRequest(ctx context.Context) (*operations.GetPartialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var partialID string
@@ -626,7 +626,7 @@ func (r *GatewayPartialResourceModel) ToOperationsGetPartialInWorkspaceRequest(c
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetPartialInWorkspaceRequest{
+	out := operations.GetPartialRequest{
 		PartialID:      partialID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -635,7 +635,7 @@ func (r *GatewayPartialResourceModel) ToOperationsGetPartialInWorkspaceRequest(c
 	return &out, diags
 }
 
-func (r *GatewayPartialResourceModel) ToOperationsUpsertPartialInWorkspaceRequest(ctx context.Context) (*operations.UpsertPartialInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPartialResourceModel) ToOperationsUpsertPartialRequest(ctx context.Context) (*operations.UpsertPartialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var partialID string
@@ -654,7 +654,7 @@ func (r *GatewayPartialResourceModel) ToOperationsUpsertPartialInWorkspaceReques
 		return nil, diags
 	}
 
-	out := operations.UpsertPartialInWorkspaceRequest{
+	out := operations.UpsertPartialRequest{
 		PartialID:      partialID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

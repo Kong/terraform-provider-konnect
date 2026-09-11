@@ -33,9 +33,9 @@ func newSNIs(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateSniInWorkspace - Create a new SNI in a workspace
+// CreateSni - Create a new SNI in a workspace
 // Create a new SNI in a workspace
-func (s *SNIs) CreateSniInWorkspace(ctx context.Context, request operations.CreateSniInWorkspaceRequest, opts ...operations.Option) (*operations.CreateSniInWorkspaceResponse, error) {
+func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniRequest, opts ...operations.Option) (*operations.CreateSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -64,7 +64,7 @@ func (s *SNIs) CreateSniInWorkspace(ctx context.Context, request operations.Crea
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-sni-in-workspace",
+		OperationID:      "create-sni",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -199,7 +199,7 @@ func (s *SNIs) CreateSniInWorkspace(ctx context.Context, request operations.Crea
 		}
 	}
 
-	res := &operations.CreateSniInWorkspaceResponse{
+	res := &operations.CreateSniResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -260,9 +260,9 @@ func (s *SNIs) CreateSniInWorkspace(ctx context.Context, request operations.Crea
 
 }
 
-// DeleteSniInWorkspace - Delete an SNI in a workspace
+// DeleteSni - Delete an SNI in a workspace
 // Delete an SNI in a workspace
-func (s *SNIs) DeleteSniInWorkspace(ctx context.Context, request operations.DeleteSniInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteSniInWorkspaceResponse, error) {
+func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniRequest, opts ...operations.Option) (*operations.DeleteSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -291,7 +291,7 @@ func (s *SNIs) DeleteSniInWorkspace(ctx context.Context, request operations.Dele
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-sni-in-workspace",
+		OperationID:      "delete-sni",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -419,7 +419,7 @@ func (s *SNIs) DeleteSniInWorkspace(ctx context.Context, request operations.Dele
 		}
 	}
 
-	res := &operations.DeleteSniInWorkspaceResponse{
+	res := &operations.DeleteSniResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -463,9 +463,9 @@ func (s *SNIs) DeleteSniInWorkspace(ctx context.Context, request operations.Dele
 
 }
 
-// GetSniInWorkspace - Get an SNI in a workspace
+// GetSni - Get an SNI in a workspace
 // Get an SNI using ID or name in a workspace.
-func (s *SNIs) GetSniInWorkspace(ctx context.Context, request operations.GetSniInWorkspaceRequest, opts ...operations.Option) (*operations.GetSniInWorkspaceResponse, error) {
+func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opts ...operations.Option) (*operations.GetSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -494,7 +494,7 @@ func (s *SNIs) GetSniInWorkspace(ctx context.Context, request operations.GetSniI
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-sni-in-workspace",
+		OperationID:      "get-sni",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -622,7 +622,7 @@ func (s *SNIs) GetSniInWorkspace(ctx context.Context, request operations.GetSniI
 		}
 	}
 
-	res := &operations.GetSniInWorkspaceResponse{
+	res := &operations.GetSniResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -685,9 +685,9 @@ func (s *SNIs) GetSniInWorkspace(ctx context.Context, request operations.GetSniI
 
 }
 
-// UpsertSniInWorkspace - Upsert a SNI in a workspace
+// UpsertSni - Upsert a SNI in a workspace
 // Create or Update SNI using ID or name in a workspace.
-func (s *SNIs) UpsertSniInWorkspace(ctx context.Context, request operations.UpsertSniInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertSniInWorkspaceResponse, error) {
+func (s *SNIs) UpsertSni(ctx context.Context, request operations.UpsertSniRequest, opts ...operations.Option) (*operations.UpsertSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -716,7 +716,7 @@ func (s *SNIs) UpsertSniInWorkspace(ctx context.Context, request operations.Upse
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-sni-in-workspace",
+		OperationID:      "upsert-sni",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -851,7 +851,7 @@ func (s *SNIs) UpsertSniInWorkspace(ctx context.Context, request operations.Upse
 		}
 	}
 
-	res := &operations.UpsertSniInWorkspaceResponse{
+	res := &operations.UpsertSniResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

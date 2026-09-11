@@ -388,7 +388,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 	return diags
 }
 
-func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsCreateKafkaconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.CreateKafkaconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsCreateKafkaconsumePluginRequest(ctx context.Context) (*operations.CreateKafkaconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -404,7 +404,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsCreateKafkaconsumeP
 		return nil, diags
 	}
 
-	out := operations.CreateKafkaconsumePluginInWorkspaceRequest{
+	out := operations.CreateKafkaconsumePluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,
 		KafkaConsumePlugin: *kafkaConsumePlugin,
@@ -413,7 +413,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsCreateKafkaconsumeP
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsDeleteKafkaconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteKafkaconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsDeleteKafkaconsumePluginRequest(ctx context.Context) (*operations.DeleteKafkaconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -425,7 +425,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsDeleteKafkaconsumeP
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteKafkaconsumePluginInWorkspaceRequest{
+	out := operations.DeleteKafkaconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -434,7 +434,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsDeleteKafkaconsumeP
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsGetKafkaconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.GetKafkaconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsGetKafkaconsumePluginRequest(ctx context.Context) (*operations.GetKafkaconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -446,7 +446,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsGetKafkaconsumePlug
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetKafkaconsumePluginInWorkspaceRequest{
+	out := operations.GetKafkaconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -455,7 +455,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsGetKafkaconsumePlug
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsUpdateKafkaconsumePluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateKafkaconsumePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsUpdateKafkaconsumePluginRequest(ctx context.Context) (*operations.UpdateKafkaconsumePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -474,7 +474,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsUpdateKafkaconsumeP
 		return nil, diags
 	}
 
-	out := operations.UpdateKafkaconsumePluginInWorkspaceRequest{
+	out := operations.UpdateKafkaconsumePluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,

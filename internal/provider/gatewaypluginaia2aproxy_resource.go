@@ -331,13 +331,13 @@ func (r *GatewayPluginAiA2aProxyResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAia2aproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAia2aproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAia2aproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAia2aproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -391,13 +391,13 @@ func (r *GatewayPluginAiA2aProxyResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAia2aproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAia2aproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAia2aproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAia2aproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -445,13 +445,13 @@ func (r *GatewayPluginAiA2aProxyResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAia2aproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAia2aproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAia2aproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAia2aproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -505,13 +505,13 @@ func (r *GatewayPluginAiA2aProxyResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAia2aproxyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAia2aproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAia2aproxyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAia2aproxyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

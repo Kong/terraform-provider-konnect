@@ -162,7 +162,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 	return diags
 }
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsCreateResponseratelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateResponseratelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsCreateResponseratelimitingPluginRequest(ctx context.Context) (*operations.CreateResponseratelimitingPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -178,7 +178,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsCreateRespo
 		return nil, diags
 	}
 
-	out := operations.CreateResponseratelimitingPluginInWorkspaceRequest{
+	out := operations.CreateResponseratelimitingPluginRequest{
 		ControlPlaneID:             controlPlaneID,
 		Workspace:                  workspace,
 		ResponseRatelimitingPlugin: *responseRatelimitingPlugin,
@@ -187,7 +187,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsCreateRespo
 	return &out, diags
 }
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsDeleteResponseratelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteResponseratelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsDeleteResponseratelimitingPluginRequest(ctx context.Context) (*operations.DeleteResponseratelimitingPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -199,7 +199,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsDeleteRespo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteResponseratelimitingPluginInWorkspaceRequest{
+	out := operations.DeleteResponseratelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -208,7 +208,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsDeleteRespo
 	return &out, diags
 }
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsGetResponseratelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.GetResponseratelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsGetResponseratelimitingPluginRequest(ctx context.Context) (*operations.GetResponseratelimitingPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -220,7 +220,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsGetResponse
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetResponseratelimitingPluginInWorkspaceRequest{
+	out := operations.GetResponseratelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -229,7 +229,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsGetResponse
 	return &out, diags
 }
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsUpdateResponseratelimitingPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateResponseratelimitingPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsUpdateResponseratelimitingPluginRequest(ctx context.Context) (*operations.UpdateResponseratelimitingPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -248,7 +248,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsUpdateRespo
 		return nil, diags
 	}
 
-	out := operations.UpdateResponseratelimitingPluginInWorkspaceRequest{
+	out := operations.UpdateResponseratelimitingPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
 		Workspace:                  workspace,

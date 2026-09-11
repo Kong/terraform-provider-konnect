@@ -133,7 +133,7 @@ func (r *GatewayPluginPostFunctionResourceModel) RefreshFromSharedPostFunctionPl
 	return diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreatePostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionPluginRequest(ctx context.Context) (*operations.CreatePostfunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -149,7 +149,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionP
 		return nil, diags
 	}
 
-	out := operations.CreatePostfunctionPluginInWorkspaceRequest{
+	out := operations.CreatePostfunctionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,
 		PostFunctionPlugin: *postFunctionPlugin,
@@ -158,7 +158,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionP
 	return &out, diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeletePostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionPluginRequest(ctx context.Context) (*operations.DeletePostfunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -170,7 +170,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionP
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeletePostfunctionPluginInWorkspaceRequest{
+	out := operations.DeletePostfunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -179,7 +179,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionP
 	return &out, diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetPostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPluginRequest(ctx context.Context) (*operations.GetPostfunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -191,7 +191,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPlug
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetPostfunctionPluginInWorkspaceRequest{
+	out := operations.GetPostfunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -200,7 +200,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPlug
 	return &out, diags
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdatePostfunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionPluginRequest(ctx context.Context) (*operations.UpdatePostfunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -219,7 +219,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionP
 		return nil, diags
 	}
 
-	out := operations.UpdatePostfunctionPluginInWorkspaceRequest{
+	out := operations.UpdatePostfunctionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,

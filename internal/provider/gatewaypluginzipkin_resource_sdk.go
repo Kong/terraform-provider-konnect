@@ -199,7 +199,7 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx con
 	return diags
 }
 
-func (r *GatewayPluginZipkinResourceModel) ToOperationsCreateZipkinPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateZipkinPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginZipkinResourceModel) ToOperationsCreateZipkinPluginRequest(ctx context.Context) (*operations.CreateZipkinPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -215,7 +215,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsCreateZipkinPluginInWorks
 		return nil, diags
 	}
 
-	out := operations.CreateZipkinPluginInWorkspaceRequest{
+	out := operations.CreateZipkinPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		ZipkinPlugin:   *zipkinPlugin,
@@ -224,7 +224,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsCreateZipkinPluginInWorks
 	return &out, diags
 }
 
-func (r *GatewayPluginZipkinResourceModel) ToOperationsDeleteZipkinPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteZipkinPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginZipkinResourceModel) ToOperationsDeleteZipkinPluginRequest(ctx context.Context) (*operations.DeleteZipkinPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -236,7 +236,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsDeleteZipkinPluginInWorks
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteZipkinPluginInWorkspaceRequest{
+	out := operations.DeleteZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -245,7 +245,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsDeleteZipkinPluginInWorks
 	return &out, diags
 }
 
-func (r *GatewayPluginZipkinResourceModel) ToOperationsGetZipkinPluginInWorkspaceRequest(ctx context.Context) (*operations.GetZipkinPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginZipkinResourceModel) ToOperationsGetZipkinPluginRequest(ctx context.Context) (*operations.GetZipkinPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -257,7 +257,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsGetZipkinPluginInWorkspac
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetZipkinPluginInWorkspaceRequest{
+	out := operations.GetZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -266,7 +266,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsGetZipkinPluginInWorkspac
 	return &out, diags
 }
 
-func (r *GatewayPluginZipkinResourceModel) ToOperationsUpdateZipkinPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateZipkinPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginZipkinResourceModel) ToOperationsUpdateZipkinPluginRequest(ctx context.Context) (*operations.UpdateZipkinPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -285,7 +285,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsUpdateZipkinPluginInWorks
 		return nil, diags
 	}
 
-	out := operations.UpdateZipkinPluginInWorkspaceRequest{
+	out := operations.UpdateZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

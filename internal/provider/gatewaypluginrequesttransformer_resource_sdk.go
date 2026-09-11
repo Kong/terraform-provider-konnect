@@ -192,7 +192,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) RefreshFromSharedRequestT
 	return diags
 }
 
-func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsCreateRequesttransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRequesttransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsCreateRequesttransformerPluginRequest(ctx context.Context) (*operations.CreateRequesttransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -208,7 +208,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsCreateRequest
 		return nil, diags
 	}
 
-	out := operations.CreateRequesttransformerPluginInWorkspaceRequest{
+	out := operations.CreateRequesttransformerPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,
 		RequestTransformerPlugin: *requestTransformerPlugin,
@@ -217,7 +217,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsCreateRequest
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsDeleteRequesttransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRequesttransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsDeleteRequesttransformerPluginRequest(ctx context.Context) (*operations.DeleteRequesttransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -229,7 +229,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsDeleteRequest
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteRequesttransformerPluginInWorkspaceRequest{
+	out := operations.DeleteRequesttransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -238,7 +238,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsDeleteRequest
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsGetRequesttransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRequesttransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsGetRequesttransformerPluginRequest(ctx context.Context) (*operations.GetRequesttransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -250,7 +250,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsGetRequesttra
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetRequesttransformerPluginInWorkspaceRequest{
+	out := operations.GetRequesttransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -259,7 +259,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsGetRequesttra
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsUpdateRequesttransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRequesttransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsUpdateRequesttransformerPluginRequest(ctx context.Context) (*operations.UpdateRequesttransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -278,7 +278,7 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToOperationsUpdateRequest
 		return nil, diags
 	}
 
-	out := operations.UpdateRequesttransformerPluginInWorkspaceRequest{
+	out := operations.UpdateRequesttransformerPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,

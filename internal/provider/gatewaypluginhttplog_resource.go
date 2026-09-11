@@ -454,13 +454,13 @@ func (r *GatewayPluginHTTPLogResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateHttplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateHttplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateHttplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateHttplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -514,13 +514,13 @@ func (r *GatewayPluginHTTPLogResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetHttplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetHttplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetHttplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetHttplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -568,13 +568,13 @@ func (r *GatewayPluginHTTPLogResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateHttplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateHttplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateHttplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateHttplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -628,13 +628,13 @@ func (r *GatewayPluginHTTPLogResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteHttplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteHttplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteHttplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteHttplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

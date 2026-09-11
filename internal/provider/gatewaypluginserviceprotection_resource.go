@@ -646,13 +646,13 @@ func (r *GatewayPluginServiceProtectionResource) Create(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateServiceprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateServiceprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateServiceprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -706,13 +706,13 @@ func (r *GatewayPluginServiceProtectionResource) Read(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetServiceprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetServiceprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetServiceprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -760,13 +760,13 @@ func (r *GatewayPluginServiceProtectionResource) Update(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateServiceprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateServiceprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateServiceprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -820,13 +820,13 @@ func (r *GatewayPluginServiceProtectionResource) Delete(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteServiceprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteServiceprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteServiceprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

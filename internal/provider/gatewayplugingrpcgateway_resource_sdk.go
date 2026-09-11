@@ -100,7 +100,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) RefreshFromSharedGrpcGatewayPlug
 	return diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPluginRequest(ctx context.Context) (*operations.CreateGrpcgatewayPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -116,7 +116,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPlu
 		return nil, diags
 	}
 
-	out := operations.CreateGrpcgatewayPluginInWorkspaceRequest{
+	out := operations.CreateGrpcgatewayPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,
 		GrpcGatewayPlugin: *grpcGatewayPlugin,
@@ -125,7 +125,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPluginRequest(ctx context.Context) (*operations.DeleteGrpcgatewayPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -137,7 +137,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPlu
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteGrpcgatewayPluginInWorkspaceRequest{
+	out := operations.DeleteGrpcgatewayPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -146,7 +146,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.GetGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPluginRequest(ctx context.Context) (*operations.GetGrpcgatewayPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -158,7 +158,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPlugin
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetGrpcgatewayPluginInWorkspaceRequest{
+	out := operations.GetGrpcgatewayPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -167,7 +167,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPlugin
 	return &out, diags
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateGrpcgatewayPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPluginRequest(ctx context.Context) (*operations.UpdateGrpcgatewayPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -186,7 +186,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPlu
 		return nil, diags
 	}
 
-	out := operations.UpdateGrpcgatewayPluginInWorkspaceRequest{
+	out := operations.UpdateGrpcgatewayPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,

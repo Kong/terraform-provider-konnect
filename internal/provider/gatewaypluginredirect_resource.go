@@ -340,13 +340,13 @@ func (r *GatewayPluginRedirectResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRedirectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRedirectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRedirectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRedirectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -400,13 +400,13 @@ func (r *GatewayPluginRedirectResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRedirectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRedirectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRedirectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRedirectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -454,13 +454,13 @@ func (r *GatewayPluginRedirectResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRedirectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRedirectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRedirectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRedirectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -514,13 +514,13 @@ func (r *GatewayPluginRedirectResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRedirectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRedirectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRedirectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRedirectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -370,13 +370,13 @@ func (r *GatewayPluginCorsResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateCorsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateCorsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateCorsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -430,13 +430,13 @@ func (r *GatewayPluginCorsResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetCorsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetCorsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetCorsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -484,13 +484,13 @@ func (r *GatewayPluginCorsResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateCorsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateCorsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateCorsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -544,13 +544,13 @@ func (r *GatewayPluginCorsResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteCorsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteCorsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteCorsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

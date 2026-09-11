@@ -101,7 +101,7 @@ func (r *GatewayPluginBotDetectionResourceModel) RefreshFromSharedBotDetectionPl
 	return diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionPluginRequest(ctx context.Context) (*operations.CreateBotdetectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -117,7 +117,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionP
 		return nil, diags
 	}
 
-	out := operations.CreateBotdetectionPluginInWorkspaceRequest{
+	out := operations.CreateBotdetectionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,
 		BotDetectionPlugin: *botDetectionPlugin,
@@ -126,7 +126,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionP
 	return &out, diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionPluginRequest(ctx context.Context) (*operations.DeleteBotdetectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -138,7 +138,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionP
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteBotdetectionPluginInWorkspaceRequest{
+	out := operations.DeleteBotdetectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -147,7 +147,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionP
 	return &out, diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPluginRequest(ctx context.Context) (*operations.GetBotdetectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -159,7 +159,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPlug
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetBotdetectionPluginInWorkspaceRequest{
+	out := operations.GetBotdetectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -168,7 +168,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPlug
 	return &out, diags
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateBotdetectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionPluginRequest(ctx context.Context) (*operations.UpdateBotdetectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -187,7 +187,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionP
 		return nil, diags
 	}
 
-	out := operations.UpdateBotdetectionPluginInWorkspaceRequest{
+	out := operations.UpdateBotdetectionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,

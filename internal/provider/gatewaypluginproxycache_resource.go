@@ -428,13 +428,13 @@ func (r *GatewayPluginProxyCacheResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateProxycachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateProxycachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateProxycachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateProxycachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -488,13 +488,13 @@ func (r *GatewayPluginProxyCacheResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetProxycachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetProxycachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetProxycachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetProxycachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -542,13 +542,13 @@ func (r *GatewayPluginProxyCacheResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateProxycachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateProxycachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateProxycachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateProxycachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -602,13 +602,13 @@ func (r *GatewayPluginProxyCacheResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteProxycachePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteProxycachePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteProxycachePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteProxycachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

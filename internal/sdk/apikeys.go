@@ -30,9 +30,9 @@ func newAPIKeys(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateKeyAuthWithConsumerInWorkspace - Create a new API-key associated with a Consumer in a workspace
+// CreateKeyAuthWithConsumer - Create a new API-key associated with a Consumer in a workspace
 // Create a new API-key associated with a Consumer in a workspace
-func (s *APIKeys) CreateKeyAuthWithConsumerInWorkspace(ctx context.Context, request operations.CreateKeyAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKeyAuthWithConsumerInWorkspaceResponse, error) {
+func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operations.CreateKeyAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateKeyAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61,7 +61,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumerInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-key-auth-with-consumer-in-workspace",
+		OperationID:      "create-key-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumerInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateKeyAuthWithConsumerInWorkspaceResponse{
+	res := &operations.CreateKeyAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *APIKeys) CreateKeyAuthWithConsumerInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteKeyAuthWithConsumerInWorkspace - Delete a an API-key associated with a Consumer in a workspace
+// DeleteKeyAuthWithConsumer - Delete a an API-key associated with a Consumer in a workspace
 // Delete a an API-key associated with a Consumer using ID in a workspace.
-func (s *APIKeys) DeleteKeyAuthWithConsumerInWorkspace(ctx context.Context, request operations.DeleteKeyAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKeyAuthWithConsumerInWorkspaceResponse, error) {
+func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operations.DeleteKeyAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteKeyAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -267,7 +267,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumerInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-key-auth-with-consumer-in-workspace",
+		OperationID:      "delete-key-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumerInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteKeyAuthWithConsumerInWorkspaceResponse{
+	res := &operations.DeleteKeyAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *APIKeys) DeleteKeyAuthWithConsumerInWorkspace(ctx context.Context, requ
 
 }
 
-// GetKeyAuthWithConsumerInWorkspace - Get an API-key associated with a Consumer in a workspace
+// GetKeyAuthWithConsumer - Get an API-key associated with a Consumer in a workspace
 // Get an API-key associated with a Consumer using ID in a workspace.
-func (s *APIKeys) GetKeyAuthWithConsumerInWorkspace(ctx context.Context, request operations.GetKeyAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetKeyAuthWithConsumerInWorkspaceResponse, error) {
+func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations.GetKeyAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetKeyAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -449,7 +449,7 @@ func (s *APIKeys) GetKeyAuthWithConsumerInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-key-auth-with-consumer-in-workspace",
+		OperationID:      "get-key-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *APIKeys) GetKeyAuthWithConsumerInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetKeyAuthWithConsumerInWorkspaceResponse{
+	res := &operations.GetKeyAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

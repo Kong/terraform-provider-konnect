@@ -124,7 +124,7 @@ func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPl
 	return diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyPluginRequest(ctx context.Context) (*operations.CreateForwardproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -140,7 +140,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyP
 		return nil, diags
 	}
 
-	out := operations.CreateForwardproxyPluginInWorkspaceRequest{
+	out := operations.CreateForwardproxyPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,
 		ForwardProxyPlugin: *forwardProxyPlugin,
@@ -149,7 +149,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyP
 	return &out, diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyPluginRequest(ctx context.Context) (*operations.DeleteForwardproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -161,7 +161,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyP
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteForwardproxyPluginInWorkspaceRequest{
+	out := operations.DeleteForwardproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -170,7 +170,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyP
 	return &out, diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPluginRequest(ctx context.Context) (*operations.GetForwardproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -182,7 +182,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPlug
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetForwardproxyPluginInWorkspaceRequest{
+	out := operations.GetForwardproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -191,7 +191,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPlug
 	return &out, diags
 }
 
-func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateForwardproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyPluginRequest(ctx context.Context) (*operations.UpdateForwardproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -210,7 +210,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyP
 		return nil, diags
 	}
 
-	out := operations.UpdateForwardproxyPluginInWorkspaceRequest{
+	out := operations.UpdateForwardproxyPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,

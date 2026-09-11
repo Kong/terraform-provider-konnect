@@ -103,7 +103,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) RefreshFromSharedRo
 	return diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.CreateRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -119,7 +119,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateR
 		return nil, diags
 	}
 
-	out := operations.CreateRoutetransformeradvancedPluginInWorkspaceRequest{
+	out := operations.CreateRoutetransformeradvancedPluginRequest{
 		ControlPlaneID:                 controlPlaneID,
 		Workspace:                      workspace,
 		RouteTransformerAdvancedPlugin: *routeTransformerAdvancedPlugin,
@@ -128,7 +128,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateR
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.DeleteRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -140,7 +140,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteR
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteRoutetransformeradvancedPluginInWorkspaceRequest{
+	out := operations.DeleteRoutetransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -149,7 +149,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteR
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.GetRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -161,7 +161,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRout
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetRoutetransformeradvancedPluginInWorkspaceRequest{
+	out := operations.GetRoutetransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -170,7 +170,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRout
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateRoutetransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRoutetransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.UpdateRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -189,7 +189,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateR
 		return nil, diags
 	}
 
-	out := operations.UpdateRoutetransformeradvancedPluginInWorkspaceRequest{
+	out := operations.UpdateRoutetransformeradvancedPluginRequest{
 		PluginID:                       pluginID,
 		ControlPlaneID:                 controlPlaneID,
 		Workspace:                      workspace,

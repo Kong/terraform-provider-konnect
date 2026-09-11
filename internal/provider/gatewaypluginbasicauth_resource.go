@@ -520,13 +520,13 @@ func (r *GatewayPluginBasicAuthResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateBasicauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateBasicauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateBasicauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateBasicauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -580,13 +580,13 @@ func (r *GatewayPluginBasicAuthResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetBasicauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetBasicauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetBasicauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetBasicauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -634,13 +634,13 @@ func (r *GatewayPluginBasicAuthResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateBasicauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateBasicauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateBasicauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateBasicauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -694,13 +694,13 @@ func (r *GatewayPluginBasicAuthResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteBasicauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteBasicauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteBasicauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteBasicauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

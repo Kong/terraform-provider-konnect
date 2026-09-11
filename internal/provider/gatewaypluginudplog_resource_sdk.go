@@ -104,7 +104,7 @@ func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(ctx con
 	return diags
 }
 
-func (r *GatewayPluginUDPLogResourceModel) ToOperationsCreateUdplogPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateUdplogPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsCreateUdplogPluginRequest(ctx context.Context) (*operations.CreateUdplogPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -120,7 +120,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsCreateUdplogPluginInWorks
 		return nil, diags
 	}
 
-	out := operations.CreateUdplogPluginInWorkspaceRequest{
+	out := operations.CreateUdplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		UDPLogPlugin:   *udpLogPlugin,
@@ -129,7 +129,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsCreateUdplogPluginInWorks
 	return &out, diags
 }
 
-func (r *GatewayPluginUDPLogResourceModel) ToOperationsDeleteUdplogPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteUdplogPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsDeleteUdplogPluginRequest(ctx context.Context) (*operations.DeleteUdplogPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -141,7 +141,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsDeleteUdplogPluginInWorks
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteUdplogPluginInWorkspaceRequest{
+	out := operations.DeleteUdplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -150,7 +150,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsDeleteUdplogPluginInWorks
 	return &out, diags
 }
 
-func (r *GatewayPluginUDPLogResourceModel) ToOperationsGetUdplogPluginInWorkspaceRequest(ctx context.Context) (*operations.GetUdplogPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsGetUdplogPluginRequest(ctx context.Context) (*operations.GetUdplogPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -162,7 +162,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsGetUdplogPluginInWorkspac
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetUdplogPluginInWorkspaceRequest{
+	out := operations.GetUdplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -171,7 +171,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsGetUdplogPluginInWorkspac
 	return &out, diags
 }
 
-func (r *GatewayPluginUDPLogResourceModel) ToOperationsUpdateUdplogPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateUdplogPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsUpdateUdplogPluginRequest(ctx context.Context) (*operations.UpdateUdplogPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -190,7 +190,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsUpdateUdplogPluginInWorks
 		return nil, diags
 	}
 
-	out := operations.UpdateUdplogPluginInWorkspaceRequest{
+	out := operations.UpdateUdplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

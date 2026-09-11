@@ -207,7 +207,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 	return diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetryPluginRequest(ctx context.Context) (*operations.CreateOpentelemetryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -223,7 +223,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetr
 		return nil, diags
 	}
 
-	out := operations.CreateOpentelemetryPluginInWorkspaceRequest{
+	out := operations.CreateOpentelemetryPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		OpentelemetryPlugin: *opentelemetryPlugin,
@@ -232,7 +232,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsCreateOpentelemetr
 	return &out, diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetryPluginRequest(ctx context.Context) (*operations.DeleteOpentelemetryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -244,7 +244,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetr
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteOpentelemetryPluginInWorkspaceRequest{
+	out := operations.DeleteOpentelemetryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -253,7 +253,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsDeleteOpentelemetr
 	return &out, diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.GetOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPluginRequest(ctx context.Context) (*operations.GetOpentelemetryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -265,7 +265,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetOpentelemetryPluginInWorkspaceRequest{
+	out := operations.GetOpentelemetryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -274,7 +274,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsGetOpentelemetryPl
 	return &out, diags
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetryPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateOpentelemetryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetryPluginRequest(ctx context.Context) (*operations.UpdateOpentelemetryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -293,7 +293,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetr
 		return nil, diags
 	}
 
-	out := operations.UpdateOpentelemetryPluginInWorkspaceRequest{
+	out := operations.UpdateOpentelemetryPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

@@ -312,13 +312,13 @@ func (r *GatewayPluginJweDecryptResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJwedecryptPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJwedecryptPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateJwedecryptPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateJwedecryptPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -372,13 +372,13 @@ func (r *GatewayPluginJweDecryptResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJwedecryptPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJwedecryptPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetJwedecryptPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetJwedecryptPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -426,13 +426,13 @@ func (r *GatewayPluginJweDecryptResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateJwedecryptPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateJwedecryptPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateJwedecryptPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateJwedecryptPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -486,13 +486,13 @@ func (r *GatewayPluginJweDecryptResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJwedecryptPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJwedecryptPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteJwedecryptPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteJwedecryptPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

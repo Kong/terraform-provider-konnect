@@ -312,13 +312,13 @@ func (r *GatewayPluginGrpcGatewayResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateGrpcgatewayPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateGrpcgatewayPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateGrpcgatewayPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -372,13 +372,13 @@ func (r *GatewayPluginGrpcGatewayResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetGrpcgatewayPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetGrpcgatewayPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetGrpcgatewayPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -426,13 +426,13 @@ func (r *GatewayPluginGrpcGatewayResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateGrpcgatewayPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateGrpcgatewayPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateGrpcgatewayPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -486,13 +486,13 @@ func (r *GatewayPluginGrpcGatewayResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteGrpcgatewayPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteGrpcgatewayPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteGrpcgatewayPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -514,13 +514,13 @@ func (r *GatewayPluginDatadogResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateDatadogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateDatadogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateDatadogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -574,13 +574,13 @@ func (r *GatewayPluginDatadogResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetDatadogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetDatadogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetDatadogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -628,13 +628,13 @@ func (r *GatewayPluginDatadogResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateDatadogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateDatadogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateDatadogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -688,13 +688,13 @@ func (r *GatewayPluginDatadogResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteDatadogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteDatadogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteDatadogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

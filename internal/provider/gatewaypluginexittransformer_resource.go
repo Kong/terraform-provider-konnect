@@ -320,13 +320,13 @@ func (r *GatewayPluginExitTransformerResource) Create(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateExittransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateExittransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -380,13 +380,13 @@ func (r *GatewayPluginExitTransformerResource) Read(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetExittransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetExittransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -434,13 +434,13 @@ func (r *GatewayPluginExitTransformerResource) Update(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateExittransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateExittransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -494,13 +494,13 @@ func (r *GatewayPluginExitTransformerResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteExittransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteExittransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

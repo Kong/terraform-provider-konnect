@@ -393,13 +393,13 @@ func (r *GatewayPluginPreFunctionResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreatePrefunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreatePrefunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreatePrefunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreatePrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -453,13 +453,13 @@ func (r *GatewayPluginPreFunctionResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetPrefunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetPrefunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetPrefunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetPrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -507,13 +507,13 @@ func (r *GatewayPluginPreFunctionResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdatePrefunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdatePrefunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdatePrefunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdatePrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -567,13 +567,13 @@ func (r *GatewayPluginPreFunctionResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeletePrefunctionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeletePrefunctionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeletePrefunctionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeletePrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -140,13 +140,13 @@ func (r *GatewayCACertificateResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateCaCertificateInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateCaCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CACertificates.CreateCaCertificateInWorkspace(ctx, *request)
+	res, err := r.client.CACertificates.CreateCaCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -200,13 +200,13 @@ func (r *GatewayCACertificateResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetCaCertificateInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetCaCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CACertificates.GetCaCertificateInWorkspace(ctx, *request)
+	res, err := r.client.CACertificates.GetCaCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -254,13 +254,13 @@ func (r *GatewayCACertificateResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertCaCertificateInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertCaCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CACertificates.UpsertCaCertificateInWorkspace(ctx, *request)
+	res, err := r.client.CACertificates.UpsertCaCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -314,13 +314,13 @@ func (r *GatewayCACertificateResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteCaCertificateInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteCaCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CACertificates.DeleteCaCertificateInWorkspace(ctx, *request)
+	res, err := r.client.CACertificates.DeleteCaCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

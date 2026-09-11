@@ -350,13 +350,13 @@ func (r *GatewayPluginSyslogResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateSyslogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateSyslogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateSyslogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -410,13 +410,13 @@ func (r *GatewayPluginSyslogResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetSyslogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetSyslogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetSyslogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -464,13 +464,13 @@ func (r *GatewayPluginSyslogResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateSyslogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateSyslogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateSyslogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -524,13 +524,13 @@ func (r *GatewayPluginSyslogResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteSyslogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteSyslogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteSyslogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

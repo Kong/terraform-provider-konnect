@@ -313,13 +313,13 @@ func (r *GatewayPluginBotDetectionResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateBotdetectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateBotdetectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -373,13 +373,13 @@ func (r *GatewayPluginBotDetectionResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetBotdetectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetBotdetectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -427,13 +427,13 @@ func (r *GatewayPluginBotDetectionResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateBotdetectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateBotdetectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -487,13 +487,13 @@ func (r *GatewayPluginBotDetectionResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteBotdetectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteBotdetectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

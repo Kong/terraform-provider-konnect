@@ -729,13 +729,13 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Create(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRatelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRatelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRatelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRatelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -789,13 +789,13 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Read(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRatelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRatelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRatelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRatelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -843,13 +843,13 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Update(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRatelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRatelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRatelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRatelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -903,13 +903,13 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Delete(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRatelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRatelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRatelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRatelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

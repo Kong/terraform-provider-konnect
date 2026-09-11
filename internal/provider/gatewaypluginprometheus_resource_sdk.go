@@ -106,7 +106,7 @@ func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin
 	return diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.CreatePrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPluginRequest(ctx context.Context) (*operations.CreatePrometheusPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -122,7 +122,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPlugi
 		return nil, diags
 	}
 
-	out := operations.CreatePrometheusPluginInWorkspaceRequest{
+	out := operations.CreatePrometheusPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,
 		PrometheusPlugin: *prometheusPlugin,
@@ -131,7 +131,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.DeletePrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPluginRequest(ctx context.Context) (*operations.DeletePrometheusPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -143,7 +143,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPlugi
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeletePrometheusPluginInWorkspaceRequest{
+	out := operations.DeletePrometheusPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -152,7 +152,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.GetPrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginRequest(ctx context.Context) (*operations.GetPrometheusPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,7 +164,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginIn
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetPrometheusPluginInWorkspaceRequest{
+	out := operations.GetPrometheusPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -173,7 +173,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginIn
 	return &out, diags
 }
 
-func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdatePrometheusPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPluginRequest(ctx context.Context) (*operations.UpdatePrometheusPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -192,7 +192,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdatePrometheusPluginInWorkspaceRequest{
+	out := operations.UpdatePrometheusPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,

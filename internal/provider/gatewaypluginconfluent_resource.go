@@ -976,13 +976,13 @@ func (r *GatewayPluginConfluentResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateConfluentPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateConfluentPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateConfluentPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateConfluentPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1036,13 +1036,13 @@ func (r *GatewayPluginConfluentResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetConfluentPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetConfluentPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetConfluentPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetConfluentPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1090,13 +1090,13 @@ func (r *GatewayPluginConfluentResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateConfluentPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateConfluentPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateConfluentPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateConfluentPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1150,13 +1150,13 @@ func (r *GatewayPluginConfluentResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteConfluentPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteConfluentPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteConfluentPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteConfluentPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -374,13 +374,13 @@ func (r *GatewayPluginJwtResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJwtPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJwtPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateJwtPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateJwtPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -434,13 +434,13 @@ func (r *GatewayPluginJwtResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJwtPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJwtPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetJwtPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetJwtPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -488,13 +488,13 @@ func (r *GatewayPluginJwtResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateJwtPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateJwtPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateJwtPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateJwtPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -548,13 +548,13 @@ func (r *GatewayPluginJwtResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJwtPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJwtPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteJwtPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteJwtPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

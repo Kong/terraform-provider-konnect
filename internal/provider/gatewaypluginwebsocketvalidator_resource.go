@@ -461,13 +461,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateWebsocketvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateWebsocketvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -521,13 +521,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetWebsocketvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetWebsocketvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -575,13 +575,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateWebsocketvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateWebsocketvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -635,13 +635,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteWebsocketvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteWebsocketvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

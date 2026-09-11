@@ -737,13 +737,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateProxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateProxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -797,13 +797,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetProxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetProxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -851,13 +851,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateProxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateProxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -911,13 +911,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteProxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteProxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

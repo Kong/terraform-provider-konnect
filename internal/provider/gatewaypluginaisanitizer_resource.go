@@ -462,13 +462,13 @@ func (r *GatewayPluginAiSanitizerResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAisanitizerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAisanitizerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAisanitizerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -522,13 +522,13 @@ func (r *GatewayPluginAiSanitizerResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAisanitizerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAisanitizerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAisanitizerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -576,13 +576,13 @@ func (r *GatewayPluginAiSanitizerResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAisanitizerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAisanitizerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAisanitizerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -636,13 +636,13 @@ func (r *GatewayPluginAiSanitizerResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAisanitizerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAisanitizerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAisanitizerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

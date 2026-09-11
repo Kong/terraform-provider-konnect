@@ -140,13 +140,13 @@ func (r *GatewayConsumerResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Consumers.CreateConsumerInWorkspace(ctx, *request)
+	res, err := r.client.Consumers.CreateConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -200,13 +200,13 @@ func (r *GatewayConsumerResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Consumers.GetConsumerInWorkspace(ctx, *request)
+	res, err := r.client.Consumers.GetConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -254,13 +254,13 @@ func (r *GatewayConsumerResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Consumers.UpsertConsumerInWorkspace(ctx, *request)
+	res, err := r.client.Consumers.UpsertConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -314,13 +314,13 @@ func (r *GatewayConsumerResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Consumers.DeleteConsumerInWorkspace(ctx, *request)
+	res, err := r.client.Consumers.DeleteConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -406,13 +406,13 @@ func (r *GatewayPluginOasValidationResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateOasvalidationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateOasvalidationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateOasvalidationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateOasvalidationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -466,13 +466,13 @@ func (r *GatewayPluginOasValidationResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetOasvalidationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetOasvalidationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetOasvalidationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetOasvalidationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -520,13 +520,13 @@ func (r *GatewayPluginOasValidationResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateOasvalidationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateOasvalidationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateOasvalidationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateOasvalidationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -580,13 +580,13 @@ func (r *GatewayPluginOasValidationResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteOasvalidationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteOasvalidationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteOasvalidationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteOasvalidationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

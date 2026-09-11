@@ -412,13 +412,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Create(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAiazurecontentsafetyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAiazurecontentsafetyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAiazurecontentsafetyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -472,13 +472,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Read(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAiazurecontentsafetyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAiazurecontentsafetyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAiazurecontentsafetyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -526,13 +526,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Update(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAiazurecontentsafetyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAiazurecontentsafetyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAiazurecontentsafetyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -586,13 +586,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Delete(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAiazurecontentsafetyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAiazurecontentsafetyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAiazurecontentsafetyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

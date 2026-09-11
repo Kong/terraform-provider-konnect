@@ -509,13 +509,13 @@ func (r *GatewayPluginResponseTransformerResource) Create(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateResponsetransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateResponsetransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateResponsetransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateResponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -569,13 +569,13 @@ func (r *GatewayPluginResponseTransformerResource) Read(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetResponsetransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetResponsetransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetResponsetransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetResponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -623,13 +623,13 @@ func (r *GatewayPluginResponseTransformerResource) Update(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateResponsetransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateResponsetransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateResponsetransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateResponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -683,13 +683,13 @@ func (r *GatewayPluginResponseTransformerResource) Delete(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteResponsetransformerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteResponsetransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteResponsetransformerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteResponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

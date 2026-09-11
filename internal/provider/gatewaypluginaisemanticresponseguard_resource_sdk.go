@@ -322,7 +322,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 	return diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.CreateAisemanticresponseguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -338,7 +338,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAi
 		return nil, diags
 	}
 
-	out := operations.CreateAisemanticresponseguardPluginInWorkspaceRequest{
+	out := operations.CreateAisemanticresponseguardPluginRequest{
 		ControlPlaneID:                controlPlaneID,
 		Workspace:                     workspace,
 		AiSemanticResponseGuardPlugin: *aiSemanticResponseGuardPlugin,
@@ -347,7 +347,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAi
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.DeleteAisemanticresponseguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -359,7 +359,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAi
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAisemanticresponseguardPluginInWorkspaceRequest{
+	out := operations.DeleteAisemanticresponseguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -368,7 +368,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAi
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.GetAisemanticresponseguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -380,7 +380,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisem
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAisemanticresponseguardPluginInWorkspaceRequest{
+	out := operations.GetAisemanticresponseguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -389,7 +389,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisem
 	return &out, diags
 }
 
-func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAisemanticresponseguardPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAisemanticresponseguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAisemanticresponseguardPluginRequest(ctx context.Context) (*operations.UpdateAisemanticresponseguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -408,7 +408,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAi
 		return nil, diags
 	}
 
-	out := operations.UpdateAisemanticresponseguardPluginInWorkspaceRequest{
+	out := operations.UpdateAisemanticresponseguardPluginRequest{
 		PluginID:                      pluginID,
 		ControlPlaneID:                controlPlaneID,
 		Workspace:                     workspace,

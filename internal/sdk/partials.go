@@ -31,9 +31,9 @@ func newPartials(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hoo
 	}
 }
 
-// CreatePartialInWorkspace - Create a new Partial in a workspace
+// CreatePartial - Create a new Partial in a workspace
 // Create a new Partial in a workspace
-func (s *Partials) CreatePartialInWorkspace(ctx context.Context, request operations.CreatePartialInWorkspaceRequest, opts ...operations.Option) (*operations.CreatePartialInWorkspaceResponse, error) {
+func (s *Partials) CreatePartial(ctx context.Context, request operations.CreatePartialRequest, opts ...operations.Option) (*operations.CreatePartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62,7 +62,7 @@ func (s *Partials) CreatePartialInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-partial-in-workspace",
+		OperationID:      "create-partial",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -197,7 +197,7 @@ func (s *Partials) CreatePartialInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.CreatePartialInWorkspaceResponse{
+	res := &operations.CreatePartialResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -258,9 +258,9 @@ func (s *Partials) CreatePartialInWorkspace(ctx context.Context, request operati
 
 }
 
-// DeletePartialInWorkspace - Delete a Partial in a workspace
+// DeletePartial - Delete a Partial in a workspace
 // Delete a Partial in a workspace
-func (s *Partials) DeletePartialInWorkspace(ctx context.Context, request operations.DeletePartialInWorkspaceRequest, opts ...operations.Option) (*operations.DeletePartialInWorkspaceResponse, error) {
+func (s *Partials) DeletePartial(ctx context.Context, request operations.DeletePartialRequest, opts ...operations.Option) (*operations.DeletePartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -289,7 +289,7 @@ func (s *Partials) DeletePartialInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-partial-in-workspace",
+		OperationID:      "delete-partial",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -417,7 +417,7 @@ func (s *Partials) DeletePartialInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeletePartialInWorkspaceResponse{
+	res := &operations.DeletePartialResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -461,9 +461,9 @@ func (s *Partials) DeletePartialInWorkspace(ctx context.Context, request operati
 
 }
 
-// GetPartialInWorkspace - Get a Partial in a workspace
+// GetPartial - Get a Partial in a workspace
 // Get a Partial using ID in a workspace.
-func (s *Partials) GetPartialInWorkspace(ctx context.Context, request operations.GetPartialInWorkspaceRequest, opts ...operations.Option) (*operations.GetPartialInWorkspaceResponse, error) {
+func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartialRequest, opts ...operations.Option) (*operations.GetPartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -492,7 +492,7 @@ func (s *Partials) GetPartialInWorkspace(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-partial-in-workspace",
+		OperationID:      "get-partial",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -620,7 +620,7 @@ func (s *Partials) GetPartialInWorkspace(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.GetPartialInWorkspaceResponse{
+	res := &operations.GetPartialResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -683,9 +683,9 @@ func (s *Partials) GetPartialInWorkspace(ctx context.Context, request operations
 
 }
 
-// UpsertPartialInWorkspace - Upsert a Partial in a workspace
+// UpsertPartial - Upsert a Partial in a workspace
 // Create or Update Partial using ID in a workspace.
-func (s *Partials) UpsertPartialInWorkspace(ctx context.Context, request operations.UpsertPartialInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertPartialInWorkspaceResponse, error) {
+func (s *Partials) UpsertPartial(ctx context.Context, request operations.UpsertPartialRequest, opts ...operations.Option) (*operations.UpsertPartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -714,7 +714,7 @@ func (s *Partials) UpsertPartialInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-partial-in-workspace",
+		OperationID:      "upsert-partial",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -849,7 +849,7 @@ func (s *Partials) UpsertPartialInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.UpsertPartialInWorkspaceResponse{
+	res := &operations.UpsertPartialResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

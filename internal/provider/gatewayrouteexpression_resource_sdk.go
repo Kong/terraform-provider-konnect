@@ -62,7 +62,7 @@ func (r *GatewayRouteExpressionResourceModel) RefreshFromSharedRouteExpression(c
 	return diags
 }
 
-func (r *GatewayRouteExpressionResourceModel) ToOperationsCreateRouteInWorkspaceRouteExpressionRequest(ctx context.Context) (*operations.CreateRouteInWorkspaceRouteExpressionRequest, diag.Diagnostics) {
+func (r *GatewayRouteExpressionResourceModel) ToOperationsCreateRouteRouteExpressionRequest(ctx context.Context) (*operations.CreateRouteRouteExpressionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -78,7 +78,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsCreateRouteInWorkspace
 		return nil, diags
 	}
 
-	out := operations.CreateRouteInWorkspaceRouteExpressionRequest{
+	out := operations.CreateRouteRouteExpressionRequest{
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
 		RouteExpression: *routeExpression,
@@ -87,7 +87,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsCreateRouteInWorkspace
 	return &out, diags
 }
 
-func (r *GatewayRouteExpressionResourceModel) ToOperationsDeleteRouteInWorkspaceRouteExpressionRequest(ctx context.Context) (*operations.DeleteRouteInWorkspaceRouteExpressionRequest, diag.Diagnostics) {
+func (r *GatewayRouteExpressionResourceModel) ToOperationsDeleteRouteRouteExpressionRequest(ctx context.Context) (*operations.DeleteRouteRouteExpressionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -99,7 +99,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsDeleteRouteInWorkspace
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteRouteInWorkspaceRouteExpressionRequest{
+	out := operations.DeleteRouteRouteExpressionRequest{
 		ControlPlaneID: controlPlaneID,
 		RouteID:        routeID,
 		Workspace:      workspace,
@@ -108,7 +108,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsDeleteRouteInWorkspace
 	return &out, diags
 }
 
-func (r *GatewayRouteExpressionResourceModel) ToOperationsGetRouteInWorkspaceRouteExpressionRequest(ctx context.Context) (*operations.GetRouteInWorkspaceRouteExpressionRequest, diag.Diagnostics) {
+func (r *GatewayRouteExpressionResourceModel) ToOperationsGetRouteRouteExpressionRequest(ctx context.Context) (*operations.GetRouteRouteExpressionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var routeID string
@@ -120,7 +120,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsGetRouteInWorkspaceRou
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetRouteInWorkspaceRouteExpressionRequest{
+	out := operations.GetRouteRouteExpressionRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -129,7 +129,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsGetRouteInWorkspaceRou
 	return &out, diags
 }
 
-func (r *GatewayRouteExpressionResourceModel) ToOperationsUpsertRouteInWorkspaceRouteExpressionRequest(ctx context.Context) (*operations.UpsertRouteInWorkspaceRouteExpressionRequest, diag.Diagnostics) {
+func (r *GatewayRouteExpressionResourceModel) ToOperationsUpsertRouteRouteExpressionRequest(ctx context.Context) (*operations.UpsertRouteRouteExpressionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var routeID string
@@ -148,7 +148,7 @@ func (r *GatewayRouteExpressionResourceModel) ToOperationsUpsertRouteInWorkspace
 		return nil, diags
 	}
 
-	out := operations.UpsertRouteInWorkspaceRouteExpressionRequest{
+	out := operations.UpsertRouteRouteExpressionRequest{
 		RouteID:         routeID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,

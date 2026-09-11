@@ -122,7 +122,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 	return diags
 }
 
-func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsCreateLdapauthadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateLdapauthadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsCreateLdapauthadvancedPluginRequest(ctx context.Context) (*operations.CreateLdapauthadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -138,7 +138,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsCreateLdapautha
 		return nil, diags
 	}
 
-	out := operations.CreateLdapauthadvancedPluginInWorkspaceRequest{
+	out := operations.CreateLdapauthadvancedPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,
 		LdapAuthAdvancedPlugin: *ldapAuthAdvancedPlugin,
@@ -147,7 +147,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsCreateLdapautha
 	return &out, diags
 }
 
-func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsDeleteLdapauthadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteLdapauthadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsDeleteLdapauthadvancedPluginRequest(ctx context.Context) (*operations.DeleteLdapauthadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -159,7 +159,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsDeleteLdapautha
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteLdapauthadvancedPluginInWorkspaceRequest{
+	out := operations.DeleteLdapauthadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -168,7 +168,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsDeleteLdapautha
 	return &out, diags
 }
 
-func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsGetLdapauthadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetLdapauthadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsGetLdapauthadvancedPluginRequest(ctx context.Context) (*operations.GetLdapauthadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -180,7 +180,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsGetLdapauthadva
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetLdapauthadvancedPluginInWorkspaceRequest{
+	out := operations.GetLdapauthadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -189,7 +189,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsGetLdapauthadva
 	return &out, diags
 }
 
-func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsUpdateLdapauthadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateLdapauthadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsUpdateLdapauthadvancedPluginRequest(ctx context.Context) (*operations.UpdateLdapauthadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -208,7 +208,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsUpdateLdapautha
 		return nil, diags
 	}
 
-	out := operations.UpdateLdapauthadvancedPluginInWorkspaceRequest{
+	out := operations.UpdateLdapauthadvancedPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,

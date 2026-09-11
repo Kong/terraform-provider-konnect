@@ -124,7 +124,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) RefreshFromSharedMtlsAuthPlugin(ctx
 	return diags
 }
 
-func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsCreateMtlsauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateMtlsauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsCreateMtlsauthPluginRequest(ctx context.Context) (*operations.CreateMtlsauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -140,7 +140,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsCreateMtlsauthPluginInW
 		return nil, diags
 	}
 
-	out := operations.CreateMtlsauthPluginInWorkspaceRequest{
+	out := operations.CreateMtlsauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		MtlsAuthPlugin: *mtlsAuthPlugin,
@@ -149,7 +149,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsCreateMtlsauthPluginInW
 	return &out, diags
 }
 
-func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsDeleteMtlsauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteMtlsauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsDeleteMtlsauthPluginRequest(ctx context.Context) (*operations.DeleteMtlsauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -161,7 +161,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsDeleteMtlsauthPluginInW
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteMtlsauthPluginInWorkspaceRequest{
+	out := operations.DeleteMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -170,7 +170,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsDeleteMtlsauthPluginInW
 	return &out, diags
 }
 
-func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsGetMtlsauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetMtlsauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsGetMtlsauthPluginRequest(ctx context.Context) (*operations.GetMtlsauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -182,7 +182,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsGetMtlsauthPluginInWork
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetMtlsauthPluginInWorkspaceRequest{
+	out := operations.GetMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -191,7 +191,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsGetMtlsauthPluginInWork
 	return &out, diags
 }
 
-func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsUpdateMtlsauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateMtlsauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsUpdateMtlsauthPluginRequest(ctx context.Context) (*operations.UpdateMtlsauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -210,7 +210,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsUpdateMtlsauthPluginInW
 		return nil, diags
 	}
 
-	out := operations.UpdateMtlsauthPluginInWorkspaceRequest{
+	out := operations.UpdateMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

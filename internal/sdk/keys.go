@@ -31,9 +31,9 @@ func newKeys(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateKeyInWorkspace - Create a new Key in a workspace
+// CreateKey - Create a new Key in a workspace
 // Create a new Key in a workspace
-func (s *Keys) CreateKeyInWorkspace(ctx context.Context, request operations.CreateKeyInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKeyInWorkspaceResponse, error) {
+func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyRequest, opts ...operations.Option) (*operations.CreateKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62,7 +62,7 @@ func (s *Keys) CreateKeyInWorkspace(ctx context.Context, request operations.Crea
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-key-in-workspace",
+		OperationID:      "create-key",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -197,7 +197,7 @@ func (s *Keys) CreateKeyInWorkspace(ctx context.Context, request operations.Crea
 		}
 	}
 
-	res := &operations.CreateKeyInWorkspaceResponse{
+	res := &operations.CreateKeyResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -258,9 +258,9 @@ func (s *Keys) CreateKeyInWorkspace(ctx context.Context, request operations.Crea
 
 }
 
-// DeleteKeyInWorkspace - Delete a Key in a workspace
+// DeleteKey - Delete a Key in a workspace
 // Delete a Key in a workspace
-func (s *Keys) DeleteKeyInWorkspace(ctx context.Context, request operations.DeleteKeyInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKeyInWorkspaceResponse, error) {
+func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyRequest, opts ...operations.Option) (*operations.DeleteKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -289,7 +289,7 @@ func (s *Keys) DeleteKeyInWorkspace(ctx context.Context, request operations.Dele
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-key-in-workspace",
+		OperationID:      "delete-key",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -417,7 +417,7 @@ func (s *Keys) DeleteKeyInWorkspace(ctx context.Context, request operations.Dele
 		}
 	}
 
-	res := &operations.DeleteKeyInWorkspaceResponse{
+	res := &operations.DeleteKeyResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -461,9 +461,9 @@ func (s *Keys) DeleteKeyInWorkspace(ctx context.Context, request operations.Dele
 
 }
 
-// GetKeyInWorkspace - Get a Key in a workspace
+// GetKey - Get a Key in a workspace
 // Get a Key using ID or name in a workspace.
-func (s *Keys) GetKeyInWorkspace(ctx context.Context, request operations.GetKeyInWorkspaceRequest, opts ...operations.Option) (*operations.GetKeyInWorkspaceResponse, error) {
+func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opts ...operations.Option) (*operations.GetKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -492,7 +492,7 @@ func (s *Keys) GetKeyInWorkspace(ctx context.Context, request operations.GetKeyI
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-key-in-workspace",
+		OperationID:      "get-key",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -620,7 +620,7 @@ func (s *Keys) GetKeyInWorkspace(ctx context.Context, request operations.GetKeyI
 		}
 	}
 
-	res := &operations.GetKeyInWorkspaceResponse{
+	res := &operations.GetKeyResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -683,9 +683,9 @@ func (s *Keys) GetKeyInWorkspace(ctx context.Context, request operations.GetKeyI
 
 }
 
-// UpsertKeyInWorkspace - Upsert a Key in a workspace
+// UpsertKey - Upsert a Key in a workspace
 // Create or Update Key using ID or name in a workspace.
-func (s *Keys) UpsertKeyInWorkspace(ctx context.Context, request operations.UpsertKeyInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertKeyInWorkspaceResponse, error) {
+func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyRequest, opts ...operations.Option) (*operations.UpsertKeyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -714,7 +714,7 @@ func (s *Keys) UpsertKeyInWorkspace(ctx context.Context, request operations.Upse
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-key-in-workspace",
+		OperationID:      "upsert-key",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -849,7 +849,7 @@ func (s *Keys) UpsertKeyInWorkspace(ctx context.Context, request operations.Upse
 		}
 	}
 
-	res := &operations.UpsertKeyInWorkspaceResponse{
+	res := &operations.UpsertKeyResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

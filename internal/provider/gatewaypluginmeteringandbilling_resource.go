@@ -464,13 +464,13 @@ func (r *GatewayPluginMeteringAndBillingResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeteringandbillingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateMeteringandbillingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -524,13 +524,13 @@ func (r *GatewayPluginMeteringAndBillingResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetMeteringandbillingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetMeteringandbillingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -578,13 +578,13 @@ func (r *GatewayPluginMeteringAndBillingResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeteringandbillingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateMeteringandbillingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -638,13 +638,13 @@ func (r *GatewayPluginMeteringAndBillingResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteMeteringandbillingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteMeteringandbillingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

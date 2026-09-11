@@ -147,13 +147,13 @@ func (r *GatewaySNIResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateSniInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateSniRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.SNIs.CreateSniInWorkspace(ctx, *request)
+	res, err := r.client.SNIs.CreateSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -207,13 +207,13 @@ func (r *GatewaySNIResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetSniInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetSniRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.SNIs.GetSniInWorkspace(ctx, *request)
+	res, err := r.client.SNIs.GetSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -261,13 +261,13 @@ func (r *GatewaySNIResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertSniInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertSniRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.SNIs.UpsertSniInWorkspace(ctx, *request)
+	res, err := r.client.SNIs.UpsertSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -321,13 +321,13 @@ func (r *GatewaySNIResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteSniInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteSniRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.SNIs.DeleteSniInWorkspace(ctx, *request)
+	res, err := r.client.SNIs.DeleteSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

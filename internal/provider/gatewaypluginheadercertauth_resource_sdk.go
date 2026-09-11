@@ -122,7 +122,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAu
 	return diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercertauthPluginRequest(ctx context.Context) (*operations.CreateHeadercertauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -138,7 +138,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercerta
 		return nil, diags
 	}
 
-	out := operations.CreateHeadercertauthPluginInWorkspaceRequest{
+	out := operations.CreateHeadercertauthPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		Workspace:            workspace,
 		HeaderCertAuthPlugin: *headerCertAuthPlugin,
@@ -147,7 +147,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercerta
 	return &out, diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercertauthPluginRequest(ctx context.Context) (*operations.DeleteHeadercertauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -159,7 +159,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercerta
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteHeadercertauthPluginInWorkspaceRequest{
+	out := operations.DeleteHeadercertauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -168,7 +168,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercerta
 	return &out, diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauthPluginRequest(ctx context.Context) (*operations.GetHeadercertauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -180,7 +180,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauth
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetHeadercertauthPluginInWorkspaceRequest{
+	out := operations.GetHeadercertauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -189,7 +189,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauth
 	return &out, diags
 }
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercertauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateHeadercertauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercertauthPluginRequest(ctx context.Context) (*operations.UpdateHeadercertauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -208,7 +208,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercerta
 		return nil, diags
 	}
 
-	out := operations.UpdateHeadercertauthPluginInWorkspaceRequest{
+	out := operations.UpdateHeadercertauthPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
 		Workspace:            workspace,

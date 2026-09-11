@@ -267,7 +267,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 	return diags
 }
 
-func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsCreateAimcpoauth2PluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAimcpoauth2PluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsCreateAimcpoauth2PluginRequest(ctx context.Context) (*operations.CreateAimcpoauth2PluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -283,7 +283,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsCreateAimcpoauth2Plu
 		return nil, diags
 	}
 
-	out := operations.CreateAimcpoauth2PluginInWorkspaceRequest{
+	out := operations.CreateAimcpoauth2PluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,
 		AiMcpOauth2Plugin: *aiMcpOauth2Plugin,
@@ -292,7 +292,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsCreateAimcpoauth2Plu
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsDeleteAimcpoauth2PluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAimcpoauth2PluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsDeleteAimcpoauth2PluginRequest(ctx context.Context) (*operations.DeleteAimcpoauth2PluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -304,7 +304,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsDeleteAimcpoauth2Plu
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAimcpoauth2PluginInWorkspaceRequest{
+	out := operations.DeleteAimcpoauth2PluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -313,7 +313,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsDeleteAimcpoauth2Plu
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsGetAimcpoauth2PluginInWorkspaceRequest(ctx context.Context) (*operations.GetAimcpoauth2PluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsGetAimcpoauth2PluginRequest(ctx context.Context) (*operations.GetAimcpoauth2PluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -325,7 +325,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsGetAimcpoauth2Plugin
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAimcpoauth2PluginInWorkspaceRequest{
+	out := operations.GetAimcpoauth2PluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -334,7 +334,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsGetAimcpoauth2Plugin
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsUpdateAimcpoauth2PluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAimcpoauth2PluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsUpdateAimcpoauth2PluginRequest(ctx context.Context) (*operations.UpdateAimcpoauth2PluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -353,7 +353,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsUpdateAimcpoauth2Plu
 		return nil, diags
 	}
 
-	out := operations.UpdateAimcpoauth2PluginInWorkspaceRequest{
+	out := operations.UpdateAimcpoauth2PluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,

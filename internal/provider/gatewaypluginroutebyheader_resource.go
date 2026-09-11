@@ -341,13 +341,13 @@ func (r *GatewayPluginRouteByHeaderResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRoutebyheaderPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRoutebyheaderPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -401,13 +401,13 @@ func (r *GatewayPluginRouteByHeaderResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRoutebyheaderPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRoutebyheaderPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -455,13 +455,13 @@ func (r *GatewayPluginRouteByHeaderResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRoutebyheaderPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRoutebyheaderPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -515,13 +515,13 @@ func (r *GatewayPluginRouteByHeaderResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRoutebyheaderPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRoutebyheaderPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -368,13 +368,13 @@ func (r *GatewayPluginLogglyResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateLogglyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateLogglyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateLogglyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -428,13 +428,13 @@ func (r *GatewayPluginLogglyResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetLogglyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetLogglyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetLogglyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -482,13 +482,13 @@ func (r *GatewayPluginLogglyResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateLogglyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateLogglyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateLogglyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -542,13 +542,13 @@ func (r *GatewayPluginLogglyResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteLogglyPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteLogglyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteLogglyPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

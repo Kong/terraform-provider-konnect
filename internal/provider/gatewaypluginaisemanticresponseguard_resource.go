@@ -1039,13 +1039,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Create(ctx context.Contex
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAisemanticresponseguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAisemanticresponseguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAisemanticresponseguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAisemanticresponseguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1099,13 +1099,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Read(ctx context.Context,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAisemanticresponseguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAisemanticresponseguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAisemanticresponseguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAisemanticresponseguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1153,13 +1153,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Update(ctx context.Contex
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAisemanticresponseguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAisemanticresponseguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAisemanticresponseguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAisemanticresponseguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1213,13 +1213,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Delete(ctx context.Contex
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAisemanticresponseguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAisemanticresponseguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAisemanticresponseguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAisemanticresponseguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

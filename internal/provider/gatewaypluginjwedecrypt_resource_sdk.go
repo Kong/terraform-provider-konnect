@@ -96,7 +96,7 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 	return diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPluginRequest(ctx context.Context) (*operations.CreateJwedecryptPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -112,7 +112,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPlugi
 		return nil, diags
 	}
 
-	out := operations.CreateJwedecryptPluginInWorkspaceRequest{
+	out := operations.CreateJwedecryptPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,
 		JweDecryptPlugin: *jweDecryptPlugin,
@@ -121,7 +121,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPluginRequest(ctx context.Context) (*operations.DeleteJwedecryptPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -133,7 +133,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPlugi
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteJwedecryptPluginInWorkspaceRequest{
+	out := operations.DeleteJwedecryptPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -142,7 +142,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.GetJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginRequest(ctx context.Context) (*operations.GetJwedecryptPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -154,7 +154,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginIn
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetJwedecryptPluginInWorkspaceRequest{
+	out := operations.GetJwedecryptPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -163,7 +163,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginIn
 	return &out, diags
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateJwedecryptPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPluginRequest(ctx context.Context) (*operations.UpdateJwedecryptPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -182,7 +182,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdateJwedecryptPluginInWorkspaceRequest{
+	out := operations.UpdateJwedecryptPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,

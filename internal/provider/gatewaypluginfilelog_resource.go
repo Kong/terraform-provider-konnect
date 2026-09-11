@@ -320,13 +320,13 @@ func (r *GatewayPluginFileLogResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateFilelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateFilelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateFilelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -380,13 +380,13 @@ func (r *GatewayPluginFileLogResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetFilelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetFilelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetFilelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -434,13 +434,13 @@ func (r *GatewayPluginFileLogResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateFilelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateFilelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateFilelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -494,13 +494,13 @@ func (r *GatewayPluginFileLogResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteFilelogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteFilelogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteFilelogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -32,7 +32,7 @@ func (r *GatewayCACertificateResourceModel) RefreshFromSharedCACertificate(ctx c
 	return diags
 }
 
-func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateInWorkspaceRequest(ctx context.Context) (*operations.CreateCaCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateRequest(ctx context.Context) (*operations.CreateCaCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -48,7 +48,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateInWor
 		return nil, diags
 	}
 
-	out := operations.CreateCaCertificateInWorkspaceRequest{
+	out := operations.CreateCaCertificateRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		CACertificate:  *caCertificate,
@@ -57,7 +57,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateInWor
 	return &out, diags
 }
 
-func (r *GatewayCACertificateResourceModel) ToOperationsDeleteCaCertificateInWorkspaceRequest(ctx context.Context) (*operations.DeleteCaCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCACertificateResourceModel) ToOperationsDeleteCaCertificateRequest(ctx context.Context) (*operations.DeleteCaCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -69,7 +69,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsDeleteCaCertificateInWor
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteCaCertificateInWorkspaceRequest{
+	out := operations.DeleteCaCertificateRequest{
 		ControlPlaneID:  controlPlaneID,
 		CACertificateID: caCertificateID,
 		Workspace:       workspace,
@@ -78,7 +78,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsDeleteCaCertificateInWor
 	return &out, diags
 }
 
-func (r *GatewayCACertificateResourceModel) ToOperationsGetCaCertificateInWorkspaceRequest(ctx context.Context) (*operations.GetCaCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCACertificateResourceModel) ToOperationsGetCaCertificateRequest(ctx context.Context) (*operations.GetCaCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var caCertificateID string
@@ -90,7 +90,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsGetCaCertificateInWorksp
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetCaCertificateInWorkspaceRequest{
+	out := operations.GetCaCertificateRequest{
 		CACertificateID: caCertificateID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
@@ -99,7 +99,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsGetCaCertificateInWorksp
 	return &out, diags
 }
 
-func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateInWorkspaceRequest(ctx context.Context) (*operations.UpsertCaCertificateInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateRequest(ctx context.Context) (*operations.UpsertCaCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var caCertificateID string
@@ -118,7 +118,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateInWor
 		return nil, diags
 	}
 
-	out := operations.UpsertCaCertificateInWorkspaceRequest{
+	out := operations.UpsertCaCertificateRequest{
 		CACertificateID: caCertificateID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,

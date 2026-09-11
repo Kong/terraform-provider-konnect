@@ -10,7 +10,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 )
 
-func (r *GatewayConsumerGroupMemberResourceModel) RefreshFromOperationsAddConsumerToGroupInWorkspaceResponseBody(ctx context.Context, resp *operations.AddConsumerToGroupInWorkspaceResponseBody) diag.Diagnostics {
+func (r *GatewayConsumerGroupMemberResourceModel) RefreshFromOperationsAddConsumerToGroupResponseBody(ctx context.Context, resp *operations.AddConsumerToGroupResponseBody) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -61,7 +61,7 @@ func (r *GatewayConsumerGroupMemberResourceModel) RefreshFromOperationsAddConsum
 	return diags
 }
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupInWorkspaceRequest(ctx context.Context) (*operations.AddConsumerToGroupInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequest(ctx context.Context) (*operations.AddConsumerToGroupRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerGroupID string
@@ -73,14 +73,14 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	requestBody, requestBodyDiags := r.ToOperationsAddConsumerToGroupInWorkspaceRequestBody(ctx)
+	requestBody, requestBodyDiags := r.ToOperationsAddConsumerToGroupRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.AddConsumerToGroupInWorkspaceRequest{
+	out := operations.AddConsumerToGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
@@ -90,7 +90,7 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	return &out, diags
 }
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupInWorkspaceRequestBody(ctx context.Context) (*operations.AddConsumerToGroupInWorkspaceRequestBody, diag.Diagnostics) {
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequestBody(ctx context.Context) (*operations.AddConsumerToGroupRequestBody, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	consumerID := new(string)
@@ -99,14 +99,14 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	} else {
 		consumerID = nil
 	}
-	out := operations.AddConsumerToGroupInWorkspaceRequestBody{
+	out := operations.AddConsumerToGroupRequestBody{
 		ConsumerID: consumerID,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFromGroupInWorkspaceRequest(ctx context.Context) (*operations.RemoveConsumerFromGroupInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFromGroupRequest(ctx context.Context) (*operations.RemoveConsumerFromGroupRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var consumerGroupID string
@@ -121,7 +121,7 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFrom
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.RemoveConsumerFromGroupInWorkspaceRequest{
+	out := operations.RemoveConsumerFromGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ConsumerID:      consumerID,
 		ControlPlaneID:  controlPlaneID,

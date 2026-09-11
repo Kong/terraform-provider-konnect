@@ -94,7 +94,7 @@ func (r *GatewayPluginDegraphqlResourceModel) RefreshFromSharedDegraphqlPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginRequest(ctx context.Context) (*operations.CreateDegraphqlPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -110,7 +110,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginI
 		return nil, diags
 	}
 
-	out := operations.CreateDegraphqlPluginInWorkspaceRequest{
+	out := operations.CreateDegraphqlPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
 		DegraphqlPlugin: *degraphqlPlugin,
@@ -119,7 +119,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginRequest(ctx context.Context) (*operations.DeleteDegraphqlPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -131,7 +131,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginI
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteDegraphqlPluginInWorkspaceRequest{
+	out := operations.DeleteDegraphqlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -140,7 +140,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.GetDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginRequest(ctx context.Context) (*operations.GetDegraphqlPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -152,7 +152,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginInWo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetDegraphqlPluginInWorkspaceRequest{
+	out := operations.GetDegraphqlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -161,7 +161,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginInWo
 	return &out, diags
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateDegraphqlPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginRequest(ctx context.Context) (*operations.UpdateDegraphqlPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -180,7 +180,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginI
 		return nil, diags
 	}
 
-	out := operations.UpdateDegraphqlPluginInWorkspaceRequest{
+	out := operations.UpdateDegraphqlPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,

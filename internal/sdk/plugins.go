@@ -34,9 +34,9 @@ func newPlugins(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreatePluginInWorkspace - Create a new Plugin in a workspace
+// CreatePlugin - Create a new Plugin in a workspace
 // Create a new Plugin in a workspace
-func (s *Plugins) CreatePluginInWorkspace(ctx context.Context, request operations.CreatePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreatePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePluginRequest, opts ...operations.Option) (*operations.CreatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -65,7 +65,7 @@ func (s *Plugins) CreatePluginInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-plugin-in-workspace",
+		OperationID:      "create-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -200,7 +200,7 @@ func (s *Plugins) CreatePluginInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.CreatePluginInWorkspaceResponse{
+	res := &operations.CreatePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -261,9 +261,9 @@ func (s *Plugins) CreatePluginInWorkspace(ctx context.Context, request operation
 
 }
 
-// DeletePluginInWorkspace - Delete a Plugin in a workspace
+// DeletePlugin - Delete a Plugin in a workspace
 // Delete a Plugin in a workspace
-func (s *Plugins) DeletePluginInWorkspace(ctx context.Context, request operations.DeletePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeletePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePluginRequest, opts ...operations.Option) (*operations.DeletePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -292,7 +292,7 @@ func (s *Plugins) DeletePluginInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-plugin-in-workspace",
+		OperationID:      "delete-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -420,7 +420,7 @@ func (s *Plugins) DeletePluginInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.DeletePluginInWorkspaceResponse{
+	res := &operations.DeletePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -462,9 +462,9 @@ func (s *Plugins) DeletePluginInWorkspace(ctx context.Context, request operation
 
 }
 
-// GetPluginInWorkspace - Get a Plugin in a workspace
+// GetPlugin - Get a Plugin in a workspace
 // Get a Plugin using ID in a workspace.
-func (s *Plugins) GetPluginInWorkspace(ctx context.Context, request operations.GetPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginRequest, opts ...operations.Option) (*operations.GetPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -493,7 +493,7 @@ func (s *Plugins) GetPluginInWorkspace(ctx context.Context, request operations.G
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-plugin-in-workspace",
+		OperationID:      "get-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -621,7 +621,7 @@ func (s *Plugins) GetPluginInWorkspace(ctx context.Context, request operations.G
 		}
 	}
 
-	res := &operations.GetPluginInWorkspaceResponse{
+	res := &operations.GetPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -684,9 +684,9 @@ func (s *Plugins) GetPluginInWorkspace(ctx context.Context, request operations.G
 
 }
 
-// UpsertPluginInWorkspace - Upsert a Plugin in a workspace
+// UpsertPlugin - Upsert a Plugin in a workspace
 // Create or Update Plugin using ID in a workspace.
-func (s *Plugins) UpsertPluginInWorkspace(ctx context.Context, request operations.UpsertPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPluginRequest, opts ...operations.Option) (*operations.UpsertPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -715,7 +715,7 @@ func (s *Plugins) UpsertPluginInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-plugin-in-workspace",
+		OperationID:      "upsert-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -850,7 +850,7 @@ func (s *Plugins) UpsertPluginInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.UpsertPluginInWorkspaceResponse{
+	res := &operations.UpsertPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -911,9 +911,9 @@ func (s *Plugins) UpsertPluginInWorkspace(ctx context.Context, request operation
 
 }
 
-// DeleteAcePluginInWorkspace - Delete a Ace plugin in a workspace
+// DeleteAcePlugin - Delete a Ace plugin in a workspace
 // Delete a Ace plugin in a workspace
-func (s *Plugins) DeleteAcePluginInWorkspace(ctx context.Context, request operations.DeleteAcePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAcePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAcePlugin(ctx context.Context, request operations.DeleteAcePluginRequest, opts ...operations.Option) (*operations.DeleteAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -942,7 +942,7 @@ func (s *Plugins) DeleteAcePluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-ace-plugin-in-workspace",
+		OperationID:      "delete-ace-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1070,7 +1070,7 @@ func (s *Plugins) DeleteAcePluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.DeleteAcePluginInWorkspaceResponse{
+	res := &operations.DeleteAcePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1114,9 +1114,9 @@ func (s *Plugins) DeleteAcePluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// GetAcePluginInWorkspace - Get a Ace plugin in a workspace
+// GetAcePlugin - Get a Ace plugin in a workspace
 // Get a Ace plugin in a workspace
-func (s *Plugins) GetAcePluginInWorkspace(ctx context.Context, request operations.GetAcePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAcePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAcePlugin(ctx context.Context, request operations.GetAcePluginRequest, opts ...operations.Option) (*operations.GetAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1145,7 +1145,7 @@ func (s *Plugins) GetAcePluginInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-ace-plugin-in-workspace",
+		OperationID:      "get-ace-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1273,7 +1273,7 @@ func (s *Plugins) GetAcePluginInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.GetAcePluginInWorkspaceResponse{
+	res := &operations.GetAcePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1336,9 +1336,9 @@ func (s *Plugins) GetAcePluginInWorkspace(ctx context.Context, request operation
 
 }
 
-// UpdateAcePluginInWorkspace - Update a Ace plugin in a workspace
+// UpdateAcePlugin - Update a Ace plugin in a workspace
 // Update a Ace plugin in a workspace
-func (s *Plugins) UpdateAcePluginInWorkspace(ctx context.Context, request operations.UpdateAcePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAcePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAcePlugin(ctx context.Context, request operations.UpdateAcePluginRequest, opts ...operations.Option) (*operations.UpdateAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1367,7 +1367,7 @@ func (s *Plugins) UpdateAcePluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-ace-plugin-in-workspace",
+		OperationID:      "update-ace-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1502,7 +1502,7 @@ func (s *Plugins) UpdateAcePluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.UpdateAcePluginInWorkspaceResponse{
+	res := &operations.UpdateAcePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1563,9 +1563,9 @@ func (s *Plugins) UpdateAcePluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// DeleteACLPluginInWorkspace - Delete a ACL plugin in a workspace
+// DeleteACLPlugin - Delete a ACL plugin in a workspace
 // Delete a ACL plugin in a workspace
-func (s *Plugins) DeleteACLPluginInWorkspace(ctx context.Context, request operations.DeleteACLPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteACLPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.DeleteACLPluginRequest, opts ...operations.Option) (*operations.DeleteACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1594,7 +1594,7 @@ func (s *Plugins) DeleteACLPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-acl-plugin-in-workspace",
+		OperationID:      "delete-acl-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1722,7 +1722,7 @@ func (s *Plugins) DeleteACLPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.DeleteACLPluginInWorkspaceResponse{
+	res := &operations.DeleteACLPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1766,9 +1766,9 @@ func (s *Plugins) DeleteACLPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// GetACLPluginInWorkspace - Get a ACL plugin in a workspace
+// GetACLPlugin - Get a ACL plugin in a workspace
 // Get a ACL plugin in a workspace
-func (s *Plugins) GetACLPluginInWorkspace(ctx context.Context, request operations.GetACLPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetACLPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPluginRequest, opts ...operations.Option) (*operations.GetACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1797,7 +1797,7 @@ func (s *Plugins) GetACLPluginInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-acl-plugin-in-workspace",
+		OperationID:      "get-acl-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1925,7 +1925,7 @@ func (s *Plugins) GetACLPluginInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.GetACLPluginInWorkspaceResponse{
+	res := &operations.GetACLPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1988,9 +1988,9 @@ func (s *Plugins) GetACLPluginInWorkspace(ctx context.Context, request operation
 
 }
 
-// UpdateACLPluginInWorkspace - Update a ACL plugin in a workspace
+// UpdateACLPlugin - Update a ACL plugin in a workspace
 // Update a ACL plugin in a workspace
-func (s *Plugins) UpdateACLPluginInWorkspace(ctx context.Context, request operations.UpdateACLPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateACLPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.UpdateACLPluginRequest, opts ...operations.Option) (*operations.UpdateACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2019,7 +2019,7 @@ func (s *Plugins) UpdateACLPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-acl-plugin-in-workspace",
+		OperationID:      "update-acl-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -2154,7 +2154,7 @@ func (s *Plugins) UpdateACLPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.UpdateACLPluginInWorkspaceResponse{
+	res := &operations.UpdateACLPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -2215,9 +2215,9 @@ func (s *Plugins) UpdateACLPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// DeleteAcmePluginInWorkspace - Delete a Acme plugin in a workspace
+// DeleteAcmePlugin - Delete a Acme plugin in a workspace
 // Delete a Acme plugin in a workspace
-func (s *Plugins) DeleteAcmePluginInWorkspace(ctx context.Context, request operations.DeleteAcmePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAcmePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAcmePlugin(ctx context.Context, request operations.DeleteAcmePluginRequest, opts ...operations.Option) (*operations.DeleteAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2246,7 +2246,7 @@ func (s *Plugins) DeleteAcmePluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-acme-plugin-in-workspace",
+		OperationID:      "delete-acme-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -2374,7 +2374,7 @@ func (s *Plugins) DeleteAcmePluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.DeleteAcmePluginInWorkspaceResponse{
+	res := &operations.DeleteAcmePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -2418,9 +2418,9 @@ func (s *Plugins) DeleteAcmePluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// GetAcmePluginInWorkspace - Get a Acme plugin in a workspace
+// GetAcmePlugin - Get a Acme plugin in a workspace
 // Get a Acme plugin in a workspace
-func (s *Plugins) GetAcmePluginInWorkspace(ctx context.Context, request operations.GetAcmePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAcmePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAcmePlugin(ctx context.Context, request operations.GetAcmePluginRequest, opts ...operations.Option) (*operations.GetAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2449,7 +2449,7 @@ func (s *Plugins) GetAcmePluginInWorkspace(ctx context.Context, request operatio
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-acme-plugin-in-workspace",
+		OperationID:      "get-acme-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -2577,7 +2577,7 @@ func (s *Plugins) GetAcmePluginInWorkspace(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.GetAcmePluginInWorkspaceResponse{
+	res := &operations.GetAcmePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -2640,9 +2640,9 @@ func (s *Plugins) GetAcmePluginInWorkspace(ctx context.Context, request operatio
 
 }
 
-// UpdateAcmePluginInWorkspace - Update a Acme plugin in a workspace
+// UpdateAcmePlugin - Update a Acme plugin in a workspace
 // Update a Acme plugin in a workspace
-func (s *Plugins) UpdateAcmePluginInWorkspace(ctx context.Context, request operations.UpdateAcmePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAcmePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAcmePlugin(ctx context.Context, request operations.UpdateAcmePluginRequest, opts ...operations.Option) (*operations.UpdateAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2671,7 +2671,7 @@ func (s *Plugins) UpdateAcmePluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-acme-plugin-in-workspace",
+		OperationID:      "update-acme-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -2806,7 +2806,7 @@ func (s *Plugins) UpdateAcmePluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.UpdateAcmePluginInWorkspaceResponse{
+	res := &operations.UpdateAcmePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -2867,9 +2867,9 @@ func (s *Plugins) UpdateAcmePluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// DeleteAia2aproxyPluginInWorkspace - Delete a AiA2aProxy plugin in a workspace
+// DeleteAia2aproxyPlugin - Delete a AiA2aProxy plugin in a workspace
 // Delete a AiA2aProxy plugin in a workspace
-func (s *Plugins) DeleteAia2aproxyPluginInWorkspace(ctx context.Context, request operations.DeleteAia2aproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAia2aproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAia2aproxyPlugin(ctx context.Context, request operations.DeleteAia2aproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2898,7 +2898,7 @@ func (s *Plugins) DeleteAia2aproxyPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aia2aproxy-plugin-in-workspace",
+		OperationID:      "delete-aia2aproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -3026,7 +3026,7 @@ func (s *Plugins) DeleteAia2aproxyPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.DeleteAia2aproxyPluginInWorkspaceResponse{
+	res := &operations.DeleteAia2aproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3070,9 +3070,9 @@ func (s *Plugins) DeleteAia2aproxyPluginInWorkspace(ctx context.Context, request
 
 }
 
-// GetAia2aproxyPluginInWorkspace - Get a AiA2aProxy plugin in a workspace
+// GetAia2aproxyPlugin - Get a AiA2aProxy plugin in a workspace
 // Get a AiA2aProxy plugin in a workspace
-func (s *Plugins) GetAia2aproxyPluginInWorkspace(ctx context.Context, request operations.GetAia2aproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAia2aproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAia2aproxyPlugin(ctx context.Context, request operations.GetAia2aproxyPluginRequest, opts ...operations.Option) (*operations.GetAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -3101,7 +3101,7 @@ func (s *Plugins) GetAia2aproxyPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aia2aproxy-plugin-in-workspace",
+		OperationID:      "get-aia2aproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -3229,7 +3229,7 @@ func (s *Plugins) GetAia2aproxyPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.GetAia2aproxyPluginInWorkspaceResponse{
+	res := &operations.GetAia2aproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3292,9 +3292,9 @@ func (s *Plugins) GetAia2aproxyPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// UpdateAia2aproxyPluginInWorkspace - Update a AiA2aProxy plugin in a workspace
+// UpdateAia2aproxyPlugin - Update a AiA2aProxy plugin in a workspace
 // Update a AiA2aProxy plugin in a workspace
-func (s *Plugins) UpdateAia2aproxyPluginInWorkspace(ctx context.Context, request operations.UpdateAia2aproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAia2aproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAia2aproxyPlugin(ctx context.Context, request operations.UpdateAia2aproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -3323,7 +3323,7 @@ func (s *Plugins) UpdateAia2aproxyPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aia2aproxy-plugin-in-workspace",
+		OperationID:      "update-aia2aproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -3458,7 +3458,7 @@ func (s *Plugins) UpdateAia2aproxyPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.UpdateAia2aproxyPluginInWorkspaceResponse{
+	res := &operations.UpdateAia2aproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3519,9 +3519,9 @@ func (s *Plugins) UpdateAia2aproxyPluginInWorkspace(ctx context.Context, request
 
 }
 
-// DeleteAiawsguardrailsPluginInWorkspace - Delete a AiAwsGuardrails plugin in a workspace
+// DeleteAiawsguardrailsPlugin - Delete a AiAwsGuardrails plugin in a workspace
 // Delete a AiAwsGuardrails plugin in a workspace
-func (s *Plugins) DeleteAiawsguardrailsPluginInWorkspace(ctx context.Context, request operations.DeleteAiawsguardrailsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiawsguardrailsPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiawsguardrailsPlugin(ctx context.Context, request operations.DeleteAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.DeleteAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -3550,7 +3550,7 @@ func (s *Plugins) DeleteAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aiawsguardrails-plugin-in-workspace",
+		OperationID:      "delete-aiawsguardrails-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -3678,7 +3678,7 @@ func (s *Plugins) DeleteAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.DeleteAiawsguardrailsPluginInWorkspaceResponse{
+	res := &operations.DeleteAiawsguardrailsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3722,9 +3722,9 @@ func (s *Plugins) DeleteAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 
 }
 
-// GetAiawsguardrailsPluginInWorkspace - Get a AiAwsGuardrails plugin in a workspace
+// GetAiawsguardrailsPlugin - Get a AiAwsGuardrails plugin in a workspace
 // Get a AiAwsGuardrails plugin in a workspace
-func (s *Plugins) GetAiawsguardrailsPluginInWorkspace(ctx context.Context, request operations.GetAiawsguardrailsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiawsguardrailsPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiawsguardrailsPlugin(ctx context.Context, request operations.GetAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.GetAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -3753,7 +3753,7 @@ func (s *Plugins) GetAiawsguardrailsPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aiawsguardrails-plugin-in-workspace",
+		OperationID:      "get-aiawsguardrails-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -3881,7 +3881,7 @@ func (s *Plugins) GetAiawsguardrailsPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.GetAiawsguardrailsPluginInWorkspaceResponse{
+	res := &operations.GetAiawsguardrailsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -3944,9 +3944,9 @@ func (s *Plugins) GetAiawsguardrailsPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// UpdateAiawsguardrailsPluginInWorkspace - Update a AiAwsGuardrails plugin in a workspace
+// UpdateAiawsguardrailsPlugin - Update a AiAwsGuardrails plugin in a workspace
 // Update a AiAwsGuardrails plugin in a workspace
-func (s *Plugins) UpdateAiawsguardrailsPluginInWorkspace(ctx context.Context, request operations.UpdateAiawsguardrailsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiawsguardrailsPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiawsguardrailsPlugin(ctx context.Context, request operations.UpdateAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.UpdateAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -3975,7 +3975,7 @@ func (s *Plugins) UpdateAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aiawsguardrails-plugin-in-workspace",
+		OperationID:      "update-aiawsguardrails-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -4110,7 +4110,7 @@ func (s *Plugins) UpdateAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.UpdateAiawsguardrailsPluginInWorkspaceResponse{
+	res := &operations.UpdateAiawsguardrailsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -4171,9 +4171,9 @@ func (s *Plugins) UpdateAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 
 }
 
-// DeleteAiazurecontentsafetyPluginInWorkspace - Delete a AiAzureContentSafety plugin in a workspace
+// DeleteAiazurecontentsafetyPlugin - Delete a AiAzureContentSafety plugin in a workspace
 // Delete a AiAzureContentSafety plugin in a workspace
-func (s *Plugins) DeleteAiazurecontentsafetyPluginInWorkspace(ctx context.Context, request operations.DeleteAiazurecontentsafetyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiazurecontentsafetyPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiazurecontentsafetyPlugin(ctx context.Context, request operations.DeleteAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.DeleteAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -4202,7 +4202,7 @@ func (s *Plugins) DeleteAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aiazurecontentsafety-plugin-in-workspace",
+		OperationID:      "delete-aiazurecontentsafety-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -4330,7 +4330,7 @@ func (s *Plugins) DeleteAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.DeleteAiazurecontentsafetyPluginInWorkspaceResponse{
+	res := &operations.DeleteAiazurecontentsafetyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -4374,9 +4374,9 @@ func (s *Plugins) DeleteAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 
 }
 
-// GetAiazurecontentsafetyPluginInWorkspace - Get a AiAzureContentSafety plugin in a workspace
+// GetAiazurecontentsafetyPlugin - Get a AiAzureContentSafety plugin in a workspace
 // Get a AiAzureContentSafety plugin in a workspace
-func (s *Plugins) GetAiazurecontentsafetyPluginInWorkspace(ctx context.Context, request operations.GetAiazurecontentsafetyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiazurecontentsafetyPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiazurecontentsafetyPlugin(ctx context.Context, request operations.GetAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.GetAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -4405,7 +4405,7 @@ func (s *Plugins) GetAiazurecontentsafetyPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aiazurecontentsafety-plugin-in-workspace",
+		OperationID:      "get-aiazurecontentsafety-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -4533,7 +4533,7 @@ func (s *Plugins) GetAiazurecontentsafetyPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.GetAiazurecontentsafetyPluginInWorkspaceResponse{
+	res := &operations.GetAiazurecontentsafetyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -4596,9 +4596,9 @@ func (s *Plugins) GetAiazurecontentsafetyPluginInWorkspace(ctx context.Context, 
 
 }
 
-// UpdateAiazurecontentsafetyPluginInWorkspace - Update a AiAzureContentSafety plugin in a workspace
+// UpdateAiazurecontentsafetyPlugin - Update a AiAzureContentSafety plugin in a workspace
 // Update a AiAzureContentSafety plugin in a workspace
-func (s *Plugins) UpdateAiazurecontentsafetyPluginInWorkspace(ctx context.Context, request operations.UpdateAiazurecontentsafetyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiazurecontentsafetyPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiazurecontentsafetyPlugin(ctx context.Context, request operations.UpdateAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.UpdateAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -4627,7 +4627,7 @@ func (s *Plugins) UpdateAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aiazurecontentsafety-plugin-in-workspace",
+		OperationID:      "update-aiazurecontentsafety-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -4762,7 +4762,7 @@ func (s *Plugins) UpdateAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.UpdateAiazurecontentsafetyPluginInWorkspaceResponse{
+	res := &operations.UpdateAiazurecontentsafetyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -4823,9 +4823,9 @@ func (s *Plugins) UpdateAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 
 }
 
-// DeleteAicustomguardrailPluginInWorkspace - Delete a AiCustomGuardrail plugin in a workspace
+// DeleteAicustomguardrailPlugin - Delete a AiCustomGuardrail plugin in a workspace
 // Delete a AiCustomGuardrail plugin in a workspace
-func (s *Plugins) DeleteAicustomguardrailPluginInWorkspace(ctx context.Context, request operations.DeleteAicustomguardrailPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAicustomguardrailPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAicustomguardrailPlugin(ctx context.Context, request operations.DeleteAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.DeleteAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -4854,7 +4854,7 @@ func (s *Plugins) DeleteAicustomguardrailPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aicustomguardrail-plugin-in-workspace",
+		OperationID:      "delete-aicustomguardrail-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -4982,7 +4982,7 @@ func (s *Plugins) DeleteAicustomguardrailPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.DeleteAicustomguardrailPluginInWorkspaceResponse{
+	res := &operations.DeleteAicustomguardrailPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5026,9 +5026,9 @@ func (s *Plugins) DeleteAicustomguardrailPluginInWorkspace(ctx context.Context, 
 
 }
 
-// GetAicustomguardrailPluginInWorkspace - Get a AiCustomGuardrail plugin in a workspace
+// GetAicustomguardrailPlugin - Get a AiCustomGuardrail plugin in a workspace
 // Get a AiCustomGuardrail plugin in a workspace
-func (s *Plugins) GetAicustomguardrailPluginInWorkspace(ctx context.Context, request operations.GetAicustomguardrailPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAicustomguardrailPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAicustomguardrailPlugin(ctx context.Context, request operations.GetAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.GetAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -5057,7 +5057,7 @@ func (s *Plugins) GetAicustomguardrailPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aicustomguardrail-plugin-in-workspace",
+		OperationID:      "get-aicustomguardrail-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -5185,7 +5185,7 @@ func (s *Plugins) GetAicustomguardrailPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.GetAicustomguardrailPluginInWorkspaceResponse{
+	res := &operations.GetAicustomguardrailPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5248,9 +5248,9 @@ func (s *Plugins) GetAicustomguardrailPluginInWorkspace(ctx context.Context, req
 
 }
 
-// UpdateAicustomguardrailPluginInWorkspace - Update a AiCustomGuardrail plugin in a workspace
+// UpdateAicustomguardrailPlugin - Update a AiCustomGuardrail plugin in a workspace
 // Update a AiCustomGuardrail plugin in a workspace
-func (s *Plugins) UpdateAicustomguardrailPluginInWorkspace(ctx context.Context, request operations.UpdateAicustomguardrailPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAicustomguardrailPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAicustomguardrailPlugin(ctx context.Context, request operations.UpdateAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.UpdateAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -5279,7 +5279,7 @@ func (s *Plugins) UpdateAicustomguardrailPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aicustomguardrail-plugin-in-workspace",
+		OperationID:      "update-aicustomguardrail-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -5414,7 +5414,7 @@ func (s *Plugins) UpdateAicustomguardrailPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.UpdateAicustomguardrailPluginInWorkspaceResponse{
+	res := &operations.UpdateAicustomguardrailPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5475,9 +5475,9 @@ func (s *Plugins) UpdateAicustomguardrailPluginInWorkspace(ctx context.Context, 
 
 }
 
-// DeleteAigcpmodelarmorPluginInWorkspace - Delete a AiGcpModelArmor plugin in a workspace
+// DeleteAigcpmodelarmorPlugin - Delete a AiGcpModelArmor plugin in a workspace
 // Delete a AiGcpModelArmor plugin in a workspace
-func (s *Plugins) DeleteAigcpmodelarmorPluginInWorkspace(ctx context.Context, request operations.DeleteAigcpmodelarmorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAigcpmodelarmorPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAigcpmodelarmorPlugin(ctx context.Context, request operations.DeleteAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.DeleteAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -5506,7 +5506,7 @@ func (s *Plugins) DeleteAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aigcpmodelarmor-plugin-in-workspace",
+		OperationID:      "delete-aigcpmodelarmor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -5634,7 +5634,7 @@ func (s *Plugins) DeleteAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.DeleteAigcpmodelarmorPluginInWorkspaceResponse{
+	res := &operations.DeleteAigcpmodelarmorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5678,9 +5678,9 @@ func (s *Plugins) DeleteAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 
 }
 
-// GetAigcpmodelarmorPluginInWorkspace - Get a AiGcpModelArmor plugin in a workspace
+// GetAigcpmodelarmorPlugin - Get a AiGcpModelArmor plugin in a workspace
 // Get a AiGcpModelArmor plugin in a workspace
-func (s *Plugins) GetAigcpmodelarmorPluginInWorkspace(ctx context.Context, request operations.GetAigcpmodelarmorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAigcpmodelarmorPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAigcpmodelarmorPlugin(ctx context.Context, request operations.GetAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.GetAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -5709,7 +5709,7 @@ func (s *Plugins) GetAigcpmodelarmorPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aigcpmodelarmor-plugin-in-workspace",
+		OperationID:      "get-aigcpmodelarmor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -5837,7 +5837,7 @@ func (s *Plugins) GetAigcpmodelarmorPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.GetAigcpmodelarmorPluginInWorkspaceResponse{
+	res := &operations.GetAigcpmodelarmorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -5900,9 +5900,9 @@ func (s *Plugins) GetAigcpmodelarmorPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// UpdateAigcpmodelarmorPluginInWorkspace - Update a AiGcpModelArmor plugin in a workspace
+// UpdateAigcpmodelarmorPlugin - Update a AiGcpModelArmor plugin in a workspace
 // Update a AiGcpModelArmor plugin in a workspace
-func (s *Plugins) UpdateAigcpmodelarmorPluginInWorkspace(ctx context.Context, request operations.UpdateAigcpmodelarmorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAigcpmodelarmorPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAigcpmodelarmorPlugin(ctx context.Context, request operations.UpdateAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.UpdateAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -5931,7 +5931,7 @@ func (s *Plugins) UpdateAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aigcpmodelarmor-plugin-in-workspace",
+		OperationID:      "update-aigcpmodelarmor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -6066,7 +6066,7 @@ func (s *Plugins) UpdateAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.UpdateAigcpmodelarmorPluginInWorkspaceResponse{
+	res := &operations.UpdateAigcpmodelarmorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6127,9 +6127,9 @@ func (s *Plugins) UpdateAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 
 }
 
-// DeleteAilakeraguardPluginInWorkspace - Delete a AiLakeraGuard plugin in a workspace
+// DeleteAilakeraguardPlugin - Delete a AiLakeraGuard plugin in a workspace
 // Delete a AiLakeraGuard plugin in a workspace
-func (s *Plugins) DeleteAilakeraguardPluginInWorkspace(ctx context.Context, request operations.DeleteAilakeraguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAilakeraguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAilakeraguardPlugin(ctx context.Context, request operations.DeleteAilakeraguardPluginRequest, opts ...operations.Option) (*operations.DeleteAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -6158,7 +6158,7 @@ func (s *Plugins) DeleteAilakeraguardPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-ailakeraguard-plugin-in-workspace",
+		OperationID:      "delete-ailakeraguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -6286,7 +6286,7 @@ func (s *Plugins) DeleteAilakeraguardPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteAilakeraguardPluginInWorkspaceResponse{
+	res := &operations.DeleteAilakeraguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6330,9 +6330,9 @@ func (s *Plugins) DeleteAilakeraguardPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetAilakeraguardPluginInWorkspace - Get a AiLakeraGuard plugin in a workspace
+// GetAilakeraguardPlugin - Get a AiLakeraGuard plugin in a workspace
 // Get a AiLakeraGuard plugin in a workspace
-func (s *Plugins) GetAilakeraguardPluginInWorkspace(ctx context.Context, request operations.GetAilakeraguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAilakeraguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAilakeraguardPlugin(ctx context.Context, request operations.GetAilakeraguardPluginRequest, opts ...operations.Option) (*operations.GetAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -6361,7 +6361,7 @@ func (s *Plugins) GetAilakeraguardPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-ailakeraguard-plugin-in-workspace",
+		OperationID:      "get-ailakeraguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -6489,7 +6489,7 @@ func (s *Plugins) GetAilakeraguardPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetAilakeraguardPluginInWorkspaceResponse{
+	res := &operations.GetAilakeraguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6552,9 +6552,9 @@ func (s *Plugins) GetAilakeraguardPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateAilakeraguardPluginInWorkspace - Update a AiLakeraGuard plugin in a workspace
+// UpdateAilakeraguardPlugin - Update a AiLakeraGuard plugin in a workspace
 // Update a AiLakeraGuard plugin in a workspace
-func (s *Plugins) UpdateAilakeraguardPluginInWorkspace(ctx context.Context, request operations.UpdateAilakeraguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAilakeraguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAilakeraguardPlugin(ctx context.Context, request operations.UpdateAilakeraguardPluginRequest, opts ...operations.Option) (*operations.UpdateAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -6583,7 +6583,7 @@ func (s *Plugins) UpdateAilakeraguardPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-ailakeraguard-plugin-in-workspace",
+		OperationID:      "update-ailakeraguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -6718,7 +6718,7 @@ func (s *Plugins) UpdateAilakeraguardPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateAilakeraguardPluginInWorkspaceResponse{
+	res := &operations.UpdateAilakeraguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6779,9 +6779,9 @@ func (s *Plugins) UpdateAilakeraguardPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteAillmasjudgePluginInWorkspace - Delete a AiLlmAsJudge plugin in a workspace
+// DeleteAillmasjudgePlugin - Delete a AiLlmAsJudge plugin in a workspace
 // Delete a AiLlmAsJudge plugin in a workspace
-func (s *Plugins) DeleteAillmasjudgePluginInWorkspace(ctx context.Context, request operations.DeleteAillmasjudgePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAillmasjudgePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAillmasjudgePlugin(ctx context.Context, request operations.DeleteAillmasjudgePluginRequest, opts ...operations.Option) (*operations.DeleteAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -6810,7 +6810,7 @@ func (s *Plugins) DeleteAillmasjudgePluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aillmasjudge-plugin-in-workspace",
+		OperationID:      "delete-aillmasjudge-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -6938,7 +6938,7 @@ func (s *Plugins) DeleteAillmasjudgePluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.DeleteAillmasjudgePluginInWorkspaceResponse{
+	res := &operations.DeleteAillmasjudgePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6982,9 +6982,9 @@ func (s *Plugins) DeleteAillmasjudgePluginInWorkspace(ctx context.Context, reque
 
 }
 
-// GetAillmasjudgePluginInWorkspace - Get a AiLlmAsJudge plugin in a workspace
+// GetAillmasjudgePlugin - Get a AiLlmAsJudge plugin in a workspace
 // Get a AiLlmAsJudge plugin in a workspace
-func (s *Plugins) GetAillmasjudgePluginInWorkspace(ctx context.Context, request operations.GetAillmasjudgePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAillmasjudgePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAillmasjudgePlugin(ctx context.Context, request operations.GetAillmasjudgePluginRequest, opts ...operations.Option) (*operations.GetAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -7013,7 +7013,7 @@ func (s *Plugins) GetAillmasjudgePluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aillmasjudge-plugin-in-workspace",
+		OperationID:      "get-aillmasjudge-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -7141,7 +7141,7 @@ func (s *Plugins) GetAillmasjudgePluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.GetAillmasjudgePluginInWorkspaceResponse{
+	res := &operations.GetAillmasjudgePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -7204,9 +7204,9 @@ func (s *Plugins) GetAillmasjudgePluginInWorkspace(ctx context.Context, request 
 
 }
 
-// UpdateAillmasjudgePluginInWorkspace - Update a AiLlmAsJudge plugin in a workspace
+// UpdateAillmasjudgePlugin - Update a AiLlmAsJudge plugin in a workspace
 // Update a AiLlmAsJudge plugin in a workspace
-func (s *Plugins) UpdateAillmasjudgePluginInWorkspace(ctx context.Context, request operations.UpdateAillmasjudgePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAillmasjudgePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAillmasjudgePlugin(ctx context.Context, request operations.UpdateAillmasjudgePluginRequest, opts ...operations.Option) (*operations.UpdateAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -7235,7 +7235,7 @@ func (s *Plugins) UpdateAillmasjudgePluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aillmasjudge-plugin-in-workspace",
+		OperationID:      "update-aillmasjudge-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -7370,7 +7370,7 @@ func (s *Plugins) UpdateAillmasjudgePluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.UpdateAillmasjudgePluginInWorkspaceResponse{
+	res := &operations.UpdateAillmasjudgePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -7431,9 +7431,9 @@ func (s *Plugins) UpdateAillmasjudgePluginInWorkspace(ctx context.Context, reque
 
 }
 
-// DeleteAimcpoauth2PluginInWorkspace - Delete a AiMcpOauth2 plugin in a workspace
+// DeleteAimcpoauth2Plugin - Delete a AiMcpOauth2 plugin in a workspace
 // Delete a AiMcpOauth2 plugin in a workspace
-func (s *Plugins) DeleteAimcpoauth2PluginInWorkspace(ctx context.Context, request operations.DeleteAimcpoauth2PluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAimcpoauth2PluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAimcpoauth2Plugin(ctx context.Context, request operations.DeleteAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.DeleteAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -7462,7 +7462,7 @@ func (s *Plugins) DeleteAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aimcpoauth2-plugin-in-workspace",
+		OperationID:      "delete-aimcpoauth2-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -7590,7 +7590,7 @@ func (s *Plugins) DeleteAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.DeleteAimcpoauth2PluginInWorkspaceResponse{
+	res := &operations.DeleteAimcpoauth2PluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -7634,9 +7634,9 @@ func (s *Plugins) DeleteAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 
 }
 
-// GetAimcpoauth2PluginInWorkspace - Get a AiMcpOauth2 plugin in a workspace
+// GetAimcpoauth2Plugin - Get a AiMcpOauth2 plugin in a workspace
 // Get a AiMcpOauth2 plugin in a workspace
-func (s *Plugins) GetAimcpoauth2PluginInWorkspace(ctx context.Context, request operations.GetAimcpoauth2PluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAimcpoauth2PluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAimcpoauth2Plugin(ctx context.Context, request operations.GetAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.GetAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -7665,7 +7665,7 @@ func (s *Plugins) GetAimcpoauth2PluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aimcpoauth2-plugin-in-workspace",
+		OperationID:      "get-aimcpoauth2-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -7793,7 +7793,7 @@ func (s *Plugins) GetAimcpoauth2PluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.GetAimcpoauth2PluginInWorkspaceResponse{
+	res := &operations.GetAimcpoauth2PluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -7856,9 +7856,9 @@ func (s *Plugins) GetAimcpoauth2PluginInWorkspace(ctx context.Context, request o
 
 }
 
-// UpdateAimcpoauth2PluginInWorkspace - Update a AiMcpOauth2 plugin in a workspace
+// UpdateAimcpoauth2Plugin - Update a AiMcpOauth2 plugin in a workspace
 // Update a AiMcpOauth2 plugin in a workspace
-func (s *Plugins) UpdateAimcpoauth2PluginInWorkspace(ctx context.Context, request operations.UpdateAimcpoauth2PluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAimcpoauth2PluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAimcpoauth2Plugin(ctx context.Context, request operations.UpdateAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.UpdateAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -7887,7 +7887,7 @@ func (s *Plugins) UpdateAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aimcpoauth2-plugin-in-workspace",
+		OperationID:      "update-aimcpoauth2-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -8022,7 +8022,7 @@ func (s *Plugins) UpdateAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.UpdateAimcpoauth2PluginInWorkspaceResponse{
+	res := &operations.UpdateAimcpoauth2PluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8083,9 +8083,9 @@ func (s *Plugins) UpdateAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 
 }
 
-// DeleteAimcpproxyPluginInWorkspace - Delete a AiMcpProxy plugin in a workspace
+// DeleteAimcpproxyPlugin - Delete a AiMcpProxy plugin in a workspace
 // Delete a AiMcpProxy plugin in a workspace
-func (s *Plugins) DeleteAimcpproxyPluginInWorkspace(ctx context.Context, request operations.DeleteAimcpproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAimcpproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAimcpproxyPlugin(ctx context.Context, request operations.DeleteAimcpproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -8114,7 +8114,7 @@ func (s *Plugins) DeleteAimcpproxyPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aimcpproxy-plugin-in-workspace",
+		OperationID:      "delete-aimcpproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -8242,7 +8242,7 @@ func (s *Plugins) DeleteAimcpproxyPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.DeleteAimcpproxyPluginInWorkspaceResponse{
+	res := &operations.DeleteAimcpproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8286,9 +8286,9 @@ func (s *Plugins) DeleteAimcpproxyPluginInWorkspace(ctx context.Context, request
 
 }
 
-// GetAimcpproxyPluginInWorkspace - Get a AiMcpProxy plugin in a workspace
+// GetAimcpproxyPlugin - Get a AiMcpProxy plugin in a workspace
 // Get a AiMcpProxy plugin in a workspace
-func (s *Plugins) GetAimcpproxyPluginInWorkspace(ctx context.Context, request operations.GetAimcpproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAimcpproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAimcpproxyPlugin(ctx context.Context, request operations.GetAimcpproxyPluginRequest, opts ...operations.Option) (*operations.GetAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -8317,7 +8317,7 @@ func (s *Plugins) GetAimcpproxyPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aimcpproxy-plugin-in-workspace",
+		OperationID:      "get-aimcpproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -8445,7 +8445,7 @@ func (s *Plugins) GetAimcpproxyPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.GetAimcpproxyPluginInWorkspaceResponse{
+	res := &operations.GetAimcpproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8508,9 +8508,9 @@ func (s *Plugins) GetAimcpproxyPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// UpdateAimcpproxyPluginInWorkspace - Update a AiMcpProxy plugin in a workspace
+// UpdateAimcpproxyPlugin - Update a AiMcpProxy plugin in a workspace
 // Update a AiMcpProxy plugin in a workspace
-func (s *Plugins) UpdateAimcpproxyPluginInWorkspace(ctx context.Context, request operations.UpdateAimcpproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAimcpproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAimcpproxyPlugin(ctx context.Context, request operations.UpdateAimcpproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -8539,7 +8539,7 @@ func (s *Plugins) UpdateAimcpproxyPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aimcpproxy-plugin-in-workspace",
+		OperationID:      "update-aimcpproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -8674,7 +8674,7 @@ func (s *Plugins) UpdateAimcpproxyPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.UpdateAimcpproxyPluginInWorkspaceResponse{
+	res := &operations.UpdateAimcpproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8735,9 +8735,9 @@ func (s *Plugins) UpdateAimcpproxyPluginInWorkspace(ctx context.Context, request
 
 }
 
-// DeleteAipromptcompressorPluginInWorkspace - Delete a AiPromptCompressor plugin in a workspace
+// DeleteAipromptcompressorPlugin - Delete a AiPromptCompressor plugin in a workspace
 // Delete a AiPromptCompressor plugin in a workspace
-func (s *Plugins) DeleteAipromptcompressorPluginInWorkspace(ctx context.Context, request operations.DeleteAipromptcompressorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAipromptcompressorPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAipromptcompressorPlugin(ctx context.Context, request operations.DeleteAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -8766,7 +8766,7 @@ func (s *Plugins) DeleteAipromptcompressorPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aipromptcompressor-plugin-in-workspace",
+		OperationID:      "delete-aipromptcompressor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -8894,7 +8894,7 @@ func (s *Plugins) DeleteAipromptcompressorPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteAipromptcompressorPluginInWorkspaceResponse{
+	res := &operations.DeleteAipromptcompressorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -8938,9 +8938,9 @@ func (s *Plugins) DeleteAipromptcompressorPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetAipromptcompressorPluginInWorkspace - Get a AiPromptCompressor plugin in a workspace
+// GetAipromptcompressorPlugin - Get a AiPromptCompressor plugin in a workspace
 // Get a AiPromptCompressor plugin in a workspace
-func (s *Plugins) GetAipromptcompressorPluginInWorkspace(ctx context.Context, request operations.GetAipromptcompressorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAipromptcompressorPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAipromptcompressorPlugin(ctx context.Context, request operations.GetAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.GetAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -8969,7 +8969,7 @@ func (s *Plugins) GetAipromptcompressorPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aipromptcompressor-plugin-in-workspace",
+		OperationID:      "get-aipromptcompressor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -9097,7 +9097,7 @@ func (s *Plugins) GetAipromptcompressorPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetAipromptcompressorPluginInWorkspaceResponse{
+	res := &operations.GetAipromptcompressorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -9160,9 +9160,9 @@ func (s *Plugins) GetAipromptcompressorPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateAipromptcompressorPluginInWorkspace - Update a AiPromptCompressor plugin in a workspace
+// UpdateAipromptcompressorPlugin - Update a AiPromptCompressor plugin in a workspace
 // Update a AiPromptCompressor plugin in a workspace
-func (s *Plugins) UpdateAipromptcompressorPluginInWorkspace(ctx context.Context, request operations.UpdateAipromptcompressorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAipromptcompressorPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAipromptcompressorPlugin(ctx context.Context, request operations.UpdateAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -9191,7 +9191,7 @@ func (s *Plugins) UpdateAipromptcompressorPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aipromptcompressor-plugin-in-workspace",
+		OperationID:      "update-aipromptcompressor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -9326,7 +9326,7 @@ func (s *Plugins) UpdateAipromptcompressorPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateAipromptcompressorPluginInWorkspaceResponse{
+	res := &operations.UpdateAipromptcompressorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -9387,9 +9387,9 @@ func (s *Plugins) UpdateAipromptcompressorPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteAipromptdecoratorPluginInWorkspace - Delete a AiPromptDecorator plugin in a workspace
+// DeleteAipromptdecoratorPlugin - Delete a AiPromptDecorator plugin in a workspace
 // Delete a AiPromptDecorator plugin in a workspace
-func (s *Plugins) DeleteAipromptdecoratorPluginInWorkspace(ctx context.Context, request operations.DeleteAipromptdecoratorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAipromptdecoratorPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request operations.DeleteAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -9418,7 +9418,7 @@ func (s *Plugins) DeleteAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aipromptdecorator-plugin-in-workspace",
+		OperationID:      "delete-aipromptdecorator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -9546,7 +9546,7 @@ func (s *Plugins) DeleteAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.DeleteAipromptdecoratorPluginInWorkspaceResponse{
+	res := &operations.DeleteAipromptdecoratorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -9590,9 +9590,9 @@ func (s *Plugins) DeleteAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 
 }
 
-// GetAipromptdecoratorPluginInWorkspace - Get a AiPromptDecorator plugin in a workspace
+// GetAipromptdecoratorPlugin - Get a AiPromptDecorator plugin in a workspace
 // Get a AiPromptDecorator plugin in a workspace
-func (s *Plugins) GetAipromptdecoratorPluginInWorkspace(ctx context.Context, request operations.GetAipromptdecoratorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAipromptdecoratorPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operations.GetAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.GetAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -9621,7 +9621,7 @@ func (s *Plugins) GetAipromptdecoratorPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aipromptdecorator-plugin-in-workspace",
+		OperationID:      "get-aipromptdecorator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -9749,7 +9749,7 @@ func (s *Plugins) GetAipromptdecoratorPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.GetAipromptdecoratorPluginInWorkspaceResponse{
+	res := &operations.GetAipromptdecoratorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -9812,9 +9812,9 @@ func (s *Plugins) GetAipromptdecoratorPluginInWorkspace(ctx context.Context, req
 
 }
 
-// UpdateAipromptdecoratorPluginInWorkspace - Update a AiPromptDecorator plugin in a workspace
+// UpdateAipromptdecoratorPlugin - Update a AiPromptDecorator plugin in a workspace
 // Update a AiPromptDecorator plugin in a workspace
-func (s *Plugins) UpdateAipromptdecoratorPluginInWorkspace(ctx context.Context, request operations.UpdateAipromptdecoratorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAipromptdecoratorPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request operations.UpdateAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -9843,7 +9843,7 @@ func (s *Plugins) UpdateAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aipromptdecorator-plugin-in-workspace",
+		OperationID:      "update-aipromptdecorator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -9978,7 +9978,7 @@ func (s *Plugins) UpdateAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.UpdateAipromptdecoratorPluginInWorkspaceResponse{
+	res := &operations.UpdateAipromptdecoratorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10039,9 +10039,9 @@ func (s *Plugins) UpdateAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 
 }
 
-// DeleteAipromptguardPluginInWorkspace - Delete a AiPromptGuard plugin in a workspace
+// DeleteAipromptguardPlugin - Delete a AiPromptGuard plugin in a workspace
 // Delete a AiPromptGuard plugin in a workspace
-func (s *Plugins) DeleteAipromptguardPluginInWorkspace(ctx context.Context, request operations.DeleteAipromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAipromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operations.DeleteAipromptguardPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -10070,7 +10070,7 @@ func (s *Plugins) DeleteAipromptguardPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aipromptguard-plugin-in-workspace",
+		OperationID:      "delete-aipromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -10198,7 +10198,7 @@ func (s *Plugins) DeleteAipromptguardPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteAipromptguardPluginInWorkspaceResponse{
+	res := &operations.DeleteAipromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10242,9 +10242,9 @@ func (s *Plugins) DeleteAipromptguardPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetAipromptguardPluginInWorkspace - Get a AiPromptGuard plugin in a workspace
+// GetAipromptguardPlugin - Get a AiPromptGuard plugin in a workspace
 // Get a AiPromptGuard plugin in a workspace
-func (s *Plugins) GetAipromptguardPluginInWorkspace(ctx context.Context, request operations.GetAipromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAipromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations.GetAipromptguardPluginRequest, opts ...operations.Option) (*operations.GetAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -10273,7 +10273,7 @@ func (s *Plugins) GetAipromptguardPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aipromptguard-plugin-in-workspace",
+		OperationID:      "get-aipromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -10401,7 +10401,7 @@ func (s *Plugins) GetAipromptguardPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetAipromptguardPluginInWorkspaceResponse{
+	res := &operations.GetAipromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10464,9 +10464,9 @@ func (s *Plugins) GetAipromptguardPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateAipromptguardPluginInWorkspace - Update a AiPromptGuard plugin in a workspace
+// UpdateAipromptguardPlugin - Update a AiPromptGuard plugin in a workspace
 // Update a AiPromptGuard plugin in a workspace
-func (s *Plugins) UpdateAipromptguardPluginInWorkspace(ctx context.Context, request operations.UpdateAipromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAipromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operations.UpdateAipromptguardPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -10495,7 +10495,7 @@ func (s *Plugins) UpdateAipromptguardPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aipromptguard-plugin-in-workspace",
+		OperationID:      "update-aipromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -10630,7 +10630,7 @@ func (s *Plugins) UpdateAipromptguardPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateAipromptguardPluginInWorkspaceResponse{
+	res := &operations.UpdateAipromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10691,9 +10691,9 @@ func (s *Plugins) UpdateAipromptguardPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteAiprompttemplatePluginInWorkspace - Delete a AiPromptTemplate plugin in a workspace
+// DeleteAiprompttemplatePlugin - Delete a AiPromptTemplate plugin in a workspace
 // Delete a AiPromptTemplate plugin in a workspace
-func (s *Plugins) DeleteAiprompttemplatePluginInWorkspace(ctx context.Context, request operations.DeleteAiprompttemplatePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiprompttemplatePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request operations.DeleteAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.DeleteAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -10722,7 +10722,7 @@ func (s *Plugins) DeleteAiprompttemplatePluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aiprompttemplate-plugin-in-workspace",
+		OperationID:      "delete-aiprompttemplate-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -10850,7 +10850,7 @@ func (s *Plugins) DeleteAiprompttemplatePluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.DeleteAiprompttemplatePluginInWorkspaceResponse{
+	res := &operations.DeleteAiprompttemplatePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -10894,9 +10894,9 @@ func (s *Plugins) DeleteAiprompttemplatePluginInWorkspace(ctx context.Context, r
 
 }
 
-// GetAiprompttemplatePluginInWorkspace - Get a AiPromptTemplate plugin in a workspace
+// GetAiprompttemplatePlugin - Get a AiPromptTemplate plugin in a workspace
 // Get a AiPromptTemplate plugin in a workspace
-func (s *Plugins) GetAiprompttemplatePluginInWorkspace(ctx context.Context, request operations.GetAiprompttemplatePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiprompttemplatePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operations.GetAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.GetAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -10925,7 +10925,7 @@ func (s *Plugins) GetAiprompttemplatePluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aiprompttemplate-plugin-in-workspace",
+		OperationID:      "get-aiprompttemplate-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -11053,7 +11053,7 @@ func (s *Plugins) GetAiprompttemplatePluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.GetAiprompttemplatePluginInWorkspaceResponse{
+	res := &operations.GetAiprompttemplatePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -11116,9 +11116,9 @@ func (s *Plugins) GetAiprompttemplatePluginInWorkspace(ctx context.Context, requ
 
 }
 
-// UpdateAiprompttemplatePluginInWorkspace - Update a AiPromptTemplate plugin in a workspace
+// UpdateAiprompttemplatePlugin - Update a AiPromptTemplate plugin in a workspace
 // Update a AiPromptTemplate plugin in a workspace
-func (s *Plugins) UpdateAiprompttemplatePluginInWorkspace(ctx context.Context, request operations.UpdateAiprompttemplatePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiprompttemplatePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request operations.UpdateAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.UpdateAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -11147,7 +11147,7 @@ func (s *Plugins) UpdateAiprompttemplatePluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aiprompttemplate-plugin-in-workspace",
+		OperationID:      "update-aiprompttemplate-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -11282,7 +11282,7 @@ func (s *Plugins) UpdateAiprompttemplatePluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.UpdateAiprompttemplatePluginInWorkspaceResponse{
+	res := &operations.UpdateAiprompttemplatePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -11343,9 +11343,9 @@ func (s *Plugins) UpdateAiprompttemplatePluginInWorkspace(ctx context.Context, r
 
 }
 
-// DeleteAiproxyPluginInWorkspace - Delete a AiProxy plugin in a workspace
+// DeleteAiproxyPlugin - Delete a AiProxy plugin in a workspace
 // Delete a AiProxy plugin in a workspace
-func (s *Plugins) DeleteAiproxyPluginInWorkspace(ctx context.Context, request operations.DeleteAiproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.DeleteAiproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -11374,7 +11374,7 @@ func (s *Plugins) DeleteAiproxyPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aiproxy-plugin-in-workspace",
+		OperationID:      "delete-aiproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -11502,7 +11502,7 @@ func (s *Plugins) DeleteAiproxyPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteAiproxyPluginInWorkspaceResponse{
+	res := &operations.DeleteAiproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -11546,9 +11546,9 @@ func (s *Plugins) DeleteAiproxyPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetAiproxyPluginInWorkspace - Get a AiProxy plugin in a workspace
+// GetAiproxyPlugin - Get a AiProxy plugin in a workspace
 // Get a AiProxy plugin in a workspace
-func (s *Plugins) GetAiproxyPluginInWorkspace(ctx context.Context, request operations.GetAiproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAiproxyPluginRequest, opts ...operations.Option) (*operations.GetAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -11577,7 +11577,7 @@ func (s *Plugins) GetAiproxyPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aiproxy-plugin-in-workspace",
+		OperationID:      "get-aiproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -11705,7 +11705,7 @@ func (s *Plugins) GetAiproxyPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetAiproxyPluginInWorkspaceResponse{
+	res := &operations.GetAiproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -11768,9 +11768,9 @@ func (s *Plugins) GetAiproxyPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateAiproxyPluginInWorkspace - Update a AiProxy plugin in a workspace
+// UpdateAiproxyPlugin - Update a AiProxy plugin in a workspace
 // Update a AiProxy plugin in a workspace
-func (s *Plugins) UpdateAiproxyPluginInWorkspace(ctx context.Context, request operations.UpdateAiproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.UpdateAiproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -11799,7 +11799,7 @@ func (s *Plugins) UpdateAiproxyPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aiproxy-plugin-in-workspace",
+		OperationID:      "update-aiproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -11934,7 +11934,7 @@ func (s *Plugins) UpdateAiproxyPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateAiproxyPluginInWorkspaceResponse{
+	res := &operations.UpdateAiproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -11995,9 +11995,9 @@ func (s *Plugins) UpdateAiproxyPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteAiproxyadvancedPluginInWorkspace - Delete a AiProxyAdvanced plugin in a workspace
+// DeleteAiproxyadvancedPlugin - Delete a AiProxyAdvanced plugin in a workspace
 // Delete a AiProxyAdvanced plugin in a workspace
-func (s *Plugins) DeleteAiproxyadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteAiproxyadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiproxyadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiproxyadvancedPlugin(ctx context.Context, request operations.DeleteAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -12026,7 +12026,7 @@ func (s *Plugins) DeleteAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aiproxyadvanced-plugin-in-workspace",
+		OperationID:      "delete-aiproxyadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -12154,7 +12154,7 @@ func (s *Plugins) DeleteAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.DeleteAiproxyadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteAiproxyadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -12198,9 +12198,9 @@ func (s *Plugins) DeleteAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 
 }
 
-// GetAiproxyadvancedPluginInWorkspace - Get a AiProxyAdvanced plugin in a workspace
+// GetAiproxyadvancedPlugin - Get a AiProxyAdvanced plugin in a workspace
 // Get a AiProxyAdvanced plugin in a workspace
-func (s *Plugins) GetAiproxyadvancedPluginInWorkspace(ctx context.Context, request operations.GetAiproxyadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiproxyadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiproxyadvancedPlugin(ctx context.Context, request operations.GetAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.GetAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -12229,7 +12229,7 @@ func (s *Plugins) GetAiproxyadvancedPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aiproxyadvanced-plugin-in-workspace",
+		OperationID:      "get-aiproxyadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -12357,7 +12357,7 @@ func (s *Plugins) GetAiproxyadvancedPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.GetAiproxyadvancedPluginInWorkspaceResponse{
+	res := &operations.GetAiproxyadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -12420,9 +12420,9 @@ func (s *Plugins) GetAiproxyadvancedPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// UpdateAiproxyadvancedPluginInWorkspace - Update a AiProxyAdvanced plugin in a workspace
+// UpdateAiproxyadvancedPlugin - Update a AiProxyAdvanced plugin in a workspace
 // Update a AiProxyAdvanced plugin in a workspace
-func (s *Plugins) UpdateAiproxyadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateAiproxyadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiproxyadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiproxyadvancedPlugin(ctx context.Context, request operations.UpdateAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -12451,7 +12451,7 @@ func (s *Plugins) UpdateAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aiproxyadvanced-plugin-in-workspace",
+		OperationID:      "update-aiproxyadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -12586,7 +12586,7 @@ func (s *Plugins) UpdateAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.UpdateAiproxyadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateAiproxyadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -12647,9 +12647,9 @@ func (s *Plugins) UpdateAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 
 }
 
-// DeleteAiraginjectorPluginInWorkspace - Delete a AiRagInjector plugin in a workspace
+// DeleteAiraginjectorPlugin - Delete a AiRagInjector plugin in a workspace
 // Delete a AiRagInjector plugin in a workspace
-func (s *Plugins) DeleteAiraginjectorPluginInWorkspace(ctx context.Context, request operations.DeleteAiraginjectorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiraginjectorPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiraginjectorPlugin(ctx context.Context, request operations.DeleteAiraginjectorPluginRequest, opts ...operations.Option) (*operations.DeleteAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -12678,7 +12678,7 @@ func (s *Plugins) DeleteAiraginjectorPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-airaginjector-plugin-in-workspace",
+		OperationID:      "delete-airaginjector-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -12806,7 +12806,7 @@ func (s *Plugins) DeleteAiraginjectorPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteAiraginjectorPluginInWorkspaceResponse{
+	res := &operations.DeleteAiraginjectorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -12850,9 +12850,9 @@ func (s *Plugins) DeleteAiraginjectorPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetAiraginjectorPluginInWorkspace - Get a AiRagInjector plugin in a workspace
+// GetAiraginjectorPlugin - Get a AiRagInjector plugin in a workspace
 // Get a AiRagInjector plugin in a workspace
-func (s *Plugins) GetAiraginjectorPluginInWorkspace(ctx context.Context, request operations.GetAiraginjectorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiraginjectorPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiraginjectorPlugin(ctx context.Context, request operations.GetAiraginjectorPluginRequest, opts ...operations.Option) (*operations.GetAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -12881,7 +12881,7 @@ func (s *Plugins) GetAiraginjectorPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-airaginjector-plugin-in-workspace",
+		OperationID:      "get-airaginjector-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -13009,7 +13009,7 @@ func (s *Plugins) GetAiraginjectorPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetAiraginjectorPluginInWorkspaceResponse{
+	res := &operations.GetAiraginjectorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -13072,9 +13072,9 @@ func (s *Plugins) GetAiraginjectorPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateAiraginjectorPluginInWorkspace - Update a AiRagInjector plugin in a workspace
+// UpdateAiraginjectorPlugin - Update a AiRagInjector plugin in a workspace
 // Update a AiRagInjector plugin in a workspace
-func (s *Plugins) UpdateAiraginjectorPluginInWorkspace(ctx context.Context, request operations.UpdateAiraginjectorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiraginjectorPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiraginjectorPlugin(ctx context.Context, request operations.UpdateAiraginjectorPluginRequest, opts ...operations.Option) (*operations.UpdateAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -13103,7 +13103,7 @@ func (s *Plugins) UpdateAiraginjectorPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-airaginjector-plugin-in-workspace",
+		OperationID:      "update-airaginjector-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -13238,7 +13238,7 @@ func (s *Plugins) UpdateAiraginjectorPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateAiraginjectorPluginInWorkspaceResponse{
+	res := &operations.UpdateAiraginjectorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -13299,9 +13299,9 @@ func (s *Plugins) UpdateAiraginjectorPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteAiratelimitingadvancedPluginInWorkspace - Delete a AiRateLimitingAdvanced plugin in a workspace
+// DeleteAiratelimitingadvancedPlugin - Delete a AiRateLimitingAdvanced plugin in a workspace
 // Delete a AiRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) DeleteAiratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteAiratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiratelimitingadvancedPlugin(ctx context.Context, request operations.DeleteAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -13330,7 +13330,7 @@ func (s *Plugins) DeleteAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-airatelimitingadvanced-plugin-in-workspace",
+		OperationID:      "delete-airatelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -13458,7 +13458,7 @@ func (s *Plugins) DeleteAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 		}
 	}
 
-	res := &operations.DeleteAiratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteAiratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -13502,9 +13502,9 @@ func (s *Plugins) DeleteAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 
 }
 
-// GetAiratelimitingadvancedPluginInWorkspace - Get a AiRateLimitingAdvanced plugin in a workspace
+// GetAiratelimitingadvancedPlugin - Get a AiRateLimitingAdvanced plugin in a workspace
 // Get a AiRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) GetAiratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.GetAiratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiratelimitingadvancedPlugin(ctx context.Context, request operations.GetAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.GetAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -13533,7 +13533,7 @@ func (s *Plugins) GetAiratelimitingadvancedPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-airatelimitingadvanced-plugin-in-workspace",
+		OperationID:      "get-airatelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -13661,7 +13661,7 @@ func (s *Plugins) GetAiratelimitingadvancedPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.GetAiratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.GetAiratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -13724,9 +13724,9 @@ func (s *Plugins) GetAiratelimitingadvancedPluginInWorkspace(ctx context.Context
 
 }
 
-// UpdateAiratelimitingadvancedPluginInWorkspace - Update a AiRateLimitingAdvanced plugin in a workspace
+// UpdateAiratelimitingadvancedPlugin - Update a AiRateLimitingAdvanced plugin in a workspace
 // Update a AiRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) UpdateAiratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateAiratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiratelimitingadvancedPlugin(ctx context.Context, request operations.UpdateAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -13755,7 +13755,7 @@ func (s *Plugins) UpdateAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-airatelimitingadvanced-plugin-in-workspace",
+		OperationID:      "update-airatelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -13890,7 +13890,7 @@ func (s *Plugins) UpdateAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 		}
 	}
 
-	res := &operations.UpdateAiratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateAiratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -13951,9 +13951,9 @@ func (s *Plugins) UpdateAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 
 }
 
-// DeleteAirequesttransformerPluginInWorkspace - Delete a AiRequestTransformer plugin in a workspace
+// DeleteAirequesttransformerPlugin - Delete a AiRequestTransformer plugin in a workspace
 // Delete a AiRequestTransformer plugin in a workspace
-func (s *Plugins) DeleteAirequesttransformerPluginInWorkspace(ctx context.Context, request operations.DeleteAirequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAirequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAirequesttransformerPlugin(ctx context.Context, request operations.DeleteAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.DeleteAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -13982,7 +13982,7 @@ func (s *Plugins) DeleteAirequesttransformerPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-airequesttransformer-plugin-in-workspace",
+		OperationID:      "delete-airequesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -14110,7 +14110,7 @@ func (s *Plugins) DeleteAirequesttransformerPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.DeleteAirequesttransformerPluginInWorkspaceResponse{
+	res := &operations.DeleteAirequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -14154,9 +14154,9 @@ func (s *Plugins) DeleteAirequesttransformerPluginInWorkspace(ctx context.Contex
 
 }
 
-// GetAirequesttransformerPluginInWorkspace - Get a AiRequestTransformer plugin in a workspace
+// GetAirequesttransformerPlugin - Get a AiRequestTransformer plugin in a workspace
 // Get a AiRequestTransformer plugin in a workspace
-func (s *Plugins) GetAirequesttransformerPluginInWorkspace(ctx context.Context, request operations.GetAirequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAirequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAirequesttransformerPlugin(ctx context.Context, request operations.GetAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.GetAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -14185,7 +14185,7 @@ func (s *Plugins) GetAirequesttransformerPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-airequesttransformer-plugin-in-workspace",
+		OperationID:      "get-airequesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -14313,7 +14313,7 @@ func (s *Plugins) GetAirequesttransformerPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.GetAirequesttransformerPluginInWorkspaceResponse{
+	res := &operations.GetAirequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -14376,9 +14376,9 @@ func (s *Plugins) GetAirequesttransformerPluginInWorkspace(ctx context.Context, 
 
 }
 
-// UpdateAirequesttransformerPluginInWorkspace - Update a AiRequestTransformer plugin in a workspace
+// UpdateAirequesttransformerPlugin - Update a AiRequestTransformer plugin in a workspace
 // Update a AiRequestTransformer plugin in a workspace
-func (s *Plugins) UpdateAirequesttransformerPluginInWorkspace(ctx context.Context, request operations.UpdateAirequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAirequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAirequesttransformerPlugin(ctx context.Context, request operations.UpdateAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.UpdateAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -14407,7 +14407,7 @@ func (s *Plugins) UpdateAirequesttransformerPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-airequesttransformer-plugin-in-workspace",
+		OperationID:      "update-airequesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -14542,7 +14542,7 @@ func (s *Plugins) UpdateAirequesttransformerPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.UpdateAirequesttransformerPluginInWorkspaceResponse{
+	res := &operations.UpdateAirequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -14603,9 +14603,9 @@ func (s *Plugins) UpdateAirequesttransformerPluginInWorkspace(ctx context.Contex
 
 }
 
-// DeleteAiresponsetransformerPluginInWorkspace - Delete a AiResponseTransformer plugin in a workspace
+// DeleteAiresponsetransformerPlugin - Delete a AiResponseTransformer plugin in a workspace
 // Delete a AiResponseTransformer plugin in a workspace
-func (s *Plugins) DeleteAiresponsetransformerPluginInWorkspace(ctx context.Context, request operations.DeleteAiresponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAiresponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAiresponsetransformerPlugin(ctx context.Context, request operations.DeleteAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.DeleteAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -14634,7 +14634,7 @@ func (s *Plugins) DeleteAiresponsetransformerPluginInWorkspace(ctx context.Conte
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-airesponsetransformer-plugin-in-workspace",
+		OperationID:      "delete-airesponsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -14762,7 +14762,7 @@ func (s *Plugins) DeleteAiresponsetransformerPluginInWorkspace(ctx context.Conte
 		}
 	}
 
-	res := &operations.DeleteAiresponsetransformerPluginInWorkspaceResponse{
+	res := &operations.DeleteAiresponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -14806,9 +14806,9 @@ func (s *Plugins) DeleteAiresponsetransformerPluginInWorkspace(ctx context.Conte
 
 }
 
-// GetAiresponsetransformerPluginInWorkspace - Get a AiResponseTransformer plugin in a workspace
+// GetAiresponsetransformerPlugin - Get a AiResponseTransformer plugin in a workspace
 // Get a AiResponseTransformer plugin in a workspace
-func (s *Plugins) GetAiresponsetransformerPluginInWorkspace(ctx context.Context, request operations.GetAiresponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAiresponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAiresponsetransformerPlugin(ctx context.Context, request operations.GetAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.GetAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -14837,7 +14837,7 @@ func (s *Plugins) GetAiresponsetransformerPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-airesponsetransformer-plugin-in-workspace",
+		OperationID:      "get-airesponsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -14965,7 +14965,7 @@ func (s *Plugins) GetAiresponsetransformerPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.GetAiresponsetransformerPluginInWorkspaceResponse{
+	res := &operations.GetAiresponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -15028,9 +15028,9 @@ func (s *Plugins) GetAiresponsetransformerPluginInWorkspace(ctx context.Context,
 
 }
 
-// UpdateAiresponsetransformerPluginInWorkspace - Update a AiResponseTransformer plugin in a workspace
+// UpdateAiresponsetransformerPlugin - Update a AiResponseTransformer plugin in a workspace
 // Update a AiResponseTransformer plugin in a workspace
-func (s *Plugins) UpdateAiresponsetransformerPluginInWorkspace(ctx context.Context, request operations.UpdateAiresponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAiresponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAiresponsetransformerPlugin(ctx context.Context, request operations.UpdateAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.UpdateAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -15059,7 +15059,7 @@ func (s *Plugins) UpdateAiresponsetransformerPluginInWorkspace(ctx context.Conte
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-airesponsetransformer-plugin-in-workspace",
+		OperationID:      "update-airesponsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -15194,7 +15194,7 @@ func (s *Plugins) UpdateAiresponsetransformerPluginInWorkspace(ctx context.Conte
 		}
 	}
 
-	res := &operations.UpdateAiresponsetransformerPluginInWorkspaceResponse{
+	res := &operations.UpdateAiresponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -15255,9 +15255,9 @@ func (s *Plugins) UpdateAiresponsetransformerPluginInWorkspace(ctx context.Conte
 
 }
 
-// DeleteAisanitizerPluginInWorkspace - Delete a AiSanitizer plugin in a workspace
+// DeleteAisanitizerPlugin - Delete a AiSanitizer plugin in a workspace
 // Delete a AiSanitizer plugin in a workspace
-func (s *Plugins) DeleteAisanitizerPluginInWorkspace(ctx context.Context, request operations.DeleteAisanitizerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAisanitizerPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAisanitizerPlugin(ctx context.Context, request operations.DeleteAisanitizerPluginRequest, opts ...operations.Option) (*operations.DeleteAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -15286,7 +15286,7 @@ func (s *Plugins) DeleteAisanitizerPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aisanitizer-plugin-in-workspace",
+		OperationID:      "delete-aisanitizer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -15414,7 +15414,7 @@ func (s *Plugins) DeleteAisanitizerPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.DeleteAisanitizerPluginInWorkspaceResponse{
+	res := &operations.DeleteAisanitizerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -15458,9 +15458,9 @@ func (s *Plugins) DeleteAisanitizerPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// GetAisanitizerPluginInWorkspace - Get a AiSanitizer plugin in a workspace
+// GetAisanitizerPlugin - Get a AiSanitizer plugin in a workspace
 // Get a AiSanitizer plugin in a workspace
-func (s *Plugins) GetAisanitizerPluginInWorkspace(ctx context.Context, request operations.GetAisanitizerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAisanitizerPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAisanitizerPlugin(ctx context.Context, request operations.GetAisanitizerPluginRequest, opts ...operations.Option) (*operations.GetAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -15489,7 +15489,7 @@ func (s *Plugins) GetAisanitizerPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aisanitizer-plugin-in-workspace",
+		OperationID:      "get-aisanitizer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -15617,7 +15617,7 @@ func (s *Plugins) GetAisanitizerPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.GetAisanitizerPluginInWorkspaceResponse{
+	res := &operations.GetAisanitizerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -15680,9 +15680,9 @@ func (s *Plugins) GetAisanitizerPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// UpdateAisanitizerPluginInWorkspace - Update a AiSanitizer plugin in a workspace
+// UpdateAisanitizerPlugin - Update a AiSanitizer plugin in a workspace
 // Update a AiSanitizer plugin in a workspace
-func (s *Plugins) UpdateAisanitizerPluginInWorkspace(ctx context.Context, request operations.UpdateAisanitizerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAisanitizerPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAisanitizerPlugin(ctx context.Context, request operations.UpdateAisanitizerPluginRequest, opts ...operations.Option) (*operations.UpdateAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -15711,7 +15711,7 @@ func (s *Plugins) UpdateAisanitizerPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aisanitizer-plugin-in-workspace",
+		OperationID:      "update-aisanitizer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -15846,7 +15846,7 @@ func (s *Plugins) UpdateAisanitizerPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.UpdateAisanitizerPluginInWorkspaceResponse{
+	res := &operations.UpdateAisanitizerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -15907,9 +15907,9 @@ func (s *Plugins) UpdateAisanitizerPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// DeleteAisemanticcachePluginInWorkspace - Delete a AiSemanticCache plugin in a workspace
+// DeleteAisemanticcachePlugin - Delete a AiSemanticCache plugin in a workspace
 // Delete a AiSemanticCache plugin in a workspace
-func (s *Plugins) DeleteAisemanticcachePluginInWorkspace(ctx context.Context, request operations.DeleteAisemanticcachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAisemanticcachePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAisemanticcachePlugin(ctx context.Context, request operations.DeleteAisemanticcachePluginRequest, opts ...operations.Option) (*operations.DeleteAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -15938,7 +15938,7 @@ func (s *Plugins) DeleteAisemanticcachePluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aisemanticcache-plugin-in-workspace",
+		OperationID:      "delete-aisemanticcache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -16066,7 +16066,7 @@ func (s *Plugins) DeleteAisemanticcachePluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.DeleteAisemanticcachePluginInWorkspaceResponse{
+	res := &operations.DeleteAisemanticcachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -16110,9 +16110,9 @@ func (s *Plugins) DeleteAisemanticcachePluginInWorkspace(ctx context.Context, re
 
 }
 
-// GetAisemanticcachePluginInWorkspace - Get a AiSemanticCache plugin in a workspace
+// GetAisemanticcachePlugin - Get a AiSemanticCache plugin in a workspace
 // Get a AiSemanticCache plugin in a workspace
-func (s *Plugins) GetAisemanticcachePluginInWorkspace(ctx context.Context, request operations.GetAisemanticcachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAisemanticcachePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAisemanticcachePlugin(ctx context.Context, request operations.GetAisemanticcachePluginRequest, opts ...operations.Option) (*operations.GetAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -16141,7 +16141,7 @@ func (s *Plugins) GetAisemanticcachePluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aisemanticcache-plugin-in-workspace",
+		OperationID:      "get-aisemanticcache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -16269,7 +16269,7 @@ func (s *Plugins) GetAisemanticcachePluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.GetAisemanticcachePluginInWorkspaceResponse{
+	res := &operations.GetAisemanticcachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -16332,9 +16332,9 @@ func (s *Plugins) GetAisemanticcachePluginInWorkspace(ctx context.Context, reque
 
 }
 
-// UpdateAisemanticcachePluginInWorkspace - Update a AiSemanticCache plugin in a workspace
+// UpdateAisemanticcachePlugin - Update a AiSemanticCache plugin in a workspace
 // Update a AiSemanticCache plugin in a workspace
-func (s *Plugins) UpdateAisemanticcachePluginInWorkspace(ctx context.Context, request operations.UpdateAisemanticcachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAisemanticcachePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAisemanticcachePlugin(ctx context.Context, request operations.UpdateAisemanticcachePluginRequest, opts ...operations.Option) (*operations.UpdateAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -16363,7 +16363,7 @@ func (s *Plugins) UpdateAisemanticcachePluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aisemanticcache-plugin-in-workspace",
+		OperationID:      "update-aisemanticcache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -16498,7 +16498,7 @@ func (s *Plugins) UpdateAisemanticcachePluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.UpdateAisemanticcachePluginInWorkspaceResponse{
+	res := &operations.UpdateAisemanticcachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -16559,9 +16559,9 @@ func (s *Plugins) UpdateAisemanticcachePluginInWorkspace(ctx context.Context, re
 
 }
 
-// DeleteAisemanticpromptguardPluginInWorkspace - Delete a AiSemanticPromptGuard plugin in a workspace
+// DeleteAisemanticpromptguardPlugin - Delete a AiSemanticPromptGuard plugin in a workspace
 // Delete a AiSemanticPromptGuard plugin in a workspace
-func (s *Plugins) DeleteAisemanticpromptguardPluginInWorkspace(ctx context.Context, request operations.DeleteAisemanticpromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAisemanticpromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAisemanticpromptguardPlugin(ctx context.Context, request operations.DeleteAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.DeleteAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -16590,7 +16590,7 @@ func (s *Plugins) DeleteAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aisemanticpromptguard-plugin-in-workspace",
+		OperationID:      "delete-aisemanticpromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -16718,7 +16718,7 @@ func (s *Plugins) DeleteAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 		}
 	}
 
-	res := &operations.DeleteAisemanticpromptguardPluginInWorkspaceResponse{
+	res := &operations.DeleteAisemanticpromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -16762,9 +16762,9 @@ func (s *Plugins) DeleteAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 
 }
 
-// GetAisemanticpromptguardPluginInWorkspace - Get a AiSemanticPromptGuard plugin in a workspace
+// GetAisemanticpromptguardPlugin - Get a AiSemanticPromptGuard plugin in a workspace
 // Get a AiSemanticPromptGuard plugin in a workspace
-func (s *Plugins) GetAisemanticpromptguardPluginInWorkspace(ctx context.Context, request operations.GetAisemanticpromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAisemanticpromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAisemanticpromptguardPlugin(ctx context.Context, request operations.GetAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.GetAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -16793,7 +16793,7 @@ func (s *Plugins) GetAisemanticpromptguardPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aisemanticpromptguard-plugin-in-workspace",
+		OperationID:      "get-aisemanticpromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -16921,7 +16921,7 @@ func (s *Plugins) GetAisemanticpromptguardPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.GetAisemanticpromptguardPluginInWorkspaceResponse{
+	res := &operations.GetAisemanticpromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -16984,9 +16984,9 @@ func (s *Plugins) GetAisemanticpromptguardPluginInWorkspace(ctx context.Context,
 
 }
 
-// UpdateAisemanticpromptguardPluginInWorkspace - Update a AiSemanticPromptGuard plugin in a workspace
+// UpdateAisemanticpromptguardPlugin - Update a AiSemanticPromptGuard plugin in a workspace
 // Update a AiSemanticPromptGuard plugin in a workspace
-func (s *Plugins) UpdateAisemanticpromptguardPluginInWorkspace(ctx context.Context, request operations.UpdateAisemanticpromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAisemanticpromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAisemanticpromptguardPlugin(ctx context.Context, request operations.UpdateAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.UpdateAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -17015,7 +17015,7 @@ func (s *Plugins) UpdateAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aisemanticpromptguard-plugin-in-workspace",
+		OperationID:      "update-aisemanticpromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -17150,7 +17150,7 @@ func (s *Plugins) UpdateAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 		}
 	}
 
-	res := &operations.UpdateAisemanticpromptguardPluginInWorkspaceResponse{
+	res := &operations.UpdateAisemanticpromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -17211,9 +17211,9 @@ func (s *Plugins) UpdateAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 
 }
 
-// DeleteAisemanticresponseguardPluginInWorkspace - Delete a AiSemanticResponseGuard plugin in a workspace
+// DeleteAisemanticresponseguardPlugin - Delete a AiSemanticResponseGuard plugin in a workspace
 // Delete a AiSemanticResponseGuard plugin in a workspace
-func (s *Plugins) DeleteAisemanticresponseguardPluginInWorkspace(ctx context.Context, request operations.DeleteAisemanticresponseguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAisemanticresponseguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAisemanticresponseguardPlugin(ctx context.Context, request operations.DeleteAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.DeleteAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -17242,7 +17242,7 @@ func (s *Plugins) DeleteAisemanticresponseguardPluginInWorkspace(ctx context.Con
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-aisemanticresponseguard-plugin-in-workspace",
+		OperationID:      "delete-aisemanticresponseguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -17370,7 +17370,7 @@ func (s *Plugins) DeleteAisemanticresponseguardPluginInWorkspace(ctx context.Con
 		}
 	}
 
-	res := &operations.DeleteAisemanticresponseguardPluginInWorkspaceResponse{
+	res := &operations.DeleteAisemanticresponseguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -17414,9 +17414,9 @@ func (s *Plugins) DeleteAisemanticresponseguardPluginInWorkspace(ctx context.Con
 
 }
 
-// GetAisemanticresponseguardPluginInWorkspace - Get a AiSemanticResponseGuard plugin in a workspace
+// GetAisemanticresponseguardPlugin - Get a AiSemanticResponseGuard plugin in a workspace
 // Get a AiSemanticResponseGuard plugin in a workspace
-func (s *Plugins) GetAisemanticresponseguardPluginInWorkspace(ctx context.Context, request operations.GetAisemanticresponseguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAisemanticresponseguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAisemanticresponseguardPlugin(ctx context.Context, request operations.GetAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.GetAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -17445,7 +17445,7 @@ func (s *Plugins) GetAisemanticresponseguardPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-aisemanticresponseguard-plugin-in-workspace",
+		OperationID:      "get-aisemanticresponseguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -17573,7 +17573,7 @@ func (s *Plugins) GetAisemanticresponseguardPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.GetAisemanticresponseguardPluginInWorkspaceResponse{
+	res := &operations.GetAisemanticresponseguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -17636,9 +17636,9 @@ func (s *Plugins) GetAisemanticresponseguardPluginInWorkspace(ctx context.Contex
 
 }
 
-// UpdateAisemanticresponseguardPluginInWorkspace - Update a AiSemanticResponseGuard plugin in a workspace
+// UpdateAisemanticresponseguardPlugin - Update a AiSemanticResponseGuard plugin in a workspace
 // Update a AiSemanticResponseGuard plugin in a workspace
-func (s *Plugins) UpdateAisemanticresponseguardPluginInWorkspace(ctx context.Context, request operations.UpdateAisemanticresponseguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAisemanticresponseguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAisemanticresponseguardPlugin(ctx context.Context, request operations.UpdateAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.UpdateAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -17667,7 +17667,7 @@ func (s *Plugins) UpdateAisemanticresponseguardPluginInWorkspace(ctx context.Con
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-aisemanticresponseguard-plugin-in-workspace",
+		OperationID:      "update-aisemanticresponseguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -17802,7 +17802,7 @@ func (s *Plugins) UpdateAisemanticresponseguardPluginInWorkspace(ctx context.Con
 		}
 	}
 
-	res := &operations.UpdateAisemanticresponseguardPluginInWorkspaceResponse{
+	res := &operations.UpdateAisemanticresponseguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -17863,9 +17863,9 @@ func (s *Plugins) UpdateAisemanticresponseguardPluginInWorkspace(ctx context.Con
 
 }
 
-// DeleteAppdynamicsPluginInWorkspace - Delete a AppDynamics plugin in a workspace
+// DeleteAppdynamicsPlugin - Delete a AppDynamics plugin in a workspace
 // Delete a AppDynamics plugin in a workspace
-func (s *Plugins) DeleteAppdynamicsPluginInWorkspace(ctx context.Context, request operations.DeleteAppdynamicsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAppdynamicsPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAppdynamicsPlugin(ctx context.Context, request operations.DeleteAppdynamicsPluginRequest, opts ...operations.Option) (*operations.DeleteAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -17894,7 +17894,7 @@ func (s *Plugins) DeleteAppdynamicsPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-appdynamics-plugin-in-workspace",
+		OperationID:      "delete-appdynamics-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -18022,7 +18022,7 @@ func (s *Plugins) DeleteAppdynamicsPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.DeleteAppdynamicsPluginInWorkspaceResponse{
+	res := &operations.DeleteAppdynamicsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -18066,9 +18066,9 @@ func (s *Plugins) DeleteAppdynamicsPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// GetAppdynamicsPluginInWorkspace - Get a AppDynamics plugin in a workspace
+// GetAppdynamicsPlugin - Get a AppDynamics plugin in a workspace
 // Get a AppDynamics plugin in a workspace
-func (s *Plugins) GetAppdynamicsPluginInWorkspace(ctx context.Context, request operations.GetAppdynamicsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAppdynamicsPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAppdynamicsPlugin(ctx context.Context, request operations.GetAppdynamicsPluginRequest, opts ...operations.Option) (*operations.GetAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -18097,7 +18097,7 @@ func (s *Plugins) GetAppdynamicsPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-appdynamics-plugin-in-workspace",
+		OperationID:      "get-appdynamics-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -18225,7 +18225,7 @@ func (s *Plugins) GetAppdynamicsPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.GetAppdynamicsPluginInWorkspaceResponse{
+	res := &operations.GetAppdynamicsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -18288,9 +18288,9 @@ func (s *Plugins) GetAppdynamicsPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// UpdateAppdynamicsPluginInWorkspace - Update a AppDynamics plugin in a workspace
+// UpdateAppdynamicsPlugin - Update a AppDynamics plugin in a workspace
 // Update a AppDynamics plugin in a workspace
-func (s *Plugins) UpdateAppdynamicsPluginInWorkspace(ctx context.Context, request operations.UpdateAppdynamicsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAppdynamicsPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAppdynamicsPlugin(ctx context.Context, request operations.UpdateAppdynamicsPluginRequest, opts ...operations.Option) (*operations.UpdateAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -18319,7 +18319,7 @@ func (s *Plugins) UpdateAppdynamicsPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-appdynamics-plugin-in-workspace",
+		OperationID:      "update-appdynamics-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -18454,7 +18454,7 @@ func (s *Plugins) UpdateAppdynamicsPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.UpdateAppdynamicsPluginInWorkspaceResponse{
+	res := &operations.UpdateAppdynamicsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -18515,9 +18515,9 @@ func (s *Plugins) UpdateAppdynamicsPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// DeleteAwslambdaPluginInWorkspace - Delete a AwsLambda plugin in a workspace
+// DeleteAwslambdaPlugin - Delete a AwsLambda plugin in a workspace
 // Delete a AwsLambda plugin in a workspace
-func (s *Plugins) DeleteAwslambdaPluginInWorkspace(ctx context.Context, request operations.DeleteAwslambdaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAwslambdaPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.DeleteAwslambdaPluginRequest, opts ...operations.Option) (*operations.DeleteAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -18546,7 +18546,7 @@ func (s *Plugins) DeleteAwslambdaPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-awslambda-plugin-in-workspace",
+		OperationID:      "delete-awslambda-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -18674,7 +18674,7 @@ func (s *Plugins) DeleteAwslambdaPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteAwslambdaPluginInWorkspaceResponse{
+	res := &operations.DeleteAwslambdaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -18718,9 +18718,9 @@ func (s *Plugins) DeleteAwslambdaPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// GetAwslambdaPluginInWorkspace - Get a AwsLambda plugin in a workspace
+// GetAwslambdaPlugin - Get a AwsLambda plugin in a workspace
 // Get a AwsLambda plugin in a workspace
-func (s *Plugins) GetAwslambdaPluginInWorkspace(ctx context.Context, request operations.GetAwslambdaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAwslambdaPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.GetAwslambdaPluginRequest, opts ...operations.Option) (*operations.GetAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -18749,7 +18749,7 @@ func (s *Plugins) GetAwslambdaPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-awslambda-plugin-in-workspace",
+		OperationID:      "get-awslambda-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -18877,7 +18877,7 @@ func (s *Plugins) GetAwslambdaPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.GetAwslambdaPluginInWorkspaceResponse{
+	res := &operations.GetAwslambdaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -18940,9 +18940,9 @@ func (s *Plugins) GetAwslambdaPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// UpdateAwslambdaPluginInWorkspace - Update a AwsLambda plugin in a workspace
+// UpdateAwslambdaPlugin - Update a AwsLambda plugin in a workspace
 // Update a AwsLambda plugin in a workspace
-func (s *Plugins) UpdateAwslambdaPluginInWorkspace(ctx context.Context, request operations.UpdateAwslambdaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAwslambdaPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.UpdateAwslambdaPluginRequest, opts ...operations.Option) (*operations.UpdateAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -18971,7 +18971,7 @@ func (s *Plugins) UpdateAwslambdaPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-awslambda-plugin-in-workspace",
+		OperationID:      "update-awslambda-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -19106,7 +19106,7 @@ func (s *Plugins) UpdateAwslambdaPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.UpdateAwslambdaPluginInWorkspaceResponse{
+	res := &operations.UpdateAwslambdaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -19167,9 +19167,9 @@ func (s *Plugins) UpdateAwslambdaPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// DeleteAzurefunctionsPluginInWorkspace - Delete a AzureFunctions plugin in a workspace
+// DeleteAzurefunctionsPlugin - Delete a AzureFunctions plugin in a workspace
 // Delete a AzureFunctions plugin in a workspace
-func (s *Plugins) DeleteAzurefunctionsPluginInWorkspace(ctx context.Context, request operations.DeleteAzurefunctionsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteAzurefunctionsPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteAzurefunctionsPlugin(ctx context.Context, request operations.DeleteAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.DeleteAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -19198,7 +19198,7 @@ func (s *Plugins) DeleteAzurefunctionsPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-azurefunctions-plugin-in-workspace",
+		OperationID:      "delete-azurefunctions-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -19326,7 +19326,7 @@ func (s *Plugins) DeleteAzurefunctionsPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.DeleteAzurefunctionsPluginInWorkspaceResponse{
+	res := &operations.DeleteAzurefunctionsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -19370,9 +19370,9 @@ func (s *Plugins) DeleteAzurefunctionsPluginInWorkspace(ctx context.Context, req
 
 }
 
-// GetAzurefunctionsPluginInWorkspace - Get a AzureFunctions plugin in a workspace
+// GetAzurefunctionsPlugin - Get a AzureFunctions plugin in a workspace
 // Get a AzureFunctions plugin in a workspace
-func (s *Plugins) GetAzurefunctionsPluginInWorkspace(ctx context.Context, request operations.GetAzurefunctionsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetAzurefunctionsPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetAzurefunctionsPlugin(ctx context.Context, request operations.GetAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.GetAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -19401,7 +19401,7 @@ func (s *Plugins) GetAzurefunctionsPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-azurefunctions-plugin-in-workspace",
+		OperationID:      "get-azurefunctions-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -19529,7 +19529,7 @@ func (s *Plugins) GetAzurefunctionsPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.GetAzurefunctionsPluginInWorkspaceResponse{
+	res := &operations.GetAzurefunctionsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -19592,9 +19592,9 @@ func (s *Plugins) GetAzurefunctionsPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// UpdateAzurefunctionsPluginInWorkspace - Update a AzureFunctions plugin in a workspace
+// UpdateAzurefunctionsPlugin - Update a AzureFunctions plugin in a workspace
 // Update a AzureFunctions plugin in a workspace
-func (s *Plugins) UpdateAzurefunctionsPluginInWorkspace(ctx context.Context, request operations.UpdateAzurefunctionsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateAzurefunctionsPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateAzurefunctionsPlugin(ctx context.Context, request operations.UpdateAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.UpdateAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -19623,7 +19623,7 @@ func (s *Plugins) UpdateAzurefunctionsPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-azurefunctions-plugin-in-workspace",
+		OperationID:      "update-azurefunctions-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -19758,7 +19758,7 @@ func (s *Plugins) UpdateAzurefunctionsPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.UpdateAzurefunctionsPluginInWorkspaceResponse{
+	res := &operations.UpdateAzurefunctionsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -19819,9 +19819,9 @@ func (s *Plugins) UpdateAzurefunctionsPluginInWorkspace(ctx context.Context, req
 
 }
 
-// DeleteBasicauthPluginInWorkspace - Delete a BasicAuth plugin in a workspace
+// DeleteBasicauthPlugin - Delete a BasicAuth plugin in a workspace
 // Delete a BasicAuth plugin in a workspace
-func (s *Plugins) DeleteBasicauthPluginInWorkspace(ctx context.Context, request operations.DeleteBasicauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteBasicauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.DeleteBasicauthPluginRequest, opts ...operations.Option) (*operations.DeleteBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -19850,7 +19850,7 @@ func (s *Plugins) DeleteBasicauthPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-basicauth-plugin-in-workspace",
+		OperationID:      "delete-basicauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -19978,7 +19978,7 @@ func (s *Plugins) DeleteBasicauthPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteBasicauthPluginInWorkspaceResponse{
+	res := &operations.DeleteBasicauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -20022,9 +20022,9 @@ func (s *Plugins) DeleteBasicauthPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// GetBasicauthPluginInWorkspace - Get a BasicAuth plugin in a workspace
+// GetBasicauthPlugin - Get a BasicAuth plugin in a workspace
 // Get a BasicAuth plugin in a workspace
-func (s *Plugins) GetBasicauthPluginInWorkspace(ctx context.Context, request operations.GetBasicauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetBasicauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.GetBasicauthPluginRequest, opts ...operations.Option) (*operations.GetBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -20053,7 +20053,7 @@ func (s *Plugins) GetBasicauthPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-basicauth-plugin-in-workspace",
+		OperationID:      "get-basicauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -20181,7 +20181,7 @@ func (s *Plugins) GetBasicauthPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.GetBasicauthPluginInWorkspaceResponse{
+	res := &operations.GetBasicauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -20244,9 +20244,9 @@ func (s *Plugins) GetBasicauthPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// UpdateBasicauthPluginInWorkspace - Update a BasicAuth plugin in a workspace
+// UpdateBasicauthPlugin - Update a BasicAuth plugin in a workspace
 // Update a BasicAuth plugin in a workspace
-func (s *Plugins) UpdateBasicauthPluginInWorkspace(ctx context.Context, request operations.UpdateBasicauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateBasicauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.UpdateBasicauthPluginRequest, opts ...operations.Option) (*operations.UpdateBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -20275,7 +20275,7 @@ func (s *Plugins) UpdateBasicauthPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-basicauth-plugin-in-workspace",
+		OperationID:      "update-basicauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -20410,7 +20410,7 @@ func (s *Plugins) UpdateBasicauthPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.UpdateBasicauthPluginInWorkspaceResponse{
+	res := &operations.UpdateBasicauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -20471,9 +20471,9 @@ func (s *Plugins) UpdateBasicauthPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// DeleteBotdetectionPluginInWorkspace - Delete a BotDetection plugin in a workspace
+// DeleteBotdetectionPlugin - Delete a BotDetection plugin in a workspace
 // Delete a BotDetection plugin in a workspace
-func (s *Plugins) DeleteBotdetectionPluginInWorkspace(ctx context.Context, request operations.DeleteBotdetectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteBotdetectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteBotdetectionPlugin(ctx context.Context, request operations.DeleteBotdetectionPluginRequest, opts ...operations.Option) (*operations.DeleteBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -20502,7 +20502,7 @@ func (s *Plugins) DeleteBotdetectionPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-botdetection-plugin-in-workspace",
+		OperationID:      "delete-botdetection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -20630,7 +20630,7 @@ func (s *Plugins) DeleteBotdetectionPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.DeleteBotdetectionPluginInWorkspaceResponse{
+	res := &operations.DeleteBotdetectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -20674,9 +20674,9 @@ func (s *Plugins) DeleteBotdetectionPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// GetBotdetectionPluginInWorkspace - Get a BotDetection plugin in a workspace
+// GetBotdetectionPlugin - Get a BotDetection plugin in a workspace
 // Get a BotDetection plugin in a workspace
-func (s *Plugins) GetBotdetectionPluginInWorkspace(ctx context.Context, request operations.GetBotdetectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetBotdetectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetBotdetectionPlugin(ctx context.Context, request operations.GetBotdetectionPluginRequest, opts ...operations.Option) (*operations.GetBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -20705,7 +20705,7 @@ func (s *Plugins) GetBotdetectionPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-botdetection-plugin-in-workspace",
+		OperationID:      "get-botdetection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -20833,7 +20833,7 @@ func (s *Plugins) GetBotdetectionPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.GetBotdetectionPluginInWorkspaceResponse{
+	res := &operations.GetBotdetectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -20896,9 +20896,9 @@ func (s *Plugins) GetBotdetectionPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// UpdateBotdetectionPluginInWorkspace - Update a BotDetection plugin in a workspace
+// UpdateBotdetectionPlugin - Update a BotDetection plugin in a workspace
 // Update a BotDetection plugin in a workspace
-func (s *Plugins) UpdateBotdetectionPluginInWorkspace(ctx context.Context, request operations.UpdateBotdetectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateBotdetectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateBotdetectionPlugin(ctx context.Context, request operations.UpdateBotdetectionPluginRequest, opts ...operations.Option) (*operations.UpdateBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -20927,7 +20927,7 @@ func (s *Plugins) UpdateBotdetectionPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-botdetection-plugin-in-workspace",
+		OperationID:      "update-botdetection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -21062,7 +21062,7 @@ func (s *Plugins) UpdateBotdetectionPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.UpdateBotdetectionPluginInWorkspaceResponse{
+	res := &operations.UpdateBotdetectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -21123,9 +21123,9 @@ func (s *Plugins) UpdateBotdetectionPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// DeleteCanaryPluginInWorkspace - Delete a Canary plugin in a workspace
+// DeleteCanaryPlugin - Delete a Canary plugin in a workspace
 // Delete a Canary plugin in a workspace
-func (s *Plugins) DeleteCanaryPluginInWorkspace(ctx context.Context, request operations.DeleteCanaryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteCanaryPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteCanaryPlugin(ctx context.Context, request operations.DeleteCanaryPluginRequest, opts ...operations.Option) (*operations.DeleteCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -21154,7 +21154,7 @@ func (s *Plugins) DeleteCanaryPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-canary-plugin-in-workspace",
+		OperationID:      "delete-canary-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -21282,7 +21282,7 @@ func (s *Plugins) DeleteCanaryPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteCanaryPluginInWorkspaceResponse{
+	res := &operations.DeleteCanaryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -21326,9 +21326,9 @@ func (s *Plugins) DeleteCanaryPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetCanaryPluginInWorkspace - Get a Canary plugin in a workspace
+// GetCanaryPlugin - Get a Canary plugin in a workspace
 // Get a Canary plugin in a workspace
-func (s *Plugins) GetCanaryPluginInWorkspace(ctx context.Context, request operations.GetCanaryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetCanaryPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetCanaryPlugin(ctx context.Context, request operations.GetCanaryPluginRequest, opts ...operations.Option) (*operations.GetCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -21357,7 +21357,7 @@ func (s *Plugins) GetCanaryPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-canary-plugin-in-workspace",
+		OperationID:      "get-canary-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -21485,7 +21485,7 @@ func (s *Plugins) GetCanaryPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetCanaryPluginInWorkspaceResponse{
+	res := &operations.GetCanaryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -21548,9 +21548,9 @@ func (s *Plugins) GetCanaryPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// UpdateCanaryPluginInWorkspace - Update a Canary plugin in a workspace
+// UpdateCanaryPlugin - Update a Canary plugin in a workspace
 // Update a Canary plugin in a workspace
-func (s *Plugins) UpdateCanaryPluginInWorkspace(ctx context.Context, request operations.UpdateCanaryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateCanaryPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateCanaryPlugin(ctx context.Context, request operations.UpdateCanaryPluginRequest, opts ...operations.Option) (*operations.UpdateCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -21579,7 +21579,7 @@ func (s *Plugins) UpdateCanaryPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-canary-plugin-in-workspace",
+		OperationID:      "update-canary-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -21714,7 +21714,7 @@ func (s *Plugins) UpdateCanaryPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.UpdateCanaryPluginInWorkspaceResponse{
+	res := &operations.UpdateCanaryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -21775,9 +21775,9 @@ func (s *Plugins) UpdateCanaryPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteConfluentPluginInWorkspace - Delete a Confluent plugin in a workspace
+// DeleteConfluentPlugin - Delete a Confluent plugin in a workspace
 // Delete a Confluent plugin in a workspace
-func (s *Plugins) DeleteConfluentPluginInWorkspace(ctx context.Context, request operations.DeleteConfluentPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteConfluentPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteConfluentPlugin(ctx context.Context, request operations.DeleteConfluentPluginRequest, opts ...operations.Option) (*operations.DeleteConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -21806,7 +21806,7 @@ func (s *Plugins) DeleteConfluentPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-confluent-plugin-in-workspace",
+		OperationID:      "delete-confluent-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -21934,7 +21934,7 @@ func (s *Plugins) DeleteConfluentPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteConfluentPluginInWorkspaceResponse{
+	res := &operations.DeleteConfluentPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -21978,9 +21978,9 @@ func (s *Plugins) DeleteConfluentPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// GetConfluentPluginInWorkspace - Get a Confluent plugin in a workspace
+// GetConfluentPlugin - Get a Confluent plugin in a workspace
 // Get a Confluent plugin in a workspace
-func (s *Plugins) GetConfluentPluginInWorkspace(ctx context.Context, request operations.GetConfluentPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetConfluentPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetConfluentPlugin(ctx context.Context, request operations.GetConfluentPluginRequest, opts ...operations.Option) (*operations.GetConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -22009,7 +22009,7 @@ func (s *Plugins) GetConfluentPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-confluent-plugin-in-workspace",
+		OperationID:      "get-confluent-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -22137,7 +22137,7 @@ func (s *Plugins) GetConfluentPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.GetConfluentPluginInWorkspaceResponse{
+	res := &operations.GetConfluentPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -22200,9 +22200,9 @@ func (s *Plugins) GetConfluentPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// UpdateConfluentPluginInWorkspace - Update a Confluent plugin in a workspace
+// UpdateConfluentPlugin - Update a Confluent plugin in a workspace
 // Update a Confluent plugin in a workspace
-func (s *Plugins) UpdateConfluentPluginInWorkspace(ctx context.Context, request operations.UpdateConfluentPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateConfluentPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateConfluentPlugin(ctx context.Context, request operations.UpdateConfluentPluginRequest, opts ...operations.Option) (*operations.UpdateConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -22231,7 +22231,7 @@ func (s *Plugins) UpdateConfluentPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-confluent-plugin-in-workspace",
+		OperationID:      "update-confluent-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -22366,7 +22366,7 @@ func (s *Plugins) UpdateConfluentPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.UpdateConfluentPluginInWorkspaceResponse{
+	res := &operations.UpdateConfluentPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -22427,9 +22427,9 @@ func (s *Plugins) UpdateConfluentPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// DeleteConfluentconsumePluginInWorkspace - Delete a ConfluentConsume plugin in a workspace
+// DeleteConfluentconsumePlugin - Delete a ConfluentConsume plugin in a workspace
 // Delete a ConfluentConsume plugin in a workspace
-func (s *Plugins) DeleteConfluentconsumePluginInWorkspace(ctx context.Context, request operations.DeleteConfluentconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteConfluentconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteConfluentconsumePlugin(ctx context.Context, request operations.DeleteConfluentconsumePluginRequest, opts ...operations.Option) (*operations.DeleteConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -22458,7 +22458,7 @@ func (s *Plugins) DeleteConfluentconsumePluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-confluentconsume-plugin-in-workspace",
+		OperationID:      "delete-confluentconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -22586,7 +22586,7 @@ func (s *Plugins) DeleteConfluentconsumePluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.DeleteConfluentconsumePluginInWorkspaceResponse{
+	res := &operations.DeleteConfluentconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -22630,9 +22630,9 @@ func (s *Plugins) DeleteConfluentconsumePluginInWorkspace(ctx context.Context, r
 
 }
 
-// GetConfluentconsumePluginInWorkspace - Get a ConfluentConsume plugin in a workspace
+// GetConfluentconsumePlugin - Get a ConfluentConsume plugin in a workspace
 // Get a ConfluentConsume plugin in a workspace
-func (s *Plugins) GetConfluentconsumePluginInWorkspace(ctx context.Context, request operations.GetConfluentconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetConfluentconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetConfluentconsumePlugin(ctx context.Context, request operations.GetConfluentconsumePluginRequest, opts ...operations.Option) (*operations.GetConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -22661,7 +22661,7 @@ func (s *Plugins) GetConfluentconsumePluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-confluentconsume-plugin-in-workspace",
+		OperationID:      "get-confluentconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -22789,7 +22789,7 @@ func (s *Plugins) GetConfluentconsumePluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.GetConfluentconsumePluginInWorkspaceResponse{
+	res := &operations.GetConfluentconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -22852,9 +22852,9 @@ func (s *Plugins) GetConfluentconsumePluginInWorkspace(ctx context.Context, requ
 
 }
 
-// UpdateConfluentconsumePluginInWorkspace - Update a ConfluentConsume plugin in a workspace
+// UpdateConfluentconsumePlugin - Update a ConfluentConsume plugin in a workspace
 // Update a ConfluentConsume plugin in a workspace
-func (s *Plugins) UpdateConfluentconsumePluginInWorkspace(ctx context.Context, request operations.UpdateConfluentconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateConfluentconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateConfluentconsumePlugin(ctx context.Context, request operations.UpdateConfluentconsumePluginRequest, opts ...operations.Option) (*operations.UpdateConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -22883,7 +22883,7 @@ func (s *Plugins) UpdateConfluentconsumePluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-confluentconsume-plugin-in-workspace",
+		OperationID:      "update-confluentconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -23018,7 +23018,7 @@ func (s *Plugins) UpdateConfluentconsumePluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.UpdateConfluentconsumePluginInWorkspaceResponse{
+	res := &operations.UpdateConfluentconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -23079,9 +23079,9 @@ func (s *Plugins) UpdateConfluentconsumePluginInWorkspace(ctx context.Context, r
 
 }
 
-// DeleteCorrelationidPluginInWorkspace - Delete a CorrelationId plugin in a workspace
+// DeleteCorrelationidPlugin - Delete a CorrelationId plugin in a workspace
 // Delete a CorrelationId plugin in a workspace
-func (s *Plugins) DeleteCorrelationidPluginInWorkspace(ctx context.Context, request operations.DeleteCorrelationidPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteCorrelationidPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operations.DeleteCorrelationidPluginRequest, opts ...operations.Option) (*operations.DeleteCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -23110,7 +23110,7 @@ func (s *Plugins) DeleteCorrelationidPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-correlationid-plugin-in-workspace",
+		OperationID:      "delete-correlationid-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -23238,7 +23238,7 @@ func (s *Plugins) DeleteCorrelationidPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteCorrelationidPluginInWorkspaceResponse{
+	res := &operations.DeleteCorrelationidPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -23282,9 +23282,9 @@ func (s *Plugins) DeleteCorrelationidPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetCorrelationidPluginInWorkspace - Get a CorrelationId plugin in a workspace
+// GetCorrelationidPlugin - Get a CorrelationId plugin in a workspace
 // Get a CorrelationId plugin in a workspace
-func (s *Plugins) GetCorrelationidPluginInWorkspace(ctx context.Context, request operations.GetCorrelationidPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetCorrelationidPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations.GetCorrelationidPluginRequest, opts ...operations.Option) (*operations.GetCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -23313,7 +23313,7 @@ func (s *Plugins) GetCorrelationidPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-correlationid-plugin-in-workspace",
+		OperationID:      "get-correlationid-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -23441,7 +23441,7 @@ func (s *Plugins) GetCorrelationidPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetCorrelationidPluginInWorkspaceResponse{
+	res := &operations.GetCorrelationidPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -23504,9 +23504,9 @@ func (s *Plugins) GetCorrelationidPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateCorrelationidPluginInWorkspace - Update a CorrelationId plugin in a workspace
+// UpdateCorrelationidPlugin - Update a CorrelationId plugin in a workspace
 // Update a CorrelationId plugin in a workspace
-func (s *Plugins) UpdateCorrelationidPluginInWorkspace(ctx context.Context, request operations.UpdateCorrelationidPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateCorrelationidPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operations.UpdateCorrelationidPluginRequest, opts ...operations.Option) (*operations.UpdateCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -23535,7 +23535,7 @@ func (s *Plugins) UpdateCorrelationidPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-correlationid-plugin-in-workspace",
+		OperationID:      "update-correlationid-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -23670,7 +23670,7 @@ func (s *Plugins) UpdateCorrelationidPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateCorrelationidPluginInWorkspaceResponse{
+	res := &operations.UpdateCorrelationidPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -23731,9 +23731,9 @@ func (s *Plugins) UpdateCorrelationidPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteCorsPluginInWorkspace - Delete a Cors plugin in a workspace
+// DeleteCorsPlugin - Delete a Cors plugin in a workspace
 // Delete a Cors plugin in a workspace
-func (s *Plugins) DeleteCorsPluginInWorkspace(ctx context.Context, request operations.DeleteCorsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteCorsPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.DeleteCorsPluginRequest, opts ...operations.Option) (*operations.DeleteCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -23762,7 +23762,7 @@ func (s *Plugins) DeleteCorsPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-cors-plugin-in-workspace",
+		OperationID:      "delete-cors-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -23890,7 +23890,7 @@ func (s *Plugins) DeleteCorsPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.DeleteCorsPluginInWorkspaceResponse{
+	res := &operations.DeleteCorsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -23934,9 +23934,9 @@ func (s *Plugins) DeleteCorsPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// GetCorsPluginInWorkspace - Get a Cors plugin in a workspace
+// GetCorsPlugin - Get a Cors plugin in a workspace
 // Get a Cors plugin in a workspace
-func (s *Plugins) GetCorsPluginInWorkspace(ctx context.Context, request operations.GetCorsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetCorsPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsPluginRequest, opts ...operations.Option) (*operations.GetCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -23965,7 +23965,7 @@ func (s *Plugins) GetCorsPluginInWorkspace(ctx context.Context, request operatio
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-cors-plugin-in-workspace",
+		OperationID:      "get-cors-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -24093,7 +24093,7 @@ func (s *Plugins) GetCorsPluginInWorkspace(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.GetCorsPluginInWorkspaceResponse{
+	res := &operations.GetCorsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -24156,9 +24156,9 @@ func (s *Plugins) GetCorsPluginInWorkspace(ctx context.Context, request operatio
 
 }
 
-// UpdateCorsPluginInWorkspace - Update a Cors plugin in a workspace
+// UpdateCorsPlugin - Update a Cors plugin in a workspace
 // Update a Cors plugin in a workspace
-func (s *Plugins) UpdateCorsPluginInWorkspace(ctx context.Context, request operations.UpdateCorsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateCorsPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.UpdateCorsPluginRequest, opts ...operations.Option) (*operations.UpdateCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -24187,7 +24187,7 @@ func (s *Plugins) UpdateCorsPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-cors-plugin-in-workspace",
+		OperationID:      "update-cors-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -24322,7 +24322,7 @@ func (s *Plugins) UpdateCorsPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.UpdateCorsPluginInWorkspaceResponse{
+	res := &operations.UpdateCorsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -24383,9 +24383,9 @@ func (s *Plugins) UpdateCorsPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// DeleteDatadogPluginInWorkspace - Delete a Datadog plugin in a workspace
+// DeleteDatadogPlugin - Delete a Datadog plugin in a workspace
 // Delete a Datadog plugin in a workspace
-func (s *Plugins) DeleteDatadogPluginInWorkspace(ctx context.Context, request operations.DeleteDatadogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteDatadogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteDatadogPlugin(ctx context.Context, request operations.DeleteDatadogPluginRequest, opts ...operations.Option) (*operations.DeleteDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -24414,7 +24414,7 @@ func (s *Plugins) DeleteDatadogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-datadog-plugin-in-workspace",
+		OperationID:      "delete-datadog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -24542,7 +24542,7 @@ func (s *Plugins) DeleteDatadogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteDatadogPluginInWorkspaceResponse{
+	res := &operations.DeleteDatadogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -24586,9 +24586,9 @@ func (s *Plugins) DeleteDatadogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetDatadogPluginInWorkspace - Get a Datadog plugin in a workspace
+// GetDatadogPlugin - Get a Datadog plugin in a workspace
 // Get a Datadog plugin in a workspace
-func (s *Plugins) GetDatadogPluginInWorkspace(ctx context.Context, request operations.GetDatadogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetDatadogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetDatadogPlugin(ctx context.Context, request operations.GetDatadogPluginRequest, opts ...operations.Option) (*operations.GetDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -24617,7 +24617,7 @@ func (s *Plugins) GetDatadogPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-datadog-plugin-in-workspace",
+		OperationID:      "get-datadog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -24745,7 +24745,7 @@ func (s *Plugins) GetDatadogPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetDatadogPluginInWorkspaceResponse{
+	res := &operations.GetDatadogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -24808,9 +24808,9 @@ func (s *Plugins) GetDatadogPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateDatadogPluginInWorkspace - Update a Datadog plugin in a workspace
+// UpdateDatadogPlugin - Update a Datadog plugin in a workspace
 // Update a Datadog plugin in a workspace
-func (s *Plugins) UpdateDatadogPluginInWorkspace(ctx context.Context, request operations.UpdateDatadogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateDatadogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateDatadogPlugin(ctx context.Context, request operations.UpdateDatadogPluginRequest, opts ...operations.Option) (*operations.UpdateDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -24839,7 +24839,7 @@ func (s *Plugins) UpdateDatadogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-datadog-plugin-in-workspace",
+		OperationID:      "update-datadog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -24974,7 +24974,7 @@ func (s *Plugins) UpdateDatadogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateDatadogPluginInWorkspaceResponse{
+	res := &operations.UpdateDatadogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -25035,9 +25035,9 @@ func (s *Plugins) UpdateDatadogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteDatakitPluginInWorkspace - Delete a Datakit plugin in a workspace
+// DeleteDatakitPlugin - Delete a Datakit plugin in a workspace
 // Delete a Datakit plugin in a workspace
-func (s *Plugins) DeleteDatakitPluginInWorkspace(ctx context.Context, request operations.DeleteDatakitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteDatakitPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteDatakitPlugin(ctx context.Context, request operations.DeleteDatakitPluginRequest, opts ...operations.Option) (*operations.DeleteDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -25066,7 +25066,7 @@ func (s *Plugins) DeleteDatakitPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-datakit-plugin-in-workspace",
+		OperationID:      "delete-datakit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -25194,7 +25194,7 @@ func (s *Plugins) DeleteDatakitPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteDatakitPluginInWorkspaceResponse{
+	res := &operations.DeleteDatakitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -25238,9 +25238,9 @@ func (s *Plugins) DeleteDatakitPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetDatakitPluginInWorkspace - Get a Datakit plugin in a workspace
+// GetDatakitPlugin - Get a Datakit plugin in a workspace
 // Get a Datakit plugin in a workspace
-func (s *Plugins) GetDatakitPluginInWorkspace(ctx context.Context, request operations.GetDatakitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetDatakitPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetDatakitPlugin(ctx context.Context, request operations.GetDatakitPluginRequest, opts ...operations.Option) (*operations.GetDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -25269,7 +25269,7 @@ func (s *Plugins) GetDatakitPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-datakit-plugin-in-workspace",
+		OperationID:      "get-datakit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -25397,7 +25397,7 @@ func (s *Plugins) GetDatakitPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetDatakitPluginInWorkspaceResponse{
+	res := &operations.GetDatakitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -25460,9 +25460,9 @@ func (s *Plugins) GetDatakitPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateDatakitPluginInWorkspace - Update a Datakit plugin in a workspace
+// UpdateDatakitPlugin - Update a Datakit plugin in a workspace
 // Update a Datakit plugin in a workspace
-func (s *Plugins) UpdateDatakitPluginInWorkspace(ctx context.Context, request operations.UpdateDatakitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateDatakitPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateDatakitPlugin(ctx context.Context, request operations.UpdateDatakitPluginRequest, opts ...operations.Option) (*operations.UpdateDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -25491,7 +25491,7 @@ func (s *Plugins) UpdateDatakitPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-datakit-plugin-in-workspace",
+		OperationID:      "update-datakit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -25626,7 +25626,7 @@ func (s *Plugins) UpdateDatakitPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateDatakitPluginInWorkspaceResponse{
+	res := &operations.UpdateDatakitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -25687,9 +25687,9 @@ func (s *Plugins) UpdateDatakitPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteDegraphqlPluginInWorkspace - Delete a Degraphql plugin in a workspace
+// DeleteDegraphqlPlugin - Delete a Degraphql plugin in a workspace
 // Delete a Degraphql plugin in a workspace
-func (s *Plugins) DeleteDegraphqlPluginInWorkspace(ctx context.Context, request operations.DeleteDegraphqlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteDegraphqlPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteDegraphqlPlugin(ctx context.Context, request operations.DeleteDegraphqlPluginRequest, opts ...operations.Option) (*operations.DeleteDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -25718,7 +25718,7 @@ func (s *Plugins) DeleteDegraphqlPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-degraphql-plugin-in-workspace",
+		OperationID:      "delete-degraphql-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -25846,7 +25846,7 @@ func (s *Plugins) DeleteDegraphqlPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteDegraphqlPluginInWorkspaceResponse{
+	res := &operations.DeleteDegraphqlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -25890,9 +25890,9 @@ func (s *Plugins) DeleteDegraphqlPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// GetDegraphqlPluginInWorkspace - Get a Degraphql plugin in a workspace
+// GetDegraphqlPlugin - Get a Degraphql plugin in a workspace
 // Get a Degraphql plugin in a workspace
-func (s *Plugins) GetDegraphqlPluginInWorkspace(ctx context.Context, request operations.GetDegraphqlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetDegraphqlPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetDegraphqlPlugin(ctx context.Context, request operations.GetDegraphqlPluginRequest, opts ...operations.Option) (*operations.GetDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -25921,7 +25921,7 @@ func (s *Plugins) GetDegraphqlPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-degraphql-plugin-in-workspace",
+		OperationID:      "get-degraphql-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -26049,7 +26049,7 @@ func (s *Plugins) GetDegraphqlPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.GetDegraphqlPluginInWorkspaceResponse{
+	res := &operations.GetDegraphqlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -26112,9 +26112,9 @@ func (s *Plugins) GetDegraphqlPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// UpdateDegraphqlPluginInWorkspace - Update a Degraphql plugin in a workspace
+// UpdateDegraphqlPlugin - Update a Degraphql plugin in a workspace
 // Update a Degraphql plugin in a workspace
-func (s *Plugins) UpdateDegraphqlPluginInWorkspace(ctx context.Context, request operations.UpdateDegraphqlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateDegraphqlPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateDegraphqlPlugin(ctx context.Context, request operations.UpdateDegraphqlPluginRequest, opts ...operations.Option) (*operations.UpdateDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -26143,7 +26143,7 @@ func (s *Plugins) UpdateDegraphqlPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-degraphql-plugin-in-workspace",
+		OperationID:      "update-degraphql-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -26278,7 +26278,7 @@ func (s *Plugins) UpdateDegraphqlPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.UpdateDegraphqlPluginInWorkspaceResponse{
+	res := &operations.UpdateDegraphqlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -26339,9 +26339,9 @@ func (s *Plugins) UpdateDegraphqlPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// DeleteExittransformerPluginInWorkspace - Delete a ExitTransformer plugin in a workspace
+// DeleteExittransformerPlugin - Delete a ExitTransformer plugin in a workspace
 // Delete a ExitTransformer plugin in a workspace
-func (s *Plugins) DeleteExittransformerPluginInWorkspace(ctx context.Context, request operations.DeleteExittransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteExittransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request operations.DeleteExittransformerPluginRequest, opts ...operations.Option) (*operations.DeleteExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -26370,7 +26370,7 @@ func (s *Plugins) DeleteExittransformerPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-exittransformer-plugin-in-workspace",
+		OperationID:      "delete-exittransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -26498,7 +26498,7 @@ func (s *Plugins) DeleteExittransformerPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.DeleteExittransformerPluginInWorkspaceResponse{
+	res := &operations.DeleteExittransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -26542,9 +26542,9 @@ func (s *Plugins) DeleteExittransformerPluginInWorkspace(ctx context.Context, re
 
 }
 
-// GetExittransformerPluginInWorkspace - Get a ExitTransformer plugin in a workspace
+// GetExittransformerPlugin - Get a ExitTransformer plugin in a workspace
 // Get a ExitTransformer plugin in a workspace
-func (s *Plugins) GetExittransformerPluginInWorkspace(ctx context.Context, request operations.GetExittransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetExittransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operations.GetExittransformerPluginRequest, opts ...operations.Option) (*operations.GetExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -26573,7 +26573,7 @@ func (s *Plugins) GetExittransformerPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-exittransformer-plugin-in-workspace",
+		OperationID:      "get-exittransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -26701,7 +26701,7 @@ func (s *Plugins) GetExittransformerPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.GetExittransformerPluginInWorkspaceResponse{
+	res := &operations.GetExittransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -26764,9 +26764,9 @@ func (s *Plugins) GetExittransformerPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// UpdateExittransformerPluginInWorkspace - Update a ExitTransformer plugin in a workspace
+// UpdateExittransformerPlugin - Update a ExitTransformer plugin in a workspace
 // Update a ExitTransformer plugin in a workspace
-func (s *Plugins) UpdateExittransformerPluginInWorkspace(ctx context.Context, request operations.UpdateExittransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateExittransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request operations.UpdateExittransformerPluginRequest, opts ...operations.Option) (*operations.UpdateExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -26795,7 +26795,7 @@ func (s *Plugins) UpdateExittransformerPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-exittransformer-plugin-in-workspace",
+		OperationID:      "update-exittransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -26930,7 +26930,7 @@ func (s *Plugins) UpdateExittransformerPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.UpdateExittransformerPluginInWorkspaceResponse{
+	res := &operations.UpdateExittransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -26991,9 +26991,9 @@ func (s *Plugins) UpdateExittransformerPluginInWorkspace(ctx context.Context, re
 
 }
 
-// DeleteFilelogPluginInWorkspace - Delete a FileLog plugin in a workspace
+// DeleteFilelogPlugin - Delete a FileLog plugin in a workspace
 // Delete a FileLog plugin in a workspace
-func (s *Plugins) DeleteFilelogPluginInWorkspace(ctx context.Context, request operations.DeleteFilelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteFilelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.DeleteFilelogPluginRequest, opts ...operations.Option) (*operations.DeleteFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -27022,7 +27022,7 @@ func (s *Plugins) DeleteFilelogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-filelog-plugin-in-workspace",
+		OperationID:      "delete-filelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -27150,7 +27150,7 @@ func (s *Plugins) DeleteFilelogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteFilelogPluginInWorkspaceResponse{
+	res := &operations.DeleteFilelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -27194,9 +27194,9 @@ func (s *Plugins) DeleteFilelogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetFilelogPluginInWorkspace - Get a FileLog plugin in a workspace
+// GetFilelogPlugin - Get a FileLog plugin in a workspace
 // Get a FileLog plugin in a workspace
-func (s *Plugins) GetFilelogPluginInWorkspace(ctx context.Context, request operations.GetFilelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetFilelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFilelogPluginRequest, opts ...operations.Option) (*operations.GetFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -27225,7 +27225,7 @@ func (s *Plugins) GetFilelogPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-filelog-plugin-in-workspace",
+		OperationID:      "get-filelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -27353,7 +27353,7 @@ func (s *Plugins) GetFilelogPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetFilelogPluginInWorkspaceResponse{
+	res := &operations.GetFilelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -27416,9 +27416,9 @@ func (s *Plugins) GetFilelogPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateFilelogPluginInWorkspace - Update a FileLog plugin in a workspace
+// UpdateFilelogPlugin - Update a FileLog plugin in a workspace
 // Update a FileLog plugin in a workspace
-func (s *Plugins) UpdateFilelogPluginInWorkspace(ctx context.Context, request operations.UpdateFilelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateFilelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.UpdateFilelogPluginRequest, opts ...operations.Option) (*operations.UpdateFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -27447,7 +27447,7 @@ func (s *Plugins) UpdateFilelogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-filelog-plugin-in-workspace",
+		OperationID:      "update-filelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -27582,7 +27582,7 @@ func (s *Plugins) UpdateFilelogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateFilelogPluginInWorkspaceResponse{
+	res := &operations.UpdateFilelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -27643,9 +27643,9 @@ func (s *Plugins) UpdateFilelogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteForwardproxyPluginInWorkspace - Delete a ForwardProxy plugin in a workspace
+// DeleteForwardproxyPlugin - Delete a ForwardProxy plugin in a workspace
 // Delete a ForwardProxy plugin in a workspace
-func (s *Plugins) DeleteForwardproxyPluginInWorkspace(ctx context.Context, request operations.DeleteForwardproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteForwardproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteForwardproxyPlugin(ctx context.Context, request operations.DeleteForwardproxyPluginRequest, opts ...operations.Option) (*operations.DeleteForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -27674,7 +27674,7 @@ func (s *Plugins) DeleteForwardproxyPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-forwardproxy-plugin-in-workspace",
+		OperationID:      "delete-forwardproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -27802,7 +27802,7 @@ func (s *Plugins) DeleteForwardproxyPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.DeleteForwardproxyPluginInWorkspaceResponse{
+	res := &operations.DeleteForwardproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -27846,9 +27846,9 @@ func (s *Plugins) DeleteForwardproxyPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// GetForwardproxyPluginInWorkspace - Get a ForwardProxy plugin in a workspace
+// GetForwardproxyPlugin - Get a ForwardProxy plugin in a workspace
 // Get a ForwardProxy plugin in a workspace
-func (s *Plugins) GetForwardproxyPluginInWorkspace(ctx context.Context, request operations.GetForwardproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetForwardproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetForwardproxyPlugin(ctx context.Context, request operations.GetForwardproxyPluginRequest, opts ...operations.Option) (*operations.GetForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -27877,7 +27877,7 @@ func (s *Plugins) GetForwardproxyPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-forwardproxy-plugin-in-workspace",
+		OperationID:      "get-forwardproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -28005,7 +28005,7 @@ func (s *Plugins) GetForwardproxyPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.GetForwardproxyPluginInWorkspaceResponse{
+	res := &operations.GetForwardproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -28068,9 +28068,9 @@ func (s *Plugins) GetForwardproxyPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// UpdateForwardproxyPluginInWorkspace - Update a ForwardProxy plugin in a workspace
+// UpdateForwardproxyPlugin - Update a ForwardProxy plugin in a workspace
 // Update a ForwardProxy plugin in a workspace
-func (s *Plugins) UpdateForwardproxyPluginInWorkspace(ctx context.Context, request operations.UpdateForwardproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateForwardproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateForwardproxyPlugin(ctx context.Context, request operations.UpdateForwardproxyPluginRequest, opts ...operations.Option) (*operations.UpdateForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -28099,7 +28099,7 @@ func (s *Plugins) UpdateForwardproxyPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-forwardproxy-plugin-in-workspace",
+		OperationID:      "update-forwardproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -28234,7 +28234,7 @@ func (s *Plugins) UpdateForwardproxyPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.UpdateForwardproxyPluginInWorkspaceResponse{
+	res := &operations.UpdateForwardproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -28295,9 +28295,9 @@ func (s *Plugins) UpdateForwardproxyPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// DeleteGraphqlproxycacheadvancedPluginInWorkspace - Delete a GraphqlProxyCacheAdvanced plugin in a workspace
+// DeleteGraphqlproxycacheadvancedPlugin - Delete a GraphqlProxyCacheAdvanced plugin in a workspace
 // Delete a GraphqlProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) DeleteGraphqlproxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteGraphqlproxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.DeleteGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -28326,7 +28326,7 @@ func (s *Plugins) DeleteGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-graphqlproxycacheadvanced-plugin-in-workspace",
+		OperationID:      "delete-graphqlproxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -28454,7 +28454,7 @@ func (s *Plugins) DeleteGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 		}
 	}
 
-	res := &operations.DeleteGraphqlproxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteGraphqlproxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -28498,9 +28498,9 @@ func (s *Plugins) DeleteGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 
 }
 
-// GetGraphqlproxycacheadvancedPluginInWorkspace - Get a GraphqlProxyCacheAdvanced plugin in a workspace
+// GetGraphqlproxycacheadvancedPlugin - Get a GraphqlProxyCacheAdvanced plugin in a workspace
 // Get a GraphqlProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) GetGraphqlproxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.GetGraphqlproxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetGraphqlproxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.GetGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.GetGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -28529,7 +28529,7 @@ func (s *Plugins) GetGraphqlproxycacheadvancedPluginInWorkspace(ctx context.Cont
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-graphqlproxycacheadvanced-plugin-in-workspace",
+		OperationID:      "get-graphqlproxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -28657,7 +28657,7 @@ func (s *Plugins) GetGraphqlproxycacheadvancedPluginInWorkspace(ctx context.Cont
 		}
 	}
 
-	res := &operations.GetGraphqlproxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.GetGraphqlproxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -28720,9 +28720,9 @@ func (s *Plugins) GetGraphqlproxycacheadvancedPluginInWorkspace(ctx context.Cont
 
 }
 
-// UpdateGraphqlproxycacheadvancedPluginInWorkspace - Update a GraphqlProxyCacheAdvanced plugin in a workspace
+// UpdateGraphqlproxycacheadvancedPlugin - Update a GraphqlProxyCacheAdvanced plugin in a workspace
 // Update a GraphqlProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) UpdateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateGraphqlproxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.UpdateGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -28751,7 +28751,7 @@ func (s *Plugins) UpdateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-graphqlproxycacheadvanced-plugin-in-workspace",
+		OperationID:      "update-graphqlproxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -28886,7 +28886,7 @@ func (s *Plugins) UpdateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 		}
 	}
 
-	res := &operations.UpdateGraphqlproxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateGraphqlproxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -28947,9 +28947,9 @@ func (s *Plugins) UpdateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 
 }
 
-// DeleteGraphqlratelimitingadvancedPluginInWorkspace - Delete a GraphqlRateLimitingAdvanced plugin in a workspace
+// DeleteGraphqlratelimitingadvancedPlugin - Delete a GraphqlRateLimitingAdvanced plugin in a workspace
 // Delete a GraphqlRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) DeleteGraphqlratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteGraphqlratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.DeleteGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -28978,7 +28978,7 @@ func (s *Plugins) DeleteGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-graphqlratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "delete-graphqlratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -29106,7 +29106,7 @@ func (s *Plugins) DeleteGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 		}
 	}
 
-	res := &operations.DeleteGraphqlratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteGraphqlratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -29150,9 +29150,9 @@ func (s *Plugins) DeleteGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 
 }
 
-// GetGraphqlratelimitingadvancedPluginInWorkspace - Get a GraphqlRateLimitingAdvanced plugin in a workspace
+// GetGraphqlratelimitingadvancedPlugin - Get a GraphqlRateLimitingAdvanced plugin in a workspace
 // Get a GraphqlRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) GetGraphqlratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.GetGraphqlratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetGraphqlratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.GetGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.GetGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -29181,7 +29181,7 @@ func (s *Plugins) GetGraphqlratelimitingadvancedPluginInWorkspace(ctx context.Co
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-graphqlratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "get-graphqlratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -29309,7 +29309,7 @@ func (s *Plugins) GetGraphqlratelimitingadvancedPluginInWorkspace(ctx context.Co
 		}
 	}
 
-	res := &operations.GetGraphqlratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.GetGraphqlratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -29372,9 +29372,9 @@ func (s *Plugins) GetGraphqlratelimitingadvancedPluginInWorkspace(ctx context.Co
 
 }
 
-// UpdateGraphqlratelimitingadvancedPluginInWorkspace - Update a GraphqlRateLimitingAdvanced plugin in a workspace
+// UpdateGraphqlratelimitingadvancedPlugin - Update a GraphqlRateLimitingAdvanced plugin in a workspace
 // Update a GraphqlRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) UpdateGraphqlratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateGraphqlratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.UpdateGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -29403,7 +29403,7 @@ func (s *Plugins) UpdateGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-graphqlratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "update-graphqlratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -29538,7 +29538,7 @@ func (s *Plugins) UpdateGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 		}
 	}
 
-	res := &operations.UpdateGraphqlratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateGraphqlratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -29599,9 +29599,9 @@ func (s *Plugins) UpdateGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 
 }
 
-// DeleteGrpcgatewayPluginInWorkspace - Delete a GrpcGateway plugin in a workspace
+// DeleteGrpcgatewayPlugin - Delete a GrpcGateway plugin in a workspace
 // Delete a GrpcGateway plugin in a workspace
-func (s *Plugins) DeleteGrpcgatewayPluginInWorkspace(ctx context.Context, request operations.DeleteGrpcgatewayPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteGrpcgatewayPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteGrpcgatewayPlugin(ctx context.Context, request operations.DeleteGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.DeleteGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -29630,7 +29630,7 @@ func (s *Plugins) DeleteGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-grpcgateway-plugin-in-workspace",
+		OperationID:      "delete-grpcgateway-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -29758,7 +29758,7 @@ func (s *Plugins) DeleteGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.DeleteGrpcgatewayPluginInWorkspaceResponse{
+	res := &operations.DeleteGrpcgatewayPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -29802,9 +29802,9 @@ func (s *Plugins) DeleteGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// GetGrpcgatewayPluginInWorkspace - Get a GrpcGateway plugin in a workspace
+// GetGrpcgatewayPlugin - Get a GrpcGateway plugin in a workspace
 // Get a GrpcGateway plugin in a workspace
-func (s *Plugins) GetGrpcgatewayPluginInWorkspace(ctx context.Context, request operations.GetGrpcgatewayPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetGrpcgatewayPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetGrpcgatewayPlugin(ctx context.Context, request operations.GetGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.GetGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -29833,7 +29833,7 @@ func (s *Plugins) GetGrpcgatewayPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-grpcgateway-plugin-in-workspace",
+		OperationID:      "get-grpcgateway-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -29961,7 +29961,7 @@ func (s *Plugins) GetGrpcgatewayPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.GetGrpcgatewayPluginInWorkspaceResponse{
+	res := &operations.GetGrpcgatewayPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -30024,9 +30024,9 @@ func (s *Plugins) GetGrpcgatewayPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// UpdateGrpcgatewayPluginInWorkspace - Update a GrpcGateway plugin in a workspace
+// UpdateGrpcgatewayPlugin - Update a GrpcGateway plugin in a workspace
 // Update a GrpcGateway plugin in a workspace
-func (s *Plugins) UpdateGrpcgatewayPluginInWorkspace(ctx context.Context, request operations.UpdateGrpcgatewayPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateGrpcgatewayPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateGrpcgatewayPlugin(ctx context.Context, request operations.UpdateGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.UpdateGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -30055,7 +30055,7 @@ func (s *Plugins) UpdateGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-grpcgateway-plugin-in-workspace",
+		OperationID:      "update-grpcgateway-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -30190,7 +30190,7 @@ func (s *Plugins) UpdateGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.UpdateGrpcgatewayPluginInWorkspaceResponse{
+	res := &operations.UpdateGrpcgatewayPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -30251,9 +30251,9 @@ func (s *Plugins) UpdateGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// DeleteGrpcwebPluginInWorkspace - Delete a GrpcWeb plugin in a workspace
+// DeleteGrpcwebPlugin - Delete a GrpcWeb plugin in a workspace
 // Delete a GrpcWeb plugin in a workspace
-func (s *Plugins) DeleteGrpcwebPluginInWorkspace(ctx context.Context, request operations.DeleteGrpcwebPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteGrpcwebPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteGrpcwebPlugin(ctx context.Context, request operations.DeleteGrpcwebPluginRequest, opts ...operations.Option) (*operations.DeleteGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -30282,7 +30282,7 @@ func (s *Plugins) DeleteGrpcwebPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-grpcweb-plugin-in-workspace",
+		OperationID:      "delete-grpcweb-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -30410,7 +30410,7 @@ func (s *Plugins) DeleteGrpcwebPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteGrpcwebPluginInWorkspaceResponse{
+	res := &operations.DeleteGrpcwebPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -30454,9 +30454,9 @@ func (s *Plugins) DeleteGrpcwebPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetGrpcwebPluginInWorkspace - Get a GrpcWeb plugin in a workspace
+// GetGrpcwebPlugin - Get a GrpcWeb plugin in a workspace
 // Get a GrpcWeb plugin in a workspace
-func (s *Plugins) GetGrpcwebPluginInWorkspace(ctx context.Context, request operations.GetGrpcwebPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetGrpcwebPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetGrpcwebPlugin(ctx context.Context, request operations.GetGrpcwebPluginRequest, opts ...operations.Option) (*operations.GetGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -30485,7 +30485,7 @@ func (s *Plugins) GetGrpcwebPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-grpcweb-plugin-in-workspace",
+		OperationID:      "get-grpcweb-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -30613,7 +30613,7 @@ func (s *Plugins) GetGrpcwebPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetGrpcwebPluginInWorkspaceResponse{
+	res := &operations.GetGrpcwebPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -30676,9 +30676,9 @@ func (s *Plugins) GetGrpcwebPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateGrpcwebPluginInWorkspace - Update a GrpcWeb plugin in a workspace
+// UpdateGrpcwebPlugin - Update a GrpcWeb plugin in a workspace
 // Update a GrpcWeb plugin in a workspace
-func (s *Plugins) UpdateGrpcwebPluginInWorkspace(ctx context.Context, request operations.UpdateGrpcwebPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateGrpcwebPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateGrpcwebPlugin(ctx context.Context, request operations.UpdateGrpcwebPluginRequest, opts ...operations.Option) (*operations.UpdateGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -30707,7 +30707,7 @@ func (s *Plugins) UpdateGrpcwebPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-grpcweb-plugin-in-workspace",
+		OperationID:      "update-grpcweb-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -30842,7 +30842,7 @@ func (s *Plugins) UpdateGrpcwebPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateGrpcwebPluginInWorkspaceResponse{
+	res := &operations.UpdateGrpcwebPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -30903,9 +30903,9 @@ func (s *Plugins) UpdateGrpcwebPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteHeadercertauthPluginInWorkspace - Delete a HeaderCertAuth plugin in a workspace
+// DeleteHeadercertauthPlugin - Delete a HeaderCertAuth plugin in a workspace
 // Delete a HeaderCertAuth plugin in a workspace
-func (s *Plugins) DeleteHeadercertauthPluginInWorkspace(ctx context.Context, request operations.DeleteHeadercertauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteHeadercertauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteHeadercertauthPlugin(ctx context.Context, request operations.DeleteHeadercertauthPluginRequest, opts ...operations.Option) (*operations.DeleteHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -30934,7 +30934,7 @@ func (s *Plugins) DeleteHeadercertauthPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-headercertauth-plugin-in-workspace",
+		OperationID:      "delete-headercertauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -31062,7 +31062,7 @@ func (s *Plugins) DeleteHeadercertauthPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.DeleteHeadercertauthPluginInWorkspaceResponse{
+	res := &operations.DeleteHeadercertauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -31106,9 +31106,9 @@ func (s *Plugins) DeleteHeadercertauthPluginInWorkspace(ctx context.Context, req
 
 }
 
-// GetHeadercertauthPluginInWorkspace - Get a HeaderCertAuth plugin in a workspace
+// GetHeadercertauthPlugin - Get a HeaderCertAuth plugin in a workspace
 // Get a HeaderCertAuth plugin in a workspace
-func (s *Plugins) GetHeadercertauthPluginInWorkspace(ctx context.Context, request operations.GetHeadercertauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetHeadercertauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetHeadercertauthPlugin(ctx context.Context, request operations.GetHeadercertauthPluginRequest, opts ...operations.Option) (*operations.GetHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -31137,7 +31137,7 @@ func (s *Plugins) GetHeadercertauthPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-headercertauth-plugin-in-workspace",
+		OperationID:      "get-headercertauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -31265,7 +31265,7 @@ func (s *Plugins) GetHeadercertauthPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.GetHeadercertauthPluginInWorkspaceResponse{
+	res := &operations.GetHeadercertauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -31328,9 +31328,9 @@ func (s *Plugins) GetHeadercertauthPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// UpdateHeadercertauthPluginInWorkspace - Update a HeaderCertAuth plugin in a workspace
+// UpdateHeadercertauthPlugin - Update a HeaderCertAuth plugin in a workspace
 // Update a HeaderCertAuth plugin in a workspace
-func (s *Plugins) UpdateHeadercertauthPluginInWorkspace(ctx context.Context, request operations.UpdateHeadercertauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateHeadercertauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateHeadercertauthPlugin(ctx context.Context, request operations.UpdateHeadercertauthPluginRequest, opts ...operations.Option) (*operations.UpdateHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -31359,7 +31359,7 @@ func (s *Plugins) UpdateHeadercertauthPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-headercertauth-plugin-in-workspace",
+		OperationID:      "update-headercertauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -31494,7 +31494,7 @@ func (s *Plugins) UpdateHeadercertauthPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.UpdateHeadercertauthPluginInWorkspaceResponse{
+	res := &operations.UpdateHeadercertauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -31555,9 +31555,9 @@ func (s *Plugins) UpdateHeadercertauthPluginInWorkspace(ctx context.Context, req
 
 }
 
-// DeleteHmacauthPluginInWorkspace - Delete a HmacAuth plugin in a workspace
+// DeleteHmacauthPlugin - Delete a HmacAuth plugin in a workspace
 // Delete a HmacAuth plugin in a workspace
-func (s *Plugins) DeleteHmacauthPluginInWorkspace(ctx context.Context, request operations.DeleteHmacauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteHmacauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteHmacauthPlugin(ctx context.Context, request operations.DeleteHmacauthPluginRequest, opts ...operations.Option) (*operations.DeleteHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -31586,7 +31586,7 @@ func (s *Plugins) DeleteHmacauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-hmacauth-plugin-in-workspace",
+		OperationID:      "delete-hmacauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -31714,7 +31714,7 @@ func (s *Plugins) DeleteHmacauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteHmacauthPluginInWorkspaceResponse{
+	res := &operations.DeleteHmacauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -31758,9 +31758,9 @@ func (s *Plugins) DeleteHmacauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// GetHmacauthPluginInWorkspace - Get a HmacAuth plugin in a workspace
+// GetHmacauthPlugin - Get a HmacAuth plugin in a workspace
 // Get a HmacAuth plugin in a workspace
-func (s *Plugins) GetHmacauthPluginInWorkspace(ctx context.Context, request operations.GetHmacauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetHmacauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetHmacauthPlugin(ctx context.Context, request operations.GetHmacauthPluginRequest, opts ...operations.Option) (*operations.GetHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -31789,7 +31789,7 @@ func (s *Plugins) GetHmacauthPluginInWorkspace(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-hmacauth-plugin-in-workspace",
+		OperationID:      "get-hmacauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -31917,7 +31917,7 @@ func (s *Plugins) GetHmacauthPluginInWorkspace(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetHmacauthPluginInWorkspaceResponse{
+	res := &operations.GetHmacauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -31980,9 +31980,9 @@ func (s *Plugins) GetHmacauthPluginInWorkspace(ctx context.Context, request oper
 
 }
 
-// UpdateHmacauthPluginInWorkspace - Update a HmacAuth plugin in a workspace
+// UpdateHmacauthPlugin - Update a HmacAuth plugin in a workspace
 // Update a HmacAuth plugin in a workspace
-func (s *Plugins) UpdateHmacauthPluginInWorkspace(ctx context.Context, request operations.UpdateHmacauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateHmacauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateHmacauthPlugin(ctx context.Context, request operations.UpdateHmacauthPluginRequest, opts ...operations.Option) (*operations.UpdateHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -32011,7 +32011,7 @@ func (s *Plugins) UpdateHmacauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-hmacauth-plugin-in-workspace",
+		OperationID:      "update-hmacauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -32146,7 +32146,7 @@ func (s *Plugins) UpdateHmacauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateHmacauthPluginInWorkspaceResponse{
+	res := &operations.UpdateHmacauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -32207,9 +32207,9 @@ func (s *Plugins) UpdateHmacauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// DeleteHttplogPluginInWorkspace - Delete a HttpLog plugin in a workspace
+// DeleteHttplogPlugin - Delete a HttpLog plugin in a workspace
 // Delete a HttpLog plugin in a workspace
-func (s *Plugins) DeleteHttplogPluginInWorkspace(ctx context.Context, request operations.DeleteHttplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteHttplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteHttplogPlugin(ctx context.Context, request operations.DeleteHttplogPluginRequest, opts ...operations.Option) (*operations.DeleteHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -32238,7 +32238,7 @@ func (s *Plugins) DeleteHttplogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-httplog-plugin-in-workspace",
+		OperationID:      "delete-httplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -32366,7 +32366,7 @@ func (s *Plugins) DeleteHttplogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteHttplogPluginInWorkspaceResponse{
+	res := &operations.DeleteHttplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -32410,9 +32410,9 @@ func (s *Plugins) DeleteHttplogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetHttplogPluginInWorkspace - Get a HttpLog plugin in a workspace
+// GetHttplogPlugin - Get a HttpLog plugin in a workspace
 // Get a HttpLog plugin in a workspace
-func (s *Plugins) GetHttplogPluginInWorkspace(ctx context.Context, request operations.GetHttplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetHttplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetHttplogPlugin(ctx context.Context, request operations.GetHttplogPluginRequest, opts ...operations.Option) (*operations.GetHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -32441,7 +32441,7 @@ func (s *Plugins) GetHttplogPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-httplog-plugin-in-workspace",
+		OperationID:      "get-httplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -32569,7 +32569,7 @@ func (s *Plugins) GetHttplogPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetHttplogPluginInWorkspaceResponse{
+	res := &operations.GetHttplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -32632,9 +32632,9 @@ func (s *Plugins) GetHttplogPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateHttplogPluginInWorkspace - Update a HttpLog plugin in a workspace
+// UpdateHttplogPlugin - Update a HttpLog plugin in a workspace
 // Update a HttpLog plugin in a workspace
-func (s *Plugins) UpdateHttplogPluginInWorkspace(ctx context.Context, request operations.UpdateHttplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateHttplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateHttplogPlugin(ctx context.Context, request operations.UpdateHttplogPluginRequest, opts ...operations.Option) (*operations.UpdateHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -32663,7 +32663,7 @@ func (s *Plugins) UpdateHttplogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-httplog-plugin-in-workspace",
+		OperationID:      "update-httplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -32798,7 +32798,7 @@ func (s *Plugins) UpdateHttplogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateHttplogPluginInWorkspaceResponse{
+	res := &operations.UpdateHttplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -32859,9 +32859,9 @@ func (s *Plugins) UpdateHttplogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteInjectionprotectionPluginInWorkspace - Delete a InjectionProtection plugin in a workspace
+// DeleteInjectionprotectionPlugin - Delete a InjectionProtection plugin in a workspace
 // Delete a InjectionProtection plugin in a workspace
-func (s *Plugins) DeleteInjectionprotectionPluginInWorkspace(ctx context.Context, request operations.DeleteInjectionprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteInjectionprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteInjectionprotectionPlugin(ctx context.Context, request operations.DeleteInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -32890,7 +32890,7 @@ func (s *Plugins) DeleteInjectionprotectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-injectionprotection-plugin-in-workspace",
+		OperationID:      "delete-injectionprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -33018,7 +33018,7 @@ func (s *Plugins) DeleteInjectionprotectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.DeleteInjectionprotectionPluginInWorkspaceResponse{
+	res := &operations.DeleteInjectionprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -33062,9 +33062,9 @@ func (s *Plugins) DeleteInjectionprotectionPluginInWorkspace(ctx context.Context
 
 }
 
-// GetInjectionprotectionPluginInWorkspace - Get a InjectionProtection plugin in a workspace
+// GetInjectionprotectionPlugin - Get a InjectionProtection plugin in a workspace
 // Get a InjectionProtection plugin in a workspace
-func (s *Plugins) GetInjectionprotectionPluginInWorkspace(ctx context.Context, request operations.GetInjectionprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetInjectionprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetInjectionprotectionPlugin(ctx context.Context, request operations.GetInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.GetInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -33093,7 +33093,7 @@ func (s *Plugins) GetInjectionprotectionPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-injectionprotection-plugin-in-workspace",
+		OperationID:      "get-injectionprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -33221,7 +33221,7 @@ func (s *Plugins) GetInjectionprotectionPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.GetInjectionprotectionPluginInWorkspaceResponse{
+	res := &operations.GetInjectionprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -33284,9 +33284,9 @@ func (s *Plugins) GetInjectionprotectionPluginInWorkspace(ctx context.Context, r
 
 }
 
-// UpdateInjectionprotectionPluginInWorkspace - Update a InjectionProtection plugin in a workspace
+// UpdateInjectionprotectionPlugin - Update a InjectionProtection plugin in a workspace
 // Update a InjectionProtection plugin in a workspace
-func (s *Plugins) UpdateInjectionprotectionPluginInWorkspace(ctx context.Context, request operations.UpdateInjectionprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateInjectionprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateInjectionprotectionPlugin(ctx context.Context, request operations.UpdateInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -33315,7 +33315,7 @@ func (s *Plugins) UpdateInjectionprotectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-injectionprotection-plugin-in-workspace",
+		OperationID:      "update-injectionprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -33450,7 +33450,7 @@ func (s *Plugins) UpdateInjectionprotectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.UpdateInjectionprotectionPluginInWorkspaceResponse{
+	res := &operations.UpdateInjectionprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -33511,9 +33511,9 @@ func (s *Plugins) UpdateInjectionprotectionPluginInWorkspace(ctx context.Context
 
 }
 
-// DeleteIprestrictionPluginInWorkspace - Delete a IpRestriction plugin in a workspace
+// DeleteIprestrictionPlugin - Delete a IpRestriction plugin in a workspace
 // Delete a IpRestriction plugin in a workspace
-func (s *Plugins) DeleteIprestrictionPluginInWorkspace(ctx context.Context, request operations.DeleteIprestrictionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteIprestrictionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operations.DeleteIprestrictionPluginRequest, opts ...operations.Option) (*operations.DeleteIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -33542,7 +33542,7 @@ func (s *Plugins) DeleteIprestrictionPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-iprestriction-plugin-in-workspace",
+		OperationID:      "delete-iprestriction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -33670,7 +33670,7 @@ func (s *Plugins) DeleteIprestrictionPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteIprestrictionPluginInWorkspaceResponse{
+	res := &operations.DeleteIprestrictionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -33714,9 +33714,9 @@ func (s *Plugins) DeleteIprestrictionPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetIprestrictionPluginInWorkspace - Get a IpRestriction plugin in a workspace
+// GetIprestrictionPlugin - Get a IpRestriction plugin in a workspace
 // Get a IpRestriction plugin in a workspace
-func (s *Plugins) GetIprestrictionPluginInWorkspace(ctx context.Context, request operations.GetIprestrictionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetIprestrictionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations.GetIprestrictionPluginRequest, opts ...operations.Option) (*operations.GetIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -33745,7 +33745,7 @@ func (s *Plugins) GetIprestrictionPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-iprestriction-plugin-in-workspace",
+		OperationID:      "get-iprestriction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -33873,7 +33873,7 @@ func (s *Plugins) GetIprestrictionPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetIprestrictionPluginInWorkspaceResponse{
+	res := &operations.GetIprestrictionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -33936,9 +33936,9 @@ func (s *Plugins) GetIprestrictionPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateIprestrictionPluginInWorkspace - Update a IpRestriction plugin in a workspace
+// UpdateIprestrictionPlugin - Update a IpRestriction plugin in a workspace
 // Update a IpRestriction plugin in a workspace
-func (s *Plugins) UpdateIprestrictionPluginInWorkspace(ctx context.Context, request operations.UpdateIprestrictionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateIprestrictionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operations.UpdateIprestrictionPluginRequest, opts ...operations.Option) (*operations.UpdateIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -33967,7 +33967,7 @@ func (s *Plugins) UpdateIprestrictionPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-iprestriction-plugin-in-workspace",
+		OperationID:      "update-iprestriction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -34102,7 +34102,7 @@ func (s *Plugins) UpdateIprestrictionPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateIprestrictionPluginInWorkspaceResponse{
+	res := &operations.UpdateIprestrictionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -34163,9 +34163,9 @@ func (s *Plugins) UpdateIprestrictionPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteJqPluginInWorkspace - Delete a Jq plugin in a workspace
+// DeleteJqPlugin - Delete a Jq plugin in a workspace
 // Delete a Jq plugin in a workspace
-func (s *Plugins) DeleteJqPluginInWorkspace(ctx context.Context, request operations.DeleteJqPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteJqPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJqPluginRequest, opts ...operations.Option) (*operations.DeleteJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -34194,7 +34194,7 @@ func (s *Plugins) DeleteJqPluginInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-jq-plugin-in-workspace",
+		OperationID:      "delete-jq-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -34322,7 +34322,7 @@ func (s *Plugins) DeleteJqPluginInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteJqPluginInWorkspaceResponse{
+	res := &operations.DeleteJqPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -34366,9 +34366,9 @@ func (s *Plugins) DeleteJqPluginInWorkspace(ctx context.Context, request operati
 
 }
 
-// GetJqPluginInWorkspace - Get a Jq plugin in a workspace
+// GetJqPlugin - Get a Jq plugin in a workspace
 // Get a Jq plugin in a workspace
-func (s *Plugins) GetJqPluginInWorkspace(ctx context.Context, request operations.GetJqPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetJqPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPluginRequest, opts ...operations.Option) (*operations.GetJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -34397,7 +34397,7 @@ func (s *Plugins) GetJqPluginInWorkspace(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-jq-plugin-in-workspace",
+		OperationID:      "get-jq-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -34525,7 +34525,7 @@ func (s *Plugins) GetJqPluginInWorkspace(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.GetJqPluginInWorkspaceResponse{
+	res := &operations.GetJqPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -34588,9 +34588,9 @@ func (s *Plugins) GetJqPluginInWorkspace(ctx context.Context, request operations
 
 }
 
-// UpdateJqPluginInWorkspace - Update a Jq plugin in a workspace
+// UpdateJqPlugin - Update a Jq plugin in a workspace
 // Update a Jq plugin in a workspace
-func (s *Plugins) UpdateJqPluginInWorkspace(ctx context.Context, request operations.UpdateJqPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateJqPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJqPluginRequest, opts ...operations.Option) (*operations.UpdateJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -34619,7 +34619,7 @@ func (s *Plugins) UpdateJqPluginInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-jq-plugin-in-workspace",
+		OperationID:      "update-jq-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -34754,7 +34754,7 @@ func (s *Plugins) UpdateJqPluginInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.UpdateJqPluginInWorkspaceResponse{
+	res := &operations.UpdateJqPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -34815,9 +34815,9 @@ func (s *Plugins) UpdateJqPluginInWorkspace(ctx context.Context, request operati
 
 }
 
-// DeleteJsonthreatprotectionPluginInWorkspace - Delete a JsonThreatProtection plugin in a workspace
+// DeleteJsonthreatprotectionPlugin - Delete a JsonThreatProtection plugin in a workspace
 // Delete a JsonThreatProtection plugin in a workspace
-func (s *Plugins) DeleteJsonthreatprotectionPluginInWorkspace(ctx context.Context, request operations.DeleteJsonthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteJsonthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteJsonthreatprotectionPlugin(ctx context.Context, request operations.DeleteJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -34846,7 +34846,7 @@ func (s *Plugins) DeleteJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-jsonthreatprotection-plugin-in-workspace",
+		OperationID:      "delete-jsonthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -34974,7 +34974,7 @@ func (s *Plugins) DeleteJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.DeleteJsonthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.DeleteJsonthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -35018,9 +35018,9 @@ func (s *Plugins) DeleteJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 
 }
 
-// GetJsonthreatprotectionPluginInWorkspace - Get a JsonThreatProtection plugin in a workspace
+// GetJsonthreatprotectionPlugin - Get a JsonThreatProtection plugin in a workspace
 // Get a JsonThreatProtection plugin in a workspace
-func (s *Plugins) GetJsonthreatprotectionPluginInWorkspace(ctx context.Context, request operations.GetJsonthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetJsonthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetJsonthreatprotectionPlugin(ctx context.Context, request operations.GetJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.GetJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -35049,7 +35049,7 @@ func (s *Plugins) GetJsonthreatprotectionPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-jsonthreatprotection-plugin-in-workspace",
+		OperationID:      "get-jsonthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -35177,7 +35177,7 @@ func (s *Plugins) GetJsonthreatprotectionPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.GetJsonthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.GetJsonthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -35240,9 +35240,9 @@ func (s *Plugins) GetJsonthreatprotectionPluginInWorkspace(ctx context.Context, 
 
 }
 
-// UpdateJsonthreatprotectionPluginInWorkspace - Update a JsonThreatProtection plugin in a workspace
+// UpdateJsonthreatprotectionPlugin - Update a JsonThreatProtection plugin in a workspace
 // Update a JsonThreatProtection plugin in a workspace
-func (s *Plugins) UpdateJsonthreatprotectionPluginInWorkspace(ctx context.Context, request operations.UpdateJsonthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateJsonthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateJsonthreatprotectionPlugin(ctx context.Context, request operations.UpdateJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -35271,7 +35271,7 @@ func (s *Plugins) UpdateJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-jsonthreatprotection-plugin-in-workspace",
+		OperationID:      "update-jsonthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -35406,7 +35406,7 @@ func (s *Plugins) UpdateJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.UpdateJsonthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.UpdateJsonthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -35467,9 +35467,9 @@ func (s *Plugins) UpdateJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 
 }
 
-// DeleteJwedecryptPluginInWorkspace - Delete a JweDecrypt plugin in a workspace
+// DeleteJwedecryptPlugin - Delete a JweDecrypt plugin in a workspace
 // Delete a JweDecrypt plugin in a workspace
-func (s *Plugins) DeleteJwedecryptPluginInWorkspace(ctx context.Context, request operations.DeleteJwedecryptPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteJwedecryptPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteJwedecryptPlugin(ctx context.Context, request operations.DeleteJwedecryptPluginRequest, opts ...operations.Option) (*operations.DeleteJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -35498,7 +35498,7 @@ func (s *Plugins) DeleteJwedecryptPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-jwedecrypt-plugin-in-workspace",
+		OperationID:      "delete-jwedecrypt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -35626,7 +35626,7 @@ func (s *Plugins) DeleteJwedecryptPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.DeleteJwedecryptPluginInWorkspaceResponse{
+	res := &operations.DeleteJwedecryptPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -35670,9 +35670,9 @@ func (s *Plugins) DeleteJwedecryptPluginInWorkspace(ctx context.Context, request
 
 }
 
-// GetJwedecryptPluginInWorkspace - Get a JweDecrypt plugin in a workspace
+// GetJwedecryptPlugin - Get a JweDecrypt plugin in a workspace
 // Get a JweDecrypt plugin in a workspace
-func (s *Plugins) GetJwedecryptPluginInWorkspace(ctx context.Context, request operations.GetJwedecryptPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetJwedecryptPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetJwedecryptPlugin(ctx context.Context, request operations.GetJwedecryptPluginRequest, opts ...operations.Option) (*operations.GetJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -35701,7 +35701,7 @@ func (s *Plugins) GetJwedecryptPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-jwedecrypt-plugin-in-workspace",
+		OperationID:      "get-jwedecrypt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -35829,7 +35829,7 @@ func (s *Plugins) GetJwedecryptPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.GetJwedecryptPluginInWorkspaceResponse{
+	res := &operations.GetJwedecryptPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -35892,9 +35892,9 @@ func (s *Plugins) GetJwedecryptPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// UpdateJwedecryptPluginInWorkspace - Update a JweDecrypt plugin in a workspace
+// UpdateJwedecryptPlugin - Update a JweDecrypt plugin in a workspace
 // Update a JweDecrypt plugin in a workspace
-func (s *Plugins) UpdateJwedecryptPluginInWorkspace(ctx context.Context, request operations.UpdateJwedecryptPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateJwedecryptPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateJwedecryptPlugin(ctx context.Context, request operations.UpdateJwedecryptPluginRequest, opts ...operations.Option) (*operations.UpdateJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -35923,7 +35923,7 @@ func (s *Plugins) UpdateJwedecryptPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-jwedecrypt-plugin-in-workspace",
+		OperationID:      "update-jwedecrypt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -36058,7 +36058,7 @@ func (s *Plugins) UpdateJwedecryptPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.UpdateJwedecryptPluginInWorkspaceResponse{
+	res := &operations.UpdateJwedecryptPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -36119,9 +36119,9 @@ func (s *Plugins) UpdateJwedecryptPluginInWorkspace(ctx context.Context, request
 
 }
 
-// DeleteJwtPluginInWorkspace - Delete a Jwt plugin in a workspace
+// DeleteJwtPlugin - Delete a Jwt plugin in a workspace
 // Delete a Jwt plugin in a workspace
-func (s *Plugins) DeleteJwtPluginInWorkspace(ctx context.Context, request operations.DeleteJwtPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteJwtPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.DeleteJwtPluginRequest, opts ...operations.Option) (*operations.DeleteJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -36150,7 +36150,7 @@ func (s *Plugins) DeleteJwtPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-jwt-plugin-in-workspace",
+		OperationID:      "delete-jwt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -36278,7 +36278,7 @@ func (s *Plugins) DeleteJwtPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.DeleteJwtPluginInWorkspaceResponse{
+	res := &operations.DeleteJwtPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -36322,9 +36322,9 @@ func (s *Plugins) DeleteJwtPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// GetJwtPluginInWorkspace - Get a Jwt plugin in a workspace
+// GetJwtPlugin - Get a Jwt plugin in a workspace
 // Get a Jwt plugin in a workspace
-func (s *Plugins) GetJwtPluginInWorkspace(ctx context.Context, request operations.GetJwtPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetJwtPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPluginRequest, opts ...operations.Option) (*operations.GetJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -36353,7 +36353,7 @@ func (s *Plugins) GetJwtPluginInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-jwt-plugin-in-workspace",
+		OperationID:      "get-jwt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -36481,7 +36481,7 @@ func (s *Plugins) GetJwtPluginInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.GetJwtPluginInWorkspaceResponse{
+	res := &operations.GetJwtPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -36544,9 +36544,9 @@ func (s *Plugins) GetJwtPluginInWorkspace(ctx context.Context, request operation
 
 }
 
-// UpdateJwtPluginInWorkspace - Update a Jwt plugin in a workspace
+// UpdateJwtPlugin - Update a Jwt plugin in a workspace
 // Update a Jwt plugin in a workspace
-func (s *Plugins) UpdateJwtPluginInWorkspace(ctx context.Context, request operations.UpdateJwtPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateJwtPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.UpdateJwtPluginRequest, opts ...operations.Option) (*operations.UpdateJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -36575,7 +36575,7 @@ func (s *Plugins) UpdateJwtPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-jwt-plugin-in-workspace",
+		OperationID:      "update-jwt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -36710,7 +36710,7 @@ func (s *Plugins) UpdateJwtPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.UpdateJwtPluginInWorkspaceResponse{
+	res := &operations.UpdateJwtPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -36771,9 +36771,9 @@ func (s *Plugins) UpdateJwtPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// DeleteJwtsignerPluginInWorkspace - Delete a JwtSigner plugin in a workspace
+// DeleteJwtsignerPlugin - Delete a JwtSigner plugin in a workspace
 // Delete a JwtSigner plugin in a workspace
-func (s *Plugins) DeleteJwtsignerPluginInWorkspace(ctx context.Context, request operations.DeleteJwtsignerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteJwtsignerPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.DeleteJwtsignerPluginRequest, opts ...operations.Option) (*operations.DeleteJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -36802,7 +36802,7 @@ func (s *Plugins) DeleteJwtsignerPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-jwtsigner-plugin-in-workspace",
+		OperationID:      "delete-jwtsigner-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -36930,7 +36930,7 @@ func (s *Plugins) DeleteJwtsignerPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteJwtsignerPluginInWorkspaceResponse{
+	res := &operations.DeleteJwtsignerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -36974,9 +36974,9 @@ func (s *Plugins) DeleteJwtsignerPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// GetJwtsignerPluginInWorkspace - Get a JwtSigner plugin in a workspace
+// GetJwtsignerPlugin - Get a JwtSigner plugin in a workspace
 // Get a JwtSigner plugin in a workspace
-func (s *Plugins) GetJwtsignerPluginInWorkspace(ctx context.Context, request operations.GetJwtsignerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetJwtsignerPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.GetJwtsignerPluginRequest, opts ...operations.Option) (*operations.GetJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -37005,7 +37005,7 @@ func (s *Plugins) GetJwtsignerPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-jwtsigner-plugin-in-workspace",
+		OperationID:      "get-jwtsigner-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -37133,7 +37133,7 @@ func (s *Plugins) GetJwtsignerPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.GetJwtsignerPluginInWorkspaceResponse{
+	res := &operations.GetJwtsignerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -37196,9 +37196,9 @@ func (s *Plugins) GetJwtsignerPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// UpdateJwtsignerPluginInWorkspace - Update a JwtSigner plugin in a workspace
+// UpdateJwtsignerPlugin - Update a JwtSigner plugin in a workspace
 // Update a JwtSigner plugin in a workspace
-func (s *Plugins) UpdateJwtsignerPluginInWorkspace(ctx context.Context, request operations.UpdateJwtsignerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateJwtsignerPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.UpdateJwtsignerPluginRequest, opts ...operations.Option) (*operations.UpdateJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -37227,7 +37227,7 @@ func (s *Plugins) UpdateJwtsignerPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-jwtsigner-plugin-in-workspace",
+		OperationID:      "update-jwtsigner-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -37362,7 +37362,7 @@ func (s *Plugins) UpdateJwtsignerPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.UpdateJwtsignerPluginInWorkspaceResponse{
+	res := &operations.UpdateJwtsignerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -37423,9 +37423,9 @@ func (s *Plugins) UpdateJwtsignerPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// DeleteKafkaconsumePluginInWorkspace - Delete a KafkaConsume plugin in a workspace
+// DeleteKafkaconsumePlugin - Delete a KafkaConsume plugin in a workspace
 // Delete a KafkaConsume plugin in a workspace
-func (s *Plugins) DeleteKafkaconsumePluginInWorkspace(ctx context.Context, request operations.DeleteKafkaconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKafkaconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteKafkaconsumePlugin(ctx context.Context, request operations.DeleteKafkaconsumePluginRequest, opts ...operations.Option) (*operations.DeleteKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -37454,7 +37454,7 @@ func (s *Plugins) DeleteKafkaconsumePluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-kafkaconsume-plugin-in-workspace",
+		OperationID:      "delete-kafkaconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -37582,7 +37582,7 @@ func (s *Plugins) DeleteKafkaconsumePluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.DeleteKafkaconsumePluginInWorkspaceResponse{
+	res := &operations.DeleteKafkaconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -37626,9 +37626,9 @@ func (s *Plugins) DeleteKafkaconsumePluginInWorkspace(ctx context.Context, reque
 
 }
 
-// GetKafkaconsumePluginInWorkspace - Get a KafkaConsume plugin in a workspace
+// GetKafkaconsumePlugin - Get a KafkaConsume plugin in a workspace
 // Get a KafkaConsume plugin in a workspace
-func (s *Plugins) GetKafkaconsumePluginInWorkspace(ctx context.Context, request operations.GetKafkaconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetKafkaconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetKafkaconsumePlugin(ctx context.Context, request operations.GetKafkaconsumePluginRequest, opts ...operations.Option) (*operations.GetKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -37657,7 +37657,7 @@ func (s *Plugins) GetKafkaconsumePluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-kafkaconsume-plugin-in-workspace",
+		OperationID:      "get-kafkaconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -37785,7 +37785,7 @@ func (s *Plugins) GetKafkaconsumePluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.GetKafkaconsumePluginInWorkspaceResponse{
+	res := &operations.GetKafkaconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -37848,9 +37848,9 @@ func (s *Plugins) GetKafkaconsumePluginInWorkspace(ctx context.Context, request 
 
 }
 
-// UpdateKafkaconsumePluginInWorkspace - Update a KafkaConsume plugin in a workspace
+// UpdateKafkaconsumePlugin - Update a KafkaConsume plugin in a workspace
 // Update a KafkaConsume plugin in a workspace
-func (s *Plugins) UpdateKafkaconsumePluginInWorkspace(ctx context.Context, request operations.UpdateKafkaconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateKafkaconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateKafkaconsumePlugin(ctx context.Context, request operations.UpdateKafkaconsumePluginRequest, opts ...operations.Option) (*operations.UpdateKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -37879,7 +37879,7 @@ func (s *Plugins) UpdateKafkaconsumePluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-kafkaconsume-plugin-in-workspace",
+		OperationID:      "update-kafkaconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -38014,7 +38014,7 @@ func (s *Plugins) UpdateKafkaconsumePluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.UpdateKafkaconsumePluginInWorkspaceResponse{
+	res := &operations.UpdateKafkaconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -38075,9 +38075,9 @@ func (s *Plugins) UpdateKafkaconsumePluginInWorkspace(ctx context.Context, reque
 
 }
 
-// DeleteKafkalogPluginInWorkspace - Delete a KafkaLog plugin in a workspace
+// DeleteKafkalogPlugin - Delete a KafkaLog plugin in a workspace
 // Delete a KafkaLog plugin in a workspace
-func (s *Plugins) DeleteKafkalogPluginInWorkspace(ctx context.Context, request operations.DeleteKafkalogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKafkalogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteKafkalogPlugin(ctx context.Context, request operations.DeleteKafkalogPluginRequest, opts ...operations.Option) (*operations.DeleteKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -38106,7 +38106,7 @@ func (s *Plugins) DeleteKafkalogPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-kafkalog-plugin-in-workspace",
+		OperationID:      "delete-kafkalog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -38234,7 +38234,7 @@ func (s *Plugins) DeleteKafkalogPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteKafkalogPluginInWorkspaceResponse{
+	res := &operations.DeleteKafkalogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -38278,9 +38278,9 @@ func (s *Plugins) DeleteKafkalogPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// GetKafkalogPluginInWorkspace - Get a KafkaLog plugin in a workspace
+// GetKafkalogPlugin - Get a KafkaLog plugin in a workspace
 // Get a KafkaLog plugin in a workspace
-func (s *Plugins) GetKafkalogPluginInWorkspace(ctx context.Context, request operations.GetKafkalogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetKafkalogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetKafkalogPlugin(ctx context.Context, request operations.GetKafkalogPluginRequest, opts ...operations.Option) (*operations.GetKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -38309,7 +38309,7 @@ func (s *Plugins) GetKafkalogPluginInWorkspace(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-kafkalog-plugin-in-workspace",
+		OperationID:      "get-kafkalog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -38437,7 +38437,7 @@ func (s *Plugins) GetKafkalogPluginInWorkspace(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetKafkalogPluginInWorkspaceResponse{
+	res := &operations.GetKafkalogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -38500,9 +38500,9 @@ func (s *Plugins) GetKafkalogPluginInWorkspace(ctx context.Context, request oper
 
 }
 
-// UpdateKafkalogPluginInWorkspace - Update a KafkaLog plugin in a workspace
+// UpdateKafkalogPlugin - Update a KafkaLog plugin in a workspace
 // Update a KafkaLog plugin in a workspace
-func (s *Plugins) UpdateKafkalogPluginInWorkspace(ctx context.Context, request operations.UpdateKafkalogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateKafkalogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateKafkalogPlugin(ctx context.Context, request operations.UpdateKafkalogPluginRequest, opts ...operations.Option) (*operations.UpdateKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -38531,7 +38531,7 @@ func (s *Plugins) UpdateKafkalogPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-kafkalog-plugin-in-workspace",
+		OperationID:      "update-kafkalog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -38666,7 +38666,7 @@ func (s *Plugins) UpdateKafkalogPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateKafkalogPluginInWorkspaceResponse{
+	res := &operations.UpdateKafkalogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -38727,9 +38727,9 @@ func (s *Plugins) UpdateKafkalogPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// DeleteKafkaupstreamPluginInWorkspace - Delete a KafkaUpstream plugin in a workspace
+// DeleteKafkaupstreamPlugin - Delete a KafkaUpstream plugin in a workspace
 // Delete a KafkaUpstream plugin in a workspace
-func (s *Plugins) DeleteKafkaupstreamPluginInWorkspace(ctx context.Context, request operations.DeleteKafkaupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKafkaupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteKafkaupstreamPlugin(ctx context.Context, request operations.DeleteKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.DeleteKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -38758,7 +38758,7 @@ func (s *Plugins) DeleteKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-kafkaupstream-plugin-in-workspace",
+		OperationID:      "delete-kafkaupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -38886,7 +38886,7 @@ func (s *Plugins) DeleteKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteKafkaupstreamPluginInWorkspaceResponse{
+	res := &operations.DeleteKafkaupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -38930,9 +38930,9 @@ func (s *Plugins) DeleteKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetKafkaupstreamPluginInWorkspace - Get a KafkaUpstream plugin in a workspace
+// GetKafkaupstreamPlugin - Get a KafkaUpstream plugin in a workspace
 // Get a KafkaUpstream plugin in a workspace
-func (s *Plugins) GetKafkaupstreamPluginInWorkspace(ctx context.Context, request operations.GetKafkaupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetKafkaupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetKafkaupstreamPlugin(ctx context.Context, request operations.GetKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.GetKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -38961,7 +38961,7 @@ func (s *Plugins) GetKafkaupstreamPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-kafkaupstream-plugin-in-workspace",
+		OperationID:      "get-kafkaupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -39089,7 +39089,7 @@ func (s *Plugins) GetKafkaupstreamPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetKafkaupstreamPluginInWorkspaceResponse{
+	res := &operations.GetKafkaupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -39152,9 +39152,9 @@ func (s *Plugins) GetKafkaupstreamPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateKafkaupstreamPluginInWorkspace - Update a KafkaUpstream plugin in a workspace
+// UpdateKafkaupstreamPlugin - Update a KafkaUpstream plugin in a workspace
 // Update a KafkaUpstream plugin in a workspace
-func (s *Plugins) UpdateKafkaupstreamPluginInWorkspace(ctx context.Context, request operations.UpdateKafkaupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateKafkaupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateKafkaupstreamPlugin(ctx context.Context, request operations.UpdateKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.UpdateKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -39183,7 +39183,7 @@ func (s *Plugins) UpdateKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-kafkaupstream-plugin-in-workspace",
+		OperationID:      "update-kafkaupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -39318,7 +39318,7 @@ func (s *Plugins) UpdateKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateKafkaupstreamPluginInWorkspaceResponse{
+	res := &operations.UpdateKafkaupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -39379,9 +39379,9 @@ func (s *Plugins) UpdateKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteKeyauthPluginInWorkspace - Delete a KeyAuth plugin in a workspace
+// DeleteKeyauthPlugin - Delete a KeyAuth plugin in a workspace
 // Delete a KeyAuth plugin in a workspace
-func (s *Plugins) DeleteKeyauthPluginInWorkspace(ctx context.Context, request operations.DeleteKeyauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKeyauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.DeleteKeyauthPluginRequest, opts ...operations.Option) (*operations.DeleteKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -39410,7 +39410,7 @@ func (s *Plugins) DeleteKeyauthPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-keyauth-plugin-in-workspace",
+		OperationID:      "delete-keyauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -39538,7 +39538,7 @@ func (s *Plugins) DeleteKeyauthPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteKeyauthPluginInWorkspaceResponse{
+	res := &operations.DeleteKeyauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -39582,9 +39582,9 @@ func (s *Plugins) DeleteKeyauthPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetKeyauthPluginInWorkspace - Get a KeyAuth plugin in a workspace
+// GetKeyauthPlugin - Get a KeyAuth plugin in a workspace
 // Get a KeyAuth plugin in a workspace
-func (s *Plugins) GetKeyauthPluginInWorkspace(ctx context.Context, request operations.GetKeyauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetKeyauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKeyauthPluginRequest, opts ...operations.Option) (*operations.GetKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -39613,7 +39613,7 @@ func (s *Plugins) GetKeyauthPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-keyauth-plugin-in-workspace",
+		OperationID:      "get-keyauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -39741,7 +39741,7 @@ func (s *Plugins) GetKeyauthPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetKeyauthPluginInWorkspaceResponse{
+	res := &operations.GetKeyauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -39804,9 +39804,9 @@ func (s *Plugins) GetKeyauthPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateKeyauthPluginInWorkspace - Update a KeyAuth plugin in a workspace
+// UpdateKeyauthPlugin - Update a KeyAuth plugin in a workspace
 // Update a KeyAuth plugin in a workspace
-func (s *Plugins) UpdateKeyauthPluginInWorkspace(ctx context.Context, request operations.UpdateKeyauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateKeyauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.UpdateKeyauthPluginRequest, opts ...operations.Option) (*operations.UpdateKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -39835,7 +39835,7 @@ func (s *Plugins) UpdateKeyauthPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-keyauth-plugin-in-workspace",
+		OperationID:      "update-keyauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -39970,7 +39970,7 @@ func (s *Plugins) UpdateKeyauthPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateKeyauthPluginInWorkspaceResponse{
+	res := &operations.UpdateKeyauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -40031,9 +40031,9 @@ func (s *Plugins) UpdateKeyauthPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteLdapauthPluginInWorkspace - Delete a LdapAuth plugin in a workspace
+// DeleteLdapauthPlugin - Delete a LdapAuth plugin in a workspace
 // Delete a LdapAuth plugin in a workspace
-func (s *Plugins) DeleteLdapauthPluginInWorkspace(ctx context.Context, request operations.DeleteLdapauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteLdapauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteLdapauthPlugin(ctx context.Context, request operations.DeleteLdapauthPluginRequest, opts ...operations.Option) (*operations.DeleteLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -40062,7 +40062,7 @@ func (s *Plugins) DeleteLdapauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-ldapauth-plugin-in-workspace",
+		OperationID:      "delete-ldapauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -40190,7 +40190,7 @@ func (s *Plugins) DeleteLdapauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteLdapauthPluginInWorkspaceResponse{
+	res := &operations.DeleteLdapauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -40234,9 +40234,9 @@ func (s *Plugins) DeleteLdapauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// GetLdapauthPluginInWorkspace - Get a LdapAuth plugin in a workspace
+// GetLdapauthPlugin - Get a LdapAuth plugin in a workspace
 // Get a LdapAuth plugin in a workspace
-func (s *Plugins) GetLdapauthPluginInWorkspace(ctx context.Context, request operations.GetLdapauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetLdapauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetLdapauthPlugin(ctx context.Context, request operations.GetLdapauthPluginRequest, opts ...operations.Option) (*operations.GetLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -40265,7 +40265,7 @@ func (s *Plugins) GetLdapauthPluginInWorkspace(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-ldapauth-plugin-in-workspace",
+		OperationID:      "get-ldapauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -40393,7 +40393,7 @@ func (s *Plugins) GetLdapauthPluginInWorkspace(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetLdapauthPluginInWorkspaceResponse{
+	res := &operations.GetLdapauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -40456,9 +40456,9 @@ func (s *Plugins) GetLdapauthPluginInWorkspace(ctx context.Context, request oper
 
 }
 
-// UpdateLdapauthPluginInWorkspace - Update a LdapAuth plugin in a workspace
+// UpdateLdapauthPlugin - Update a LdapAuth plugin in a workspace
 // Update a LdapAuth plugin in a workspace
-func (s *Plugins) UpdateLdapauthPluginInWorkspace(ctx context.Context, request operations.UpdateLdapauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateLdapauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateLdapauthPlugin(ctx context.Context, request operations.UpdateLdapauthPluginRequest, opts ...operations.Option) (*operations.UpdateLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -40487,7 +40487,7 @@ func (s *Plugins) UpdateLdapauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-ldapauth-plugin-in-workspace",
+		OperationID:      "update-ldapauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -40622,7 +40622,7 @@ func (s *Plugins) UpdateLdapauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateLdapauthPluginInWorkspaceResponse{
+	res := &operations.UpdateLdapauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -40683,9 +40683,9 @@ func (s *Plugins) UpdateLdapauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// DeleteLdapauthadvancedPluginInWorkspace - Delete a LdapAuthAdvanced plugin in a workspace
+// DeleteLdapauthadvancedPlugin - Delete a LdapAuthAdvanced plugin in a workspace
 // Delete a LdapAuthAdvanced plugin in a workspace
-func (s *Plugins) DeleteLdapauthadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteLdapauthadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteLdapauthadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteLdapauthadvancedPlugin(ctx context.Context, request operations.DeleteLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -40714,7 +40714,7 @@ func (s *Plugins) DeleteLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-ldapauthadvanced-plugin-in-workspace",
+		OperationID:      "delete-ldapauthadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -40842,7 +40842,7 @@ func (s *Plugins) DeleteLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.DeleteLdapauthadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteLdapauthadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -40886,9 +40886,9 @@ func (s *Plugins) DeleteLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 
 }
 
-// GetLdapauthadvancedPluginInWorkspace - Get a LdapAuthAdvanced plugin in a workspace
+// GetLdapauthadvancedPlugin - Get a LdapAuthAdvanced plugin in a workspace
 // Get a LdapAuthAdvanced plugin in a workspace
-func (s *Plugins) GetLdapauthadvancedPluginInWorkspace(ctx context.Context, request operations.GetLdapauthadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetLdapauthadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetLdapauthadvancedPlugin(ctx context.Context, request operations.GetLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.GetLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -40917,7 +40917,7 @@ func (s *Plugins) GetLdapauthadvancedPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-ldapauthadvanced-plugin-in-workspace",
+		OperationID:      "get-ldapauthadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -41045,7 +41045,7 @@ func (s *Plugins) GetLdapauthadvancedPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.GetLdapauthadvancedPluginInWorkspaceResponse{
+	res := &operations.GetLdapauthadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -41108,9 +41108,9 @@ func (s *Plugins) GetLdapauthadvancedPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// UpdateLdapauthadvancedPluginInWorkspace - Update a LdapAuthAdvanced plugin in a workspace
+// UpdateLdapauthadvancedPlugin - Update a LdapAuthAdvanced plugin in a workspace
 // Update a LdapAuthAdvanced plugin in a workspace
-func (s *Plugins) UpdateLdapauthadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateLdapauthadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateLdapauthadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateLdapauthadvancedPlugin(ctx context.Context, request operations.UpdateLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -41139,7 +41139,7 @@ func (s *Plugins) UpdateLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-ldapauthadvanced-plugin-in-workspace",
+		OperationID:      "update-ldapauthadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -41274,7 +41274,7 @@ func (s *Plugins) UpdateLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.UpdateLdapauthadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateLdapauthadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -41335,9 +41335,9 @@ func (s *Plugins) UpdateLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 
 }
 
-// DeleteLogglyPluginInWorkspace - Delete a Loggly plugin in a workspace
+// DeleteLogglyPlugin - Delete a Loggly plugin in a workspace
 // Delete a Loggly plugin in a workspace
-func (s *Plugins) DeleteLogglyPluginInWorkspace(ctx context.Context, request operations.DeleteLogglyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteLogglyPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteLogglyPlugin(ctx context.Context, request operations.DeleteLogglyPluginRequest, opts ...operations.Option) (*operations.DeleteLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -41366,7 +41366,7 @@ func (s *Plugins) DeleteLogglyPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-loggly-plugin-in-workspace",
+		OperationID:      "delete-loggly-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -41494,7 +41494,7 @@ func (s *Plugins) DeleteLogglyPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteLogglyPluginInWorkspaceResponse{
+	res := &operations.DeleteLogglyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -41538,9 +41538,9 @@ func (s *Plugins) DeleteLogglyPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetLogglyPluginInWorkspace - Get a Loggly plugin in a workspace
+// GetLogglyPlugin - Get a Loggly plugin in a workspace
 // Get a Loggly plugin in a workspace
-func (s *Plugins) GetLogglyPluginInWorkspace(ctx context.Context, request operations.GetLogglyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetLogglyPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetLogglyPlugin(ctx context.Context, request operations.GetLogglyPluginRequest, opts ...operations.Option) (*operations.GetLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -41569,7 +41569,7 @@ func (s *Plugins) GetLogglyPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-loggly-plugin-in-workspace",
+		OperationID:      "get-loggly-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -41697,7 +41697,7 @@ func (s *Plugins) GetLogglyPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetLogglyPluginInWorkspaceResponse{
+	res := &operations.GetLogglyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -41760,9 +41760,9 @@ func (s *Plugins) GetLogglyPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// UpdateLogglyPluginInWorkspace - Update a Loggly plugin in a workspace
+// UpdateLogglyPlugin - Update a Loggly plugin in a workspace
 // Update a Loggly plugin in a workspace
-func (s *Plugins) UpdateLogglyPluginInWorkspace(ctx context.Context, request operations.UpdateLogglyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateLogglyPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateLogglyPlugin(ctx context.Context, request operations.UpdateLogglyPluginRequest, opts ...operations.Option) (*operations.UpdateLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -41791,7 +41791,7 @@ func (s *Plugins) UpdateLogglyPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-loggly-plugin-in-workspace",
+		OperationID:      "update-loggly-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -41926,7 +41926,7 @@ func (s *Plugins) UpdateLogglyPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.UpdateLogglyPluginInWorkspaceResponse{
+	res := &operations.UpdateLogglyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -41987,9 +41987,9 @@ func (s *Plugins) UpdateLogglyPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteMeteringandbillingPluginInWorkspace - Delete a MeteringAndBilling plugin in a workspace
+// DeleteMeteringandbillingPlugin - Delete a MeteringAndBilling plugin in a workspace
 // Delete a MeteringAndBilling plugin in a workspace
-func (s *Plugins) DeleteMeteringandbillingPluginInWorkspace(ctx context.Context, request operations.DeleteMeteringandbillingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteMeteringandbillingPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteMeteringandbillingPlugin(ctx context.Context, request operations.DeleteMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.DeleteMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -42018,7 +42018,7 @@ func (s *Plugins) DeleteMeteringandbillingPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-meteringandbilling-plugin-in-workspace",
+		OperationID:      "delete-meteringandbilling-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -42146,7 +42146,7 @@ func (s *Plugins) DeleteMeteringandbillingPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteMeteringandbillingPluginInWorkspaceResponse{
+	res := &operations.DeleteMeteringandbillingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -42190,9 +42190,9 @@ func (s *Plugins) DeleteMeteringandbillingPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetMeteringandbillingPluginInWorkspace - Get a MeteringAndBilling plugin in a workspace
+// GetMeteringandbillingPlugin - Get a MeteringAndBilling plugin in a workspace
 // Get a MeteringAndBilling plugin in a workspace
-func (s *Plugins) GetMeteringandbillingPluginInWorkspace(ctx context.Context, request operations.GetMeteringandbillingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetMeteringandbillingPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetMeteringandbillingPlugin(ctx context.Context, request operations.GetMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.GetMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -42221,7 +42221,7 @@ func (s *Plugins) GetMeteringandbillingPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-meteringandbilling-plugin-in-workspace",
+		OperationID:      "get-meteringandbilling-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -42349,7 +42349,7 @@ func (s *Plugins) GetMeteringandbillingPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetMeteringandbillingPluginInWorkspaceResponse{
+	res := &operations.GetMeteringandbillingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -42412,9 +42412,9 @@ func (s *Plugins) GetMeteringandbillingPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateMeteringandbillingPluginInWorkspace - Update a MeteringAndBilling plugin in a workspace
+// UpdateMeteringandbillingPlugin - Update a MeteringAndBilling plugin in a workspace
 // Update a MeteringAndBilling plugin in a workspace
-func (s *Plugins) UpdateMeteringandbillingPluginInWorkspace(ctx context.Context, request operations.UpdateMeteringandbillingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateMeteringandbillingPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateMeteringandbillingPlugin(ctx context.Context, request operations.UpdateMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.UpdateMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -42443,7 +42443,7 @@ func (s *Plugins) UpdateMeteringandbillingPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-meteringandbilling-plugin-in-workspace",
+		OperationID:      "update-meteringandbilling-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -42578,7 +42578,7 @@ func (s *Plugins) UpdateMeteringandbillingPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateMeteringandbillingPluginInWorkspaceResponse{
+	res := &operations.UpdateMeteringandbillingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -42639,9 +42639,9 @@ func (s *Plugins) UpdateMeteringandbillingPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteMockingPluginInWorkspace - Delete a Mocking plugin in a workspace
+// DeleteMockingPlugin - Delete a Mocking plugin in a workspace
 // Delete a Mocking plugin in a workspace
-func (s *Plugins) DeleteMockingPluginInWorkspace(ctx context.Context, request operations.DeleteMockingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteMockingPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteMockingPlugin(ctx context.Context, request operations.DeleteMockingPluginRequest, opts ...operations.Option) (*operations.DeleteMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -42670,7 +42670,7 @@ func (s *Plugins) DeleteMockingPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-mocking-plugin-in-workspace",
+		OperationID:      "delete-mocking-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -42798,7 +42798,7 @@ func (s *Plugins) DeleteMockingPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteMockingPluginInWorkspaceResponse{
+	res := &operations.DeleteMockingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -42842,9 +42842,9 @@ func (s *Plugins) DeleteMockingPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetMockingPluginInWorkspace - Get a Mocking plugin in a workspace
+// GetMockingPlugin - Get a Mocking plugin in a workspace
 // Get a Mocking plugin in a workspace
-func (s *Plugins) GetMockingPluginInWorkspace(ctx context.Context, request operations.GetMockingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetMockingPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetMockingPlugin(ctx context.Context, request operations.GetMockingPluginRequest, opts ...operations.Option) (*operations.GetMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -42873,7 +42873,7 @@ func (s *Plugins) GetMockingPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-mocking-plugin-in-workspace",
+		OperationID:      "get-mocking-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -43001,7 +43001,7 @@ func (s *Plugins) GetMockingPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetMockingPluginInWorkspaceResponse{
+	res := &operations.GetMockingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -43064,9 +43064,9 @@ func (s *Plugins) GetMockingPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateMockingPluginInWorkspace - Update a Mocking plugin in a workspace
+// UpdateMockingPlugin - Update a Mocking plugin in a workspace
 // Update a Mocking plugin in a workspace
-func (s *Plugins) UpdateMockingPluginInWorkspace(ctx context.Context, request operations.UpdateMockingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateMockingPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateMockingPlugin(ctx context.Context, request operations.UpdateMockingPluginRequest, opts ...operations.Option) (*operations.UpdateMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -43095,7 +43095,7 @@ func (s *Plugins) UpdateMockingPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-mocking-plugin-in-workspace",
+		OperationID:      "update-mocking-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -43230,7 +43230,7 @@ func (s *Plugins) UpdateMockingPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateMockingPluginInWorkspaceResponse{
+	res := &operations.UpdateMockingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -43291,9 +43291,9 @@ func (s *Plugins) UpdateMockingPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteMtlsauthPluginInWorkspace - Delete a MtlsAuth plugin in a workspace
+// DeleteMtlsauthPlugin - Delete a MtlsAuth plugin in a workspace
 // Delete a MtlsAuth plugin in a workspace
-func (s *Plugins) DeleteMtlsauthPluginInWorkspace(ctx context.Context, request operations.DeleteMtlsauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteMtlsauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteMtlsauthPlugin(ctx context.Context, request operations.DeleteMtlsauthPluginRequest, opts ...operations.Option) (*operations.DeleteMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -43322,7 +43322,7 @@ func (s *Plugins) DeleteMtlsauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-mtlsauth-plugin-in-workspace",
+		OperationID:      "delete-mtlsauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -43450,7 +43450,7 @@ func (s *Plugins) DeleteMtlsauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteMtlsauthPluginInWorkspaceResponse{
+	res := &operations.DeleteMtlsauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -43494,9 +43494,9 @@ func (s *Plugins) DeleteMtlsauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// GetMtlsauthPluginInWorkspace - Get a MtlsAuth plugin in a workspace
+// GetMtlsauthPlugin - Get a MtlsAuth plugin in a workspace
 // Get a MtlsAuth plugin in a workspace
-func (s *Plugins) GetMtlsauthPluginInWorkspace(ctx context.Context, request operations.GetMtlsauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetMtlsauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetMtlsauthPlugin(ctx context.Context, request operations.GetMtlsauthPluginRequest, opts ...operations.Option) (*operations.GetMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -43525,7 +43525,7 @@ func (s *Plugins) GetMtlsauthPluginInWorkspace(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-mtlsauth-plugin-in-workspace",
+		OperationID:      "get-mtlsauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -43653,7 +43653,7 @@ func (s *Plugins) GetMtlsauthPluginInWorkspace(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetMtlsauthPluginInWorkspaceResponse{
+	res := &operations.GetMtlsauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -43716,9 +43716,9 @@ func (s *Plugins) GetMtlsauthPluginInWorkspace(ctx context.Context, request oper
 
 }
 
-// UpdateMtlsauthPluginInWorkspace - Update a MtlsAuth plugin in a workspace
+// UpdateMtlsauthPlugin - Update a MtlsAuth plugin in a workspace
 // Update a MtlsAuth plugin in a workspace
-func (s *Plugins) UpdateMtlsauthPluginInWorkspace(ctx context.Context, request operations.UpdateMtlsauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateMtlsauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateMtlsauthPlugin(ctx context.Context, request operations.UpdateMtlsauthPluginRequest, opts ...operations.Option) (*operations.UpdateMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -43747,7 +43747,7 @@ func (s *Plugins) UpdateMtlsauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-mtlsauth-plugin-in-workspace",
+		OperationID:      "update-mtlsauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -43882,7 +43882,7 @@ func (s *Plugins) UpdateMtlsauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateMtlsauthPluginInWorkspaceResponse{
+	res := &operations.UpdateMtlsauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -43943,9 +43943,9 @@ func (s *Plugins) UpdateMtlsauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// DeleteOasvalidationPluginInWorkspace - Delete a OasValidation plugin in a workspace
+// DeleteOasvalidationPlugin - Delete a OasValidation plugin in a workspace
 // Delete a OasValidation plugin in a workspace
-func (s *Plugins) DeleteOasvalidationPluginInWorkspace(ctx context.Context, request operations.DeleteOasvalidationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteOasvalidationPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteOasvalidationPlugin(ctx context.Context, request operations.DeleteOasvalidationPluginRequest, opts ...operations.Option) (*operations.DeleteOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -43974,7 +43974,7 @@ func (s *Plugins) DeleteOasvalidationPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-oasvalidation-plugin-in-workspace",
+		OperationID:      "delete-oasvalidation-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -44102,7 +44102,7 @@ func (s *Plugins) DeleteOasvalidationPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteOasvalidationPluginInWorkspaceResponse{
+	res := &operations.DeleteOasvalidationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -44146,9 +44146,9 @@ func (s *Plugins) DeleteOasvalidationPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetOasvalidationPluginInWorkspace - Get a OasValidation plugin in a workspace
+// GetOasvalidationPlugin - Get a OasValidation plugin in a workspace
 // Get a OasValidation plugin in a workspace
-func (s *Plugins) GetOasvalidationPluginInWorkspace(ctx context.Context, request operations.GetOasvalidationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetOasvalidationPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetOasvalidationPlugin(ctx context.Context, request operations.GetOasvalidationPluginRequest, opts ...operations.Option) (*operations.GetOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -44177,7 +44177,7 @@ func (s *Plugins) GetOasvalidationPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-oasvalidation-plugin-in-workspace",
+		OperationID:      "get-oasvalidation-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -44305,7 +44305,7 @@ func (s *Plugins) GetOasvalidationPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetOasvalidationPluginInWorkspaceResponse{
+	res := &operations.GetOasvalidationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -44368,9 +44368,9 @@ func (s *Plugins) GetOasvalidationPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateOasvalidationPluginInWorkspace - Update a OasValidation plugin in a workspace
+// UpdateOasvalidationPlugin - Update a OasValidation plugin in a workspace
 // Update a OasValidation plugin in a workspace
-func (s *Plugins) UpdateOasvalidationPluginInWorkspace(ctx context.Context, request operations.UpdateOasvalidationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateOasvalidationPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateOasvalidationPlugin(ctx context.Context, request operations.UpdateOasvalidationPluginRequest, opts ...operations.Option) (*operations.UpdateOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -44399,7 +44399,7 @@ func (s *Plugins) UpdateOasvalidationPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-oasvalidation-plugin-in-workspace",
+		OperationID:      "update-oasvalidation-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -44534,7 +44534,7 @@ func (s *Plugins) UpdateOasvalidationPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateOasvalidationPluginInWorkspaceResponse{
+	res := &operations.UpdateOasvalidationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -44595,9 +44595,9 @@ func (s *Plugins) UpdateOasvalidationPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteOauth2introspectionPluginInWorkspace - Delete a Oauth2Introspection plugin in a workspace
+// DeleteOauth2introspectionPlugin - Delete a Oauth2Introspection plugin in a workspace
 // Delete a Oauth2Introspection plugin in a workspace
-func (s *Plugins) DeleteOauth2introspectionPluginInWorkspace(ctx context.Context, request operations.DeleteOauth2introspectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteOauth2introspectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteOauth2introspectionPlugin(ctx context.Context, request operations.DeleteOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.DeleteOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -44626,7 +44626,7 @@ func (s *Plugins) DeleteOauth2introspectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-oauth2introspection-plugin-in-workspace",
+		OperationID:      "delete-oauth2introspection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -44754,7 +44754,7 @@ func (s *Plugins) DeleteOauth2introspectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.DeleteOauth2introspectionPluginInWorkspaceResponse{
+	res := &operations.DeleteOauth2introspectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -44798,9 +44798,9 @@ func (s *Plugins) DeleteOauth2introspectionPluginInWorkspace(ctx context.Context
 
 }
 
-// GetOauth2introspectionPluginInWorkspace - Get a Oauth2Introspection plugin in a workspace
+// GetOauth2introspectionPlugin - Get a Oauth2Introspection plugin in a workspace
 // Get a Oauth2Introspection plugin in a workspace
-func (s *Plugins) GetOauth2introspectionPluginInWorkspace(ctx context.Context, request operations.GetOauth2introspectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetOauth2introspectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetOauth2introspectionPlugin(ctx context.Context, request operations.GetOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.GetOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -44829,7 +44829,7 @@ func (s *Plugins) GetOauth2introspectionPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-oauth2introspection-plugin-in-workspace",
+		OperationID:      "get-oauth2introspection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -44957,7 +44957,7 @@ func (s *Plugins) GetOauth2introspectionPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.GetOauth2introspectionPluginInWorkspaceResponse{
+	res := &operations.GetOauth2introspectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -45020,9 +45020,9 @@ func (s *Plugins) GetOauth2introspectionPluginInWorkspace(ctx context.Context, r
 
 }
 
-// UpdateOauth2introspectionPluginInWorkspace - Update a Oauth2Introspection plugin in a workspace
+// UpdateOauth2introspectionPlugin - Update a Oauth2Introspection plugin in a workspace
 // Update a Oauth2Introspection plugin in a workspace
-func (s *Plugins) UpdateOauth2introspectionPluginInWorkspace(ctx context.Context, request operations.UpdateOauth2introspectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateOauth2introspectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateOauth2introspectionPlugin(ctx context.Context, request operations.UpdateOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.UpdateOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -45051,7 +45051,7 @@ func (s *Plugins) UpdateOauth2introspectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-oauth2introspection-plugin-in-workspace",
+		OperationID:      "update-oauth2introspection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -45186,7 +45186,7 @@ func (s *Plugins) UpdateOauth2introspectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.UpdateOauth2introspectionPluginInWorkspaceResponse{
+	res := &operations.UpdateOauth2introspectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -45247,9 +45247,9 @@ func (s *Plugins) UpdateOauth2introspectionPluginInWorkspace(ctx context.Context
 
 }
 
-// DeleteOpaPluginInWorkspace - Delete a Opa plugin in a workspace
+// DeleteOpaPlugin - Delete a Opa plugin in a workspace
 // Delete a Opa plugin in a workspace
-func (s *Plugins) DeleteOpaPluginInWorkspace(ctx context.Context, request operations.DeleteOpaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteOpaPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteOpaPlugin(ctx context.Context, request operations.DeleteOpaPluginRequest, opts ...operations.Option) (*operations.DeleteOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -45278,7 +45278,7 @@ func (s *Plugins) DeleteOpaPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-opa-plugin-in-workspace",
+		OperationID:      "delete-opa-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -45406,7 +45406,7 @@ func (s *Plugins) DeleteOpaPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.DeleteOpaPluginInWorkspaceResponse{
+	res := &operations.DeleteOpaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -45450,9 +45450,9 @@ func (s *Plugins) DeleteOpaPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// GetOpaPluginInWorkspace - Get a Opa plugin in a workspace
+// GetOpaPlugin - Get a Opa plugin in a workspace
 // Get a Opa plugin in a workspace
-func (s *Plugins) GetOpaPluginInWorkspace(ctx context.Context, request operations.GetOpaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetOpaPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetOpaPlugin(ctx context.Context, request operations.GetOpaPluginRequest, opts ...operations.Option) (*operations.GetOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -45481,7 +45481,7 @@ func (s *Plugins) GetOpaPluginInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-opa-plugin-in-workspace",
+		OperationID:      "get-opa-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -45609,7 +45609,7 @@ func (s *Plugins) GetOpaPluginInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.GetOpaPluginInWorkspaceResponse{
+	res := &operations.GetOpaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -45672,9 +45672,9 @@ func (s *Plugins) GetOpaPluginInWorkspace(ctx context.Context, request operation
 
 }
 
-// UpdateOpaPluginInWorkspace - Update a Opa plugin in a workspace
+// UpdateOpaPlugin - Update a Opa plugin in a workspace
 // Update a Opa plugin in a workspace
-func (s *Plugins) UpdateOpaPluginInWorkspace(ctx context.Context, request operations.UpdateOpaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateOpaPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateOpaPlugin(ctx context.Context, request operations.UpdateOpaPluginRequest, opts ...operations.Option) (*operations.UpdateOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -45703,7 +45703,7 @@ func (s *Plugins) UpdateOpaPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-opa-plugin-in-workspace",
+		OperationID:      "update-opa-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -45838,7 +45838,7 @@ func (s *Plugins) UpdateOpaPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.UpdateOpaPluginInWorkspaceResponse{
+	res := &operations.UpdateOpaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -45899,9 +45899,9 @@ func (s *Plugins) UpdateOpaPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// DeleteOpenidconnectPluginInWorkspace - Delete a OpenidConnect plugin in a workspace
+// DeleteOpenidconnectPlugin - Delete a OpenidConnect plugin in a workspace
 // Delete a OpenidConnect plugin in a workspace
-func (s *Plugins) DeleteOpenidconnectPluginInWorkspace(ctx context.Context, request operations.DeleteOpenidconnectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteOpenidconnectPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operations.DeleteOpenidconnectPluginRequest, opts ...operations.Option) (*operations.DeleteOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -45930,7 +45930,7 @@ func (s *Plugins) DeleteOpenidconnectPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-openidconnect-plugin-in-workspace",
+		OperationID:      "delete-openidconnect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -46058,7 +46058,7 @@ func (s *Plugins) DeleteOpenidconnectPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteOpenidconnectPluginInWorkspaceResponse{
+	res := &operations.DeleteOpenidconnectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -46102,9 +46102,9 @@ func (s *Plugins) DeleteOpenidconnectPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetOpenidconnectPluginInWorkspace - Get a OpenidConnect plugin in a workspace
+// GetOpenidconnectPlugin - Get a OpenidConnect plugin in a workspace
 // Get a OpenidConnect plugin in a workspace
-func (s *Plugins) GetOpenidconnectPluginInWorkspace(ctx context.Context, request operations.GetOpenidconnectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetOpenidconnectPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations.GetOpenidconnectPluginRequest, opts ...operations.Option) (*operations.GetOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -46133,7 +46133,7 @@ func (s *Plugins) GetOpenidconnectPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-openidconnect-plugin-in-workspace",
+		OperationID:      "get-openidconnect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -46261,7 +46261,7 @@ func (s *Plugins) GetOpenidconnectPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetOpenidconnectPluginInWorkspaceResponse{
+	res := &operations.GetOpenidconnectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -46324,9 +46324,9 @@ func (s *Plugins) GetOpenidconnectPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateOpenidconnectPluginInWorkspace - Update a OpenidConnect plugin in a workspace
+// UpdateOpenidconnectPlugin - Update a OpenidConnect plugin in a workspace
 // Update a OpenidConnect plugin in a workspace
-func (s *Plugins) UpdateOpenidconnectPluginInWorkspace(ctx context.Context, request operations.UpdateOpenidconnectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateOpenidconnectPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operations.UpdateOpenidconnectPluginRequest, opts ...operations.Option) (*operations.UpdateOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -46355,7 +46355,7 @@ func (s *Plugins) UpdateOpenidconnectPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-openidconnect-plugin-in-workspace",
+		OperationID:      "update-openidconnect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -46490,7 +46490,7 @@ func (s *Plugins) UpdateOpenidconnectPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateOpenidconnectPluginInWorkspaceResponse{
+	res := &operations.UpdateOpenidconnectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -46551,9 +46551,9 @@ func (s *Plugins) UpdateOpenidconnectPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteOpentelemetryPluginInWorkspace - Delete a Opentelemetry plugin in a workspace
+// DeleteOpentelemetryPlugin - Delete a Opentelemetry plugin in a workspace
 // Delete a Opentelemetry plugin in a workspace
-func (s *Plugins) DeleteOpentelemetryPluginInWorkspace(ctx context.Context, request operations.DeleteOpentelemetryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteOpentelemetryPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operations.DeleteOpentelemetryPluginRequest, opts ...operations.Option) (*operations.DeleteOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -46582,7 +46582,7 @@ func (s *Plugins) DeleteOpentelemetryPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-opentelemetry-plugin-in-workspace",
+		OperationID:      "delete-opentelemetry-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -46710,7 +46710,7 @@ func (s *Plugins) DeleteOpentelemetryPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteOpentelemetryPluginInWorkspaceResponse{
+	res := &operations.DeleteOpentelemetryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -46754,9 +46754,9 @@ func (s *Plugins) DeleteOpentelemetryPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetOpentelemetryPluginInWorkspace - Get a Opentelemetry plugin in a workspace
+// GetOpentelemetryPlugin - Get a Opentelemetry plugin in a workspace
 // Get a Opentelemetry plugin in a workspace
-func (s *Plugins) GetOpentelemetryPluginInWorkspace(ctx context.Context, request operations.GetOpentelemetryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetOpentelemetryPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations.GetOpentelemetryPluginRequest, opts ...operations.Option) (*operations.GetOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -46785,7 +46785,7 @@ func (s *Plugins) GetOpentelemetryPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-opentelemetry-plugin-in-workspace",
+		OperationID:      "get-opentelemetry-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -46913,7 +46913,7 @@ func (s *Plugins) GetOpentelemetryPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetOpentelemetryPluginInWorkspaceResponse{
+	res := &operations.GetOpentelemetryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -46976,9 +46976,9 @@ func (s *Plugins) GetOpentelemetryPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateOpentelemetryPluginInWorkspace - Update a Opentelemetry plugin in a workspace
+// UpdateOpentelemetryPlugin - Update a Opentelemetry plugin in a workspace
 // Update a Opentelemetry plugin in a workspace
-func (s *Plugins) UpdateOpentelemetryPluginInWorkspace(ctx context.Context, request operations.UpdateOpentelemetryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateOpentelemetryPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operations.UpdateOpentelemetryPluginRequest, opts ...operations.Option) (*operations.UpdateOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -47007,7 +47007,7 @@ func (s *Plugins) UpdateOpentelemetryPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-opentelemetry-plugin-in-workspace",
+		OperationID:      "update-opentelemetry-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -47142,7 +47142,7 @@ func (s *Plugins) UpdateOpentelemetryPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateOpentelemetryPluginInWorkspaceResponse{
+	res := &operations.UpdateOpentelemetryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -47203,9 +47203,9 @@ func (s *Plugins) UpdateOpentelemetryPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeletePostfunctionPluginInWorkspace - Delete a PostFunction plugin in a workspace
+// DeletePostfunctionPlugin - Delete a PostFunction plugin in a workspace
 // Delete a PostFunction plugin in a workspace
-func (s *Plugins) DeletePostfunctionPluginInWorkspace(ctx context.Context, request operations.DeletePostfunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeletePostfunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operations.DeletePostfunctionPluginRequest, opts ...operations.Option) (*operations.DeletePostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -47234,7 +47234,7 @@ func (s *Plugins) DeletePostfunctionPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-postfunction-plugin-in-workspace",
+		OperationID:      "delete-postfunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -47362,7 +47362,7 @@ func (s *Plugins) DeletePostfunctionPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.DeletePostfunctionPluginInWorkspaceResponse{
+	res := &operations.DeletePostfunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -47406,9 +47406,9 @@ func (s *Plugins) DeletePostfunctionPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// GetPostfunctionPluginInWorkspace - Get a PostFunction plugin in a workspace
+// GetPostfunctionPlugin - Get a PostFunction plugin in a workspace
 // Get a PostFunction plugin in a workspace
-func (s *Plugins) GetPostfunctionPluginInWorkspace(ctx context.Context, request operations.GetPostfunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetPostfunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetPostfunctionPlugin(ctx context.Context, request operations.GetPostfunctionPluginRequest, opts ...operations.Option) (*operations.GetPostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -47437,7 +47437,7 @@ func (s *Plugins) GetPostfunctionPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-postfunction-plugin-in-workspace",
+		OperationID:      "get-postfunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -47565,7 +47565,7 @@ func (s *Plugins) GetPostfunctionPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.GetPostfunctionPluginInWorkspaceResponse{
+	res := &operations.GetPostfunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -47628,9 +47628,9 @@ func (s *Plugins) GetPostfunctionPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// UpdatePostfunctionPluginInWorkspace - Update a PostFunction plugin in a workspace
+// UpdatePostfunctionPlugin - Update a PostFunction plugin in a workspace
 // Update a PostFunction plugin in a workspace
-func (s *Plugins) UpdatePostfunctionPluginInWorkspace(ctx context.Context, request operations.UpdatePostfunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdatePostfunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdatePostfunctionPlugin(ctx context.Context, request operations.UpdatePostfunctionPluginRequest, opts ...operations.Option) (*operations.UpdatePostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -47659,7 +47659,7 @@ func (s *Plugins) UpdatePostfunctionPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-postfunction-plugin-in-workspace",
+		OperationID:      "update-postfunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -47794,7 +47794,7 @@ func (s *Plugins) UpdatePostfunctionPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.UpdatePostfunctionPluginInWorkspaceResponse{
+	res := &operations.UpdatePostfunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -47855,9 +47855,9 @@ func (s *Plugins) UpdatePostfunctionPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// DeletePrefunctionPluginInWorkspace - Delete a PreFunction plugin in a workspace
+// DeletePrefunctionPlugin - Delete a PreFunction plugin in a workspace
 // Delete a PreFunction plugin in a workspace
-func (s *Plugins) DeletePrefunctionPluginInWorkspace(ctx context.Context, request operations.DeletePrefunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeletePrefunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operations.DeletePrefunctionPluginRequest, opts ...operations.Option) (*operations.DeletePrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -47886,7 +47886,7 @@ func (s *Plugins) DeletePrefunctionPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-prefunction-plugin-in-workspace",
+		OperationID:      "delete-prefunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -48014,7 +48014,7 @@ func (s *Plugins) DeletePrefunctionPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.DeletePrefunctionPluginInWorkspaceResponse{
+	res := &operations.DeletePrefunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -48058,9 +48058,9 @@ func (s *Plugins) DeletePrefunctionPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// GetPrefunctionPluginInWorkspace - Get a PreFunction plugin in a workspace
+// GetPrefunctionPlugin - Get a PreFunction plugin in a workspace
 // Get a PreFunction plugin in a workspace
-func (s *Plugins) GetPrefunctionPluginInWorkspace(ctx context.Context, request operations.GetPrefunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetPrefunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.GetPrefunctionPluginRequest, opts ...operations.Option) (*operations.GetPrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -48089,7 +48089,7 @@ func (s *Plugins) GetPrefunctionPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-prefunction-plugin-in-workspace",
+		OperationID:      "get-prefunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -48217,7 +48217,7 @@ func (s *Plugins) GetPrefunctionPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.GetPrefunctionPluginInWorkspaceResponse{
+	res := &operations.GetPrefunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -48280,9 +48280,9 @@ func (s *Plugins) GetPrefunctionPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// UpdatePrefunctionPluginInWorkspace - Update a PreFunction plugin in a workspace
+// UpdatePrefunctionPlugin - Update a PreFunction plugin in a workspace
 // Update a PreFunction plugin in a workspace
-func (s *Plugins) UpdatePrefunctionPluginInWorkspace(ctx context.Context, request operations.UpdatePrefunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdatePrefunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operations.UpdatePrefunctionPluginRequest, opts ...operations.Option) (*operations.UpdatePrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -48311,7 +48311,7 @@ func (s *Plugins) UpdatePrefunctionPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-prefunction-plugin-in-workspace",
+		OperationID:      "update-prefunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -48446,7 +48446,7 @@ func (s *Plugins) UpdatePrefunctionPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.UpdatePrefunctionPluginInWorkspaceResponse{
+	res := &operations.UpdatePrefunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -48507,9 +48507,9 @@ func (s *Plugins) UpdatePrefunctionPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// DeletePrometheusPluginInWorkspace - Delete a Prometheus plugin in a workspace
+// DeletePrometheusPlugin - Delete a Prometheus plugin in a workspace
 // Delete a Prometheus plugin in a workspace
-func (s *Plugins) DeletePrometheusPluginInWorkspace(ctx context.Context, request operations.DeletePrometheusPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeletePrometheusPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations.DeletePrometheusPluginRequest, opts ...operations.Option) (*operations.DeletePrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -48538,7 +48538,7 @@ func (s *Plugins) DeletePrometheusPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-prometheus-plugin-in-workspace",
+		OperationID:      "delete-prometheus-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -48666,7 +48666,7 @@ func (s *Plugins) DeletePrometheusPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.DeletePrometheusPluginInWorkspaceResponse{
+	res := &operations.DeletePrometheusPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -48710,9 +48710,9 @@ func (s *Plugins) DeletePrometheusPluginInWorkspace(ctx context.Context, request
 
 }
 
-// GetPrometheusPluginInWorkspace - Get a Prometheus plugin in a workspace
+// GetPrometheusPlugin - Get a Prometheus plugin in a workspace
 // Get a Prometheus plugin in a workspace
-func (s *Plugins) GetPrometheusPluginInWorkspace(ctx context.Context, request operations.GetPrometheusPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetPrometheusPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.GetPrometheusPluginRequest, opts ...operations.Option) (*operations.GetPrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -48741,7 +48741,7 @@ func (s *Plugins) GetPrometheusPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-prometheus-plugin-in-workspace",
+		OperationID:      "get-prometheus-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -48869,7 +48869,7 @@ func (s *Plugins) GetPrometheusPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.GetPrometheusPluginInWorkspaceResponse{
+	res := &operations.GetPrometheusPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -48932,9 +48932,9 @@ func (s *Plugins) GetPrometheusPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// UpdatePrometheusPluginInWorkspace - Update a Prometheus plugin in a workspace
+// UpdatePrometheusPlugin - Update a Prometheus plugin in a workspace
 // Update a Prometheus plugin in a workspace
-func (s *Plugins) UpdatePrometheusPluginInWorkspace(ctx context.Context, request operations.UpdatePrometheusPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdatePrometheusPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations.UpdatePrometheusPluginRequest, opts ...operations.Option) (*operations.UpdatePrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -48963,7 +48963,7 @@ func (s *Plugins) UpdatePrometheusPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-prometheus-plugin-in-workspace",
+		OperationID:      "update-prometheus-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -49098,7 +49098,7 @@ func (s *Plugins) UpdatePrometheusPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.UpdatePrometheusPluginInWorkspaceResponse{
+	res := &operations.UpdatePrometheusPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -49159,9 +49159,9 @@ func (s *Plugins) UpdatePrometheusPluginInWorkspace(ctx context.Context, request
 
 }
 
-// DeleteProxycachePluginInWorkspace - Delete a ProxyCache plugin in a workspace
+// DeleteProxycachePlugin - Delete a ProxyCache plugin in a workspace
 // Delete a ProxyCache plugin in a workspace
-func (s *Plugins) DeleteProxycachePluginInWorkspace(ctx context.Context, request operations.DeleteProxycachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteProxycachePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations.DeleteProxycachePluginRequest, opts ...operations.Option) (*operations.DeleteProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -49190,7 +49190,7 @@ func (s *Plugins) DeleteProxycachePluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-proxycache-plugin-in-workspace",
+		OperationID:      "delete-proxycache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -49318,7 +49318,7 @@ func (s *Plugins) DeleteProxycachePluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.DeleteProxycachePluginInWorkspaceResponse{
+	res := &operations.DeleteProxycachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -49362,9 +49362,9 @@ func (s *Plugins) DeleteProxycachePluginInWorkspace(ctx context.Context, request
 
 }
 
-// GetProxycachePluginInWorkspace - Get a ProxyCache plugin in a workspace
+// GetProxycachePlugin - Get a ProxyCache plugin in a workspace
 // Get a ProxyCache plugin in a workspace
-func (s *Plugins) GetProxycachePluginInWorkspace(ctx context.Context, request operations.GetProxycachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetProxycachePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.GetProxycachePluginRequest, opts ...operations.Option) (*operations.GetProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -49393,7 +49393,7 @@ func (s *Plugins) GetProxycachePluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-proxycache-plugin-in-workspace",
+		OperationID:      "get-proxycache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -49521,7 +49521,7 @@ func (s *Plugins) GetProxycachePluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.GetProxycachePluginInWorkspaceResponse{
+	res := &operations.GetProxycachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -49584,9 +49584,9 @@ func (s *Plugins) GetProxycachePluginInWorkspace(ctx context.Context, request op
 
 }
 
-// UpdateProxycachePluginInWorkspace - Update a ProxyCache plugin in a workspace
+// UpdateProxycachePlugin - Update a ProxyCache plugin in a workspace
 // Update a ProxyCache plugin in a workspace
-func (s *Plugins) UpdateProxycachePluginInWorkspace(ctx context.Context, request operations.UpdateProxycachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateProxycachePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations.UpdateProxycachePluginRequest, opts ...operations.Option) (*operations.UpdateProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -49615,7 +49615,7 @@ func (s *Plugins) UpdateProxycachePluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-proxycache-plugin-in-workspace",
+		OperationID:      "update-proxycache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -49750,7 +49750,7 @@ func (s *Plugins) UpdateProxycachePluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.UpdateProxycachePluginInWorkspaceResponse{
+	res := &operations.UpdateProxycachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -49811,9 +49811,9 @@ func (s *Plugins) UpdateProxycachePluginInWorkspace(ctx context.Context, request
 
 }
 
-// DeleteProxycacheadvancedPluginInWorkspace - Delete a ProxyCacheAdvanced plugin in a workspace
+// DeleteProxycacheadvancedPlugin - Delete a ProxyCacheAdvanced plugin in a workspace
 // Delete a ProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) DeleteProxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteProxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteProxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteProxycacheadvancedPlugin(ctx context.Context, request operations.DeleteProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -49842,7 +49842,7 @@ func (s *Plugins) DeleteProxycacheadvancedPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-proxycacheadvanced-plugin-in-workspace",
+		OperationID:      "delete-proxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -49970,7 +49970,7 @@ func (s *Plugins) DeleteProxycacheadvancedPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteProxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteProxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -50014,9 +50014,9 @@ func (s *Plugins) DeleteProxycacheadvancedPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetProxycacheadvancedPluginInWorkspace - Get a ProxyCacheAdvanced plugin in a workspace
+// GetProxycacheadvancedPlugin - Get a ProxyCacheAdvanced plugin in a workspace
 // Get a ProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) GetProxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.GetProxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetProxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetProxycacheadvancedPlugin(ctx context.Context, request operations.GetProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.GetProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -50045,7 +50045,7 @@ func (s *Plugins) GetProxycacheadvancedPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-proxycacheadvanced-plugin-in-workspace",
+		OperationID:      "get-proxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -50173,7 +50173,7 @@ func (s *Plugins) GetProxycacheadvancedPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetProxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.GetProxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -50236,9 +50236,9 @@ func (s *Plugins) GetProxycacheadvancedPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateProxycacheadvancedPluginInWorkspace - Update a ProxyCacheAdvanced plugin in a workspace
+// UpdateProxycacheadvancedPlugin - Update a ProxyCacheAdvanced plugin in a workspace
 // Update a ProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) UpdateProxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateProxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateProxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateProxycacheadvancedPlugin(ctx context.Context, request operations.UpdateProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -50267,7 +50267,7 @@ func (s *Plugins) UpdateProxycacheadvancedPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-proxycacheadvanced-plugin-in-workspace",
+		OperationID:      "update-proxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -50402,7 +50402,7 @@ func (s *Plugins) UpdateProxycacheadvancedPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateProxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateProxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -50463,9 +50463,9 @@ func (s *Plugins) UpdateProxycacheadvancedPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteRatelimitingPluginInWorkspace - Delete a RateLimiting plugin in a workspace
+// DeleteRatelimitingPlugin - Delete a RateLimiting plugin in a workspace
 // Delete a RateLimiting plugin in a workspace
-func (s *Plugins) DeleteRatelimitingPluginInWorkspace(ctx context.Context, request operations.DeleteRatelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRatelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operations.DeleteRatelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -50494,7 +50494,7 @@ func (s *Plugins) DeleteRatelimitingPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-ratelimiting-plugin-in-workspace",
+		OperationID:      "delete-ratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -50622,7 +50622,7 @@ func (s *Plugins) DeleteRatelimitingPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.DeleteRatelimitingPluginInWorkspaceResponse{
+	res := &operations.DeleteRatelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -50666,9 +50666,9 @@ func (s *Plugins) DeleteRatelimitingPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// GetRatelimitingPluginInWorkspace - Get a RateLimiting plugin in a workspace
+// GetRatelimitingPlugin - Get a RateLimiting plugin in a workspace
 // Get a RateLimiting plugin in a workspace
-func (s *Plugins) GetRatelimitingPluginInWorkspace(ctx context.Context, request operations.GetRatelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRatelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.GetRatelimitingPluginRequest, opts ...operations.Option) (*operations.GetRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -50697,7 +50697,7 @@ func (s *Plugins) GetRatelimitingPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-ratelimiting-plugin-in-workspace",
+		OperationID:      "get-ratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -50825,7 +50825,7 @@ func (s *Plugins) GetRatelimitingPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.GetRatelimitingPluginInWorkspaceResponse{
+	res := &operations.GetRatelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -50888,9 +50888,9 @@ func (s *Plugins) GetRatelimitingPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// UpdateRatelimitingPluginInWorkspace - Update a RateLimiting plugin in a workspace
+// UpdateRatelimitingPlugin - Update a RateLimiting plugin in a workspace
 // Update a RateLimiting plugin in a workspace
-func (s *Plugins) UpdateRatelimitingPluginInWorkspace(ctx context.Context, request operations.UpdateRatelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRatelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operations.UpdateRatelimitingPluginRequest, opts ...operations.Option) (*operations.UpdateRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -50919,7 +50919,7 @@ func (s *Plugins) UpdateRatelimitingPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-ratelimiting-plugin-in-workspace",
+		OperationID:      "update-ratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -51054,7 +51054,7 @@ func (s *Plugins) UpdateRatelimitingPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.UpdateRatelimitingPluginInWorkspaceResponse{
+	res := &operations.UpdateRatelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -51115,9 +51115,9 @@ func (s *Plugins) UpdateRatelimitingPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// DeleteRatelimitingadvancedPluginInWorkspace - Delete a RateLimitingAdvanced plugin in a workspace
+// DeleteRatelimitingadvancedPlugin - Delete a RateLimitingAdvanced plugin in a workspace
 // Delete a RateLimitingAdvanced plugin in a workspace
-func (s *Plugins) DeleteRatelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteRatelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRatelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request operations.DeleteRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51146,7 +51146,7 @@ func (s *Plugins) DeleteRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-ratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "delete-ratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -51274,7 +51274,7 @@ func (s *Plugins) DeleteRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.DeleteRatelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteRatelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -51318,9 +51318,9 @@ func (s *Plugins) DeleteRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 
 }
 
-// GetRatelimitingadvancedPluginInWorkspace - Get a RateLimitingAdvanced plugin in a workspace
+// GetRatelimitingadvancedPlugin - Get a RateLimitingAdvanced plugin in a workspace
 // Get a RateLimitingAdvanced plugin in a workspace
-func (s *Plugins) GetRatelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.GetRatelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRatelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request operations.GetRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.GetRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51349,7 +51349,7 @@ func (s *Plugins) GetRatelimitingadvancedPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-ratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "get-ratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -51477,7 +51477,7 @@ func (s *Plugins) GetRatelimitingadvancedPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.GetRatelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.GetRatelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -51540,9 +51540,9 @@ func (s *Plugins) GetRatelimitingadvancedPluginInWorkspace(ctx context.Context, 
 
 }
 
-// UpdateRatelimitingadvancedPluginInWorkspace - Update a RateLimitingAdvanced plugin in a workspace
+// UpdateRatelimitingadvancedPlugin - Update a RateLimitingAdvanced plugin in a workspace
 // Update a RateLimitingAdvanced plugin in a workspace
-func (s *Plugins) UpdateRatelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateRatelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRatelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request operations.UpdateRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51571,7 +51571,7 @@ func (s *Plugins) UpdateRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-ratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "update-ratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -51706,7 +51706,7 @@ func (s *Plugins) UpdateRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.UpdateRatelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateRatelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -51767,9 +51767,9 @@ func (s *Plugins) UpdateRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 
 }
 
-// DeleteRedirectPluginInWorkspace - Delete a Redirect plugin in a workspace
+// DeleteRedirectPlugin - Delete a Redirect plugin in a workspace
 // Delete a Redirect plugin in a workspace
-func (s *Plugins) DeleteRedirectPluginInWorkspace(ctx context.Context, request operations.DeleteRedirectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRedirectPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRedirectPlugin(ctx context.Context, request operations.DeleteRedirectPluginRequest, opts ...operations.Option) (*operations.DeleteRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -51798,7 +51798,7 @@ func (s *Plugins) DeleteRedirectPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-redirect-plugin-in-workspace",
+		OperationID:      "delete-redirect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -51926,7 +51926,7 @@ func (s *Plugins) DeleteRedirectPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteRedirectPluginInWorkspaceResponse{
+	res := &operations.DeleteRedirectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -51970,9 +51970,9 @@ func (s *Plugins) DeleteRedirectPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// GetRedirectPluginInWorkspace - Get a Redirect plugin in a workspace
+// GetRedirectPlugin - Get a Redirect plugin in a workspace
 // Get a Redirect plugin in a workspace
-func (s *Plugins) GetRedirectPluginInWorkspace(ctx context.Context, request operations.GetRedirectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRedirectPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRedirectPlugin(ctx context.Context, request operations.GetRedirectPluginRequest, opts ...operations.Option) (*operations.GetRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52001,7 +52001,7 @@ func (s *Plugins) GetRedirectPluginInWorkspace(ctx context.Context, request oper
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-redirect-plugin-in-workspace",
+		OperationID:      "get-redirect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -52129,7 +52129,7 @@ func (s *Plugins) GetRedirectPluginInWorkspace(ctx context.Context, request oper
 		}
 	}
 
-	res := &operations.GetRedirectPluginInWorkspaceResponse{
+	res := &operations.GetRedirectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -52192,9 +52192,9 @@ func (s *Plugins) GetRedirectPluginInWorkspace(ctx context.Context, request oper
 
 }
 
-// UpdateRedirectPluginInWorkspace - Update a Redirect plugin in a workspace
+// UpdateRedirectPlugin - Update a Redirect plugin in a workspace
 // Update a Redirect plugin in a workspace
-func (s *Plugins) UpdateRedirectPluginInWorkspace(ctx context.Context, request operations.UpdateRedirectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRedirectPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRedirectPlugin(ctx context.Context, request operations.UpdateRedirectPluginRequest, opts ...operations.Option) (*operations.UpdateRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52223,7 +52223,7 @@ func (s *Plugins) UpdateRedirectPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-redirect-plugin-in-workspace",
+		OperationID:      "update-redirect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -52358,7 +52358,7 @@ func (s *Plugins) UpdateRedirectPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateRedirectPluginInWorkspaceResponse{
+	res := &operations.UpdateRedirectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -52419,9 +52419,9 @@ func (s *Plugins) UpdateRedirectPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// DeleteRequestcalloutPluginInWorkspace - Delete a RequestCallout plugin in a workspace
+// DeleteRequestcalloutPlugin - Delete a RequestCallout plugin in a workspace
 // Delete a RequestCallout plugin in a workspace
-func (s *Plugins) DeleteRequestcalloutPluginInWorkspace(ctx context.Context, request operations.DeleteRequestcalloutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRequestcalloutPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRequestcalloutPlugin(ctx context.Context, request operations.DeleteRequestcalloutPluginRequest, opts ...operations.Option) (*operations.DeleteRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52450,7 +52450,7 @@ func (s *Plugins) DeleteRequestcalloutPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-requestcallout-plugin-in-workspace",
+		OperationID:      "delete-requestcallout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -52578,7 +52578,7 @@ func (s *Plugins) DeleteRequestcalloutPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.DeleteRequestcalloutPluginInWorkspaceResponse{
+	res := &operations.DeleteRequestcalloutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -52622,9 +52622,9 @@ func (s *Plugins) DeleteRequestcalloutPluginInWorkspace(ctx context.Context, req
 
 }
 
-// GetRequestcalloutPluginInWorkspace - Get a RequestCallout plugin in a workspace
+// GetRequestcalloutPlugin - Get a RequestCallout plugin in a workspace
 // Get a RequestCallout plugin in a workspace
-func (s *Plugins) GetRequestcalloutPluginInWorkspace(ctx context.Context, request operations.GetRequestcalloutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRequestcalloutPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRequestcalloutPlugin(ctx context.Context, request operations.GetRequestcalloutPluginRequest, opts ...operations.Option) (*operations.GetRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52653,7 +52653,7 @@ func (s *Plugins) GetRequestcalloutPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-requestcallout-plugin-in-workspace",
+		OperationID:      "get-requestcallout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -52781,7 +52781,7 @@ func (s *Plugins) GetRequestcalloutPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.GetRequestcalloutPluginInWorkspaceResponse{
+	res := &operations.GetRequestcalloutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -52844,9 +52844,9 @@ func (s *Plugins) GetRequestcalloutPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// UpdateRequestcalloutPluginInWorkspace - Update a RequestCallout plugin in a workspace
+// UpdateRequestcalloutPlugin - Update a RequestCallout plugin in a workspace
 // Update a RequestCallout plugin in a workspace
-func (s *Plugins) UpdateRequestcalloutPluginInWorkspace(ctx context.Context, request operations.UpdateRequestcalloutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRequestcalloutPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRequestcalloutPlugin(ctx context.Context, request operations.UpdateRequestcalloutPluginRequest, opts ...operations.Option) (*operations.UpdateRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52875,7 +52875,7 @@ func (s *Plugins) UpdateRequestcalloutPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-requestcallout-plugin-in-workspace",
+		OperationID:      "update-requestcallout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -53010,7 +53010,7 @@ func (s *Plugins) UpdateRequestcalloutPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.UpdateRequestcalloutPluginInWorkspaceResponse{
+	res := &operations.UpdateRequestcalloutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -53071,9 +53071,9 @@ func (s *Plugins) UpdateRequestcalloutPluginInWorkspace(ctx context.Context, req
 
 }
 
-// DeleteRequestsizelimitingPluginInWorkspace - Delete a RequestSizeLimiting plugin in a workspace
+// DeleteRequestsizelimitingPlugin - Delete a RequestSizeLimiting plugin in a workspace
 // Delete a RequestSizeLimiting plugin in a workspace
-func (s *Plugins) DeleteRequestsizelimitingPluginInWorkspace(ctx context.Context, request operations.DeleteRequestsizelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRequestsizelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRequestsizelimitingPlugin(ctx context.Context, request operations.DeleteRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53102,7 +53102,7 @@ func (s *Plugins) DeleteRequestsizelimitingPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-requestsizelimiting-plugin-in-workspace",
+		OperationID:      "delete-requestsizelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -53230,7 +53230,7 @@ func (s *Plugins) DeleteRequestsizelimitingPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.DeleteRequestsizelimitingPluginInWorkspaceResponse{
+	res := &operations.DeleteRequestsizelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -53274,9 +53274,9 @@ func (s *Plugins) DeleteRequestsizelimitingPluginInWorkspace(ctx context.Context
 
 }
 
-// GetRequestsizelimitingPluginInWorkspace - Get a RequestSizeLimiting plugin in a workspace
+// GetRequestsizelimitingPlugin - Get a RequestSizeLimiting plugin in a workspace
 // Get a RequestSizeLimiting plugin in a workspace
-func (s *Plugins) GetRequestsizelimitingPluginInWorkspace(ctx context.Context, request operations.GetRequestsizelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRequestsizelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRequestsizelimitingPlugin(ctx context.Context, request operations.GetRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.GetRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53305,7 +53305,7 @@ func (s *Plugins) GetRequestsizelimitingPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-requestsizelimiting-plugin-in-workspace",
+		OperationID:      "get-requestsizelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -53433,7 +53433,7 @@ func (s *Plugins) GetRequestsizelimitingPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.GetRequestsizelimitingPluginInWorkspaceResponse{
+	res := &operations.GetRequestsizelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -53496,9 +53496,9 @@ func (s *Plugins) GetRequestsizelimitingPluginInWorkspace(ctx context.Context, r
 
 }
 
-// UpdateRequestsizelimitingPluginInWorkspace - Update a RequestSizeLimiting plugin in a workspace
+// UpdateRequestsizelimitingPlugin - Update a RequestSizeLimiting plugin in a workspace
 // Update a RequestSizeLimiting plugin in a workspace
-func (s *Plugins) UpdateRequestsizelimitingPluginInWorkspace(ctx context.Context, request operations.UpdateRequestsizelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRequestsizelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRequestsizelimitingPlugin(ctx context.Context, request operations.UpdateRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.UpdateRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53527,7 +53527,7 @@ func (s *Plugins) UpdateRequestsizelimitingPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-requestsizelimiting-plugin-in-workspace",
+		OperationID:      "update-requestsizelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -53662,7 +53662,7 @@ func (s *Plugins) UpdateRequestsizelimitingPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.UpdateRequestsizelimitingPluginInWorkspaceResponse{
+	res := &operations.UpdateRequestsizelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -53723,9 +53723,9 @@ func (s *Plugins) UpdateRequestsizelimitingPluginInWorkspace(ctx context.Context
 
 }
 
-// DeleteRequestterminationPluginInWorkspace - Delete a RequestTermination plugin in a workspace
+// DeleteRequestterminationPlugin - Delete a RequestTermination plugin in a workspace
 // Delete a RequestTermination plugin in a workspace
-func (s *Plugins) DeleteRequestterminationPluginInWorkspace(ctx context.Context, request operations.DeleteRequestterminationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRequestterminationPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request operations.DeleteRequestterminationPluginRequest, opts ...operations.Option) (*operations.DeleteRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53754,7 +53754,7 @@ func (s *Plugins) DeleteRequestterminationPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-requesttermination-plugin-in-workspace",
+		OperationID:      "delete-requesttermination-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -53882,7 +53882,7 @@ func (s *Plugins) DeleteRequestterminationPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteRequestterminationPluginInWorkspaceResponse{
+	res := &operations.DeleteRequestterminationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -53926,9 +53926,9 @@ func (s *Plugins) DeleteRequestterminationPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetRequestterminationPluginInWorkspace - Get a RequestTermination plugin in a workspace
+// GetRequestterminationPlugin - Get a RequestTermination plugin in a workspace
 // Get a RequestTermination plugin in a workspace
-func (s *Plugins) GetRequestterminationPluginInWorkspace(ctx context.Context, request operations.GetRequestterminationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRequestterminationPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request operations.GetRequestterminationPluginRequest, opts ...operations.Option) (*operations.GetRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -53957,7 +53957,7 @@ func (s *Plugins) GetRequestterminationPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-requesttermination-plugin-in-workspace",
+		OperationID:      "get-requesttermination-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -54085,7 +54085,7 @@ func (s *Plugins) GetRequestterminationPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetRequestterminationPluginInWorkspaceResponse{
+	res := &operations.GetRequestterminationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -54148,9 +54148,9 @@ func (s *Plugins) GetRequestterminationPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateRequestterminationPluginInWorkspace - Update a RequestTermination plugin in a workspace
+// UpdateRequestterminationPlugin - Update a RequestTermination plugin in a workspace
 // Update a RequestTermination plugin in a workspace
-func (s *Plugins) UpdateRequestterminationPluginInWorkspace(ctx context.Context, request operations.UpdateRequestterminationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRequestterminationPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request operations.UpdateRequestterminationPluginRequest, opts ...operations.Option) (*operations.UpdateRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -54179,7 +54179,7 @@ func (s *Plugins) UpdateRequestterminationPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-requesttermination-plugin-in-workspace",
+		OperationID:      "update-requesttermination-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -54314,7 +54314,7 @@ func (s *Plugins) UpdateRequestterminationPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateRequestterminationPluginInWorkspaceResponse{
+	res := &operations.UpdateRequestterminationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -54375,9 +54375,9 @@ func (s *Plugins) UpdateRequestterminationPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteRequesttransformerPluginInWorkspace - Delete a RequestTransformer plugin in a workspace
+// DeleteRequesttransformerPlugin - Delete a RequestTransformer plugin in a workspace
 // Delete a RequestTransformer plugin in a workspace
-func (s *Plugins) DeleteRequesttransformerPluginInWorkspace(ctx context.Context, request operations.DeleteRequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request operations.DeleteRequesttransformerPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -54406,7 +54406,7 @@ func (s *Plugins) DeleteRequesttransformerPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-requesttransformer-plugin-in-workspace",
+		OperationID:      "delete-requesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -54534,7 +54534,7 @@ func (s *Plugins) DeleteRequesttransformerPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteRequesttransformerPluginInWorkspaceResponse{
+	res := &operations.DeleteRequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -54578,9 +54578,9 @@ func (s *Plugins) DeleteRequesttransformerPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetRequesttransformerPluginInWorkspace - Get a RequestTransformer plugin in a workspace
+// GetRequesttransformerPlugin - Get a RequestTransformer plugin in a workspace
 // Get a RequestTransformer plugin in a workspace
-func (s *Plugins) GetRequesttransformerPluginInWorkspace(ctx context.Context, request operations.GetRequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request operations.GetRequesttransformerPluginRequest, opts ...operations.Option) (*operations.GetRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -54609,7 +54609,7 @@ func (s *Plugins) GetRequesttransformerPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-requesttransformer-plugin-in-workspace",
+		OperationID:      "get-requesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -54737,7 +54737,7 @@ func (s *Plugins) GetRequesttransformerPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetRequesttransformerPluginInWorkspaceResponse{
+	res := &operations.GetRequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -54800,9 +54800,9 @@ func (s *Plugins) GetRequesttransformerPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateRequesttransformerPluginInWorkspace - Update a RequestTransformer plugin in a workspace
+// UpdateRequesttransformerPlugin - Update a RequestTransformer plugin in a workspace
 // Update a RequestTransformer plugin in a workspace
-func (s *Plugins) UpdateRequesttransformerPluginInWorkspace(ctx context.Context, request operations.UpdateRequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request operations.UpdateRequesttransformerPluginRequest, opts ...operations.Option) (*operations.UpdateRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -54831,7 +54831,7 @@ func (s *Plugins) UpdateRequesttransformerPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-requesttransformer-plugin-in-workspace",
+		OperationID:      "update-requesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -54966,7 +54966,7 @@ func (s *Plugins) UpdateRequesttransformerPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateRequesttransformerPluginInWorkspaceResponse{
+	res := &operations.UpdateRequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -55027,9 +55027,9 @@ func (s *Plugins) UpdateRequesttransformerPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteRequesttransformeradvancedPluginInWorkspace - Delete a RequestTransformerAdvanced plugin in a workspace
+// DeleteRequesttransformeradvancedPlugin - Delete a RequestTransformerAdvanced plugin in a workspace
 // Delete a RequestTransformerAdvanced plugin in a workspace
-func (s *Plugins) DeleteRequesttransformeradvancedPluginInWorkspace(ctx context.Context, request operations.DeleteRequesttransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRequesttransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, request operations.DeleteRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -55058,7 +55058,7 @@ func (s *Plugins) DeleteRequesttransformeradvancedPluginInWorkspace(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-requesttransformeradvanced-plugin-in-workspace",
+		OperationID:      "delete-requesttransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -55186,7 +55186,7 @@ func (s *Plugins) DeleteRequesttransformeradvancedPluginInWorkspace(ctx context.
 		}
 	}
 
-	res := &operations.DeleteRequesttransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteRequesttransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -55230,9 +55230,9 @@ func (s *Plugins) DeleteRequesttransformeradvancedPluginInWorkspace(ctx context.
 
 }
 
-// GetRequesttransformeradvancedPluginInWorkspace - Get a RequestTransformerAdvanced plugin in a workspace
+// GetRequesttransformeradvancedPlugin - Get a RequestTransformerAdvanced plugin in a workspace
 // Get a RequestTransformerAdvanced plugin in a workspace
-func (s *Plugins) GetRequesttransformeradvancedPluginInWorkspace(ctx context.Context, request operations.GetRequesttransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRequesttransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, request operations.GetRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -55261,7 +55261,7 @@ func (s *Plugins) GetRequesttransformeradvancedPluginInWorkspace(ctx context.Con
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-requesttransformeradvanced-plugin-in-workspace",
+		OperationID:      "get-requesttransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -55389,7 +55389,7 @@ func (s *Plugins) GetRequesttransformeradvancedPluginInWorkspace(ctx context.Con
 		}
 	}
 
-	res := &operations.GetRequesttransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.GetRequesttransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -55452,9 +55452,9 @@ func (s *Plugins) GetRequesttransformeradvancedPluginInWorkspace(ctx context.Con
 
 }
 
-// UpdateRequesttransformeradvancedPluginInWorkspace - Update a RequestTransformerAdvanced plugin in a workspace
+// UpdateRequesttransformeradvancedPlugin - Update a RequestTransformerAdvanced plugin in a workspace
 // Update a RequestTransformerAdvanced plugin in a workspace
-func (s *Plugins) UpdateRequesttransformeradvancedPluginInWorkspace(ctx context.Context, request operations.UpdateRequesttransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRequesttransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, request operations.UpdateRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -55483,7 +55483,7 @@ func (s *Plugins) UpdateRequesttransformeradvancedPluginInWorkspace(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-requesttransformeradvanced-plugin-in-workspace",
+		OperationID:      "update-requesttransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -55618,7 +55618,7 @@ func (s *Plugins) UpdateRequesttransformeradvancedPluginInWorkspace(ctx context.
 		}
 	}
 
-	res := &operations.UpdateRequesttransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateRequesttransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -55679,9 +55679,9 @@ func (s *Plugins) UpdateRequesttransformeradvancedPluginInWorkspace(ctx context.
 
 }
 
-// DeleteRequestvalidatorPluginInWorkspace - Delete a RequestValidator plugin in a workspace
+// DeleteRequestvalidatorPlugin - Delete a RequestValidator plugin in a workspace
 // Delete a RequestValidator plugin in a workspace
-func (s *Plugins) DeleteRequestvalidatorPluginInWorkspace(ctx context.Context, request operations.DeleteRequestvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRequestvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRequestvalidatorPlugin(ctx context.Context, request operations.DeleteRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.DeleteRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -55710,7 +55710,7 @@ func (s *Plugins) DeleteRequestvalidatorPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-requestvalidator-plugin-in-workspace",
+		OperationID:      "delete-requestvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -55838,7 +55838,7 @@ func (s *Plugins) DeleteRequestvalidatorPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.DeleteRequestvalidatorPluginInWorkspaceResponse{
+	res := &operations.DeleteRequestvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -55882,9 +55882,9 @@ func (s *Plugins) DeleteRequestvalidatorPluginInWorkspace(ctx context.Context, r
 
 }
 
-// GetRequestvalidatorPluginInWorkspace - Get a RequestValidator plugin in a workspace
+// GetRequestvalidatorPlugin - Get a RequestValidator plugin in a workspace
 // Get a RequestValidator plugin in a workspace
-func (s *Plugins) GetRequestvalidatorPluginInWorkspace(ctx context.Context, request operations.GetRequestvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRequestvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRequestvalidatorPlugin(ctx context.Context, request operations.GetRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.GetRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -55913,7 +55913,7 @@ func (s *Plugins) GetRequestvalidatorPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-requestvalidator-plugin-in-workspace",
+		OperationID:      "get-requestvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -56041,7 +56041,7 @@ func (s *Plugins) GetRequestvalidatorPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.GetRequestvalidatorPluginInWorkspaceResponse{
+	res := &operations.GetRequestvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -56104,9 +56104,9 @@ func (s *Plugins) GetRequestvalidatorPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// UpdateRequestvalidatorPluginInWorkspace - Update a RequestValidator plugin in a workspace
+// UpdateRequestvalidatorPlugin - Update a RequestValidator plugin in a workspace
 // Update a RequestValidator plugin in a workspace
-func (s *Plugins) UpdateRequestvalidatorPluginInWorkspace(ctx context.Context, request operations.UpdateRequestvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRequestvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRequestvalidatorPlugin(ctx context.Context, request operations.UpdateRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.UpdateRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -56135,7 +56135,7 @@ func (s *Plugins) UpdateRequestvalidatorPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-requestvalidator-plugin-in-workspace",
+		OperationID:      "update-requestvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -56270,7 +56270,7 @@ func (s *Plugins) UpdateRequestvalidatorPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.UpdateRequestvalidatorPluginInWorkspaceResponse{
+	res := &operations.UpdateRequestvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -56331,9 +56331,9 @@ func (s *Plugins) UpdateRequestvalidatorPluginInWorkspace(ctx context.Context, r
 
 }
 
-// DeleteResponseratelimitingPluginInWorkspace - Delete a ResponseRatelimiting plugin in a workspace
+// DeleteResponseratelimitingPlugin - Delete a ResponseRatelimiting plugin in a workspace
 // Delete a ResponseRatelimiting plugin in a workspace
-func (s *Plugins) DeleteResponseratelimitingPluginInWorkspace(ctx context.Context, request operations.DeleteResponseratelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteResponseratelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteResponseratelimitingPlugin(ctx context.Context, request operations.DeleteResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -56362,7 +56362,7 @@ func (s *Plugins) DeleteResponseratelimitingPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-responseratelimiting-plugin-in-workspace",
+		OperationID:      "delete-responseratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -56490,7 +56490,7 @@ func (s *Plugins) DeleteResponseratelimitingPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.DeleteResponseratelimitingPluginInWorkspaceResponse{
+	res := &operations.DeleteResponseratelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -56534,9 +56534,9 @@ func (s *Plugins) DeleteResponseratelimitingPluginInWorkspace(ctx context.Contex
 
 }
 
-// GetResponseratelimitingPluginInWorkspace - Get a ResponseRatelimiting plugin in a workspace
+// GetResponseratelimitingPlugin - Get a ResponseRatelimiting plugin in a workspace
 // Get a ResponseRatelimiting plugin in a workspace
-func (s *Plugins) GetResponseratelimitingPluginInWorkspace(ctx context.Context, request operations.GetResponseratelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetResponseratelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetResponseratelimitingPlugin(ctx context.Context, request operations.GetResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.GetResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -56565,7 +56565,7 @@ func (s *Plugins) GetResponseratelimitingPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-responseratelimiting-plugin-in-workspace",
+		OperationID:      "get-responseratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -56693,7 +56693,7 @@ func (s *Plugins) GetResponseratelimitingPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.GetResponseratelimitingPluginInWorkspaceResponse{
+	res := &operations.GetResponseratelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -56756,9 +56756,9 @@ func (s *Plugins) GetResponseratelimitingPluginInWorkspace(ctx context.Context, 
 
 }
 
-// UpdateResponseratelimitingPluginInWorkspace - Update a ResponseRatelimiting plugin in a workspace
+// UpdateResponseratelimitingPlugin - Update a ResponseRatelimiting plugin in a workspace
 // Update a ResponseRatelimiting plugin in a workspace
-func (s *Plugins) UpdateResponseratelimitingPluginInWorkspace(ctx context.Context, request operations.UpdateResponseratelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateResponseratelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateResponseratelimitingPlugin(ctx context.Context, request operations.UpdateResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.UpdateResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -56787,7 +56787,7 @@ func (s *Plugins) UpdateResponseratelimitingPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-responseratelimiting-plugin-in-workspace",
+		OperationID:      "update-responseratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -56922,7 +56922,7 @@ func (s *Plugins) UpdateResponseratelimitingPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.UpdateResponseratelimitingPluginInWorkspaceResponse{
+	res := &operations.UpdateResponseratelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -56983,9 +56983,9 @@ func (s *Plugins) UpdateResponseratelimitingPluginInWorkspace(ctx context.Contex
 
 }
 
-// DeleteResponsetransformerPluginInWorkspace - Delete a ResponseTransformer plugin in a workspace
+// DeleteResponsetransformerPlugin - Delete a ResponseTransformer plugin in a workspace
 // Delete a ResponseTransformer plugin in a workspace
-func (s *Plugins) DeleteResponsetransformerPluginInWorkspace(ctx context.Context, request operations.DeleteResponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteResponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request operations.DeleteResponsetransformerPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57014,7 +57014,7 @@ func (s *Plugins) DeleteResponsetransformerPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-responsetransformer-plugin-in-workspace",
+		OperationID:      "delete-responsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -57142,7 +57142,7 @@ func (s *Plugins) DeleteResponsetransformerPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.DeleteResponsetransformerPluginInWorkspaceResponse{
+	res := &operations.DeleteResponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -57186,9 +57186,9 @@ func (s *Plugins) DeleteResponsetransformerPluginInWorkspace(ctx context.Context
 
 }
 
-// GetResponsetransformerPluginInWorkspace - Get a ResponseTransformer plugin in a workspace
+// GetResponsetransformerPlugin - Get a ResponseTransformer plugin in a workspace
 // Get a ResponseTransformer plugin in a workspace
-func (s *Plugins) GetResponsetransformerPluginInWorkspace(ctx context.Context, request operations.GetResponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetResponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request operations.GetResponsetransformerPluginRequest, opts ...operations.Option) (*operations.GetResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57217,7 +57217,7 @@ func (s *Plugins) GetResponsetransformerPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-responsetransformer-plugin-in-workspace",
+		OperationID:      "get-responsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -57345,7 +57345,7 @@ func (s *Plugins) GetResponsetransformerPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.GetResponsetransformerPluginInWorkspaceResponse{
+	res := &operations.GetResponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -57408,9 +57408,9 @@ func (s *Plugins) GetResponsetransformerPluginInWorkspace(ctx context.Context, r
 
 }
 
-// UpdateResponsetransformerPluginInWorkspace - Update a ResponseTransformer plugin in a workspace
+// UpdateResponsetransformerPlugin - Update a ResponseTransformer plugin in a workspace
 // Update a ResponseTransformer plugin in a workspace
-func (s *Plugins) UpdateResponsetransformerPluginInWorkspace(ctx context.Context, request operations.UpdateResponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateResponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request operations.UpdateResponsetransformerPluginRequest, opts ...operations.Option) (*operations.UpdateResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57439,7 +57439,7 @@ func (s *Plugins) UpdateResponsetransformerPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-responsetransformer-plugin-in-workspace",
+		OperationID:      "update-responsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -57574,7 +57574,7 @@ func (s *Plugins) UpdateResponsetransformerPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.UpdateResponsetransformerPluginInWorkspaceResponse{
+	res := &operations.UpdateResponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -57635,9 +57635,9 @@ func (s *Plugins) UpdateResponsetransformerPluginInWorkspace(ctx context.Context
 
 }
 
-// DeleteResponsetransformeradvancedPluginInWorkspace - Delete a ResponseTransformerAdvanced plugin in a workspace
+// DeleteResponsetransformeradvancedPlugin - Delete a ResponseTransformerAdvanced plugin in a workspace
 // Delete a ResponseTransformerAdvanced plugin in a workspace
-func (s *Plugins) DeleteResponsetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.DeleteResponsetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteResponsetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, request operations.DeleteResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57666,7 +57666,7 @@ func (s *Plugins) DeleteResponsetransformeradvancedPluginInWorkspace(ctx context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-responsetransformeradvanced-plugin-in-workspace",
+		OperationID:      "delete-responsetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -57794,7 +57794,7 @@ func (s *Plugins) DeleteResponsetransformeradvancedPluginInWorkspace(ctx context
 		}
 	}
 
-	res := &operations.DeleteResponsetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteResponsetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -57838,9 +57838,9 @@ func (s *Plugins) DeleteResponsetransformeradvancedPluginInWorkspace(ctx context
 
 }
 
-// GetResponsetransformeradvancedPluginInWorkspace - Get a ResponseTransformerAdvanced plugin in a workspace
+// GetResponsetransformeradvancedPlugin - Get a ResponseTransformerAdvanced plugin in a workspace
 // Get a ResponseTransformerAdvanced plugin in a workspace
-func (s *Plugins) GetResponsetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.GetResponsetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetResponsetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, request operations.GetResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -57869,7 +57869,7 @@ func (s *Plugins) GetResponsetransformeradvancedPluginInWorkspace(ctx context.Co
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-responsetransformeradvanced-plugin-in-workspace",
+		OperationID:      "get-responsetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -57997,7 +57997,7 @@ func (s *Plugins) GetResponsetransformeradvancedPluginInWorkspace(ctx context.Co
 		}
 	}
 
-	res := &operations.GetResponsetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.GetResponsetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -58060,9 +58060,9 @@ func (s *Plugins) GetResponsetransformeradvancedPluginInWorkspace(ctx context.Co
 
 }
 
-// UpdateResponsetransformeradvancedPluginInWorkspace - Update a ResponseTransformerAdvanced plugin in a workspace
+// UpdateResponsetransformeradvancedPlugin - Update a ResponseTransformerAdvanced plugin in a workspace
 // Update a ResponseTransformerAdvanced plugin in a workspace
-func (s *Plugins) UpdateResponsetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.UpdateResponsetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateResponsetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, request operations.UpdateResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -58091,7 +58091,7 @@ func (s *Plugins) UpdateResponsetransformeradvancedPluginInWorkspace(ctx context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-responsetransformeradvanced-plugin-in-workspace",
+		OperationID:      "update-responsetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -58226,7 +58226,7 @@ func (s *Plugins) UpdateResponsetransformeradvancedPluginInWorkspace(ctx context
 		}
 	}
 
-	res := &operations.UpdateResponsetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateResponsetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -58287,9 +58287,9 @@ func (s *Plugins) UpdateResponsetransformeradvancedPluginInWorkspace(ctx context
 
 }
 
-// DeleteRoutebyheaderPluginInWorkspace - Delete a RouteByHeader plugin in a workspace
+// DeleteRoutebyheaderPlugin - Delete a RouteByHeader plugin in a workspace
 // Delete a RouteByHeader plugin in a workspace
-func (s *Plugins) DeleteRoutebyheaderPluginInWorkspace(ctx context.Context, request operations.DeleteRoutebyheaderPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRoutebyheaderPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRoutebyheaderPlugin(ctx context.Context, request operations.DeleteRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.DeleteRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -58318,7 +58318,7 @@ func (s *Plugins) DeleteRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-routebyheader-plugin-in-workspace",
+		OperationID:      "delete-routebyheader-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -58446,7 +58446,7 @@ func (s *Plugins) DeleteRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteRoutebyheaderPluginInWorkspaceResponse{
+	res := &operations.DeleteRoutebyheaderPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -58490,9 +58490,9 @@ func (s *Plugins) DeleteRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetRoutebyheaderPluginInWorkspace - Get a RouteByHeader plugin in a workspace
+// GetRoutebyheaderPlugin - Get a RouteByHeader plugin in a workspace
 // Get a RouteByHeader plugin in a workspace
-func (s *Plugins) GetRoutebyheaderPluginInWorkspace(ctx context.Context, request operations.GetRoutebyheaderPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRoutebyheaderPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRoutebyheaderPlugin(ctx context.Context, request operations.GetRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.GetRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -58521,7 +58521,7 @@ func (s *Plugins) GetRoutebyheaderPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-routebyheader-plugin-in-workspace",
+		OperationID:      "get-routebyheader-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -58649,7 +58649,7 @@ func (s *Plugins) GetRoutebyheaderPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetRoutebyheaderPluginInWorkspaceResponse{
+	res := &operations.GetRoutebyheaderPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -58712,9 +58712,9 @@ func (s *Plugins) GetRoutebyheaderPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateRoutebyheaderPluginInWorkspace - Update a RouteByHeader plugin in a workspace
+// UpdateRoutebyheaderPlugin - Update a RouteByHeader plugin in a workspace
 // Update a RouteByHeader plugin in a workspace
-func (s *Plugins) UpdateRoutebyheaderPluginInWorkspace(ctx context.Context, request operations.UpdateRoutebyheaderPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRoutebyheaderPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRoutebyheaderPlugin(ctx context.Context, request operations.UpdateRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.UpdateRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -58743,7 +58743,7 @@ func (s *Plugins) UpdateRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-routebyheader-plugin-in-workspace",
+		OperationID:      "update-routebyheader-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -58878,7 +58878,7 @@ func (s *Plugins) UpdateRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateRoutebyheaderPluginInWorkspaceResponse{
+	res := &operations.UpdateRoutebyheaderPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -58939,9 +58939,9 @@ func (s *Plugins) UpdateRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteRoutetransformeradvancedPluginInWorkspace - Delete a RouteTransformerAdvanced plugin in a workspace
+// DeleteRoutetransformeradvancedPlugin - Delete a RouteTransformerAdvanced plugin in a workspace
 // Delete a RouteTransformerAdvanced plugin in a workspace
-func (s *Plugins) DeleteRoutetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.DeleteRoutetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRoutetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteRoutetransformeradvancedPlugin(ctx context.Context, request operations.DeleteRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -58970,7 +58970,7 @@ func (s *Plugins) DeleteRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-routetransformeradvanced-plugin-in-workspace",
+		OperationID:      "delete-routetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -59098,7 +59098,7 @@ func (s *Plugins) DeleteRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 		}
 	}
 
-	res := &operations.DeleteRoutetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteRoutetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -59142,9 +59142,9 @@ func (s *Plugins) DeleteRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 
 }
 
-// GetRoutetransformeradvancedPluginInWorkspace - Get a RouteTransformerAdvanced plugin in a workspace
+// GetRoutetransformeradvancedPlugin - Get a RouteTransformerAdvanced plugin in a workspace
 // Get a RouteTransformerAdvanced plugin in a workspace
-func (s *Plugins) GetRoutetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.GetRoutetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetRoutetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetRoutetransformeradvancedPlugin(ctx context.Context, request operations.GetRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -59173,7 +59173,7 @@ func (s *Plugins) GetRoutetransformeradvancedPluginInWorkspace(ctx context.Conte
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-routetransformeradvanced-plugin-in-workspace",
+		OperationID:      "get-routetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -59301,7 +59301,7 @@ func (s *Plugins) GetRoutetransformeradvancedPluginInWorkspace(ctx context.Conte
 		}
 	}
 
-	res := &operations.GetRoutetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.GetRoutetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -59364,9 +59364,9 @@ func (s *Plugins) GetRoutetransformeradvancedPluginInWorkspace(ctx context.Conte
 
 }
 
-// UpdateRoutetransformeradvancedPluginInWorkspace - Update a RouteTransformerAdvanced plugin in a workspace
+// UpdateRoutetransformeradvancedPlugin - Update a RouteTransformerAdvanced plugin in a workspace
 // Update a RouteTransformerAdvanced plugin in a workspace
-func (s *Plugins) UpdateRoutetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.UpdateRoutetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateRoutetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateRoutetransformeradvancedPlugin(ctx context.Context, request operations.UpdateRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -59395,7 +59395,7 @@ func (s *Plugins) UpdateRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-routetransformeradvanced-plugin-in-workspace",
+		OperationID:      "update-routetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -59530,7 +59530,7 @@ func (s *Plugins) UpdateRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 		}
 	}
 
-	res := &operations.UpdateRoutetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateRoutetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -59591,9 +59591,9 @@ func (s *Plugins) UpdateRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 
 }
 
-// DeleteSamlPluginInWorkspace - Delete a Saml plugin in a workspace
+// DeleteSamlPlugin - Delete a Saml plugin in a workspace
 // Delete a Saml plugin in a workspace
-func (s *Plugins) DeleteSamlPluginInWorkspace(ctx context.Context, request operations.DeleteSamlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteSamlPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.DeleteSamlPluginRequest, opts ...operations.Option) (*operations.DeleteSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -59622,7 +59622,7 @@ func (s *Plugins) DeleteSamlPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-saml-plugin-in-workspace",
+		OperationID:      "delete-saml-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -59750,7 +59750,7 @@ func (s *Plugins) DeleteSamlPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.DeleteSamlPluginInWorkspaceResponse{
+	res := &operations.DeleteSamlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -59794,9 +59794,9 @@ func (s *Plugins) DeleteSamlPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// GetSamlPluginInWorkspace - Get a Saml plugin in a workspace
+// GetSamlPlugin - Get a Saml plugin in a workspace
 // Get a Saml plugin in a workspace
-func (s *Plugins) GetSamlPluginInWorkspace(ctx context.Context, request operations.GetSamlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetSamlPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlPluginRequest, opts ...operations.Option) (*operations.GetSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -59825,7 +59825,7 @@ func (s *Plugins) GetSamlPluginInWorkspace(ctx context.Context, request operatio
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-saml-plugin-in-workspace",
+		OperationID:      "get-saml-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -59953,7 +59953,7 @@ func (s *Plugins) GetSamlPluginInWorkspace(ctx context.Context, request operatio
 		}
 	}
 
-	res := &operations.GetSamlPluginInWorkspaceResponse{
+	res := &operations.GetSamlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -60016,9 +60016,9 @@ func (s *Plugins) GetSamlPluginInWorkspace(ctx context.Context, request operatio
 
 }
 
-// UpdateSamlPluginInWorkspace - Update a Saml plugin in a workspace
+// UpdateSamlPlugin - Update a Saml plugin in a workspace
 // Update a Saml plugin in a workspace
-func (s *Plugins) UpdateSamlPluginInWorkspace(ctx context.Context, request operations.UpdateSamlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateSamlPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.UpdateSamlPluginRequest, opts ...operations.Option) (*operations.UpdateSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -60047,7 +60047,7 @@ func (s *Plugins) UpdateSamlPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-saml-plugin-in-workspace",
+		OperationID:      "update-saml-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -60182,7 +60182,7 @@ func (s *Plugins) UpdateSamlPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.UpdateSamlPluginInWorkspaceResponse{
+	res := &operations.UpdateSamlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -60243,9 +60243,9 @@ func (s *Plugins) UpdateSamlPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// DeleteServiceprotectionPluginInWorkspace - Delete a ServiceProtection plugin in a workspace
+// DeleteServiceprotectionPlugin - Delete a ServiceProtection plugin in a workspace
 // Delete a ServiceProtection plugin in a workspace
-func (s *Plugins) DeleteServiceprotectionPluginInWorkspace(ctx context.Context, request operations.DeleteServiceprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteServiceprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteServiceprotectionPlugin(ctx context.Context, request operations.DeleteServiceprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -60274,7 +60274,7 @@ func (s *Plugins) DeleteServiceprotectionPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-serviceprotection-plugin-in-workspace",
+		OperationID:      "delete-serviceprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -60402,7 +60402,7 @@ func (s *Plugins) DeleteServiceprotectionPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.DeleteServiceprotectionPluginInWorkspaceResponse{
+	res := &operations.DeleteServiceprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -60446,9 +60446,9 @@ func (s *Plugins) DeleteServiceprotectionPluginInWorkspace(ctx context.Context, 
 
 }
 
-// GetServiceprotectionPluginInWorkspace - Get a ServiceProtection plugin in a workspace
+// GetServiceprotectionPlugin - Get a ServiceProtection plugin in a workspace
 // Get a ServiceProtection plugin in a workspace
-func (s *Plugins) GetServiceprotectionPluginInWorkspace(ctx context.Context, request operations.GetServiceprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetServiceprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetServiceprotectionPlugin(ctx context.Context, request operations.GetServiceprotectionPluginRequest, opts ...operations.Option) (*operations.GetServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -60477,7 +60477,7 @@ func (s *Plugins) GetServiceprotectionPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-serviceprotection-plugin-in-workspace",
+		OperationID:      "get-serviceprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -60605,7 +60605,7 @@ func (s *Plugins) GetServiceprotectionPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.GetServiceprotectionPluginInWorkspaceResponse{
+	res := &operations.GetServiceprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -60668,9 +60668,9 @@ func (s *Plugins) GetServiceprotectionPluginInWorkspace(ctx context.Context, req
 
 }
 
-// UpdateServiceprotectionPluginInWorkspace - Update a ServiceProtection plugin in a workspace
+// UpdateServiceprotectionPlugin - Update a ServiceProtection plugin in a workspace
 // Update a ServiceProtection plugin in a workspace
-func (s *Plugins) UpdateServiceprotectionPluginInWorkspace(ctx context.Context, request operations.UpdateServiceprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateServiceprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateServiceprotectionPlugin(ctx context.Context, request operations.UpdateServiceprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -60699,7 +60699,7 @@ func (s *Plugins) UpdateServiceprotectionPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-serviceprotection-plugin-in-workspace",
+		OperationID:      "update-serviceprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -60834,7 +60834,7 @@ func (s *Plugins) UpdateServiceprotectionPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.UpdateServiceprotectionPluginInWorkspaceResponse{
+	res := &operations.UpdateServiceprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -60895,9 +60895,9 @@ func (s *Plugins) UpdateServiceprotectionPluginInWorkspace(ctx context.Context, 
 
 }
 
-// DeleteSessionPluginInWorkspace - Delete a Session plugin in a workspace
+// DeleteSessionPlugin - Delete a Session plugin in a workspace
 // Delete a Session plugin in a workspace
-func (s *Plugins) DeleteSessionPluginInWorkspace(ctx context.Context, request operations.DeleteSessionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteSessionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteSessionPlugin(ctx context.Context, request operations.DeleteSessionPluginRequest, opts ...operations.Option) (*operations.DeleteSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -60926,7 +60926,7 @@ func (s *Plugins) DeleteSessionPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-session-plugin-in-workspace",
+		OperationID:      "delete-session-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -61054,7 +61054,7 @@ func (s *Plugins) DeleteSessionPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.DeleteSessionPluginInWorkspaceResponse{
+	res := &operations.DeleteSessionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -61098,9 +61098,9 @@ func (s *Plugins) DeleteSessionPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// GetSessionPluginInWorkspace - Get a Session plugin in a workspace
+// GetSessionPlugin - Get a Session plugin in a workspace
 // Get a Session plugin in a workspace
-func (s *Plugins) GetSessionPluginInWorkspace(ctx context.Context, request operations.GetSessionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetSessionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetSessionPlugin(ctx context.Context, request operations.GetSessionPluginRequest, opts ...operations.Option) (*operations.GetSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61129,7 +61129,7 @@ func (s *Plugins) GetSessionPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-session-plugin-in-workspace",
+		OperationID:      "get-session-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -61257,7 +61257,7 @@ func (s *Plugins) GetSessionPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.GetSessionPluginInWorkspaceResponse{
+	res := &operations.GetSessionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -61320,9 +61320,9 @@ func (s *Plugins) GetSessionPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// UpdateSessionPluginInWorkspace - Update a Session plugin in a workspace
+// UpdateSessionPlugin - Update a Session plugin in a workspace
 // Update a Session plugin in a workspace
-func (s *Plugins) UpdateSessionPluginInWorkspace(ctx context.Context, request operations.UpdateSessionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateSessionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateSessionPlugin(ctx context.Context, request operations.UpdateSessionPluginRequest, opts ...operations.Option) (*operations.UpdateSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61351,7 +61351,7 @@ func (s *Plugins) UpdateSessionPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-session-plugin-in-workspace",
+		OperationID:      "update-session-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -61486,7 +61486,7 @@ func (s *Plugins) UpdateSessionPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.UpdateSessionPluginInWorkspaceResponse{
+	res := &operations.UpdateSessionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -61547,9 +61547,9 @@ func (s *Plugins) UpdateSessionPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// DeleteSolaceconsumePluginInWorkspace - Delete a SolaceConsume plugin in a workspace
+// DeleteSolaceconsumePlugin - Delete a SolaceConsume plugin in a workspace
 // Delete a SolaceConsume plugin in a workspace
-func (s *Plugins) DeleteSolaceconsumePluginInWorkspace(ctx context.Context, request operations.DeleteSolaceconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteSolaceconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteSolaceconsumePlugin(ctx context.Context, request operations.DeleteSolaceconsumePluginRequest, opts ...operations.Option) (*operations.DeleteSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61578,7 +61578,7 @@ func (s *Plugins) DeleteSolaceconsumePluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-solaceconsume-plugin-in-workspace",
+		OperationID:      "delete-solaceconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -61706,7 +61706,7 @@ func (s *Plugins) DeleteSolaceconsumePluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteSolaceconsumePluginInWorkspaceResponse{
+	res := &operations.DeleteSolaceconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -61750,9 +61750,9 @@ func (s *Plugins) DeleteSolaceconsumePluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetSolaceconsumePluginInWorkspace - Get a SolaceConsume plugin in a workspace
+// GetSolaceconsumePlugin - Get a SolaceConsume plugin in a workspace
 // Get a SolaceConsume plugin in a workspace
-func (s *Plugins) GetSolaceconsumePluginInWorkspace(ctx context.Context, request operations.GetSolaceconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetSolaceconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) GetSolaceconsumePlugin(ctx context.Context, request operations.GetSolaceconsumePluginRequest, opts ...operations.Option) (*operations.GetSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61781,7 +61781,7 @@ func (s *Plugins) GetSolaceconsumePluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-solaceconsume-plugin-in-workspace",
+		OperationID:      "get-solaceconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -61909,7 +61909,7 @@ func (s *Plugins) GetSolaceconsumePluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetSolaceconsumePluginInWorkspaceResponse{
+	res := &operations.GetSolaceconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -61972,9 +61972,9 @@ func (s *Plugins) GetSolaceconsumePluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateSolaceconsumePluginInWorkspace - Update a SolaceConsume plugin in a workspace
+// UpdateSolaceconsumePlugin - Update a SolaceConsume plugin in a workspace
 // Update a SolaceConsume plugin in a workspace
-func (s *Plugins) UpdateSolaceconsumePluginInWorkspace(ctx context.Context, request operations.UpdateSolaceconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateSolaceconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateSolaceconsumePlugin(ctx context.Context, request operations.UpdateSolaceconsumePluginRequest, opts ...operations.Option) (*operations.UpdateSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62003,7 +62003,7 @@ func (s *Plugins) UpdateSolaceconsumePluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-solaceconsume-plugin-in-workspace",
+		OperationID:      "update-solaceconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -62138,7 +62138,7 @@ func (s *Plugins) UpdateSolaceconsumePluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateSolaceconsumePluginInWorkspaceResponse{
+	res := &operations.UpdateSolaceconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -62199,9 +62199,9 @@ func (s *Plugins) UpdateSolaceconsumePluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteSolacelogPluginInWorkspace - Delete a SolaceLog plugin in a workspace
+// DeleteSolacelogPlugin - Delete a SolaceLog plugin in a workspace
 // Delete a SolaceLog plugin in a workspace
-func (s *Plugins) DeleteSolacelogPluginInWorkspace(ctx context.Context, request operations.DeleteSolacelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteSolacelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteSolacelogPlugin(ctx context.Context, request operations.DeleteSolacelogPluginRequest, opts ...operations.Option) (*operations.DeleteSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62230,7 +62230,7 @@ func (s *Plugins) DeleteSolacelogPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-solacelog-plugin-in-workspace",
+		OperationID:      "delete-solacelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -62358,7 +62358,7 @@ func (s *Plugins) DeleteSolacelogPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteSolacelogPluginInWorkspaceResponse{
+	res := &operations.DeleteSolacelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -62402,9 +62402,9 @@ func (s *Plugins) DeleteSolacelogPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// GetSolacelogPluginInWorkspace - Get a SolaceLog plugin in a workspace
+// GetSolacelogPlugin - Get a SolaceLog plugin in a workspace
 // Get a SolaceLog plugin in a workspace
-func (s *Plugins) GetSolacelogPluginInWorkspace(ctx context.Context, request operations.GetSolacelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetSolacelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetSolacelogPlugin(ctx context.Context, request operations.GetSolacelogPluginRequest, opts ...operations.Option) (*operations.GetSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62433,7 +62433,7 @@ func (s *Plugins) GetSolacelogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-solacelog-plugin-in-workspace",
+		OperationID:      "get-solacelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -62561,7 +62561,7 @@ func (s *Plugins) GetSolacelogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.GetSolacelogPluginInWorkspaceResponse{
+	res := &operations.GetSolacelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -62624,9 +62624,9 @@ func (s *Plugins) GetSolacelogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// UpdateSolacelogPluginInWorkspace - Update a SolaceLog plugin in a workspace
+// UpdateSolacelogPlugin - Update a SolaceLog plugin in a workspace
 // Update a SolaceLog plugin in a workspace
-func (s *Plugins) UpdateSolacelogPluginInWorkspace(ctx context.Context, request operations.UpdateSolacelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateSolacelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateSolacelogPlugin(ctx context.Context, request operations.UpdateSolacelogPluginRequest, opts ...operations.Option) (*operations.UpdateSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62655,7 +62655,7 @@ func (s *Plugins) UpdateSolacelogPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-solacelog-plugin-in-workspace",
+		OperationID:      "update-solacelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -62790,7 +62790,7 @@ func (s *Plugins) UpdateSolacelogPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.UpdateSolacelogPluginInWorkspaceResponse{
+	res := &operations.UpdateSolacelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -62851,9 +62851,9 @@ func (s *Plugins) UpdateSolacelogPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// DeleteSolaceupstreamPluginInWorkspace - Delete a SolaceUpstream plugin in a workspace
+// DeleteSolaceupstreamPlugin - Delete a SolaceUpstream plugin in a workspace
 // Delete a SolaceUpstream plugin in a workspace
-func (s *Plugins) DeleteSolaceupstreamPluginInWorkspace(ctx context.Context, request operations.DeleteSolaceupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteSolaceupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteSolaceupstreamPlugin(ctx context.Context, request operations.DeleteSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.DeleteSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62882,7 +62882,7 @@ func (s *Plugins) DeleteSolaceupstreamPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-solaceupstream-plugin-in-workspace",
+		OperationID:      "delete-solaceupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -63010,7 +63010,7 @@ func (s *Plugins) DeleteSolaceupstreamPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.DeleteSolaceupstreamPluginInWorkspaceResponse{
+	res := &operations.DeleteSolaceupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -63054,9 +63054,9 @@ func (s *Plugins) DeleteSolaceupstreamPluginInWorkspace(ctx context.Context, req
 
 }
 
-// GetSolaceupstreamPluginInWorkspace - Get a SolaceUpstream plugin in a workspace
+// GetSolaceupstreamPlugin - Get a SolaceUpstream plugin in a workspace
 // Get a SolaceUpstream plugin in a workspace
-func (s *Plugins) GetSolaceupstreamPluginInWorkspace(ctx context.Context, request operations.GetSolaceupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetSolaceupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetSolaceupstreamPlugin(ctx context.Context, request operations.GetSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.GetSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -63085,7 +63085,7 @@ func (s *Plugins) GetSolaceupstreamPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-solaceupstream-plugin-in-workspace",
+		OperationID:      "get-solaceupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -63213,7 +63213,7 @@ func (s *Plugins) GetSolaceupstreamPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.GetSolaceupstreamPluginInWorkspaceResponse{
+	res := &operations.GetSolaceupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -63276,9 +63276,9 @@ func (s *Plugins) GetSolaceupstreamPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// UpdateSolaceupstreamPluginInWorkspace - Update a SolaceUpstream plugin in a workspace
+// UpdateSolaceupstreamPlugin - Update a SolaceUpstream plugin in a workspace
 // Update a SolaceUpstream plugin in a workspace
-func (s *Plugins) UpdateSolaceupstreamPluginInWorkspace(ctx context.Context, request operations.UpdateSolaceupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateSolaceupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateSolaceupstreamPlugin(ctx context.Context, request operations.UpdateSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.UpdateSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -63307,7 +63307,7 @@ func (s *Plugins) UpdateSolaceupstreamPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-solaceupstream-plugin-in-workspace",
+		OperationID:      "update-solaceupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -63442,7 +63442,7 @@ func (s *Plugins) UpdateSolaceupstreamPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.UpdateSolaceupstreamPluginInWorkspaceResponse{
+	res := &operations.UpdateSolaceupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -63503,9 +63503,9 @@ func (s *Plugins) UpdateSolaceupstreamPluginInWorkspace(ctx context.Context, req
 
 }
 
-// DeleteStandardwebhooksPluginInWorkspace - Delete a StandardWebhooks plugin in a workspace
+// DeleteStandardwebhooksPlugin - Delete a StandardWebhooks plugin in a workspace
 // Delete a StandardWebhooks plugin in a workspace
-func (s *Plugins) DeleteStandardwebhooksPluginInWorkspace(ctx context.Context, request operations.DeleteStandardwebhooksPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteStandardwebhooksPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteStandardwebhooksPlugin(ctx context.Context, request operations.DeleteStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.DeleteStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -63534,7 +63534,7 @@ func (s *Plugins) DeleteStandardwebhooksPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-standardwebhooks-plugin-in-workspace",
+		OperationID:      "delete-standardwebhooks-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -63662,7 +63662,7 @@ func (s *Plugins) DeleteStandardwebhooksPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.DeleteStandardwebhooksPluginInWorkspaceResponse{
+	res := &operations.DeleteStandardwebhooksPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -63706,9 +63706,9 @@ func (s *Plugins) DeleteStandardwebhooksPluginInWorkspace(ctx context.Context, r
 
 }
 
-// GetStandardwebhooksPluginInWorkspace - Get a StandardWebhooks plugin in a workspace
+// GetStandardwebhooksPlugin - Get a StandardWebhooks plugin in a workspace
 // Get a StandardWebhooks plugin in a workspace
-func (s *Plugins) GetStandardwebhooksPluginInWorkspace(ctx context.Context, request operations.GetStandardwebhooksPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetStandardwebhooksPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetStandardwebhooksPlugin(ctx context.Context, request operations.GetStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.GetStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -63737,7 +63737,7 @@ func (s *Plugins) GetStandardwebhooksPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-standardwebhooks-plugin-in-workspace",
+		OperationID:      "get-standardwebhooks-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -63865,7 +63865,7 @@ func (s *Plugins) GetStandardwebhooksPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.GetStandardwebhooksPluginInWorkspaceResponse{
+	res := &operations.GetStandardwebhooksPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -63928,9 +63928,9 @@ func (s *Plugins) GetStandardwebhooksPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// UpdateStandardwebhooksPluginInWorkspace - Update a StandardWebhooks plugin in a workspace
+// UpdateStandardwebhooksPlugin - Update a StandardWebhooks plugin in a workspace
 // Update a StandardWebhooks plugin in a workspace
-func (s *Plugins) UpdateStandardwebhooksPluginInWorkspace(ctx context.Context, request operations.UpdateStandardwebhooksPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateStandardwebhooksPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateStandardwebhooksPlugin(ctx context.Context, request operations.UpdateStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.UpdateStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -63959,7 +63959,7 @@ func (s *Plugins) UpdateStandardwebhooksPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-standardwebhooks-plugin-in-workspace",
+		OperationID:      "update-standardwebhooks-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -64094,7 +64094,7 @@ func (s *Plugins) UpdateStandardwebhooksPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.UpdateStandardwebhooksPluginInWorkspaceResponse{
+	res := &operations.UpdateStandardwebhooksPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -64155,9 +64155,9 @@ func (s *Plugins) UpdateStandardwebhooksPluginInWorkspace(ctx context.Context, r
 
 }
 
-// DeleteStatsdPluginInWorkspace - Delete a Statsd plugin in a workspace
+// DeleteStatsdPlugin - Delete a Statsd plugin in a workspace
 // Delete a Statsd plugin in a workspace
-func (s *Plugins) DeleteStatsdPluginInWorkspace(ctx context.Context, request operations.DeleteStatsdPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteStatsdPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.DeleteStatsdPluginRequest, opts ...operations.Option) (*operations.DeleteStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -64186,7 +64186,7 @@ func (s *Plugins) DeleteStatsdPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-statsd-plugin-in-workspace",
+		OperationID:      "delete-statsd-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -64314,7 +64314,7 @@ func (s *Plugins) DeleteStatsdPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteStatsdPluginInWorkspaceResponse{
+	res := &operations.DeleteStatsdPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -64358,9 +64358,9 @@ func (s *Plugins) DeleteStatsdPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetStatsdPluginInWorkspace - Get a Statsd plugin in a workspace
+// GetStatsdPlugin - Get a Statsd plugin in a workspace
 // Get a Statsd plugin in a workspace
-func (s *Plugins) GetStatsdPluginInWorkspace(ctx context.Context, request operations.GetStatsdPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetStatsdPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetStatsdPlugin(ctx context.Context, request operations.GetStatsdPluginRequest, opts ...operations.Option) (*operations.GetStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -64389,7 +64389,7 @@ func (s *Plugins) GetStatsdPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-statsd-plugin-in-workspace",
+		OperationID:      "get-statsd-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -64517,7 +64517,7 @@ func (s *Plugins) GetStatsdPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetStatsdPluginInWorkspaceResponse{
+	res := &operations.GetStatsdPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -64580,9 +64580,9 @@ func (s *Plugins) GetStatsdPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// UpdateStatsdPluginInWorkspace - Update a Statsd plugin in a workspace
+// UpdateStatsdPlugin - Update a Statsd plugin in a workspace
 // Update a Statsd plugin in a workspace
-func (s *Plugins) UpdateStatsdPluginInWorkspace(ctx context.Context, request operations.UpdateStatsdPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateStatsdPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateStatsdPlugin(ctx context.Context, request operations.UpdateStatsdPluginRequest, opts ...operations.Option) (*operations.UpdateStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -64611,7 +64611,7 @@ func (s *Plugins) UpdateStatsdPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-statsd-plugin-in-workspace",
+		OperationID:      "update-statsd-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -64746,7 +64746,7 @@ func (s *Plugins) UpdateStatsdPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.UpdateStatsdPluginInWorkspaceResponse{
+	res := &operations.UpdateStatsdPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -64807,9 +64807,9 @@ func (s *Plugins) UpdateStatsdPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteStatsdadvancedPluginInWorkspace - Delete a StatsdAdvanced plugin in a workspace
+// DeleteStatsdadvancedPlugin - Delete a StatsdAdvanced plugin in a workspace
 // Delete a StatsdAdvanced plugin in a workspace
-func (s *Plugins) DeleteStatsdadvancedPluginInWorkspace(ctx context.Context, request operations.DeleteStatsdadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteStatsdadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteStatsdadvancedPlugin(ctx context.Context, request operations.DeleteStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -64838,7 +64838,7 @@ func (s *Plugins) DeleteStatsdadvancedPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-statsdadvanced-plugin-in-workspace",
+		OperationID:      "delete-statsdadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -64966,7 +64966,7 @@ func (s *Plugins) DeleteStatsdadvancedPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.DeleteStatsdadvancedPluginInWorkspaceResponse{
+	res := &operations.DeleteStatsdadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -65010,9 +65010,9 @@ func (s *Plugins) DeleteStatsdadvancedPluginInWorkspace(ctx context.Context, req
 
 }
 
-// GetStatsdadvancedPluginInWorkspace - Get a StatsdAdvanced plugin in a workspace
+// GetStatsdadvancedPlugin - Get a StatsdAdvanced plugin in a workspace
 // Get a StatsdAdvanced plugin in a workspace
-func (s *Plugins) GetStatsdadvancedPluginInWorkspace(ctx context.Context, request operations.GetStatsdadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetStatsdadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetStatsdadvancedPlugin(ctx context.Context, request operations.GetStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.GetStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -65041,7 +65041,7 @@ func (s *Plugins) GetStatsdadvancedPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-statsdadvanced-plugin-in-workspace",
+		OperationID:      "get-statsdadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -65169,7 +65169,7 @@ func (s *Plugins) GetStatsdadvancedPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.GetStatsdadvancedPluginInWorkspaceResponse{
+	res := &operations.GetStatsdadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -65232,9 +65232,9 @@ func (s *Plugins) GetStatsdadvancedPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// UpdateStatsdadvancedPluginInWorkspace - Update a StatsdAdvanced plugin in a workspace
+// UpdateStatsdadvancedPlugin - Update a StatsdAdvanced plugin in a workspace
 // Update a StatsdAdvanced plugin in a workspace
-func (s *Plugins) UpdateStatsdadvancedPluginInWorkspace(ctx context.Context, request operations.UpdateStatsdadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateStatsdadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateStatsdadvancedPlugin(ctx context.Context, request operations.UpdateStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -65263,7 +65263,7 @@ func (s *Plugins) UpdateStatsdadvancedPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-statsdadvanced-plugin-in-workspace",
+		OperationID:      "update-statsdadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -65398,7 +65398,7 @@ func (s *Plugins) UpdateStatsdadvancedPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.UpdateStatsdadvancedPluginInWorkspaceResponse{
+	res := &operations.UpdateStatsdadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -65459,9 +65459,9 @@ func (s *Plugins) UpdateStatsdadvancedPluginInWorkspace(ctx context.Context, req
 
 }
 
-// DeleteSyslogPluginInWorkspace - Delete a Syslog plugin in a workspace
+// DeleteSyslogPlugin - Delete a Syslog plugin in a workspace
 // Delete a Syslog plugin in a workspace
-func (s *Plugins) DeleteSyslogPluginInWorkspace(ctx context.Context, request operations.DeleteSyslogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteSyslogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteSyslogPlugin(ctx context.Context, request operations.DeleteSyslogPluginRequest, opts ...operations.Option) (*operations.DeleteSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -65490,7 +65490,7 @@ func (s *Plugins) DeleteSyslogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-syslog-plugin-in-workspace",
+		OperationID:      "delete-syslog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -65618,7 +65618,7 @@ func (s *Plugins) DeleteSyslogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteSyslogPluginInWorkspaceResponse{
+	res := &operations.DeleteSyslogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -65662,9 +65662,9 @@ func (s *Plugins) DeleteSyslogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetSyslogPluginInWorkspace - Get a Syslog plugin in a workspace
+// GetSyslogPlugin - Get a Syslog plugin in a workspace
 // Get a Syslog plugin in a workspace
-func (s *Plugins) GetSyslogPluginInWorkspace(ctx context.Context, request operations.GetSyslogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetSyslogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetSyslogPlugin(ctx context.Context, request operations.GetSyslogPluginRequest, opts ...operations.Option) (*operations.GetSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -65693,7 +65693,7 @@ func (s *Plugins) GetSyslogPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-syslog-plugin-in-workspace",
+		OperationID:      "get-syslog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -65821,7 +65821,7 @@ func (s *Plugins) GetSyslogPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetSyslogPluginInWorkspaceResponse{
+	res := &operations.GetSyslogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -65884,9 +65884,9 @@ func (s *Plugins) GetSyslogPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// UpdateSyslogPluginInWorkspace - Update a Syslog plugin in a workspace
+// UpdateSyslogPlugin - Update a Syslog plugin in a workspace
 // Update a Syslog plugin in a workspace
-func (s *Plugins) UpdateSyslogPluginInWorkspace(ctx context.Context, request operations.UpdateSyslogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateSyslogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateSyslogPlugin(ctx context.Context, request operations.UpdateSyslogPluginRequest, opts ...operations.Option) (*operations.UpdateSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -65915,7 +65915,7 @@ func (s *Plugins) UpdateSyslogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-syslog-plugin-in-workspace",
+		OperationID:      "update-syslog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -66050,7 +66050,7 @@ func (s *Plugins) UpdateSyslogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.UpdateSyslogPluginInWorkspaceResponse{
+	res := &operations.UpdateSyslogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -66111,9 +66111,9 @@ func (s *Plugins) UpdateSyslogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteTcplogPluginInWorkspace - Delete a TcpLog plugin in a workspace
+// DeleteTcplogPlugin - Delete a TcpLog plugin in a workspace
 // Delete a TcpLog plugin in a workspace
-func (s *Plugins) DeleteTcplogPluginInWorkspace(ctx context.Context, request operations.DeleteTcplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteTcplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteTcplogPlugin(ctx context.Context, request operations.DeleteTcplogPluginRequest, opts ...operations.Option) (*operations.DeleteTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -66142,7 +66142,7 @@ func (s *Plugins) DeleteTcplogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-tcplog-plugin-in-workspace",
+		OperationID:      "delete-tcplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -66270,7 +66270,7 @@ func (s *Plugins) DeleteTcplogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteTcplogPluginInWorkspaceResponse{
+	res := &operations.DeleteTcplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -66314,9 +66314,9 @@ func (s *Plugins) DeleteTcplogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetTcplogPluginInWorkspace - Get a TcpLog plugin in a workspace
+// GetTcplogPlugin - Get a TcpLog plugin in a workspace
 // Get a TcpLog plugin in a workspace
-func (s *Plugins) GetTcplogPluginInWorkspace(ctx context.Context, request operations.GetTcplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetTcplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetTcplogPlugin(ctx context.Context, request operations.GetTcplogPluginRequest, opts ...operations.Option) (*operations.GetTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -66345,7 +66345,7 @@ func (s *Plugins) GetTcplogPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-tcplog-plugin-in-workspace",
+		OperationID:      "get-tcplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -66473,7 +66473,7 @@ func (s *Plugins) GetTcplogPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetTcplogPluginInWorkspaceResponse{
+	res := &operations.GetTcplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -66536,9 +66536,9 @@ func (s *Plugins) GetTcplogPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// UpdateTcplogPluginInWorkspace - Update a TcpLog plugin in a workspace
+// UpdateTcplogPlugin - Update a TcpLog plugin in a workspace
 // Update a TcpLog plugin in a workspace
-func (s *Plugins) UpdateTcplogPluginInWorkspace(ctx context.Context, request operations.UpdateTcplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateTcplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateTcplogPlugin(ctx context.Context, request operations.UpdateTcplogPluginRequest, opts ...operations.Option) (*operations.UpdateTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -66567,7 +66567,7 @@ func (s *Plugins) UpdateTcplogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-tcplog-plugin-in-workspace",
+		OperationID:      "update-tcplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -66702,7 +66702,7 @@ func (s *Plugins) UpdateTcplogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.UpdateTcplogPluginInWorkspaceResponse{
+	res := &operations.UpdateTcplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -66763,9 +66763,9 @@ func (s *Plugins) UpdateTcplogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteTlshandshakemodifierPluginInWorkspace - Delete a TlsHandshakeModifier plugin in a workspace
+// DeleteTlshandshakemodifierPlugin - Delete a TlsHandshakeModifier plugin in a workspace
 // Delete a TlsHandshakeModifier plugin in a workspace
-func (s *Plugins) DeleteTlshandshakemodifierPluginInWorkspace(ctx context.Context, request operations.DeleteTlshandshakemodifierPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteTlshandshakemodifierPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteTlshandshakemodifierPlugin(ctx context.Context, request operations.DeleteTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.DeleteTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -66794,7 +66794,7 @@ func (s *Plugins) DeleteTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-tlshandshakemodifier-plugin-in-workspace",
+		OperationID:      "delete-tlshandshakemodifier-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -66922,7 +66922,7 @@ func (s *Plugins) DeleteTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.DeleteTlshandshakemodifierPluginInWorkspaceResponse{
+	res := &operations.DeleteTlshandshakemodifierPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -66966,9 +66966,9 @@ func (s *Plugins) DeleteTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 
 }
 
-// GetTlshandshakemodifierPluginInWorkspace - Get a TlsHandshakeModifier plugin in a workspace
+// GetTlshandshakemodifierPlugin - Get a TlsHandshakeModifier plugin in a workspace
 // Get a TlsHandshakeModifier plugin in a workspace
-func (s *Plugins) GetTlshandshakemodifierPluginInWorkspace(ctx context.Context, request operations.GetTlshandshakemodifierPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetTlshandshakemodifierPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetTlshandshakemodifierPlugin(ctx context.Context, request operations.GetTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.GetTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -66997,7 +66997,7 @@ func (s *Plugins) GetTlshandshakemodifierPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-tlshandshakemodifier-plugin-in-workspace",
+		OperationID:      "get-tlshandshakemodifier-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -67125,7 +67125,7 @@ func (s *Plugins) GetTlshandshakemodifierPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.GetTlshandshakemodifierPluginInWorkspaceResponse{
+	res := &operations.GetTlshandshakemodifierPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -67188,9 +67188,9 @@ func (s *Plugins) GetTlshandshakemodifierPluginInWorkspace(ctx context.Context, 
 
 }
 
-// UpdateTlshandshakemodifierPluginInWorkspace - Update a TlsHandshakeModifier plugin in a workspace
+// UpdateTlshandshakemodifierPlugin - Update a TlsHandshakeModifier plugin in a workspace
 // Update a TlsHandshakeModifier plugin in a workspace
-func (s *Plugins) UpdateTlshandshakemodifierPluginInWorkspace(ctx context.Context, request operations.UpdateTlshandshakemodifierPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateTlshandshakemodifierPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateTlshandshakemodifierPlugin(ctx context.Context, request operations.UpdateTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.UpdateTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -67219,7 +67219,7 @@ func (s *Plugins) UpdateTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-tlshandshakemodifier-plugin-in-workspace",
+		OperationID:      "update-tlshandshakemodifier-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -67354,7 +67354,7 @@ func (s *Plugins) UpdateTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.UpdateTlshandshakemodifierPluginInWorkspaceResponse{
+	res := &operations.UpdateTlshandshakemodifierPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -67415,9 +67415,9 @@ func (s *Plugins) UpdateTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 
 }
 
-// DeleteTlsmetadataheadersPluginInWorkspace - Delete a TlsMetadataHeaders plugin in a workspace
+// DeleteTlsmetadataheadersPlugin - Delete a TlsMetadataHeaders plugin in a workspace
 // Delete a TlsMetadataHeaders plugin in a workspace
-func (s *Plugins) DeleteTlsmetadataheadersPluginInWorkspace(ctx context.Context, request operations.DeleteTlsmetadataheadersPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteTlsmetadataheadersPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteTlsmetadataheadersPlugin(ctx context.Context, request operations.DeleteTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.DeleteTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -67446,7 +67446,7 @@ func (s *Plugins) DeleteTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-tlsmetadataheaders-plugin-in-workspace",
+		OperationID:      "delete-tlsmetadataheaders-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -67574,7 +67574,7 @@ func (s *Plugins) DeleteTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteTlsmetadataheadersPluginInWorkspaceResponse{
+	res := &operations.DeleteTlsmetadataheadersPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -67618,9 +67618,9 @@ func (s *Plugins) DeleteTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetTlsmetadataheadersPluginInWorkspace - Get a TlsMetadataHeaders plugin in a workspace
+// GetTlsmetadataheadersPlugin - Get a TlsMetadataHeaders plugin in a workspace
 // Get a TlsMetadataHeaders plugin in a workspace
-func (s *Plugins) GetTlsmetadataheadersPluginInWorkspace(ctx context.Context, request operations.GetTlsmetadataheadersPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetTlsmetadataheadersPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetTlsmetadataheadersPlugin(ctx context.Context, request operations.GetTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.GetTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -67649,7 +67649,7 @@ func (s *Plugins) GetTlsmetadataheadersPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-tlsmetadataheaders-plugin-in-workspace",
+		OperationID:      "get-tlsmetadataheaders-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -67777,7 +67777,7 @@ func (s *Plugins) GetTlsmetadataheadersPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetTlsmetadataheadersPluginInWorkspaceResponse{
+	res := &operations.GetTlsmetadataheadersPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -67840,9 +67840,9 @@ func (s *Plugins) GetTlsmetadataheadersPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateTlsmetadataheadersPluginInWorkspace - Update a TlsMetadataHeaders plugin in a workspace
+// UpdateTlsmetadataheadersPlugin - Update a TlsMetadataHeaders plugin in a workspace
 // Update a TlsMetadataHeaders plugin in a workspace
-func (s *Plugins) UpdateTlsmetadataheadersPluginInWorkspace(ctx context.Context, request operations.UpdateTlsmetadataheadersPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateTlsmetadataheadersPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateTlsmetadataheadersPlugin(ctx context.Context, request operations.UpdateTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.UpdateTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -67871,7 +67871,7 @@ func (s *Plugins) UpdateTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-tlsmetadataheaders-plugin-in-workspace",
+		OperationID:      "update-tlsmetadataheaders-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -68006,7 +68006,7 @@ func (s *Plugins) UpdateTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateTlsmetadataheadersPluginInWorkspaceResponse{
+	res := &operations.UpdateTlsmetadataheadersPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -68067,9 +68067,9 @@ func (s *Plugins) UpdateTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteUdplogPluginInWorkspace - Delete a UdpLog plugin in a workspace
+// DeleteUdplogPlugin - Delete a UdpLog plugin in a workspace
 // Delete a UdpLog plugin in a workspace
-func (s *Plugins) DeleteUdplogPluginInWorkspace(ctx context.Context, request operations.DeleteUdplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteUdplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteUdplogPlugin(ctx context.Context, request operations.DeleteUdplogPluginRequest, opts ...operations.Option) (*operations.DeleteUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -68098,7 +68098,7 @@ func (s *Plugins) DeleteUdplogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-udplog-plugin-in-workspace",
+		OperationID:      "delete-udplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -68226,7 +68226,7 @@ func (s *Plugins) DeleteUdplogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteUdplogPluginInWorkspaceResponse{
+	res := &operations.DeleteUdplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -68270,9 +68270,9 @@ func (s *Plugins) DeleteUdplogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetUdplogPluginInWorkspace - Get a UdpLog plugin in a workspace
+// GetUdplogPlugin - Get a UdpLog plugin in a workspace
 // Get a UdpLog plugin in a workspace
-func (s *Plugins) GetUdplogPluginInWorkspace(ctx context.Context, request operations.GetUdplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetUdplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetUdplogPlugin(ctx context.Context, request operations.GetUdplogPluginRequest, opts ...operations.Option) (*operations.GetUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -68301,7 +68301,7 @@ func (s *Plugins) GetUdplogPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-udplog-plugin-in-workspace",
+		OperationID:      "get-udplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -68429,7 +68429,7 @@ func (s *Plugins) GetUdplogPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetUdplogPluginInWorkspaceResponse{
+	res := &operations.GetUdplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -68492,9 +68492,9 @@ func (s *Plugins) GetUdplogPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// UpdateUdplogPluginInWorkspace - Update a UdpLog plugin in a workspace
+// UpdateUdplogPlugin - Update a UdpLog plugin in a workspace
 // Update a UdpLog plugin in a workspace
-func (s *Plugins) UpdateUdplogPluginInWorkspace(ctx context.Context, request operations.UpdateUdplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateUdplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateUdplogPlugin(ctx context.Context, request operations.UpdateUdplogPluginRequest, opts ...operations.Option) (*operations.UpdateUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -68523,7 +68523,7 @@ func (s *Plugins) UpdateUdplogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-udplog-plugin-in-workspace",
+		OperationID:      "update-udplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -68658,7 +68658,7 @@ func (s *Plugins) UpdateUdplogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.UpdateUdplogPluginInWorkspaceResponse{
+	res := &operations.UpdateUdplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -68719,9 +68719,9 @@ func (s *Plugins) UpdateUdplogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteUpstreamoauthPluginInWorkspace - Delete a UpstreamOauth plugin in a workspace
+// DeleteUpstreamoauthPlugin - Delete a UpstreamOauth plugin in a workspace
 // Delete a UpstreamOauth plugin in a workspace
-func (s *Plugins) DeleteUpstreamoauthPluginInWorkspace(ctx context.Context, request operations.DeleteUpstreamoauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteUpstreamoauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteUpstreamoauthPlugin(ctx context.Context, request operations.DeleteUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.DeleteUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -68750,7 +68750,7 @@ func (s *Plugins) DeleteUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-upstreamoauth-plugin-in-workspace",
+		OperationID:      "delete-upstreamoauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -68878,7 +68878,7 @@ func (s *Plugins) DeleteUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteUpstreamoauthPluginInWorkspaceResponse{
+	res := &operations.DeleteUpstreamoauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -68922,9 +68922,9 @@ func (s *Plugins) DeleteUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// GetUpstreamoauthPluginInWorkspace - Get a UpstreamOauth plugin in a workspace
+// GetUpstreamoauthPlugin - Get a UpstreamOauth plugin in a workspace
 // Get a UpstreamOauth plugin in a workspace
-func (s *Plugins) GetUpstreamoauthPluginInWorkspace(ctx context.Context, request operations.GetUpstreamoauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetUpstreamoauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetUpstreamoauthPlugin(ctx context.Context, request operations.GetUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.GetUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -68953,7 +68953,7 @@ func (s *Plugins) GetUpstreamoauthPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-upstreamoauth-plugin-in-workspace",
+		OperationID:      "get-upstreamoauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -69081,7 +69081,7 @@ func (s *Plugins) GetUpstreamoauthPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetUpstreamoauthPluginInWorkspaceResponse{
+	res := &operations.GetUpstreamoauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -69144,9 +69144,9 @@ func (s *Plugins) GetUpstreamoauthPluginInWorkspace(ctx context.Context, request
 
 }
 
-// UpdateUpstreamoauthPluginInWorkspace - Update a UpstreamOauth plugin in a workspace
+// UpdateUpstreamoauthPlugin - Update a UpstreamOauth plugin in a workspace
 // Update a UpstreamOauth plugin in a workspace
-func (s *Plugins) UpdateUpstreamoauthPluginInWorkspace(ctx context.Context, request operations.UpdateUpstreamoauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateUpstreamoauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateUpstreamoauthPlugin(ctx context.Context, request operations.UpdateUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.UpdateUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -69175,7 +69175,7 @@ func (s *Plugins) UpdateUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-upstreamoauth-plugin-in-workspace",
+		OperationID:      "update-upstreamoauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -69310,7 +69310,7 @@ func (s *Plugins) UpdateUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpdateUpstreamoauthPluginInWorkspaceResponse{
+	res := &operations.UpdateUpstreamoauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -69371,9 +69371,9 @@ func (s *Plugins) UpdateUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// DeleteUpstreamtimeoutPluginInWorkspace - Delete a UpstreamTimeout plugin in a workspace
+// DeleteUpstreamtimeoutPlugin - Delete a UpstreamTimeout plugin in a workspace
 // Delete a UpstreamTimeout plugin in a workspace
-func (s *Plugins) DeleteUpstreamtimeoutPluginInWorkspace(ctx context.Context, request operations.DeleteUpstreamtimeoutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteUpstreamtimeoutPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteUpstreamtimeoutPlugin(ctx context.Context, request operations.DeleteUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.DeleteUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -69402,7 +69402,7 @@ func (s *Plugins) DeleteUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-upstreamtimeout-plugin-in-workspace",
+		OperationID:      "delete-upstreamtimeout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -69530,7 +69530,7 @@ func (s *Plugins) DeleteUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.DeleteUpstreamtimeoutPluginInWorkspaceResponse{
+	res := &operations.DeleteUpstreamtimeoutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -69574,9 +69574,9 @@ func (s *Plugins) DeleteUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 
 }
 
-// GetUpstreamtimeoutPluginInWorkspace - Get a UpstreamTimeout plugin in a workspace
+// GetUpstreamtimeoutPlugin - Get a UpstreamTimeout plugin in a workspace
 // Get a UpstreamTimeout plugin in a workspace
-func (s *Plugins) GetUpstreamtimeoutPluginInWorkspace(ctx context.Context, request operations.GetUpstreamtimeoutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetUpstreamtimeoutPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetUpstreamtimeoutPlugin(ctx context.Context, request operations.GetUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.GetUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -69605,7 +69605,7 @@ func (s *Plugins) GetUpstreamtimeoutPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-upstreamtimeout-plugin-in-workspace",
+		OperationID:      "get-upstreamtimeout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -69733,7 +69733,7 @@ func (s *Plugins) GetUpstreamtimeoutPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.GetUpstreamtimeoutPluginInWorkspaceResponse{
+	res := &operations.GetUpstreamtimeoutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -69796,9 +69796,9 @@ func (s *Plugins) GetUpstreamtimeoutPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// UpdateUpstreamtimeoutPluginInWorkspace - Update a UpstreamTimeout plugin in a workspace
+// UpdateUpstreamtimeoutPlugin - Update a UpstreamTimeout plugin in a workspace
 // Update a UpstreamTimeout plugin in a workspace
-func (s *Plugins) UpdateUpstreamtimeoutPluginInWorkspace(ctx context.Context, request operations.UpdateUpstreamtimeoutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateUpstreamtimeoutPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateUpstreamtimeoutPlugin(ctx context.Context, request operations.UpdateUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.UpdateUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -69827,7 +69827,7 @@ func (s *Plugins) UpdateUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-upstreamtimeout-plugin-in-workspace",
+		OperationID:      "update-upstreamtimeout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -69962,7 +69962,7 @@ func (s *Plugins) UpdateUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.UpdateUpstreamtimeoutPluginInWorkspaceResponse{
+	res := &operations.UpdateUpstreamtimeoutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -70023,9 +70023,9 @@ func (s *Plugins) UpdateUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 
 }
 
-// DeleteVaultauthPluginInWorkspace - Delete a VaultAuth plugin in a workspace
+// DeleteVaultauthPlugin - Delete a VaultAuth plugin in a workspace
 // Delete a VaultAuth plugin in a workspace
-func (s *Plugins) DeleteVaultauthPluginInWorkspace(ctx context.Context, request operations.DeleteVaultauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteVaultauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteVaultauthPlugin(ctx context.Context, request operations.DeleteVaultauthPluginRequest, opts ...operations.Option) (*operations.DeleteVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -70054,7 +70054,7 @@ func (s *Plugins) DeleteVaultauthPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-vaultauth-plugin-in-workspace",
+		OperationID:      "delete-vaultauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -70182,7 +70182,7 @@ func (s *Plugins) DeleteVaultauthPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.DeleteVaultauthPluginInWorkspaceResponse{
+	res := &operations.DeleteVaultauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -70226,9 +70226,9 @@ func (s *Plugins) DeleteVaultauthPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// GetVaultauthPluginInWorkspace - Get a VaultAuth plugin in a workspace
+// GetVaultauthPlugin - Get a VaultAuth plugin in a workspace
 // Get a VaultAuth plugin in a workspace
-func (s *Plugins) GetVaultauthPluginInWorkspace(ctx context.Context, request operations.GetVaultauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetVaultauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetVaultauthPlugin(ctx context.Context, request operations.GetVaultauthPluginRequest, opts ...operations.Option) (*operations.GetVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -70257,7 +70257,7 @@ func (s *Plugins) GetVaultauthPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-vaultauth-plugin-in-workspace",
+		OperationID:      "get-vaultauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -70385,7 +70385,7 @@ func (s *Plugins) GetVaultauthPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.GetVaultauthPluginInWorkspaceResponse{
+	res := &operations.GetVaultauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -70448,9 +70448,9 @@ func (s *Plugins) GetVaultauthPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// UpdateVaultauthPluginInWorkspace - Update a VaultAuth plugin in a workspace
+// UpdateVaultauthPlugin - Update a VaultAuth plugin in a workspace
 // Update a VaultAuth plugin in a workspace
-func (s *Plugins) UpdateVaultauthPluginInWorkspace(ctx context.Context, request operations.UpdateVaultauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateVaultauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateVaultauthPlugin(ctx context.Context, request operations.UpdateVaultauthPluginRequest, opts ...operations.Option) (*operations.UpdateVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -70479,7 +70479,7 @@ func (s *Plugins) UpdateVaultauthPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-vaultauth-plugin-in-workspace",
+		OperationID:      "update-vaultauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -70614,7 +70614,7 @@ func (s *Plugins) UpdateVaultauthPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.UpdateVaultauthPluginInWorkspaceResponse{
+	res := &operations.UpdateVaultauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -70675,9 +70675,9 @@ func (s *Plugins) UpdateVaultauthPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// DeleteWebsocketsizelimitPluginInWorkspace - Delete a WebsocketSizeLimit plugin in a workspace
+// DeleteWebsocketsizelimitPlugin - Delete a WebsocketSizeLimit plugin in a workspace
 // Delete a WebsocketSizeLimit plugin in a workspace
-func (s *Plugins) DeleteWebsocketsizelimitPluginInWorkspace(ctx context.Context, request operations.DeleteWebsocketsizelimitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteWebsocketsizelimitPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteWebsocketsizelimitPlugin(ctx context.Context, request operations.DeleteWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.DeleteWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -70706,7 +70706,7 @@ func (s *Plugins) DeleteWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-websocketsizelimit-plugin-in-workspace",
+		OperationID:      "delete-websocketsizelimit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -70834,7 +70834,7 @@ func (s *Plugins) DeleteWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteWebsocketsizelimitPluginInWorkspaceResponse{
+	res := &operations.DeleteWebsocketsizelimitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -70878,9 +70878,9 @@ func (s *Plugins) DeleteWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetWebsocketsizelimitPluginInWorkspace - Get a WebsocketSizeLimit plugin in a workspace
+// GetWebsocketsizelimitPlugin - Get a WebsocketSizeLimit plugin in a workspace
 // Get a WebsocketSizeLimit plugin in a workspace
-func (s *Plugins) GetWebsocketsizelimitPluginInWorkspace(ctx context.Context, request operations.GetWebsocketsizelimitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetWebsocketsizelimitPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetWebsocketsizelimitPlugin(ctx context.Context, request operations.GetWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.GetWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -70909,7 +70909,7 @@ func (s *Plugins) GetWebsocketsizelimitPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-websocketsizelimit-plugin-in-workspace",
+		OperationID:      "get-websocketsizelimit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -71037,7 +71037,7 @@ func (s *Plugins) GetWebsocketsizelimitPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetWebsocketsizelimitPluginInWorkspaceResponse{
+	res := &operations.GetWebsocketsizelimitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -71100,9 +71100,9 @@ func (s *Plugins) GetWebsocketsizelimitPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateWebsocketsizelimitPluginInWorkspace - Update a WebsocketSizeLimit plugin in a workspace
+// UpdateWebsocketsizelimitPlugin - Update a WebsocketSizeLimit plugin in a workspace
 // Update a WebsocketSizeLimit plugin in a workspace
-func (s *Plugins) UpdateWebsocketsizelimitPluginInWorkspace(ctx context.Context, request operations.UpdateWebsocketsizelimitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateWebsocketsizelimitPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateWebsocketsizelimitPlugin(ctx context.Context, request operations.UpdateWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.UpdateWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -71131,7 +71131,7 @@ func (s *Plugins) UpdateWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-websocketsizelimit-plugin-in-workspace",
+		OperationID:      "update-websocketsizelimit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -71266,7 +71266,7 @@ func (s *Plugins) UpdateWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateWebsocketsizelimitPluginInWorkspaceResponse{
+	res := &operations.UpdateWebsocketsizelimitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -71327,9 +71327,9 @@ func (s *Plugins) UpdateWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteWebsocketvalidatorPluginInWorkspace - Delete a WebsocketValidator plugin in a workspace
+// DeleteWebsocketvalidatorPlugin - Delete a WebsocketValidator plugin in a workspace
 // Delete a WebsocketValidator plugin in a workspace
-func (s *Plugins) DeleteWebsocketvalidatorPluginInWorkspace(ctx context.Context, request operations.DeleteWebsocketvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteWebsocketvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteWebsocketvalidatorPlugin(ctx context.Context, request operations.DeleteWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.DeleteWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -71358,7 +71358,7 @@ func (s *Plugins) DeleteWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-websocketvalidator-plugin-in-workspace",
+		OperationID:      "delete-websocketvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -71486,7 +71486,7 @@ func (s *Plugins) DeleteWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.DeleteWebsocketvalidatorPluginInWorkspaceResponse{
+	res := &operations.DeleteWebsocketvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -71530,9 +71530,9 @@ func (s *Plugins) DeleteWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 
 }
 
-// GetWebsocketvalidatorPluginInWorkspace - Get a WebsocketValidator plugin in a workspace
+// GetWebsocketvalidatorPlugin - Get a WebsocketValidator plugin in a workspace
 // Get a WebsocketValidator plugin in a workspace
-func (s *Plugins) GetWebsocketvalidatorPluginInWorkspace(ctx context.Context, request operations.GetWebsocketvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetWebsocketvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetWebsocketvalidatorPlugin(ctx context.Context, request operations.GetWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.GetWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -71561,7 +71561,7 @@ func (s *Plugins) GetWebsocketvalidatorPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-websocketvalidator-plugin-in-workspace",
+		OperationID:      "get-websocketvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -71689,7 +71689,7 @@ func (s *Plugins) GetWebsocketvalidatorPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.GetWebsocketvalidatorPluginInWorkspaceResponse{
+	res := &operations.GetWebsocketvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -71752,9 +71752,9 @@ func (s *Plugins) GetWebsocketvalidatorPluginInWorkspace(ctx context.Context, re
 
 }
 
-// UpdateWebsocketvalidatorPluginInWorkspace - Update a WebsocketValidator plugin in a workspace
+// UpdateWebsocketvalidatorPlugin - Update a WebsocketValidator plugin in a workspace
 // Update a WebsocketValidator plugin in a workspace
-func (s *Plugins) UpdateWebsocketvalidatorPluginInWorkspace(ctx context.Context, request operations.UpdateWebsocketvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateWebsocketvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateWebsocketvalidatorPlugin(ctx context.Context, request operations.UpdateWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.UpdateWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -71783,7 +71783,7 @@ func (s *Plugins) UpdateWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-websocketvalidator-plugin-in-workspace",
+		OperationID:      "update-websocketvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -71918,7 +71918,7 @@ func (s *Plugins) UpdateWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.UpdateWebsocketvalidatorPluginInWorkspaceResponse{
+	res := &operations.UpdateWebsocketvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -71979,9 +71979,9 @@ func (s *Plugins) UpdateWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 
 }
 
-// DeleteXmlthreatprotectionPluginInWorkspace - Delete a XmlThreatProtection plugin in a workspace
+// DeleteXmlthreatprotectionPlugin - Delete a XmlThreatProtection plugin in a workspace
 // Delete a XmlThreatProtection plugin in a workspace
-func (s *Plugins) DeleteXmlthreatprotectionPluginInWorkspace(ctx context.Context, request operations.DeleteXmlthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteXmlthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteXmlthreatprotectionPlugin(ctx context.Context, request operations.DeleteXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -72010,7 +72010,7 @@ func (s *Plugins) DeleteXmlthreatprotectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-xmlthreatprotection-plugin-in-workspace",
+		OperationID:      "delete-xmlthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -72138,7 +72138,7 @@ func (s *Plugins) DeleteXmlthreatprotectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.DeleteXmlthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.DeleteXmlthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -72182,9 +72182,9 @@ func (s *Plugins) DeleteXmlthreatprotectionPluginInWorkspace(ctx context.Context
 
 }
 
-// GetXmlthreatprotectionPluginInWorkspace - Get a XmlThreatProtection plugin in a workspace
+// GetXmlthreatprotectionPlugin - Get a XmlThreatProtection plugin in a workspace
 // Get a XmlThreatProtection plugin in a workspace
-func (s *Plugins) GetXmlthreatprotectionPluginInWorkspace(ctx context.Context, request operations.GetXmlthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetXmlthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetXmlthreatprotectionPlugin(ctx context.Context, request operations.GetXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.GetXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -72213,7 +72213,7 @@ func (s *Plugins) GetXmlthreatprotectionPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-xmlthreatprotection-plugin-in-workspace",
+		OperationID:      "get-xmlthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -72341,7 +72341,7 @@ func (s *Plugins) GetXmlthreatprotectionPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.GetXmlthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.GetXmlthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -72404,9 +72404,9 @@ func (s *Plugins) GetXmlthreatprotectionPluginInWorkspace(ctx context.Context, r
 
 }
 
-// UpdateXmlthreatprotectionPluginInWorkspace - Update a XmlThreatProtection plugin in a workspace
+// UpdateXmlthreatprotectionPlugin - Update a XmlThreatProtection plugin in a workspace
 // Update a XmlThreatProtection plugin in a workspace
-func (s *Plugins) UpdateXmlthreatprotectionPluginInWorkspace(ctx context.Context, request operations.UpdateXmlthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateXmlthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateXmlthreatprotectionPlugin(ctx context.Context, request operations.UpdateXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -72435,7 +72435,7 @@ func (s *Plugins) UpdateXmlthreatprotectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-xmlthreatprotection-plugin-in-workspace",
+		OperationID:      "update-xmlthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -72570,7 +72570,7 @@ func (s *Plugins) UpdateXmlthreatprotectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.UpdateXmlthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.UpdateXmlthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -72631,9 +72631,9 @@ func (s *Plugins) UpdateXmlthreatprotectionPluginInWorkspace(ctx context.Context
 
 }
 
-// DeleteZipkinPluginInWorkspace - Delete a Zipkin plugin in a workspace
+// DeleteZipkinPlugin - Delete a Zipkin plugin in a workspace
 // Delete a Zipkin plugin in a workspace
-func (s *Plugins) DeleteZipkinPluginInWorkspace(ctx context.Context, request operations.DeleteZipkinPluginInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteZipkinPluginInWorkspaceResponse, error) {
+func (s *Plugins) DeleteZipkinPlugin(ctx context.Context, request operations.DeleteZipkinPluginRequest, opts ...operations.Option) (*operations.DeleteZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -72662,7 +72662,7 @@ func (s *Plugins) DeleteZipkinPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-zipkin-plugin-in-workspace",
+		OperationID:      "delete-zipkin-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -72790,7 +72790,7 @@ func (s *Plugins) DeleteZipkinPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteZipkinPluginInWorkspaceResponse{
+	res := &operations.DeleteZipkinPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -72834,9 +72834,9 @@ func (s *Plugins) DeleteZipkinPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetZipkinPluginInWorkspace - Get a Zipkin plugin in a workspace
+// GetZipkinPlugin - Get a Zipkin plugin in a workspace
 // Get a Zipkin plugin in a workspace
-func (s *Plugins) GetZipkinPluginInWorkspace(ctx context.Context, request operations.GetZipkinPluginInWorkspaceRequest, opts ...operations.Option) (*operations.GetZipkinPluginInWorkspaceResponse, error) {
+func (s *Plugins) GetZipkinPlugin(ctx context.Context, request operations.GetZipkinPluginRequest, opts ...operations.Option) (*operations.GetZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -72865,7 +72865,7 @@ func (s *Plugins) GetZipkinPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-zipkin-plugin-in-workspace",
+		OperationID:      "get-zipkin-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -72993,7 +72993,7 @@ func (s *Plugins) GetZipkinPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetZipkinPluginInWorkspaceResponse{
+	res := &operations.GetZipkinPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -73056,9 +73056,9 @@ func (s *Plugins) GetZipkinPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// UpdateZipkinPluginInWorkspace - Update a Zipkin plugin in a workspace
+// UpdateZipkinPlugin - Update a Zipkin plugin in a workspace
 // Update a Zipkin plugin in a workspace
-func (s *Plugins) UpdateZipkinPluginInWorkspace(ctx context.Context, request operations.UpdateZipkinPluginInWorkspaceRequest, opts ...operations.Option) (*operations.UpdateZipkinPluginInWorkspaceResponse, error) {
+func (s *Plugins) UpdateZipkinPlugin(ctx context.Context, request operations.UpdateZipkinPluginRequest, opts ...operations.Option) (*operations.UpdateZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -73087,7 +73087,7 @@ func (s *Plugins) UpdateZipkinPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-zipkin-plugin-in-workspace",
+		OperationID:      "update-zipkin-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -73222,7 +73222,7 @@ func (s *Plugins) UpdateZipkinPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.UpdateZipkinPluginInWorkspaceResponse{
+	res := &operations.UpdateZipkinPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -73283,9 +73283,9 @@ func (s *Plugins) UpdateZipkinPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// CreateAcePluginInWorkspace - Create a Ace plugin in a workspace
+// CreateAcePlugin - Create a Ace plugin in a workspace
 // Create a Ace plugin in a workspace
-func (s *Plugins) CreateAcePluginInWorkspace(ctx context.Context, request operations.CreateAcePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAcePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAcePlugin(ctx context.Context, request operations.CreateAcePluginRequest, opts ...operations.Option) (*operations.CreateAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -73314,7 +73314,7 @@ func (s *Plugins) CreateAcePluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-ace-plugin-in-workspace",
+		OperationID:      "create-ace-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -73449,7 +73449,7 @@ func (s *Plugins) CreateAcePluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.CreateAcePluginInWorkspaceResponse{
+	res := &operations.CreateAcePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -73510,9 +73510,9 @@ func (s *Plugins) CreateAcePluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// CreateACLPluginInWorkspace - Create a ACL plugin in a workspace
+// CreateACLPlugin - Create a ACL plugin in a workspace
 // Create a ACL plugin in a workspace
-func (s *Plugins) CreateACLPluginInWorkspace(ctx context.Context, request operations.CreateACLPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateACLPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.CreateACLPluginRequest, opts ...operations.Option) (*operations.CreateACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -73541,7 +73541,7 @@ func (s *Plugins) CreateACLPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-acl-plugin-in-workspace",
+		OperationID:      "create-acl-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -73676,7 +73676,7 @@ func (s *Plugins) CreateACLPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.CreateACLPluginInWorkspaceResponse{
+	res := &operations.CreateACLPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -73737,9 +73737,9 @@ func (s *Plugins) CreateACLPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// CreateAcmePluginInWorkspace - Create a Acme plugin in a workspace
+// CreateAcmePlugin - Create a Acme plugin in a workspace
 // Create a Acme plugin in a workspace
-func (s *Plugins) CreateAcmePluginInWorkspace(ctx context.Context, request operations.CreateAcmePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAcmePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAcmePlugin(ctx context.Context, request operations.CreateAcmePluginRequest, opts ...operations.Option) (*operations.CreateAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -73768,7 +73768,7 @@ func (s *Plugins) CreateAcmePluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-acme-plugin-in-workspace",
+		OperationID:      "create-acme-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -73903,7 +73903,7 @@ func (s *Plugins) CreateAcmePluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.CreateAcmePluginInWorkspaceResponse{
+	res := &operations.CreateAcmePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -73964,9 +73964,9 @@ func (s *Plugins) CreateAcmePluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// CreateAia2aproxyPluginInWorkspace - Create a AiA2aProxy plugin in a workspace
+// CreateAia2aproxyPlugin - Create a AiA2aProxy plugin in a workspace
 // Create a AiA2aProxy plugin in a workspace
-func (s *Plugins) CreateAia2aproxyPluginInWorkspace(ctx context.Context, request operations.CreateAia2aproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAia2aproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAia2aproxyPlugin(ctx context.Context, request operations.CreateAia2aproxyPluginRequest, opts ...operations.Option) (*operations.CreateAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -73995,7 +73995,7 @@ func (s *Plugins) CreateAia2aproxyPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aia2aproxy-plugin-in-workspace",
+		OperationID:      "create-aia2aproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -74130,7 +74130,7 @@ func (s *Plugins) CreateAia2aproxyPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.CreateAia2aproxyPluginInWorkspaceResponse{
+	res := &operations.CreateAia2aproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -74191,9 +74191,9 @@ func (s *Plugins) CreateAia2aproxyPluginInWorkspace(ctx context.Context, request
 
 }
 
-// CreateAiawsguardrailsPluginInWorkspace - Create a AiAwsGuardrails plugin in a workspace
+// CreateAiawsguardrailsPlugin - Create a AiAwsGuardrails plugin in a workspace
 // Create a AiAwsGuardrails plugin in a workspace
-func (s *Plugins) CreateAiawsguardrailsPluginInWorkspace(ctx context.Context, request operations.CreateAiawsguardrailsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiawsguardrailsPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiawsguardrailsPlugin(ctx context.Context, request operations.CreateAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.CreateAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -74222,7 +74222,7 @@ func (s *Plugins) CreateAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aiawsguardrails-plugin-in-workspace",
+		OperationID:      "create-aiawsguardrails-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -74357,7 +74357,7 @@ func (s *Plugins) CreateAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.CreateAiawsguardrailsPluginInWorkspaceResponse{
+	res := &operations.CreateAiawsguardrailsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -74418,9 +74418,9 @@ func (s *Plugins) CreateAiawsguardrailsPluginInWorkspace(ctx context.Context, re
 
 }
 
-// CreateAiazurecontentsafetyPluginInWorkspace - Create a AiAzureContentSafety plugin in a workspace
+// CreateAiazurecontentsafetyPlugin - Create a AiAzureContentSafety plugin in a workspace
 // Create a AiAzureContentSafety plugin in a workspace
-func (s *Plugins) CreateAiazurecontentsafetyPluginInWorkspace(ctx context.Context, request operations.CreateAiazurecontentsafetyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiazurecontentsafetyPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiazurecontentsafetyPlugin(ctx context.Context, request operations.CreateAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.CreateAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -74449,7 +74449,7 @@ func (s *Plugins) CreateAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aiazurecontentsafety-plugin-in-workspace",
+		OperationID:      "create-aiazurecontentsafety-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -74584,7 +74584,7 @@ func (s *Plugins) CreateAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.CreateAiazurecontentsafetyPluginInWorkspaceResponse{
+	res := &operations.CreateAiazurecontentsafetyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -74645,9 +74645,9 @@ func (s *Plugins) CreateAiazurecontentsafetyPluginInWorkspace(ctx context.Contex
 
 }
 
-// CreateAicustomguardrailPluginInWorkspace - Create a AiCustomGuardrail plugin in a workspace
+// CreateAicustomguardrailPlugin - Create a AiCustomGuardrail plugin in a workspace
 // Create a AiCustomGuardrail plugin in a workspace
-func (s *Plugins) CreateAicustomguardrailPluginInWorkspace(ctx context.Context, request operations.CreateAicustomguardrailPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAicustomguardrailPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAicustomguardrailPlugin(ctx context.Context, request operations.CreateAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.CreateAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -74676,7 +74676,7 @@ func (s *Plugins) CreateAicustomguardrailPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aicustomguardrail-plugin-in-workspace",
+		OperationID:      "create-aicustomguardrail-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -74811,7 +74811,7 @@ func (s *Plugins) CreateAicustomguardrailPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.CreateAicustomguardrailPluginInWorkspaceResponse{
+	res := &operations.CreateAicustomguardrailPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -74872,9 +74872,9 @@ func (s *Plugins) CreateAicustomguardrailPluginInWorkspace(ctx context.Context, 
 
 }
 
-// CreateAigcpmodelarmorPluginInWorkspace - Create a AiGcpModelArmor plugin in a workspace
+// CreateAigcpmodelarmorPlugin - Create a AiGcpModelArmor plugin in a workspace
 // Create a AiGcpModelArmor plugin in a workspace
-func (s *Plugins) CreateAigcpmodelarmorPluginInWorkspace(ctx context.Context, request operations.CreateAigcpmodelarmorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAigcpmodelarmorPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAigcpmodelarmorPlugin(ctx context.Context, request operations.CreateAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.CreateAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -74903,7 +74903,7 @@ func (s *Plugins) CreateAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aigcpmodelarmor-plugin-in-workspace",
+		OperationID:      "create-aigcpmodelarmor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -75038,7 +75038,7 @@ func (s *Plugins) CreateAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.CreateAigcpmodelarmorPluginInWorkspaceResponse{
+	res := &operations.CreateAigcpmodelarmorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -75099,9 +75099,9 @@ func (s *Plugins) CreateAigcpmodelarmorPluginInWorkspace(ctx context.Context, re
 
 }
 
-// CreateAilakeraguardPluginInWorkspace - Create a AiLakeraGuard plugin in a workspace
+// CreateAilakeraguardPlugin - Create a AiLakeraGuard plugin in a workspace
 // Create a AiLakeraGuard plugin in a workspace
-func (s *Plugins) CreateAilakeraguardPluginInWorkspace(ctx context.Context, request operations.CreateAilakeraguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAilakeraguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAilakeraguardPlugin(ctx context.Context, request operations.CreateAilakeraguardPluginRequest, opts ...operations.Option) (*operations.CreateAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -75130,7 +75130,7 @@ func (s *Plugins) CreateAilakeraguardPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-ailakeraguard-plugin-in-workspace",
+		OperationID:      "create-ailakeraguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -75265,7 +75265,7 @@ func (s *Plugins) CreateAilakeraguardPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateAilakeraguardPluginInWorkspaceResponse{
+	res := &operations.CreateAilakeraguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -75326,9 +75326,9 @@ func (s *Plugins) CreateAilakeraguardPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateAillmasjudgePluginInWorkspace - Create a AiLlmAsJudge plugin in a workspace
+// CreateAillmasjudgePlugin - Create a AiLlmAsJudge plugin in a workspace
 // Create a AiLlmAsJudge plugin in a workspace
-func (s *Plugins) CreateAillmasjudgePluginInWorkspace(ctx context.Context, request operations.CreateAillmasjudgePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAillmasjudgePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAillmasjudgePlugin(ctx context.Context, request operations.CreateAillmasjudgePluginRequest, opts ...operations.Option) (*operations.CreateAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -75357,7 +75357,7 @@ func (s *Plugins) CreateAillmasjudgePluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aillmasjudge-plugin-in-workspace",
+		OperationID:      "create-aillmasjudge-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -75492,7 +75492,7 @@ func (s *Plugins) CreateAillmasjudgePluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.CreateAillmasjudgePluginInWorkspaceResponse{
+	res := &operations.CreateAillmasjudgePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -75553,9 +75553,9 @@ func (s *Plugins) CreateAillmasjudgePluginInWorkspace(ctx context.Context, reque
 
 }
 
-// CreateAimcpoauth2PluginInWorkspace - Create a AiMcpOauth2 plugin in a workspace
+// CreateAimcpoauth2Plugin - Create a AiMcpOauth2 plugin in a workspace
 // Create a AiMcpOauth2 plugin in a workspace
-func (s *Plugins) CreateAimcpoauth2PluginInWorkspace(ctx context.Context, request operations.CreateAimcpoauth2PluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAimcpoauth2PluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAimcpoauth2Plugin(ctx context.Context, request operations.CreateAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.CreateAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -75584,7 +75584,7 @@ func (s *Plugins) CreateAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aimcpoauth2-plugin-in-workspace",
+		OperationID:      "create-aimcpoauth2-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -75719,7 +75719,7 @@ func (s *Plugins) CreateAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.CreateAimcpoauth2PluginInWorkspaceResponse{
+	res := &operations.CreateAimcpoauth2PluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -75780,9 +75780,9 @@ func (s *Plugins) CreateAimcpoauth2PluginInWorkspace(ctx context.Context, reques
 
 }
 
-// CreateAimcpproxyPluginInWorkspace - Create a AiMcpProxy plugin in a workspace
+// CreateAimcpproxyPlugin - Create a AiMcpProxy plugin in a workspace
 // Create a AiMcpProxy plugin in a workspace
-func (s *Plugins) CreateAimcpproxyPluginInWorkspace(ctx context.Context, request operations.CreateAimcpproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAimcpproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAimcpproxyPlugin(ctx context.Context, request operations.CreateAimcpproxyPluginRequest, opts ...operations.Option) (*operations.CreateAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -75811,7 +75811,7 @@ func (s *Plugins) CreateAimcpproxyPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aimcpproxy-plugin-in-workspace",
+		OperationID:      "create-aimcpproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -75946,7 +75946,7 @@ func (s *Plugins) CreateAimcpproxyPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.CreateAimcpproxyPluginInWorkspaceResponse{
+	res := &operations.CreateAimcpproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -76007,9 +76007,9 @@ func (s *Plugins) CreateAimcpproxyPluginInWorkspace(ctx context.Context, request
 
 }
 
-// CreateAipromptcompressorPluginInWorkspace - Create a AiPromptCompressor plugin in a workspace
+// CreateAipromptcompressorPlugin - Create a AiPromptCompressor plugin in a workspace
 // Create a AiPromptCompressor plugin in a workspace
-func (s *Plugins) CreateAipromptcompressorPluginInWorkspace(ctx context.Context, request operations.CreateAipromptcompressorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAipromptcompressorPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAipromptcompressorPlugin(ctx context.Context, request operations.CreateAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.CreateAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -76038,7 +76038,7 @@ func (s *Plugins) CreateAipromptcompressorPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aipromptcompressor-plugin-in-workspace",
+		OperationID:      "create-aipromptcompressor-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -76173,7 +76173,7 @@ func (s *Plugins) CreateAipromptcompressorPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateAipromptcompressorPluginInWorkspaceResponse{
+	res := &operations.CreateAipromptcompressorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -76234,9 +76234,9 @@ func (s *Plugins) CreateAipromptcompressorPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateAipromptdecoratorPluginInWorkspace - Create a AiPromptDecorator plugin in a workspace
+// CreateAipromptdecoratorPlugin - Create a AiPromptDecorator plugin in a workspace
 // Create a AiPromptDecorator plugin in a workspace
-func (s *Plugins) CreateAipromptdecoratorPluginInWorkspace(ctx context.Context, request operations.CreateAipromptdecoratorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAipromptdecoratorPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request operations.CreateAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.CreateAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -76265,7 +76265,7 @@ func (s *Plugins) CreateAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aipromptdecorator-plugin-in-workspace",
+		OperationID:      "create-aipromptdecorator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -76400,7 +76400,7 @@ func (s *Plugins) CreateAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.CreateAipromptdecoratorPluginInWorkspaceResponse{
+	res := &operations.CreateAipromptdecoratorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -76461,9 +76461,9 @@ func (s *Plugins) CreateAipromptdecoratorPluginInWorkspace(ctx context.Context, 
 
 }
 
-// CreateAipromptguardPluginInWorkspace - Create a AiPromptGuard plugin in a workspace
+// CreateAipromptguardPlugin - Create a AiPromptGuard plugin in a workspace
 // Create a AiPromptGuard plugin in a workspace
-func (s *Plugins) CreateAipromptguardPluginInWorkspace(ctx context.Context, request operations.CreateAipromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAipromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operations.CreateAipromptguardPluginRequest, opts ...operations.Option) (*operations.CreateAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -76492,7 +76492,7 @@ func (s *Plugins) CreateAipromptguardPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aipromptguard-plugin-in-workspace",
+		OperationID:      "create-aipromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -76627,7 +76627,7 @@ func (s *Plugins) CreateAipromptguardPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateAipromptguardPluginInWorkspaceResponse{
+	res := &operations.CreateAipromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -76688,9 +76688,9 @@ func (s *Plugins) CreateAipromptguardPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateAiprompttemplatePluginInWorkspace - Create a AiPromptTemplate plugin in a workspace
+// CreateAiprompttemplatePlugin - Create a AiPromptTemplate plugin in a workspace
 // Create a AiPromptTemplate plugin in a workspace
-func (s *Plugins) CreateAiprompttemplatePluginInWorkspace(ctx context.Context, request operations.CreateAiprompttemplatePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiprompttemplatePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request operations.CreateAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.CreateAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -76719,7 +76719,7 @@ func (s *Plugins) CreateAiprompttemplatePluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aiprompttemplate-plugin-in-workspace",
+		OperationID:      "create-aiprompttemplate-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -76854,7 +76854,7 @@ func (s *Plugins) CreateAiprompttemplatePluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.CreateAiprompttemplatePluginInWorkspaceResponse{
+	res := &operations.CreateAiprompttemplatePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -76915,9 +76915,9 @@ func (s *Plugins) CreateAiprompttemplatePluginInWorkspace(ctx context.Context, r
 
 }
 
-// CreateAiproxyPluginInWorkspace - Create a AiProxy plugin in a workspace
+// CreateAiproxyPlugin - Create a AiProxy plugin in a workspace
 // Create a AiProxy plugin in a workspace
-func (s *Plugins) CreateAiproxyPluginInWorkspace(ctx context.Context, request operations.CreateAiproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.CreateAiproxyPluginRequest, opts ...operations.Option) (*operations.CreateAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -76946,7 +76946,7 @@ func (s *Plugins) CreateAiproxyPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aiproxy-plugin-in-workspace",
+		OperationID:      "create-aiproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -77081,7 +77081,7 @@ func (s *Plugins) CreateAiproxyPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateAiproxyPluginInWorkspaceResponse{
+	res := &operations.CreateAiproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -77142,9 +77142,9 @@ func (s *Plugins) CreateAiproxyPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateAiproxyadvancedPluginInWorkspace - Create a AiProxyAdvanced plugin in a workspace
+// CreateAiproxyadvancedPlugin - Create a AiProxyAdvanced plugin in a workspace
 // Create a AiProxyAdvanced plugin in a workspace
-func (s *Plugins) CreateAiproxyadvancedPluginInWorkspace(ctx context.Context, request operations.CreateAiproxyadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiproxyadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiproxyadvancedPlugin(ctx context.Context, request operations.CreateAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.CreateAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -77173,7 +77173,7 @@ func (s *Plugins) CreateAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aiproxyadvanced-plugin-in-workspace",
+		OperationID:      "create-aiproxyadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -77308,7 +77308,7 @@ func (s *Plugins) CreateAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.CreateAiproxyadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateAiproxyadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -77369,9 +77369,9 @@ func (s *Plugins) CreateAiproxyadvancedPluginInWorkspace(ctx context.Context, re
 
 }
 
-// CreateAiraginjectorPluginInWorkspace - Create a AiRagInjector plugin in a workspace
+// CreateAiraginjectorPlugin - Create a AiRagInjector plugin in a workspace
 // Create a AiRagInjector plugin in a workspace
-func (s *Plugins) CreateAiraginjectorPluginInWorkspace(ctx context.Context, request operations.CreateAiraginjectorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiraginjectorPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiraginjectorPlugin(ctx context.Context, request operations.CreateAiraginjectorPluginRequest, opts ...operations.Option) (*operations.CreateAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -77400,7 +77400,7 @@ func (s *Plugins) CreateAiraginjectorPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-airaginjector-plugin-in-workspace",
+		OperationID:      "create-airaginjector-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -77535,7 +77535,7 @@ func (s *Plugins) CreateAiraginjectorPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateAiraginjectorPluginInWorkspaceResponse{
+	res := &operations.CreateAiraginjectorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -77596,9 +77596,9 @@ func (s *Plugins) CreateAiraginjectorPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateAiratelimitingadvancedPluginInWorkspace - Create a AiRateLimitingAdvanced plugin in a workspace
+// CreateAiratelimitingadvancedPlugin - Create a AiRateLimitingAdvanced plugin in a workspace
 // Create a AiRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) CreateAiratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.CreateAiratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiratelimitingadvancedPlugin(ctx context.Context, request operations.CreateAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.CreateAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -77627,7 +77627,7 @@ func (s *Plugins) CreateAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-airatelimitingadvanced-plugin-in-workspace",
+		OperationID:      "create-airatelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -77762,7 +77762,7 @@ func (s *Plugins) CreateAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 		}
 	}
 
-	res := &operations.CreateAiratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateAiratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -77823,9 +77823,9 @@ func (s *Plugins) CreateAiratelimitingadvancedPluginInWorkspace(ctx context.Cont
 
 }
 
-// CreateAirequesttransformerPluginInWorkspace - Create a AiRequestTransformer plugin in a workspace
+// CreateAirequesttransformerPlugin - Create a AiRequestTransformer plugin in a workspace
 // Create a AiRequestTransformer plugin in a workspace
-func (s *Plugins) CreateAirequesttransformerPluginInWorkspace(ctx context.Context, request operations.CreateAirequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAirequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAirequesttransformerPlugin(ctx context.Context, request operations.CreateAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.CreateAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -77854,7 +77854,7 @@ func (s *Plugins) CreateAirequesttransformerPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-airequesttransformer-plugin-in-workspace",
+		OperationID:      "create-airequesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -77989,7 +77989,7 @@ func (s *Plugins) CreateAirequesttransformerPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.CreateAirequesttransformerPluginInWorkspaceResponse{
+	res := &operations.CreateAirequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -78050,9 +78050,9 @@ func (s *Plugins) CreateAirequesttransformerPluginInWorkspace(ctx context.Contex
 
 }
 
-// CreateAiresponsetransformerPluginInWorkspace - Create a AiResponseTransformer plugin in a workspace
+// CreateAiresponsetransformerPlugin - Create a AiResponseTransformer plugin in a workspace
 // Create a AiResponseTransformer plugin in a workspace
-func (s *Plugins) CreateAiresponsetransformerPluginInWorkspace(ctx context.Context, request operations.CreateAiresponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAiresponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAiresponsetransformerPlugin(ctx context.Context, request operations.CreateAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.CreateAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -78081,7 +78081,7 @@ func (s *Plugins) CreateAiresponsetransformerPluginInWorkspace(ctx context.Conte
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-airesponsetransformer-plugin-in-workspace",
+		OperationID:      "create-airesponsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -78216,7 +78216,7 @@ func (s *Plugins) CreateAiresponsetransformerPluginInWorkspace(ctx context.Conte
 		}
 	}
 
-	res := &operations.CreateAiresponsetransformerPluginInWorkspaceResponse{
+	res := &operations.CreateAiresponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -78277,9 +78277,9 @@ func (s *Plugins) CreateAiresponsetransformerPluginInWorkspace(ctx context.Conte
 
 }
 
-// CreateAisanitizerPluginInWorkspace - Create a AiSanitizer plugin in a workspace
+// CreateAisanitizerPlugin - Create a AiSanitizer plugin in a workspace
 // Create a AiSanitizer plugin in a workspace
-func (s *Plugins) CreateAisanitizerPluginInWorkspace(ctx context.Context, request operations.CreateAisanitizerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAisanitizerPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAisanitizerPlugin(ctx context.Context, request operations.CreateAisanitizerPluginRequest, opts ...operations.Option) (*operations.CreateAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -78308,7 +78308,7 @@ func (s *Plugins) CreateAisanitizerPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aisanitizer-plugin-in-workspace",
+		OperationID:      "create-aisanitizer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -78443,7 +78443,7 @@ func (s *Plugins) CreateAisanitizerPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.CreateAisanitizerPluginInWorkspaceResponse{
+	res := &operations.CreateAisanitizerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -78504,9 +78504,9 @@ func (s *Plugins) CreateAisanitizerPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// CreateAisemanticcachePluginInWorkspace - Create a AiSemanticCache plugin in a workspace
+// CreateAisemanticcachePlugin - Create a AiSemanticCache plugin in a workspace
 // Create a AiSemanticCache plugin in a workspace
-func (s *Plugins) CreateAisemanticcachePluginInWorkspace(ctx context.Context, request operations.CreateAisemanticcachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAisemanticcachePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAisemanticcachePlugin(ctx context.Context, request operations.CreateAisemanticcachePluginRequest, opts ...operations.Option) (*operations.CreateAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -78535,7 +78535,7 @@ func (s *Plugins) CreateAisemanticcachePluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aisemanticcache-plugin-in-workspace",
+		OperationID:      "create-aisemanticcache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -78670,7 +78670,7 @@ func (s *Plugins) CreateAisemanticcachePluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.CreateAisemanticcachePluginInWorkspaceResponse{
+	res := &operations.CreateAisemanticcachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -78731,9 +78731,9 @@ func (s *Plugins) CreateAisemanticcachePluginInWorkspace(ctx context.Context, re
 
 }
 
-// CreateAisemanticpromptguardPluginInWorkspace - Create a AiSemanticPromptGuard plugin in a workspace
+// CreateAisemanticpromptguardPlugin - Create a AiSemanticPromptGuard plugin in a workspace
 // Create a AiSemanticPromptGuard plugin in a workspace
-func (s *Plugins) CreateAisemanticpromptguardPluginInWorkspace(ctx context.Context, request operations.CreateAisemanticpromptguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAisemanticpromptguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAisemanticpromptguardPlugin(ctx context.Context, request operations.CreateAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.CreateAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -78762,7 +78762,7 @@ func (s *Plugins) CreateAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aisemanticpromptguard-plugin-in-workspace",
+		OperationID:      "create-aisemanticpromptguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -78897,7 +78897,7 @@ func (s *Plugins) CreateAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 		}
 	}
 
-	res := &operations.CreateAisemanticpromptguardPluginInWorkspaceResponse{
+	res := &operations.CreateAisemanticpromptguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -78958,9 +78958,9 @@ func (s *Plugins) CreateAisemanticpromptguardPluginInWorkspace(ctx context.Conte
 
 }
 
-// CreateAisemanticresponseguardPluginInWorkspace - Create a AiSemanticResponseGuard plugin in a workspace
+// CreateAisemanticresponseguardPlugin - Create a AiSemanticResponseGuard plugin in a workspace
 // Create a AiSemanticResponseGuard plugin in a workspace
-func (s *Plugins) CreateAisemanticresponseguardPluginInWorkspace(ctx context.Context, request operations.CreateAisemanticresponseguardPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAisemanticresponseguardPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAisemanticresponseguardPlugin(ctx context.Context, request operations.CreateAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.CreateAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -78989,7 +78989,7 @@ func (s *Plugins) CreateAisemanticresponseguardPluginInWorkspace(ctx context.Con
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-aisemanticresponseguard-plugin-in-workspace",
+		OperationID:      "create-aisemanticresponseguard-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -79124,7 +79124,7 @@ func (s *Plugins) CreateAisemanticresponseguardPluginInWorkspace(ctx context.Con
 		}
 	}
 
-	res := &operations.CreateAisemanticresponseguardPluginInWorkspaceResponse{
+	res := &operations.CreateAisemanticresponseguardPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -79185,9 +79185,9 @@ func (s *Plugins) CreateAisemanticresponseguardPluginInWorkspace(ctx context.Con
 
 }
 
-// CreateAppdynamicsPluginInWorkspace - Create a AppDynamics plugin in a workspace
+// CreateAppdynamicsPlugin - Create a AppDynamics plugin in a workspace
 // Create a AppDynamics plugin in a workspace
-func (s *Plugins) CreateAppdynamicsPluginInWorkspace(ctx context.Context, request operations.CreateAppdynamicsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAppdynamicsPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAppdynamicsPlugin(ctx context.Context, request operations.CreateAppdynamicsPluginRequest, opts ...operations.Option) (*operations.CreateAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -79216,7 +79216,7 @@ func (s *Plugins) CreateAppdynamicsPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-appdynamics-plugin-in-workspace",
+		OperationID:      "create-appdynamics-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -79351,7 +79351,7 @@ func (s *Plugins) CreateAppdynamicsPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.CreateAppdynamicsPluginInWorkspaceResponse{
+	res := &operations.CreateAppdynamicsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -79412,9 +79412,9 @@ func (s *Plugins) CreateAppdynamicsPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// CreateAwslambdaPluginInWorkspace - Create a AwsLambda plugin in a workspace
+// CreateAwslambdaPlugin - Create a AwsLambda plugin in a workspace
 // Create a AwsLambda plugin in a workspace
-func (s *Plugins) CreateAwslambdaPluginInWorkspace(ctx context.Context, request operations.CreateAwslambdaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAwslambdaPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.CreateAwslambdaPluginRequest, opts ...operations.Option) (*operations.CreateAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -79443,7 +79443,7 @@ func (s *Plugins) CreateAwslambdaPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-awslambda-plugin-in-workspace",
+		OperationID:      "create-awslambda-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -79578,7 +79578,7 @@ func (s *Plugins) CreateAwslambdaPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.CreateAwslambdaPluginInWorkspaceResponse{
+	res := &operations.CreateAwslambdaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -79639,9 +79639,9 @@ func (s *Plugins) CreateAwslambdaPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// CreateAzurefunctionsPluginInWorkspace - Create a AzureFunctions plugin in a workspace
+// CreateAzurefunctionsPlugin - Create a AzureFunctions plugin in a workspace
 // Create a AzureFunctions plugin in a workspace
-func (s *Plugins) CreateAzurefunctionsPluginInWorkspace(ctx context.Context, request operations.CreateAzurefunctionsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateAzurefunctionsPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateAzurefunctionsPlugin(ctx context.Context, request operations.CreateAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.CreateAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -79670,7 +79670,7 @@ func (s *Plugins) CreateAzurefunctionsPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-azurefunctions-plugin-in-workspace",
+		OperationID:      "create-azurefunctions-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -79805,7 +79805,7 @@ func (s *Plugins) CreateAzurefunctionsPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.CreateAzurefunctionsPluginInWorkspaceResponse{
+	res := &operations.CreateAzurefunctionsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -79866,9 +79866,9 @@ func (s *Plugins) CreateAzurefunctionsPluginInWorkspace(ctx context.Context, req
 
 }
 
-// CreateBasicauthPluginInWorkspace - Create a BasicAuth plugin in a workspace
+// CreateBasicauthPlugin - Create a BasicAuth plugin in a workspace
 // Create a BasicAuth plugin in a workspace
-func (s *Plugins) CreateBasicauthPluginInWorkspace(ctx context.Context, request operations.CreateBasicauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateBasicauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.CreateBasicauthPluginRequest, opts ...operations.Option) (*operations.CreateBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -79897,7 +79897,7 @@ func (s *Plugins) CreateBasicauthPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-basicauth-plugin-in-workspace",
+		OperationID:      "create-basicauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -80032,7 +80032,7 @@ func (s *Plugins) CreateBasicauthPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.CreateBasicauthPluginInWorkspaceResponse{
+	res := &operations.CreateBasicauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -80093,9 +80093,9 @@ func (s *Plugins) CreateBasicauthPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// CreateBotdetectionPluginInWorkspace - Create a BotDetection plugin in a workspace
+// CreateBotdetectionPlugin - Create a BotDetection plugin in a workspace
 // Create a BotDetection plugin in a workspace
-func (s *Plugins) CreateBotdetectionPluginInWorkspace(ctx context.Context, request operations.CreateBotdetectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateBotdetectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateBotdetectionPlugin(ctx context.Context, request operations.CreateBotdetectionPluginRequest, opts ...operations.Option) (*operations.CreateBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -80124,7 +80124,7 @@ func (s *Plugins) CreateBotdetectionPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-botdetection-plugin-in-workspace",
+		OperationID:      "create-botdetection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -80259,7 +80259,7 @@ func (s *Plugins) CreateBotdetectionPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.CreateBotdetectionPluginInWorkspaceResponse{
+	res := &operations.CreateBotdetectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -80320,9 +80320,9 @@ func (s *Plugins) CreateBotdetectionPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// CreateCanaryPluginInWorkspace - Create a Canary plugin in a workspace
+// CreateCanaryPlugin - Create a Canary plugin in a workspace
 // Create a Canary plugin in a workspace
-func (s *Plugins) CreateCanaryPluginInWorkspace(ctx context.Context, request operations.CreateCanaryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateCanaryPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateCanaryPlugin(ctx context.Context, request operations.CreateCanaryPluginRequest, opts ...operations.Option) (*operations.CreateCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -80351,7 +80351,7 @@ func (s *Plugins) CreateCanaryPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-canary-plugin-in-workspace",
+		OperationID:      "create-canary-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -80486,7 +80486,7 @@ func (s *Plugins) CreateCanaryPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateCanaryPluginInWorkspaceResponse{
+	res := &operations.CreateCanaryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -80547,9 +80547,9 @@ func (s *Plugins) CreateCanaryPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// CreateConfluentPluginInWorkspace - Create a Confluent plugin in a workspace
+// CreateConfluentPlugin - Create a Confluent plugin in a workspace
 // Create a Confluent plugin in a workspace
-func (s *Plugins) CreateConfluentPluginInWorkspace(ctx context.Context, request operations.CreateConfluentPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateConfluentPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateConfluentPlugin(ctx context.Context, request operations.CreateConfluentPluginRequest, opts ...operations.Option) (*operations.CreateConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -80578,7 +80578,7 @@ func (s *Plugins) CreateConfluentPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-confluent-plugin-in-workspace",
+		OperationID:      "create-confluent-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -80713,7 +80713,7 @@ func (s *Plugins) CreateConfluentPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.CreateConfluentPluginInWorkspaceResponse{
+	res := &operations.CreateConfluentPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -80774,9 +80774,9 @@ func (s *Plugins) CreateConfluentPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// CreateConfluentconsumePluginInWorkspace - Create a ConfluentConsume plugin in a workspace
+// CreateConfluentconsumePlugin - Create a ConfluentConsume plugin in a workspace
 // Create a ConfluentConsume plugin in a workspace
-func (s *Plugins) CreateConfluentconsumePluginInWorkspace(ctx context.Context, request operations.CreateConfluentconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateConfluentconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateConfluentconsumePlugin(ctx context.Context, request operations.CreateConfluentconsumePluginRequest, opts ...operations.Option) (*operations.CreateConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -80805,7 +80805,7 @@ func (s *Plugins) CreateConfluentconsumePluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-confluentconsume-plugin-in-workspace",
+		OperationID:      "create-confluentconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -80940,7 +80940,7 @@ func (s *Plugins) CreateConfluentconsumePluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.CreateConfluentconsumePluginInWorkspaceResponse{
+	res := &operations.CreateConfluentconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -81001,9 +81001,9 @@ func (s *Plugins) CreateConfluentconsumePluginInWorkspace(ctx context.Context, r
 
 }
 
-// CreateCorrelationidPluginInWorkspace - Create a CorrelationId plugin in a workspace
+// CreateCorrelationidPlugin - Create a CorrelationId plugin in a workspace
 // Create a CorrelationId plugin in a workspace
-func (s *Plugins) CreateCorrelationidPluginInWorkspace(ctx context.Context, request operations.CreateCorrelationidPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateCorrelationidPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operations.CreateCorrelationidPluginRequest, opts ...operations.Option) (*operations.CreateCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -81032,7 +81032,7 @@ func (s *Plugins) CreateCorrelationidPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-correlationid-plugin-in-workspace",
+		OperationID:      "create-correlationid-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -81167,7 +81167,7 @@ func (s *Plugins) CreateCorrelationidPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateCorrelationidPluginInWorkspaceResponse{
+	res := &operations.CreateCorrelationidPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -81228,9 +81228,9 @@ func (s *Plugins) CreateCorrelationidPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateCorsPluginInWorkspace - Create a Cors plugin in a workspace
+// CreateCorsPlugin - Create a Cors plugin in a workspace
 // Create a Cors plugin in a workspace
-func (s *Plugins) CreateCorsPluginInWorkspace(ctx context.Context, request operations.CreateCorsPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateCorsPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.CreateCorsPluginRequest, opts ...operations.Option) (*operations.CreateCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -81259,7 +81259,7 @@ func (s *Plugins) CreateCorsPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-cors-plugin-in-workspace",
+		OperationID:      "create-cors-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -81394,7 +81394,7 @@ func (s *Plugins) CreateCorsPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.CreateCorsPluginInWorkspaceResponse{
+	res := &operations.CreateCorsPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -81455,9 +81455,9 @@ func (s *Plugins) CreateCorsPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// CreateDatadogPluginInWorkspace - Create a Datadog plugin in a workspace
+// CreateDatadogPlugin - Create a Datadog plugin in a workspace
 // Create a Datadog plugin in a workspace
-func (s *Plugins) CreateDatadogPluginInWorkspace(ctx context.Context, request operations.CreateDatadogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateDatadogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateDatadogPlugin(ctx context.Context, request operations.CreateDatadogPluginRequest, opts ...operations.Option) (*operations.CreateDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -81486,7 +81486,7 @@ func (s *Plugins) CreateDatadogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-datadog-plugin-in-workspace",
+		OperationID:      "create-datadog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -81621,7 +81621,7 @@ func (s *Plugins) CreateDatadogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateDatadogPluginInWorkspaceResponse{
+	res := &operations.CreateDatadogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -81682,9 +81682,9 @@ func (s *Plugins) CreateDatadogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateDatakitPluginInWorkspace - Create a Datakit plugin in a workspace
+// CreateDatakitPlugin - Create a Datakit plugin in a workspace
 // Create a Datakit plugin in a workspace
-func (s *Plugins) CreateDatakitPluginInWorkspace(ctx context.Context, request operations.CreateDatakitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateDatakitPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateDatakitPlugin(ctx context.Context, request operations.CreateDatakitPluginRequest, opts ...operations.Option) (*operations.CreateDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -81713,7 +81713,7 @@ func (s *Plugins) CreateDatakitPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-datakit-plugin-in-workspace",
+		OperationID:      "create-datakit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -81848,7 +81848,7 @@ func (s *Plugins) CreateDatakitPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateDatakitPluginInWorkspaceResponse{
+	res := &operations.CreateDatakitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -81909,9 +81909,9 @@ func (s *Plugins) CreateDatakitPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateDegraphqlPluginInWorkspace - Create a Degraphql plugin in a workspace
+// CreateDegraphqlPlugin - Create a Degraphql plugin in a workspace
 // Create a Degraphql plugin in a workspace
-func (s *Plugins) CreateDegraphqlPluginInWorkspace(ctx context.Context, request operations.CreateDegraphqlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateDegraphqlPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateDegraphqlPlugin(ctx context.Context, request operations.CreateDegraphqlPluginRequest, opts ...operations.Option) (*operations.CreateDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -81940,7 +81940,7 @@ func (s *Plugins) CreateDegraphqlPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-degraphql-plugin-in-workspace",
+		OperationID:      "create-degraphql-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -82075,7 +82075,7 @@ func (s *Plugins) CreateDegraphqlPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.CreateDegraphqlPluginInWorkspaceResponse{
+	res := &operations.CreateDegraphqlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -82136,9 +82136,9 @@ func (s *Plugins) CreateDegraphqlPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// CreateExittransformerPluginInWorkspace - Create a ExitTransformer plugin in a workspace
+// CreateExittransformerPlugin - Create a ExitTransformer plugin in a workspace
 // Create a ExitTransformer plugin in a workspace
-func (s *Plugins) CreateExittransformerPluginInWorkspace(ctx context.Context, request operations.CreateExittransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateExittransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request operations.CreateExittransformerPluginRequest, opts ...operations.Option) (*operations.CreateExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -82167,7 +82167,7 @@ func (s *Plugins) CreateExittransformerPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-exittransformer-plugin-in-workspace",
+		OperationID:      "create-exittransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -82302,7 +82302,7 @@ func (s *Plugins) CreateExittransformerPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.CreateExittransformerPluginInWorkspaceResponse{
+	res := &operations.CreateExittransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -82363,9 +82363,9 @@ func (s *Plugins) CreateExittransformerPluginInWorkspace(ctx context.Context, re
 
 }
 
-// CreateFilelogPluginInWorkspace - Create a FileLog plugin in a workspace
+// CreateFilelogPlugin - Create a FileLog plugin in a workspace
 // Create a FileLog plugin in a workspace
-func (s *Plugins) CreateFilelogPluginInWorkspace(ctx context.Context, request operations.CreateFilelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateFilelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.CreateFilelogPluginRequest, opts ...operations.Option) (*operations.CreateFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -82394,7 +82394,7 @@ func (s *Plugins) CreateFilelogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-filelog-plugin-in-workspace",
+		OperationID:      "create-filelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -82529,7 +82529,7 @@ func (s *Plugins) CreateFilelogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateFilelogPluginInWorkspaceResponse{
+	res := &operations.CreateFilelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -82590,9 +82590,9 @@ func (s *Plugins) CreateFilelogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateForwardproxyPluginInWorkspace - Create a ForwardProxy plugin in a workspace
+// CreateForwardproxyPlugin - Create a ForwardProxy plugin in a workspace
 // Create a ForwardProxy plugin in a workspace
-func (s *Plugins) CreateForwardproxyPluginInWorkspace(ctx context.Context, request operations.CreateForwardproxyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateForwardproxyPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateForwardproxyPlugin(ctx context.Context, request operations.CreateForwardproxyPluginRequest, opts ...operations.Option) (*operations.CreateForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -82621,7 +82621,7 @@ func (s *Plugins) CreateForwardproxyPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-forwardproxy-plugin-in-workspace",
+		OperationID:      "create-forwardproxy-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -82756,7 +82756,7 @@ func (s *Plugins) CreateForwardproxyPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.CreateForwardproxyPluginInWorkspaceResponse{
+	res := &operations.CreateForwardproxyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -82817,9 +82817,9 @@ func (s *Plugins) CreateForwardproxyPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// CreateGraphqlproxycacheadvancedPluginInWorkspace - Create a GraphqlProxyCacheAdvanced plugin in a workspace
+// CreateGraphqlproxycacheadvancedPlugin - Create a GraphqlProxyCacheAdvanced plugin in a workspace
 // Create a GraphqlProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) CreateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.CreateGraphqlproxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateGraphqlproxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.CreateGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.CreateGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -82848,7 +82848,7 @@ func (s *Plugins) CreateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-graphqlproxycacheadvanced-plugin-in-workspace",
+		OperationID:      "create-graphqlproxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -82983,7 +82983,7 @@ func (s *Plugins) CreateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 		}
 	}
 
-	res := &operations.CreateGraphqlproxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateGraphqlproxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -83044,9 +83044,9 @@ func (s *Plugins) CreateGraphqlproxycacheadvancedPluginInWorkspace(ctx context.C
 
 }
 
-// CreateGraphqlratelimitingadvancedPluginInWorkspace - Create a GraphqlRateLimitingAdvanced plugin in a workspace
+// CreateGraphqlratelimitingadvancedPlugin - Create a GraphqlRateLimitingAdvanced plugin in a workspace
 // Create a GraphqlRateLimitingAdvanced plugin in a workspace
-func (s *Plugins) CreateGraphqlratelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.CreateGraphqlratelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateGraphqlratelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.CreateGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.CreateGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -83075,7 +83075,7 @@ func (s *Plugins) CreateGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-graphqlratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "create-graphqlratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -83210,7 +83210,7 @@ func (s *Plugins) CreateGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 		}
 	}
 
-	res := &operations.CreateGraphqlratelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateGraphqlratelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -83271,9 +83271,9 @@ func (s *Plugins) CreateGraphqlratelimitingadvancedPluginInWorkspace(ctx context
 
 }
 
-// CreateGrpcgatewayPluginInWorkspace - Create a GrpcGateway plugin in a workspace
+// CreateGrpcgatewayPlugin - Create a GrpcGateway plugin in a workspace
 // Create a GrpcGateway plugin in a workspace
-func (s *Plugins) CreateGrpcgatewayPluginInWorkspace(ctx context.Context, request operations.CreateGrpcgatewayPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateGrpcgatewayPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateGrpcgatewayPlugin(ctx context.Context, request operations.CreateGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.CreateGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -83302,7 +83302,7 @@ func (s *Plugins) CreateGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-grpcgateway-plugin-in-workspace",
+		OperationID:      "create-grpcgateway-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -83437,7 +83437,7 @@ func (s *Plugins) CreateGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.CreateGrpcgatewayPluginInWorkspaceResponse{
+	res := &operations.CreateGrpcgatewayPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -83498,9 +83498,9 @@ func (s *Plugins) CreateGrpcgatewayPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// CreateGrpcwebPluginInWorkspace - Create a GrpcWeb plugin in a workspace
+// CreateGrpcwebPlugin - Create a GrpcWeb plugin in a workspace
 // Create a GrpcWeb plugin in a workspace
-func (s *Plugins) CreateGrpcwebPluginInWorkspace(ctx context.Context, request operations.CreateGrpcwebPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateGrpcwebPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateGrpcwebPlugin(ctx context.Context, request operations.CreateGrpcwebPluginRequest, opts ...operations.Option) (*operations.CreateGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -83529,7 +83529,7 @@ func (s *Plugins) CreateGrpcwebPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-grpcweb-plugin-in-workspace",
+		OperationID:      "create-grpcweb-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -83664,7 +83664,7 @@ func (s *Plugins) CreateGrpcwebPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateGrpcwebPluginInWorkspaceResponse{
+	res := &operations.CreateGrpcwebPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -83725,9 +83725,9 @@ func (s *Plugins) CreateGrpcwebPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateHeadercertauthPluginInWorkspace - Create a HeaderCertAuth plugin in a workspace
+// CreateHeadercertauthPlugin - Create a HeaderCertAuth plugin in a workspace
 // Create a HeaderCertAuth plugin in a workspace
-func (s *Plugins) CreateHeadercertauthPluginInWorkspace(ctx context.Context, request operations.CreateHeadercertauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateHeadercertauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateHeadercertauthPlugin(ctx context.Context, request operations.CreateHeadercertauthPluginRequest, opts ...operations.Option) (*operations.CreateHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -83756,7 +83756,7 @@ func (s *Plugins) CreateHeadercertauthPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-headercertauth-plugin-in-workspace",
+		OperationID:      "create-headercertauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -83891,7 +83891,7 @@ func (s *Plugins) CreateHeadercertauthPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.CreateHeadercertauthPluginInWorkspaceResponse{
+	res := &operations.CreateHeadercertauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -83952,9 +83952,9 @@ func (s *Plugins) CreateHeadercertauthPluginInWorkspace(ctx context.Context, req
 
 }
 
-// CreateHmacauthPluginInWorkspace - Create a HmacAuth plugin in a workspace
+// CreateHmacauthPlugin - Create a HmacAuth plugin in a workspace
 // Create a HmacAuth plugin in a workspace
-func (s *Plugins) CreateHmacauthPluginInWorkspace(ctx context.Context, request operations.CreateHmacauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateHmacauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateHmacauthPlugin(ctx context.Context, request operations.CreateHmacauthPluginRequest, opts ...operations.Option) (*operations.CreateHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -83983,7 +83983,7 @@ func (s *Plugins) CreateHmacauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-hmacauth-plugin-in-workspace",
+		OperationID:      "create-hmacauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -84118,7 +84118,7 @@ func (s *Plugins) CreateHmacauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.CreateHmacauthPluginInWorkspaceResponse{
+	res := &operations.CreateHmacauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -84179,9 +84179,9 @@ func (s *Plugins) CreateHmacauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// CreateHttplogPluginInWorkspace - Create a HttpLog plugin in a workspace
+// CreateHttplogPlugin - Create a HttpLog plugin in a workspace
 // Create a HttpLog plugin in a workspace
-func (s *Plugins) CreateHttplogPluginInWorkspace(ctx context.Context, request operations.CreateHttplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateHttplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateHttplogPlugin(ctx context.Context, request operations.CreateHttplogPluginRequest, opts ...operations.Option) (*operations.CreateHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -84210,7 +84210,7 @@ func (s *Plugins) CreateHttplogPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-httplog-plugin-in-workspace",
+		OperationID:      "create-httplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -84345,7 +84345,7 @@ func (s *Plugins) CreateHttplogPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateHttplogPluginInWorkspaceResponse{
+	res := &operations.CreateHttplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -84406,9 +84406,9 @@ func (s *Plugins) CreateHttplogPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateInjectionprotectionPluginInWorkspace - Create a InjectionProtection plugin in a workspace
+// CreateInjectionprotectionPlugin - Create a InjectionProtection plugin in a workspace
 // Create a InjectionProtection plugin in a workspace
-func (s *Plugins) CreateInjectionprotectionPluginInWorkspace(ctx context.Context, request operations.CreateInjectionprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateInjectionprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateInjectionprotectionPlugin(ctx context.Context, request operations.CreateInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.CreateInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -84437,7 +84437,7 @@ func (s *Plugins) CreateInjectionprotectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-injectionprotection-plugin-in-workspace",
+		OperationID:      "create-injectionprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -84572,7 +84572,7 @@ func (s *Plugins) CreateInjectionprotectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.CreateInjectionprotectionPluginInWorkspaceResponse{
+	res := &operations.CreateInjectionprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -84633,9 +84633,9 @@ func (s *Plugins) CreateInjectionprotectionPluginInWorkspace(ctx context.Context
 
 }
 
-// CreateIprestrictionPluginInWorkspace - Create a IpRestriction plugin in a workspace
+// CreateIprestrictionPlugin - Create a IpRestriction plugin in a workspace
 // Create a IpRestriction plugin in a workspace
-func (s *Plugins) CreateIprestrictionPluginInWorkspace(ctx context.Context, request operations.CreateIprestrictionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateIprestrictionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operations.CreateIprestrictionPluginRequest, opts ...operations.Option) (*operations.CreateIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -84664,7 +84664,7 @@ func (s *Plugins) CreateIprestrictionPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-iprestriction-plugin-in-workspace",
+		OperationID:      "create-iprestriction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -84799,7 +84799,7 @@ func (s *Plugins) CreateIprestrictionPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateIprestrictionPluginInWorkspaceResponse{
+	res := &operations.CreateIprestrictionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -84860,9 +84860,9 @@ func (s *Plugins) CreateIprestrictionPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateJqPluginInWorkspace - Create a Jq plugin in a workspace
+// CreateJqPlugin - Create a Jq plugin in a workspace
 // Create a Jq plugin in a workspace
-func (s *Plugins) CreateJqPluginInWorkspace(ctx context.Context, request operations.CreateJqPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateJqPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJqPluginRequest, opts ...operations.Option) (*operations.CreateJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -84891,7 +84891,7 @@ func (s *Plugins) CreateJqPluginInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-jq-plugin-in-workspace",
+		OperationID:      "create-jq-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -85026,7 +85026,7 @@ func (s *Plugins) CreateJqPluginInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.CreateJqPluginInWorkspaceResponse{
+	res := &operations.CreateJqPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -85087,9 +85087,9 @@ func (s *Plugins) CreateJqPluginInWorkspace(ctx context.Context, request operati
 
 }
 
-// CreateJsonthreatprotectionPluginInWorkspace - Create a JsonThreatProtection plugin in a workspace
+// CreateJsonthreatprotectionPlugin - Create a JsonThreatProtection plugin in a workspace
 // Create a JsonThreatProtection plugin in a workspace
-func (s *Plugins) CreateJsonthreatprotectionPluginInWorkspace(ctx context.Context, request operations.CreateJsonthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateJsonthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateJsonthreatprotectionPlugin(ctx context.Context, request operations.CreateJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.CreateJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -85118,7 +85118,7 @@ func (s *Plugins) CreateJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-jsonthreatprotection-plugin-in-workspace",
+		OperationID:      "create-jsonthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -85253,7 +85253,7 @@ func (s *Plugins) CreateJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.CreateJsonthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.CreateJsonthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -85314,9 +85314,9 @@ func (s *Plugins) CreateJsonthreatprotectionPluginInWorkspace(ctx context.Contex
 
 }
 
-// CreateJwedecryptPluginInWorkspace - Create a JweDecrypt plugin in a workspace
+// CreateJwedecryptPlugin - Create a JweDecrypt plugin in a workspace
 // Create a JweDecrypt plugin in a workspace
-func (s *Plugins) CreateJwedecryptPluginInWorkspace(ctx context.Context, request operations.CreateJwedecryptPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateJwedecryptPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateJwedecryptPlugin(ctx context.Context, request operations.CreateJwedecryptPluginRequest, opts ...operations.Option) (*operations.CreateJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -85345,7 +85345,7 @@ func (s *Plugins) CreateJwedecryptPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-jwedecrypt-plugin-in-workspace",
+		OperationID:      "create-jwedecrypt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -85480,7 +85480,7 @@ func (s *Plugins) CreateJwedecryptPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.CreateJwedecryptPluginInWorkspaceResponse{
+	res := &operations.CreateJwedecryptPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -85541,9 +85541,9 @@ func (s *Plugins) CreateJwedecryptPluginInWorkspace(ctx context.Context, request
 
 }
 
-// CreateJwtPluginInWorkspace - Create a Jwt plugin in a workspace
+// CreateJwtPlugin - Create a Jwt plugin in a workspace
 // Create a Jwt plugin in a workspace
-func (s *Plugins) CreateJwtPluginInWorkspace(ctx context.Context, request operations.CreateJwtPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateJwtPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.CreateJwtPluginRequest, opts ...operations.Option) (*operations.CreateJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -85572,7 +85572,7 @@ func (s *Plugins) CreateJwtPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-jwt-plugin-in-workspace",
+		OperationID:      "create-jwt-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -85707,7 +85707,7 @@ func (s *Plugins) CreateJwtPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.CreateJwtPluginInWorkspaceResponse{
+	res := &operations.CreateJwtPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -85768,9 +85768,9 @@ func (s *Plugins) CreateJwtPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// CreateJwtsignerPluginInWorkspace - Create a JwtSigner plugin in a workspace
+// CreateJwtsignerPlugin - Create a JwtSigner plugin in a workspace
 // Create a JwtSigner plugin in a workspace
-func (s *Plugins) CreateJwtsignerPluginInWorkspace(ctx context.Context, request operations.CreateJwtsignerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateJwtsignerPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.CreateJwtsignerPluginRequest, opts ...operations.Option) (*operations.CreateJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -85799,7 +85799,7 @@ func (s *Plugins) CreateJwtsignerPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-jwtsigner-plugin-in-workspace",
+		OperationID:      "create-jwtsigner-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -85934,7 +85934,7 @@ func (s *Plugins) CreateJwtsignerPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.CreateJwtsignerPluginInWorkspaceResponse{
+	res := &operations.CreateJwtsignerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -85995,9 +85995,9 @@ func (s *Plugins) CreateJwtsignerPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// CreateKafkaconsumePluginInWorkspace - Create a KafkaConsume plugin in a workspace
+// CreateKafkaconsumePlugin - Create a KafkaConsume plugin in a workspace
 // Create a KafkaConsume plugin in a workspace
-func (s *Plugins) CreateKafkaconsumePluginInWorkspace(ctx context.Context, request operations.CreateKafkaconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKafkaconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateKafkaconsumePlugin(ctx context.Context, request operations.CreateKafkaconsumePluginRequest, opts ...operations.Option) (*operations.CreateKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -86026,7 +86026,7 @@ func (s *Plugins) CreateKafkaconsumePluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-kafkaconsume-plugin-in-workspace",
+		OperationID:      "create-kafkaconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -86161,7 +86161,7 @@ func (s *Plugins) CreateKafkaconsumePluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.CreateKafkaconsumePluginInWorkspaceResponse{
+	res := &operations.CreateKafkaconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -86222,9 +86222,9 @@ func (s *Plugins) CreateKafkaconsumePluginInWorkspace(ctx context.Context, reque
 
 }
 
-// CreateKafkalogPluginInWorkspace - Create a KafkaLog plugin in a workspace
+// CreateKafkalogPlugin - Create a KafkaLog plugin in a workspace
 // Create a KafkaLog plugin in a workspace
-func (s *Plugins) CreateKafkalogPluginInWorkspace(ctx context.Context, request operations.CreateKafkalogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKafkalogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateKafkalogPlugin(ctx context.Context, request operations.CreateKafkalogPluginRequest, opts ...operations.Option) (*operations.CreateKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -86253,7 +86253,7 @@ func (s *Plugins) CreateKafkalogPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-kafkalog-plugin-in-workspace",
+		OperationID:      "create-kafkalog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -86388,7 +86388,7 @@ func (s *Plugins) CreateKafkalogPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.CreateKafkalogPluginInWorkspaceResponse{
+	res := &operations.CreateKafkalogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -86449,9 +86449,9 @@ func (s *Plugins) CreateKafkalogPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// CreateKafkaupstreamPluginInWorkspace - Create a KafkaUpstream plugin in a workspace
+// CreateKafkaupstreamPlugin - Create a KafkaUpstream plugin in a workspace
 // Create a KafkaUpstream plugin in a workspace
-func (s *Plugins) CreateKafkaupstreamPluginInWorkspace(ctx context.Context, request operations.CreateKafkaupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKafkaupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateKafkaupstreamPlugin(ctx context.Context, request operations.CreateKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.CreateKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -86480,7 +86480,7 @@ func (s *Plugins) CreateKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-kafkaupstream-plugin-in-workspace",
+		OperationID:      "create-kafkaupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -86615,7 +86615,7 @@ func (s *Plugins) CreateKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateKafkaupstreamPluginInWorkspaceResponse{
+	res := &operations.CreateKafkaupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -86676,9 +86676,9 @@ func (s *Plugins) CreateKafkaupstreamPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateKeyauthPluginInWorkspace - Create a KeyAuth plugin in a workspace
+// CreateKeyauthPlugin - Create a KeyAuth plugin in a workspace
 // Create a KeyAuth plugin in a workspace
-func (s *Plugins) CreateKeyauthPluginInWorkspace(ctx context.Context, request operations.CreateKeyauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKeyauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.CreateKeyauthPluginRequest, opts ...operations.Option) (*operations.CreateKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -86707,7 +86707,7 @@ func (s *Plugins) CreateKeyauthPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-keyauth-plugin-in-workspace",
+		OperationID:      "create-keyauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -86842,7 +86842,7 @@ func (s *Plugins) CreateKeyauthPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateKeyauthPluginInWorkspaceResponse{
+	res := &operations.CreateKeyauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -86903,9 +86903,9 @@ func (s *Plugins) CreateKeyauthPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateLdapauthPluginInWorkspace - Create a LdapAuth plugin in a workspace
+// CreateLdapauthPlugin - Create a LdapAuth plugin in a workspace
 // Create a LdapAuth plugin in a workspace
-func (s *Plugins) CreateLdapauthPluginInWorkspace(ctx context.Context, request operations.CreateLdapauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateLdapauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateLdapauthPlugin(ctx context.Context, request operations.CreateLdapauthPluginRequest, opts ...operations.Option) (*operations.CreateLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -86934,7 +86934,7 @@ func (s *Plugins) CreateLdapauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-ldapauth-plugin-in-workspace",
+		OperationID:      "create-ldapauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -87069,7 +87069,7 @@ func (s *Plugins) CreateLdapauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.CreateLdapauthPluginInWorkspaceResponse{
+	res := &operations.CreateLdapauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -87130,9 +87130,9 @@ func (s *Plugins) CreateLdapauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// CreateLdapauthadvancedPluginInWorkspace - Create a LdapAuthAdvanced plugin in a workspace
+// CreateLdapauthadvancedPlugin - Create a LdapAuthAdvanced plugin in a workspace
 // Create a LdapAuthAdvanced plugin in a workspace
-func (s *Plugins) CreateLdapauthadvancedPluginInWorkspace(ctx context.Context, request operations.CreateLdapauthadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateLdapauthadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateLdapauthadvancedPlugin(ctx context.Context, request operations.CreateLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.CreateLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -87161,7 +87161,7 @@ func (s *Plugins) CreateLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-ldapauthadvanced-plugin-in-workspace",
+		OperationID:      "create-ldapauthadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -87296,7 +87296,7 @@ func (s *Plugins) CreateLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.CreateLdapauthadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateLdapauthadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -87357,9 +87357,9 @@ func (s *Plugins) CreateLdapauthadvancedPluginInWorkspace(ctx context.Context, r
 
 }
 
-// CreateLogglyPluginInWorkspace - Create a Loggly plugin in a workspace
+// CreateLogglyPlugin - Create a Loggly plugin in a workspace
 // Create a Loggly plugin in a workspace
-func (s *Plugins) CreateLogglyPluginInWorkspace(ctx context.Context, request operations.CreateLogglyPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateLogglyPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateLogglyPlugin(ctx context.Context, request operations.CreateLogglyPluginRequest, opts ...operations.Option) (*operations.CreateLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -87388,7 +87388,7 @@ func (s *Plugins) CreateLogglyPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-loggly-plugin-in-workspace",
+		OperationID:      "create-loggly-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -87523,7 +87523,7 @@ func (s *Plugins) CreateLogglyPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateLogglyPluginInWorkspaceResponse{
+	res := &operations.CreateLogglyPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -87584,9 +87584,9 @@ func (s *Plugins) CreateLogglyPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// CreateMeteringandbillingPluginInWorkspace - Create a MeteringAndBilling plugin in a workspace
+// CreateMeteringandbillingPlugin - Create a MeteringAndBilling plugin in a workspace
 // Create a MeteringAndBilling plugin in a workspace
-func (s *Plugins) CreateMeteringandbillingPluginInWorkspace(ctx context.Context, request operations.CreateMeteringandbillingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateMeteringandbillingPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateMeteringandbillingPlugin(ctx context.Context, request operations.CreateMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.CreateMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -87615,7 +87615,7 @@ func (s *Plugins) CreateMeteringandbillingPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-meteringandbilling-plugin-in-workspace",
+		OperationID:      "create-meteringandbilling-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -87750,7 +87750,7 @@ func (s *Plugins) CreateMeteringandbillingPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateMeteringandbillingPluginInWorkspaceResponse{
+	res := &operations.CreateMeteringandbillingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -87811,9 +87811,9 @@ func (s *Plugins) CreateMeteringandbillingPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateMockingPluginInWorkspace - Create a Mocking plugin in a workspace
+// CreateMockingPlugin - Create a Mocking plugin in a workspace
 // Create a Mocking plugin in a workspace
-func (s *Plugins) CreateMockingPluginInWorkspace(ctx context.Context, request operations.CreateMockingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateMockingPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateMockingPlugin(ctx context.Context, request operations.CreateMockingPluginRequest, opts ...operations.Option) (*operations.CreateMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -87842,7 +87842,7 @@ func (s *Plugins) CreateMockingPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-mocking-plugin-in-workspace",
+		OperationID:      "create-mocking-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -87977,7 +87977,7 @@ func (s *Plugins) CreateMockingPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateMockingPluginInWorkspaceResponse{
+	res := &operations.CreateMockingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -88038,9 +88038,9 @@ func (s *Plugins) CreateMockingPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateMtlsauthPluginInWorkspace - Create a MtlsAuth plugin in a workspace
+// CreateMtlsauthPlugin - Create a MtlsAuth plugin in a workspace
 // Create a MtlsAuth plugin in a workspace
-func (s *Plugins) CreateMtlsauthPluginInWorkspace(ctx context.Context, request operations.CreateMtlsauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateMtlsauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateMtlsauthPlugin(ctx context.Context, request operations.CreateMtlsauthPluginRequest, opts ...operations.Option) (*operations.CreateMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -88069,7 +88069,7 @@ func (s *Plugins) CreateMtlsauthPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-mtlsauth-plugin-in-workspace",
+		OperationID:      "create-mtlsauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -88204,7 +88204,7 @@ func (s *Plugins) CreateMtlsauthPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.CreateMtlsauthPluginInWorkspaceResponse{
+	res := &operations.CreateMtlsauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -88265,9 +88265,9 @@ func (s *Plugins) CreateMtlsauthPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// CreateOasvalidationPluginInWorkspace - Create a OasValidation plugin in a workspace
+// CreateOasvalidationPlugin - Create a OasValidation plugin in a workspace
 // Create a OasValidation plugin in a workspace
-func (s *Plugins) CreateOasvalidationPluginInWorkspace(ctx context.Context, request operations.CreateOasvalidationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateOasvalidationPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateOasvalidationPlugin(ctx context.Context, request operations.CreateOasvalidationPluginRequest, opts ...operations.Option) (*operations.CreateOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -88296,7 +88296,7 @@ func (s *Plugins) CreateOasvalidationPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-oasvalidation-plugin-in-workspace",
+		OperationID:      "create-oasvalidation-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -88431,7 +88431,7 @@ func (s *Plugins) CreateOasvalidationPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateOasvalidationPluginInWorkspaceResponse{
+	res := &operations.CreateOasvalidationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -88492,9 +88492,9 @@ func (s *Plugins) CreateOasvalidationPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateOauth2introspectionPluginInWorkspace - Create a Oauth2Introspection plugin in a workspace
+// CreateOauth2introspectionPlugin - Create a Oauth2Introspection plugin in a workspace
 // Create a Oauth2Introspection plugin in a workspace
-func (s *Plugins) CreateOauth2introspectionPluginInWorkspace(ctx context.Context, request operations.CreateOauth2introspectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateOauth2introspectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateOauth2introspectionPlugin(ctx context.Context, request operations.CreateOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.CreateOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -88523,7 +88523,7 @@ func (s *Plugins) CreateOauth2introspectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-oauth2introspection-plugin-in-workspace",
+		OperationID:      "create-oauth2introspection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -88658,7 +88658,7 @@ func (s *Plugins) CreateOauth2introspectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.CreateOauth2introspectionPluginInWorkspaceResponse{
+	res := &operations.CreateOauth2introspectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -88719,9 +88719,9 @@ func (s *Plugins) CreateOauth2introspectionPluginInWorkspace(ctx context.Context
 
 }
 
-// CreateOpaPluginInWorkspace - Create a Opa plugin in a workspace
+// CreateOpaPlugin - Create a Opa plugin in a workspace
 // Create a Opa plugin in a workspace
-func (s *Plugins) CreateOpaPluginInWorkspace(ctx context.Context, request operations.CreateOpaPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateOpaPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateOpaPlugin(ctx context.Context, request operations.CreateOpaPluginRequest, opts ...operations.Option) (*operations.CreateOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -88750,7 +88750,7 @@ func (s *Plugins) CreateOpaPluginInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-opa-plugin-in-workspace",
+		OperationID:      "create-opa-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -88885,7 +88885,7 @@ func (s *Plugins) CreateOpaPluginInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.CreateOpaPluginInWorkspaceResponse{
+	res := &operations.CreateOpaPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -88946,9 +88946,9 @@ func (s *Plugins) CreateOpaPluginInWorkspace(ctx context.Context, request operat
 
 }
 
-// CreateOpenidconnectPluginInWorkspace - Create a OpenidConnect plugin in a workspace
+// CreateOpenidconnectPlugin - Create a OpenidConnect plugin in a workspace
 // Create a OpenidConnect plugin in a workspace
-func (s *Plugins) CreateOpenidconnectPluginInWorkspace(ctx context.Context, request operations.CreateOpenidconnectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateOpenidconnectPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operations.CreateOpenidconnectPluginRequest, opts ...operations.Option) (*operations.CreateOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -88977,7 +88977,7 @@ func (s *Plugins) CreateOpenidconnectPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-openidconnect-plugin-in-workspace",
+		OperationID:      "create-openidconnect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -89112,7 +89112,7 @@ func (s *Plugins) CreateOpenidconnectPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateOpenidconnectPluginInWorkspaceResponse{
+	res := &operations.CreateOpenidconnectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -89173,9 +89173,9 @@ func (s *Plugins) CreateOpenidconnectPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateOpentelemetryPluginInWorkspace - Create a Opentelemetry plugin in a workspace
+// CreateOpentelemetryPlugin - Create a Opentelemetry plugin in a workspace
 // Create a Opentelemetry plugin in a workspace
-func (s *Plugins) CreateOpentelemetryPluginInWorkspace(ctx context.Context, request operations.CreateOpentelemetryPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateOpentelemetryPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operations.CreateOpentelemetryPluginRequest, opts ...operations.Option) (*operations.CreateOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -89204,7 +89204,7 @@ func (s *Plugins) CreateOpentelemetryPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-opentelemetry-plugin-in-workspace",
+		OperationID:      "create-opentelemetry-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -89339,7 +89339,7 @@ func (s *Plugins) CreateOpentelemetryPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateOpentelemetryPluginInWorkspaceResponse{
+	res := &operations.CreateOpentelemetryPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -89400,9 +89400,9 @@ func (s *Plugins) CreateOpentelemetryPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreatePostfunctionPluginInWorkspace - Create a PostFunction plugin in a workspace
+// CreatePostfunctionPlugin - Create a PostFunction plugin in a workspace
 // Create a PostFunction plugin in a workspace
-func (s *Plugins) CreatePostfunctionPluginInWorkspace(ctx context.Context, request operations.CreatePostfunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreatePostfunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreatePostfunctionPlugin(ctx context.Context, request operations.CreatePostfunctionPluginRequest, opts ...operations.Option) (*operations.CreatePostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -89431,7 +89431,7 @@ func (s *Plugins) CreatePostfunctionPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-postfunction-plugin-in-workspace",
+		OperationID:      "create-postfunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -89566,7 +89566,7 @@ func (s *Plugins) CreatePostfunctionPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.CreatePostfunctionPluginInWorkspaceResponse{
+	res := &operations.CreatePostfunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -89627,9 +89627,9 @@ func (s *Plugins) CreatePostfunctionPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// CreatePrefunctionPluginInWorkspace - Create a PreFunction plugin in a workspace
+// CreatePrefunctionPlugin - Create a PreFunction plugin in a workspace
 // Create a PreFunction plugin in a workspace
-func (s *Plugins) CreatePrefunctionPluginInWorkspace(ctx context.Context, request operations.CreatePrefunctionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreatePrefunctionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operations.CreatePrefunctionPluginRequest, opts ...operations.Option) (*operations.CreatePrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -89658,7 +89658,7 @@ func (s *Plugins) CreatePrefunctionPluginInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-prefunction-plugin-in-workspace",
+		OperationID:      "create-prefunction-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -89793,7 +89793,7 @@ func (s *Plugins) CreatePrefunctionPluginInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.CreatePrefunctionPluginInWorkspaceResponse{
+	res := &operations.CreatePrefunctionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -89854,9 +89854,9 @@ func (s *Plugins) CreatePrefunctionPluginInWorkspace(ctx context.Context, reques
 
 }
 
-// CreatePrometheusPluginInWorkspace - Create a Prometheus plugin in a workspace
+// CreatePrometheusPlugin - Create a Prometheus plugin in a workspace
 // Create a Prometheus plugin in a workspace
-func (s *Plugins) CreatePrometheusPluginInWorkspace(ctx context.Context, request operations.CreatePrometheusPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreatePrometheusPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations.CreatePrometheusPluginRequest, opts ...operations.Option) (*operations.CreatePrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -89885,7 +89885,7 @@ func (s *Plugins) CreatePrometheusPluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-prometheus-plugin-in-workspace",
+		OperationID:      "create-prometheus-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -90020,7 +90020,7 @@ func (s *Plugins) CreatePrometheusPluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.CreatePrometheusPluginInWorkspaceResponse{
+	res := &operations.CreatePrometheusPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -90081,9 +90081,9 @@ func (s *Plugins) CreatePrometheusPluginInWorkspace(ctx context.Context, request
 
 }
 
-// CreateProxycachePluginInWorkspace - Create a ProxyCache plugin in a workspace
+// CreateProxycachePlugin - Create a ProxyCache plugin in a workspace
 // Create a ProxyCache plugin in a workspace
-func (s *Plugins) CreateProxycachePluginInWorkspace(ctx context.Context, request operations.CreateProxycachePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateProxycachePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations.CreateProxycachePluginRequest, opts ...operations.Option) (*operations.CreateProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -90112,7 +90112,7 @@ func (s *Plugins) CreateProxycachePluginInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-proxycache-plugin-in-workspace",
+		OperationID:      "create-proxycache-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -90247,7 +90247,7 @@ func (s *Plugins) CreateProxycachePluginInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.CreateProxycachePluginInWorkspaceResponse{
+	res := &operations.CreateProxycachePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -90308,9 +90308,9 @@ func (s *Plugins) CreateProxycachePluginInWorkspace(ctx context.Context, request
 
 }
 
-// CreateProxycacheadvancedPluginInWorkspace - Create a ProxyCacheAdvanced plugin in a workspace
+// CreateProxycacheadvancedPlugin - Create a ProxyCacheAdvanced plugin in a workspace
 // Create a ProxyCacheAdvanced plugin in a workspace
-func (s *Plugins) CreateProxycacheadvancedPluginInWorkspace(ctx context.Context, request operations.CreateProxycacheadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateProxycacheadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateProxycacheadvancedPlugin(ctx context.Context, request operations.CreateProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.CreateProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -90339,7 +90339,7 @@ func (s *Plugins) CreateProxycacheadvancedPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-proxycacheadvanced-plugin-in-workspace",
+		OperationID:      "create-proxycacheadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -90474,7 +90474,7 @@ func (s *Plugins) CreateProxycacheadvancedPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateProxycacheadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateProxycacheadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -90535,9 +90535,9 @@ func (s *Plugins) CreateProxycacheadvancedPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateRatelimitingPluginInWorkspace - Create a RateLimiting plugin in a workspace
+// CreateRatelimitingPlugin - Create a RateLimiting plugin in a workspace
 // Create a RateLimiting plugin in a workspace
-func (s *Plugins) CreateRatelimitingPluginInWorkspace(ctx context.Context, request operations.CreateRatelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRatelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operations.CreateRatelimitingPluginRequest, opts ...operations.Option) (*operations.CreateRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -90566,7 +90566,7 @@ func (s *Plugins) CreateRatelimitingPluginInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-ratelimiting-plugin-in-workspace",
+		OperationID:      "create-ratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -90701,7 +90701,7 @@ func (s *Plugins) CreateRatelimitingPluginInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.CreateRatelimitingPluginInWorkspaceResponse{
+	res := &operations.CreateRatelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -90762,9 +90762,9 @@ func (s *Plugins) CreateRatelimitingPluginInWorkspace(ctx context.Context, reque
 
 }
 
-// CreateRatelimitingadvancedPluginInWorkspace - Create a RateLimitingAdvanced plugin in a workspace
+// CreateRatelimitingadvancedPlugin - Create a RateLimitingAdvanced plugin in a workspace
 // Create a RateLimitingAdvanced plugin in a workspace
-func (s *Plugins) CreateRatelimitingadvancedPluginInWorkspace(ctx context.Context, request operations.CreateRatelimitingadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRatelimitingadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request operations.CreateRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.CreateRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -90793,7 +90793,7 @@ func (s *Plugins) CreateRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-ratelimitingadvanced-plugin-in-workspace",
+		OperationID:      "create-ratelimitingadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -90928,7 +90928,7 @@ func (s *Plugins) CreateRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.CreateRatelimitingadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateRatelimitingadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -90989,9 +90989,9 @@ func (s *Plugins) CreateRatelimitingadvancedPluginInWorkspace(ctx context.Contex
 
 }
 
-// CreateRedirectPluginInWorkspace - Create a Redirect plugin in a workspace
+// CreateRedirectPlugin - Create a Redirect plugin in a workspace
 // Create a Redirect plugin in a workspace
-func (s *Plugins) CreateRedirectPluginInWorkspace(ctx context.Context, request operations.CreateRedirectPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRedirectPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRedirectPlugin(ctx context.Context, request operations.CreateRedirectPluginRequest, opts ...operations.Option) (*operations.CreateRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -91020,7 +91020,7 @@ func (s *Plugins) CreateRedirectPluginInWorkspace(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-redirect-plugin-in-workspace",
+		OperationID:      "create-redirect-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -91155,7 +91155,7 @@ func (s *Plugins) CreateRedirectPluginInWorkspace(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.CreateRedirectPluginInWorkspaceResponse{
+	res := &operations.CreateRedirectPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -91216,9 +91216,9 @@ func (s *Plugins) CreateRedirectPluginInWorkspace(ctx context.Context, request o
 
 }
 
-// CreateRequestcalloutPluginInWorkspace - Create a RequestCallout plugin in a workspace
+// CreateRequestcalloutPlugin - Create a RequestCallout plugin in a workspace
 // Create a RequestCallout plugin in a workspace
-func (s *Plugins) CreateRequestcalloutPluginInWorkspace(ctx context.Context, request operations.CreateRequestcalloutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRequestcalloutPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRequestcalloutPlugin(ctx context.Context, request operations.CreateRequestcalloutPluginRequest, opts ...operations.Option) (*operations.CreateRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -91247,7 +91247,7 @@ func (s *Plugins) CreateRequestcalloutPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-requestcallout-plugin-in-workspace",
+		OperationID:      "create-requestcallout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -91382,7 +91382,7 @@ func (s *Plugins) CreateRequestcalloutPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.CreateRequestcalloutPluginInWorkspaceResponse{
+	res := &operations.CreateRequestcalloutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -91443,9 +91443,9 @@ func (s *Plugins) CreateRequestcalloutPluginInWorkspace(ctx context.Context, req
 
 }
 
-// CreateRequestsizelimitingPluginInWorkspace - Create a RequestSizeLimiting plugin in a workspace
+// CreateRequestsizelimitingPlugin - Create a RequestSizeLimiting plugin in a workspace
 // Create a RequestSizeLimiting plugin in a workspace
-func (s *Plugins) CreateRequestsizelimitingPluginInWorkspace(ctx context.Context, request operations.CreateRequestsizelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRequestsizelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRequestsizelimitingPlugin(ctx context.Context, request operations.CreateRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.CreateRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -91474,7 +91474,7 @@ func (s *Plugins) CreateRequestsizelimitingPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-requestsizelimiting-plugin-in-workspace",
+		OperationID:      "create-requestsizelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -91609,7 +91609,7 @@ func (s *Plugins) CreateRequestsizelimitingPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.CreateRequestsizelimitingPluginInWorkspaceResponse{
+	res := &operations.CreateRequestsizelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -91670,9 +91670,9 @@ func (s *Plugins) CreateRequestsizelimitingPluginInWorkspace(ctx context.Context
 
 }
 
-// CreateRequestterminationPluginInWorkspace - Create a RequestTermination plugin in a workspace
+// CreateRequestterminationPlugin - Create a RequestTermination plugin in a workspace
 // Create a RequestTermination plugin in a workspace
-func (s *Plugins) CreateRequestterminationPluginInWorkspace(ctx context.Context, request operations.CreateRequestterminationPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRequestterminationPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request operations.CreateRequestterminationPluginRequest, opts ...operations.Option) (*operations.CreateRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -91701,7 +91701,7 @@ func (s *Plugins) CreateRequestterminationPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-requesttermination-plugin-in-workspace",
+		OperationID:      "create-requesttermination-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -91836,7 +91836,7 @@ func (s *Plugins) CreateRequestterminationPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateRequestterminationPluginInWorkspaceResponse{
+	res := &operations.CreateRequestterminationPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -91897,9 +91897,9 @@ func (s *Plugins) CreateRequestterminationPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateRequesttransformerPluginInWorkspace - Create a RequestTransformer plugin in a workspace
+// CreateRequesttransformerPlugin - Create a RequestTransformer plugin in a workspace
 // Create a RequestTransformer plugin in a workspace
-func (s *Plugins) CreateRequesttransformerPluginInWorkspace(ctx context.Context, request operations.CreateRequesttransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRequesttransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request operations.CreateRequesttransformerPluginRequest, opts ...operations.Option) (*operations.CreateRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -91928,7 +91928,7 @@ func (s *Plugins) CreateRequesttransformerPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-requesttransformer-plugin-in-workspace",
+		OperationID:      "create-requesttransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -92063,7 +92063,7 @@ func (s *Plugins) CreateRequesttransformerPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateRequesttransformerPluginInWorkspaceResponse{
+	res := &operations.CreateRequesttransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -92124,9 +92124,9 @@ func (s *Plugins) CreateRequesttransformerPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateRequesttransformeradvancedPluginInWorkspace - Create a RequestTransformerAdvanced plugin in a workspace
+// CreateRequesttransformeradvancedPlugin - Create a RequestTransformerAdvanced plugin in a workspace
 // Create a RequestTransformerAdvanced plugin in a workspace
-func (s *Plugins) CreateRequesttransformeradvancedPluginInWorkspace(ctx context.Context, request operations.CreateRequesttransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRequesttransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, request operations.CreateRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -92155,7 +92155,7 @@ func (s *Plugins) CreateRequesttransformeradvancedPluginInWorkspace(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-requesttransformeradvanced-plugin-in-workspace",
+		OperationID:      "create-requesttransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -92290,7 +92290,7 @@ func (s *Plugins) CreateRequesttransformeradvancedPluginInWorkspace(ctx context.
 		}
 	}
 
-	res := &operations.CreateRequesttransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.CreateRequesttransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -92351,9 +92351,9 @@ func (s *Plugins) CreateRequesttransformeradvancedPluginInWorkspace(ctx context.
 
 }
 
-// CreateRequestvalidatorPluginInWorkspace - Create a RequestValidator plugin in a workspace
+// CreateRequestvalidatorPlugin - Create a RequestValidator plugin in a workspace
 // Create a RequestValidator plugin in a workspace
-func (s *Plugins) CreateRequestvalidatorPluginInWorkspace(ctx context.Context, request operations.CreateRequestvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRequestvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRequestvalidatorPlugin(ctx context.Context, request operations.CreateRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.CreateRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -92382,7 +92382,7 @@ func (s *Plugins) CreateRequestvalidatorPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-requestvalidator-plugin-in-workspace",
+		OperationID:      "create-requestvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -92517,7 +92517,7 @@ func (s *Plugins) CreateRequestvalidatorPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.CreateRequestvalidatorPluginInWorkspaceResponse{
+	res := &operations.CreateRequestvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -92578,9 +92578,9 @@ func (s *Plugins) CreateRequestvalidatorPluginInWorkspace(ctx context.Context, r
 
 }
 
-// CreateResponseratelimitingPluginInWorkspace - Create a ResponseRatelimiting plugin in a workspace
+// CreateResponseratelimitingPlugin - Create a ResponseRatelimiting plugin in a workspace
 // Create a ResponseRatelimiting plugin in a workspace
-func (s *Plugins) CreateResponseratelimitingPluginInWorkspace(ctx context.Context, request operations.CreateResponseratelimitingPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateResponseratelimitingPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateResponseratelimitingPlugin(ctx context.Context, request operations.CreateResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.CreateResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -92609,7 +92609,7 @@ func (s *Plugins) CreateResponseratelimitingPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-responseratelimiting-plugin-in-workspace",
+		OperationID:      "create-responseratelimiting-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -92744,7 +92744,7 @@ func (s *Plugins) CreateResponseratelimitingPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.CreateResponseratelimitingPluginInWorkspaceResponse{
+	res := &operations.CreateResponseratelimitingPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -92805,9 +92805,9 @@ func (s *Plugins) CreateResponseratelimitingPluginInWorkspace(ctx context.Contex
 
 }
 
-// CreateResponsetransformerPluginInWorkspace - Create a ResponseTransformer plugin in a workspace
+// CreateResponsetransformerPlugin - Create a ResponseTransformer plugin in a workspace
 // Create a ResponseTransformer plugin in a workspace
-func (s *Plugins) CreateResponsetransformerPluginInWorkspace(ctx context.Context, request operations.CreateResponsetransformerPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateResponsetransformerPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request operations.CreateResponsetransformerPluginRequest, opts ...operations.Option) (*operations.CreateResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -92836,7 +92836,7 @@ func (s *Plugins) CreateResponsetransformerPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-responsetransformer-plugin-in-workspace",
+		OperationID:      "create-responsetransformer-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -92971,7 +92971,7 @@ func (s *Plugins) CreateResponsetransformerPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.CreateResponsetransformerPluginInWorkspaceResponse{
+	res := &operations.CreateResponsetransformerPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -93032,9 +93032,9 @@ func (s *Plugins) CreateResponsetransformerPluginInWorkspace(ctx context.Context
 
 }
 
-// CreateResponsetransformeradvancedPluginInWorkspace - Create a ResponseTransformerAdvanced plugin in a workspace
+// CreateResponsetransformeradvancedPlugin - Create a ResponseTransformerAdvanced plugin in a workspace
 // Create a ResponseTransformerAdvanced plugin in a workspace
-func (s *Plugins) CreateResponsetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.CreateResponsetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateResponsetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, request operations.CreateResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -93063,7 +93063,7 @@ func (s *Plugins) CreateResponsetransformeradvancedPluginInWorkspace(ctx context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-responsetransformeradvanced-plugin-in-workspace",
+		OperationID:      "create-responsetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -93198,7 +93198,7 @@ func (s *Plugins) CreateResponsetransformeradvancedPluginInWorkspace(ctx context
 		}
 	}
 
-	res := &operations.CreateResponsetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.CreateResponsetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -93259,9 +93259,9 @@ func (s *Plugins) CreateResponsetransformeradvancedPluginInWorkspace(ctx context
 
 }
 
-// CreateRoutebyheaderPluginInWorkspace - Create a RouteByHeader plugin in a workspace
+// CreateRoutebyheaderPlugin - Create a RouteByHeader plugin in a workspace
 // Create a RouteByHeader plugin in a workspace
-func (s *Plugins) CreateRoutebyheaderPluginInWorkspace(ctx context.Context, request operations.CreateRoutebyheaderPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRoutebyheaderPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRoutebyheaderPlugin(ctx context.Context, request operations.CreateRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.CreateRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -93290,7 +93290,7 @@ func (s *Plugins) CreateRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-routebyheader-plugin-in-workspace",
+		OperationID:      "create-routebyheader-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -93425,7 +93425,7 @@ func (s *Plugins) CreateRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateRoutebyheaderPluginInWorkspaceResponse{
+	res := &operations.CreateRoutebyheaderPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -93486,9 +93486,9 @@ func (s *Plugins) CreateRoutebyheaderPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateRoutetransformeradvancedPluginInWorkspace - Create a RouteTransformerAdvanced plugin in a workspace
+// CreateRoutetransformeradvancedPlugin - Create a RouteTransformerAdvanced plugin in a workspace
 // Create a RouteTransformerAdvanced plugin in a workspace
-func (s *Plugins) CreateRoutetransformeradvancedPluginInWorkspace(ctx context.Context, request operations.CreateRoutetransformeradvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRoutetransformeradvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateRoutetransformeradvancedPlugin(ctx context.Context, request operations.CreateRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -93517,7 +93517,7 @@ func (s *Plugins) CreateRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-routetransformeradvanced-plugin-in-workspace",
+		OperationID:      "create-routetransformeradvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -93652,7 +93652,7 @@ func (s *Plugins) CreateRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 		}
 	}
 
-	res := &operations.CreateRoutetransformeradvancedPluginInWorkspaceResponse{
+	res := &operations.CreateRoutetransformeradvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -93713,9 +93713,9 @@ func (s *Plugins) CreateRoutetransformeradvancedPluginInWorkspace(ctx context.Co
 
 }
 
-// CreateSamlPluginInWorkspace - Create a Saml plugin in a workspace
+// CreateSamlPlugin - Create a Saml plugin in a workspace
 // Create a Saml plugin in a workspace
-func (s *Plugins) CreateSamlPluginInWorkspace(ctx context.Context, request operations.CreateSamlPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateSamlPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.CreateSamlPluginRequest, opts ...operations.Option) (*operations.CreateSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -93744,7 +93744,7 @@ func (s *Plugins) CreateSamlPluginInWorkspace(ctx context.Context, request opera
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-saml-plugin-in-workspace",
+		OperationID:      "create-saml-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -93879,7 +93879,7 @@ func (s *Plugins) CreateSamlPluginInWorkspace(ctx context.Context, request opera
 		}
 	}
 
-	res := &operations.CreateSamlPluginInWorkspaceResponse{
+	res := &operations.CreateSamlPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -93940,9 +93940,9 @@ func (s *Plugins) CreateSamlPluginInWorkspace(ctx context.Context, request opera
 
 }
 
-// CreateServiceprotectionPluginInWorkspace - Create a ServiceProtection plugin in a workspace
+// CreateServiceprotectionPlugin - Create a ServiceProtection plugin in a workspace
 // Create a ServiceProtection plugin in a workspace
-func (s *Plugins) CreateServiceprotectionPluginInWorkspace(ctx context.Context, request operations.CreateServiceprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateServiceprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateServiceprotectionPlugin(ctx context.Context, request operations.CreateServiceprotectionPluginRequest, opts ...operations.Option) (*operations.CreateServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -93971,7 +93971,7 @@ func (s *Plugins) CreateServiceprotectionPluginInWorkspace(ctx context.Context, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-serviceprotection-plugin-in-workspace",
+		OperationID:      "create-serviceprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -94106,7 +94106,7 @@ func (s *Plugins) CreateServiceprotectionPluginInWorkspace(ctx context.Context, 
 		}
 	}
 
-	res := &operations.CreateServiceprotectionPluginInWorkspaceResponse{
+	res := &operations.CreateServiceprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -94167,9 +94167,9 @@ func (s *Plugins) CreateServiceprotectionPluginInWorkspace(ctx context.Context, 
 
 }
 
-// CreateSessionPluginInWorkspace - Create a Session plugin in a workspace
+// CreateSessionPlugin - Create a Session plugin in a workspace
 // Create a Session plugin in a workspace
-func (s *Plugins) CreateSessionPluginInWorkspace(ctx context.Context, request operations.CreateSessionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateSessionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateSessionPlugin(ctx context.Context, request operations.CreateSessionPluginRequest, opts ...operations.Option) (*operations.CreateSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -94198,7 +94198,7 @@ func (s *Plugins) CreateSessionPluginInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-session-plugin-in-workspace",
+		OperationID:      "create-session-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -94333,7 +94333,7 @@ func (s *Plugins) CreateSessionPluginInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.CreateSessionPluginInWorkspaceResponse{
+	res := &operations.CreateSessionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -94394,9 +94394,9 @@ func (s *Plugins) CreateSessionPluginInWorkspace(ctx context.Context, request op
 
 }
 
-// CreateSolaceconsumePluginInWorkspace - Create a SolaceConsume plugin in a workspace
+// CreateSolaceconsumePlugin - Create a SolaceConsume plugin in a workspace
 // Create a SolaceConsume plugin in a workspace
-func (s *Plugins) CreateSolaceconsumePluginInWorkspace(ctx context.Context, request operations.CreateSolaceconsumePluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateSolaceconsumePluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateSolaceconsumePlugin(ctx context.Context, request operations.CreateSolaceconsumePluginRequest, opts ...operations.Option) (*operations.CreateSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -94425,7 +94425,7 @@ func (s *Plugins) CreateSolaceconsumePluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-solaceconsume-plugin-in-workspace",
+		OperationID:      "create-solaceconsume-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -94560,7 +94560,7 @@ func (s *Plugins) CreateSolaceconsumePluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateSolaceconsumePluginInWorkspaceResponse{
+	res := &operations.CreateSolaceconsumePluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -94621,9 +94621,9 @@ func (s *Plugins) CreateSolaceconsumePluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateSolacelogPluginInWorkspace - Create a SolaceLog plugin in a workspace
+// CreateSolacelogPlugin - Create a SolaceLog plugin in a workspace
 // Create a SolaceLog plugin in a workspace
-func (s *Plugins) CreateSolacelogPluginInWorkspace(ctx context.Context, request operations.CreateSolacelogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateSolacelogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateSolacelogPlugin(ctx context.Context, request operations.CreateSolacelogPluginRequest, opts ...operations.Option) (*operations.CreateSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -94652,7 +94652,7 @@ func (s *Plugins) CreateSolacelogPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-solacelog-plugin-in-workspace",
+		OperationID:      "create-solacelog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -94787,7 +94787,7 @@ func (s *Plugins) CreateSolacelogPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.CreateSolacelogPluginInWorkspaceResponse{
+	res := &operations.CreateSolacelogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -94848,9 +94848,9 @@ func (s *Plugins) CreateSolacelogPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// CreateSolaceupstreamPluginInWorkspace - Create a SolaceUpstream plugin in a workspace
+// CreateSolaceupstreamPlugin - Create a SolaceUpstream plugin in a workspace
 // Create a SolaceUpstream plugin in a workspace
-func (s *Plugins) CreateSolaceupstreamPluginInWorkspace(ctx context.Context, request operations.CreateSolaceupstreamPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateSolaceupstreamPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateSolaceupstreamPlugin(ctx context.Context, request operations.CreateSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.CreateSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -94879,7 +94879,7 @@ func (s *Plugins) CreateSolaceupstreamPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-solaceupstream-plugin-in-workspace",
+		OperationID:      "create-solaceupstream-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -95014,7 +95014,7 @@ func (s *Plugins) CreateSolaceupstreamPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.CreateSolaceupstreamPluginInWorkspaceResponse{
+	res := &operations.CreateSolaceupstreamPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -95075,9 +95075,9 @@ func (s *Plugins) CreateSolaceupstreamPluginInWorkspace(ctx context.Context, req
 
 }
 
-// CreateStandardwebhooksPluginInWorkspace - Create a StandardWebhooks plugin in a workspace
+// CreateStandardwebhooksPlugin - Create a StandardWebhooks plugin in a workspace
 // Create a StandardWebhooks plugin in a workspace
-func (s *Plugins) CreateStandardwebhooksPluginInWorkspace(ctx context.Context, request operations.CreateStandardwebhooksPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateStandardwebhooksPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateStandardwebhooksPlugin(ctx context.Context, request operations.CreateStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.CreateStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -95106,7 +95106,7 @@ func (s *Plugins) CreateStandardwebhooksPluginInWorkspace(ctx context.Context, r
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-standardwebhooks-plugin-in-workspace",
+		OperationID:      "create-standardwebhooks-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -95241,7 +95241,7 @@ func (s *Plugins) CreateStandardwebhooksPluginInWorkspace(ctx context.Context, r
 		}
 	}
 
-	res := &operations.CreateStandardwebhooksPluginInWorkspaceResponse{
+	res := &operations.CreateStandardwebhooksPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -95302,9 +95302,9 @@ func (s *Plugins) CreateStandardwebhooksPluginInWorkspace(ctx context.Context, r
 
 }
 
-// CreateStatsdPluginInWorkspace - Create a Statsd plugin in a workspace
+// CreateStatsdPlugin - Create a Statsd plugin in a workspace
 // Create a Statsd plugin in a workspace
-func (s *Plugins) CreateStatsdPluginInWorkspace(ctx context.Context, request operations.CreateStatsdPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateStatsdPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateStatsdPlugin(ctx context.Context, request operations.CreateStatsdPluginRequest, opts ...operations.Option) (*operations.CreateStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -95333,7 +95333,7 @@ func (s *Plugins) CreateStatsdPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-statsd-plugin-in-workspace",
+		OperationID:      "create-statsd-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -95468,7 +95468,7 @@ func (s *Plugins) CreateStatsdPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateStatsdPluginInWorkspaceResponse{
+	res := &operations.CreateStatsdPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -95529,9 +95529,9 @@ func (s *Plugins) CreateStatsdPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// CreateStatsdadvancedPluginInWorkspace - Create a StatsdAdvanced plugin in a workspace
+// CreateStatsdadvancedPlugin - Create a StatsdAdvanced plugin in a workspace
 // Create a StatsdAdvanced plugin in a workspace
-func (s *Plugins) CreateStatsdadvancedPluginInWorkspace(ctx context.Context, request operations.CreateStatsdadvancedPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateStatsdadvancedPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateStatsdadvancedPlugin(ctx context.Context, request operations.CreateStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.CreateStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -95560,7 +95560,7 @@ func (s *Plugins) CreateStatsdadvancedPluginInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-statsdadvanced-plugin-in-workspace",
+		OperationID:      "create-statsdadvanced-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -95695,7 +95695,7 @@ func (s *Plugins) CreateStatsdadvancedPluginInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.CreateStatsdadvancedPluginInWorkspaceResponse{
+	res := &operations.CreateStatsdadvancedPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -95756,9 +95756,9 @@ func (s *Plugins) CreateStatsdadvancedPluginInWorkspace(ctx context.Context, req
 
 }
 
-// CreateSyslogPluginInWorkspace - Create a Syslog plugin in a workspace
+// CreateSyslogPlugin - Create a Syslog plugin in a workspace
 // Create a Syslog plugin in a workspace
-func (s *Plugins) CreateSyslogPluginInWorkspace(ctx context.Context, request operations.CreateSyslogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateSyslogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateSyslogPlugin(ctx context.Context, request operations.CreateSyslogPluginRequest, opts ...operations.Option) (*operations.CreateSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -95787,7 +95787,7 @@ func (s *Plugins) CreateSyslogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-syslog-plugin-in-workspace",
+		OperationID:      "create-syslog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -95922,7 +95922,7 @@ func (s *Plugins) CreateSyslogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateSyslogPluginInWorkspaceResponse{
+	res := &operations.CreateSyslogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -95983,9 +95983,9 @@ func (s *Plugins) CreateSyslogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// CreateTcplogPluginInWorkspace - Create a TcpLog plugin in a workspace
+// CreateTcplogPlugin - Create a TcpLog plugin in a workspace
 // Create a TcpLog plugin in a workspace
-func (s *Plugins) CreateTcplogPluginInWorkspace(ctx context.Context, request operations.CreateTcplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateTcplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateTcplogPlugin(ctx context.Context, request operations.CreateTcplogPluginRequest, opts ...operations.Option) (*operations.CreateTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -96014,7 +96014,7 @@ func (s *Plugins) CreateTcplogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-tcplog-plugin-in-workspace",
+		OperationID:      "create-tcplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -96149,7 +96149,7 @@ func (s *Plugins) CreateTcplogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateTcplogPluginInWorkspaceResponse{
+	res := &operations.CreateTcplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -96210,9 +96210,9 @@ func (s *Plugins) CreateTcplogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// CreateTlshandshakemodifierPluginInWorkspace - Create a TlsHandshakeModifier plugin in a workspace
+// CreateTlshandshakemodifierPlugin - Create a TlsHandshakeModifier plugin in a workspace
 // Create a TlsHandshakeModifier plugin in a workspace
-func (s *Plugins) CreateTlshandshakemodifierPluginInWorkspace(ctx context.Context, request operations.CreateTlshandshakemodifierPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateTlshandshakemodifierPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateTlshandshakemodifierPlugin(ctx context.Context, request operations.CreateTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.CreateTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -96241,7 +96241,7 @@ func (s *Plugins) CreateTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-tlshandshakemodifier-plugin-in-workspace",
+		OperationID:      "create-tlshandshakemodifier-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -96376,7 +96376,7 @@ func (s *Plugins) CreateTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 		}
 	}
 
-	res := &operations.CreateTlshandshakemodifierPluginInWorkspaceResponse{
+	res := &operations.CreateTlshandshakemodifierPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -96437,9 +96437,9 @@ func (s *Plugins) CreateTlshandshakemodifierPluginInWorkspace(ctx context.Contex
 
 }
 
-// CreateTlsmetadataheadersPluginInWorkspace - Create a TlsMetadataHeaders plugin in a workspace
+// CreateTlsmetadataheadersPlugin - Create a TlsMetadataHeaders plugin in a workspace
 // Create a TlsMetadataHeaders plugin in a workspace
-func (s *Plugins) CreateTlsmetadataheadersPluginInWorkspace(ctx context.Context, request operations.CreateTlsmetadataheadersPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateTlsmetadataheadersPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateTlsmetadataheadersPlugin(ctx context.Context, request operations.CreateTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.CreateTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -96468,7 +96468,7 @@ func (s *Plugins) CreateTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-tlsmetadataheaders-plugin-in-workspace",
+		OperationID:      "create-tlsmetadataheaders-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -96603,7 +96603,7 @@ func (s *Plugins) CreateTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateTlsmetadataheadersPluginInWorkspaceResponse{
+	res := &operations.CreateTlsmetadataheadersPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -96664,9 +96664,9 @@ func (s *Plugins) CreateTlsmetadataheadersPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateUdplogPluginInWorkspace - Create a UdpLog plugin in a workspace
+// CreateUdplogPlugin - Create a UdpLog plugin in a workspace
 // Create a UdpLog plugin in a workspace
-func (s *Plugins) CreateUdplogPluginInWorkspace(ctx context.Context, request operations.CreateUdplogPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateUdplogPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateUdplogPlugin(ctx context.Context, request operations.CreateUdplogPluginRequest, opts ...operations.Option) (*operations.CreateUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -96695,7 +96695,7 @@ func (s *Plugins) CreateUdplogPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-udplog-plugin-in-workspace",
+		OperationID:      "create-udplog-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -96830,7 +96830,7 @@ func (s *Plugins) CreateUdplogPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateUdplogPluginInWorkspaceResponse{
+	res := &operations.CreateUdplogPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -96891,9 +96891,9 @@ func (s *Plugins) CreateUdplogPluginInWorkspace(ctx context.Context, request ope
 
 }
 
-// CreateUpstreamoauthPluginInWorkspace - Create a UpstreamOauth plugin in a workspace
+// CreateUpstreamoauthPlugin - Create a UpstreamOauth plugin in a workspace
 // Create a UpstreamOauth plugin in a workspace
-func (s *Plugins) CreateUpstreamoauthPluginInWorkspace(ctx context.Context, request operations.CreateUpstreamoauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateUpstreamoauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateUpstreamoauthPlugin(ctx context.Context, request operations.CreateUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.CreateUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -96922,7 +96922,7 @@ func (s *Plugins) CreateUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-upstreamoauth-plugin-in-workspace",
+		OperationID:      "create-upstreamoauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -97057,7 +97057,7 @@ func (s *Plugins) CreateUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateUpstreamoauthPluginInWorkspaceResponse{
+	res := &operations.CreateUpstreamoauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -97118,9 +97118,9 @@ func (s *Plugins) CreateUpstreamoauthPluginInWorkspace(ctx context.Context, requ
 
 }
 
-// CreateUpstreamtimeoutPluginInWorkspace - Create a UpstreamTimeout plugin in a workspace
+// CreateUpstreamtimeoutPlugin - Create a UpstreamTimeout plugin in a workspace
 // Create a UpstreamTimeout plugin in a workspace
-func (s *Plugins) CreateUpstreamtimeoutPluginInWorkspace(ctx context.Context, request operations.CreateUpstreamtimeoutPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateUpstreamtimeoutPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateUpstreamtimeoutPlugin(ctx context.Context, request operations.CreateUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.CreateUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -97149,7 +97149,7 @@ func (s *Plugins) CreateUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-upstreamtimeout-plugin-in-workspace",
+		OperationID:      "create-upstreamtimeout-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -97284,7 +97284,7 @@ func (s *Plugins) CreateUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 		}
 	}
 
-	res := &operations.CreateUpstreamtimeoutPluginInWorkspaceResponse{
+	res := &operations.CreateUpstreamtimeoutPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -97345,9 +97345,9 @@ func (s *Plugins) CreateUpstreamtimeoutPluginInWorkspace(ctx context.Context, re
 
 }
 
-// CreateVaultauthPluginInWorkspace - Create a VaultAuth plugin in a workspace
+// CreateVaultauthPlugin - Create a VaultAuth plugin in a workspace
 // Create a VaultAuth plugin in a workspace
-func (s *Plugins) CreateVaultauthPluginInWorkspace(ctx context.Context, request operations.CreateVaultauthPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateVaultauthPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateVaultauthPlugin(ctx context.Context, request operations.CreateVaultauthPluginRequest, opts ...operations.Option) (*operations.CreateVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -97376,7 +97376,7 @@ func (s *Plugins) CreateVaultauthPluginInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-vaultauth-plugin-in-workspace",
+		OperationID:      "create-vaultauth-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -97511,7 +97511,7 @@ func (s *Plugins) CreateVaultauthPluginInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.CreateVaultauthPluginInWorkspaceResponse{
+	res := &operations.CreateVaultauthPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -97572,9 +97572,9 @@ func (s *Plugins) CreateVaultauthPluginInWorkspace(ctx context.Context, request 
 
 }
 
-// CreateWebsocketsizelimitPluginInWorkspace - Create a WebsocketSizeLimit plugin in a workspace
+// CreateWebsocketsizelimitPlugin - Create a WebsocketSizeLimit plugin in a workspace
 // Create a WebsocketSizeLimit plugin in a workspace
-func (s *Plugins) CreateWebsocketsizelimitPluginInWorkspace(ctx context.Context, request operations.CreateWebsocketsizelimitPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateWebsocketsizelimitPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateWebsocketsizelimitPlugin(ctx context.Context, request operations.CreateWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.CreateWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -97603,7 +97603,7 @@ func (s *Plugins) CreateWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-websocketsizelimit-plugin-in-workspace",
+		OperationID:      "create-websocketsizelimit-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -97738,7 +97738,7 @@ func (s *Plugins) CreateWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateWebsocketsizelimitPluginInWorkspaceResponse{
+	res := &operations.CreateWebsocketsizelimitPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -97799,9 +97799,9 @@ func (s *Plugins) CreateWebsocketsizelimitPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateWebsocketvalidatorPluginInWorkspace - Create a WebsocketValidator plugin in a workspace
+// CreateWebsocketvalidatorPlugin - Create a WebsocketValidator plugin in a workspace
 // Create a WebsocketValidator plugin in a workspace
-func (s *Plugins) CreateWebsocketvalidatorPluginInWorkspace(ctx context.Context, request operations.CreateWebsocketvalidatorPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateWebsocketvalidatorPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateWebsocketvalidatorPlugin(ctx context.Context, request operations.CreateWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.CreateWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -97830,7 +97830,7 @@ func (s *Plugins) CreateWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-websocketvalidator-plugin-in-workspace",
+		OperationID:      "create-websocketvalidator-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -97965,7 +97965,7 @@ func (s *Plugins) CreateWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.CreateWebsocketvalidatorPluginInWorkspaceResponse{
+	res := &operations.CreateWebsocketvalidatorPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -98026,9 +98026,9 @@ func (s *Plugins) CreateWebsocketvalidatorPluginInWorkspace(ctx context.Context,
 
 }
 
-// CreateXmlthreatprotectionPluginInWorkspace - Create a XmlThreatProtection plugin in a workspace
+// CreateXmlthreatprotectionPlugin - Create a XmlThreatProtection plugin in a workspace
 // Create a XmlThreatProtection plugin in a workspace
-func (s *Plugins) CreateXmlthreatprotectionPluginInWorkspace(ctx context.Context, request operations.CreateXmlthreatprotectionPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateXmlthreatprotectionPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateXmlthreatprotectionPlugin(ctx context.Context, request operations.CreateXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.CreateXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -98057,7 +98057,7 @@ func (s *Plugins) CreateXmlthreatprotectionPluginInWorkspace(ctx context.Context
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-xmlthreatprotection-plugin-in-workspace",
+		OperationID:      "create-xmlthreatprotection-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -98192,7 +98192,7 @@ func (s *Plugins) CreateXmlthreatprotectionPluginInWorkspace(ctx context.Context
 		}
 	}
 
-	res := &operations.CreateXmlthreatprotectionPluginInWorkspaceResponse{
+	res := &operations.CreateXmlthreatprotectionPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -98253,9 +98253,9 @@ func (s *Plugins) CreateXmlthreatprotectionPluginInWorkspace(ctx context.Context
 
 }
 
-// CreateZipkinPluginInWorkspace - Create a Zipkin plugin in a workspace
+// CreateZipkinPlugin - Create a Zipkin plugin in a workspace
 // Create a Zipkin plugin in a workspace
-func (s *Plugins) CreateZipkinPluginInWorkspace(ctx context.Context, request operations.CreateZipkinPluginInWorkspaceRequest, opts ...operations.Option) (*operations.CreateZipkinPluginInWorkspaceResponse, error) {
+func (s *Plugins) CreateZipkinPlugin(ctx context.Context, request operations.CreateZipkinPluginRequest, opts ...operations.Option) (*operations.CreateZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -98284,7 +98284,7 @@ func (s *Plugins) CreateZipkinPluginInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-zipkin-plugin-in-workspace",
+		OperationID:      "create-zipkin-plugin",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -98419,7 +98419,7 @@ func (s *Plugins) CreateZipkinPluginInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateZipkinPluginInWorkspaceResponse{
+	res := &operations.CreateZipkinPluginResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

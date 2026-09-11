@@ -676,13 +676,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Create(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -736,13 +736,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Read(ctx context.Cont
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -790,13 +790,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Update(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -850,13 +850,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Delete(ctx context.Co
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteGraphqlratelimitingadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

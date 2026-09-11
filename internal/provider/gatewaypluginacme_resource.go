@@ -763,13 +763,13 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAcmePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAcmePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAcmePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -823,13 +823,13 @@ func (r *GatewayPluginAcmeResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAcmePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAcmePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAcmePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -877,13 +877,13 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAcmePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAcmePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAcmePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -937,13 +937,13 @@ func (r *GatewayPluginAcmeResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAcmePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAcmePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAcmePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

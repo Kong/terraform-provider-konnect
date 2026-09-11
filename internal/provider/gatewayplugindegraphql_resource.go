@@ -299,13 +299,13 @@ func (r *GatewayPluginDegraphqlResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateDegraphqlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateDegraphqlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateDegraphqlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateDegraphqlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -359,13 +359,13 @@ func (r *GatewayPluginDegraphqlResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetDegraphqlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetDegraphqlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetDegraphqlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetDegraphqlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -413,13 +413,13 @@ func (r *GatewayPluginDegraphqlResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateDegraphqlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateDegraphqlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateDegraphqlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateDegraphqlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -473,13 +473,13 @@ func (r *GatewayPluginDegraphqlResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteDegraphqlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteDegraphqlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteDegraphqlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteDegraphqlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

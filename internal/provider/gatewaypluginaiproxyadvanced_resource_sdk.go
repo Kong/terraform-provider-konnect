@@ -563,7 +563,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 	return diags
 }
 
-func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAiproxyadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadvancedPluginRequest(ctx context.Context) (*operations.CreateAiproxyadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -579,7 +579,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadv
 		return nil, diags
 	}
 
-	out := operations.CreateAiproxyadvancedPluginInWorkspaceRequest{
+	out := operations.CreateAiproxyadvancedPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		Workspace:             workspace,
 		AiProxyAdvancedPlugin: *aiProxyAdvancedPlugin,
@@ -588,7 +588,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadv
 	return &out, diags
 }
 
-func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsDeleteAiproxyadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAiproxyadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsDeleteAiproxyadvancedPluginRequest(ctx context.Context) (*operations.DeleteAiproxyadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -600,7 +600,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsDeleteAiproxyadv
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAiproxyadvancedPluginInWorkspaceRequest{
+	out := operations.DeleteAiproxyadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -609,7 +609,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsDeleteAiproxyadv
 	return &out, diags
 }
 
-func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsGetAiproxyadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAiproxyadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsGetAiproxyadvancedPluginRequest(ctx context.Context) (*operations.GetAiproxyadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -621,7 +621,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsGetAiproxyadvanc
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAiproxyadvancedPluginInWorkspaceRequest{
+	out := operations.GetAiproxyadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -630,7 +630,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsGetAiproxyadvanc
 	return &out, diags
 }
 
-func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAiproxyadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadvancedPluginRequest(ctx context.Context) (*operations.UpdateAiproxyadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -649,7 +649,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadv
 		return nil, diags
 	}
 
-	out := operations.UpdateAiproxyadvancedPluginInWorkspaceRequest{
+	out := operations.UpdateAiproxyadvancedPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
 		Workspace:             workspace,

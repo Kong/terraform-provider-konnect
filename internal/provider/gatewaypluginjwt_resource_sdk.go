@@ -119,7 +119,7 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.C
 	return diags
 }
 
-func (r *GatewayPluginJwtResourceModel) ToOperationsCreateJwtPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateJwtPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtResourceModel) ToOperationsCreateJwtPluginRequest(ctx context.Context) (*operations.CreateJwtPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -135,7 +135,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsCreateJwtPluginInWorkspaceRe
 		return nil, diags
 	}
 
-	out := operations.CreateJwtPluginInWorkspaceRequest{
+	out := operations.CreateJwtPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		JwtPlugin:      *jwtPlugin,
@@ -144,7 +144,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsCreateJwtPluginInWorkspaceRe
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtResourceModel) ToOperationsDeleteJwtPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteJwtPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtResourceModel) ToOperationsDeleteJwtPluginRequest(ctx context.Context) (*operations.DeleteJwtPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -156,7 +156,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsDeleteJwtPluginInWorkspaceRe
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteJwtPluginInWorkspaceRequest{
+	out := operations.DeleteJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -165,7 +165,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsDeleteJwtPluginInWorkspaceRe
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtResourceModel) ToOperationsGetJwtPluginInWorkspaceRequest(ctx context.Context) (*operations.GetJwtPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtResourceModel) ToOperationsGetJwtPluginRequest(ctx context.Context) (*operations.GetJwtPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -177,7 +177,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsGetJwtPluginInWorkspaceReque
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetJwtPluginInWorkspaceRequest{
+	out := operations.GetJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -186,7 +186,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsGetJwtPluginInWorkspaceReque
 	return &out, diags
 }
 
-func (r *GatewayPluginJwtResourceModel) ToOperationsUpdateJwtPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateJwtPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJwtResourceModel) ToOperationsUpdateJwtPluginRequest(ctx context.Context) (*operations.UpdateJwtPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -205,7 +205,7 @@ func (r *GatewayPluginJwtResourceModel) ToOperationsUpdateJwtPluginInWorkspaceRe
 		return nil, diags
 	}
 
-	out := operations.UpdateJwtPluginInWorkspaceRequest{
+	out := operations.UpdateJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

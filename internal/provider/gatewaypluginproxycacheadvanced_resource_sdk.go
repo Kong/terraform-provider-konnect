@@ -226,7 +226,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 	return diags
 }
 
-func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateProxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxycacheadvancedPluginRequest(ctx context.Context) (*operations.CreateProxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -242,7 +242,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxyca
 		return nil, diags
 	}
 
-	out := operations.CreateProxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.CreateProxycacheadvancedPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,
 		ProxyCacheAdvancedPlugin: *proxyCacheAdvancedPlugin,
@@ -251,7 +251,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxyca
 	return &out, diags
 }
 
-func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsDeleteProxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteProxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsDeleteProxycacheadvancedPluginRequest(ctx context.Context) (*operations.DeleteProxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -263,7 +263,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsDeleteProxyca
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteProxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.DeleteProxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -272,7 +272,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsDeleteProxyca
 	return &out, diags
 }
 
-func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsGetProxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetProxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsGetProxycacheadvancedPluginRequest(ctx context.Context) (*operations.GetProxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -284,7 +284,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsGetProxycache
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetProxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.GetProxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -293,7 +293,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsGetProxycache
 	return &out, diags
 }
 
-func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateProxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxycacheadvancedPluginRequest(ctx context.Context) (*operations.UpdateProxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -312,7 +312,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxyca
 		return nil, diags
 	}
 
-	out := operations.UpdateProxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.UpdateProxycacheadvancedPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,

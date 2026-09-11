@@ -455,13 +455,13 @@ func (r *GatewayPluginAiCustomGuardrailResource) Create(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAicustomguardrailPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAicustomguardrailPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAicustomguardrailPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAicustomguardrailPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -515,13 +515,13 @@ func (r *GatewayPluginAiCustomGuardrailResource) Read(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAicustomguardrailPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAicustomguardrailPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAicustomguardrailPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAicustomguardrailPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -569,13 +569,13 @@ func (r *GatewayPluginAiCustomGuardrailResource) Update(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAicustomguardrailPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAicustomguardrailPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAicustomguardrailPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAicustomguardrailPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -629,13 +629,13 @@ func (r *GatewayPluginAiCustomGuardrailResource) Delete(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAicustomguardrailPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAicustomguardrailPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAicustomguardrailPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAicustomguardrailPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -372,13 +372,13 @@ func (r *GatewayPluginMockingResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMockingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateMockingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateMockingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateMockingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -432,13 +432,13 @@ func (r *GatewayPluginMockingResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetMockingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetMockingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetMockingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetMockingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -486,13 +486,13 @@ func (r *GatewayPluginMockingResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMockingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateMockingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateMockingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateMockingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -546,13 +546,13 @@ func (r *GatewayPluginMockingResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteMockingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteMockingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteMockingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteMockingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

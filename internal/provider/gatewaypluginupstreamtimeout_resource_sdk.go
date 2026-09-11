@@ -102,7 +102,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) RefreshFromSharedUpstreamTim
 	return diags
 }
 
-func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsCreateUpstreamtimeoutPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateUpstreamtimeoutPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsCreateUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.CreateUpstreamtimeoutPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -118,7 +118,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsCreateUpstreamti
 		return nil, diags
 	}
 
-	out := operations.CreateUpstreamtimeoutPluginInWorkspaceRequest{
+	out := operations.CreateUpstreamtimeoutPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		Workspace:             workspace,
 		UpstreamTimeoutPlugin: *upstreamTimeoutPlugin,
@@ -127,7 +127,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsCreateUpstreamti
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsDeleteUpstreamtimeoutPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteUpstreamtimeoutPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsDeleteUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.DeleteUpstreamtimeoutPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -139,7 +139,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsDeleteUpstreamti
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteUpstreamtimeoutPluginInWorkspaceRequest{
+	out := operations.DeleteUpstreamtimeoutPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -148,7 +148,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsDeleteUpstreamti
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsGetUpstreamtimeoutPluginInWorkspaceRequest(ctx context.Context) (*operations.GetUpstreamtimeoutPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsGetUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.GetUpstreamtimeoutPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -160,7 +160,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsGetUpstreamtimeo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetUpstreamtimeoutPluginInWorkspaceRequest{
+	out := operations.GetUpstreamtimeoutPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -169,7 +169,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsGetUpstreamtimeo
 	return &out, diags
 }
 
-func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsUpdateUpstreamtimeoutPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateUpstreamtimeoutPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsUpdateUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.UpdateUpstreamtimeoutPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -188,7 +188,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsUpdateUpstreamti
 		return nil, diags
 	}
 
-	out := operations.UpdateUpstreamtimeoutPluginInWorkspaceRequest{
+	out := operations.UpdateUpstreamtimeoutPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
 		Workspace:             workspace,

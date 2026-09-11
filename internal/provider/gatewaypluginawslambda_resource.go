@@ -506,13 +506,13 @@ func (r *GatewayPluginAwsLambdaResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAwslambdaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAwslambdaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAwslambdaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAwslambdaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -566,13 +566,13 @@ func (r *GatewayPluginAwsLambdaResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAwslambdaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAwslambdaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAwslambdaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAwslambdaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -620,13 +620,13 @@ func (r *GatewayPluginAwsLambdaResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAwslambdaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAwslambdaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAwslambdaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAwslambdaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -680,13 +680,13 @@ func (r *GatewayPluginAwsLambdaResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAwslambdaPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAwslambdaPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAwslambdaPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAwslambdaPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

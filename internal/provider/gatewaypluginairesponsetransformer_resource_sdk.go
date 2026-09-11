@@ -281,7 +281,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 	return diags
 }
 
-func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsCreateAiresponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAiresponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsCreateAiresponsetransformerPluginRequest(ctx context.Context) (*operations.CreateAiresponsetransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -297,7 +297,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsCreateAire
 		return nil, diags
 	}
 
-	out := operations.CreateAiresponsetransformerPluginInWorkspaceRequest{
+	out := operations.CreateAiresponsetransformerPluginRequest{
 		ControlPlaneID:              controlPlaneID,
 		Workspace:                   workspace,
 		AiResponseTransformerPlugin: *aiResponseTransformerPlugin,
@@ -306,7 +306,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsCreateAire
 	return &out, diags
 }
 
-func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsDeleteAiresponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAiresponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsDeleteAiresponsetransformerPluginRequest(ctx context.Context) (*operations.DeleteAiresponsetransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -318,7 +318,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsDeleteAire
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAiresponsetransformerPluginInWorkspaceRequest{
+	out := operations.DeleteAiresponsetransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -327,7 +327,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsDeleteAire
 	return &out, diags
 }
 
-func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsGetAiresponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAiresponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsGetAiresponsetransformerPluginRequest(ctx context.Context) (*operations.GetAiresponsetransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -339,7 +339,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsGetAirespo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAiresponsetransformerPluginInWorkspaceRequest{
+	out := operations.GetAiresponsetransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -348,7 +348,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsGetAirespo
 	return &out, diags
 }
 
-func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsUpdateAiresponsetransformerPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAiresponsetransformerPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsUpdateAiresponsetransformerPluginRequest(ctx context.Context) (*operations.UpdateAiresponsetransformerPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -367,7 +367,7 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToOperationsUpdateAire
 		return nil, diags
 	}
 
-	out := operations.UpdateAiresponsetransformerPluginInWorkspaceRequest{
+	out := operations.UpdateAiresponsetransformerPluginRequest{
 		PluginID:                    pluginID,
 		ControlPlaneID:              controlPlaneID,
 		Workspace:                   workspace,

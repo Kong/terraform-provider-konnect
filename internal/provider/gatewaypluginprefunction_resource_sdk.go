@@ -133,7 +133,7 @@ func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlug
 	return diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreatePrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPluginRequest(ctx context.Context) (*operations.CreatePrefunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -149,7 +149,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPlu
 		return nil, diags
 	}
 
-	out := operations.CreatePrefunctionPluginInWorkspaceRequest{
+	out := operations.CreatePrefunctionPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,
 		PreFunctionPlugin: *preFunctionPlugin,
@@ -158,7 +158,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeletePrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPluginRequest(ctx context.Context) (*operations.DeletePrefunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -170,7 +170,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPlu
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeletePrefunctionPluginInWorkspaceRequest{
+	out := operations.DeletePrefunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -179,7 +179,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPlu
 	return &out, diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetPrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPluginRequest(ctx context.Context) (*operations.GetPrefunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -191,7 +191,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPlugin
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetPrefunctionPluginInWorkspaceRequest{
+	out := operations.GetPrefunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -200,7 +200,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPlugin
 	return &out, diags
 }
 
-func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdatePrefunctionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPluginRequest(ctx context.Context) (*operations.UpdatePrefunctionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -219,7 +219,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPlu
 		return nil, diags
 	}
 
-	out := operations.UpdatePrefunctionPluginInWorkspaceRequest{
+	out := operations.UpdatePrefunctionPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
 		Workspace:         workspace,

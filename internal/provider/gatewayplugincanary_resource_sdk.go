@@ -116,7 +116,7 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx con
 	return diags
 }
 
-func (r *GatewayPluginCanaryResourceModel) ToOperationsCreateCanaryPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateCanaryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCanaryResourceModel) ToOperationsCreateCanaryPluginRequest(ctx context.Context) (*operations.CreateCanaryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -132,7 +132,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsCreateCanaryPluginInWorks
 		return nil, diags
 	}
 
-	out := operations.CreateCanaryPluginInWorkspaceRequest{
+	out := operations.CreateCanaryPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		CanaryPlugin:   *canaryPlugin,
@@ -141,7 +141,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsCreateCanaryPluginInWorks
 	return &out, diags
 }
 
-func (r *GatewayPluginCanaryResourceModel) ToOperationsDeleteCanaryPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteCanaryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCanaryResourceModel) ToOperationsDeleteCanaryPluginRequest(ctx context.Context) (*operations.DeleteCanaryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -153,7 +153,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsDeleteCanaryPluginInWorks
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteCanaryPluginInWorkspaceRequest{
+	out := operations.DeleteCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -162,7 +162,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsDeleteCanaryPluginInWorks
 	return &out, diags
 }
 
-func (r *GatewayPluginCanaryResourceModel) ToOperationsGetCanaryPluginInWorkspaceRequest(ctx context.Context) (*operations.GetCanaryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCanaryResourceModel) ToOperationsGetCanaryPluginRequest(ctx context.Context) (*operations.GetCanaryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -174,7 +174,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsGetCanaryPluginInWorkspac
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetCanaryPluginInWorkspaceRequest{
+	out := operations.GetCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -183,7 +183,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsGetCanaryPluginInWorkspac
 	return &out, diags
 }
 
-func (r *GatewayPluginCanaryResourceModel) ToOperationsUpdateCanaryPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateCanaryPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginCanaryResourceModel) ToOperationsUpdateCanaryPluginRequest(ctx context.Context) (*operations.UpdateCanaryPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -202,7 +202,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsUpdateCanaryPluginInWorks
 		return nil, diags
 	}
 
-	out := operations.UpdateCanaryPluginInWorkspaceRequest{
+	out := operations.UpdateCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

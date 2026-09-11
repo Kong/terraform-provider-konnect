@@ -37,9 +37,9 @@ func newServices(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hoo
 	}
 }
 
-// CreateServiceInWorkspace - Create a new Service in a workspace
+// CreateService - Create a new Service in a workspace
 // Create a new Service in a workspace
-func (s *Services) CreateServiceInWorkspace(ctx context.Context, request operations.CreateServiceInWorkspaceRequest, opts ...operations.Option) (*operations.CreateServiceInWorkspaceResponse, error) {
+func (s *Services) CreateService(ctx context.Context, request operations.CreateServiceRequest, opts ...operations.Option) (*operations.CreateServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -68,7 +68,7 @@ func (s *Services) CreateServiceInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-service-in-workspace",
+		OperationID:      "create-service",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -203,7 +203,7 @@ func (s *Services) CreateServiceInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.CreateServiceInWorkspaceResponse{
+	res := &operations.CreateServiceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -264,9 +264,9 @@ func (s *Services) CreateServiceInWorkspace(ctx context.Context, request operati
 
 }
 
-// DeleteServiceInWorkspace - Delete a Service in a workspace
+// DeleteService - Delete a Service in a workspace
 // Delete a Service in a workspace
-func (s *Services) DeleteServiceInWorkspace(ctx context.Context, request operations.DeleteServiceInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteServiceInWorkspaceResponse, error) {
+func (s *Services) DeleteService(ctx context.Context, request operations.DeleteServiceRequest, opts ...operations.Option) (*operations.DeleteServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -295,7 +295,7 @@ func (s *Services) DeleteServiceInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-service-in-workspace",
+		OperationID:      "delete-service",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -423,7 +423,7 @@ func (s *Services) DeleteServiceInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteServiceInWorkspaceResponse{
+	res := &operations.DeleteServiceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -467,9 +467,9 @@ func (s *Services) DeleteServiceInWorkspace(ctx context.Context, request operati
 
 }
 
-// GetServiceInWorkspace - Get a Service in a workspace
+// GetService - Get a Service in a workspace
 // Get a Service using ID or name in a workspace.
-func (s *Services) GetServiceInWorkspace(ctx context.Context, request operations.GetServiceInWorkspaceRequest, opts ...operations.Option) (*operations.GetServiceInWorkspaceResponse, error) {
+func (s *Services) GetService(ctx context.Context, request operations.GetServiceRequest, opts ...operations.Option) (*operations.GetServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -498,7 +498,7 @@ func (s *Services) GetServiceInWorkspace(ctx context.Context, request operations
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-service-in-workspace",
+		OperationID:      "get-service",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -626,7 +626,7 @@ func (s *Services) GetServiceInWorkspace(ctx context.Context, request operations
 		}
 	}
 
-	res := &operations.GetServiceInWorkspaceResponse{
+	res := &operations.GetServiceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -689,9 +689,9 @@ func (s *Services) GetServiceInWorkspace(ctx context.Context, request operations
 
 }
 
-// UpsertServiceInWorkspace - Upsert a Service in a workspace
+// UpsertService - Upsert a Service in a workspace
 // Create or Update Service using ID or name in a workspace.
-func (s *Services) UpsertServiceInWorkspace(ctx context.Context, request operations.UpsertServiceInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertServiceInWorkspaceResponse, error) {
+func (s *Services) UpsertService(ctx context.Context, request operations.UpsertServiceRequest, opts ...operations.Option) (*operations.UpsertServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -720,7 +720,7 @@ func (s *Services) UpsertServiceInWorkspace(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-service-in-workspace",
+		OperationID:      "upsert-service",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -855,7 +855,7 @@ func (s *Services) UpsertServiceInWorkspace(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.UpsertServiceInWorkspaceResponse{
+	res := &operations.UpsertServiceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

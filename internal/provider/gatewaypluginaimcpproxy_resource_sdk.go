@@ -367,7 +367,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 	return diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPluginRequest(ctx context.Context) (*operations.CreateAimcpproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -383,7 +383,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.CreateAimcpproxyPluginInWorkspaceRequest{
+	out := operations.CreateAimcpproxyPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,
 		AiMcpProxyPlugin: *aiMcpProxyPlugin,
@@ -392,7 +392,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPluginRequest(ctx context.Context) (*operations.DeleteAimcpproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -404,7 +404,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPlugi
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAimcpproxyPluginInWorkspaceRequest{
+	out := operations.DeleteAimcpproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -413,7 +413,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginRequest(ctx context.Context) (*operations.GetAimcpproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -425,7 +425,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginIn
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAimcpproxyPluginInWorkspaceRequest{
+	out := operations.GetAimcpproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -434,7 +434,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginIn
 	return &out, diags
 }
 
-func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAimcpproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPluginRequest(ctx context.Context) (*operations.UpdateAimcpproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -453,7 +453,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdateAimcpproxyPluginInWorkspaceRequest{
+	out := operations.UpdateAimcpproxyPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,

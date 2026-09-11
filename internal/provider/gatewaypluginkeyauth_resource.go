@@ -416,13 +416,13 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKeyauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateKeyauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateKeyauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -476,13 +476,13 @@ func (r *GatewayPluginKeyAuthResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKeyauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetKeyauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetKeyauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -530,13 +530,13 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateKeyauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateKeyauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateKeyauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -590,13 +590,13 @@ func (r *GatewayPluginKeyAuthResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKeyauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteKeyauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteKeyauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

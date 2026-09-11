@@ -374,13 +374,13 @@ func (r *GatewayPluginInjectionProtectionResource) Create(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateInjectionprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateInjectionprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateInjectionprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -434,13 +434,13 @@ func (r *GatewayPluginInjectionProtectionResource) Read(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetInjectionprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetInjectionprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetInjectionprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -488,13 +488,13 @@ func (r *GatewayPluginInjectionProtectionResource) Update(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateInjectionprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateInjectionprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateInjectionprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -548,13 +548,13 @@ func (r *GatewayPluginInjectionProtectionResource) Delete(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteInjectionprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteInjectionprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteInjectionprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

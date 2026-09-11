@@ -156,13 +156,13 @@ func (r *GatewayACLResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateACLWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateACLWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ACLs.CreateACLWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.ACLs.CreateACLWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -216,13 +216,13 @@ func (r *GatewayACLResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetACLWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetACLWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ACLs.GetACLWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.ACLs.GetACLWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -294,13 +294,13 @@ func (r *GatewayACLResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteACLWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteACLWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ACLs.DeleteACLWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.ACLs.DeleteACLWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

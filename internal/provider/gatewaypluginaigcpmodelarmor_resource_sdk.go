@@ -127,7 +127,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) RefreshFromSharedAiGcpModelA
 	return diags
 }
 
-func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsCreateAigcpmodelarmorPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAigcpmodelarmorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsCreateAigcpmodelarmorPluginRequest(ctx context.Context) (*operations.CreateAigcpmodelarmorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -143,7 +143,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsCreateAigcpmodel
 		return nil, diags
 	}
 
-	out := operations.CreateAigcpmodelarmorPluginInWorkspaceRequest{
+	out := operations.CreateAigcpmodelarmorPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		Workspace:             workspace,
 		AiGcpModelArmorPlugin: *aiGcpModelArmorPlugin,
@@ -152,7 +152,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsCreateAigcpmodel
 	return &out, diags
 }
 
-func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsDeleteAigcpmodelarmorPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAigcpmodelarmorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsDeleteAigcpmodelarmorPluginRequest(ctx context.Context) (*operations.DeleteAigcpmodelarmorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -164,7 +164,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsDeleteAigcpmodel
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAigcpmodelarmorPluginInWorkspaceRequest{
+	out := operations.DeleteAigcpmodelarmorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -173,7 +173,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsDeleteAigcpmodel
 	return &out, diags
 }
 
-func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsGetAigcpmodelarmorPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAigcpmodelarmorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsGetAigcpmodelarmorPluginRequest(ctx context.Context) (*operations.GetAigcpmodelarmorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -185,7 +185,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsGetAigcpmodelarm
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAigcpmodelarmorPluginInWorkspaceRequest{
+	out := operations.GetAigcpmodelarmorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -194,7 +194,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsGetAigcpmodelarm
 	return &out, diags
 }
 
-func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsUpdateAigcpmodelarmorPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAigcpmodelarmorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsUpdateAigcpmodelarmorPluginRequest(ctx context.Context) (*operations.UpdateAigcpmodelarmorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -213,7 +213,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsUpdateAigcpmodel
 		return nil, diags
 	}
 
-	out := operations.UpdateAigcpmodelarmorPluginInWorkspaceRequest{
+	out := operations.UpdateAigcpmodelarmorPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
 		Workspace:             workspace,

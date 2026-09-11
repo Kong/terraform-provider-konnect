@@ -137,7 +137,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) RefreshFromSharedWebsocke
 	return diags
 }
 
-func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsCreateWebsocketvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateWebsocketvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsCreateWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.CreateWebsocketvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -153,7 +153,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsCreateWebsock
 		return nil, diags
 	}
 
-	out := operations.CreateWebsocketvalidatorPluginInWorkspaceRequest{
+	out := operations.CreateWebsocketvalidatorPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,
 		WebsocketValidatorPlugin: *websocketValidatorPlugin,
@@ -162,7 +162,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsCreateWebsock
 	return &out, diags
 }
 
-func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsDeleteWebsocketvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteWebsocketvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsDeleteWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.DeleteWebsocketvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -174,7 +174,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsDeleteWebsock
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteWebsocketvalidatorPluginInWorkspaceRequest{
+	out := operations.DeleteWebsocketvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -183,7 +183,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsDeleteWebsock
 	return &out, diags
 }
 
-func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsGetWebsocketvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.GetWebsocketvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsGetWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.GetWebsocketvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -195,7 +195,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsGetWebsocketv
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetWebsocketvalidatorPluginInWorkspaceRequest{
+	out := operations.GetWebsocketvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -204,7 +204,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsGetWebsocketv
 	return &out, diags
 }
 
-func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsUpdateWebsocketvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateWebsocketvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsUpdateWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.UpdateWebsocketvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -223,7 +223,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsUpdateWebsock
 		return nil, diags
 	}
 
-	out := operations.UpdateWebsocketvalidatorPluginInWorkspaceRequest{
+	out := operations.UpdateWebsocketvalidatorPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,

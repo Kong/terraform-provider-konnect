@@ -309,13 +309,13 @@ func (r *GatewayPluginAppDynamicsResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAppdynamicsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAppdynamicsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -369,13 +369,13 @@ func (r *GatewayPluginAppDynamicsResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAppdynamicsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAppdynamicsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -423,13 +423,13 @@ func (r *GatewayPluginAppDynamicsResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAppdynamicsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAppdynamicsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -483,13 +483,13 @@ func (r *GatewayPluginAppDynamicsResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAppdynamicsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAppdynamicsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

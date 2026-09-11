@@ -328,13 +328,13 @@ func (r *GatewayPluginUDPLogResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateUdplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateUdplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateUdplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -388,13 +388,13 @@ func (r *GatewayPluginUDPLogResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetUdplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetUdplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetUdplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -442,13 +442,13 @@ func (r *GatewayPluginUDPLogResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateUdplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateUdplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateUdplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -502,13 +502,13 @@ func (r *GatewayPluginUDPLogResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteUdplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteUdplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteUdplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

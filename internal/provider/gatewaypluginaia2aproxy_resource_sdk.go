@@ -102,7 +102,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) RefreshFromSharedAiA2aProxyPlugin
 	return diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPluginRequest(ctx context.Context) (*operations.CreateAia2aproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -118,7 +118,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.CreateAia2aproxyPluginInWorkspaceRequest{
+	out := operations.CreateAia2aproxyPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,
 		AiA2aProxyPlugin: *aiA2aProxyPlugin,
@@ -127,7 +127,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPluginRequest(ctx context.Context) (*operations.DeleteAia2aproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -139,7 +139,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPlugi
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAia2aproxyPluginInWorkspaceRequest{
+	out := operations.DeleteAia2aproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -148,7 +148,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsDeleteAia2aproxyPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginRequest(ctx context.Context) (*operations.GetAia2aproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -160,7 +160,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginIn
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAia2aproxyPluginInWorkspaceRequest{
+	out := operations.GetAia2aproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -169,7 +169,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsGetAia2aproxyPluginIn
 	return &out, diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAia2aproxyPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPluginRequest(ctx context.Context) (*operations.UpdateAia2aproxyPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -188,7 +188,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPlugi
 		return nil, diags
 	}
 
-	out := operations.UpdateAia2aproxyPluginInWorkspaceRequest{
+	out := operations.UpdateAia2aproxyPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
 		Workspace:        workspace,

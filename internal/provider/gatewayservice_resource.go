@@ -280,13 +280,13 @@ func (r *GatewayServiceResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateServiceInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.CreateServiceInWorkspace(ctx, *request)
+	res, err := r.client.Services.CreateService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -340,13 +340,13 @@ func (r *GatewayServiceResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetServiceInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.GetServiceInWorkspace(ctx, *request)
+	res, err := r.client.Services.GetService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -394,13 +394,13 @@ func (r *GatewayServiceResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertServiceInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.UpsertServiceInWorkspace(ctx, *request)
+	res, err := r.client.Services.UpsertService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -454,13 +454,13 @@ func (r *GatewayServiceResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteServiceInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Services.DeleteServiceInWorkspace(ctx, *request)
+	res, err := r.client.Services.DeleteService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

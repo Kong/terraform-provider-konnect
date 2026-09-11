@@ -31,7 +31,7 @@ func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(ctx context.Con
 	return diags
 }
 
-func (r *GatewayHMACAuthResourceModel) ToOperationsCreateHmacAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.CreateHmacAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayHMACAuthResourceModel) ToOperationsCreateHmacAuthWithConsumerRequest(ctx context.Context) (*operations.CreateHmacAuthWithConsumerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -50,7 +50,7 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsCreateHmacAuthWithConsumerInW
 		return nil, diags
 	}
 
-	out := operations.CreateHmacAuthWithConsumerInWorkspaceRequest{
+	out := operations.CreateHmacAuthWithConsumerRequest{
 		ControlPlaneID:         controlPlaneID,
 		ConsumerID:             consumerID,
 		Workspace:              workspace,
@@ -60,7 +60,7 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsCreateHmacAuthWithConsumerInW
 	return &out, diags
 }
 
-func (r *GatewayHMACAuthResourceModel) ToOperationsDeleteHmacAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.DeleteHmacAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayHMACAuthResourceModel) ToOperationsDeleteHmacAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteHmacAuthWithConsumerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -75,7 +75,7 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsDeleteHmacAuthWithConsumerInW
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteHmacAuthWithConsumerInWorkspaceRequest{
+	out := operations.DeleteHmacAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		HMACAuthID:     hmacAuthID,
@@ -85,7 +85,7 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsDeleteHmacAuthWithConsumerInW
 	return &out, diags
 }
 
-func (r *GatewayHMACAuthResourceModel) ToOperationsGetHmacAuthWithConsumerInWorkspaceRequest(ctx context.Context) (*operations.GetHmacAuthWithConsumerInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayHMACAuthResourceModel) ToOperationsGetHmacAuthWithConsumerRequest(ctx context.Context) (*operations.GetHmacAuthWithConsumerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -100,7 +100,7 @@ func (r *GatewayHMACAuthResourceModel) ToOperationsGetHmacAuthWithConsumerInWork
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetHmacAuthWithConsumerInWorkspaceRequest{
+	out := operations.GetHmacAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		HMACAuthID:     hmacAuthID,

@@ -105,7 +105,7 @@ func (r *GatewayPluginVaultAuthResourceModel) RefreshFromSharedVaultAuthPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginRequest(ctx context.Context) (*operations.CreateVaultauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -121,7 +121,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginI
 		return nil, diags
 	}
 
-	out := operations.CreateVaultauthPluginInWorkspaceRequest{
+	out := operations.CreateVaultauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
 		VaultAuthPlugin: *vaultAuthPlugin,
@@ -130,7 +130,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginRequest(ctx context.Context) (*operations.DeleteVaultauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -142,7 +142,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginI
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteVaultauthPluginInWorkspaceRequest{
+	out := operations.DeleteVaultauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -151,7 +151,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginRequest(ctx context.Context) (*operations.GetVaultauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -163,7 +163,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginInWo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetVaultauthPluginInWorkspaceRequest{
+	out := operations.GetVaultauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -172,7 +172,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginInWo
 	return &out, diags
 }
 
-func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateVaultauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginRequest(ctx context.Context) (*operations.UpdateVaultauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -191,7 +191,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginI
 		return nil, diags
 	}
 
-	out := operations.UpdateVaultauthPluginInWorkspaceRequest{
+	out := operations.UpdateVaultauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,

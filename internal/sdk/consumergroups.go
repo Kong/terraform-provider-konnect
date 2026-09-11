@@ -32,9 +32,9 @@ func newConsumerGroups(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hook
 	}
 }
 
-// CreateConsumerGroupInWorkspace - Create a new Consumer Group in a workspace
+// CreateConsumerGroup - Create a new Consumer Group in a workspace
 // Create a new Consumer Group in a workspace
-func (s *ConsumerGroups) CreateConsumerGroupInWorkspace(ctx context.Context, request operations.CreateConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.CreateConsumerGroupInWorkspaceResponse, error) {
+func (s *ConsumerGroups) CreateConsumerGroup(ctx context.Context, request operations.CreateConsumerGroupRequest, opts ...operations.Option) (*operations.CreateConsumerGroupResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -63,7 +63,7 @@ func (s *ConsumerGroups) CreateConsumerGroupInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-consumer_group-in-workspace",
+		OperationID:      "create-consumer_group",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -198,7 +198,7 @@ func (s *ConsumerGroups) CreateConsumerGroupInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.CreateConsumerGroupInWorkspaceResponse{
+	res := &operations.CreateConsumerGroupResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -259,9 +259,9 @@ func (s *ConsumerGroups) CreateConsumerGroupInWorkspace(ctx context.Context, req
 
 }
 
-// DeleteConsumerGroupInWorkspace - Delete a Consumer Group in a workspace
+// DeleteConsumerGroup - Delete a Consumer Group in a workspace
 // Delete a Consumer Group in a workspace
-func (s *ConsumerGroups) DeleteConsumerGroupInWorkspace(ctx context.Context, request operations.DeleteConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteConsumerGroupInWorkspaceResponse, error) {
+func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operations.DeleteConsumerGroupRequest, opts ...operations.Option) (*operations.DeleteConsumerGroupResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -290,7 +290,7 @@ func (s *ConsumerGroups) DeleteConsumerGroupInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-consumer_group-in-workspace",
+		OperationID:      "delete-consumer_group",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -418,7 +418,7 @@ func (s *ConsumerGroups) DeleteConsumerGroupInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.DeleteConsumerGroupInWorkspaceResponse{
+	res := &operations.DeleteConsumerGroupResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -462,9 +462,9 @@ func (s *ConsumerGroups) DeleteConsumerGroupInWorkspace(ctx context.Context, req
 
 }
 
-// GetConsumerGroupInWorkspace - Get a Consumer Group in a workspace
+// GetConsumerGroup - Get a Consumer Group in a workspace
 // Get a Consumer Group using ID in a workspace.
-func (s *ConsumerGroups) GetConsumerGroupInWorkspace(ctx context.Context, request operations.GetConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.GetConsumerGroupInWorkspaceResponse, error) {
+func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operations.GetConsumerGroupRequest, opts ...operations.Option) (*operations.GetConsumerGroupResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -493,7 +493,7 @@ func (s *ConsumerGroups) GetConsumerGroupInWorkspace(ctx context.Context, reques
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-consumer_group-in-workspace",
+		OperationID:      "get-consumer_group",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -625,7 +625,7 @@ func (s *ConsumerGroups) GetConsumerGroupInWorkspace(ctx context.Context, reques
 		}
 	}
 
-	res := &operations.GetConsumerGroupInWorkspaceResponse{
+	res := &operations.GetConsumerGroupResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -688,9 +688,9 @@ func (s *ConsumerGroups) GetConsumerGroupInWorkspace(ctx context.Context, reques
 
 }
 
-// UpsertConsumerGroupInWorkspace - Upsert a Consumer Group in a workspace
+// UpsertConsumerGroup - Upsert a Consumer Group in a workspace
 // Create or Update Consumer Group using ID in a workspace.
-func (s *ConsumerGroups) UpsertConsumerGroupInWorkspace(ctx context.Context, request operations.UpsertConsumerGroupInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertConsumerGroupInWorkspaceResponse, error) {
+func (s *ConsumerGroups) UpsertConsumerGroup(ctx context.Context, request operations.UpsertConsumerGroupRequest, opts ...operations.Option) (*operations.UpsertConsumerGroupResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -719,7 +719,7 @@ func (s *ConsumerGroups) UpsertConsumerGroupInWorkspace(ctx context.Context, req
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-consumer_group-in-workspace",
+		OperationID:      "upsert-consumer_group",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -854,7 +854,7 @@ func (s *ConsumerGroups) UpsertConsumerGroupInWorkspace(ctx context.Context, req
 		}
 	}
 
-	res := &operations.UpsertConsumerGroupInWorkspaceResponse{
+	res := &operations.UpsertConsumerGroupResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -915,9 +915,9 @@ func (s *ConsumerGroups) UpsertConsumerGroupInWorkspace(ctx context.Context, req
 
 }
 
-// AddConsumerToGroupInWorkspace - Add consumer to consumer group in a workspace
+// AddConsumerToGroup - Add consumer to consumer group in a workspace
 // Add a consumer to a consumer group in a workspace
-func (s *ConsumerGroups) AddConsumerToGroupInWorkspace(ctx context.Context, request operations.AddConsumerToGroupInWorkspaceRequest, opts ...operations.Option) (*operations.AddConsumerToGroupInWorkspaceResponse, error) {
+func (s *ConsumerGroups) AddConsumerToGroup(ctx context.Context, request operations.AddConsumerToGroupRequest, opts ...operations.Option) (*operations.AddConsumerToGroupResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -946,7 +946,7 @@ func (s *ConsumerGroups) AddConsumerToGroupInWorkspace(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "add-consumer-to-group-in-workspace",
+		OperationID:      "add-consumer-to-group",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1081,7 +1081,7 @@ func (s *ConsumerGroups) AddConsumerToGroupInWorkspace(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.AddConsumerToGroupInWorkspaceResponse{
+	res := &operations.AddConsumerToGroupResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1096,7 +1096,7 @@ func (s *ConsumerGroups) AddConsumerToGroupInWorkspace(ctx context.Context, requ
 				return nil, err
 			}
 
-			var out operations.AddConsumerToGroupInWorkspaceResponseBody
+			var out operations.AddConsumerToGroupResponseBody
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
@@ -1121,9 +1121,9 @@ func (s *ConsumerGroups) AddConsumerToGroupInWorkspace(ctx context.Context, requ
 
 }
 
-// RemoveConsumerFromGroupInWorkspace - Remove consumer from consumer group in a workspace
+// RemoveConsumerFromGroup - Remove consumer from consumer group in a workspace
 // Remove a consumer from a consumer group in a workspace
-func (s *ConsumerGroups) RemoveConsumerFromGroupInWorkspace(ctx context.Context, request operations.RemoveConsumerFromGroupInWorkspaceRequest, opts ...operations.Option) (*operations.RemoveConsumerFromGroupInWorkspaceResponse, error) {
+func (s *ConsumerGroups) RemoveConsumerFromGroup(ctx context.Context, request operations.RemoveConsumerFromGroupRequest, opts ...operations.Option) (*operations.RemoveConsumerFromGroupResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1152,7 +1152,7 @@ func (s *ConsumerGroups) RemoveConsumerFromGroupInWorkspace(ctx context.Context,
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "remove-consumer-from-group-in-workspace",
+		OperationID:      "remove-consumer-from-group",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1280,7 +1280,7 @@ func (s *ConsumerGroups) RemoveConsumerFromGroupInWorkspace(ctx context.Context,
 		}
 	}
 
-	res := &operations.RemoveConsumerFromGroupInWorkspaceResponse{
+	res := &operations.RemoveConsumerFromGroupResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

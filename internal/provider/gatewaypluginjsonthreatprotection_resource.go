@@ -392,13 +392,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Create(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJsonthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJsonthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateJsonthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -452,13 +452,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Read(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJsonthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJsonthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetJsonthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -506,13 +506,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Update(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateJsonthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateJsonthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateJsonthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -566,13 +566,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Delete(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJsonthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJsonthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteJsonthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

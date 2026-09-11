@@ -1189,13 +1189,13 @@ func (r *GatewayPluginKafkaConsumeResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKafkaconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKafkaconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateKafkaconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1249,13 +1249,13 @@ func (r *GatewayPluginKafkaConsumeResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKafkaconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKafkaconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetKafkaconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1303,13 +1303,13 @@ func (r *GatewayPluginKafkaConsumeResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateKafkaconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateKafkaconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateKafkaconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1363,13 +1363,13 @@ func (r *GatewayPluginKafkaConsumeResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKafkaconsumePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKafkaconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteKafkaconsumePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

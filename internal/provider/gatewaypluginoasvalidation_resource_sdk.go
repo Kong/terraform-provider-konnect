@@ -113,7 +113,7 @@ func (r *GatewayPluginOasValidationResourceModel) RefreshFromSharedOasValidation
 	return diags
 }
 
-func (r *GatewayPluginOasValidationResourceModel) ToOperationsCreateOasvalidationPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateOasvalidationPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsCreateOasvalidationPluginRequest(ctx context.Context) (*operations.CreateOasvalidationPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -129,7 +129,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsCreateOasvalidatio
 		return nil, diags
 	}
 
-	out := operations.CreateOasvalidationPluginInWorkspaceRequest{
+	out := operations.CreateOasvalidationPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		OasValidationPlugin: *oasValidationPlugin,
@@ -138,7 +138,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsCreateOasvalidatio
 	return &out, diags
 }
 
-func (r *GatewayPluginOasValidationResourceModel) ToOperationsDeleteOasvalidationPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteOasvalidationPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsDeleteOasvalidationPluginRequest(ctx context.Context) (*operations.DeleteOasvalidationPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -150,7 +150,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsDeleteOasvalidatio
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteOasvalidationPluginInWorkspaceRequest{
+	out := operations.DeleteOasvalidationPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -159,7 +159,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsDeleteOasvalidatio
 	return &out, diags
 }
 
-func (r *GatewayPluginOasValidationResourceModel) ToOperationsGetOasvalidationPluginInWorkspaceRequest(ctx context.Context) (*operations.GetOasvalidationPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsGetOasvalidationPluginRequest(ctx context.Context) (*operations.GetOasvalidationPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -171,7 +171,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsGetOasvalidationPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetOasvalidationPluginInWorkspaceRequest{
+	out := operations.GetOasvalidationPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -180,7 +180,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsGetOasvalidationPl
 	return &out, diags
 }
 
-func (r *GatewayPluginOasValidationResourceModel) ToOperationsUpdateOasvalidationPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateOasvalidationPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsUpdateOasvalidationPluginRequest(ctx context.Context) (*operations.UpdateOasvalidationPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -199,7 +199,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsUpdateOasvalidatio
 		return nil, diags
 	}
 
-	out := operations.UpdateOasvalidationPluginInWorkspaceRequest{
+	out := operations.UpdateOasvalidationPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

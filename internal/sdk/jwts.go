@@ -30,9 +30,9 @@ func newJWTs(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateJwtWithConsumerInWorkspace - Create a new JWT associated with a Consumer in a workspace
+// CreateJwtWithConsumer - Create a new JWT associated with a Consumer in a workspace
 // Create a new JWT associated with a Consumer in a workspace
-func (s *JWTs) CreateJwtWithConsumerInWorkspace(ctx context.Context, request operations.CreateJwtWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateJwtWithConsumerInWorkspaceResponse, error) {
+func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.CreateJwtWithConsumerRequest, opts ...operations.Option) (*operations.CreateJwtWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61,7 +61,7 @@ func (s *JWTs) CreateJwtWithConsumerInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-jwt-with-consumer-in-workspace",
+		OperationID:      "create-jwt-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *JWTs) CreateJwtWithConsumerInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateJwtWithConsumerInWorkspaceResponse{
+	res := &operations.CreateJwtWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *JWTs) CreateJwtWithConsumerInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteJwtWithConsumerInWorkspace - Delete a a JWT associated with a Consumer in a workspace
+// DeleteJwtWithConsumer - Delete a a JWT associated with a Consumer in a workspace
 // Delete a a JWT associated with a Consumer using ID in a workspace.
-func (s *JWTs) DeleteJwtWithConsumerInWorkspace(ctx context.Context, request operations.DeleteJwtWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteJwtWithConsumerInWorkspaceResponse, error) {
+func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.DeleteJwtWithConsumerRequest, opts ...operations.Option) (*operations.DeleteJwtWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -267,7 +267,7 @@ func (s *JWTs) DeleteJwtWithConsumerInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-jwt-with-consumer-in-workspace",
+		OperationID:      "delete-jwt-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *JWTs) DeleteJwtWithConsumerInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteJwtWithConsumerInWorkspaceResponse{
+	res := &operations.DeleteJwtWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *JWTs) DeleteJwtWithConsumerInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetJwtWithConsumerInWorkspace - Get a JWT associated with a Consumer in a workspace
+// GetJwtWithConsumer - Get a JWT associated with a Consumer in a workspace
 // Get a JWT associated with a Consumer using ID in a workspace.
-func (s *JWTs) GetJwtWithConsumerInWorkspace(ctx context.Context, request operations.GetJwtWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetJwtWithConsumerInWorkspaceResponse, error) {
+func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwtWithConsumerRequest, opts ...operations.Option) (*operations.GetJwtWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -449,7 +449,7 @@ func (s *JWTs) GetJwtWithConsumerInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-jwt-with-consumer-in-workspace",
+		OperationID:      "get-jwt-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *JWTs) GetJwtWithConsumerInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetJwtWithConsumerInWorkspaceResponse{
+	res := &operations.GetJwtWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

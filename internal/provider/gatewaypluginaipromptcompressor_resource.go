@@ -401,13 +401,13 @@ func (r *GatewayPluginAiPromptCompressorResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAipromptcompressorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAipromptcompressorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -461,13 +461,13 @@ func (r *GatewayPluginAiPromptCompressorResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAipromptcompressorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAipromptcompressorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -515,13 +515,13 @@ func (r *GatewayPluginAiPromptCompressorResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAipromptcompressorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAipromptcompressorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -575,13 +575,13 @@ func (r *GatewayPluginAiPromptCompressorResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAipromptcompressorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAipromptcompressorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

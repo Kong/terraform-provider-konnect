@@ -485,13 +485,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Create(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateXmlthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateXmlthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -545,13 +545,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Read(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetXmlthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetXmlthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -599,13 +599,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Update(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateXmlthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateXmlthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -659,13 +659,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Delete(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteXmlthreatprotectionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteXmlthreatprotectionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

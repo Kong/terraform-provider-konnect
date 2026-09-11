@@ -123,7 +123,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 	return diags
 }
 
-func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsCreateIprestrictionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateIprestrictionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsCreateIprestrictionPluginRequest(ctx context.Context) (*operations.CreateIprestrictionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -139,7 +139,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsCreateIprestrictio
 		return nil, diags
 	}
 
-	out := operations.CreateIprestrictionPluginInWorkspaceRequest{
+	out := operations.CreateIprestrictionPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		IPRestrictionPlugin: *ipRestrictionPlugin,
@@ -148,7 +148,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsCreateIprestrictio
 	return &out, diags
 }
 
-func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsDeleteIprestrictionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteIprestrictionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsDeleteIprestrictionPluginRequest(ctx context.Context) (*operations.DeleteIprestrictionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -160,7 +160,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsDeleteIprestrictio
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteIprestrictionPluginInWorkspaceRequest{
+	out := operations.DeleteIprestrictionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -169,7 +169,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsDeleteIprestrictio
 	return &out, diags
 }
 
-func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsGetIprestrictionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetIprestrictionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsGetIprestrictionPluginRequest(ctx context.Context) (*operations.GetIprestrictionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -181,7 +181,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsGetIprestrictionPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetIprestrictionPluginInWorkspaceRequest{
+	out := operations.GetIprestrictionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -190,7 +190,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsGetIprestrictionPl
 	return &out, diags
 }
 
-func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsUpdateIprestrictionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateIprestrictionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsUpdateIprestrictionPluginRequest(ctx context.Context) (*operations.UpdateIprestrictionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -209,7 +209,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsUpdateIprestrictio
 		return nil, diags
 	}
 
-	out := operations.UpdateIprestrictionPluginInWorkspaceRequest{
+	out := operations.UpdateIprestrictionPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

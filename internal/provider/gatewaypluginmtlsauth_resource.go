@@ -398,13 +398,13 @@ func (r *GatewayPluginMtlsAuthResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMtlsauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateMtlsauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateMtlsauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateMtlsauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -458,13 +458,13 @@ func (r *GatewayPluginMtlsAuthResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetMtlsauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetMtlsauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetMtlsauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetMtlsauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -512,13 +512,13 @@ func (r *GatewayPluginMtlsAuthResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMtlsauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateMtlsauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateMtlsauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateMtlsauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -572,13 +572,13 @@ func (r *GatewayPluginMtlsAuthResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteMtlsauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteMtlsauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteMtlsauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteMtlsauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

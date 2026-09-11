@@ -180,13 +180,13 @@ func (r *GatewayMTLSAuthResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMtlsAuthWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateMtlsAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -240,13 +240,13 @@ func (r *GatewayMTLSAuthResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetMtlsAuthWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetMtlsAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -318,13 +318,13 @@ func (r *GatewayMTLSAuthResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteMtlsAuthWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

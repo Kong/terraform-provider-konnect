@@ -33,9 +33,9 @@ func newTargets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateTargetWithUpstreamInWorkspace - Create a new Target associated with an Upstream in a workspace
+// CreateTargetWithUpstream - Create a new Target associated with an Upstream in a workspace
 // Create a new Target associated with an Upstream in a workspace
-func (s *Targets) CreateTargetWithUpstreamInWorkspace(ctx context.Context, request operations.CreateTargetWithUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.CreateTargetWithUpstreamInWorkspaceResponse, error) {
+func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operations.CreateTargetWithUpstreamRequest, opts ...operations.Option) (*operations.CreateTargetWithUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -64,7 +64,7 @@ func (s *Targets) CreateTargetWithUpstreamInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-target-with-upstream-in-workspace",
+		OperationID:      "create-target-with-upstream",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -199,7 +199,7 @@ func (s *Targets) CreateTargetWithUpstreamInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.CreateTargetWithUpstreamInWorkspaceResponse{
+	res := &operations.CreateTargetWithUpstreamResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -239,9 +239,9 @@ func (s *Targets) CreateTargetWithUpstreamInWorkspace(ctx context.Context, reque
 
 }
 
-// DeleteTargetWithUpstreamInWorkspace - Delete a a Target associated with an Upstream in a workspace
+// DeleteTargetWithUpstream - Delete a a Target associated with an Upstream in a workspace
 // Delete a a Target associated with an Upstream using ID or target in a workspace.
-func (s *Targets) DeleteTargetWithUpstreamInWorkspace(ctx context.Context, request operations.DeleteTargetWithUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteTargetWithUpstreamInWorkspaceResponse, error) {
+func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operations.DeleteTargetWithUpstreamRequest, opts ...operations.Option) (*operations.DeleteTargetWithUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -270,7 +270,7 @@ func (s *Targets) DeleteTargetWithUpstreamInWorkspace(ctx context.Context, reque
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-target-with-upstream-in-workspace",
+		OperationID:      "delete-target-with-upstream",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -398,7 +398,7 @@ func (s *Targets) DeleteTargetWithUpstreamInWorkspace(ctx context.Context, reque
 		}
 	}
 
-	res := &operations.DeleteTargetWithUpstreamInWorkspaceResponse{
+	res := &operations.DeleteTargetWithUpstreamResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -421,9 +421,9 @@ func (s *Targets) DeleteTargetWithUpstreamInWorkspace(ctx context.Context, reque
 
 }
 
-// GetTargetWithUpstreamInWorkspace - Get a Target associated with an Upstream in a workspace
+// GetTargetWithUpstream - Get a Target associated with an Upstream in a workspace
 // Get a Target associated with an Upstream using ID or target in a workspace.
-func (s *Targets) GetTargetWithUpstreamInWorkspace(ctx context.Context, request operations.GetTargetWithUpstreamInWorkspaceRequest, opts ...operations.Option) (*operations.GetTargetWithUpstreamInWorkspaceResponse, error) {
+func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.GetTargetWithUpstreamRequest, opts ...operations.Option) (*operations.GetTargetWithUpstreamResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -452,7 +452,7 @@ func (s *Targets) GetTargetWithUpstreamInWorkspace(ctx context.Context, request 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-target-with-upstream-in-workspace",
+		OperationID:      "get-target-with-upstream",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -580,7 +580,7 @@ func (s *Targets) GetTargetWithUpstreamInWorkspace(ctx context.Context, request 
 		}
 	}
 
-	res := &operations.GetTargetWithUpstreamInWorkspaceResponse{
+	res := &operations.GetTargetWithUpstreamResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

@@ -30,9 +30,9 @@ func newACLs(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateACLWithConsumerInWorkspace - Create a new ACL associated with a Consumer in a workspace
+// CreateACLWithConsumer - Create a new ACL associated with a Consumer in a workspace
 // Create a new ACL associated with a Consumer in a workspace
-func (s *ACLs) CreateACLWithConsumerInWorkspace(ctx context.Context, request operations.CreateACLWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateACLWithConsumerInWorkspaceResponse, error) {
+func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.CreateACLWithConsumerRequest, opts ...operations.Option) (*operations.CreateACLWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61,7 +61,7 @@ func (s *ACLs) CreateACLWithConsumerInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-acl-with-consumer-in-workspace",
+		OperationID:      "create-acl-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *ACLs) CreateACLWithConsumerInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.CreateACLWithConsumerInWorkspaceResponse{
+	res := &operations.CreateACLWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *ACLs) CreateACLWithConsumerInWorkspace(ctx context.Context, request ope
 
 }
 
-// DeleteACLWithConsumerInWorkspace - Delete a an ACL associated with a Consumer in a workspace
+// DeleteACLWithConsumer - Delete a an ACL associated with a Consumer in a workspace
 // Delete a an ACL associated with a Consumer using ID in a workspace.
-func (s *ACLs) DeleteACLWithConsumerInWorkspace(ctx context.Context, request operations.DeleteACLWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteACLWithConsumerInWorkspaceResponse, error) {
+func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.DeleteACLWithConsumerRequest, opts ...operations.Option) (*operations.DeleteACLWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -267,7 +267,7 @@ func (s *ACLs) DeleteACLWithConsumerInWorkspace(ctx context.Context, request ope
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-acl-with-consumer-in-workspace",
+		OperationID:      "delete-acl-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *ACLs) DeleteACLWithConsumerInWorkspace(ctx context.Context, request ope
 		}
 	}
 
-	res := &operations.DeleteACLWithConsumerInWorkspaceResponse{
+	res := &operations.DeleteACLWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *ACLs) DeleteACLWithConsumerInWorkspace(ctx context.Context, request ope
 
 }
 
-// GetACLWithConsumerInWorkspace - Get an ACL associated with a Consumer in a workspace
+// GetACLWithConsumer - Get an ACL associated with a Consumer in a workspace
 // Get an ACL associated with a Consumer using ID in a workspace.
-func (s *ACLs) GetACLWithConsumerInWorkspace(ctx context.Context, request operations.GetACLWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetACLWithConsumerInWorkspaceResponse, error) {
+func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACLWithConsumerRequest, opts ...operations.Option) (*operations.GetACLWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -449,7 +449,7 @@ func (s *ACLs) GetACLWithConsumerInWorkspace(ctx context.Context, request operat
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-acl-with-consumer-in-workspace",
+		OperationID:      "get-acl-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *ACLs) GetACLWithConsumerInWorkspace(ctx context.Context, request operat
 		}
 	}
 
-	res := &operations.GetACLWithConsumerInWorkspaceResponse{
+	res := &operations.GetACLWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

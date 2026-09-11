@@ -108,7 +108,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) RefreshFromSharedJSONTh
 	return diags
 }
 
-func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsCreateJsonthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateJsonthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsCreateJsonthreatprotectionPluginRequest(ctx context.Context) (*operations.CreateJsonthreatprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -124,7 +124,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsCreateJsont
 		return nil, diags
 	}
 
-	out := operations.CreateJsonthreatprotectionPluginInWorkspaceRequest{
+	out := operations.CreateJsonthreatprotectionPluginRequest{
 		ControlPlaneID:             controlPlaneID,
 		Workspace:                  workspace,
 		JSONThreatProtectionPlugin: *jsonThreatProtectionPlugin,
@@ -133,7 +133,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsCreateJsont
 	return &out, diags
 }
 
-func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsDeleteJsonthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteJsonthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsDeleteJsonthreatprotectionPluginRequest(ctx context.Context) (*operations.DeleteJsonthreatprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -145,7 +145,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsDeleteJsont
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteJsonthreatprotectionPluginInWorkspaceRequest{
+	out := operations.DeleteJsonthreatprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -154,7 +154,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsDeleteJsont
 	return &out, diags
 }
 
-func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsGetJsonthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.GetJsonthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsGetJsonthreatprotectionPluginRequest(ctx context.Context) (*operations.GetJsonthreatprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -166,7 +166,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsGetJsonthre
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetJsonthreatprotectionPluginInWorkspaceRequest{
+	out := operations.GetJsonthreatprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -175,7 +175,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsGetJsonthre
 	return &out, diags
 }
 
-func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsUpdateJsonthreatprotectionPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateJsonthreatprotectionPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsUpdateJsonthreatprotectionPluginRequest(ctx context.Context) (*operations.UpdateJsonthreatprotectionPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -194,7 +194,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsUpdateJsont
 		return nil, diags
 	}
 
-	out := operations.UpdateJsonthreatprotectionPluginInWorkspaceRequest{
+	out := operations.UpdateJsonthreatprotectionPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
 		Workspace:                  workspace,

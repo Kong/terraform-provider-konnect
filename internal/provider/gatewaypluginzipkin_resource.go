@@ -584,13 +584,13 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateZipkinPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateZipkinPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateZipkinPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -644,13 +644,13 @@ func (r *GatewayPluginZipkinResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetZipkinPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetZipkinPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetZipkinPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -698,13 +698,13 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateZipkinPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateZipkinPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateZipkinPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -758,13 +758,13 @@ func (r *GatewayPluginZipkinResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteZipkinPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteZipkinPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteZipkinPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

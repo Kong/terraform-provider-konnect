@@ -531,13 +531,13 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateUpstreamInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.CreateUpstreamInWorkspace(ctx, *request)
+	res, err := r.client.Upstreams.CreateUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -591,13 +591,13 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetUpstreamInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.GetUpstreamInWorkspace(ctx, *request)
+	res, err := r.client.Upstreams.GetUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -645,13 +645,13 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertUpstreamInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.UpsertUpstreamInWorkspace(ctx, *request)
+	res, err := r.client.Upstreams.UpsertUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -705,13 +705,13 @@ func (r *GatewayUpstreamResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteUpstreamInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Upstreams.DeleteUpstreamInWorkspace(ctx, *request)
+	res, err := r.client.Upstreams.DeleteUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -2046,13 +2046,13 @@ func (r *GatewayPartialResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreatePartialInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreatePartialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.CreatePartialInWorkspace(ctx, *request)
+	res, err := r.client.Partials.CreatePartial(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2106,13 +2106,13 @@ func (r *GatewayPartialResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetPartialInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetPartialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.GetPartialInWorkspace(ctx, *request)
+	res, err := r.client.Partials.GetPartial(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2160,13 +2160,13 @@ func (r *GatewayPartialResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertPartialInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertPartialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.UpsertPartialInWorkspace(ctx, *request)
+	res, err := r.client.Partials.UpsertPartial(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2220,13 +2220,13 @@ func (r *GatewayPartialResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeletePartialInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeletePartialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Partials.DeletePartialInWorkspace(ctx, *request)
+	res, err := r.client.Partials.DeletePartial(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

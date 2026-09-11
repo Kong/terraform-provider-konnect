@@ -51,9 +51,9 @@ func newRoutes(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks
 	}
 }
 
-// CreateRouteInWorkspace - Create a new Route in a workspace
+// CreateRoute - Create a new Route in a workspace
 // Create a new Route in a workspace
-func (s *Routes) CreateRouteInWorkspace(ctx context.Context, request operations.CreateRouteInWorkspaceRequest, opts ...operations.Option) (*operations.CreateRouteInWorkspaceResponse, error) {
+func (s *Routes) CreateRoute(ctx context.Context, request operations.CreateRouteRequest, opts ...operations.Option) (*operations.CreateRouteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -82,7 +82,7 @@ func (s *Routes) CreateRouteInWorkspace(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-route-in-workspace",
+		OperationID:      "create-route",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -217,7 +217,7 @@ func (s *Routes) CreateRouteInWorkspace(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.CreateRouteInWorkspaceResponse{
+	res := &operations.CreateRouteResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -278,9 +278,9 @@ func (s *Routes) CreateRouteInWorkspace(ctx context.Context, request operations.
 
 }
 
-// DeleteRouteInWorkspace - Delete a Route in a workspace
+// DeleteRoute - Delete a Route in a workspace
 // Delete a Route in a workspace
-func (s *Routes) DeleteRouteInWorkspace(ctx context.Context, request operations.DeleteRouteInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteRouteInWorkspaceResponse, error) {
+func (s *Routes) DeleteRoute(ctx context.Context, request operations.DeleteRouteRequest, opts ...operations.Option) (*operations.DeleteRouteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -309,7 +309,7 @@ func (s *Routes) DeleteRouteInWorkspace(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-route-in-workspace",
+		OperationID:      "delete-route",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -437,7 +437,7 @@ func (s *Routes) DeleteRouteInWorkspace(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.DeleteRouteInWorkspaceResponse{
+	res := &operations.DeleteRouteResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -481,9 +481,9 @@ func (s *Routes) DeleteRouteInWorkspace(ctx context.Context, request operations.
 
 }
 
-// GetRouteInWorkspace - Get a Route in a workspace
+// GetRoute - Get a Route in a workspace
 // Get a Route using ID or name in a workspace.
-func (s *Routes) GetRouteInWorkspace(ctx context.Context, request operations.GetRouteInWorkspaceRequest, opts ...operations.Option) (*operations.GetRouteInWorkspaceResponse, error) {
+func (s *Routes) GetRoute(ctx context.Context, request operations.GetRouteRequest, opts ...operations.Option) (*operations.GetRouteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -512,7 +512,7 @@ func (s *Routes) GetRouteInWorkspace(ctx context.Context, request operations.Get
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-route-in-workspace",
+		OperationID:      "get-route",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -640,7 +640,7 @@ func (s *Routes) GetRouteInWorkspace(ctx context.Context, request operations.Get
 		}
 	}
 
-	res := &operations.GetRouteInWorkspaceResponse{
+	res := &operations.GetRouteResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -703,9 +703,9 @@ func (s *Routes) GetRouteInWorkspace(ctx context.Context, request operations.Get
 
 }
 
-// UpsertRouteInWorkspace - Upsert a Route in a workspace
+// UpsertRoute - Upsert a Route in a workspace
 // Create or Update Route using ID or name in a workspace.
-func (s *Routes) UpsertRouteInWorkspace(ctx context.Context, request operations.UpsertRouteInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertRouteInWorkspaceResponse, error) {
+func (s *Routes) UpsertRoute(ctx context.Context, request operations.UpsertRouteRequest, opts ...operations.Option) (*operations.UpsertRouteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -734,7 +734,7 @@ func (s *Routes) UpsertRouteInWorkspace(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-route-in-workspace",
+		OperationID:      "upsert-route",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -869,7 +869,7 @@ func (s *Routes) UpsertRouteInWorkspace(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.UpsertRouteInWorkspaceResponse{
+	res := &operations.UpsertRouteResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -930,9 +930,9 @@ func (s *Routes) UpsertRouteInWorkspace(ctx context.Context, request operations.
 
 }
 
-// DeleteRouteInWorkspaceRouteExpression - Delete a Route in a workspace
+// DeleteRouteRouteExpression - Delete a Route in a workspace
 // Delete a Route in a workspace
-func (s *Routes) DeleteRouteInWorkspaceRouteExpression(ctx context.Context, request operations.DeleteRouteInWorkspaceRouteExpressionRequest, opts ...operations.Option) (*operations.DeleteRouteInWorkspaceRouteExpressionResponse, error) {
+func (s *Routes) DeleteRouteRouteExpression(ctx context.Context, request operations.DeleteRouteRouteExpressionRequest, opts ...operations.Option) (*operations.DeleteRouteRouteExpressionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -961,7 +961,7 @@ func (s *Routes) DeleteRouteInWorkspaceRouteExpression(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-route-in-workspace-RouteExpression",
+		OperationID:      "delete-route-RouteExpression",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1089,7 +1089,7 @@ func (s *Routes) DeleteRouteInWorkspaceRouteExpression(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.DeleteRouteInWorkspaceRouteExpressionResponse{
+	res := &operations.DeleteRouteRouteExpressionResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1133,9 +1133,9 @@ func (s *Routes) DeleteRouteInWorkspaceRouteExpression(ctx context.Context, requ
 
 }
 
-// GetRouteInWorkspaceRouteExpression - Get a Route in a workspace
+// GetRouteRouteExpression - Get a Route in a workspace
 // Get a Route using ID or name in a workspace.
-func (s *Routes) GetRouteInWorkspaceRouteExpression(ctx context.Context, request operations.GetRouteInWorkspaceRouteExpressionRequest, opts ...operations.Option) (*operations.GetRouteInWorkspaceRouteExpressionResponse, error) {
+func (s *Routes) GetRouteRouteExpression(ctx context.Context, request operations.GetRouteRouteExpressionRequest, opts ...operations.Option) (*operations.GetRouteRouteExpressionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1164,7 +1164,7 @@ func (s *Routes) GetRouteInWorkspaceRouteExpression(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-route-in-workspace-RouteExpression",
+		OperationID:      "get-route-RouteExpression",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1292,7 +1292,7 @@ func (s *Routes) GetRouteInWorkspaceRouteExpression(ctx context.Context, request
 		}
 	}
 
-	res := &operations.GetRouteInWorkspaceRouteExpressionResponse{
+	res := &operations.GetRouteRouteExpressionResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1355,9 +1355,9 @@ func (s *Routes) GetRouteInWorkspaceRouteExpression(ctx context.Context, request
 
 }
 
-// UpsertRouteInWorkspaceRouteExpression - Upsert a Route in a workspace
+// UpsertRouteRouteExpression - Upsert a Route in a workspace
 // Create or Update Route using ID or name in a workspace.
-func (s *Routes) UpsertRouteInWorkspaceRouteExpression(ctx context.Context, request operations.UpsertRouteInWorkspaceRouteExpressionRequest, opts ...operations.Option) (*operations.UpsertRouteInWorkspaceRouteExpressionResponse, error) {
+func (s *Routes) UpsertRouteRouteExpression(ctx context.Context, request operations.UpsertRouteRouteExpressionRequest, opts ...operations.Option) (*operations.UpsertRouteRouteExpressionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1386,7 +1386,7 @@ func (s *Routes) UpsertRouteInWorkspaceRouteExpression(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-route-in-workspace-RouteExpression",
+		OperationID:      "upsert-route-RouteExpression",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1521,7 +1521,7 @@ func (s *Routes) UpsertRouteInWorkspaceRouteExpression(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.UpsertRouteInWorkspaceRouteExpressionResponse{
+	res := &operations.UpsertRouteRouteExpressionResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -1582,9 +1582,9 @@ func (s *Routes) UpsertRouteInWorkspaceRouteExpression(ctx context.Context, requ
 
 }
 
-// CreateRouteInWorkspaceRouteExpression - Create a new Route in a workspace
+// CreateRouteRouteExpression - Create a new Route in a workspace
 // Create a new Route in a workspace
-func (s *Routes) CreateRouteInWorkspaceRouteExpression(ctx context.Context, request operations.CreateRouteInWorkspaceRouteExpressionRequest, opts ...operations.Option) (*operations.CreateRouteInWorkspaceRouteExpressionResponse, error) {
+func (s *Routes) CreateRouteRouteExpression(ctx context.Context, request operations.CreateRouteRouteExpressionRequest, opts ...operations.Option) (*operations.CreateRouteRouteExpressionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1613,7 +1613,7 @@ func (s *Routes) CreateRouteInWorkspaceRouteExpression(ctx context.Context, requ
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-route-in-workspace-RouteExpression",
+		OperationID:      "create-route-RouteExpression",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1748,7 +1748,7 @@ func (s *Routes) CreateRouteInWorkspaceRouteExpression(ctx context.Context, requ
 		}
 	}
 
-	res := &operations.CreateRouteInWorkspaceRouteExpressionResponse{
+	res := &operations.CreateRouteRouteExpressionResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

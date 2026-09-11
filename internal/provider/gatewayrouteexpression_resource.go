@@ -226,13 +226,13 @@ func (r *GatewayRouteExpressionResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRouteInWorkspaceRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRouteRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.CreateRouteInWorkspaceRouteExpression(ctx, *request)
+	res, err := r.client.Routes.CreateRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -286,13 +286,13 @@ func (r *GatewayRouteExpressionResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRouteInWorkspaceRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRouteRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.GetRouteInWorkspaceRouteExpression(ctx, *request)
+	res, err := r.client.Routes.GetRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -340,13 +340,13 @@ func (r *GatewayRouteExpressionResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertRouteInWorkspaceRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertRouteRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.UpsertRouteInWorkspaceRouteExpression(ctx, *request)
+	res, err := r.client.Routes.UpsertRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -400,13 +400,13 @@ func (r *GatewayRouteExpressionResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRouteInWorkspaceRouteExpressionRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRouteRouteExpressionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Routes.DeleteRouteInWorkspaceRouteExpression(ctx, *request)
+	res, err := r.client.Routes.DeleteRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -553,13 +553,13 @@ func (r *GatewayPluginOpentelemetryResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateOpentelemetryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateOpentelemetryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateOpentelemetryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -613,13 +613,13 @@ func (r *GatewayPluginOpentelemetryResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetOpentelemetryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetOpentelemetryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetOpentelemetryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -667,13 +667,13 @@ func (r *GatewayPluginOpentelemetryResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateOpentelemetryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateOpentelemetryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateOpentelemetryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -727,13 +727,13 @@ func (r *GatewayPluginOpentelemetryResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteOpentelemetryPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteOpentelemetryPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteOpentelemetryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

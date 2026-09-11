@@ -300,13 +300,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Create(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateTlshandshakemodifierPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateTlshandshakemodifierPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateTlshandshakemodifierPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -360,13 +360,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Read(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetTlshandshakemodifierPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetTlshandshakemodifierPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetTlshandshakemodifierPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -414,13 +414,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Update(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateTlshandshakemodifierPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateTlshandshakemodifierPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateTlshandshakemodifierPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -474,13 +474,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Delete(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteTlshandshakemodifierPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteTlshandshakemodifierPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteTlshandshakemodifierPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

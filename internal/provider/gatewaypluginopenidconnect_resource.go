@@ -2498,13 +2498,13 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateOpenidconnectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateOpenidconnectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateOpenidconnectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2558,13 +2558,13 @@ func (r *GatewayPluginOpenidConnectResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetOpenidconnectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetOpenidconnectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetOpenidconnectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2612,13 +2612,13 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateOpenidconnectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateOpenidconnectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateOpenidconnectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2672,13 +2672,13 @@ func (r *GatewayPluginOpenidConnectResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteOpenidconnectPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteOpenidconnectPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteOpenidconnectPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

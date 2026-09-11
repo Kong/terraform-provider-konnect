@@ -328,13 +328,13 @@ func (r *GatewayPluginCorrelationIDResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateCorrelationidPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateCorrelationidPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateCorrelationidPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -388,13 +388,13 @@ func (r *GatewayPluginCorrelationIDResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetCorrelationidPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetCorrelationidPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetCorrelationidPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -442,13 +442,13 @@ func (r *GatewayPluginCorrelationIDResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateCorrelationidPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateCorrelationidPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateCorrelationidPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -502,13 +502,13 @@ func (r *GatewayPluginCorrelationIDResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteCorrelationidPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteCorrelationidPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteCorrelationidPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

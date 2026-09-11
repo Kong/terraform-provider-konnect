@@ -1934,13 +1934,13 @@ func (r *GatewayPluginDatakitResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateDatakitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateDatakitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateDatakitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1994,13 +1994,13 @@ func (r *GatewayPluginDatakitResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetDatakitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetDatakitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetDatakitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2048,13 +2048,13 @@ func (r *GatewayPluginDatakitResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateDatakitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateDatakitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateDatakitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -2108,13 +2108,13 @@ func (r *GatewayPluginDatakitResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteDatakitPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteDatakitPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteDatakitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

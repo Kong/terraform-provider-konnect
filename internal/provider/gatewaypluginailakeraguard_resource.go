@@ -410,13 +410,13 @@ func (r *GatewayPluginAiLakeraGuardResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAilakeraguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAilakeraguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAilakeraguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAilakeraguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -470,13 +470,13 @@ func (r *GatewayPluginAiLakeraGuardResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAilakeraguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAilakeraguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAilakeraguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAilakeraguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -524,13 +524,13 @@ func (r *GatewayPluginAiLakeraGuardResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAilakeraguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAilakeraguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAilakeraguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAilakeraguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -584,13 +584,13 @@ func (r *GatewayPluginAiLakeraGuardResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAilakeraguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAilakeraguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAilakeraguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAilakeraguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

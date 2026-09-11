@@ -350,13 +350,13 @@ func (r *GatewayPluginTCPLogResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateTcplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateTcplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateTcplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -410,13 +410,13 @@ func (r *GatewayPluginTCPLogResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetTcplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetTcplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetTcplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -464,13 +464,13 @@ func (r *GatewayPluginTCPLogResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateTcplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateTcplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateTcplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -524,13 +524,13 @@ func (r *GatewayPluginTCPLogResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteTcplogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteTcplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteTcplogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

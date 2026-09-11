@@ -184,10 +184,13 @@ func (r *CustomPluginResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"workspace": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString("default"),
-				Description: `The name of the workspace. Default: "default"`,
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString("default"),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 		},
 	}
@@ -237,7 +240,7 @@ func (r *CustomPluginResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	res, err := r.client.Plugins.CreatePluginInWorkspace(ctx, operations.CreatePluginInWorkspaceRequest{
+	res, err := r.client.Plugins.CreatePlugin(ctx, operations.CreatePluginRequest{
 		ControlPlaneID: plugin.ControlPlaneID.ValueString(),
 		Workspace:      plugin.Workspace.ValueString(),
 		Plugin:         pluginData,
@@ -274,7 +277,7 @@ func (r *CustomPluginResource) Read(ctx context.Context, req resource.ReadReques
 
 	controlPlaneID := data.ControlPlaneID.ValueString()
 
-	res, err := r.client.Plugins.GetPluginInWorkspace(ctx, operations.GetPluginInWorkspaceRequest{
+	res, err := r.client.Plugins.GetPlugin(ctx, operations.GetPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
@@ -338,7 +341,7 @@ func (r *CustomPluginResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	res, err := r.client.Plugins.UpsertPluginInWorkspace(ctx, operations.UpsertPluginInWorkspaceRequest{
+	res, err := r.client.Plugins.UpsertPlugin(ctx, operations.UpsertPluginRequest{
 		ControlPlaneID: data.ControlPlaneID.ValueString(),
 		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
@@ -375,7 +378,7 @@ func (r *CustomPluginResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	res, err := r.client.Plugins.DeletePluginInWorkspace(ctx, operations.DeletePluginInWorkspaceRequest{
+	res, err := r.client.Plugins.DeletePlugin(ctx, operations.DeletePluginRequest{
 		ControlPlaneID: data.ControlPlaneID.ValueString(),
 		Workspace:      data.Workspace.ValueString(),
 		PluginID:       data.ID.ValueString(),
@@ -549,11 +552,11 @@ func checkPluginResponse(res any, err error, diagnostics *diag.Diagnostics) {
 
 func getPluginFromResponse(res any) *shared.Plugin {
 	switch t := res.(type) {
-	case *operations.GetPluginInWorkspaceResponse:
+	case *operations.GetPluginResponse:
 		return t.Plugin
-	case *operations.UpsertPluginInWorkspaceResponse:
+	case *operations.UpsertPluginResponse:
 		return t.Plugin
-	case *operations.CreatePluginInWorkspaceResponse:
+	case *operations.CreatePluginResponse:
 		return t.Plugin
 	default:
 		return nil

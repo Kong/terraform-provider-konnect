@@ -153,13 +153,13 @@ func (r *GatewayVaultResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateVaultInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Vaults.CreateVaultInWorkspace(ctx, *request)
+	res, err := r.client.Vaults.CreateVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -213,13 +213,13 @@ func (r *GatewayVaultResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetVaultInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Vaults.GetVaultInWorkspace(ctx, *request)
+	res, err := r.client.Vaults.GetVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -267,13 +267,13 @@ func (r *GatewayVaultResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertVaultInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Vaults.UpsertVaultInWorkspace(ctx, *request)
+	res, err := r.client.Vaults.UpsertVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -327,13 +327,13 @@ func (r *GatewayVaultResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteVaultInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Vaults.DeleteVaultInWorkspace(ctx, *request)
+	res, err := r.client.Vaults.DeleteVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -710,13 +710,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Create(ctx context.Cont
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateGraphqlproxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -770,13 +770,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Read(ctx context.Contex
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetGraphqlproxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -824,13 +824,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Update(ctx context.Cont
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateGraphqlproxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -884,13 +884,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Delete(ctx context.Cont
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteGraphqlproxycacheadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -134,7 +134,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 	return diags
 }
 
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRequestvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestvalidatorPluginRequest(ctx context.Context) (*operations.CreateRequestvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -150,7 +150,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestva
 		return nil, diags
 	}
 
-	out := operations.CreateRequestvalidatorPluginInWorkspaceRequest{
+	out := operations.CreateRequestvalidatorPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,
 		RequestValidatorPlugin: *requestValidatorPlugin,
@@ -159,7 +159,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestva
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRequestvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestvalidatorPluginRequest(ctx context.Context) (*operations.DeleteRequestvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -171,7 +171,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestva
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteRequestvalidatorPluginInWorkspaceRequest{
+	out := operations.DeleteRequestvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -180,7 +180,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestva
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRequestvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalidatorPluginRequest(ctx context.Context) (*operations.GetRequestvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -192,7 +192,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalid
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetRequestvalidatorPluginInWorkspaceRequest{
+	out := operations.GetRequestvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -201,7 +201,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalid
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestvalidatorPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRequestvalidatorPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestvalidatorPluginRequest(ctx context.Context) (*operations.UpdateRequestvalidatorPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -220,7 +220,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestva
 		return nil, diags
 	}
 
-	out := operations.UpdateRequestvalidatorPluginInWorkspaceRequest{
+	out := operations.UpdateRequestvalidatorPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,

@@ -221,7 +221,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 	return diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstreamPluginRequest(ctx context.Context) (*operations.CreateSolaceupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -237,7 +237,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstr
 		return nil, diags
 	}
 
-	out := operations.CreateSolaceupstreamPluginInWorkspaceRequest{
+	out := operations.CreateSolaceupstreamPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		Workspace:            workspace,
 		SolaceUpstreamPlugin: *solaceUpstreamPlugin,
@@ -246,7 +246,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstr
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstreamPluginRequest(ctx context.Context) (*operations.DeleteSolaceupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -258,7 +258,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstr
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteSolaceupstreamPluginInWorkspaceRequest{
+	out := operations.DeleteSolaceupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -267,7 +267,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstr
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.GetSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstreamPluginRequest(ctx context.Context) (*operations.GetSolaceupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -279,7 +279,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstream
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetSolaceupstreamPluginInWorkspaceRequest{
+	out := operations.GetSolaceupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -288,7 +288,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstream
 	return &out, diags
 }
 
-func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateSolaceupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstreamPluginRequest(ctx context.Context) (*operations.UpdateSolaceupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -307,7 +307,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstr
 		return nil, diags
 	}
 
-	out := operations.UpdateSolaceupstreamPluginInWorkspaceRequest{
+	out := operations.UpdateSolaceupstreamPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
 		Workspace:            workspace,

@@ -211,7 +211,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 	return diags
 }
 
-func (r *GatewayPluginAcmeResourceModel) ToOperationsCreateAcmePluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAcmePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAcmeResourceModel) ToOperationsCreateAcmePluginRequest(ctx context.Context) (*operations.CreateAcmePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -227,7 +227,7 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsCreateAcmePluginInWorkspace
 		return nil, diags
 	}
 
-	out := operations.CreateAcmePluginInWorkspaceRequest{
+	out := operations.CreateAcmePluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		AcmePlugin:     *acmePlugin,
@@ -236,7 +236,7 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsCreateAcmePluginInWorkspace
 	return &out, diags
 }
 
-func (r *GatewayPluginAcmeResourceModel) ToOperationsDeleteAcmePluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAcmePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAcmeResourceModel) ToOperationsDeleteAcmePluginRequest(ctx context.Context) (*operations.DeleteAcmePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -248,7 +248,7 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsDeleteAcmePluginInWorkspace
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAcmePluginInWorkspaceRequest{
+	out := operations.DeleteAcmePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -257,7 +257,7 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsDeleteAcmePluginInWorkspace
 	return &out, diags
 }
 
-func (r *GatewayPluginAcmeResourceModel) ToOperationsGetAcmePluginInWorkspaceRequest(ctx context.Context) (*operations.GetAcmePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAcmeResourceModel) ToOperationsGetAcmePluginRequest(ctx context.Context) (*operations.GetAcmePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -269,7 +269,7 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsGetAcmePluginInWorkspaceReq
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAcmePluginInWorkspaceRequest{
+	out := operations.GetAcmePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -278,7 +278,7 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsGetAcmePluginInWorkspaceReq
 	return &out, diags
 }
 
-func (r *GatewayPluginAcmeResourceModel) ToOperationsUpdateAcmePluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAcmePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAcmeResourceModel) ToOperationsUpdateAcmePluginRequest(ctx context.Context) (*operations.UpdateAcmePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -297,7 +297,7 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsUpdateAcmePluginInWorkspace
 		return nil, diags
 	}
 
-	out := operations.UpdateAcmePluginInWorkspaceRequest{
+	out := operations.UpdateAcmePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

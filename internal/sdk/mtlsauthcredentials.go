@@ -30,9 +30,9 @@ func newMTLSAuthCredentials(rootSDK *Konnect, sdkConfig config.SDKConfiguration,
 	}
 }
 
-// CreateMtlsAuthWithConsumerInWorkspace - Create a new MTLS-auth credential associated with a Consumer in a workspace
+// CreateMtlsAuthWithConsumer - Create a new MTLS-auth credential associated with a Consumer in a workspace
 // Create a new MTLS-auth credential associated with a Consumer in a workspace
-func (s *MTLSAuthCredentials) CreateMtlsAuthWithConsumerInWorkspace(ctx context.Context, request operations.CreateMtlsAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.CreateMtlsAuthWithConsumerInWorkspaceResponse, error) {
+func (s *MTLSAuthCredentials) CreateMtlsAuthWithConsumer(ctx context.Context, request operations.CreateMtlsAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateMtlsAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61,7 +61,7 @@ func (s *MTLSAuthCredentials) CreateMtlsAuthWithConsumerInWorkspace(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-mtls-auth-with-consumer-in-workspace",
+		OperationID:      "create-mtls-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -196,7 +196,7 @@ func (s *MTLSAuthCredentials) CreateMtlsAuthWithConsumerInWorkspace(ctx context.
 		}
 	}
 
-	res := &operations.CreateMtlsAuthWithConsumerInWorkspaceResponse{
+	res := &operations.CreateMtlsAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -236,9 +236,9 @@ func (s *MTLSAuthCredentials) CreateMtlsAuthWithConsumerInWorkspace(ctx context.
 
 }
 
-// DeleteMtlsAuthWithConsumerInWorkspace - Delete a a MTLS-auth credential associated with a Consumer in a workspace
+// DeleteMtlsAuthWithConsumer - Delete a a MTLS-auth credential associated with a Consumer in a workspace
 // Delete a a MTLS-auth credential associated with a Consumer using ID in a workspace.
-func (s *MTLSAuthCredentials) DeleteMtlsAuthWithConsumerInWorkspace(ctx context.Context, request operations.DeleteMtlsAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteMtlsAuthWithConsumerInWorkspaceResponse, error) {
+func (s *MTLSAuthCredentials) DeleteMtlsAuthWithConsumer(ctx context.Context, request operations.DeleteMtlsAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteMtlsAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -267,7 +267,7 @@ func (s *MTLSAuthCredentials) DeleteMtlsAuthWithConsumerInWorkspace(ctx context.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-mtls-auth-with-consumer-in-workspace",
+		OperationID:      "delete-mtls-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -395,7 +395,7 @@ func (s *MTLSAuthCredentials) DeleteMtlsAuthWithConsumerInWorkspace(ctx context.
 		}
 	}
 
-	res := &operations.DeleteMtlsAuthWithConsumerInWorkspaceResponse{
+	res := &operations.DeleteMtlsAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -418,9 +418,9 @@ func (s *MTLSAuthCredentials) DeleteMtlsAuthWithConsumerInWorkspace(ctx context.
 
 }
 
-// GetMtlsAuthWithConsumerInWorkspace - Get a MTLS-auth credential associated with a Consumer in a workspace
+// GetMtlsAuthWithConsumer - Get a MTLS-auth credential associated with a Consumer in a workspace
 // Get a MTLS-auth credential associated with a Consumer using ID in a workspace.
-func (s *MTLSAuthCredentials) GetMtlsAuthWithConsumerInWorkspace(ctx context.Context, request operations.GetMtlsAuthWithConsumerInWorkspaceRequest, opts ...operations.Option) (*operations.GetMtlsAuthWithConsumerInWorkspaceResponse, error) {
+func (s *MTLSAuthCredentials) GetMtlsAuthWithConsumer(ctx context.Context, request operations.GetMtlsAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetMtlsAuthWithConsumerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -449,7 +449,7 @@ func (s *MTLSAuthCredentials) GetMtlsAuthWithConsumerInWorkspace(ctx context.Con
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-mtls-auth-with-consumer-in-workspace",
+		OperationID:      "get-mtls-auth-with-consumer",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -577,7 +577,7 @@ func (s *MTLSAuthCredentials) GetMtlsAuthWithConsumerInWorkspace(ctx context.Con
 		}
 	}
 
-	res := &operations.GetMtlsAuthWithConsumerInWorkspaceResponse{
+	res := &operations.GetMtlsAuthWithConsumerResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

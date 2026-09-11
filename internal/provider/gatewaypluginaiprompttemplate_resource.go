@@ -365,13 +365,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Create(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAiprompttemplatePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAiprompttemplatePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -425,13 +425,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Read(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAiprompttemplatePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAiprompttemplatePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -479,13 +479,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Update(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAiprompttemplatePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAiprompttemplatePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -539,13 +539,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAiprompttemplatePluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAiprompttemplatePluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

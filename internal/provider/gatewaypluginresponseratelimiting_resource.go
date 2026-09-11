@@ -576,13 +576,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Create(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateResponseratelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateResponseratelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateResponseratelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -636,13 +636,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Read(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetResponseratelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetResponseratelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetResponseratelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -690,13 +690,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Update(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateResponseratelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateResponseratelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateResponseratelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -750,13 +750,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Delete(ctx context.Context, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteResponseratelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteResponseratelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteResponseratelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -186,13 +186,13 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKeyInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.CreateKeyInWorkspace(ctx, *request)
+	res, err := r.client.Keys.CreateKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -246,13 +246,13 @@ func (r *GatewayKeyResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKeyInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.GetKeyInWorkspace(ctx, *request)
+	res, err := r.client.Keys.GetKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -300,13 +300,13 @@ func (r *GatewayKeyResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertKeyInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.UpsertKeyInWorkspace(ctx, *request)
+	res, err := r.client.Keys.UpsertKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -360,13 +360,13 @@ func (r *GatewayKeyResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKeyInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Keys.DeleteKeyInWorkspace(ctx, *request)
+	res, err := r.client.Keys.DeleteKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

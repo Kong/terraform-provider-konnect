@@ -436,13 +436,13 @@ func (r *GatewayPluginJqResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJqPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJqPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateJqPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateJqPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -496,13 +496,13 @@ func (r *GatewayPluginJqResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJqPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJqPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetJqPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetJqPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -550,13 +550,13 @@ func (r *GatewayPluginJqResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateJqPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateJqPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateJqPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateJqPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -610,13 +610,13 @@ func (r *GatewayPluginJqResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJqPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJqPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteJqPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteJqPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -1148,13 +1148,13 @@ func (r *GatewayPluginAiRagInjectorResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAiraginjectorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAiraginjectorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1208,13 +1208,13 @@ func (r *GatewayPluginAiRagInjectorResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAiraginjectorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAiraginjectorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1262,13 +1262,13 @@ func (r *GatewayPluginAiRagInjectorResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAiraginjectorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAiraginjectorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1322,13 +1322,13 @@ func (r *GatewayPluginAiRagInjectorResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAiraginjectorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAiraginjectorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

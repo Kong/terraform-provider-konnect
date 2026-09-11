@@ -134,7 +134,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 	return diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguardPluginRequest(ctx context.Context) (*operations.CreateAipromptguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -150,7 +150,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguar
 		return nil, diags
 	}
 
-	out := operations.CreateAipromptguardPluginInWorkspaceRequest{
+	out := operations.CreateAipromptguardPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		AiPromptGuardPlugin: *aiPromptGuardPlugin,
@@ -159,7 +159,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguar
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguardPluginRequest(ctx context.Context) (*operations.DeleteAipromptguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -171,7 +171,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguar
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAipromptguardPluginInWorkspaceRequest{
+	out := operations.DeleteAipromptguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -180,7 +180,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguar
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPluginRequest(ctx context.Context) (*operations.GetAipromptguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -192,7 +192,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAipromptguardPluginInWorkspaceRequest{
+	out := operations.GetAipromptguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -201,7 +201,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPl
 	return &out, diags
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguardPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAipromptguardPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguardPluginRequest(ctx context.Context) (*operations.UpdateAipromptguardPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -220,7 +220,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguar
 		return nil, diags
 	}
 
-	out := operations.UpdateAipromptguardPluginInWorkspaceRequest{
+	out := operations.UpdateAipromptguardPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

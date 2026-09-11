@@ -114,7 +114,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 	return diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheaderPluginRequest(ctx context.Context) (*operations.CreateRoutebyheaderPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -130,7 +130,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheade
 		return nil, diags
 	}
 
-	out := operations.CreateRoutebyheaderPluginInWorkspaceRequest{
+	out := operations.CreateRoutebyheaderPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		RouteByHeaderPlugin: *routeByHeaderPlugin,
@@ -139,7 +139,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheade
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheaderPluginRequest(ctx context.Context) (*operations.DeleteRoutebyheaderPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -151,7 +151,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheade
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteRoutebyheaderPluginInWorkspaceRequest{
+	out := operations.DeleteRoutebyheaderPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -160,7 +160,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheade
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPluginRequest(ctx context.Context) (*operations.GetRoutebyheaderPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -172,7 +172,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetRoutebyheaderPluginInWorkspaceRequest{
+	out := operations.GetRoutebyheaderPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -181,7 +181,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPl
 	return &out, diags
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheaderPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRoutebyheaderPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheaderPluginRequest(ctx context.Context) (*operations.UpdateRoutebyheaderPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -200,7 +200,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheade
 		return nil, diags
 	}
 
-	out := operations.UpdateRoutebyheaderPluginInWorkspaceRequest{
+	out := operations.UpdateRoutebyheaderPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

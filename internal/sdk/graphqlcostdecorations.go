@@ -30,9 +30,9 @@ func newGraphQLCostDecorations(rootSDK *Konnect, sdkConfig config.SDKConfigurati
 	}
 }
 
-// GetGraphqlRateLimitingAdvancedCostInWorkspace - Get a GraphQL Cost Decoration in a workspace
+// GetGraphqlRateLimitingAdvancedCost - Get a GraphQL Cost Decoration in a workspace
 // Get a GraphQL Cost Decoration using ID in a workspace.
-func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCostInWorkspace(ctx context.Context, request operations.GetGraphqlRateLimitingAdvancedCostInWorkspaceRequest, opts ...operations.Option) (*operations.GetGraphqlRateLimitingAdvancedCostInWorkspaceResponse, error) {
+func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCost(ctx context.Context, request operations.GetGraphqlRateLimitingAdvancedCostRequest, opts ...operations.Option) (*operations.GetGraphqlRateLimitingAdvancedCostResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -61,7 +61,7 @@ func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCostInWorkspace(c
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-graphql-rate-limiting-advanced-cost-in-workspace",
+		OperationID:      "get-graphql-rate-limiting-advanced-cost",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -189,7 +189,7 @@ func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCostInWorkspace(c
 		}
 	}
 
-	res := &operations.GetGraphqlRateLimitingAdvancedCostInWorkspaceResponse{
+	res := &operations.GetGraphqlRateLimitingAdvancedCostResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

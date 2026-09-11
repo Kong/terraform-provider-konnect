@@ -329,13 +329,13 @@ func (r *GatewayPluginACLResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateACLPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateACLPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateACLPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -389,13 +389,13 @@ func (r *GatewayPluginACLResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetACLPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetACLPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetACLPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -443,13 +443,13 @@ func (r *GatewayPluginACLResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateACLPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateACLPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateACLPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -503,13 +503,13 @@ func (r *GatewayPluginACLResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteACLPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteACLPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteACLPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

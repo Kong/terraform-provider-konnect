@@ -135,13 +135,13 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateConsumerGroupInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.CreateConsumerGroupInWorkspace(ctx, *request)
+	res, err := r.client.ConsumerGroups.CreateConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -172,13 +172,13 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetConsumerGroupInWorkspaceRequest(ctx)
+	request1, request1Diags := data.ToOperationsGetConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.ConsumerGroups.GetConsumerGroupInWorkspace(ctx, *request1)
+	res1, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -232,13 +232,13 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetConsumerGroupInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.GetConsumerGroupInWorkspace(ctx, *request)
+	res, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -286,13 +286,13 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpsertConsumerGroupInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpsertConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.UpsertConsumerGroupInWorkspace(ctx, *request)
+	res, err := r.client.ConsumerGroups.UpsertConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -323,13 +323,13 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetConsumerGroupInWorkspaceRequest(ctx)
+	request1, request1Diags := data.ToOperationsGetConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.ConsumerGroups.GetConsumerGroupInWorkspace(ctx, *request1)
+	res1, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -383,13 +383,13 @@ func (r *GatewayConsumerGroupResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteConsumerGroupInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.DeleteConsumerGroupInWorkspace(ctx, *request)
+	res, err := r.client.ConsumerGroups.DeleteConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

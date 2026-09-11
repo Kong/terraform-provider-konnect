@@ -780,13 +780,13 @@ func (r *GatewayPluginUpstreamOauthResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateUpstreamoauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateUpstreamoauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -840,13 +840,13 @@ func (r *GatewayPluginUpstreamOauthResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetUpstreamoauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetUpstreamoauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -894,13 +894,13 @@ func (r *GatewayPluginUpstreamOauthResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateUpstreamoauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateUpstreamoauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -954,13 +954,13 @@ func (r *GatewayPluginUpstreamOauthResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteUpstreamoauthPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteUpstreamoauthPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

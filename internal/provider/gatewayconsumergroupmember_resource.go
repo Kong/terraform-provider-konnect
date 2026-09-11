@@ -180,13 +180,13 @@ func (r *GatewayConsumerGroupMemberResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsAddConsumerToGroupInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsAddConsumerToGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.AddConsumerToGroupInWorkspace(ctx, *request)
+	res, err := r.client.ConsumerGroups.AddConsumerToGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -206,7 +206,7 @@ func (r *GatewayConsumerGroupMemberResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromOperationsAddConsumerToGroupInWorkspaceResponseBody(ctx, res.Object)...)
+	resp.Diagnostics.Append(data.RefreshFromOperationsAddConsumerToGroupResponseBody(ctx, res.Object)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -284,13 +284,13 @@ func (r *GatewayConsumerGroupMemberResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsRemoveConsumerFromGroupInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsRemoveConsumerFromGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ConsumerGroups.RemoveConsumerFromGroupInWorkspace(ctx, *request)
+	res, err := r.client.ConsumerGroups.RemoveConsumerFromGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

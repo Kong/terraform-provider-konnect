@@ -223,13 +223,13 @@ func (r *GatewayTargetResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateTargetWithUpstreamInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateTargetWithUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Targets.CreateTargetWithUpstreamInWorkspace(ctx, *request)
+	res, err := r.client.Targets.CreateTargetWithUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -283,13 +283,13 @@ func (r *GatewayTargetResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetTargetWithUpstreamInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetTargetWithUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Targets.GetTargetWithUpstreamInWorkspace(ctx, *request)
+	res, err := r.client.Targets.GetTargetWithUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -361,13 +361,13 @@ func (r *GatewayTargetResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteTargetWithUpstreamInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteTargetWithUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Targets.DeleteTargetWithUpstreamInWorkspace(ctx, *request)
+	res, err := r.client.Targets.DeleteTargetWithUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

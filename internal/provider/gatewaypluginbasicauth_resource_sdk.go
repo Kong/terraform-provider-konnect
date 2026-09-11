@@ -149,7 +149,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 	return diags
 }
 
-func (r *GatewayPluginBasicAuthResourceModel) ToOperationsCreateBasicauthPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateBasicauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsCreateBasicauthPluginRequest(ctx context.Context) (*operations.CreateBasicauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -165,7 +165,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsCreateBasicauthPluginI
 		return nil, diags
 	}
 
-	out := operations.CreateBasicauthPluginInWorkspaceRequest{
+	out := operations.CreateBasicauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,
 		BasicAuthPlugin: *basicAuthPlugin,
@@ -174,7 +174,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsCreateBasicauthPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginBasicAuthResourceModel) ToOperationsDeleteBasicauthPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteBasicauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsDeleteBasicauthPluginRequest(ctx context.Context) (*operations.DeleteBasicauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -186,7 +186,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsDeleteBasicauthPluginI
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteBasicauthPluginInWorkspaceRequest{
+	out := operations.DeleteBasicauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -195,7 +195,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsDeleteBasicauthPluginI
 	return &out, diags
 }
 
-func (r *GatewayPluginBasicAuthResourceModel) ToOperationsGetBasicauthPluginInWorkspaceRequest(ctx context.Context) (*operations.GetBasicauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsGetBasicauthPluginRequest(ctx context.Context) (*operations.GetBasicauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -207,7 +207,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsGetBasicauthPluginInWo
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetBasicauthPluginInWorkspaceRequest{
+	out := operations.GetBasicauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -216,7 +216,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsGetBasicauthPluginInWo
 	return &out, diags
 }
 
-func (r *GatewayPluginBasicAuthResourceModel) ToOperationsUpdateBasicauthPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateBasicauthPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsUpdateBasicauthPluginRequest(ctx context.Context) (*operations.UpdateBasicauthPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -235,7 +235,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsUpdateBasicauthPluginI
 		return nil, diags
 	}
 
-	out := operations.UpdateBasicauthPluginInWorkspaceRequest{
+	out := operations.UpdateBasicauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
 		Workspace:       workspace,

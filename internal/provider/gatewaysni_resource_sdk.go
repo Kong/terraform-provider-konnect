@@ -34,7 +34,7 @@ func (r *GatewaySNIResourceModel) RefreshFromSharedSni(ctx context.Context, resp
 	return diags
 }
 
-func (r *GatewaySNIResourceModel) ToOperationsCreateSniInWorkspaceRequest(ctx context.Context) (*operations.CreateSniInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewaySNIResourceModel) ToOperationsCreateSniRequest(ctx context.Context) (*operations.CreateSniRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -50,7 +50,7 @@ func (r *GatewaySNIResourceModel) ToOperationsCreateSniInWorkspaceRequest(ctx co
 		return nil, diags
 	}
 
-	out := operations.CreateSniInWorkspaceRequest{
+	out := operations.CreateSniRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		Sni:            *sni,
@@ -59,7 +59,7 @@ func (r *GatewaySNIResourceModel) ToOperationsCreateSniInWorkspaceRequest(ctx co
 	return &out, diags
 }
 
-func (r *GatewaySNIResourceModel) ToOperationsDeleteSniInWorkspaceRequest(ctx context.Context) (*operations.DeleteSniInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewaySNIResourceModel) ToOperationsDeleteSniRequest(ctx context.Context) (*operations.DeleteSniRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -71,7 +71,7 @@ func (r *GatewaySNIResourceModel) ToOperationsDeleteSniInWorkspaceRequest(ctx co
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteSniInWorkspaceRequest{
+	out := operations.DeleteSniRequest{
 		ControlPlaneID: controlPlaneID,
 		SNIID:          sniID,
 		Workspace:      workspace,
@@ -80,7 +80,7 @@ func (r *GatewaySNIResourceModel) ToOperationsDeleteSniInWorkspaceRequest(ctx co
 	return &out, diags
 }
 
-func (r *GatewaySNIResourceModel) ToOperationsGetSniInWorkspaceRequest(ctx context.Context) (*operations.GetSniInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewaySNIResourceModel) ToOperationsGetSniRequest(ctx context.Context) (*operations.GetSniRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var sniID string
@@ -92,7 +92,7 @@ func (r *GatewaySNIResourceModel) ToOperationsGetSniInWorkspaceRequest(ctx conte
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetSniInWorkspaceRequest{
+	out := operations.GetSniRequest{
 		SNIID:          sniID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -101,7 +101,7 @@ func (r *GatewaySNIResourceModel) ToOperationsGetSniInWorkspaceRequest(ctx conte
 	return &out, diags
 }
 
-func (r *GatewaySNIResourceModel) ToOperationsUpsertSniInWorkspaceRequest(ctx context.Context) (*operations.UpsertSniInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewaySNIResourceModel) ToOperationsUpsertSniRequest(ctx context.Context) (*operations.UpsertSniRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var sniID string
@@ -120,7 +120,7 @@ func (r *GatewaySNIResourceModel) ToOperationsUpsertSniInWorkspaceRequest(ctx co
 		return nil, diags
 	}
 
-	out := operations.UpsertSniInWorkspaceRequest{
+	out := operations.UpsertSniRequest{
 		SNIID:          sniID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

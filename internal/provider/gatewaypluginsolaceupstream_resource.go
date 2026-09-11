@@ -666,13 +666,13 @@ func (r *GatewayPluginSolaceUpstreamResource) Create(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateSolaceupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateSolaceupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -726,13 +726,13 @@ func (r *GatewayPluginSolaceUpstreamResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetSolaceupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetSolaceupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -780,13 +780,13 @@ func (r *GatewayPluginSolaceUpstreamResource) Update(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateSolaceupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateSolaceupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -840,13 +840,13 @@ func (r *GatewayPluginSolaceUpstreamResource) Delete(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteSolaceupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteSolaceupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

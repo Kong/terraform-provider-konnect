@@ -82,7 +82,7 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Conte
 	return diags
 }
 
-func (r *GatewayServiceResourceModel) ToOperationsCreateServiceInWorkspaceRequest(ctx context.Context) (*operations.CreateServiceInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx context.Context) (*operations.CreateServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -98,7 +98,7 @@ func (r *GatewayServiceResourceModel) ToOperationsCreateServiceInWorkspaceReques
 		return nil, diags
 	}
 
-	out := operations.CreateServiceInWorkspaceRequest{
+	out := operations.CreateServiceRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		Service:        *service,
@@ -107,7 +107,7 @@ func (r *GatewayServiceResourceModel) ToOperationsCreateServiceInWorkspaceReques
 	return &out, diags
 }
 
-func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceInWorkspaceRequest(ctx context.Context) (*operations.DeleteServiceInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceRequest(ctx context.Context) (*operations.DeleteServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -119,7 +119,7 @@ func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceInWorkspaceReques
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteServiceInWorkspaceRequest{
+	out := operations.DeleteServiceRequest{
 		ControlPlaneID: controlPlaneID,
 		ServiceID:      serviceID,
 		Workspace:      workspace,
@@ -128,7 +128,7 @@ func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceInWorkspaceReques
 	return &out, diags
 }
 
-func (r *GatewayServiceResourceModel) ToOperationsGetServiceInWorkspaceRequest(ctx context.Context) (*operations.GetServiceInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayServiceResourceModel) ToOperationsGetServiceRequest(ctx context.Context) (*operations.GetServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var serviceID string
@@ -140,7 +140,7 @@ func (r *GatewayServiceResourceModel) ToOperationsGetServiceInWorkspaceRequest(c
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetServiceInWorkspaceRequest{
+	out := operations.GetServiceRequest{
 		ServiceID:      serviceID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -149,7 +149,7 @@ func (r *GatewayServiceResourceModel) ToOperationsGetServiceInWorkspaceRequest(c
 	return &out, diags
 }
 
-func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceInWorkspaceRequest(ctx context.Context) (*operations.UpsertServiceInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx context.Context) (*operations.UpsertServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var serviceID string
@@ -168,7 +168,7 @@ func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceInWorkspaceReques
 		return nil, diags
 	}
 
-	out := operations.UpsertServiceInWorkspaceRequest{
+	out := operations.UpsertServiceRequest{
 		ServiceID:      serviceID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

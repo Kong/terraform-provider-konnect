@@ -97,7 +97,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWe
 	return diags
 }
 
-func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsCreateStandardwebhooksPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateStandardwebhooksPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsCreateStandardwebhooksPluginRequest(ctx context.Context) (*operations.CreateStandardwebhooksPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -113,7 +113,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsCreateStandardw
 		return nil, diags
 	}
 
-	out := operations.CreateStandardwebhooksPluginInWorkspaceRequest{
+	out := operations.CreateStandardwebhooksPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,
 		StandardWebhooksPlugin: *standardWebhooksPlugin,
@@ -122,7 +122,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsCreateStandardw
 	return &out, diags
 }
 
-func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsDeleteStandardwebhooksPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteStandardwebhooksPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsDeleteStandardwebhooksPluginRequest(ctx context.Context) (*operations.DeleteStandardwebhooksPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -134,7 +134,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsDeleteStandardw
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteStandardwebhooksPluginInWorkspaceRequest{
+	out := operations.DeleteStandardwebhooksPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -143,7 +143,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsDeleteStandardw
 	return &out, diags
 }
 
-func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsGetStandardwebhooksPluginInWorkspaceRequest(ctx context.Context) (*operations.GetStandardwebhooksPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsGetStandardwebhooksPluginRequest(ctx context.Context) (*operations.GetStandardwebhooksPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -155,7 +155,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsGetStandardwebh
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetStandardwebhooksPluginInWorkspaceRequest{
+	out := operations.GetStandardwebhooksPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -164,7 +164,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsGetStandardwebh
 	return &out, diags
 }
 
-func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsUpdateStandardwebhooksPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateStandardwebhooksPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsUpdateStandardwebhooksPluginRequest(ctx context.Context) (*operations.UpdateStandardwebhooksPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -183,7 +183,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsUpdateStandardw
 		return nil, diags
 	}
 
-	out := operations.UpdateStandardwebhooksPluginInWorkspaceRequest{
+	out := operations.UpdateStandardwebhooksPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
 		Workspace:              workspace,

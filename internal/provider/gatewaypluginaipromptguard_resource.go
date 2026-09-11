@@ -374,13 +374,13 @@ func (r *GatewayPluginAiPromptGuardResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAipromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAipromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAipromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAipromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -434,13 +434,13 @@ func (r *GatewayPluginAiPromptGuardResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAipromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAipromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAipromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAipromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -488,13 +488,13 @@ func (r *GatewayPluginAiPromptGuardResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAipromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAipromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAipromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAipromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -548,13 +548,13 @@ func (r *GatewayPluginAiPromptGuardResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAipromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAipromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAipromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAipromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

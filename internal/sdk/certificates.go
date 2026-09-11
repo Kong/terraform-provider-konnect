@@ -35,9 +35,9 @@ func newCertificates(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks 
 	}
 }
 
-// CreateCertificateInWorkspace - Create a new Certificate in a workspace
+// CreateCertificate - Create a new Certificate in a workspace
 // Create a new Certificate in a workspace
-func (s *Certificates) CreateCertificateInWorkspace(ctx context.Context, request operations.CreateCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.CreateCertificateInWorkspaceResponse, error) {
+func (s *Certificates) CreateCertificate(ctx context.Context, request operations.CreateCertificateRequest, opts ...operations.Option) (*operations.CreateCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -66,7 +66,7 @@ func (s *Certificates) CreateCertificateInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-certificate-in-workspace",
+		OperationID:      "create-certificate",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -201,7 +201,7 @@ func (s *Certificates) CreateCertificateInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.CreateCertificateInWorkspaceResponse{
+	res := &operations.CreateCertificateResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -262,9 +262,9 @@ func (s *Certificates) CreateCertificateInWorkspace(ctx context.Context, request
 
 }
 
-// DeleteCertificateInWorkspace - Delete a Certificate in a workspace
+// DeleteCertificate - Delete a Certificate in a workspace
 // Delete a Certificate in a workspace
-func (s *Certificates) DeleteCertificateInWorkspace(ctx context.Context, request operations.DeleteCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteCertificateInWorkspaceResponse, error) {
+func (s *Certificates) DeleteCertificate(ctx context.Context, request operations.DeleteCertificateRequest, opts ...operations.Option) (*operations.DeleteCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -293,7 +293,7 @@ func (s *Certificates) DeleteCertificateInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-certificate-in-workspace",
+		OperationID:      "delete-certificate",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -421,7 +421,7 @@ func (s *Certificates) DeleteCertificateInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.DeleteCertificateInWorkspaceResponse{
+	res := &operations.DeleteCertificateResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -465,9 +465,9 @@ func (s *Certificates) DeleteCertificateInWorkspace(ctx context.Context, request
 
 }
 
-// GetCertificateInWorkspace - Get a Certificate in a workspace
+// GetCertificate - Get a Certificate in a workspace
 // Get a Certificate using ID in a workspace.
-func (s *Certificates) GetCertificateInWorkspace(ctx context.Context, request operations.GetCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.GetCertificateInWorkspaceResponse, error) {
+func (s *Certificates) GetCertificate(ctx context.Context, request operations.GetCertificateRequest, opts ...operations.Option) (*operations.GetCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -496,7 +496,7 @@ func (s *Certificates) GetCertificateInWorkspace(ctx context.Context, request op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-certificate-in-workspace",
+		OperationID:      "get-certificate",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -624,7 +624,7 @@ func (s *Certificates) GetCertificateInWorkspace(ctx context.Context, request op
 		}
 	}
 
-	res := &operations.GetCertificateInWorkspaceResponse{
+	res := &operations.GetCertificateResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -687,9 +687,9 @@ func (s *Certificates) GetCertificateInWorkspace(ctx context.Context, request op
 
 }
 
-// UpsertCertificateInWorkspace - Upsert a Certificate in a workspace
+// UpsertCertificate - Upsert a Certificate in a workspace
 // Create or Update Certificate using ID in a workspace.
-func (s *Certificates) UpsertCertificateInWorkspace(ctx context.Context, request operations.UpsertCertificateInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertCertificateInWorkspaceResponse, error) {
+func (s *Certificates) UpsertCertificate(ctx context.Context, request operations.UpsertCertificateRequest, opts ...operations.Option) (*operations.UpsertCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -718,7 +718,7 @@ func (s *Certificates) UpsertCertificateInWorkspace(ctx context.Context, request
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-certificate-in-workspace",
+		OperationID:      "upsert-certificate",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -853,7 +853,7 @@ func (s *Certificates) UpsertCertificateInWorkspace(ctx context.Context, request
 		}
 	}
 
-	res := &operations.UpsertCertificateInWorkspaceResponse{
+	res := &operations.UpsertCertificateResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

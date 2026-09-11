@@ -414,13 +414,13 @@ func (r *GatewayPluginAiGcpModelArmorResource) Create(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAigcpmodelarmorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAigcpmodelarmorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAigcpmodelarmorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAigcpmodelarmorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -474,13 +474,13 @@ func (r *GatewayPluginAiGcpModelArmorResource) Read(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAigcpmodelarmorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAigcpmodelarmorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAigcpmodelarmorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAigcpmodelarmorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -528,13 +528,13 @@ func (r *GatewayPluginAiGcpModelArmorResource) Update(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAigcpmodelarmorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAigcpmodelarmorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAigcpmodelarmorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAigcpmodelarmorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -588,13 +588,13 @@ func (r *GatewayPluginAiGcpModelArmorResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAigcpmodelarmorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAigcpmodelarmorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAigcpmodelarmorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAigcpmodelarmorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

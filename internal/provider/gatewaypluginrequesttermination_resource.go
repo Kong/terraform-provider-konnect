@@ -361,13 +361,13 @@ func (r *GatewayPluginRequestTerminationResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRequestterminationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRequestterminationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRequestterminationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -421,13 +421,13 @@ func (r *GatewayPluginRequestTerminationResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRequestterminationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRequestterminationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRequestterminationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -475,13 +475,13 @@ func (r *GatewayPluginRequestTerminationResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRequestterminationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRequestterminationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRequestterminationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -535,13 +535,13 @@ func (r *GatewayPluginRequestTerminationResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRequestterminationPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRequestterminationPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRequestterminationPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

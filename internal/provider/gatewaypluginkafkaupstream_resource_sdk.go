@@ -335,7 +335,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 	return diags
 }
 
-func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateKafkaupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstreamPluginRequest(ctx context.Context) (*operations.CreateKafkaupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -351,7 +351,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstrea
 		return nil, diags
 	}
 
-	out := operations.CreateKafkaupstreamPluginInWorkspaceRequest{
+	out := operations.CreateKafkaupstreamPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,
 		KafkaUpstreamPlugin: *kafkaUpstreamPlugin,
@@ -360,7 +360,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstrea
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsDeleteKafkaupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteKafkaupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsDeleteKafkaupstreamPluginRequest(ctx context.Context) (*operations.DeleteKafkaupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -372,7 +372,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsDeleteKafkaupstrea
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteKafkaupstreamPluginInWorkspaceRequest{
+	out := operations.DeleteKafkaupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -381,7 +381,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsDeleteKafkaupstrea
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsGetKafkaupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.GetKafkaupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsGetKafkaupstreamPluginRequest(ctx context.Context) (*operations.GetKafkaupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -393,7 +393,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsGetKafkaupstreamPl
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetKafkaupstreamPluginInWorkspaceRequest{
+	out := operations.GetKafkaupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -402,7 +402,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsGetKafkaupstreamPl
 	return &out, diags
 }
 
-func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstreamPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateKafkaupstreamPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstreamPluginRequest(ctx context.Context) (*operations.UpdateKafkaupstreamPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -421,7 +421,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstrea
 		return nil, diags
 	}
 
-	out := operations.UpdateKafkaupstreamPluginInWorkspaceRequest{
+	out := operations.UpdateKafkaupstreamPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
 		Workspace:           workspace,

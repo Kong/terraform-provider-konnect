@@ -1110,13 +1110,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Create(ctx context.Context,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAisemanticpromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAisemanticpromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1170,13 +1170,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Read(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAisemanticpromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAisemanticpromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1224,13 +1224,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Update(ctx context.Context,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAisemanticpromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAisemanticpromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1284,13 +1284,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Delete(ctx context.Context,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAisemanticpromptguardPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAisemanticpromptguardPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

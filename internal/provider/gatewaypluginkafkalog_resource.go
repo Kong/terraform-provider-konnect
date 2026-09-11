@@ -993,13 +993,13 @@ func (r *GatewayPluginKafkaLogResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKafkalogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateKafkalogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateKafkalogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1053,13 +1053,13 @@ func (r *GatewayPluginKafkaLogResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKafkalogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetKafkalogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetKafkalogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1107,13 +1107,13 @@ func (r *GatewayPluginKafkaLogResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateKafkalogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateKafkalogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateKafkalogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1167,13 +1167,13 @@ func (r *GatewayPluginKafkaLogResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKafkalogPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteKafkalogPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteKafkalogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

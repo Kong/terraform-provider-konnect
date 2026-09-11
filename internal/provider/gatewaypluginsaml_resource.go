@@ -815,13 +815,13 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateSamlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateSamlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -875,13 +875,13 @@ func (r *GatewayPluginSamlResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetSamlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetSamlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -929,13 +929,13 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateSamlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateSamlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -989,13 +989,13 @@ func (r *GatewayPluginSamlResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteSamlPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteSamlPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

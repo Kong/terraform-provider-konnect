@@ -218,7 +218,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 	return diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreateRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreateRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.CreateRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -234,7 +234,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreat
 		return nil, diags
 	}
 
-	out := operations.CreateRequesttransformeradvancedPluginInWorkspaceRequest{
+	out := operations.CreateRequesttransformeradvancedPluginRequest{
 		ControlPlaneID:                   controlPlaneID,
 		Workspace:                        workspace,
 		RequestTransformerAdvancedPlugin: *requestTransformerAdvancedPlugin,
@@ -243,7 +243,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreat
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDeleteRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDeleteRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.DeleteRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -255,7 +255,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDelet
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteRequesttransformeradvancedPluginInWorkspaceRequest{
+	out := operations.DeleteRequesttransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -264,7 +264,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDelet
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.GetRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -276,7 +276,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRe
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetRequesttransformeradvancedPluginInWorkspaceRequest{
+	out := operations.GetRequesttransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -285,7 +285,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRe
 	return &out, diags
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdateRequesttransformeradvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateRequesttransformeradvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdateRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.UpdateRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -304,7 +304,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdat
 		return nil, diags
 	}
 
-	out := operations.UpdateRequesttransformeradvancedPluginInWorkspaceRequest{
+	out := operations.UpdateRequesttransformeradvancedPluginRequest{
 		PluginID:                         pluginID,
 		ControlPlaneID:                   controlPlaneID,
 		Workspace:                        workspace,

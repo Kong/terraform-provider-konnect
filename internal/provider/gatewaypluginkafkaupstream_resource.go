@@ -999,13 +999,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKafkaupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKafkaupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateKafkaupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1059,13 +1059,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKafkaupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKafkaupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetKafkaupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1113,13 +1113,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateKafkaupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateKafkaupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateKafkaupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1173,13 +1173,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKafkaupstreamPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKafkaupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteKafkaupstreamPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

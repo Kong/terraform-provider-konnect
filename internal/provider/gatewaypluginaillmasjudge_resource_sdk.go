@@ -283,7 +283,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) RefreshFromSharedAiLlmAsJudgePl
 	return diags
 }
 
-func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsCreateAillmasjudgePluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAillmasjudgePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsCreateAillmasjudgePluginRequest(ctx context.Context) (*operations.CreateAillmasjudgePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -299,7 +299,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsCreateAillmasjudgeP
 		return nil, diags
 	}
 
-	out := operations.CreateAillmasjudgePluginInWorkspaceRequest{
+	out := operations.CreateAillmasjudgePluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,
 		AiLlmAsJudgePlugin: *aiLlmAsJudgePlugin,
@@ -308,7 +308,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsCreateAillmasjudgeP
 	return &out, diags
 }
 
-func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsDeleteAillmasjudgePluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAillmasjudgePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsDeleteAillmasjudgePluginRequest(ctx context.Context) (*operations.DeleteAillmasjudgePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -320,7 +320,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsDeleteAillmasjudgeP
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAillmasjudgePluginInWorkspaceRequest{
+	out := operations.DeleteAillmasjudgePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -329,7 +329,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsDeleteAillmasjudgeP
 	return &out, diags
 }
 
-func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsGetAillmasjudgePluginInWorkspaceRequest(ctx context.Context) (*operations.GetAillmasjudgePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsGetAillmasjudgePluginRequest(ctx context.Context) (*operations.GetAillmasjudgePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -341,7 +341,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsGetAillmasjudgePlug
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAillmasjudgePluginInWorkspaceRequest{
+	out := operations.GetAillmasjudgePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -350,7 +350,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsGetAillmasjudgePlug
 	return &out, diags
 }
 
-func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsUpdateAillmasjudgePluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAillmasjudgePluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsUpdateAillmasjudgePluginRequest(ctx context.Context) (*operations.UpdateAillmasjudgePluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -369,7 +369,7 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToOperationsUpdateAillmasjudgeP
 		return nil, diags
 	}
 
-	out := operations.UpdateAillmasjudgePluginInWorkspaceRequest{
+	out := operations.UpdateAillmasjudgePluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
 		Workspace:          workspace,

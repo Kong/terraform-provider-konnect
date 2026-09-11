@@ -207,7 +207,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 	return diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCreateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCreateGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.CreateGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -223,7 +223,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCrea
 		return nil, diags
 	}
 
-	out := operations.CreateGraphqlratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.CreateGraphqlratelimitingadvancedPluginRequest{
 		ControlPlaneID:                    controlPlaneID,
 		Workspace:                         workspace,
 		GraphqlRateLimitingAdvancedPlugin: *graphqlRateLimitingAdvancedPlugin,
@@ -232,7 +232,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCrea
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDeleteGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.DeleteGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -244,7 +244,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDele
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteGraphqlratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.DeleteGraphqlratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -253,7 +253,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDele
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.GetGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -265,7 +265,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetG
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetGraphqlratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.GetGraphqlratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -274,7 +274,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetG
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpdateGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.UpdateGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -293,7 +293,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpda
 		return nil, diags
 	}
 
-	out := operations.UpdateGraphqlratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.UpdateGraphqlratelimitingadvancedPluginRequest{
 		PluginID:                          pluginID,
 		ControlPlaneID:                    controlPlaneID,
 		Workspace:                         workspace,

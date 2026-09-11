@@ -329,13 +329,13 @@ func (r *GatewayPluginRequestSizeLimitingResource) Create(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRequestsizelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRequestsizelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -389,13 +389,13 @@ func (r *GatewayPluginRequestSizeLimitingResource) Read(ctx context.Context, req
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRequestsizelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRequestsizelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -443,13 +443,13 @@ func (r *GatewayPluginRequestSizeLimitingResource) Update(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRequestsizelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRequestsizelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -503,13 +503,13 @@ func (r *GatewayPluginRequestSizeLimitingResource) Delete(ctx context.Context, r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRequestsizelimitingPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRequestsizelimitingPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

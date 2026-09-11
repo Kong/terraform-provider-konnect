@@ -37,9 +37,9 @@ func newVaults(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks
 	}
 }
 
-// CreateVaultInWorkspace - Create a new Vault in a workspace
+// CreateVault - Create a new Vault in a workspace
 // Create a new Vault in a workspace
-func (s *Vaults) CreateVaultInWorkspace(ctx context.Context, request operations.CreateVaultInWorkspaceRequest, opts ...operations.Option) (*operations.CreateVaultInWorkspaceResponse, error) {
+func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVaultRequest, opts ...operations.Option) (*operations.CreateVaultResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -68,7 +68,7 @@ func (s *Vaults) CreateVaultInWorkspace(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-vault-in-workspace",
+		OperationID:      "create-vault",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -203,7 +203,7 @@ func (s *Vaults) CreateVaultInWorkspace(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.CreateVaultInWorkspaceResponse{
+	res := &operations.CreateVaultResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -264,9 +264,9 @@ func (s *Vaults) CreateVaultInWorkspace(ctx context.Context, request operations.
 
 }
 
-// DeleteVaultInWorkspace - Delete a Vault in a workspace
+// DeleteVault - Delete a Vault in a workspace
 // Delete a Vault in a workspace
-func (s *Vaults) DeleteVaultInWorkspace(ctx context.Context, request operations.DeleteVaultInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteVaultInWorkspaceResponse, error) {
+func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVaultRequest, opts ...operations.Option) (*operations.DeleteVaultResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -295,7 +295,7 @@ func (s *Vaults) DeleteVaultInWorkspace(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-vault-in-workspace",
+		OperationID:      "delete-vault",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -423,7 +423,7 @@ func (s *Vaults) DeleteVaultInWorkspace(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.DeleteVaultInWorkspaceResponse{
+	res := &operations.DeleteVaultResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -467,9 +467,9 @@ func (s *Vaults) DeleteVaultInWorkspace(ctx context.Context, request operations.
 
 }
 
-// GetVaultInWorkspace - Get a Vault in a workspace
+// GetVault - Get a Vault in a workspace
 // Get a Vault using ID or prefix in a workspace.
-func (s *Vaults) GetVaultInWorkspace(ctx context.Context, request operations.GetVaultInWorkspaceRequest, opts ...operations.Option) (*operations.GetVaultInWorkspaceResponse, error) {
+func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultRequest, opts ...operations.Option) (*operations.GetVaultResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -498,7 +498,7 @@ func (s *Vaults) GetVaultInWorkspace(ctx context.Context, request operations.Get
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-vault-in-workspace",
+		OperationID:      "get-vault",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -626,7 +626,7 @@ func (s *Vaults) GetVaultInWorkspace(ctx context.Context, request operations.Get
 		}
 	}
 
-	res := &operations.GetVaultInWorkspaceResponse{
+	res := &operations.GetVaultResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -689,9 +689,9 @@ func (s *Vaults) GetVaultInWorkspace(ctx context.Context, request operations.Get
 
 }
 
-// UpsertVaultInWorkspace - Upsert a Vault in a workspace
+// UpsertVault - Upsert a Vault in a workspace
 // Create or Update Vault using ID or prefix in a workspace.
-func (s *Vaults) UpsertVaultInWorkspace(ctx context.Context, request operations.UpsertVaultInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertVaultInWorkspaceResponse, error) {
+func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVaultRequest, opts ...operations.Option) (*operations.UpsertVaultResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -720,7 +720,7 @@ func (s *Vaults) UpsertVaultInWorkspace(ctx context.Context, request operations.
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-vault-in-workspace",
+		OperationID:      "upsert-vault",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -855,7 +855,7 @@ func (s *Vaults) UpsertVaultInWorkspace(ctx context.Context, request operations.
 		}
 	}
 
-	res := &operations.UpsertVaultInWorkspaceResponse{
+	res := &operations.UpsertVaultResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

@@ -197,7 +197,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) RefreshFromSharedG
 	return diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreateGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreateGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.CreateGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -213,7 +213,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreate
 		return nil, diags
 	}
 
-	out := operations.CreateGraphqlproxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.CreateGraphqlproxycacheadvancedPluginRequest{
 		ControlPlaneID:                  controlPlaneID,
 		Workspace:                       workspace,
 		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
@@ -222,7 +222,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreate
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDeleteGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.DeleteGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -234,7 +234,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDelete
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteGraphqlproxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.DeleteGraphqlproxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -243,7 +243,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDelete
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.GetGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -255,7 +255,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGra
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetGraphqlproxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.GetGraphqlproxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -264,7 +264,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGra
 	return &out, diags
 }
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdateGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.UpdateGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -283,7 +283,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 		return nil, diags
 	}
 
-	out := operations.UpdateGraphqlproxycacheadvancedPluginInWorkspaceRequest{
+	out := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
 		PluginID:                        pluginID,
 		ControlPlaneID:                  controlPlaneID,
 		Workspace:                       workspace,

@@ -302,7 +302,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 	return diags
 }
 
-func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAiratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateAiratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.CreateAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -318,7 +318,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAir
 		return nil, diags
 	}
 
-	out := operations.CreateAiratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.CreateAiratelimitingadvancedPluginRequest{
 		ControlPlaneID:               controlPlaneID,
 		Workspace:                    workspace,
 		AiRateLimitingAdvancedPlugin: *aiRateLimitingAdvancedPlugin,
@@ -327,7 +327,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAir
 	return &out, diags
 }
 
-func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsDeleteAiratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteAiratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsDeleteAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.DeleteAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -339,7 +339,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsDeleteAir
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteAiratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.DeleteAiratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -348,7 +348,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsDeleteAir
 	return &out, diags
 }
 
-func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsGetAiratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetAiratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsGetAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.GetAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -360,7 +360,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsGetAirate
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetAiratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.GetAiratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -369,7 +369,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsGetAirate
 	return &out, diags
 }
 
-func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAiratelimitingadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateAiratelimitingadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.UpdateAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -388,7 +388,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAir
 		return nil, diags
 	}
 
-	out := operations.UpdateAiratelimitingadvancedPluginInWorkspaceRequest{
+	out := operations.UpdateAiratelimitingadvancedPluginRequest{
 		PluginID:                     pluginID,
 		ControlPlaneID:               controlPlaneID,
 		Workspace:                    workspace,

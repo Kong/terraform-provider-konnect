@@ -99,7 +99,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) RefreshFromSharedTLSMetad
 	return diags
 }
 
-func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsCreateTlsmetadataheadersPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateTlsmetadataheadersPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsCreateTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.CreateTlsmetadataheadersPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -115,7 +115,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsCreateTlsmeta
 		return nil, diags
 	}
 
-	out := operations.CreateTlsmetadataheadersPluginInWorkspaceRequest{
+	out := operations.CreateTlsmetadataheadersPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,
 		TLSMetadataHeadersPlugin: *tlsMetadataHeadersPlugin,
@@ -124,7 +124,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsCreateTlsmeta
 	return &out, diags
 }
 
-func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsDeleteTlsmetadataheadersPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteTlsmetadataheadersPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsDeleteTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.DeleteTlsmetadataheadersPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -136,7 +136,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsDeleteTlsmeta
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteTlsmetadataheadersPluginInWorkspaceRequest{
+	out := operations.DeleteTlsmetadataheadersPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -145,7 +145,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsDeleteTlsmeta
 	return &out, diags
 }
 
-func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsGetTlsmetadataheadersPluginInWorkspaceRequest(ctx context.Context) (*operations.GetTlsmetadataheadersPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsGetTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.GetTlsmetadataheadersPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -157,7 +157,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsGetTlsmetadat
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetTlsmetadataheadersPluginInWorkspaceRequest{
+	out := operations.GetTlsmetadataheadersPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -166,7 +166,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsGetTlsmetadat
 	return &out, diags
 }
 
-func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsUpdateTlsmetadataheadersPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateTlsmetadataheadersPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsUpdateTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.UpdateTlsmetadataheadersPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -185,7 +185,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsUpdateTlsmeta
 		return nil, diags
 	}
 
-	out := operations.UpdateTlsmetadataheadersPluginInWorkspaceRequest{
+	out := operations.UpdateTlsmetadataheadersPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
 		Workspace:                workspace,

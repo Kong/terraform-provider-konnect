@@ -1541,13 +1541,13 @@ func (r *GatewayPluginJwtSignerResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateJwtsignerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateJwtsignerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateJwtsignerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1601,13 +1601,13 @@ func (r *GatewayPluginJwtSignerResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetJwtsignerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetJwtsignerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetJwtsignerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1655,13 +1655,13 @@ func (r *GatewayPluginJwtSignerResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateJwtsignerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateJwtsignerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateJwtsignerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1715,13 +1715,13 @@ func (r *GatewayPluginJwtSignerResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteJwtsignerPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteJwtsignerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteJwtsignerPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

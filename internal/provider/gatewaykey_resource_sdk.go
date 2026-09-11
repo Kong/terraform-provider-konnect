@@ -48,7 +48,7 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(ctx context.Context, resp
 	return diags
 }
 
-func (r *GatewayKeyResourceModel) ToOperationsCreateKeyInWorkspaceRequest(ctx context.Context) (*operations.CreateKeyInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayKeyResourceModel) ToOperationsCreateKeyRequest(ctx context.Context) (*operations.CreateKeyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -64,7 +64,7 @@ func (r *GatewayKeyResourceModel) ToOperationsCreateKeyInWorkspaceRequest(ctx co
 		return nil, diags
 	}
 
-	out := operations.CreateKeyInWorkspaceRequest{
+	out := operations.CreateKeyRequest{
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
 		Key:            *key,
@@ -73,7 +73,7 @@ func (r *GatewayKeyResourceModel) ToOperationsCreateKeyInWorkspaceRequest(ctx co
 	return &out, diags
 }
 
-func (r *GatewayKeyResourceModel) ToOperationsDeleteKeyInWorkspaceRequest(ctx context.Context) (*operations.DeleteKeyInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayKeyResourceModel) ToOperationsDeleteKeyRequest(ctx context.Context) (*operations.DeleteKeyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -85,7 +85,7 @@ func (r *GatewayKeyResourceModel) ToOperationsDeleteKeyInWorkspaceRequest(ctx co
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteKeyInWorkspaceRequest{
+	out := operations.DeleteKeyRequest{
 		ControlPlaneID: controlPlaneID,
 		KeyID:          keyID,
 		Workspace:      workspace,
@@ -94,7 +94,7 @@ func (r *GatewayKeyResourceModel) ToOperationsDeleteKeyInWorkspaceRequest(ctx co
 	return &out, diags
 }
 
-func (r *GatewayKeyResourceModel) ToOperationsGetKeyInWorkspaceRequest(ctx context.Context) (*operations.GetKeyInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayKeyResourceModel) ToOperationsGetKeyRequest(ctx context.Context) (*operations.GetKeyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var keyID string
@@ -106,7 +106,7 @@ func (r *GatewayKeyResourceModel) ToOperationsGetKeyInWorkspaceRequest(ctx conte
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetKeyInWorkspaceRequest{
+	out := operations.GetKeyRequest{
 		KeyID:          keyID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -115,7 +115,7 @@ func (r *GatewayKeyResourceModel) ToOperationsGetKeyInWorkspaceRequest(ctx conte
 	return &out, diags
 }
 
-func (r *GatewayKeyResourceModel) ToOperationsUpsertKeyInWorkspaceRequest(ctx context.Context) (*operations.UpsertKeyInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayKeyResourceModel) ToOperationsUpsertKeyRequest(ctx context.Context) (*operations.UpsertKeyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var keyID string
@@ -134,7 +134,7 @@ func (r *GatewayKeyResourceModel) ToOperationsUpsertKeyInWorkspaceRequest(ctx co
 		return nil, diags
 	}
 
-	out := operations.UpsertKeyInWorkspaceRequest{
+	out := operations.UpsertKeyRequest{
 		KeyID:          keyID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,

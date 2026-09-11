@@ -400,13 +400,13 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Create(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAiawsguardrailsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAiawsguardrailsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAiawsguardrailsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAiawsguardrailsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -460,13 +460,13 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Read(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAiawsguardrailsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAiawsguardrailsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAiawsguardrailsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAiawsguardrailsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -514,13 +514,13 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Update(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAiawsguardrailsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAiawsguardrailsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAiawsguardrailsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAiawsguardrailsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -574,13 +574,13 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAiawsguardrailsPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAiawsguardrailsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAiawsguardrailsPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAiawsguardrailsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

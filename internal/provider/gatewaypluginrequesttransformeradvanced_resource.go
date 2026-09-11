@@ -586,13 +586,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Create(ctx context.Con
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRequesttransformeradvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRequesttransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRequesttransformeradvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRequesttransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -646,13 +646,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Read(ctx context.Conte
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRequesttransformeradvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRequesttransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRequesttransformeradvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRequesttransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -700,13 +700,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Update(ctx context.Con
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRequesttransformeradvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRequesttransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRequesttransformeradvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRequesttransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -760,13 +760,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Delete(ctx context.Con
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRequesttransformeradvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRequesttransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRequesttransformeradvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRequesttransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

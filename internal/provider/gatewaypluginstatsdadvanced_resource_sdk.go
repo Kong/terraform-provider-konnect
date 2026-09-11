@@ -175,7 +175,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 	return diags
 }
 
-func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsCreateStatsdadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.CreateStatsdadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsCreateStatsdadvancedPluginRequest(ctx context.Context) (*operations.CreateStatsdadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
@@ -191,7 +191,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsCreateStatsdadvan
 		return nil, diags
 	}
 
-	out := operations.CreateStatsdadvancedPluginInWorkspaceRequest{
+	out := operations.CreateStatsdadvancedPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		Workspace:            workspace,
 		StatsdAdvancedPlugin: *statsdAdvancedPlugin,
@@ -200,7 +200,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsCreateStatsdadvan
 	return &out, diags
 }
 
-func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsDeleteStatsdadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.DeleteStatsdadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsDeleteStatsdadvancedPluginRequest(ctx context.Context) (*operations.DeleteStatsdadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -212,7 +212,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsDeleteStatsdadvan
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.DeleteStatsdadvancedPluginInWorkspaceRequest{
+	out := operations.DeleteStatsdadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -221,7 +221,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsDeleteStatsdadvan
 	return &out, diags
 }
 
-func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsGetStatsdadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.GetStatsdadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsGetStatsdadvancedPluginRequest(ctx context.Context) (*operations.GetStatsdadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -233,7 +233,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsGetStatsdadvanced
 	var workspace string
 	workspace = r.Workspace.ValueString()
 
-	out := operations.GetStatsdadvancedPluginInWorkspaceRequest{
+	out := operations.GetStatsdadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 		Workspace:      workspace,
@@ -242,7 +242,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsGetStatsdadvanced
 	return &out, diags
 }
 
-func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsUpdateStatsdadvancedPluginInWorkspaceRequest(ctx context.Context) (*operations.UpdateStatsdadvancedPluginInWorkspaceRequest, diag.Diagnostics) {
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsUpdateStatsdadvancedPluginRequest(ctx context.Context) (*operations.UpdateStatsdadvancedPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -261,7 +261,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsUpdateStatsdadvan
 		return nil, diags
 	}
 
-	out := operations.UpdateStatsdadvancedPluginInWorkspaceRequest{
+	out := operations.UpdateStatsdadvancedPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
 		Workspace:            workspace,

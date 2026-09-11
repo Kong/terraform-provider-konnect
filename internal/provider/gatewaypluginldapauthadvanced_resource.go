@@ -418,13 +418,13 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Create(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateLdapauthadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateLdapauthadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateLdapauthadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateLdapauthadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -478,13 +478,13 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Read(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetLdapauthadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetLdapauthadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetLdapauthadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetLdapauthadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -532,13 +532,13 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Update(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateLdapauthadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateLdapauthadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateLdapauthadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateLdapauthadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -592,13 +592,13 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteLdapauthadvancedPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteLdapauthadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteLdapauthadvancedPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteLdapauthadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

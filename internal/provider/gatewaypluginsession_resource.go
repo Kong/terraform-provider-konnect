@@ -481,13 +481,13 @@ func (r *GatewayPluginSessionResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateSessionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateSessionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateSessionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateSessionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -541,13 +541,13 @@ func (r *GatewayPluginSessionResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetSessionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetSessionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetSessionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetSessionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -595,13 +595,13 @@ func (r *GatewayPluginSessionResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateSessionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateSessionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateSessionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateSessionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -655,13 +655,13 @@ func (r *GatewayPluginSessionResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteSessionPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteSessionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteSessionPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteSessionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

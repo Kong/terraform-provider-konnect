@@ -167,13 +167,13 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKeyAuthWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateKeyAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIKeys.CreateKeyAuthWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.APIKeys.CreateKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -227,13 +227,13 @@ func (r *GatewayKeyAuthResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKeyAuthWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetKeyAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIKeys.GetKeyAuthWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.APIKeys.GetKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -305,13 +305,13 @@ func (r *GatewayKeyAuthResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKeyAuthWithConsumerInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteKeyAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumerInWorkspace(ctx, *request)
+	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

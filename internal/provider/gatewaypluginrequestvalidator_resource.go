@@ -412,13 +412,13 @@ func (r *GatewayPluginRequestValidatorResource) Create(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRequestvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRequestvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRequestvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRequestvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -472,13 +472,13 @@ func (r *GatewayPluginRequestValidatorResource) Read(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRequestvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRequestvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRequestvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRequestvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -526,13 +526,13 @@ func (r *GatewayPluginRequestValidatorResource) Update(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRequestvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRequestvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRequestvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRequestvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -586,13 +586,13 @@ func (r *GatewayPluginRequestValidatorResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRequestvalidatorPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRequestvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRequestvalidatorPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRequestvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

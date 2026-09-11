@@ -1023,13 +1023,13 @@ func (r *GatewayPluginRequestCalloutResource) Create(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateRequestcalloutPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateRequestcalloutPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateRequestcalloutPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1083,13 +1083,13 @@ func (r *GatewayPluginRequestCalloutResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetRequestcalloutPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRequestcalloutPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetRequestcalloutPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1137,13 +1137,13 @@ func (r *GatewayPluginRequestCalloutResource) Update(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateRequestcalloutPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRequestcalloutPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateRequestcalloutPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1197,13 +1197,13 @@ func (r *GatewayPluginRequestCalloutResource) Delete(ctx context.Context, req re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteRequestcalloutPluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRequestcalloutPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteRequestcalloutPluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

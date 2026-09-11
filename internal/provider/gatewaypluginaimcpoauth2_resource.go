@@ -712,13 +712,13 @@ func (r *GatewayPluginAiMcpOauth2Resource) Create(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAimcpoauth2PluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateAimcpoauth2PluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.CreateAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -772,13 +772,13 @@ func (r *GatewayPluginAiMcpOauth2Resource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAimcpoauth2PluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetAimcpoauth2PluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.GetAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -826,13 +826,13 @@ func (r *GatewayPluginAiMcpOauth2Resource) Update(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAimcpoauth2PluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateAimcpoauth2PluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.UpdateAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -886,13 +886,13 @@ func (r *GatewayPluginAiMcpOauth2Resource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAimcpoauth2PluginInWorkspaceRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteAimcpoauth2PluginInWorkspace(ctx, *request)
+	res, err := r.client.Plugins.DeleteAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

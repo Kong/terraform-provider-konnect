@@ -31,9 +31,9 @@ func newKeySets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreateKeySetInWorkspace - Create a new KeySet in a workspace
+// CreateKeySet - Create a new KeySet in a workspace
 // Create a new KeySet in a workspace
-func (s *KeySets) CreateKeySetInWorkspace(ctx context.Context, request operations.CreateKeySetInWorkspaceRequest, opts ...operations.Option) (*operations.CreateKeySetInWorkspaceResponse, error) {
+func (s *KeySets) CreateKeySet(ctx context.Context, request operations.CreateKeySetRequest, opts ...operations.Option) (*operations.CreateKeySetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -62,7 +62,7 @@ func (s *KeySets) CreateKeySetInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-key-set-in-workspace",
+		OperationID:      "create-key-set",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -197,7 +197,7 @@ func (s *KeySets) CreateKeySetInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.CreateKeySetInWorkspaceResponse{
+	res := &operations.CreateKeySetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -258,9 +258,9 @@ func (s *KeySets) CreateKeySetInWorkspace(ctx context.Context, request operation
 
 }
 
-// DeleteKeySetInWorkspace - Delete a KeySet in a workspace
+// DeleteKeySet - Delete a KeySet in a workspace
 // Delete a KeySet in a workspace
-func (s *KeySets) DeleteKeySetInWorkspace(ctx context.Context, request operations.DeleteKeySetInWorkspaceRequest, opts ...operations.Option) (*operations.DeleteKeySetInWorkspaceResponse, error) {
+func (s *KeySets) DeleteKeySet(ctx context.Context, request operations.DeleteKeySetRequest, opts ...operations.Option) (*operations.DeleteKeySetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -289,7 +289,7 @@ func (s *KeySets) DeleteKeySetInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-key-set-in-workspace",
+		OperationID:      "delete-key-set",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -417,7 +417,7 @@ func (s *KeySets) DeleteKeySetInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.DeleteKeySetInWorkspaceResponse{
+	res := &operations.DeleteKeySetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -461,9 +461,9 @@ func (s *KeySets) DeleteKeySetInWorkspace(ctx context.Context, request operation
 
 }
 
-// GetKeySetInWorkspace - Get a KeySet in a workspace
+// GetKeySet - Get a KeySet in a workspace
 // Get a KeySet using ID or name in a workspace.
-func (s *KeySets) GetKeySetInWorkspace(ctx context.Context, request operations.GetKeySetInWorkspaceRequest, opts ...operations.Option) (*operations.GetKeySetInWorkspaceResponse, error) {
+func (s *KeySets) GetKeySet(ctx context.Context, request operations.GetKeySetRequest, opts ...operations.Option) (*operations.GetKeySetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -492,7 +492,7 @@ func (s *KeySets) GetKeySetInWorkspace(ctx context.Context, request operations.G
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-key-set-in-workspace",
+		OperationID:      "get-key-set",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -620,7 +620,7 @@ func (s *KeySets) GetKeySetInWorkspace(ctx context.Context, request operations.G
 		}
 	}
 
-	res := &operations.GetKeySetInWorkspaceResponse{
+	res := &operations.GetKeySetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -683,9 +683,9 @@ func (s *KeySets) GetKeySetInWorkspace(ctx context.Context, request operations.G
 
 }
 
-// UpsertKeySetInWorkspace - Upsert a KeySet in a workspace
+// UpsertKeySet - Upsert a KeySet in a workspace
 // Create or Update KeySet using ID or name in a workspace.
-func (s *KeySets) UpsertKeySetInWorkspace(ctx context.Context, request operations.UpsertKeySetInWorkspaceRequest, opts ...operations.Option) (*operations.UpsertKeySetInWorkspaceResponse, error) {
+func (s *KeySets) UpsertKeySet(ctx context.Context, request operations.UpsertKeySetRequest, opts ...operations.Option) (*operations.UpsertKeySetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -714,7 +714,7 @@ func (s *KeySets) UpsertKeySetInWorkspace(ctx context.Context, request operation
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "upsert-key-set-in-workspace",
+		OperationID:      "upsert-key-set",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -849,7 +849,7 @@ func (s *KeySets) UpsertKeySetInWorkspace(ctx context.Context, request operation
 		}
 	}
 
-	res := &operations.UpsertKeySetInWorkspaceResponse{
+	res := &operations.UpsertKeySetResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
