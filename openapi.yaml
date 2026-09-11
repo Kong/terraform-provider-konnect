@@ -18616,7 +18616,7 @@ paths:
     get:
       x-speakeasy-entity-operation:
         terraform-resource: IdentityProvider#read
-        terraform-datasource: null
+        terraform-datasource: IdentityProvider#read
       operationId: get-identity-provider
       summary: Get Identity Provider
       description: |
@@ -31842,8 +31842,8 @@ components:
         The visibility of the API in the portal.
         Public API publications do not require authentication to view and retrieve information about them.
         Private API publications require authentication to retrieve information about them.
+        If omitted, this defaults to the target portal's configured default API visibility.
       type: string
-      default: private
       enum:
         - public
         - private
@@ -36354,6 +36354,7 @@ components:
       enum:
         - implicit
         - client_credentials
+        - 'urn:ietf:params:oauth:grant-type:jwt-bearer'
       x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
@@ -36445,6 +36446,7 @@ components:
       type: string
       default: client_secret_post
       enum:
+        - private_key_jwt
         - client_secret_post
         - none
       x-speakeasy-unknown-values: allow
