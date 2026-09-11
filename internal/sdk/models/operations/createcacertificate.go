@@ -11,8 +11,6 @@ import (
 type CreateCaCertificateRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// The name of the workspace
-	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the new CA Certificate for creation
 	CACertificate shared.CACertificateInput `request:"mediaType=application/json"`
 }
@@ -22,7 +20,7 @@ func (c CreateCaCertificateRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateCaCertificateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "CACertificate"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "CACertificate"}); err != nil {
 		return err
 	}
 	return nil
@@ -33,13 +31,6 @@ func (c *CreateCaCertificateRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
-}
-
-func (c *CreateCaCertificateRequest) GetWorkspace() string {
-	if c == nil {
-		return ""
-	}
-	return c.Workspace
 }
 
 func (c *CreateCaCertificateRequest) GetCACertificate() shared.CACertificateInput {

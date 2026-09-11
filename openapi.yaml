@@ -5426,106 +5426,6 @@ paths:
           $ref: '#/components/responses/ConfigStoreSecretNotFound'
       tags:
         - Config Store Secrets
-  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayCACertificate#create
-      operationId: create-ca_certificate
-      summary: Create a new CA Certificate in a workspace
-      description: Create a new CA Certificate in a workspace
-      parameters:
-        - $ref: '#/components/parameters/Workspace'
-      requestBody:
-        description: Description of the new CA Certificate for creation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CACertificate'
-      responses:
-        '201':
-          description: Successfully created CA Certificate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CACertificate'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - CA Certificates
-  '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayCACertificate#delete
-      operationId: delete-ca_certificate
-      summary: Delete a CA Certificate in a workspace
-      description: Delete a CA Certificate in a workspace
-      parameters:
-        - $ref: '#/components/parameters/CACertificateId'
-        - $ref: '#/components/parameters/Workspace'
-      responses:
-        '204':
-          description: Successfully deleted CA Certificate or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - CA Certificates
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayCACertificate#read
-      operationId: get-ca_certificate
-      summary: Get a CA Certificate in a workspace
-      description: Get a CA Certificate using ID in a workspace.
-      parameters:
-        - $ref: '#/components/parameters/Workspace'
-      responses:
-        '200':
-          description: Successfully fetched CA Certificate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CACertificate'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - CA Certificates
-    parameters:
-      - $ref: '#/components/parameters/CACertificateId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayCACertificate#update
-      operationId: upsert-ca_certificate
-      summary: Upsert a CA Certificate in a workspace
-      description: Create or Update CA Certificate using ID in a workspace.
-      parameters:
-        - $ref: '#/components/parameters/Workspace'
-      requestBody:
-        description: Description of the CA Certificate
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CACertificate'
-      responses:
-        '200':
-          description: Successfully upserted CA Certificate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CACertificate'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - CA Certificates
   '/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/certificates':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -18159,6 +18059,99 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Vaults
+  '/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayCACertificate#create
+      operationId: create-ca_certificate
+      summary: Create a new CA Certificate
+      description: Create a new CA Certificate
+      requestBody:
+        description: Description of the new CA Certificate for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+      responses:
+        '201':
+          description: Successfully created CA Certificate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - CA Certificates
+  '/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayCACertificate#delete
+      operationId: delete-ca_certificate
+      summary: Delete a CA Certificate
+      description: Delete a CA Certificate
+      parameters:
+        - $ref: '#/components/parameters/CACertificateId'
+      responses:
+        '204':
+          description: Successfully deleted CA Certificate or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - CA Certificates
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayCACertificate#read
+      operationId: get-ca_certificate
+      summary: Get a CA Certificate
+      description: Get a CA Certificate using ID.
+      responses:
+        '200':
+          description: Successfully fetched CA Certificate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - CA Certificates
+    parameters:
+      - $ref: '#/components/parameters/CACertificateId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayCACertificate#update
+      operationId: upsert-ca_certificate
+      summary: Upsert a CA Certificate
+      description: Create or Update CA Certificate using ID.
+      requestBody:
+        description: Description of the CA Certificate
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+      responses:
+        '200':
+          description: Successfully upserted CA Certificate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - CA Certificates
   '/v2/control-planes/{controlPlaneId}/core-entities/cloned-plugins':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -50379,7 +50372,6 @@ components:
       additionalProperties: false
       required:
         - cert
-      x-speakeasy-entity-version: 1
     CanaryPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'

@@ -192,9 +192,6 @@ type Konnect struct {
 	ConfigStores *ConfigStores
 	// Config Store Secrets
 	ConfigStoreSecrets *ConfigStoreSecrets
-	// A CA certificate object represents a trusted certificate authority.
-	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
-	CACertificates *CACertificates
 	// A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong Gateway to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service.
 	// <br><br>
 	// Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames.
@@ -283,9 +280,12 @@ type Konnect struct {
 	// <br><br>
 	// Secrets rotation can be managed using [TTLs](https://developer.konghq.com/gateway/entities/vault/).
 	//
-	Vaults        *Vaults
-	ClonedPlugins *ClonedPlugins
-	CustomPlugins *CustomPlugins
+	Vaults *Vaults
+	// A CA certificate object represents a trusted certificate authority.
+	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
+	CACertificates *CACertificates
+	ClonedPlugins  *ClonedPlugins
+	CustomPlugins  *CustomPlugins
 	// Custom Plugin Schemas
 	CustomPluginSchemas *CustomPluginSchemas
 	Workspaces          *Workspaces
@@ -483,7 +483,6 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ControlPlanes = newControlPlanes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConfigStores = newConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConfigStoreSecrets = newConfigStoreSecrets(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Certificates = newCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConsumerGroups = newConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Consumers = newConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -504,6 +503,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Upstreams = newUpstreams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Targets = newTargets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Vaults = newVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ClonedPlugins = newClonedPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CustomPlugins = newCustomPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -16,10 +16,6 @@ func GatewaybasicauthStateUpgraderV0(ctx context.Context, req resource.UpgradeSt
 	upgradeToCurrentSchema("konnect_gateway_basic_auth", req, resp, defaultWorkspaceIfMissing)
 }
 
-func GatewaycacertificateStateUpgraderV0(ctx context.Context, req resource.UpgradeStateRequest, resp *resource.UpgradeStateResponse) {
-	upgradeToCurrentSchema("konnect_gateway_ca_certificate", req, resp, defaultWorkspaceIfMissing)
-}
-
 func GatewaycertificateStateUpgraderV0(ctx context.Context, req resource.UpgradeStateRequest, resp *resource.UpgradeStateResponse) {
 	upgradeToCurrentSchema("konnect_gateway_certificate", req, resp, defaultWorkspaceIfMissing)
 }

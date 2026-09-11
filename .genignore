@@ -6,7 +6,6 @@
 internal/provider/workspace_upgrade_schema.go
 internal/stateupgraders/gatewayacl_v0.go
 internal/stateupgraders/gatewaybasicauth_v0.go
-internal/stateupgraders/gatewaycacertificate_v0.go
 internal/stateupgraders/gatewaycertificate_v0.go
 internal/stateupgraders/gatewayconsumer_v0.go
 internal/stateupgraders/gatewayconsumergroup_v0.go

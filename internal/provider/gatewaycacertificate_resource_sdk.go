@@ -38,9 +38,6 @@ func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	var workspace string
-	workspace = r.Workspace.ValueString()
-
 	caCertificate, caCertificateDiags := r.ToSharedCACertificateInput(ctx)
 	diags.Append(caCertificateDiags...)
 
@@ -50,7 +47,6 @@ func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateReque
 
 	out := operations.CreateCaCertificateRequest{
 		ControlPlaneID: controlPlaneID,
-		Workspace:      workspace,
 		CACertificate:  *caCertificate,
 	}
 
@@ -66,13 +62,9 @@ func (r *GatewayCACertificateResourceModel) ToOperationsDeleteCaCertificateReque
 	var caCertificateID string
 	caCertificateID = r.ID.ValueString()
 
-	var workspace string
-	workspace = r.Workspace.ValueString()
-
 	out := operations.DeleteCaCertificateRequest{
 		ControlPlaneID:  controlPlaneID,
 		CACertificateID: caCertificateID,
-		Workspace:       workspace,
 	}
 
 	return &out, diags
@@ -87,13 +79,9 @@ func (r *GatewayCACertificateResourceModel) ToOperationsGetCaCertificateRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	var workspace string
-	workspace = r.Workspace.ValueString()
-
 	out := operations.GetCaCertificateRequest{
 		CACertificateID: caCertificateID,
 		ControlPlaneID:  controlPlaneID,
-		Workspace:       workspace,
 	}
 
 	return &out, diags
@@ -108,9 +96,6 @@ func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	var workspace string
-	workspace = r.Workspace.ValueString()
-
 	caCertificate, caCertificateDiags := r.ToSharedCACertificateInput(ctx)
 	diags.Append(caCertificateDiags...)
 
@@ -121,7 +106,6 @@ func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateReque
 	out := operations.UpsertCaCertificateRequest{
 		CACertificateID: caCertificateID,
 		ControlPlaneID:  controlPlaneID,
-		Workspace:       workspace,
 		CACertificate:   *caCertificate,
 	}
 

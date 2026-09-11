@@ -32,8 +32,8 @@ func newCACertificates(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hook
 	}
 }
 
-// CreateCaCertificate - Create a new CA Certificate in a workspace
-// Create a new CA Certificate in a workspace
+// CreateCaCertificate - Create a new CA Certificate
+// Create a new CA Certificate
 func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operations.CreateCaCertificateRequest, opts ...operations.Option) (*operations.CreateCaCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -53,7 +53,7 @@ func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -259,8 +259,8 @@ func (s *CACertificates) CreateCaCertificate(ctx context.Context, request operat
 
 }
 
-// DeleteCaCertificate - Delete a CA Certificate in a workspace
-// Delete a CA Certificate in a workspace
+// DeleteCaCertificate - Delete a CA Certificate
+// Delete a CA Certificate
 func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operations.DeleteCaCertificateRequest, opts ...operations.Option) (*operations.DeleteCaCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -280,7 +280,7 @@ func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -462,8 +462,8 @@ func (s *CACertificates) DeleteCaCertificate(ctx context.Context, request operat
 
 }
 
-// GetCaCertificate - Get a CA Certificate in a workspace
-// Get a CA Certificate using ID in a workspace.
+// GetCaCertificate - Get a CA Certificate
+// Get a CA Certificate using ID.
 func (s *CACertificates) GetCaCertificate(ctx context.Context, request operations.GetCaCertificateRequest, opts ...operations.Option) (*operations.GetCaCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -483,7 +483,7 @@ func (s *CACertificates) GetCaCertificate(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -684,8 +684,8 @@ func (s *CACertificates) GetCaCertificate(ctx context.Context, request operation
 
 }
 
-// UpsertCaCertificate - Upsert a CA Certificate in a workspace
-// Create or Update CA Certificate using ID in a workspace.
+// UpsertCaCertificate - Upsert a CA Certificate
+// Create or Update CA Certificate using ID.
 func (s *CACertificates) UpsertCaCertificate(ctx context.Context, request operations.UpsertCaCertificateRequest, opts ...operations.Option) (*operations.UpsertCaCertificateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -705,7 +705,7 @@ func (s *CACertificates) UpsertCaCertificate(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/ca_certificates/{CACertificateId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates/{CACertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
