@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.23.0
+> Released 2026/09/??
+
+# Features
+* Add support for `konnect_identity_provider` datasource.
+
 ## 3.22.0
 > Released 2026/08/26
 
