@@ -56,4 +56,26 @@ func TestIdentityProvider(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("data source", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckOutput("idp_login_path", "testsamldatatf"),
+						resource.TestCheckResourceAttrPair(
+							"data.konnect_identity_provider.by_id", "id",
+							"konnect_identity_provider.saml_provider_tf", "id",
+						),
+						resource.TestCheckResourceAttrSet(
+							"data.konnect_identity_provider.by_id", "created_at",
+						),
+					),
+				},
+			},
+		})
+	})
 }
