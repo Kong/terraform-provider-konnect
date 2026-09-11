@@ -81,7 +81,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
 - `layout` (String)
 - `menu` (Attributes) (see [below for nested schema](#nestedatt--menu))
 - `robots` (String)
-- `spec_renderer` (Attributes) (see [below for nested schema](#nestedatt--spec_renderer))
+- `spec_renderer` (Attributes) The spec renderer settings of this portal (see [below for nested schema](#nestedatt--spec_renderer))
 - `theme` (Attributes) (see [below for nested schema](#nestedatt--theme))
 
 <a id="nestedatt--menu"></a>
