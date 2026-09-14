@@ -36,6 +36,22 @@ func TestPortalDeveloper(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_portal_developer.test_developer", "status", "pending"),
 					),
 				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_portal_team.my_team", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_portal_team_developer.my_portalteamdeveloper", plancheck.ResourceActionCreate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_portal_team.my_team", "name", "TFAcceptancePortalDeveloperTeam"),
+						resource.TestCheckResourceAttrPair("konnect_portal_team_developer.my_portalteamdeveloper", "developer_id", "konnect_portal_developer.test_developer", "id"),
+						resource.TestCheckResourceAttrPair("konnect_portal_team_developer.my_portalteamdeveloper", "portal_id", "konnect_portal.test_portal", "id"),
+						resource.TestCheckResourceAttrPair("konnect_portal_team_developer.my_portalteamdeveloper", "team_id", "konnect_portal_team.my_team", "id"),
+					),
+				},
 			},
 		})
 	})
