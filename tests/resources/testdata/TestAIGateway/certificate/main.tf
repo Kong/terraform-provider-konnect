@@ -31,15 +31,13 @@ resource "tls_self_signed_cert" "cert" {
 }
 
 resource "konnect_ai_gateway" "my_aigateway" {
-  provider     = konnect-beta
   display_name = "TF Test AIGW - certificate"
   name         = "tf-test-aigw-certificate"
 }
 
 resource "konnect_ai_gateway_certificate" "my_aigatewaycertificate" {
-  provider = konnect-beta
-  cert     = tls_self_signed_cert.cert.cert_pem
-  key      = tls_private_key.cert.private_key_pem
+  cert = tls_self_signed_cert.cert.cert_pem
+  key  = tls_private_key.cert.private_key_pem
 
   gateway_id = konnect_ai_gateway.my_aigateway.id
   name       = "tf-test-certificate"

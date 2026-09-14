@@ -1,11 +1,9 @@
 resource "konnect_ai_gateway" "my_aigateway" {
-  provider     = konnect-beta
   display_name = "TF Test AIGW - agent"
   name         = "tf-test-aigw-agent"
 }
 
 resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
-  provider = konnect-beta
   access = {
     acls = {
       deny = [

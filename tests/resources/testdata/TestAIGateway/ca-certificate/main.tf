@@ -13,8 +13,8 @@ resource "tls_private_key" "ca" {
 }
 
 resource "tls_self_signed_cert" "ca" {
-  private_key_pem      = tls_private_key.ca.private_key_pem
-  is_ca_certificate    = true
+  private_key_pem   = tls_private_key.ca.private_key_pem
+  is_ca_certificate = true
 
   subject {
     common_name  = "Test CA"
@@ -30,14 +30,12 @@ resource "tls_self_signed_cert" "ca" {
 }
 
 resource "konnect_ai_gateway" "my_aigateway" {
-  provider     = konnect-beta
   display_name = "TF Test AIGW - ca-certificate"
   name         = "tf-test-aigw-ca-cert"
 }
 
 resource "konnect_ai_gateway_ca_certificate" "my_aigatewaycacertificate" {
-  provider = konnect-beta
-  cert     = trimspace(tls_self_signed_cert.ca.cert_pem)
+  cert = trimspace(tls_self_signed_cert.ca.cert_pem)
 
   gateway_id = konnect_ai_gateway.my_aigateway.id
   name       = "tf-test-ca-certificate"
