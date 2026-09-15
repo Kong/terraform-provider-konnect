@@ -34,6 +34,29 @@ servers:
   - url: 'https://me.api.konghq.com'
   - url: 'https://in.api.konghq.com'
 paths:
+  /available-regions:
+    servers:
+      - url: 'https://global.api.konghq.com/v3'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource: PlatformAvailableRegions#read
+      operationId: list-available-regions
+      summary: List Available Regions
+      description: 'Get the Konnect regions available for use, grouped by rollout stage.'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableRegionsResponse'
+        4XX:
+          description: Client error
+        5XX:
+          description: Server error
+      tags:
+        - Platform Regions
   /ip-addresses.json:
     servers:
       - url: 'https://ip-addresses.origin.konghq.com'
@@ -22112,6 +22135,33 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
           x-speakeasy-terraform-ignore: true
+        auth_type:
+          description: The auth type value of the cluster associated with the Runtime Group.
+          type: string
+          example: pinned_client_certs
+          x-speakeasy-param-computed: true
+        cluster_type:
+          description: The ClusterType value of the cluster associated with the Control Plane.
+          type: string
+          x-speakeasy-param-computed: true
+        cloud_gateway:
+          description: Whether this control-plane can be used for cloud-gateways.
+          type: boolean
+          example: false
+          x-speakeasy-param-computed: true
+        proxy_urls:
+          description: Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProxyURL'
+          format: set
+          example:
+            - host: example.com
+              port: 443
+              protocol: https
+          maxItems: 5
+          title: ProxyURLs
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - id
@@ -22121,6 +22171,14 @@ components:
         - updated_at
         - description
         - labels
+      x-speakeasy-transform-from-api:
+        jq: |
+          . + {
+            auth_type: .config.auth_type,
+            cluster_type: .config.cluster_type,
+            cloud_gateway: .config.cloud_gateway,
+            proxy_urls: .config.proxy_urls
+          }
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -29915,6 +29973,11 @@ components:
           description: 'When true, sends an invitation email to the developer. Default is false; no emails are sent unless explicitly requested.'
           type: boolean
           default: false
+        additional_data:
+          description: |
+            The developer's answers to the portal's `developer_registration` form, if it has one, as a map from each field's `name` to its value. Optional. Built-in fields like `full_name` and `email` go in their own top-level properties, not here. Ignored if the portal doesn't have a `developer_registration` form.
+          allOf:
+            - $ref: '#/components/schemas/FormResponseInput'
       example:
         email: developer@example.com
         full_name: Developer Name
@@ -29950,6 +30013,16 @@ components:
           maxLength: 255
         status:
           $ref: '#/components/schemas/DeveloperStatus'
+        additional_data:
+          description: |
+            The developer's answers to the portal's `developer_registration`
+            form, captured when they registered.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FormResponseData'
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       example:
         id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
         email: developer@example.com
@@ -30461,6 +30534,11 @@ components:
             - approved
             - pending
           x-speakeasy-unknown-values: allow
+        additional_data:
+          description: |
+            The developer's answers to the `api_registration` form linked to this API, as a map from each field's `name` to its value. Optional, and ignored if no form is linked to the publication.
+          allOf:
+            - $ref: '#/components/schemas/FormResponseInput'
       example:
         api_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       additionalProperties: false
@@ -30479,6 +30557,15 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         status:
           $ref: '#/components/schemas/ApplicationRegistrationStatus'
+        additional_data:
+          description: |
+            The developer's answers to the `api_registration` form linked to this API, captured when they registered.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FormResponseData'
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         api:
           description: Details about the API the application is registered to.
           type: object
@@ -31406,6 +31493,92 @@ components:
       type: string
       maxLength: 255
       nullable: false
+    CustomFormFieldName:
+      description: |
+        A stable, URL-safe slug identifying the field (letters, digits,
+        underscores, or hyphens). When omitted, `label` is slugified instead.
+
+        Used to match up stored responses across edits.
+      type: string
+      example: full-name
+      maxLength: 128
+      pattern: '^[\w-]+$'
+    FormResponseEntry:
+      description: |
+        One field's submitted answer, along with a snapshot of that field's details as they appeared when submitted.
+      type: object
+      properties:
+        name:
+          description: The field's `name`. Matches the parent object's key.
+          allOf:
+            - $ref: '#/components/schemas/CustomFormFieldName'
+        label:
+          description: The field's label at the time it was submitted.
+          type: string
+          example: Full Name
+        type:
+          description: The field's type at the time it was submitted.
+          type: string
+          example: text
+          enum:
+            - text
+            - email
+            - number
+            - textarea
+            - select
+            - checkbox
+          x-speakeasy-unknown-values: allow
+        value:
+          description: |
+            The submitted value. Its type matches the field's type:
+
+            * `text`, `email`, `textarea` — string
+            * `number` — number
+            * `checkbox` — boolean
+            * `select` — string for single-select fields, or an array of strings for multi-select fields
+          oneOf:
+            - type: string
+              example: Ada Lovelace
+            - type: number
+              example: 42
+            - type: boolean
+              example: true
+            - type: array
+              items:
+                type: string
+              example:
+                - api
+                - portal
+      additionalProperties: false
+      required:
+        - name
+        - label
+        - type
+        - value
+    FormResponseData:
+      description: |
+        A developer's submitted answers to a form, as a map from each field's `name` to a record of that answer. Each record captures the field's `label`, `type`, and `value` exactly as they appeared when the developer submitted the form. Encrypted at rest.
+      type: object
+      example:
+        full_name:
+          name: full_name
+          label: Full Name
+          type: text
+          value: Ada Lovelace
+        email:
+          name: email
+          label: Email Address
+          type: email
+          value: ada@example.com
+        topics:
+          name: topics
+          label: Topics of Interest
+          type: select
+          value:
+            - api
+            - portal
+      additionalProperties:
+        $ref: '#/components/schemas/FormResponseEntry'
     EntityType:
       description: The type of entity that is being published. Can be either an API or an API Package.
       type: string
@@ -31415,6 +31588,26 @@ components:
         - api_package
       title: Entity Type
       x-speakeasy-unknown-values: allow
+    FormResponseInput:
+      description: |
+        The developer's answers to a custom form, as a map from each field's `name` to its value. Built-in fields like `full_name` and `email` go in their own top-level properties, not here.
+      type: object
+      example:
+        department: engineering
+        age: 35
+        accepted_terms: true
+        topics:
+          - api
+          - portal
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: number
+          - type: boolean
+          - type: array
+            items:
+              type: string
+      x-speakeasy-terraform-ignore: true
     PortalSAMLIdentityProviderConfig:
       description: The identity provider that contains configuration data for the SAML authentication integration.
       type: object
@@ -31843,8 +32036,8 @@ components:
         The visibility of the API in the portal.
         Public API publications do not require authentication to view and retrieve information about them.
         Private API publications require authentication to retrieve information about them.
+        If omitted, this defaults to the target portal's configured default API visibility.
       type: string
-      default: private
       enum:
         - public
         - private
@@ -31880,6 +32073,13 @@ components:
           $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
         visibility:
           $ref: '#/components/schemas/ApiPublicationVisibility'
+        form_id:
+          description: |
+            UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
+          type: string
+          format: uuid
+          nullable: true
+          x-speakeasy-param-computed: true
         warnings:
           description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
           type: array
@@ -32056,6 +32256,48 @@ components:
         items:
           type: string
           description: IPv4 or IPv6 address.
+    AvailableRegionsResponse:
+      type: object
+      properties:
+        regions:
+          $ref: '#/components/schemas/AvailableRegions'
+      required:
+        - regions
+    AvailableRegions:
+      description: 'Konnect regions available for use, grouped by rollout stage.'
+      type: object
+      properties:
+        stable:
+          description: Regions generally available to all organizations.
+          type: array
+          items:
+            type: string
+            description: Region code.
+          example:
+            - us
+            - eu
+            - au
+            - me
+            - in
+        stable_opt_in:
+          description: Stable regions available on an opt-in basis.
+          type: array
+          items:
+            type: string
+            description: Region code.
+          example:
+            - sg
+        beta:
+          description: Regions available in beta.
+          type: array
+          items:
+            type: string
+            description: Region code.
+          example: []
+      required:
+        - stable
+        - stable_opt_in
+        - beta
     EventGatewayInfo:
       description: The gateway object contains information about a Konnect gateway.
       type: object
@@ -36355,6 +36597,7 @@ components:
       enum:
         - implicit
         - client_credentials
+        - 'urn:ietf:params:oauth:grant-type:jwt-bearer'
       x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
@@ -36446,6 +36689,7 @@ components:
       type: string
       default: client_secret_post
       enum:
+        - private_key_jwt
         - client_secret_post
         - none
       x-speakeasy-unknown-values: allow
@@ -36790,14 +37034,6 @@ components:
           nullable: true
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
-        value:
-          type: string
-          default: null
-          nullable: true
-          writeOnly: true
-          x-sensitive: true
-          x-speakeasy-param-computed: false
-          x-speakeasy-param-sensitive: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -79668,6 +79904,13 @@ components:
                 $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
               visibility:
                 $ref: '#/components/schemas/ApiPublicationVisibility'
+              form_id:
+                description: |
+                  UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
+                type: string
+                format: uuid
+                nullable: true
+                x-speakeasy-param-computed: true
               warnings:
                 description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
                 type: array
@@ -79685,6 +79928,7 @@ components:
               - created_at
               - updated_at
               - auth_strategy_ids
+              - form_id
             title: API Publication
     ApiImplementationResponse:
       description: An API implementation
@@ -80078,6 +80322,8 @@ tags:
   - name: API Implementation
   - name: Platform IPs
     description: Konnect IP inventory
+  - name: Platform Regions
+    description: Konnect region availability
   - name: Event Gateways
     description: |
       Create an Event Gateway Control Plane, used to store Event Gateway configuration
