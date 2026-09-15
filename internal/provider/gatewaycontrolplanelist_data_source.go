@@ -50,6 +50,18 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"auth_type": schema.StringAttribute{
+							Computed:    true,
+							Description: `The auth type value of the cluster associated with the Runtime Group.`,
+						},
+						"cloud_gateway": schema.BoolAttribute{
+							Computed:    true,
+							Description: `Whether this control-plane can be used for cloud-gateways.`,
+						},
+						"cluster_type": schema.StringAttribute{
+							Computed:    true,
+							Description: `The ClusterType value of the cluster associated with the Control Plane.`,
+						},
 						"config": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
@@ -114,6 +126,26 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 						"name": schema.StringAttribute{
 							Computed:    true,
 							Description: `The name of the control plane.`,
+						},
+						"proxy_urls": schema.SetNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"host": schema.StringAttribute{
+										Computed:    true,
+										Description: `Hostname of the proxy URL.`,
+									},
+									"port": schema.Int64Attribute{
+										Computed:    true,
+										Description: `Port of the proxy URL.`,
+									},
+									"protocol": schema.StringAttribute{
+										Computed:    true,
+										Description: `Protocol of the proxy URL.`,
+									},
+								},
+							},
+							Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
 						},
 					},
 				},

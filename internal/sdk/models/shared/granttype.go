@@ -6,8 +6,9 @@ package shared
 type GrantType string
 
 const (
-	GrantTypeImplicit          GrantType = "implicit"
-	GrantTypeClientCredentials GrantType = "client_credentials"
+	GrantTypeImplicit                             GrantType = "implicit"
+	GrantTypeClientCredentials                    GrantType = "client_credentials"
+	GrantTypeUrnIetfParamsOauthGrantTypeJwtBearer GrantType = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 )
 
 func (e GrantType) ToPointer() *GrantType {
@@ -18,7 +19,7 @@ func (e GrantType) ToPointer() *GrantType {
 func (e *GrantType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "implicit", "client_credentials":
+		case "implicit", "client_credentials", "urn:ietf:params:oauth:grant-type:jwt-bearer":
 			return true
 		}
 	}

@@ -14,6 +14,9 @@ import (
 func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane1(ctx context.Context, resp *shared.ControlPlane1) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	r.AuthType = types.StringPointerValue(resp.AuthType)
+	r.CloudGateway = types.BoolPointerValue(resp.CloudGateway)
+	r.ClusterType = types.StringPointerValue(resp.ClusterType)
 	r.Config = &tfTypes.ControlPlaneConfig{}
 	r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
 	r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
@@ -40,6 +43,17 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane1(ctx 
 		}
 	}
 	r.Name = types.StringValue(resp.Name)
+	r.ProxyUrls = []tfTypes.ProxyURL{}
+
+	for _, proxyUrlsItem1 := range resp.ProxyUrls {
+		var proxyUrls1 tfTypes.ProxyURL
+
+		proxyUrls1.Host = types.StringValue(proxyUrlsItem1.Host)
+		proxyUrls1.Port = types.Int64Value(proxyUrlsItem1.Port)
+		proxyUrls1.Protocol = types.StringValue(proxyUrlsItem1.Protocol)
+
+		r.ProxyUrls = append(r.ProxyUrls, proxyUrls1)
+	}
 
 	return diags
 }

@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -29,12 +31,156 @@ func (e *CreateApplicationRegistrationRequestStatus) IsExact() bool {
 	return false
 }
 
+type AdditionalDataType string
+
+const (
+	AdditionalDataTypeStr        AdditionalDataType = "str"
+	AdditionalDataTypeNumber     AdditionalDataType = "number"
+	AdditionalDataTypeBoolean    AdditionalDataType = "boolean"
+	AdditionalDataTypeArrayOfStr AdditionalDataType = "arrayOfStr"
+)
+
+type AdditionalData struct {
+	Str        *string  `queryParam:"inline" union:"member"`
+	Number     *float64 `queryParam:"inline" union:"member"`
+	Boolean    *bool    `queryParam:"inline" union:"member"`
+	ArrayOfStr []string `queryParam:"inline" union:"member"`
+
+	Type AdditionalDataType
+}
+
+func CreateAdditionalDataStr(str string) AdditionalData {
+	typ := AdditionalDataTypeStr
+
+	return AdditionalData{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func CreateAdditionalDataNumber(number float64) AdditionalData {
+	typ := AdditionalDataTypeNumber
+
+	return AdditionalData{
+		Number: &number,
+		Type:   typ,
+	}
+}
+
+func CreateAdditionalDataBoolean(boolean bool) AdditionalData {
+	typ := AdditionalDataTypeBoolean
+
+	return AdditionalData{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateAdditionalDataArrayOfStr(arrayOfStr []string) AdditionalData {
+	typ := AdditionalDataTypeArrayOfStr
+
+	return AdditionalData{
+		ArrayOfStr: arrayOfStr,
+		Type:       typ,
+	}
+}
+
+func (u *AdditionalData) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  AdditionalDataTypeStr,
+			Value: &str,
+		})
+	}
+
+	var number float64 = float64(0)
+	if err := utils.UnmarshalJSON(data, &number, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  AdditionalDataTypeNumber,
+			Value: &number,
+		})
+	}
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  AdditionalDataTypeBoolean,
+			Value: &boolean,
+		})
+	}
+
+	var arrayOfStr []string = []string{}
+	if err := utils.UnmarshalJSON(data, &arrayOfStr, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  AdditionalDataTypeArrayOfStr,
+			Value: arrayOfStr,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AdditionalData", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AdditionalData", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(AdditionalDataType)
+	switch best.Type {
+	case AdditionalDataTypeStr:
+		u.Str = best.Value.(*string)
+		return nil
+	case AdditionalDataTypeNumber:
+		u.Number = best.Value.(*float64)
+		return nil
+	case AdditionalDataTypeBoolean:
+		u.Boolean = best.Value.(*bool)
+		return nil
+	case AdditionalDataTypeArrayOfStr:
+		u.ArrayOfStr = best.Value.([]string)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AdditionalData", string(data))
+}
+
+func (u AdditionalData) MarshalJSON() ([]byte, error) {
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	if u.Number != nil {
+		return utils.MarshalJSON(u.Number, "", true)
+	}
+
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.ArrayOfStr != nil {
+		return utils.MarshalJSON(u.ArrayOfStr, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AdditionalData: all fields are null")
+}
+
 // CreateApplicationRegistrationRequest - Create an application registration for a portal application.
 type CreateApplicationRegistrationRequest struct {
 	// The ID of the API the application is registering for.
 	APIID string `json:"api_id"`
 	// The status of the application registration. It must be a valid status value for a registration creation.
 	Status *CreateApplicationRegistrationRequestStatus `json:"status,omitempty"`
+	// The developer's answers to the `api_registration` form linked to this API, as a map from each field's `name` to its value. Optional, and ignored if no form is linked to the publication.
+	//
+	AdditionalData map[string]AdditionalData `json:"additional_data,omitempty"`
 }
 
 func (c CreateApplicationRegistrationRequest) MarshalJSON() ([]byte, error) {
@@ -60,4 +206,11 @@ func (c *CreateApplicationRegistrationRequest) GetStatus() *CreateApplicationReg
 		return nil
 	}
 	return c.Status
+}
+
+func (c *CreateApplicationRegistrationRequest) GetAdditionalData() map[string]AdditionalData {
+	if c == nil {
+		return nil
+	}
+	return c.AdditionalData
 }
