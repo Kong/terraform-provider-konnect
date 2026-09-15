@@ -5,6 +5,14 @@
 
 # Features
 * Add support for `konnect_platform_available_regions` datasource.
+* Add support for AI Model and MCP catalog resources, using which users can add AI Models, MCP Servers, and Agents directly to Catalog and link them to their corresponding AI Gateway entities
+  * `konnect_catalog_ai_model`
+  * `konnect_catalog_ai_model_implementation`
+  * `konnect_catalog_ai_model_version`
+  * `konnect_catalog_ai_model_version_spec`
+  * `konnect_catalog_mcp`
+  * `konnect_catalog_mcp_version`
+  * `konnect_catalog_mcp_implementation`
 
 # Bug Fixes
 * Fixed drift in `konnect_gateway_control_plane` resource during Terraform import.
