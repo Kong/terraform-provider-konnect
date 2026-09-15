@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.23.0
+> Released 2026/09/??
+
+# Features
+* Add support for `konnect_platform_available_regions` datasource.
+
+# Bug Fixes
+* Fixed drift in `konnect_gateway_control_plane` resource during Terraform import.
+
 ## 3.22.0
 > Released 2026/08/26
 
