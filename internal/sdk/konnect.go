@@ -61,6 +61,8 @@ func Pointer[T any](v T) *T { return &v }
 // https://developer.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
 	SDKVersion string
+	// Konnect region availability
+	PlatformRegions *PlatformRegions
 	// Konnect IP inventory
 	PlatformIPs             *PlatformIPs
 	ServerlessCloudGateways *ServerlessCloudGateways
@@ -445,6 +447,7 @@ func New(opts ...SDKOption) *Konnect {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
+	sdk.PlatformRegions = newPlatformRegions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PlatformIPs = newPlatformIPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)

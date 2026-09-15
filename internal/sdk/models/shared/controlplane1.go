@@ -145,6 +145,14 @@ type ControlPlane1 struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8604 timestamp representation of control plane update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// The auth type value of the cluster associated with the Runtime Group.
+	AuthType *string `json:"auth_type,omitempty"`
+	// The ClusterType value of the cluster associated with the Control Plane.
+	ClusterType *string `json:"cluster_type,omitempty"`
+	// Whether this control-plane can be used for cloud-gateways.
+	CloudGateway *bool `json:"cloud_gateway,omitempty"`
+	// Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
+	ProxyUrls []ProxyURL `json:"proxy_urls,omitempty"`
 }
 
 func (c ControlPlane1) MarshalJSON() ([]byte, error) {
@@ -152,6 +160,11 @@ func (c ControlPlane1) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ControlPlane1) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ". + { auth_type: .config.auth_type, cluster_type: .config.cluster_type, cloud_gateway: .config.cloud_gateway, proxy_urls: .config.proxy_urls }"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "description", "labels", "config", "created_at", "updated_at"}); err != nil {
 		return err
 	}
@@ -205,6 +218,34 @@ func (c *ControlPlane1) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return c.UpdatedAt
+}
+
+func (c *ControlPlane1) GetAuthType() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AuthType
+}
+
+func (c *ControlPlane1) GetClusterType() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClusterType
+}
+
+func (c *ControlPlane1) GetCloudGateway() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.CloudGateway
+}
+
+func (c *ControlPlane1) GetProxyUrls() []ProxyURL {
+	if c == nil {
+		return nil
+	}
+	return c.ProxyUrls
 }
 
 // #region class-body-controlplane1

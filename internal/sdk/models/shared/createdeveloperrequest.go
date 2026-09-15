@@ -3,6 +3,8 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -31,6 +33,147 @@ func (e *CreateDeveloperRequestDeveloperStatus) IsExact() bool {
 	return false
 }
 
+type CreateDeveloperRequestAdditionalDataType string
+
+const (
+	CreateDeveloperRequestAdditionalDataTypeStr        CreateDeveloperRequestAdditionalDataType = "str"
+	CreateDeveloperRequestAdditionalDataTypeNumber     CreateDeveloperRequestAdditionalDataType = "number"
+	CreateDeveloperRequestAdditionalDataTypeBoolean    CreateDeveloperRequestAdditionalDataType = "boolean"
+	CreateDeveloperRequestAdditionalDataTypeArrayOfStr CreateDeveloperRequestAdditionalDataType = "arrayOfStr"
+)
+
+type CreateDeveloperRequestAdditionalData struct {
+	Str        *string  `queryParam:"inline" union:"member"`
+	Number     *float64 `queryParam:"inline" union:"member"`
+	Boolean    *bool    `queryParam:"inline" union:"member"`
+	ArrayOfStr []string `queryParam:"inline" union:"member"`
+
+	Type CreateDeveloperRequestAdditionalDataType
+}
+
+func CreateCreateDeveloperRequestAdditionalDataStr(str string) CreateDeveloperRequestAdditionalData {
+	typ := CreateDeveloperRequestAdditionalDataTypeStr
+
+	return CreateDeveloperRequestAdditionalData{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func CreateCreateDeveloperRequestAdditionalDataNumber(number float64) CreateDeveloperRequestAdditionalData {
+	typ := CreateDeveloperRequestAdditionalDataTypeNumber
+
+	return CreateDeveloperRequestAdditionalData{
+		Number: &number,
+		Type:   typ,
+	}
+}
+
+func CreateCreateDeveloperRequestAdditionalDataBoolean(boolean bool) CreateDeveloperRequestAdditionalData {
+	typ := CreateDeveloperRequestAdditionalDataTypeBoolean
+
+	return CreateDeveloperRequestAdditionalData{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateCreateDeveloperRequestAdditionalDataArrayOfStr(arrayOfStr []string) CreateDeveloperRequestAdditionalData {
+	typ := CreateDeveloperRequestAdditionalDataTypeArrayOfStr
+
+	return CreateDeveloperRequestAdditionalData{
+		ArrayOfStr: arrayOfStr,
+		Type:       typ,
+	}
+}
+
+func (u *CreateDeveloperRequestAdditionalData) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  CreateDeveloperRequestAdditionalDataTypeStr,
+			Value: &str,
+		})
+	}
+
+	var number float64 = float64(0)
+	if err := utils.UnmarshalJSON(data, &number, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  CreateDeveloperRequestAdditionalDataTypeNumber,
+			Value: &number,
+		})
+	}
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  CreateDeveloperRequestAdditionalDataTypeBoolean,
+			Value: &boolean,
+		})
+	}
+
+	var arrayOfStr []string = []string{}
+	if err := utils.UnmarshalJSON(data, &arrayOfStr, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  CreateDeveloperRequestAdditionalDataTypeArrayOfStr,
+			Value: arrayOfStr,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateDeveloperRequestAdditionalData", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateDeveloperRequestAdditionalData", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(CreateDeveloperRequestAdditionalDataType)
+	switch best.Type {
+	case CreateDeveloperRequestAdditionalDataTypeStr:
+		u.Str = best.Value.(*string)
+		return nil
+	case CreateDeveloperRequestAdditionalDataTypeNumber:
+		u.Number = best.Value.(*float64)
+		return nil
+	case CreateDeveloperRequestAdditionalDataTypeBoolean:
+		u.Boolean = best.Value.(*bool)
+		return nil
+	case CreateDeveloperRequestAdditionalDataTypeArrayOfStr:
+		u.ArrayOfStr = best.Value.([]string)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateDeveloperRequestAdditionalData", string(data))
+}
+
+func (u CreateDeveloperRequestAdditionalData) MarshalJSON() ([]byte, error) {
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	if u.Number != nil {
+		return utils.MarshalJSON(u.Number, "", true)
+	}
+
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.ArrayOfStr != nil {
+		return utils.MarshalJSON(u.ArrayOfStr, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type CreateDeveloperRequestAdditionalData: all fields are null")
+}
+
 // CreateDeveloperRequest - Request body for creating a developer in a portal.
 type CreateDeveloperRequest struct {
 	Email    string `json:"email"`
@@ -39,6 +182,9 @@ type CreateDeveloperRequest struct {
 	Status *CreateDeveloperRequestDeveloperStatus `json:"status,omitempty"`
 	// When true, sends an invitation email to the developer. Default is false; no emails are sent unless explicitly requested.
 	SendInvitationEmail *bool `default:"false" json:"send_invitation_email"`
+	// The developer's answers to the portal's `developer_registration` form, if it has one, as a map from each field's `name` to its value. Optional. Built-in fields like `full_name` and `email` go in their own top-level properties, not here. Ignored if the portal doesn't have a `developer_registration` form.
+	//
+	AdditionalData map[string]CreateDeveloperRequestAdditionalData `json:"additional_data,omitempty"`
 }
 
 func (c CreateDeveloperRequest) MarshalJSON() ([]byte, error) {
@@ -78,4 +224,11 @@ func (c *CreateDeveloperRequest) GetSendInvitationEmail() *bool {
 		return nil
 	}
 	return c.SendInvitationEmail
+}
+
+func (c *CreateDeveloperRequest) GetAdditionalData() map[string]CreateDeveloperRequestAdditionalData {
+	if c == nil {
+		return nil
+	}
+	return c.AdditionalData
 }

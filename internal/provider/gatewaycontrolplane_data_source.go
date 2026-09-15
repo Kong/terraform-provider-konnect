@@ -29,6 +29,9 @@ type GatewayControlPlaneDataSource struct {
 
 // GatewayControlPlaneDataSourceModel describes the data model.
 type GatewayControlPlaneDataSourceModel struct {
+	AuthType     types.String                          `tfsdk:"auth_type"`
+	CloudGateway types.Bool                            `tfsdk:"cloud_gateway"`
+	ClusterType  types.String                          `tfsdk:"cluster_type"`
 	Config       *tfTypes.ControlPlaneConfig           `tfsdk:"config"`
 	Description  types.String                          `tfsdk:"description"`
 	Filter       *tfTypes.ControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
@@ -36,6 +39,7 @@ type GatewayControlPlaneDataSourceModel struct {
 	ID           types.String                          `tfsdk:"id"`
 	Labels       map[string]types.String               `tfsdk:"labels"`
 	Name         types.String                          `tfsdk:"name"`
+	ProxyUrls    []tfTypes.ProxyURL                    `tfsdk:"proxy_urls"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
 }
 
@@ -50,6 +54,18 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 		MarkdownDescription: "GatewayControlPlane DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"auth_type": schema.StringAttribute{
+				Computed:    true,
+				Description: `The auth type value of the cluster associated with the Runtime Group.`,
+			},
+			"cloud_gateway": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Whether this control-plane can be used for cloud-gateways.`,
+			},
+			"cluster_type": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ClusterType value of the cluster associated with the Control Plane.`,
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -178,6 +194,26 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The name of the control plane.`,
+			},
+			"proxy_urls": schema.SetNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"host": schema.StringAttribute{
+							Computed:    true,
+							Description: `Hostname of the proxy URL.`,
+						},
+						"port": schema.Int64Attribute{
+							Computed:    true,
+							Description: `Port of the proxy URL.`,
+						},
+						"protocol": schema.StringAttribute{
+							Computed:    true,
+							Description: `Protocol of the proxy URL.`,
+						},
+					},
+				},
+				Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
 			},
 			"sort": schema.StringAttribute{
 				Optional: true,
