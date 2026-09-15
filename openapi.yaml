@@ -31335,9 +31335,9 @@ components:
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         spec_renderer:
+          description: The spec renderer settings of this portal
           type: object
           additionalProperties: false
-          nullable: false
           properties:
             try_it_ui:
               description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
@@ -31367,6 +31367,7 @@ components:
               description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
               type: boolean
               default: true
+          title: PortalCustomizationSpecRenderer
           x-speakeasy-param-computed: false
         robots:
           type: string

@@ -21,6 +21,7 @@ func TestIdentityProviderTeamGroupMapping(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "team_id"),
+						resource.TestCheckResourceAttrSet("konnect_identity_provider.oidc_provider", "login_path"),
 					),
 				},
 				{
@@ -48,6 +49,7 @@ func TestIdentityProviderTeamGroupMapping(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "team_id"),
+						resource.TestCheckResourceAttrSet("konnect_identity_provider.saml_provider", "login_path"),
 					),
 				},
 				{

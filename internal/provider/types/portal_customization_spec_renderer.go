@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type SpecRenderer struct {
+type PortalCustomizationSpecRenderer struct {
 	AllowCustomServerUrls types.Bool `tfsdk:"allow_custom_server_urls"`
 	HideDeprecated        types.Bool `tfsdk:"hide_deprecated"`
 	HideInternal          types.Bool `tfsdk:"hide_internal"`

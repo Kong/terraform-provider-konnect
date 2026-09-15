@@ -83,7 +83,7 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 		if resp.SpecRenderer == nil {
 			r.SpecRenderer = nil
 		} else {
-			r.SpecRenderer = &tfTypes.SpecRenderer{}
+			r.SpecRenderer = &tfTypes.PortalCustomizationSpecRenderer{}
 			r.SpecRenderer.AllowCustomServerUrls = types.BoolPointerValue(resp.SpecRenderer.AllowCustomServerUrls)
 			r.SpecRenderer.HideDeprecated = types.BoolPointerValue(resp.SpecRenderer.HideDeprecated)
 			r.SpecRenderer.HideInternal = types.BoolPointerValue(resp.SpecRenderer.HideInternal)
@@ -279,7 +279,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 			FooterBottom:   footerBottom,
 		}
 	}
-	var specRenderer *shared.SpecRenderer
+	var specRenderer *shared.PortalCustomizationSpecRenderer
 	if r.SpecRenderer != nil {
 		tryItUI := new(bool)
 		if !r.SpecRenderer.TryItUI.IsUnknown() && !r.SpecRenderer.TryItUI.IsNull() {
@@ -323,7 +323,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			allowCustomServerUrls = nil
 		}
-		specRenderer = &shared.SpecRenderer{
+		specRenderer = &shared.PortalCustomizationSpecRenderer{
 			TryItUI:               tryItUI,
 			TryItInsomnia:         tryItInsomnia,
 			InfiniteScroll:        infiniteScroll,
