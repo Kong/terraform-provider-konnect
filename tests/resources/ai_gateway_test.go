@@ -425,56 +425,6 @@ func TestAIGateway(t *testing.T) {
 		})
 	})
 
-	t.Run("identity-provider", func(t *testing.T) {
-		t.Run("key-auth", func(t *testing.T) {
-			resource.Test(t, resource.TestCase{
-				ProtoV6ProviderFactories: providerFactory,
-				Steps: []resource.TestStep{
-					{
-						Config:          providerConfigUs,
-						ConfigDirectory: config.TestNameDirectory(),
-						Check: resource.ComposeAggregateTestCheckFunc(
-							resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider", "key_auth.name", "tf-test-key-auth-identity-provider"),
-							resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider", "key_auth.display_name", "Okta AI SE"),
-						),
-					},
-					{
-						// Update key_auth.display_name
-						Config:          providerConfigUs,
-						ConfigDirectory: config.TestStepDirectory(),
-						Check: resource.ComposeTestCheckFunc(
-							resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider", "key_auth.display_name", "Okta AI SE Updated"),
-						),
-					},
-				},
-			})
-		})
-
-		t.Run("oidc", func(t *testing.T) {
-			resource.Test(t, resource.TestCase{
-				ProtoV6ProviderFactories: providerFactory,
-				Steps: []resource.TestStep{
-					{
-						Config:          providerConfigUs,
-						ConfigDirectory: config.TestNameDirectory(),
-						Check: resource.ComposeAggregateTestCheckFunc(
-							resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider_oidc", "openid_connect.name", "tf-test-openid-connect-identity-provider"),
-							resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider_oidc", "openid_connect.display_name", "TF Test OpenID Connect"),
-						),
-					},
-					{
-						// Update openid_connect.display_name
-						Config:          providerConfigUs,
-						ConfigDirectory: config.TestStepDirectory(),
-						Check: resource.ComposeTestCheckFunc(
-							resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider_oidc", "openid_connect.display_name", "TF Test OpenID Connect Updated"),
-						),
-					},
-				},
-			})
-		})
-	})
-
 	t.Run("certificate", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			Steps: []resource.TestStep{

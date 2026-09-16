@@ -7,7 +7,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
   gateway_id = konnect_ai_gateway.my_aigateway.id
 
   key_auth = {
-    config = jsonencode({
+    config = {
       hide_credentials = false
       key_in_header    = true
       key_in_query     = true
@@ -15,13 +15,8 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       key_names = [
         "apikey"
       ]
-    })
+    }
     display_name = "TF Test Key Auth"
     name         = "tf-test-key-auth"
-  }
-
-  lifecycle {
-    # free form, ignore to avoid test failure when new fields supported by server
-    ignore_changes = [key_auth.config]
   }
 }
