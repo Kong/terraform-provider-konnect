@@ -206,11 +206,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
-			r.Config.ClusterCacheRedis = &tfTypes.PartialVectordbRedis{}
+			r.Config.ClusterCacheRedis = &tfTypes.ClusterCacheRedis{}
 			if resp.Config.ClusterCacheRedis.CloudAuthentication == nil {
 				r.Config.ClusterCacheRedis.CloudAuthentication = nil
 			} else {
-				r.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 				if resp.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider != nil {
 					r.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider))
 				} else {
@@ -230,10 +230,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
 			if resp.Config.ClusterCacheRedis.ClusterNodes != nil {
-				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 				for _, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+					var clusterNodes tfTypes.ClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -255,10 +255,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
 			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
 			if resp.Config.ClusterCacheRedis.SentinelNodes != nil {
-				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+					var sentinelNodes tfTypes.SentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -356,10 +356,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Config.DownstreamAccessTokenHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenHeader)
 		r.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenJwkHeader)
 		if resp.Config.DownstreamHeaders != nil {
-			r.Config.DownstreamHeaders = []tfTypes.UpstreamHeaders{}
+			r.Config.DownstreamHeaders = []tfTypes.DownstreamHeaders{}
 
 			for _, downstreamHeadersItem := range resp.Config.DownstreamHeaders {
-				var downstreamHeaders tfTypes.UpstreamHeaders
+				var downstreamHeaders tfTypes.DownstreamHeaders
 
 				downstreamHeaders.Header = types.StringValue(downstreamHeadersItem.Header)
 				downstreamHeaders.Path = make([]types.String, 0, len(downstreamHeadersItem.Path))
@@ -588,7 +588,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.Principals == nil {
 			r.Config.Principals = nil
 		} else {
-			r.Config.Principals = &tfTypes.OpenidConnectPluginPrincipals{}
+			r.Config.Principals = &tfTypes.AIGatewayAuthStrategyOpenIDConnectPrincipals{}
 			r.Config.Principals.Directory = types.StringPointerValue(resp.Config.Principals.Directory)
 			r.Config.Principals.Enabled = types.BoolPointerValue(resp.Config.Principals.Enabled)
 			r.Config.Principals.ErrorOnMiss = types.BoolPointerValue(resp.Config.Principals.ErrorOnMiss)
@@ -661,11 +661,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
+			r.Config.Redis = &tfTypes.Redis{}
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -685,10 +685,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 				for _, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
+					var clusterNodes1 tfTypes.ClusterNodes
 
 					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
 					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
@@ -711,10 +711,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 				for _, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
+					var sentinelNodes1 tfTypes.SentinelNodes
 
 					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
@@ -871,18 +871,18 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.TokenExchange == nil {
 			r.Config.TokenExchange = nil
 		} else {
-			r.Config.TokenExchange = &tfTypes.OpenidConnectPluginTokenExchange{}
+			r.Config.TokenExchange = &tfTypes.TokenExchange{}
 			if resp.Config.TokenExchange.Cache == nil {
 				r.Config.TokenExchange.Cache = nil
 			} else {
-				r.Config.TokenExchange.Cache = &tfTypes.OpenidConnectPluginCache{}
+				r.Config.TokenExchange.Cache = &tfTypes.AIGatewayAuthStrategyOpenIDConnectCache{}
 				r.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Cache.Enabled)
 				r.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.Config.TokenExchange.Cache.TTL)
 			}
 			if resp.Config.TokenExchange.Request == nil {
 				r.Config.TokenExchange.Request = nil
 			} else {
-				r.Config.TokenExchange.Request = &tfTypes.OpenidConnectPluginRequest{}
+				r.Config.TokenExchange.Request = &tfTypes.AIGatewayAuthStrategyOpenIDConnectRequest{}
 				if resp.Config.TokenExchange.Request.Audience != nil {
 					r.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Audience))
 					for _, v := range resp.Config.TokenExchange.Request.Audience {
@@ -1038,10 +1038,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Config.UpstreamAccessTokenHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenHeader)
 		r.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenJwkHeader)
 		if resp.Config.UpstreamHeaders != nil {
-			r.Config.UpstreamHeaders = []tfTypes.UpstreamHeaders{}
+			r.Config.UpstreamHeaders = []tfTypes.DownstreamHeaders{}
 
 			for _, upstreamHeadersItem := range resp.Config.UpstreamHeaders {
-				var upstreamHeaders tfTypes.UpstreamHeaders
+				var upstreamHeaders tfTypes.DownstreamHeaders
 
 				upstreamHeaders.Header = types.StringValue(upstreamHeadersItem.Header)
 				upstreamHeaders.Path = make([]types.String, 0, len(upstreamHeadersItem.Path))
@@ -1412,9 +1412,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			audienceRequired = append(audienceRequired, r.Config.AudienceRequired[audienceRequiredIndex].ValueString())
 		}
 	}
-	authMethods := make([]shared.AuthMethods, 0, len(r.Config.AuthMethods))
+	authMethods := make([]shared.OpenidConnectPluginAuthMethods, 0, len(r.Config.AuthMethods))
 	for _, authMethodsItem := range r.Config.AuthMethods {
-		authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
+		authMethods = append(authMethods, shared.OpenidConnectPluginAuthMethods(authMethodsItem.ValueString()))
 	}
 	var authenticatedGroupsClaim []string
 	if r.Config.AuthenticatedGroupsClaim != nil {
@@ -1447,9 +1447,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		authorizationCookiePath = nil
 	}
-	authorizationCookieSameSite := new(shared.AuthorizationCookieSameSite)
+	authorizationCookieSameSite := new(shared.OpenidConnectPluginAuthorizationCookieSameSite)
 	if !r.Config.AuthorizationCookieSameSite.IsUnknown() && !r.Config.AuthorizationCookieSameSite.IsNull() {
-		*authorizationCookieSameSite = shared.AuthorizationCookieSameSite(r.Config.AuthorizationCookieSameSite.ValueString())
+		*authorizationCookieSameSite = shared.OpenidConnectPluginAuthorizationCookieSameSite(r.Config.AuthorizationCookieSameSite.ValueString())
 	} else {
 		authorizationCookieSameSite = nil
 	}
@@ -1504,9 +1504,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		bearerTokenHeaderName = nil
 	}
-	bearerTokenParamType := make([]shared.BearerTokenParamType, 0, len(r.Config.BearerTokenParamType))
+	bearerTokenParamType := make([]shared.OpenidConnectPluginBearerTokenParamType, 0, len(r.Config.BearerTokenParamType))
 	for _, bearerTokenParamTypeItem := range r.Config.BearerTokenParamType {
-		bearerTokenParamType = append(bearerTokenParamType, shared.BearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
+		bearerTokenParamType = append(bearerTokenParamType, shared.OpenidConnectPluginBearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
 	}
 	byUsernameIgnoreCase := new(bool)
 	if !r.Config.ByUsernameIgnoreCase.IsUnknown() && !r.Config.ByUsernameIgnoreCase.IsNull() {
@@ -1601,9 +1601,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			clientAuth = append(clientAuth, shared.OpenidConnectPluginClientAuth(clientAuthItem.ValueString()))
 		}
 	}
-	clientCredentialsParamType := make([]shared.ClientCredentialsParamType, 0, len(r.Config.ClientCredentialsParamType))
+	clientCredentialsParamType := make([]shared.OpenidConnectPluginClientCredentialsParamType, 0, len(r.Config.ClientCredentialsParamType))
 	for _, clientCredentialsParamTypeItem := range r.Config.ClientCredentialsParamType {
-		clientCredentialsParamType = append(clientCredentialsParamType, shared.ClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
+		clientCredentialsParamType = append(clientCredentialsParamType, shared.OpenidConnectPluginClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
 	}
 	var clientID []string
 	if r.Config.ClientID != nil {
@@ -1612,9 +1612,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			clientID = append(clientID, r.Config.ClientID[clientIDIndex].ValueString())
 		}
 	}
-	var clientJwk []shared.ClientJwk
+	var clientJwk []shared.OpenidConnectPluginClientJwk
 	if r.Config.ClientJwk != nil {
-		clientJwk = make([]shared.ClientJwk, 0, len(r.Config.ClientJwk))
+		clientJwk = make([]shared.OpenidConnectPluginClientJwk, 0, len(r.Config.ClientJwk))
 		for clientJwkIndex := range r.Config.ClientJwk {
 			alg := new(string)
 			if !r.Config.ClientJwk[clientJwkIndex].Alg.IsUnknown() && !r.Config.ClientJwk[clientJwkIndex].Alg.IsNull() {
@@ -1768,7 +1768,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			} else {
 				y = nil
 			}
-			clientJwk = append(clientJwk, shared.ClientJwk{
+			clientJwk = append(clientJwk, shared.OpenidConnectPluginClientJwk{
 				Alg:           alg,
 				Crv:           crv,
 				D:             d,
@@ -1808,7 +1808,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	for _, clusterCacheItemsItem := range r.Config.ClusterCacheItems {
 		clusterCacheItems = append(clusterCacheItems, shared.ClusterCacheItems(clusterCacheItemsItem.ValueString()))
 	}
-	var clusterCacheRedis *shared.ClusterCacheRedis
+	var clusterCacheRedis *shared.OpenidConnectPluginClusterCacheRedis
 	if r.Config.ClusterCacheRedis != nil {
 		var cloudAuthentication *shared.OpenidConnectPluginCloudAuthentication
 		if r.Config.ClusterCacheRedis.CloudAuthentication != nil {
@@ -2057,7 +2057,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			username = nil
 		}
-		clusterCacheRedis = &shared.ClusterCacheRedis{
+		clusterCacheRedis = &shared.OpenidConnectPluginClusterCacheRedis{
 			CloudAuthentication:    cloudAuthentication,
 			ClusterMaxRedirections: clusterMaxRedirections,
 			ClusterNodes:           clusterNodes,
@@ -2082,9 +2082,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			Username:               username,
 		}
 	}
-	clusterCacheStrategy := new(shared.ClusterCacheStrategy)
+	clusterCacheStrategy := new(shared.OpenidConnectPluginClusterCacheStrategy)
 	if !r.Config.ClusterCacheStrategy.IsUnknown() && !r.Config.ClusterCacheStrategy.IsNull() {
-		*clusterCacheStrategy = shared.ClusterCacheStrategy(r.Config.ClusterCacheStrategy.ValueString())
+		*clusterCacheStrategy = shared.OpenidConnectPluginClusterCacheStrategy(r.Config.ClusterCacheStrategy.ValueString())
 	} else {
 		clusterCacheStrategy = nil
 	}
@@ -2126,11 +2126,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	for credentialClaimIndex := range r.Config.CredentialClaim {
 		credentialClaim = append(credentialClaim, r.Config.CredentialClaim[credentialClaimIndex].ValueString())
 	}
-	var disableSession []shared.DisableSession
+	var disableSession []shared.OpenidConnectPluginDisableSession
 	if r.Config.DisableSession != nil {
-		disableSession = make([]shared.DisableSession, 0, len(r.Config.DisableSession))
+		disableSession = make([]shared.OpenidConnectPluginDisableSession, 0, len(r.Config.DisableSession))
 		for _, disableSessionItem := range r.Config.DisableSession {
-			disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
+			disableSession = append(disableSession, shared.OpenidConnectPluginDisableSession(disableSessionItem.ValueString()))
 		}
 	}
 	var discoveryHeadersNames []string
@@ -2172,9 +2172,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		downstreamAccessTokenJwkHeader = nil
 	}
-	var downstreamHeaders []shared.DownstreamHeaders
+	var downstreamHeaders []shared.OpenidConnectPluginDownstreamHeaders
 	if r.Config.DownstreamHeaders != nil {
-		downstreamHeaders = make([]shared.DownstreamHeaders, 0, len(r.Config.DownstreamHeaders))
+		downstreamHeaders = make([]shared.OpenidConnectPluginDownstreamHeaders, 0, len(r.Config.DownstreamHeaders))
 		for downstreamHeadersIndex := range r.Config.DownstreamHeaders {
 			var header string
 			header = r.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
@@ -2183,7 +2183,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			for pathIndex := range r.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
 				path1 = append(path1, r.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
 			}
-			downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
+			downstreamHeaders = append(downstreamHeaders, shared.OpenidConnectPluginDownstreamHeaders{
 				Header: header,
 				Path:   path1,
 			})
@@ -2360,13 +2360,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		idTokenParamName = nil
 	}
-	idTokenParamType := make([]shared.IDTokenParamType, 0, len(r.Config.IDTokenParamType))
+	idTokenParamType := make([]shared.OpenidConnectPluginIDTokenParamType, 0, len(r.Config.IDTokenParamType))
 	for _, idTokenParamTypeItem := range r.Config.IDTokenParamType {
-		idTokenParamType = append(idTokenParamType, shared.IDTokenParamType(idTokenParamTypeItem.ValueString()))
+		idTokenParamType = append(idTokenParamType, shared.OpenidConnectPluginIDTokenParamType(idTokenParamTypeItem.ValueString()))
 	}
-	ignoreSignature := make([]shared.IgnoreSignature, 0, len(r.Config.IgnoreSignature))
+	ignoreSignature := make([]shared.OpenidConnectPluginIgnoreSignature, 0, len(r.Config.IgnoreSignature))
 	for _, ignoreSignatureItem := range r.Config.IgnoreSignature {
-		ignoreSignature = append(ignoreSignature, shared.IgnoreSignature(ignoreSignatureItem.ValueString()))
+		ignoreSignature = append(ignoreSignature, shared.OpenidConnectPluginIgnoreSignature(ignoreSignatureItem.ValueString()))
 	}
 	introspectJwtTokens := new(bool)
 	if !r.Config.IntrospectJwtTokens.IsUnknown() && !r.Config.IntrospectJwtTokens.IsNull() {
@@ -2374,9 +2374,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		introspectJwtTokens = nil
 	}
-	introspectionAccept := new(shared.IntrospectionAccept)
+	introspectionAccept := new(shared.OpenidConnectPluginIntrospectionAccept)
 	if !r.Config.IntrospectionAccept.IsUnknown() && !r.Config.IntrospectionAccept.IsNull() {
-		*introspectionAccept = shared.IntrospectionAccept(r.Config.IntrospectionAccept.ValueString())
+		*introspectionAccept = shared.OpenidConnectPluginIntrospectionAccept(r.Config.IntrospectionAccept.ValueString())
 	} else {
 		introspectionAccept = nil
 	}
@@ -2392,9 +2392,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		introspectionEndpoint = nil
 	}
-	introspectionEndpointAuthMethod := new(shared.IntrospectionEndpointAuthMethod)
+	introspectionEndpointAuthMethod := new(shared.OpenidConnectPluginIntrospectionEndpointAuthMethod)
 	if !r.Config.IntrospectionEndpointAuthMethod.IsUnknown() && !r.Config.IntrospectionEndpointAuthMethod.IsNull() {
-		*introspectionEndpointAuthMethod = shared.IntrospectionEndpointAuthMethod(r.Config.IntrospectionEndpointAuthMethod.ValueString())
+		*introspectionEndpointAuthMethod = shared.OpenidConnectPluginIntrospectionEndpointAuthMethod(r.Config.IntrospectionEndpointAuthMethod.ValueString())
 	} else {
 		introspectionEndpointAuthMethod = nil
 	}
@@ -2499,19 +2499,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		leeway = nil
 	}
-	loginAction := new(shared.LoginAction)
+	loginAction := new(shared.OpenidConnectPluginLoginAction)
 	if !r.Config.LoginAction.IsUnknown() && !r.Config.LoginAction.IsNull() {
-		*loginAction = shared.LoginAction(r.Config.LoginAction.ValueString())
+		*loginAction = shared.OpenidConnectPluginLoginAction(r.Config.LoginAction.ValueString())
 	} else {
 		loginAction = nil
 	}
-	loginMethods := make([]shared.LoginMethods, 0, len(r.Config.LoginMethods))
+	loginMethods := make([]shared.OpenidConnectPluginLoginMethods, 0, len(r.Config.LoginMethods))
 	for _, loginMethodsItem := range r.Config.LoginMethods {
-		loginMethods = append(loginMethods, shared.LoginMethods(loginMethodsItem.ValueString()))
+		loginMethods = append(loginMethods, shared.OpenidConnectPluginLoginMethods(loginMethodsItem.ValueString()))
 	}
-	loginRedirectMode := new(shared.LoginRedirectMode)
+	loginRedirectMode := new(shared.OpenidConnectPluginLoginRedirectMode)
 	if !r.Config.LoginRedirectMode.IsUnknown() && !r.Config.LoginRedirectMode.IsNull() {
-		*loginRedirectMode = shared.LoginRedirectMode(r.Config.LoginRedirectMode.ValueString())
+		*loginRedirectMode = shared.OpenidConnectPluginLoginRedirectMode(r.Config.LoginRedirectMode.ValueString())
 	} else {
 		loginRedirectMode = nil
 	}
@@ -2522,13 +2522,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			loginRedirectURI = append(loginRedirectURI, r.Config.LoginRedirectURI[loginRedirectURIIndex].ValueString())
 		}
 	}
-	loginTokens := make([]shared.LoginTokens, 0, len(r.Config.LoginTokens))
+	loginTokens := make([]shared.OpenidConnectPluginLoginTokens, 0, len(r.Config.LoginTokens))
 	for _, loginTokensItem := range r.Config.LoginTokens {
-		loginTokens = append(loginTokens, shared.LoginTokens(loginTokensItem.ValueString()))
+		loginTokens = append(loginTokens, shared.OpenidConnectPluginLoginTokens(loginTokensItem.ValueString()))
 	}
-	logoutMethods := make([]shared.LogoutMethods, 0, len(r.Config.LogoutMethods))
+	logoutMethods := make([]shared.OpenidConnectPluginLogoutMethods, 0, len(r.Config.LogoutMethods))
 	for _, logoutMethodsItem := range r.Config.LogoutMethods {
-		logoutMethods = append(logoutMethods, shared.LogoutMethods(logoutMethodsItem.ValueString()))
+		logoutMethods = append(logoutMethods, shared.OpenidConnectPluginLogoutMethods(logoutMethodsItem.ValueString()))
 	}
 	logoutPostArg := new(string)
 	if !r.Config.LogoutPostArg.IsUnknown() && !r.Config.LogoutPostArg.IsNull() {
@@ -2603,9 +2603,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		noProxy = nil
 	}
-	passwordParamType := make([]shared.PasswordParamType, 0, len(r.Config.PasswordParamType))
+	passwordParamType := make([]shared.OpenidConnectPluginPasswordParamType, 0, len(r.Config.PasswordParamType))
 	for _, passwordParamTypeItem := range r.Config.PasswordParamType {
-		passwordParamType = append(passwordParamType, shared.PasswordParamType(passwordParamTypeItem.ValueString()))
+		passwordParamType = append(passwordParamType, shared.OpenidConnectPluginPasswordParamType(passwordParamTypeItem.ValueString()))
 	}
 	preserveQueryArgs := new(bool)
 	if !r.Config.PreserveQueryArgs.IsUnknown() && !r.Config.PreserveQueryArgs.IsNull() {
@@ -2674,19 +2674,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		proofOfPossessionAuthMethodsValidation = nil
 	}
-	proofOfPossessionDpop := new(shared.ProofOfPossessionDpop)
+	proofOfPossessionDpop := new(shared.OpenidConnectPluginProofOfPossessionDpop)
 	if !r.Config.ProofOfPossessionDpop.IsUnknown() && !r.Config.ProofOfPossessionDpop.IsNull() {
-		*proofOfPossessionDpop = shared.ProofOfPossessionDpop(r.Config.ProofOfPossessionDpop.ValueString())
+		*proofOfPossessionDpop = shared.OpenidConnectPluginProofOfPossessionDpop(r.Config.ProofOfPossessionDpop.ValueString())
 	} else {
 		proofOfPossessionDpop = nil
 	}
-	proofOfPossessionMtls := new(shared.ProofOfPossessionMtls)
+	proofOfPossessionMtls := new(shared.OpenidConnectPluginProofOfPossessionMtls)
 	if !r.Config.ProofOfPossessionMtls.IsUnknown() && !r.Config.ProofOfPossessionMtls.IsNull() {
-		*proofOfPossessionMtls = shared.ProofOfPossessionMtls(r.Config.ProofOfPossessionMtls.ValueString())
+		*proofOfPossessionMtls = shared.OpenidConnectPluginProofOfPossessionMtls(r.Config.ProofOfPossessionMtls.ValueString())
 	} else {
 		proofOfPossessionMtls = nil
 	}
-	var proofOfPossessionMtlsFromHeader *shared.ProofOfPossessionMtlsFromHeader
+	var proofOfPossessionMtlsFromHeader *shared.OpenidConnectPluginProofOfPossessionMtlsFromHeader
 	if r.Config.ProofOfPossessionMtlsFromHeader != nil {
 		allowPartialChain := new(bool)
 		if !r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsNull() {
@@ -2761,7 +2761,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			sslVerify1 = nil
 		}
-		proofOfPossessionMtlsFromHeader = &shared.ProofOfPossessionMtlsFromHeader{
+		proofOfPossessionMtlsFromHeader = &shared.OpenidConnectPluginProofOfPossessionMtlsFromHeader{
 			AllowPartialChain:       allowPartialChain,
 			CaCertificates:          caCertificates,
 			CertCacheTTL:            certCacheTTL,
@@ -2783,9 +2783,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		pushedAuthorizationRequestEndpoint = nil
 	}
-	pushedAuthorizationRequestEndpointAuthMethod := new(shared.PushedAuthorizationRequestEndpointAuthMethod)
+	pushedAuthorizationRequestEndpointAuthMethod := new(shared.OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod)
 	if !r.Config.PushedAuthorizationRequestEndpointAuthMethod.IsUnknown() && !r.Config.PushedAuthorizationRequestEndpointAuthMethod.IsNull() {
-		*pushedAuthorizationRequestEndpointAuthMethod = shared.PushedAuthorizationRequestEndpointAuthMethod(r.Config.PushedAuthorizationRequestEndpointAuthMethod.ValueString())
+		*pushedAuthorizationRequestEndpointAuthMethod = shared.OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod(r.Config.PushedAuthorizationRequestEndpointAuthMethod.ValueString())
 	} else {
 		pushedAuthorizationRequestEndpointAuthMethod = nil
 	}
@@ -3096,9 +3096,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		refreshTokenParamName = nil
 	}
-	refreshTokenParamType := make([]shared.RefreshTokenParamType, 0, len(r.Config.RefreshTokenParamType))
+	refreshTokenParamType := make([]shared.OpenidConnectPluginRefreshTokenParamType, 0, len(r.Config.RefreshTokenParamType))
 	for _, refreshTokenParamTypeItem := range r.Config.RefreshTokenParamType {
-		refreshTokenParamType = append(refreshTokenParamType, shared.RefreshTokenParamType(refreshTokenParamTypeItem.ValueString()))
+		refreshTokenParamType = append(refreshTokenParamType, shared.OpenidConnectPluginRefreshTokenParamType(refreshTokenParamTypeItem.ValueString()))
 	}
 	refreshTokens := new(bool)
 	if !r.Config.RefreshTokens.IsUnknown() && !r.Config.RefreshTokens.IsNull() {
@@ -3130,9 +3130,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		resolveDistributedClaims = nil
 	}
-	responseMode := new(shared.ResponseMode)
+	responseMode := new(shared.OpenidConnectPluginResponseMode)
 	if !r.Config.ResponseMode.IsUnknown() && !r.Config.ResponseMode.IsNull() {
-		*responseMode = shared.ResponseMode(r.Config.ResponseMode.ValueString())
+		*responseMode = shared.OpenidConnectPluginResponseMode(r.Config.ResponseMode.ValueString())
 	} else {
 		responseMode = nil
 	}
@@ -3152,9 +3152,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		revocationEndpoint = nil
 	}
-	revocationEndpointAuthMethod := new(shared.RevocationEndpointAuthMethod)
+	revocationEndpointAuthMethod := new(shared.OpenidConnectPluginRevocationEndpointAuthMethod)
 	if !r.Config.RevocationEndpointAuthMethod.IsUnknown() && !r.Config.RevocationEndpointAuthMethod.IsNull() {
-		*revocationEndpointAuthMethod = shared.RevocationEndpointAuthMethod(r.Config.RevocationEndpointAuthMethod.ValueString())
+		*revocationEndpointAuthMethod = shared.OpenidConnectPluginRevocationEndpointAuthMethod(r.Config.RevocationEndpointAuthMethod.ValueString())
 	} else {
 		revocationEndpointAuthMethod = nil
 	}
@@ -3217,11 +3217,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionAudience = nil
 	}
-	var sessionBind []shared.SessionBind
+	var sessionBind []shared.OpenidConnectPluginSessionBind
 	if r.Config.SessionBind != nil {
-		sessionBind = make([]shared.SessionBind, 0, len(r.Config.SessionBind))
+		sessionBind = make([]shared.OpenidConnectPluginSessionBind, 0, len(r.Config.SessionBind))
 		for _, sessionBindItem := range r.Config.SessionBind {
-			sessionBind = append(sessionBind, shared.SessionBind(sessionBindItem.ValueString()))
+			sessionBind = append(sessionBind, shared.OpenidConnectPluginSessionBind(sessionBindItem.ValueString()))
 		}
 	}
 	sessionCookieDomain := new(string)
@@ -3248,9 +3248,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionCookiePath = nil
 	}
-	sessionCookieSameSite := new(shared.SessionCookieSameSite)
+	sessionCookieSameSite := new(shared.OpenidConnectPluginSessionCookieSameSite)
 	if !r.Config.SessionCookieSameSite.IsUnknown() && !r.Config.SessionCookieSameSite.IsNull() {
-		*sessionCookieSameSite = shared.SessionCookieSameSite(r.Config.SessionCookieSameSite.ValueString())
+		*sessionCookieSameSite = shared.OpenidConnectPluginSessionCookieSameSite(r.Config.SessionCookieSameSite.ValueString())
 	} else {
 		sessionCookieSameSite = nil
 	}
@@ -3344,18 +3344,18 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionRememberRollingTimeout = nil
 	}
-	var sessionRequestHeaders []shared.SessionRequestHeaders
+	var sessionRequestHeaders []shared.OpenidConnectPluginSessionRequestHeaders
 	if r.Config.SessionRequestHeaders != nil {
-		sessionRequestHeaders = make([]shared.SessionRequestHeaders, 0, len(r.Config.SessionRequestHeaders))
+		sessionRequestHeaders = make([]shared.OpenidConnectPluginSessionRequestHeaders, 0, len(r.Config.SessionRequestHeaders))
 		for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
-			sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+			sessionRequestHeaders = append(sessionRequestHeaders, shared.OpenidConnectPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
 		}
 	}
-	var sessionResponseHeaders []shared.SessionResponseHeaders
+	var sessionResponseHeaders []shared.OpenidConnectPluginSessionResponseHeaders
 	if r.Config.SessionResponseHeaders != nil {
-		sessionResponseHeaders = make([]shared.SessionResponseHeaders, 0, len(r.Config.SessionResponseHeaders))
+		sessionResponseHeaders = make([]shared.OpenidConnectPluginSessionResponseHeaders, 0, len(r.Config.SessionResponseHeaders))
 		for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
-			sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+			sessionResponseHeaders = append(sessionResponseHeaders, shared.OpenidConnectPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
 		}
 	}
 	sessionRollingTimeout := new(float64)
@@ -3370,9 +3370,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionSecret = nil
 	}
-	sessionStorage := new(shared.SessionStorage)
+	sessionStorage := new(shared.OpenidConnectPluginSessionStorage)
 	if !r.Config.SessionStorage.IsUnknown() && !r.Config.SessionStorage.IsNull() {
-		*sessionStorage = shared.SessionStorage(r.Config.SessionStorage.ValueString())
+		*sessionStorage = shared.OpenidConnectPluginSessionStorage(r.Config.SessionStorage.ValueString())
 	} else {
 		sessionStorage = nil
 	}
@@ -3480,9 +3480,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 				Scopes:        scopes1,
 			}
 		}
-		subjectTokenIssuers := make([]shared.SubjectTokenIssuers, 0, len(r.Config.TokenExchange.SubjectTokenIssuers))
+		subjectTokenIssuers := make([]shared.OpenidConnectPluginSubjectTokenIssuers, 0, len(r.Config.TokenExchange.SubjectTokenIssuers))
 		for subjectTokenIssuersIndex := range r.Config.TokenExchange.SubjectTokenIssuers {
-			var conditions *shared.Conditions
+			var conditions *shared.OpenidConnectPluginConditions
 			if r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions != nil {
 				var hasAudience []string
 				if r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience != nil {
@@ -3512,7 +3512,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 						missingScopes = append(missingScopes, r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes[missingScopesIndex].ValueString())
 					}
 				}
-				conditions = &shared.Conditions{
+				conditions = &shared.OpenidConnectPluginConditions{
 					HasAudience:     hasAudience,
 					HasScopes:       hasScopes,
 					MissingAudience: missingAudience,
@@ -3534,7 +3534,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			} else {
 				verifySignature = nil
 			}
-			subjectTokenIssuers = append(subjectTokenIssuers, shared.SubjectTokenIssuers{
+			subjectTokenIssuers = append(subjectTokenIssuers, shared.OpenidConnectPluginSubjectTokenIssuers{
 				Conditions:      conditions,
 				Issuer:          issuer2,
 				JwksURI:         jwksURI,
@@ -3560,11 +3560,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			tokenHeadersClient = append(tokenHeadersClient, r.Config.TokenHeadersClient[tokenHeadersClientIndex].ValueString())
 		}
 	}
-	var tokenHeadersGrants []shared.TokenHeadersGrants
+	var tokenHeadersGrants []shared.OpenidConnectPluginTokenHeadersGrants
 	if r.Config.TokenHeadersGrants != nil {
-		tokenHeadersGrants = make([]shared.TokenHeadersGrants, 0, len(r.Config.TokenHeadersGrants))
+		tokenHeadersGrants = make([]shared.OpenidConnectPluginTokenHeadersGrants, 0, len(r.Config.TokenHeadersGrants))
 		for _, tokenHeadersGrantsItem := range r.Config.TokenHeadersGrants {
-			tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
+			tokenHeadersGrants = append(tokenHeadersGrants, shared.OpenidConnectPluginTokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
 		}
 	}
 	var tokenHeadersNames []string
@@ -3732,9 +3732,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		upstreamUserInfoJwtHeader = nil
 	}
-	userinfoAccept := new(shared.UserinfoAccept)
+	userinfoAccept := new(shared.OpenidConnectPluginUserinfoAccept)
 	if !r.Config.UserinfoAccept.IsUnknown() && !r.Config.UserinfoAccept.IsNull() {
-		*userinfoAccept = shared.UserinfoAccept(r.Config.UserinfoAccept.ValueString())
+		*userinfoAccept = shared.OpenidConnectPluginUserinfoAccept(r.Config.UserinfoAccept.ValueString())
 	} else {
 		userinfoAccept = nil
 	}

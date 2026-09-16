@@ -15,5 +15,5 @@ type ControlPlane1 struct {
 	ID           types.String            `tfsdk:"id"`
 	Labels       map[string]types.String `tfsdk:"labels"`
 	Name         types.String            `tfsdk:"name"`
-	ProxyUrls    []ProxyURL              `tfsdk:"proxy_urls"`
+	ProxyUrls    []AIGatewayProxyURL     `tfsdk:"proxy_urls"`
 }

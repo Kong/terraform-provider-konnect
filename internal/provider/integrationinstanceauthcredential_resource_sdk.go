@@ -102,7 +102,7 @@ func (r *IntegrationInstanceAuthCredentialResourceModel) ToSharedCreateIntegrati
 	var out shared.CreateIntegrationInstanceAuthCredential
 	var multiKeyAuth *shared.MultiKeyAuth
 	if r.MultiKeyAuth != nil {
-		headers := make([]shared.Headers, 0, len(r.MultiKeyAuth.Config.Headers))
+		headers := make([]shared.MultiKeyAuthHeaders, 0, len(r.MultiKeyAuth.Config.Headers))
 		for headersIndex := range r.MultiKeyAuth.Config.Headers {
 			var name string
 			name = r.MultiKeyAuth.Config.Headers[headersIndex].Name.ValueString()
@@ -110,7 +110,7 @@ func (r *IntegrationInstanceAuthCredentialResourceModel) ToSharedCreateIntegrati
 			var key string
 			key = r.MultiKeyAuth.Config.Headers[headersIndex].Key.ValueString()
 
-			headers = append(headers, shared.Headers{
+			headers = append(headers, shared.MultiKeyAuthHeaders{
 				Name: name,
 				Key:  key,
 			})

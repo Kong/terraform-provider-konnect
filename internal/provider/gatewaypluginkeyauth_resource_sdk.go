@@ -320,7 +320,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 		} else {
 			hideCredentials = nil
 		}
-		identityRealms := make([]shared.IdentityRealms, 0, len(r.Config.IdentityRealms))
+		identityRealms := make([]shared.KeyAuthPluginIdentityRealms, 0, len(r.Config.IdentityRealms))
 		for identityRealmsIndex := range r.Config.IdentityRealms {
 			id2 := new(string)
 			if !r.Config.IdentityRealms[identityRealmsIndex].ID.IsUnknown() && !r.Config.IdentityRealms[identityRealmsIndex].ID.IsNull() {
@@ -340,7 +340,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 			} else {
 				scope = nil
 			}
-			identityRealms = append(identityRealms, shared.IdentityRealms{
+			identityRealms = append(identityRealms, shared.KeyAuthPluginIdentityRealms{
 				ID:     id2,
 				Region: region,
 				Scope:  scope,

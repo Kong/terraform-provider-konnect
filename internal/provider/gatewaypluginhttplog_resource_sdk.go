@@ -379,9 +379,9 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	} else {
 		keepalive = nil
 	}
-	method := new(shared.Method)
+	method := new(shared.HTTPLogPluginMethod)
 	if !r.Config.Method.IsUnknown() && !r.Config.Method.IsNull() {
-		*method = shared.Method(r.Config.Method.ValueString())
+		*method = shared.HTTPLogPluginMethod(r.Config.Method.ValueString())
 	} else {
 		method = nil
 	}

@@ -7,7 +7,7 @@ import (
 )
 
 type DatakitPluginConfig struct {
-	Debug     types.Bool `tfsdk:"debug"`
-	Nodes     []Nodes    `tfsdk:"nodes"`
-	Resources *Resources `tfsdk:"resources"`
+	Debug     types.Bool           `tfsdk:"debug"`
+	Nodes     []DatakitPluginNodes `tfsdk:"nodes"`
+	Resources *Resources           `tfsdk:"resources"`
 }

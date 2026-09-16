@@ -20,7 +20,7 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) RefreshFromSharedEven
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.Metadata{}
+			r.Config = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)

@@ -152,7 +152,7 @@ func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponseUnion(ctx
 			r.KongIdentity.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.KongIdentity.CreatedAt))
 			r.CreatedAt = r.KongIdentity.CreatedAt
 			if r.KongIdentity.DcrConfig == nil {
-				r.KongIdentity.DcrConfig = &tfTypes.Metadata{}
+				r.KongIdentity.DcrConfig = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
 			}
 			r.KongIdentity.ID = types.StringValue(resp.KongIdentity.ID)
 			r.ID = r.KongIdentity.ID

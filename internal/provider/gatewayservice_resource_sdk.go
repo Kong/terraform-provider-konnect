@@ -229,9 +229,9 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 	} else {
 		port = nil
 	}
-	protocol := new(shared.Protocol)
+	protocol := new(shared.ServiceProtocol)
 	if !r.Protocol.IsUnknown() && !r.Protocol.IsNull() {
-		*protocol = shared.Protocol(r.Protocol.ValueString())
+		*protocol = shared.ServiceProtocol(r.Protocol.ValueString())
 	} else {
 		protocol = nil
 	}

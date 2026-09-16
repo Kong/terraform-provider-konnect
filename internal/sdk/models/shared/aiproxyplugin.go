@@ -143,7 +143,7 @@ func (e *ParamLocation) IsExact() bool {
 	return false
 }
 
-type Auth struct {
+type AiProxyPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
@@ -178,123 +178,123 @@ type Auth struct {
 	ParamValue *string `default:"null" json:"param_value"`
 }
 
-func (a Auth) MarshalJSON() ([]byte, error) {
+func (a AiProxyPluginAuth) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *Auth) UnmarshalJSON(data []byte) error {
+func (a *AiProxyPluginAuth) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *Auth) GetAllowOverride() *bool {
+func (a *AiProxyPluginAuth) GetAllowOverride() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.AllowOverride
 }
 
-func (a *Auth) GetAwsAccessKeyID() *string {
+func (a *AiProxyPluginAuth) GetAwsAccessKeyID() *string {
 	if a == nil {
 		return nil
 	}
 	return a.AwsAccessKeyID
 }
 
-func (a *Auth) GetAwsSecretAccessKey() *string {
+func (a *AiProxyPluginAuth) GetAwsSecretAccessKey() *string {
 	if a == nil {
 		return nil
 	}
 	return a.AwsSecretAccessKey
 }
 
-func (a *Auth) GetAzureClientID() *string {
+func (a *AiProxyPluginAuth) GetAzureClientID() *string {
 	if a == nil {
 		return nil
 	}
 	return a.AzureClientID
 }
 
-func (a *Auth) GetAzureClientSecret() *string {
+func (a *AiProxyPluginAuth) GetAzureClientSecret() *string {
 	if a == nil {
 		return nil
 	}
 	return a.AzureClientSecret
 }
 
-func (a *Auth) GetAzureTenantID() *string {
+func (a *AiProxyPluginAuth) GetAzureTenantID() *string {
 	if a == nil {
 		return nil
 	}
 	return a.AzureTenantID
 }
 
-func (a *Auth) GetAzureUseManagedIdentity() *bool {
+func (a *AiProxyPluginAuth) GetAzureUseManagedIdentity() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
 }
 
-func (a *Auth) GetGcpMetadataURL() *string {
+func (a *AiProxyPluginAuth) GetGcpMetadataURL() *string {
 	if a == nil {
 		return nil
 	}
 	return a.GcpMetadataURL
 }
 
-func (a *Auth) GetGcpOauthTokenURL() *string {
+func (a *AiProxyPluginAuth) GetGcpOauthTokenURL() *string {
 	if a == nil {
 		return nil
 	}
 	return a.GcpOauthTokenURL
 }
 
-func (a *Auth) GetGcpServiceAccountJSON() *string {
+func (a *AiProxyPluginAuth) GetGcpServiceAccountJSON() *string {
 	if a == nil {
 		return nil
 	}
 	return a.GcpServiceAccountJSON
 }
 
-func (a *Auth) GetGcpUseServiceAccount() *bool {
+func (a *AiProxyPluginAuth) GetGcpUseServiceAccount() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.GcpUseServiceAccount
 }
 
-func (a *Auth) GetHeaderName() *string {
+func (a *AiProxyPluginAuth) GetHeaderName() *string {
 	if a == nil {
 		return nil
 	}
 	return a.HeaderName
 }
 
-func (a *Auth) GetHeaderValue() *string {
+func (a *AiProxyPluginAuth) GetHeaderValue() *string {
 	if a == nil {
 		return nil
 	}
 	return a.HeaderValue
 }
 
-func (a *Auth) GetParamLocation() *ParamLocation {
+func (a *AiProxyPluginAuth) GetParamLocation() *ParamLocation {
 	if a == nil {
 		return nil
 	}
 	return a.ParamLocation
 }
 
-func (a *Auth) GetParamName() *string {
+func (a *AiProxyPluginAuth) GetParamName() *string {
 	if a == nil {
 		return nil
 	}
 	return a.ParamName
 }
 
-func (a *Auth) GetParamValue() *string {
+func (a *AiProxyPluginAuth) GetParamValue() *string {
 	if a == nil {
 		return nil
 	}
@@ -512,23 +512,23 @@ func (c *CacheWriteCostList) GetTTL() string {
 	return c.TTL
 }
 
-// EmbeddingInputType - The purpose of the input text to calculate embedding vectors.
-type EmbeddingInputType string
+// AiProxyPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
+type AiProxyPluginEmbeddingInputType string
 
 const (
-	EmbeddingInputTypeClassification EmbeddingInputType = "classification"
-	EmbeddingInputTypeClustering     EmbeddingInputType = "clustering"
-	EmbeddingInputTypeImage          EmbeddingInputType = "image"
-	EmbeddingInputTypeSearchDocument EmbeddingInputType = "search_document"
-	EmbeddingInputTypeSearchQuery    EmbeddingInputType = "search_query"
+	AiProxyPluginEmbeddingInputTypeClassification AiProxyPluginEmbeddingInputType = "classification"
+	AiProxyPluginEmbeddingInputTypeClustering     AiProxyPluginEmbeddingInputType = "clustering"
+	AiProxyPluginEmbeddingInputTypeImage          AiProxyPluginEmbeddingInputType = "image"
+	AiProxyPluginEmbeddingInputTypeSearchDocument AiProxyPluginEmbeddingInputType = "search_document"
+	AiProxyPluginEmbeddingInputTypeSearchQuery    AiProxyPluginEmbeddingInputType = "search_query"
 )
 
-func (e EmbeddingInputType) ToPointer() *EmbeddingInputType {
+func (e AiProxyPluginEmbeddingInputType) ToPointer() *AiProxyPluginEmbeddingInputType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *EmbeddingInputType) IsExact() bool {
+func (e *AiProxyPluginEmbeddingInputType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "classification", "clustering", "image", "search_document", "search_query":
@@ -540,7 +540,7 @@ func (e *EmbeddingInputType) IsExact() bool {
 
 type Cohere struct {
 	// The purpose of the input text to calculate embedding vectors.
-	EmbeddingInputType *EmbeddingInputType `default:"classification" json:"embedding_input_type"`
+	EmbeddingInputType *AiProxyPluginEmbeddingInputType `default:"classification" json:"embedding_input_type"`
 	// Wait for the model if it is not ready
 	WaitForModel *bool `default:"null" json:"wait_for_model"`
 }
@@ -556,7 +556,7 @@ func (c *Cohere) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *Cohere) GetEmbeddingInputType() *EmbeddingInputType {
+func (c *Cohere) GetEmbeddingInputType() *AiProxyPluginEmbeddingInputType {
 	if c == nil {
 		return nil
 	}
@@ -1096,7 +1096,7 @@ func (e *Provider) IsExact() bool {
 	return false
 }
 
-type Model struct {
+type AiProxyPluginModel struct {
 	// The model name parameter from the request that this model should map to.
 	ModelAlias *string `default:"null" json:"model_alias"`
 	// Model name to execute.
@@ -1107,60 +1107,60 @@ type Model struct {
 	Provider Provider `json:"provider"`
 }
 
-func (m Model) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(m, "", false)
+func (a AiProxyPluginModel) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (m *Model) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"provider"}); err != nil {
+func (a *AiProxyPluginModel) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"provider"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *Model) GetModelAlias() *string {
-	if m == nil {
+func (a *AiProxyPluginModel) GetModelAlias() *string {
+	if a == nil {
 		return nil
 	}
-	return m.ModelAlias
+	return a.ModelAlias
 }
 
-func (m *Model) GetName() *string {
-	if m == nil {
+func (a *AiProxyPluginModel) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return m.Name
+	return a.Name
 }
 
-func (m *Model) GetOptions() *OptionsObj {
-	if m == nil {
+func (a *AiProxyPluginModel) GetOptions() *OptionsObj {
+	if a == nil {
 		return nil
 	}
-	return m.Options
+	return a.Options
 }
 
-func (m *Model) GetProvider() Provider {
-	if m == nil {
+func (a *AiProxyPluginModel) GetProvider() Provider {
+	if a == nil {
 		return Provider("")
 	}
-	return m.Provider
+	return a.Provider
 }
 
-// ResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
-type ResponseStreaming string
+// AiProxyPluginResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
+type AiProxyPluginResponseStreaming string
 
 const (
-	ResponseStreamingAllow  ResponseStreaming = "allow"
-	ResponseStreamingAlways ResponseStreaming = "always"
-	ResponseStreamingDeny   ResponseStreaming = "deny"
+	AiProxyPluginResponseStreamingAllow  AiProxyPluginResponseStreaming = "allow"
+	AiProxyPluginResponseStreamingAlways AiProxyPluginResponseStreaming = "always"
+	AiProxyPluginResponseStreamingDeny   AiProxyPluginResponseStreaming = "deny"
 )
 
-func (e ResponseStreaming) ToPointer() *ResponseStreaming {
+func (e AiProxyPluginResponseStreaming) ToPointer() *AiProxyPluginResponseStreaming {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ResponseStreaming) IsExact() bool {
+func (e *AiProxyPluginResponseStreaming) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "allow", "always", "deny":
@@ -1207,19 +1207,19 @@ func (e *RouteType) IsExact() bool {
 }
 
 type AiProxyPluginConfig struct {
-	Auth *Auth `json:"auth"`
+	Auth *AiProxyPluginAuth `json:"auth"`
 	// Generative AI category of the request
 	GenaiCategory *AiProxyPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiProxyPluginLlmFormat `default:"openai" json:"llm_format"`
 	Logging   *AiProxyPluginLogging   `json:"logging,omitempty"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
-	Model              Model  `json:"model"`
+	MaxRequestBodySize *int64             `default:"1048576" json:"max_request_body_size"`
+	Model              AiProxyPluginModel `json:"model"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
 	ModelNameHeader *bool `default:"true" json:"model_name_header"`
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
-	ResponseStreaming *ResponseStreaming `default:"allow" json:"response_streaming"`
+	ResponseStreaming *AiProxyPluginResponseStreaming `default:"allow" json:"response_streaming"`
 	// The model's operation implementation, for this provider.
 	RouteType RouteType `json:"route_type"`
 }
@@ -1235,7 +1235,7 @@ func (a *AiProxyPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AiProxyPluginConfig) GetAuth() *Auth {
+func (a *AiProxyPluginConfig) GetAuth() *AiProxyPluginAuth {
 	if a == nil {
 		return nil
 	}
@@ -1270,9 +1270,9 @@ func (a *AiProxyPluginConfig) GetMaxRequestBodySize() *int64 {
 	return a.MaxRequestBodySize
 }
 
-func (a *AiProxyPluginConfig) GetModel() Model {
+func (a *AiProxyPluginConfig) GetModel() AiProxyPluginModel {
 	if a == nil {
-		return Model{}
+		return AiProxyPluginModel{}
 	}
 	return a.Model
 }
@@ -1284,7 +1284,7 @@ func (a *AiProxyPluginConfig) GetModelNameHeader() *bool {
 	return a.ModelNameHeader
 }
 
-func (a *AiProxyPluginConfig) GetResponseStreaming() *ResponseStreaming {
+func (a *AiProxyPluginConfig) GetResponseStreaming() *AiProxyPluginResponseStreaming {
 	if a == nil {
 		return nil
 	}

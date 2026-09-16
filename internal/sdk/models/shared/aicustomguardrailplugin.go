@@ -185,21 +185,21 @@ func (m *Metrics) GetMasked() *string {
 	return m.Masked
 }
 
-// Location - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-type Location string
+// AiCustomGuardrailPluginLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
+type AiCustomGuardrailPluginLocation string
 
 const (
-	LocationBody   Location = "body"
-	LocationHeader Location = "header"
-	LocationQuery  Location = "query"
+	AiCustomGuardrailPluginLocationBody   AiCustomGuardrailPluginLocation = "body"
+	AiCustomGuardrailPluginLocationHeader AiCustomGuardrailPluginLocation = "header"
+	AiCustomGuardrailPluginLocationQuery  AiCustomGuardrailPluginLocation = "query"
 )
 
-func (e Location) ToPointer() *Location {
+func (e AiCustomGuardrailPluginLocation) ToPointer() *AiCustomGuardrailPluginLocation {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Location) IsExact() bool {
+func (e *AiCustomGuardrailPluginLocation) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "header", "query":
@@ -212,7 +212,7 @@ func (e *Location) IsExact() bool {
 // AiCustomGuardrailPluginAuth - Authentication configuration for HTTP request.
 type AiCustomGuardrailPluginAuth struct {
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-	Location *Location `default:"header" json:"location"`
+	Location *AiCustomGuardrailPluginLocation `default:"header" json:"location"`
 	// Specify name here.
 	Name *string `default:"null" json:"name"`
 	// Specify the full token value for 'name'.
@@ -230,7 +230,7 @@ func (a *AiCustomGuardrailPluginAuth) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AiCustomGuardrailPluginAuth) GetLocation() *Location {
+func (a *AiCustomGuardrailPluginAuth) GetLocation() *AiCustomGuardrailPluginLocation {
 	if a == nil {
 		return nil
 	}

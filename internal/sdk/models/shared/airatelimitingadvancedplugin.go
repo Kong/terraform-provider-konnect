@@ -248,22 +248,22 @@ func (l *LlmProviders) GetWindowSize() []float64 {
 	return l.WindowSize
 }
 
-// AiRateLimitingAdvancedPluginTokensCountStrategy - What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost.
-type AiRateLimitingAdvancedPluginTokensCountStrategy string
+// AiRateLimitingAdvancedPluginConfigTokensCountStrategy - What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost.
+type AiRateLimitingAdvancedPluginConfigTokensCountStrategy string
 
 const (
-	AiRateLimitingAdvancedPluginTokensCountStrategyCompletionTokens AiRateLimitingAdvancedPluginTokensCountStrategy = "completion_tokens"
-	AiRateLimitingAdvancedPluginTokensCountStrategyCost             AiRateLimitingAdvancedPluginTokensCountStrategy = "cost"
-	AiRateLimitingAdvancedPluginTokensCountStrategyPromptTokens     AiRateLimitingAdvancedPluginTokensCountStrategy = "prompt_tokens"
-	AiRateLimitingAdvancedPluginTokensCountStrategyTotalTokens      AiRateLimitingAdvancedPluginTokensCountStrategy = "total_tokens"
+	AiRateLimitingAdvancedPluginConfigTokensCountStrategyCompletionTokens AiRateLimitingAdvancedPluginConfigTokensCountStrategy = "completion_tokens"
+	AiRateLimitingAdvancedPluginConfigTokensCountStrategyCost             AiRateLimitingAdvancedPluginConfigTokensCountStrategy = "cost"
+	AiRateLimitingAdvancedPluginConfigTokensCountStrategyPromptTokens     AiRateLimitingAdvancedPluginConfigTokensCountStrategy = "prompt_tokens"
+	AiRateLimitingAdvancedPluginConfigTokensCountStrategyTotalTokens      AiRateLimitingAdvancedPluginConfigTokensCountStrategy = "total_tokens"
 )
 
-func (e AiRateLimitingAdvancedPluginTokensCountStrategy) ToPointer() *AiRateLimitingAdvancedPluginTokensCountStrategy {
+func (e AiRateLimitingAdvancedPluginConfigTokensCountStrategy) ToPointer() *AiRateLimitingAdvancedPluginConfigTokensCountStrategy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AiRateLimitingAdvancedPluginTokensCountStrategy) IsExact() bool {
+func (e *AiRateLimitingAdvancedPluginConfigTokensCountStrategy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "completion_tokens", "cost", "prompt_tokens", "total_tokens":
@@ -277,7 +277,7 @@ type AiRateLimitingAdvancedPluginLimits struct {
 	// The rate limit threshold for this window.
 	Limit float64 `json:"limit"`
 	// What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost.
-	TokensCountStrategy *AiRateLimitingAdvancedPluginTokensCountStrategy `default:"total_tokens" json:"tokens_count_strategy"`
+	TokensCountStrategy *AiRateLimitingAdvancedPluginConfigTokensCountStrategy `default:"total_tokens" json:"tokens_count_strategy"`
 	// The window size in seconds.
 	WindowSize int64 `json:"window_size"`
 }
@@ -300,7 +300,7 @@ func (a *AiRateLimitingAdvancedPluginLimits) GetLimit() float64 {
 	return a.Limit
 }
 
-func (a *AiRateLimitingAdvancedPluginLimits) GetTokensCountStrategy() *AiRateLimitingAdvancedPluginTokensCountStrategy {
+func (a *AiRateLimitingAdvancedPluginLimits) GetTokensCountStrategy() *AiRateLimitingAdvancedPluginConfigTokensCountStrategy {
 	if a == nil {
 		return nil
 	}
@@ -465,21 +465,21 @@ func (p *Policies) GetWindowType() *AiRateLimitingAdvancedPluginWindowType {
 	return p.WindowType
 }
 
-// AuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
-type AuthProvider string
+// AiRateLimitingAdvancedPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AiRateLimitingAdvancedPluginAuthProvider string
 
 const (
-	AuthProviderAws   AuthProvider = "aws"
-	AuthProviderAzure AuthProvider = "azure"
-	AuthProviderGcp   AuthProvider = "gcp"
+	AiRateLimitingAdvancedPluginAuthProviderAws   AiRateLimitingAdvancedPluginAuthProvider = "aws"
+	AiRateLimitingAdvancedPluginAuthProviderAzure AiRateLimitingAdvancedPluginAuthProvider = "azure"
+	AiRateLimitingAdvancedPluginAuthProviderGcp   AiRateLimitingAdvancedPluginAuthProvider = "gcp"
 )
 
-func (e AuthProvider) ToPointer() *AuthProvider {
+func (e AiRateLimitingAdvancedPluginAuthProvider) ToPointer() *AiRateLimitingAdvancedPluginAuthProvider {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AuthProvider) IsExact() bool {
+func (e *AiRateLimitingAdvancedPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "aws", "azure", "gcp":
@@ -492,7 +492,7 @@ func (e *AuthProvider) IsExact() bool {
 // AiRateLimitingAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
 type AiRateLimitingAdvancedPluginCloudAuthentication struct {
 	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
-	AuthProvider *AuthProvider `json:"auth_provider,omitempty"`
+	AuthProvider *AiRateLimitingAdvancedPluginAuthProvider `json:"auth_provider,omitempty"`
 	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
 	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
@@ -528,7 +528,7 @@ func (a *AiRateLimitingAdvancedPluginCloudAuthentication) UnmarshalJSON(data []b
 	return nil
 }
 
-func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAuthProvider() *AuthProvider {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAuthProvider() *AiRateLimitingAdvancedPluginAuthProvider {
 	if a == nil {
 		return nil
 	}
@@ -612,85 +612,85 @@ func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetGcpServiceAccountJS
 	return a.GcpServiceAccountJSON
 }
 
-type ClusterNodes struct {
+type AiRateLimitingAdvancedPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 }
 
-func (c ClusterNodes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (a AiRateLimitingAdvancedPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (c *ClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (a *AiRateLimitingAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClusterNodes) GetIP() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginClusterNodes) GetIP() *string {
+	if a == nil {
 		return nil
 	}
-	return c.IP
+	return a.IP
 }
 
-func (c *ClusterNodes) GetPort() *int64 {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return c.Port
+	return a.Port
 }
 
-type SentinelNodes struct {
+type AiRateLimitingAdvancedPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 }
 
-func (s SentinelNodes) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+func (a AiRateLimitingAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (s *SentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+func (a *AiRateLimitingAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SentinelNodes) GetHost() *string {
-	if s == nil {
+func (a *AiRateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return s.Host
+	return a.Host
 }
 
-func (s *SentinelNodes) GetPort() *int64 {
-	if s == nil {
+func (a *AiRateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return s.Port
+	return a.Port
 }
 
-// SentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-type SentinelRole string
+// AiRateLimitingAdvancedPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type AiRateLimitingAdvancedPluginSentinelRole string
 
 const (
-	SentinelRoleAny    SentinelRole = "any"
-	SentinelRoleMaster SentinelRole = "master"
-	SentinelRoleSlave  SentinelRole = "slave"
+	AiRateLimitingAdvancedPluginSentinelRoleAny    AiRateLimitingAdvancedPluginSentinelRole = "any"
+	AiRateLimitingAdvancedPluginSentinelRoleMaster AiRateLimitingAdvancedPluginSentinelRole = "master"
+	AiRateLimitingAdvancedPluginSentinelRoleSlave  AiRateLimitingAdvancedPluginSentinelRole = "slave"
 )
 
-func (e SentinelRole) ToPointer() *SentinelRole {
+func (e AiRateLimitingAdvancedPluginSentinelRole) ToPointer() *AiRateLimitingAdvancedPluginSentinelRole {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SentinelRole) IsExact() bool {
+func (e *AiRateLimitingAdvancedPluginSentinelRole) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "any", "master", "slave":
@@ -700,13 +700,13 @@ func (e *SentinelRole) IsExact() bool {
 	return false
 }
 
-type Redis struct {
+type AiRateLimitingAdvancedPluginRedis struct {
 	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
 	CloudAuthentication *AiRateLimitingAdvancedPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []ClusterNodes `json:"cluster_nodes"`
+	ClusterNodes []AiRateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -730,11 +730,11 @@ type Redis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []SentinelNodes `json:"sentinel_nodes"`
+	SentinelNodes []AiRateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
-	SentinelRole *SentinelRole `json:"sentinel_role,omitempty"`
+	SentinelRole *AiRateLimitingAdvancedPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 	SentinelUsername *string `default:"null" json:"sentinel_username"`
 	// A string representing an SNI (server name indication) value for TLS.
@@ -747,8 +747,8 @@ type Redis struct {
 	Username *string `default:"null" json:"username"`
 }
 
-func (r Redis) MarshalJSON() ([]byte, error) {
-	jsonBytes, err := utils.MarshalJSON(r, "", false)
+func (a AiRateLimitingAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
 	if err != nil {
 		return nil, err
 	}
@@ -759,187 +759,187 @@ func (r Redis) MarshalJSON() ([]byte, error) {
 	return out, nil
 }
 
-func (r *Redis) UnmarshalJSON(data []byte) error {
+func (a *AiRateLimitingAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
 	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
 		return err
 	} else {
 		data = out
 	}
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Redis) GetCloudAuthentication() *AiRateLimitingAdvancedPluginCloudAuthentication {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetCloudAuthentication() *AiRateLimitingAdvancedPluginCloudAuthentication {
+	if a == nil {
 		return nil
 	}
-	return r.CloudAuthentication
+	return a.CloudAuthentication
 }
 
-func (r *Redis) GetClusterMaxRedirections() *int64 {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
+	if a == nil {
 		return nil
 	}
-	return r.ClusterMaxRedirections
+	return a.ClusterMaxRedirections
 }
 
-func (r *Redis) GetClusterNodes() []ClusterNodes {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetClusterNodes() []AiRateLimitingAdvancedPluginClusterNodes {
+	if a == nil {
 		return nil
 	}
-	return r.ClusterNodes
+	return a.ClusterNodes
 }
 
-func (r *Redis) GetConnectTimeout() *int64 {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return r.ConnectTimeout
+	return a.ConnectTimeout
 }
 
-func (r *Redis) GetConnectionIsProxied() *bool {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetConnectionIsProxied() *bool {
+	if a == nil {
 		return nil
 	}
-	return r.ConnectionIsProxied
+	return a.ConnectionIsProxied
 }
 
-func (r *Redis) GetDatabase() *int64 {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
+	if a == nil {
 		return nil
 	}
-	return r.Database
+	return a.Database
 }
 
-func (r *Redis) GetHost() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return r.Host
+	return a.Host
 }
 
-func (r *Redis) GetKeepaliveBacklog() *int64 {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
+	if a == nil {
 		return nil
 	}
-	return r.KeepaliveBacklog
+	return a.KeepaliveBacklog
 }
 
-func (r *Redis) GetKeepalivePoolSize() *int64 {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return r.KeepalivePoolSize
+	return a.KeepalivePoolSize
 }
 
-func (r *Redis) GetPassword() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return r.Password
+	return a.Password
 }
 
-func (r *Redis) GetPort() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetPort() *string {
+	if a == nil {
 		return nil
 	}
-	return r.Port
+	return a.Port
 }
 
-func (r *Redis) GetReadTimeout() *int64 {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetReadTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return r.ReadTimeout
+	return a.ReadTimeout
 }
 
-func (r *Redis) GetSendTimeout() *int64 {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return r.SendTimeout
+	return a.SendTimeout
 }
 
-func (r *Redis) GetSentinelMaster() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
+	if a == nil {
 		return nil
 	}
-	return r.SentinelMaster
+	return a.SentinelMaster
 }
 
-func (r *Redis) GetSentinelNodes() []SentinelNodes {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSentinelNodes() []AiRateLimitingAdvancedPluginSentinelNodes {
+	if a == nil {
 		return nil
 	}
-	return r.SentinelNodes
+	return a.SentinelNodes
 }
 
-func (r *Redis) GetSentinelPassword() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return r.SentinelPassword
+	return a.SentinelPassword
 }
 
-func (r *Redis) GetSentinelRole() *SentinelRole {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSentinelRole() *AiRateLimitingAdvancedPluginSentinelRole {
+	if a == nil {
 		return nil
 	}
-	return r.SentinelRole
+	return a.SentinelRole
 }
 
-func (r *Redis) GetSentinelUsername() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSentinelUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return r.SentinelUsername
+	return a.SentinelUsername
 }
 
-func (r *Redis) GetServerName() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetServerName() *string {
+	if a == nil {
 		return nil
 	}
-	return r.ServerName
+	return a.ServerName
 }
 
-func (r *Redis) GetSsl() *bool {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return r.Ssl
+	return a.Ssl
 }
 
-func (r *Redis) GetSslVerify() *bool {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return r.SslVerify
+	return a.SslVerify
 }
 
-func (r *Redis) GetUsername() *string {
-	if r == nil {
+func (a *AiRateLimitingAdvancedPluginRedis) GetUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return r.Username
+	return a.Username
 }
 
-// Strategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`.
-type Strategy string
+// AiRateLimitingAdvancedPluginStrategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`.
+type AiRateLimitingAdvancedPluginStrategy string
 
 const (
-	StrategyCluster Strategy = "cluster"
-	StrategyLocal   Strategy = "local"
-	StrategyRedis   Strategy = "redis"
+	AiRateLimitingAdvancedPluginStrategyCluster AiRateLimitingAdvancedPluginStrategy = "cluster"
+	AiRateLimitingAdvancedPluginStrategyLocal   AiRateLimitingAdvancedPluginStrategy = "local"
+	AiRateLimitingAdvancedPluginStrategyRedis   AiRateLimitingAdvancedPluginStrategy = "redis"
 )
 
-func (e Strategy) ToPointer() *Strategy {
+func (e AiRateLimitingAdvancedPluginStrategy) ToPointer() *AiRateLimitingAdvancedPluginStrategy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Strategy) IsExact() bool {
+func (e *AiRateLimitingAdvancedPluginStrategy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "cluster", "local", "redis":
@@ -949,22 +949,22 @@ func (e *Strategy) IsExact() bool {
 	return false
 }
 
-// TokensCountStrategy - What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`.
-type TokensCountStrategy string
+// AiRateLimitingAdvancedPluginTokensCountStrategy - What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`.
+type AiRateLimitingAdvancedPluginTokensCountStrategy string
 
 const (
-	TokensCountStrategyCompletionTokens TokensCountStrategy = "completion_tokens"
-	TokensCountStrategyCost             TokensCountStrategy = "cost"
-	TokensCountStrategyPromptTokens     TokensCountStrategy = "prompt_tokens"
-	TokensCountStrategyTotalTokens      TokensCountStrategy = "total_tokens"
+	AiRateLimitingAdvancedPluginTokensCountStrategyCompletionTokens AiRateLimitingAdvancedPluginTokensCountStrategy = "completion_tokens"
+	AiRateLimitingAdvancedPluginTokensCountStrategyCost             AiRateLimitingAdvancedPluginTokensCountStrategy = "cost"
+	AiRateLimitingAdvancedPluginTokensCountStrategyPromptTokens     AiRateLimitingAdvancedPluginTokensCountStrategy = "prompt_tokens"
+	AiRateLimitingAdvancedPluginTokensCountStrategyTotalTokens      AiRateLimitingAdvancedPluginTokensCountStrategy = "total_tokens"
 )
 
-func (e TokensCountStrategy) ToPointer() *TokensCountStrategy {
+func (e AiRateLimitingAdvancedPluginTokensCountStrategy) ToPointer() *AiRateLimitingAdvancedPluginTokensCountStrategy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *TokensCountStrategy) IsExact() bool {
+func (e *AiRateLimitingAdvancedPluginTokensCountStrategy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "completion_tokens", "cost", "prompt_tokens", "total_tokens":
@@ -1027,18 +1027,18 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path *string `default:"null" json:"path"`
 	// Policy-based rate limiting. Each policy defines match conditions and limits. Mutually exclusive with `llm_providers`.
-	Policies []Policies `json:"policies"`
-	Redis    *Redis     `json:"redis"`
+	Policies []Policies                         `json:"policies"`
+	Redis    *AiRateLimitingAdvancedPluginRedis `json:"redis"`
 	// If defined, it use custom function to count requests for the request prompt provider
 	RequestPromptCountFunction *string `default:"null" json:"request_prompt_count_function"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`.
-	Strategy *Strategy `default:"local" json:"strategy"`
+	Strategy *AiRateLimitingAdvancedPluginStrategy `default:"local" json:"strategy"`
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
 	SyncRate *float64 `default:"null" json:"sync_rate"`
 	// What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`.
-	TokensCountStrategy *TokensCountStrategy `default:"total_tokens" json:"tokens_count_strategy"`
+	TokensCountStrategy *AiRateLimitingAdvancedPluginTokensCountStrategy `default:"total_tokens" json:"tokens_count_strategy"`
 	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
 	WindowType *WindowType `default:"sliding" json:"window_type"`
 }
@@ -1159,7 +1159,7 @@ func (a *AiRateLimitingAdvancedPluginConfig) GetPolicies() []Policies {
 	return a.Policies
 }
 
-func (a *AiRateLimitingAdvancedPluginConfig) GetRedis() *Redis {
+func (a *AiRateLimitingAdvancedPluginConfig) GetRedis() *AiRateLimitingAdvancedPluginRedis {
 	if a == nil {
 		return nil
 	}
@@ -1180,7 +1180,7 @@ func (a *AiRateLimitingAdvancedPluginConfig) GetRetryAfterJitterMax() *float64 {
 	return a.RetryAfterJitterMax
 }
 
-func (a *AiRateLimitingAdvancedPluginConfig) GetStrategy() *Strategy {
+func (a *AiRateLimitingAdvancedPluginConfig) GetStrategy() *AiRateLimitingAdvancedPluginStrategy {
 	if a == nil {
 		return nil
 	}
@@ -1194,7 +1194,7 @@ func (a *AiRateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
 	return a.SyncRate
 }
 
-func (a *AiRateLimitingAdvancedPluginConfig) GetTokensCountStrategy() *TokensCountStrategy {
+func (a *AiRateLimitingAdvancedPluginConfig) GetTokensCountStrategy() *AiRateLimitingAdvancedPluginTokensCountStrategy {
 	if a == nil {
 		return nil
 	}

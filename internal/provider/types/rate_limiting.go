@@ -7,6 +7,6 @@ import (
 )
 
 type RateLimiting struct {
-	Redis    *PartialVectordbRedis `tfsdk:"redis"`
-	SyncRate types.Float64         `tfsdk:"sync_rate"`
+	Redis    *ClusterCacheRedis `tfsdk:"redis"`
+	SyncRate types.Float64      `tfsdk:"sync_rate"`
 }

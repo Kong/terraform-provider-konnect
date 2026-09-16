@@ -33,11 +33,11 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 				if resp.Config.RateLimiting.Redis == nil {
 					r.Config.RateLimiting.Redis = nil
 				} else {
-					r.Config.RateLimiting.Redis = &tfTypes.PartialVectordbRedis{}
+					r.Config.RateLimiting.Redis = &tfTypes.ClusterCacheRedis{}
 					if resp.Config.RateLimiting.Redis.CloudAuthentication == nil {
 						r.Config.RateLimiting.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.RateLimiting.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						r.Config.RateLimiting.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 						if resp.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -57,10 +57,10 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					}
 					r.Config.RateLimiting.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.RateLimiting.Redis.ClusterMaxRedirections)
 					if resp.Config.RateLimiting.Redis.ClusterNodes != nil {
-						r.Config.RateLimiting.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+						r.Config.RateLimiting.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 						for _, clusterNodesItem := range resp.Config.RateLimiting.Redis.ClusterNodes {
-							var clusterNodes tfTypes.PartialRedisEeClusterNodes
+							var clusterNodes tfTypes.ClusterNodes
 
 							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -82,10 +82,10 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					r.Config.RateLimiting.Redis.SendTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.SendTimeout)
 					r.Config.RateLimiting.Redis.SentinelMaster = types.StringPointerValue(resp.Config.RateLimiting.Redis.SentinelMaster)
 					if resp.Config.RateLimiting.Redis.SentinelNodes != nil {
-						r.Config.RateLimiting.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+						r.Config.RateLimiting.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 						for _, sentinelNodesItem := range resp.Config.RateLimiting.Redis.SentinelNodes {
-							var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+							var sentinelNodes tfTypes.SentinelNodes
 
 							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)

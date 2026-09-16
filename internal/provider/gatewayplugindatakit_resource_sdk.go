@@ -20,10 +20,10 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.DatakitPluginConfig{}
 		r.Config.Debug = types.BoolPointerValue(resp.Config.Debug)
-		r.Config.Nodes = []tfTypes.Nodes{}
+		r.Config.Nodes = []tfTypes.DatakitPluginNodes{}
 
 		for _, nodesItem := range resp.Config.Nodes {
-			var nodes tfTypes.Nodes
+			var nodes tfTypes.DatakitPluginNodes
 
 			if nodesItem.Branch != nil {
 				nodes.Branch = &tfTypes.Branch{}
@@ -298,11 +298,11 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				if resp.Config.Resources.Cache.Redis == nil {
 					r.Config.Resources.Cache.Redis = nil
 				} else {
-					r.Config.Resources.Cache.Redis = &tfTypes.PartialVectordbRedis{}
+					r.Config.Resources.Cache.Redis = &tfTypes.ClusterCacheRedis{}
 					if resp.Config.Resources.Cache.Redis.CloudAuthentication == nil {
 						r.Config.Resources.Cache.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.Resources.Cache.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						r.Config.Resources.Cache.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 						if resp.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -322,10 +322,10 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					}
 					r.Config.Resources.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ClusterMaxRedirections)
 					if resp.Config.Resources.Cache.Redis.ClusterNodes != nil {
-						r.Config.Resources.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+						r.Config.Resources.Cache.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 						for _, clusterNodesItem := range resp.Config.Resources.Cache.Redis.ClusterNodes {
-							var clusterNodes tfTypes.PartialRedisEeClusterNodes
+							var clusterNodes tfTypes.ClusterNodes
 
 							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -347,10 +347,10 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					r.Config.Resources.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.SendTimeout)
 					r.Config.Resources.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Resources.Cache.Redis.SentinelMaster)
 					if resp.Config.Resources.Cache.Redis.SentinelNodes != nil {
-						r.Config.Resources.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+						r.Config.Resources.Cache.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 						for _, sentinelNodesItem := range resp.Config.Resources.Cache.Redis.SentinelNodes {
-							var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+							var sentinelNodes tfTypes.SentinelNodes
 
 							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -654,7 +654,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 	} else {
 		debug = nil
 	}
-	nodes := make([]shared.Nodes, 0, len(r.Config.Nodes))
+	nodes := make([]shared.DatakitPluginNodes, 0, len(r.Config.Nodes))
 	for nodesItem := range r.Config.Nodes {
 		if r.Config.Nodes[nodesItem].Branch != nil {
 			var elseVar []string
@@ -716,7 +716,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Outputs: outputs,
 				Then:    then1,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				Branch: &branch,
 			})
 		}
@@ -819,7 +819,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Outputs:       outputs1,
 				TTL:           ttl1,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				NodesCache: &nodesCache,
 			})
 		}
@@ -978,7 +978,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Timeout:       timeout,
 				URL:           url1,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				Call: &call,
 			})
 		}
@@ -1033,7 +1033,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Status:          status1,
 				WarnHeadersSent: warnHeadersSent,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				Exit: &exit,
 			})
 		}
@@ -1076,7 +1076,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Name:   name5,
 				Output: output3,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				Jq: &jq,
 			})
 		}
@@ -1143,7 +1143,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				RootElementName:      rootElementName,
 				TextBlockName:        textBlockName,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				JSONToXML: &jsonToXML,
 			})
 		}
@@ -1198,7 +1198,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Output:  output5,
 				Outputs: outputs3,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				JwtDecode: &jwtDecode,
 			})
 		}
@@ -1311,7 +1311,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				StaticClaims: staticClaims,
 				Typ:          typ,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				JwtSign: &jwtSign,
 			})
 		}
@@ -1420,7 +1420,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				ValidateExp:       validateExp,
 				ValidateNbf:       validateNbf,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				JwtVerify: &jwtVerify,
 			})
 		}
@@ -1466,7 +1466,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Output:      output8,
 				Property:    property1,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				Property: &property,
 			})
 		}
@@ -1501,7 +1501,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Outputs: outputs6,
 				Values:  values,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				Static: &static,
 			})
 		}
@@ -1571,7 +1571,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				TextBlockName:        textBlockName1,
 				Xpath:                xpath,
 			}
-			nodes = append(nodes, shared.Nodes{
+			nodes = append(nodes, shared.DatakitPluginNodes{
 				XMLToJSON: &xmlToJSON,
 			})
 		}

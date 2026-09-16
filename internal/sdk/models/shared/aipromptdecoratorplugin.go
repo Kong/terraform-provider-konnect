@@ -147,59 +147,6 @@ func (e *LlmFormat) IsExact() bool {
 	return false
 }
 
-type Role string
-
-const (
-	RoleAssistant Role = "assistant"
-	RoleSystem    Role = "system"
-	RoleUser      Role = "user"
-)
-
-func (e Role) ToPointer() *Role {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Role) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "assistant", "system", "user":
-			return true
-		}
-	}
-	return false
-}
-
-type AiPromptDecoratorPluginAppend struct {
-	Content string `json:"content"`
-	Role    *Role  `default:"system" json:"role"`
-}
-
-func (a AiPromptDecoratorPluginAppend) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AiPromptDecoratorPluginAppend) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"content"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AiPromptDecoratorPluginAppend) GetContent() string {
-	if a == nil {
-		return ""
-	}
-	return a.Content
-}
-
-func (a *AiPromptDecoratorPluginAppend) GetRole() *Role {
-	if a == nil {
-		return nil
-	}
-	return a.Role
-}
-
 type AiPromptDecoratorPluginRole string
 
 const (
@@ -223,9 +170,62 @@ func (e *AiPromptDecoratorPluginRole) IsExact() bool {
 	return false
 }
 
-type Prepend struct {
+type AiPromptDecoratorPluginAppend struct {
 	Content string                       `json:"content"`
 	Role    *AiPromptDecoratorPluginRole `default:"system" json:"role"`
+}
+
+func (a AiPromptDecoratorPluginAppend) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginAppend) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"content"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiPromptDecoratorPluginAppend) GetContent() string {
+	if a == nil {
+		return ""
+	}
+	return a.Content
+}
+
+func (a *AiPromptDecoratorPluginAppend) GetRole() *AiPromptDecoratorPluginRole {
+	if a == nil {
+		return nil
+	}
+	return a.Role
+}
+
+type AiPromptDecoratorPluginConfigRole string
+
+const (
+	AiPromptDecoratorPluginConfigRoleAssistant AiPromptDecoratorPluginConfigRole = "assistant"
+	AiPromptDecoratorPluginConfigRoleSystem    AiPromptDecoratorPluginConfigRole = "system"
+	AiPromptDecoratorPluginConfigRoleUser      AiPromptDecoratorPluginConfigRole = "user"
+)
+
+func (e AiPromptDecoratorPluginConfigRole) ToPointer() *AiPromptDecoratorPluginConfigRole {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiPromptDecoratorPluginConfigRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "assistant", "system", "user":
+			return true
+		}
+	}
+	return false
+}
+
+type Prepend struct {
+	Content string                             `json:"content"`
+	Role    *AiPromptDecoratorPluginConfigRole `default:"system" json:"role"`
 }
 
 func (p Prepend) MarshalJSON() ([]byte, error) {
@@ -246,7 +246,7 @@ func (p *Prepend) GetContent() string {
 	return p.Content
 }
 
-func (p *Prepend) GetRole() *AiPromptDecoratorPluginRole {
+func (p *Prepend) GetRole() *AiPromptDecoratorPluginConfigRole {
 	if p == nil {
 		return nil
 	}

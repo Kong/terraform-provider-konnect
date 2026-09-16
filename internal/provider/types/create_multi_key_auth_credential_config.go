@@ -3,5 +3,5 @@
 package types
 
 type CreateMultiKeyAuthCredentialConfig struct {
-	Headers []Headers `tfsdk:"headers"`
+	Headers []MultiKeyAuthHeaders `tfsdk:"headers"`
 }

@@ -98,7 +98,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 				}
 			}
 		}
-		r.Config.Session = &tfTypes.Session{}
+		r.Config.Session = &tfTypes.SolaceConsumePluginSession{}
 		if resp.Config.Session.Authentication == nil {
 			r.Config.Session.Authentication = nil
 		} else {

@@ -3,7 +3,7 @@
 package types
 
 type MCPTransport struct {
-	SseTransport            *SseTransport `queryParam:"inline" tfsdk:"sse_transport"`
-	StdioTransport          *Metadata     `queryParam:"inline" tfsdk:"stdio_transport"`
-	StreamableHTTPTransport *SseTransport `queryParam:"inline" tfsdk:"streamable_http_transport"`
+	SseTransport            *SseTransport                        `queryParam:"inline" tfsdk:"sse_transport"`
+	StdioTransport          *CreateAPIProductDocumentDTOMetadata `queryParam:"inline" tfsdk:"stdio_transport"`
+	StreamableHTTPTransport *SseTransport                        `queryParam:"inline" tfsdk:"streamable_http_transport"`
 }

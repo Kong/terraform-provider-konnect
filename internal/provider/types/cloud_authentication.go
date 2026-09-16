@@ -2,14 +2,8 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type CloudAuthentication struct {
-	AuthProvider     types.String `tfsdk:"auth_provider"`
-	AwsAssumeRoleArn types.String `tfsdk:"aws_assume_role_arn"`
-	AwsCacheName     types.String `tfsdk:"aws_cache_name"`
-	AwsRegion        types.String `tfsdk:"aws_region"`
-	AzureTenantID    types.String `tfsdk:"azure_tenant_id"`
+	Aws   *AIGatewayRedisAWSAuthentication   `queryParam:"inline" tfsdk:"aws"`
+	Azure *AIGatewayRedisAzureAuthentication `queryParam:"inline" tfsdk:"azure"`
+	Gcp   *AIGatewayRedisGCPAuthentication   `queryParam:"inline" tfsdk:"gcp"`
 }

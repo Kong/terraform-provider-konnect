@@ -23,7 +23,7 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 			var authentication tfTypes.VirtualClusterAuthenticationScheme
 
 			if authenticationItem.VirtualClusterAuthenticationAnonymous != nil {
-				authentication.Anonymous = &tfTypes.Metadata{}
+				authentication.Anonymous = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
 			}
 			if authenticationItem.VirtualClusterAuthenticationClientCertificate != nil {
 				authentication.ClientCertificate = &tfTypes.VirtualClusterAuthenticationClientCertificate{}

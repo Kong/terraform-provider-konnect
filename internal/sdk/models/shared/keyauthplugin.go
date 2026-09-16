@@ -142,43 +142,43 @@ func (e *KeyAuthPluginScope) IsExact() bool {
 	return false
 }
 
-type IdentityRealms struct {
+type KeyAuthPluginIdentityRealms struct {
 	// A string representing a UUID (universally unique identifier).
 	ID     *string             `json:"id,omitempty"`
 	Region *string             `default:"null" json:"region"`
 	Scope  *KeyAuthPluginScope `default:"cp" json:"scope"`
 }
 
-func (i IdentityRealms) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(i, "", false)
+func (k KeyAuthPluginIdentityRealms) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
 }
 
-func (i *IdentityRealms) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+func (k *KeyAuthPluginIdentityRealms) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (i *IdentityRealms) GetID() *string {
-	if i == nil {
+func (k *KeyAuthPluginIdentityRealms) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return i.ID
+	return k.ID
 }
 
-func (i *IdentityRealms) GetRegion() *string {
-	if i == nil {
+func (k *KeyAuthPluginIdentityRealms) GetRegion() *string {
+	if k == nil {
 		return nil
 	}
-	return i.Region
+	return k.Region
 }
 
-func (i *IdentityRealms) GetScope() *KeyAuthPluginScope {
-	if i == nil {
+func (k *KeyAuthPluginIdentityRealms) GetScope() *KeyAuthPluginScope {
+	if k == nil {
 		return nil
 	}
-	return i.Scope
+	return k.Scope
 }
 
 type KeyAuthPluginPrincipals struct {
@@ -228,7 +228,7 @@ type KeyAuthPluginConfig struct {
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
-	IdentityRealms []IdentityRealms `json:"identity_realms,omitempty"`
+	IdentityRealms []KeyAuthPluginIdentityRealms `json:"identity_realms,omitempty"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	KeyInBody *bool `default:"false" json:"key_in_body"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
@@ -269,7 +269,7 @@ func (k *KeyAuthPluginConfig) GetHideCredentials() *bool {
 	return k.HideCredentials
 }
 
-func (k *KeyAuthPluginConfig) GetIdentityRealms() []IdentityRealms {
+func (k *KeyAuthPluginConfig) GetIdentityRealms() []KeyAuthPluginIdentityRealms {
 	if k == nil {
 		return nil
 	}

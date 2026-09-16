@@ -73,7 +73,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 		if resp.Config.Server == nil {
 			r.Config.Server = nil
 		} else {
-			r.Config.Server = &tfTypes.Server{}
+			r.Config.Server = &tfTypes.AiMcpProxyPluginServer{}
 			r.Config.Server.ForwardClientHeaders = types.BoolPointerValue(resp.Config.Server.ForwardClientHeaders)
 			if resp.Config.Server.Session == nil {
 				r.Config.Server.Session = nil
@@ -82,7 +82,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				if resp.Config.Server.Session.Client == nil {
 					r.Config.Server.Session.Client = nil
 				} else {
-					r.Config.Server.Session.Client = &tfTypes.AiMcpProxyPluginClient{}
+					r.Config.Server.Session.Client = &tfTypes.AIGatewayMCPServerServerConfigBaseClient{}
 					if resp.Config.Server.Session.Client.Secrets != nil {
 						r.Config.Server.Session.Client.Secrets = make([]types.String, 0, len(resp.Config.Server.Session.Client.Secrets))
 						for _, v := range resp.Config.Server.Session.Client.Secrets {
@@ -96,11 +96,11 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				if resp.Config.Server.Session.Redis == nil {
 					r.Config.Server.Session.Redis = nil
 				} else {
-					r.Config.Server.Session.Redis = &tfTypes.PartialVectordbRedis{}
+					r.Config.Server.Session.Redis = &tfTypes.ClusterCacheRedis{}
 					if resp.Config.Server.Session.Redis.CloudAuthentication == nil {
 						r.Config.Server.Session.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						r.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 						if resp.Config.Server.Session.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.Server.Session.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Server.Session.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -120,10 +120,10 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					}
 					r.Config.Server.Session.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Server.Session.Redis.ClusterMaxRedirections)
 					if resp.Config.Server.Session.Redis.ClusterNodes != nil {
-						r.Config.Server.Session.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+						r.Config.Server.Session.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 						for _, clusterNodesItem := range resp.Config.Server.Session.Redis.ClusterNodes {
-							var clusterNodes tfTypes.PartialRedisEeClusterNodes
+							var clusterNodes tfTypes.ClusterNodes
 
 							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -145,10 +145,10 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					r.Config.Server.Session.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.SendTimeout)
 					r.Config.Server.Session.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Server.Session.Redis.SentinelMaster)
 					if resp.Config.Server.Session.Redis.SentinelNodes != nil {
-						r.Config.Server.Session.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+						r.Config.Server.Session.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 						for _, sentinelNodesItem := range resp.Config.Server.Session.Redis.SentinelNodes {
-							var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+							var sentinelNodes tfTypes.SentinelNodes
 
 							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -250,7 +250,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 						if parametersItem.Schema == nil {
 							parameters.Schema = nil
 						} else {
-							parameters.Schema = &tfTypes.BrokerHostFormat{}
+							parameters.Schema = &tfTypes.AIGatewayModelFormat{}
 							parameters.Schema.Type = types.StringPointerValue(parametersItem.Schema.Type)
 						}
 
@@ -634,7 +634,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 		maxRequestBodySize = nil
 	}
 	mode := shared.AiMcpProxyPluginMode(r.Config.Mode.ValueString())
-	var server *shared.Server
+	var server *shared.AiMcpProxyPluginServer
 	if r.Config.Server != nil {
 		forwardClientHeaders := new(bool)
 		if !r.Config.Server.ForwardClientHeaders.IsUnknown() && !r.Config.Server.ForwardClientHeaders.IsNull() {
@@ -969,7 +969,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 		} else {
 			timeout = nil
 		}
-		server = &shared.Server{
+		server = &shared.AiMcpProxyPluginServer{
 			ForwardClientHeaders: forwardClientHeaders,
 			Session:              session,
 			Tag:                  tag,
@@ -1147,9 +1147,9 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			if !r.Config.Tools[toolsIndex].Responses.IsUnknown() && !r.Config.Tools[toolsIndex].Responses.IsNull() {
 				_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Responses.ValueString()), &responses)
 			}
-			scheme := new(shared.Scheme)
+			scheme := new(shared.AiMcpProxyPluginScheme)
 			if !r.Config.Tools[toolsIndex].Scheme.IsUnknown() && !r.Config.Tools[toolsIndex].Scheme.IsNull() {
-				*scheme = shared.Scheme(r.Config.Tools[toolsIndex].Scheme.ValueString())
+				*scheme = shared.AiMcpProxyPluginScheme(r.Config.Tools[toolsIndex].Scheme.ValueString())
 			} else {
 				scheme = nil
 			}

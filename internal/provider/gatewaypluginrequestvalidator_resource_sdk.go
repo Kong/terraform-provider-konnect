@@ -347,7 +347,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 				} else {
 					explode = nil
 				}
-				in := shared.In(r.Config.ParameterSchema[parameterSchemaIndex].In.ValueString())
+				in := shared.RequestValidatorPluginIn(r.Config.ParameterSchema[parameterSchemaIndex].In.ValueString())
 				var name1 string
 				name1 = r.Config.ParameterSchema[parameterSchemaIndex].Name.ValueString()
 
@@ -382,9 +382,9 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		} else {
 			verboseResponse = nil
 		}
-		version := new(shared.Version)
+		version := new(shared.RequestValidatorPluginVersion)
 		if !r.Config.Version.IsUnknown() && !r.Config.Version.IsNull() {
-			*version = shared.Version(r.Config.Version.ValueString())
+			*version = shared.RequestValidatorPluginVersion(r.Config.Version.ValueString())
 		} else {
 			version = nil
 		}

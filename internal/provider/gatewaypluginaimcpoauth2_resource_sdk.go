@@ -128,7 +128,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 		if resp.Config.TokenExchange == nil {
 			r.Config.TokenExchange = nil
 		} else {
-			r.Config.TokenExchange = &tfTypes.TokenExchange{}
+			r.Config.TokenExchange = &tfTypes.AiMcpOauth2PluginTokenExchange{}
 			if resp.Config.TokenExchange.Cache == nil {
 				r.Config.TokenExchange.Cache = nil
 			} else {
@@ -179,10 +179,10 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			r.Config.TokenExchange.TokenEndpoint = types.StringValue(resp.Config.TokenExchange.TokenEndpoint)
 		}
 		if resp.Config.UpstreamHeaders != nil {
-			r.Config.UpstreamHeaders = []tfTypes.UpstreamHeaders{}
+			r.Config.UpstreamHeaders = []tfTypes.DownstreamHeaders{}
 
 			for _, upstreamHeadersItem := range resp.Config.UpstreamHeaders {
-				var upstreamHeaders tfTypes.UpstreamHeaders
+				var upstreamHeaders tfTypes.DownstreamHeaders
 
 				upstreamHeaders.Header = types.StringValue(upstreamHeadersItem.Header)
 				upstreamHeaders.Path = make([]types.String, 0, len(upstreamHeadersItem.Path))
@@ -482,15 +482,15 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 			})
 		}
 	}
-	clientAlg := new(shared.ClientAlg)
+	clientAlg := new(shared.AiMcpOauth2PluginClientAlg)
 	if !r.Config.ClientAlg.IsUnknown() && !r.Config.ClientAlg.IsNull() {
-		*clientAlg = shared.ClientAlg(r.Config.ClientAlg.ValueString())
+		*clientAlg = shared.AiMcpOauth2PluginClientAlg(r.Config.ClientAlg.ValueString())
 	} else {
 		clientAlg = nil
 	}
-	clientAuth := new(shared.ClientAuth)
+	clientAuth := new(shared.AiMcpOauth2PluginClientAuth)
 	if !r.Config.ClientAuth.IsUnknown() && !r.Config.ClientAuth.IsNull() {
-		*clientAuth = shared.ClientAuth(r.Config.ClientAuth.ValueString())
+		*clientAuth = shared.AiMcpOauth2PluginClientAuth(r.Config.ClientAuth.ValueString())
 	} else {
 		clientAuth = nil
 	}
@@ -512,9 +512,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	} else {
 		clientSecret = nil
 	}
-	consumerBy := make([]shared.ConsumerBy, 0, len(r.Config.ConsumerBy))
+	consumerBy := make([]shared.AiMcpOauth2PluginConsumerBy, 0, len(r.Config.ConsumerBy))
 	for _, consumerByItem := range r.Config.ConsumerBy {
-		consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
+		consumerBy = append(consumerBy, shared.AiMcpOauth2PluginConsumerBy(consumerByItem.ValueString()))
 	}
 	var consumerClaim []string
 	if r.Config.ConsumerClaim != nil {
@@ -716,7 +716,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	} else {
 		tlsClientAuthSslVerify = nil
 	}
-	var tokenExchange *shared.TokenExchange
+	var tokenExchange *shared.AiMcpOauth2PluginTokenExchange
 	if r.Config.TokenExchange != nil {
 		var cache *shared.AiMcpOauth2PluginCache
 		if r.Config.TokenExchange.Cache != nil {
@@ -737,9 +737,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 				TTL:     ttl,
 			}
 		}
-		clientAuth1 := new(shared.AiMcpOauth2PluginClientAuth)
+		clientAuth1 := new(shared.AiMcpOauth2PluginConfigClientAuth)
 		if !r.Config.TokenExchange.ClientAuth.IsUnknown() && !r.Config.TokenExchange.ClientAuth.IsNull() {
-			*clientAuth1 = shared.AiMcpOauth2PluginClientAuth(r.Config.TokenExchange.ClientAuth.ValueString())
+			*clientAuth1 = shared.AiMcpOauth2PluginConfigClientAuth(r.Config.TokenExchange.ClientAuth.ValueString())
 		} else {
 			clientAuth1 = nil
 		}
@@ -834,7 +834,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		var tokenEndpoint string
 		tokenEndpoint = r.Config.TokenExchange.TokenEndpoint.ValueString()
 
-		tokenExchange = &shared.TokenExchange{
+		tokenExchange = &shared.AiMcpOauth2PluginTokenExchange{
 			Cache:         cache,
 			ClientAuth:    clientAuth1,
 			ClientID:      clientId1,
@@ -844,9 +844,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 			TokenEndpoint: tokenEndpoint,
 		}
 	}
-	var upstreamHeaders []shared.UpstreamHeaders
+	var upstreamHeaders []shared.AiMcpOauth2PluginUpstreamHeaders
 	if r.Config.UpstreamHeaders != nil {
-		upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.Config.UpstreamHeaders))
+		upstreamHeaders = make([]shared.AiMcpOauth2PluginUpstreamHeaders, 0, len(r.Config.UpstreamHeaders))
 		for upstreamHeadersIndex := range r.Config.UpstreamHeaders {
 			var header1 string
 			header1 = r.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
@@ -855,7 +855,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 			for pathIndex := range r.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
 				path1 = append(path1, r.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex].ValueString())
 			}
-			upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
+			upstreamHeaders = append(upstreamHeaders, shared.AiMcpOauth2PluginUpstreamHeaders{
 				Header: header1,
 				Path:   path1,
 			})

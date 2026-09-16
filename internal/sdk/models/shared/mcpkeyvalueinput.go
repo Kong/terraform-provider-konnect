@@ -6,22 +6,22 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// Format - Specifies the input format.
-type Format string
+// MCPKeyValueInputFormat - Specifies the input format.
+type MCPKeyValueInputFormat string
 
 const (
-	FormatString   Format = "string"
-	FormatNumber   Format = "number"
-	FormatBoolean  Format = "boolean"
-	FormatFilepath Format = "filepath"
+	MCPKeyValueInputFormatString   MCPKeyValueInputFormat = "string"
+	MCPKeyValueInputFormatNumber   MCPKeyValueInputFormat = "number"
+	MCPKeyValueInputFormatBoolean  MCPKeyValueInputFormat = "boolean"
+	MCPKeyValueInputFormatFilepath MCPKeyValueInputFormat = "filepath"
 )
 
-func (e Format) ToPointer() *Format {
+func (e MCPKeyValueInputFormat) ToPointer() *MCPKeyValueInputFormat {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Format) IsExact() bool {
+func (e *MCPKeyValueInputFormat) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "string", "number", "boolean", "filepath":
@@ -36,7 +36,7 @@ type MCPKeyValueInput struct {
 	Description *string `json:"description,omitempty"`
 	IsRequired  *bool   `default:"false" json:"is_required"`
 	// Specifies the input format.
-	Format *Format `default:"string" json:"format"`
+	Format *MCPKeyValueInputFormat `default:"string" json:"format"`
 	// The value for the input.
 	Value *string `json:"value,omitempty"`
 	// Indicates whether the input is a secret value.
@@ -78,7 +78,7 @@ func (m *MCPKeyValueInput) GetIsRequired() *bool {
 	return m.IsRequired
 }
 
-func (m *MCPKeyValueInput) GetFormat() *Format {
+func (m *MCPKeyValueInput) GetFormat() *MCPKeyValueInputFormat {
 	if m == nil {
 		return nil
 	}

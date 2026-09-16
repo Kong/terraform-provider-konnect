@@ -20,7 +20,7 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 			r.Authentication = &tfTypes.BackendClusterAuthenticationScheme{}
 		}
 		if resp.Authentication.BackendClusterAuthenticationAnonymous != nil {
-			r.Authentication.Anonymous = &tfTypes.Metadata{}
+			r.Authentication.Anonymous = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
 		}
 		if resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware != nil {
 			r.Authentication.SaslPlain = &tfTypes.BackendClusterAuthenticationSaslPlain{}

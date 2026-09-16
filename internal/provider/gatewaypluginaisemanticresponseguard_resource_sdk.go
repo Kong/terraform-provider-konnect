@@ -161,11 +161,11 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			if resp.Config.Vectordb.Redis == nil {
 				r.Config.Vectordb.Redis = nil
 			} else {
-				r.Config.Vectordb.Redis = &tfTypes.PartialVectordbRedis{}
+				r.Config.Vectordb.Redis = &tfTypes.ClusterCacheRedis{}
 				if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
 					r.Config.Vectordb.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 					if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -185,10 +185,10 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 				}
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
-					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-						var clusterNodes tfTypes.PartialRedisEeClusterNodes
+						var clusterNodes tfTypes.ClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -210,10 +210,10 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
 				if resp.Config.Vectordb.Redis.SentinelNodes != nil {
-					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+						var sentinelNodes tfTypes.SentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)

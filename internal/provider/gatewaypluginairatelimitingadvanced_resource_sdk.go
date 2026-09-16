@@ -125,11 +125,11 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.PartialVectordbRedis{}
+				r.Config.Redis = &tfTypes.ClusterCacheRedis{}
 				if resp.Config.Redis.CloudAuthentication == nil {
 					r.Config.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					r.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 					if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -149,10 +149,10 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 				}
 				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 				if resp.Config.Redis.ClusterNodes != nil {
-					r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+					r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-						var clusterNodes tfTypes.PartialRedisEeClusterNodes
+						var clusterNodes tfTypes.ClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -174,10 +174,10 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 				if resp.Config.Redis.SentinelNodes != nil {
-					r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+					r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+						var sentinelNodes tfTypes.SentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -598,9 +598,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 						var limit1 float64
 						limit1 = r.Config.Policies[policiesIndex].Limits[limitsIndex].Limit.ValueFloat64()
 
-						tokensCountStrategy := new(shared.AiRateLimitingAdvancedPluginTokensCountStrategy)
+						tokensCountStrategy := new(shared.AiRateLimitingAdvancedPluginConfigTokensCountStrategy)
 						if !r.Config.Policies[policiesIndex].Limits[limitsIndex].TokensCountStrategy.IsUnknown() && !r.Config.Policies[policiesIndex].Limits[limitsIndex].TokensCountStrategy.IsNull() {
-							*tokensCountStrategy = shared.AiRateLimitingAdvancedPluginTokensCountStrategy(r.Config.Policies[policiesIndex].Limits[limitsIndex].TokensCountStrategy.ValueString())
+							*tokensCountStrategy = shared.AiRateLimitingAdvancedPluginConfigTokensCountStrategy(r.Config.Policies[policiesIndex].Limits[limitsIndex].TokensCountStrategy.ValueString())
 						} else {
 							tokensCountStrategy = nil
 						}
@@ -660,13 +660,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 				})
 			}
 		}
-		var redis *shared.Redis
+		var redis *shared.AiRateLimitingAdvancedPluginRedis
 		if r.Config.Redis != nil {
 			var cloudAuthentication *shared.AiRateLimitingAdvancedPluginCloudAuthentication
 			if r.Config.Redis.CloudAuthentication != nil {
-				authProvider := new(shared.AuthProvider)
+				authProvider := new(shared.AiRateLimitingAdvancedPluginAuthProvider)
 				if !r.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
-					*authProvider = shared.AuthProvider(r.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
+					*authProvider = shared.AiRateLimitingAdvancedPluginAuthProvider(r.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
 				} else {
 					authProvider = nil
 				}
@@ -757,9 +757,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.ClusterNodes
+			var clusterNodes []shared.AiRateLimitingAdvancedPluginClusterNodes
 			if r.Config.Redis.ClusterNodes != nil {
-				clusterNodes = make([]shared.ClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
+				clusterNodes = make([]shared.AiRateLimitingAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
 				for clusterNodesIndex := range r.Config.Redis.ClusterNodes {
 					ip := new(string)
 					if !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
@@ -773,7 +773,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 					} else {
 						port = nil
 					}
-					clusterNodes = append(clusterNodes, shared.ClusterNodes{
+					clusterNodes = append(clusterNodes, shared.AiRateLimitingAdvancedPluginClusterNodes{
 						IP:   ip,
 						Port: port,
 					})
@@ -845,9 +845,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.SentinelNodes
+			var sentinelNodes []shared.AiRateLimitingAdvancedPluginSentinelNodes
 			if r.Config.Redis.SentinelNodes != nil {
-				sentinelNodes = make([]shared.SentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
+				sentinelNodes = make([]shared.AiRateLimitingAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
 				for sentinelNodesIndex := range r.Config.Redis.SentinelNodes {
 					host1 := new(string)
 					if !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
@@ -861,7 +861,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 					} else {
 						port2 = nil
 					}
-					sentinelNodes = append(sentinelNodes, shared.SentinelNodes{
+					sentinelNodes = append(sentinelNodes, shared.AiRateLimitingAdvancedPluginSentinelNodes{
 						Host: host1,
 						Port: port2,
 					})
@@ -873,9 +873,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			} else {
 				sentinelPassword = nil
 			}
-			sentinelRole := new(shared.SentinelRole)
+			sentinelRole := new(shared.AiRateLimitingAdvancedPluginSentinelRole)
 			if !r.Config.Redis.SentinelRole.IsUnknown() && !r.Config.Redis.SentinelRole.IsNull() {
-				*sentinelRole = shared.SentinelRole(r.Config.Redis.SentinelRole.ValueString())
+				*sentinelRole = shared.AiRateLimitingAdvancedPluginSentinelRole(r.Config.Redis.SentinelRole.ValueString())
 			} else {
 				sentinelRole = nil
 			}
@@ -909,7 +909,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			} else {
 				username = nil
 			}
-			redis = &shared.Redis{
+			redis = &shared.AiRateLimitingAdvancedPluginRedis{
 				CloudAuthentication:    cloudAuthentication,
 				ClusterMaxRedirections: clusterMaxRedirections,
 				ClusterNodes:           clusterNodes,
@@ -946,9 +946,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		} else {
 			retryAfterJitterMax = nil
 		}
-		strategy := new(shared.Strategy)
+		strategy := new(shared.AiRateLimitingAdvancedPluginStrategy)
 		if !r.Config.Strategy.IsUnknown() && !r.Config.Strategy.IsNull() {
-			*strategy = shared.Strategy(r.Config.Strategy.ValueString())
+			*strategy = shared.AiRateLimitingAdvancedPluginStrategy(r.Config.Strategy.ValueString())
 		} else {
 			strategy = nil
 		}
@@ -958,9 +958,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		} else {
 			syncRate = nil
 		}
-		tokensCountStrategy1 := new(shared.TokensCountStrategy)
+		tokensCountStrategy1 := new(shared.AiRateLimitingAdvancedPluginTokensCountStrategy)
 		if !r.Config.TokensCountStrategy.IsUnknown() && !r.Config.TokensCountStrategy.IsNull() {
-			*tokensCountStrategy1 = shared.TokensCountStrategy(r.Config.TokensCountStrategy.ValueString())
+			*tokensCountStrategy1 = shared.AiRateLimitingAdvancedPluginTokensCountStrategy(r.Config.TokensCountStrategy.ValueString())
 		} else {
 			tokensCountStrategy1 = nil
 		}

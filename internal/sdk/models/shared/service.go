@@ -29,28 +29,28 @@ func (c *ClientCertificate) GetID() *string {
 	return c.ID
 }
 
-// Protocol - The protocol used to communicate with the upstream.
-type Protocol string
+// ServiceProtocol - The protocol used to communicate with the upstream.
+type ServiceProtocol string
 
 const (
-	ProtocolGrpc           Protocol = "grpc"
-	ProtocolGrpcs          Protocol = "grpcs"
-	ProtocolHTTP           Protocol = "http"
-	ProtocolHTTPS          Protocol = "https"
-	ProtocolTCP            Protocol = "tcp"
-	ProtocolTLS            Protocol = "tls"
-	ProtocolTLSPassthrough Protocol = "tls_passthrough"
-	ProtocolUDP            Protocol = "udp"
-	ProtocolWs             Protocol = "ws"
-	ProtocolWss            Protocol = "wss"
+	ServiceProtocolGrpc           ServiceProtocol = "grpc"
+	ServiceProtocolGrpcs          ServiceProtocol = "grpcs"
+	ServiceProtocolHTTP           ServiceProtocol = "http"
+	ServiceProtocolHTTPS          ServiceProtocol = "https"
+	ServiceProtocolTCP            ServiceProtocol = "tcp"
+	ServiceProtocolTLS            ServiceProtocol = "tls"
+	ServiceProtocolTLSPassthrough ServiceProtocol = "tls_passthrough"
+	ServiceProtocolUDP            ServiceProtocol = "udp"
+	ServiceProtocolWs             ServiceProtocol = "ws"
+	ServiceProtocolWss            ServiceProtocol = "wss"
 )
 
-func (e Protocol) ToPointer() *Protocol {
+func (e ServiceProtocol) ToPointer() *ServiceProtocol {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Protocol) IsExact() bool {
+func (e *ServiceProtocol) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
@@ -116,7 +116,7 @@ type Service struct {
 	// The upstream server port.
 	Port *int64 `default:"80" json:"port"`
 	// The protocol used to communicate with the upstream.
-	Protocol *Protocol `default:"http" json:"protocol"`
+	Protocol *ServiceProtocol `default:"http" json:"protocol"`
 	// The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
 	ReadTimeout *int64 `default:"60000" json:"read_timeout"`
 	// The number of retries to execute upon failure to proxy.
@@ -216,7 +216,7 @@ func (s *Service) GetPort() *int64 {
 	return s.Port
 }
 
-func (s *Service) GetProtocol() *Protocol {
+func (s *Service) GetProtocol() *ServiceProtocol {
 	if s == nil {
 		return nil
 	}

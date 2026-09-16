@@ -52,7 +52,7 @@ func (r *CloudGatewayAddonResourceModel) RefreshFromSharedAddOnResponse(ctx cont
 			if resp.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication == nil {
 				r.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication = nil
 			} else {
-				r.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication = &tfTypes.CloudAuthentication{}
+				r.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication = &tfTypes.ManagedCacheAddOnConfigResponseCloudAuthentication{}
 				r.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication.AuthProvider = types.StringPointerValue(resp.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication.AuthProvider)
 				r.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication.AwsAssumeRoleArn)
 				r.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.ManagedCacheAddOnConfigResponse.StateMetadata.CloudAuthentication.AwsCacheName)

@@ -1726,24 +1726,24 @@ func (b *Branch) GetType() *string {
 	return types.Pointer("branch")
 }
 
-type NodesType string
+type DatakitPluginNodesType string
 
 const (
-	NodesTypeBranch     NodesType = "branch"
-	NodesTypeNodesCache NodesType = "nodes_cache"
-	NodesTypeCall       NodesType = "call"
-	NodesTypeExit       NodesType = "exit"
-	NodesTypeJq         NodesType = "jq"
-	NodesTypeJSONToXML  NodesType = "json_to_xml"
-	NodesTypeJwtDecode  NodesType = "jwt_decode"
-	NodesTypeJwtSign    NodesType = "jwt_sign"
-	NodesTypeJwtVerify  NodesType = "jwt_verify"
-	NodesTypeProperty   NodesType = "property"
-	NodesTypeStatic     NodesType = "static"
-	NodesTypeXMLToJSON  NodesType = "xml_to_json"
+	DatakitPluginNodesTypeBranch     DatakitPluginNodesType = "branch"
+	DatakitPluginNodesTypeNodesCache DatakitPluginNodesType = "nodes_cache"
+	DatakitPluginNodesTypeCall       DatakitPluginNodesType = "call"
+	DatakitPluginNodesTypeExit       DatakitPluginNodesType = "exit"
+	DatakitPluginNodesTypeJq         DatakitPluginNodesType = "jq"
+	DatakitPluginNodesTypeJSONToXML  DatakitPluginNodesType = "json_to_xml"
+	DatakitPluginNodesTypeJwtDecode  DatakitPluginNodesType = "jwt_decode"
+	DatakitPluginNodesTypeJwtSign    DatakitPluginNodesType = "jwt_sign"
+	DatakitPluginNodesTypeJwtVerify  DatakitPluginNodesType = "jwt_verify"
+	DatakitPluginNodesTypeProperty   DatakitPluginNodesType = "property"
+	DatakitPluginNodesTypeStatic     DatakitPluginNodesType = "static"
+	DatakitPluginNodesTypeXMLToJSON  DatakitPluginNodesType = "xml_to_json"
 )
 
-type Nodes struct {
+type DatakitPluginNodes struct {
 	Branch     *Branch     `queryParam:"inline" union:"member"`
 	NodesCache *NodesCache `queryParam:"inline" union:"member"`
 	Call       *Call       `queryParam:"inline" union:"member"`
@@ -1757,118 +1757,118 @@ type Nodes struct {
 	Static     *Static     `queryParam:"inline" union:"member"`
 	XMLToJSON  *XMLToJSON  `queryParam:"inline" union:"member"`
 
-	Type NodesType
+	Type DatakitPluginNodesType
 }
 
-func CreateNodesBranch(branch Branch) Nodes {
-	typ := NodesTypeBranch
+func CreateDatakitPluginNodesBranch(branch Branch) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeBranch
 
-	return Nodes{
+	return DatakitPluginNodes{
 		Branch: &branch,
 		Type:   typ,
 	}
 }
 
-func CreateNodesNodesCache(nodesCache NodesCache) Nodes {
-	typ := NodesTypeNodesCache
+func CreateDatakitPluginNodesNodesCache(nodesCache NodesCache) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeNodesCache
 
-	return Nodes{
+	return DatakitPluginNodes{
 		NodesCache: &nodesCache,
 		Type:       typ,
 	}
 }
 
-func CreateNodesCall(call Call) Nodes {
-	typ := NodesTypeCall
+func CreateDatakitPluginNodesCall(call Call) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeCall
 
-	return Nodes{
+	return DatakitPluginNodes{
 		Call: &call,
 		Type: typ,
 	}
 }
 
-func CreateNodesExit(exit Exit) Nodes {
-	typ := NodesTypeExit
+func CreateDatakitPluginNodesExit(exit Exit) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeExit
 
-	return Nodes{
+	return DatakitPluginNodes{
 		Exit: &exit,
 		Type: typ,
 	}
 }
 
-func CreateNodesJq(jq Jq) Nodes {
-	typ := NodesTypeJq
+func CreateDatakitPluginNodesJq(jq Jq) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeJq
 
-	return Nodes{
+	return DatakitPluginNodes{
 		Jq:   &jq,
 		Type: typ,
 	}
 }
 
-func CreateNodesJSONToXML(jsonToXML JSONToXML) Nodes {
-	typ := NodesTypeJSONToXML
+func CreateDatakitPluginNodesJSONToXML(jsonToXML JSONToXML) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeJSONToXML
 
-	return Nodes{
+	return DatakitPluginNodes{
 		JSONToXML: &jsonToXML,
 		Type:      typ,
 	}
 }
 
-func CreateNodesJwtDecode(jwtDecode JwtDecode) Nodes {
-	typ := NodesTypeJwtDecode
+func CreateDatakitPluginNodesJwtDecode(jwtDecode JwtDecode) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeJwtDecode
 
-	return Nodes{
+	return DatakitPluginNodes{
 		JwtDecode: &jwtDecode,
 		Type:      typ,
 	}
 }
 
-func CreateNodesJwtSign(jwtSign JwtSign) Nodes {
-	typ := NodesTypeJwtSign
+func CreateDatakitPluginNodesJwtSign(jwtSign JwtSign) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeJwtSign
 
-	return Nodes{
+	return DatakitPluginNodes{
 		JwtSign: &jwtSign,
 		Type:    typ,
 	}
 }
 
-func CreateNodesJwtVerify(jwtVerify JwtVerify) Nodes {
-	typ := NodesTypeJwtVerify
+func CreateDatakitPluginNodesJwtVerify(jwtVerify JwtVerify) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeJwtVerify
 
-	return Nodes{
+	return DatakitPluginNodes{
 		JwtVerify: &jwtVerify,
 		Type:      typ,
 	}
 }
 
-func CreateNodesProperty(property Property) Nodes {
-	typ := NodesTypeProperty
+func CreateDatakitPluginNodesProperty(property Property) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeProperty
 
-	return Nodes{
+	return DatakitPluginNodes{
 		Property: &property,
 		Type:     typ,
 	}
 }
 
-func CreateNodesStatic(static Static) Nodes {
-	typ := NodesTypeStatic
+func CreateDatakitPluginNodesStatic(static Static) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeStatic
 
-	return Nodes{
+	return DatakitPluginNodes{
 		Static: &static,
 		Type:   typ,
 	}
 }
 
-func CreateNodesXMLToJSON(xmlToJSON XMLToJSON) Nodes {
-	typ := NodesTypeXMLToJSON
+func CreateDatakitPluginNodesXMLToJSON(xmlToJSON XMLToJSON) DatakitPluginNodes {
+	typ := DatakitPluginNodesTypeXMLToJSON
 
-	return Nodes{
+	return DatakitPluginNodes{
 		XMLToJSON: &xmlToJSON,
 		Type:      typ,
 	}
 }
 
-func (u *Nodes) UnmarshalJSON(data []byte) error {
+func (u *DatakitPluginNodes) UnmarshalJSON(data []byte) error {
 
 	var candidates []utils.UnionCandidate
 
@@ -1876,7 +1876,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var branch Branch = Branch{}
 	if err := utils.UnmarshalJSON(data, &branch, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeBranch,
+			Type:  DatakitPluginNodesTypeBranch,
 			Value: &branch,
 		})
 	}
@@ -1884,7 +1884,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var nodesCache NodesCache = NodesCache{}
 	if err := utils.UnmarshalJSON(data, &nodesCache, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeNodesCache,
+			Type:  DatakitPluginNodesTypeNodesCache,
 			Value: &nodesCache,
 		})
 	}
@@ -1892,7 +1892,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var call Call = Call{}
 	if err := utils.UnmarshalJSON(data, &call, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeCall,
+			Type:  DatakitPluginNodesTypeCall,
 			Value: &call,
 		})
 	}
@@ -1900,7 +1900,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var exit Exit = Exit{}
 	if err := utils.UnmarshalJSON(data, &exit, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeExit,
+			Type:  DatakitPluginNodesTypeExit,
 			Value: &exit,
 		})
 	}
@@ -1908,7 +1908,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var jq Jq = Jq{}
 	if err := utils.UnmarshalJSON(data, &jq, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeJq,
+			Type:  DatakitPluginNodesTypeJq,
 			Value: &jq,
 		})
 	}
@@ -1916,7 +1916,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var jsonToXML JSONToXML = JSONToXML{}
 	if err := utils.UnmarshalJSON(data, &jsonToXML, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeJSONToXML,
+			Type:  DatakitPluginNodesTypeJSONToXML,
 			Value: &jsonToXML,
 		})
 	}
@@ -1924,7 +1924,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var jwtDecode JwtDecode = JwtDecode{}
 	if err := utils.UnmarshalJSON(data, &jwtDecode, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeJwtDecode,
+			Type:  DatakitPluginNodesTypeJwtDecode,
 			Value: &jwtDecode,
 		})
 	}
@@ -1932,7 +1932,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var jwtSign JwtSign = JwtSign{}
 	if err := utils.UnmarshalJSON(data, &jwtSign, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeJwtSign,
+			Type:  DatakitPluginNodesTypeJwtSign,
 			Value: &jwtSign,
 		})
 	}
@@ -1940,7 +1940,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var jwtVerify JwtVerify = JwtVerify{}
 	if err := utils.UnmarshalJSON(data, &jwtVerify, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeJwtVerify,
+			Type:  DatakitPluginNodesTypeJwtVerify,
 			Value: &jwtVerify,
 		})
 	}
@@ -1948,7 +1948,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var property Property = Property{}
 	if err := utils.UnmarshalJSON(data, &property, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeProperty,
+			Type:  DatakitPluginNodesTypeProperty,
 			Value: &property,
 		})
 	}
@@ -1956,7 +1956,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var static Static = Static{}
 	if err := utils.UnmarshalJSON(data, &static, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeStatic,
+			Type:  DatakitPluginNodesTypeStatic,
 			Value: &static,
 		})
 	}
@@ -1964,66 +1964,66 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	var xmlToJSON XMLToJSON = XMLToJSON{}
 	if err := utils.UnmarshalJSON(data, &xmlToJSON, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeXMLToJSON,
+			Type:  DatakitPluginNodesTypeXMLToJSON,
 			Value: &xmlToJSON,
 		})
 	}
 
 	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for DatakitPluginNodes", string(data))
 	}
 
 	// Pick the best candidate using multi-stage filtering
 	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for DatakitPluginNodes", string(data))
 	}
 
 	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(NodesType)
+	u.Type = best.Type.(DatakitPluginNodesType)
 	switch best.Type {
-	case NodesTypeBranch:
+	case DatakitPluginNodesTypeBranch:
 		u.Branch = best.Value.(*Branch)
 		return nil
-	case NodesTypeNodesCache:
+	case DatakitPluginNodesTypeNodesCache:
 		u.NodesCache = best.Value.(*NodesCache)
 		return nil
-	case NodesTypeCall:
+	case DatakitPluginNodesTypeCall:
 		u.Call = best.Value.(*Call)
 		return nil
-	case NodesTypeExit:
+	case DatakitPluginNodesTypeExit:
 		u.Exit = best.Value.(*Exit)
 		return nil
-	case NodesTypeJq:
+	case DatakitPluginNodesTypeJq:
 		u.Jq = best.Value.(*Jq)
 		return nil
-	case NodesTypeJSONToXML:
+	case DatakitPluginNodesTypeJSONToXML:
 		u.JSONToXML = best.Value.(*JSONToXML)
 		return nil
-	case NodesTypeJwtDecode:
+	case DatakitPluginNodesTypeJwtDecode:
 		u.JwtDecode = best.Value.(*JwtDecode)
 		return nil
-	case NodesTypeJwtSign:
+	case DatakitPluginNodesTypeJwtSign:
 		u.JwtSign = best.Value.(*JwtSign)
 		return nil
-	case NodesTypeJwtVerify:
+	case DatakitPluginNodesTypeJwtVerify:
 		u.JwtVerify = best.Value.(*JwtVerify)
 		return nil
-	case NodesTypeProperty:
+	case DatakitPluginNodesTypeProperty:
 		u.Property = best.Value.(*Property)
 		return nil
-	case NodesTypeStatic:
+	case DatakitPluginNodesTypeStatic:
 		u.Static = best.Value.(*Static)
 		return nil
-	case NodesTypeXMLToJSON:
+	case DatakitPluginNodesTypeXMLToJSON:
 		u.XMLToJSON = best.Value.(*XMLToJSON)
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for DatakitPluginNodes", string(data))
 }
 
-func (u Nodes) MarshalJSON() ([]byte, error) {
+func (u DatakitPluginNodes) MarshalJSON() ([]byte, error) {
 	if u.Branch != nil {
 		return utils.MarshalJSON(u.Branch, "", true)
 	}
@@ -2072,7 +2072,7 @@ func (u Nodes) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.XMLToJSON, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type Nodes: all fields are null")
+	return nil, errors.New("could not marshal union type DatakitPluginNodes: all fields are null")
 }
 
 type DatakitPluginMemory struct {
@@ -2651,9 +2651,9 @@ func (r *Resources) GetVault() map[string]string {
 }
 
 type DatakitPluginConfig struct {
-	Debug     *bool      `default:"false" json:"debug"`
-	Nodes     []Nodes    `json:"nodes"`
-	Resources *Resources `json:"resources"`
+	Debug     *bool                `default:"false" json:"debug"`
+	Nodes     []DatakitPluginNodes `json:"nodes"`
+	Resources *Resources           `json:"resources"`
 }
 
 func (d DatakitPluginConfig) MarshalJSON() ([]byte, error) {
@@ -2674,9 +2674,9 @@ func (d *DatakitPluginConfig) GetDebug() *bool {
 	return d.Debug
 }
 
-func (d *DatakitPluginConfig) GetNodes() []Nodes {
+func (d *DatakitPluginConfig) GetNodes() []DatakitPluginNodes {
 	if d == nil {
-		return []Nodes{}
+		return []DatakitPluginNodes{}
 	}
 	return d.Nodes
 }

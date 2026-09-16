@@ -30,11 +30,11 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
+			r.Config.Redis = &tfTypes.Redis{}
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -54,10 +54,10 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 				for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+					var clusterNodes tfTypes.ClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -80,10 +80,10 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
 			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+					var sentinelNodes tfTypes.SentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)

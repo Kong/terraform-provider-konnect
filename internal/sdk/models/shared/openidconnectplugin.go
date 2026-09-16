@@ -120,26 +120,26 @@ func (o *OpenidConnectPluginPartials) GetPath() string {
 	return o.Path
 }
 
-type AuthMethods string
+type OpenidConnectPluginAuthMethods string
 
 const (
-	AuthMethodsAuthorizationCode AuthMethods = "authorization_code"
-	AuthMethodsBearer            AuthMethods = "bearer"
-	AuthMethodsClientCredentials AuthMethods = "client_credentials"
-	AuthMethodsIntrospection     AuthMethods = "introspection"
-	AuthMethodsKongOauth2        AuthMethods = "kong_oauth2"
-	AuthMethodsPassword          AuthMethods = "password"
-	AuthMethodsRefreshToken      AuthMethods = "refresh_token"
-	AuthMethodsSession           AuthMethods = "session"
-	AuthMethodsUserinfo          AuthMethods = "userinfo"
+	OpenidConnectPluginAuthMethodsAuthorizationCode OpenidConnectPluginAuthMethods = "authorization_code"
+	OpenidConnectPluginAuthMethodsBearer            OpenidConnectPluginAuthMethods = "bearer"
+	OpenidConnectPluginAuthMethodsClientCredentials OpenidConnectPluginAuthMethods = "client_credentials"
+	OpenidConnectPluginAuthMethodsIntrospection     OpenidConnectPluginAuthMethods = "introspection"
+	OpenidConnectPluginAuthMethodsKongOauth2        OpenidConnectPluginAuthMethods = "kong_oauth2"
+	OpenidConnectPluginAuthMethodsPassword          OpenidConnectPluginAuthMethods = "password"
+	OpenidConnectPluginAuthMethodsRefreshToken      OpenidConnectPluginAuthMethods = "refresh_token"
+	OpenidConnectPluginAuthMethodsSession           OpenidConnectPluginAuthMethods = "session"
+	OpenidConnectPluginAuthMethodsUserinfo          OpenidConnectPluginAuthMethods = "userinfo"
 )
 
-func (e AuthMethods) ToPointer() *AuthMethods {
+func (e OpenidConnectPluginAuthMethods) ToPointer() *OpenidConnectPluginAuthMethods {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AuthMethods) IsExact() bool {
+func (e *OpenidConnectPluginAuthMethods) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
@@ -149,22 +149,22 @@ func (e *AuthMethods) IsExact() bool {
 	return false
 }
 
-// AuthorizationCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-type AuthorizationCookieSameSite string
+// OpenidConnectPluginAuthorizationCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+type OpenidConnectPluginAuthorizationCookieSameSite string
 
 const (
-	AuthorizationCookieSameSiteDefault AuthorizationCookieSameSite = "Default"
-	AuthorizationCookieSameSiteLax     AuthorizationCookieSameSite = "Lax"
-	AuthorizationCookieSameSiteNone    AuthorizationCookieSameSite = "None"
-	AuthorizationCookieSameSiteStrict  AuthorizationCookieSameSite = "Strict"
+	OpenidConnectPluginAuthorizationCookieSameSiteDefault OpenidConnectPluginAuthorizationCookieSameSite = "Default"
+	OpenidConnectPluginAuthorizationCookieSameSiteLax     OpenidConnectPluginAuthorizationCookieSameSite = "Lax"
+	OpenidConnectPluginAuthorizationCookieSameSiteNone    OpenidConnectPluginAuthorizationCookieSameSite = "None"
+	OpenidConnectPluginAuthorizationCookieSameSiteStrict  OpenidConnectPluginAuthorizationCookieSameSite = "Strict"
 )
 
-func (e AuthorizationCookieSameSite) ToPointer() *AuthorizationCookieSameSite {
+func (e OpenidConnectPluginAuthorizationCookieSameSite) ToPointer() *OpenidConnectPluginAuthorizationCookieSameSite {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AuthorizationCookieSameSite) IsExact() bool {
+func (e *OpenidConnectPluginAuthorizationCookieSameSite) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "Default", "Lax", "None", "Strict":
@@ -174,21 +174,21 @@ func (e *AuthorizationCookieSameSite) IsExact() bool {
 	return false
 }
 
-type BearerTokenParamType string
+type OpenidConnectPluginBearerTokenParamType string
 
 const (
-	BearerTokenParamTypeBody   BearerTokenParamType = "body"
-	BearerTokenParamTypeCookie BearerTokenParamType = "cookie"
-	BearerTokenParamTypeHeader BearerTokenParamType = "header"
-	BearerTokenParamTypeQuery  BearerTokenParamType = "query"
+	OpenidConnectPluginBearerTokenParamTypeBody   OpenidConnectPluginBearerTokenParamType = "body"
+	OpenidConnectPluginBearerTokenParamTypeCookie OpenidConnectPluginBearerTokenParamType = "cookie"
+	OpenidConnectPluginBearerTokenParamTypeHeader OpenidConnectPluginBearerTokenParamType = "header"
+	OpenidConnectPluginBearerTokenParamTypeQuery  OpenidConnectPluginBearerTokenParamType = "query"
 )
 
-func (e BearerTokenParamType) ToPointer() *BearerTokenParamType {
+func (e OpenidConnectPluginBearerTokenParamType) ToPointer() *OpenidConnectPluginBearerTokenParamType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *BearerTokenParamType) IsExact() bool {
+func (e *OpenidConnectPluginBearerTokenParamType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "cookie", "header", "query":
@@ -258,20 +258,20 @@ func (e *OpenidConnectPluginClientAuth) IsExact() bool {
 	return false
 }
 
-type ClientCredentialsParamType string
+type OpenidConnectPluginClientCredentialsParamType string
 
 const (
-	ClientCredentialsParamTypeBody   ClientCredentialsParamType = "body"
-	ClientCredentialsParamTypeHeader ClientCredentialsParamType = "header"
-	ClientCredentialsParamTypeQuery  ClientCredentialsParamType = "query"
+	OpenidConnectPluginClientCredentialsParamTypeBody   OpenidConnectPluginClientCredentialsParamType = "body"
+	OpenidConnectPluginClientCredentialsParamTypeHeader OpenidConnectPluginClientCredentialsParamType = "header"
+	OpenidConnectPluginClientCredentialsParamTypeQuery  OpenidConnectPluginClientCredentialsParamType = "query"
 )
 
-func (e ClientCredentialsParamType) ToPointer() *ClientCredentialsParamType {
+func (e OpenidConnectPluginClientCredentialsParamType) ToPointer() *OpenidConnectPluginClientCredentialsParamType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ClientCredentialsParamType) IsExact() bool {
+func (e *OpenidConnectPluginClientCredentialsParamType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "header", "query":
@@ -281,7 +281,7 @@ func (e *ClientCredentialsParamType) IsExact() bool {
 	return false
 }
 
-type ClientJwk struct {
+type OpenidConnectPluginClientJwk struct {
 	Alg           *string  `default:"null" json:"alg"`
 	Crv           *string  `default:"null" json:"crv"`
 	D             *string  `default:"null" json:"d"`
@@ -309,190 +309,190 @@ type ClientJwk struct {
 	Y             *string  `default:"null" json:"y"`
 }
 
-func (c ClientJwk) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (o OpenidConnectPluginClientJwk) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
 }
 
-func (c *ClientJwk) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (o *OpenidConnectPluginClientJwk) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientJwk) GetAlg() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetAlg() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Alg
+	return o.Alg
 }
 
-func (c *ClientJwk) GetCrv() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetCrv() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Crv
+	return o.Crv
 }
 
-func (c *ClientJwk) GetD() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetD() *string {
+	if o == nil {
 		return nil
 	}
-	return c.D
+	return o.D
 }
 
-func (c *ClientJwk) GetDp() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetDp() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Dp
+	return o.Dp
 }
 
-func (c *ClientJwk) GetDq() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetDq() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Dq
+	return o.Dq
 }
 
-func (c *ClientJwk) GetE() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetE() *string {
+	if o == nil {
 		return nil
 	}
-	return c.E
+	return o.E
 }
 
-func (c *ClientJwk) GetIssuer() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetIssuer() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Issuer
+	return o.Issuer
 }
 
-func (c *ClientJwk) GetK() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetK() *string {
+	if o == nil {
 		return nil
 	}
-	return c.K
+	return o.K
 }
 
-func (c *ClientJwk) GetKeyOps() []string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetKeyOps() []string {
+	if o == nil {
 		return nil
 	}
-	return c.KeyOps
+	return o.KeyOps
 }
 
-func (c *ClientJwk) GetKid() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetKid() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Kid
+	return o.Kid
 }
 
-func (c *ClientJwk) GetKty() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetKty() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Kty
+	return o.Kty
 }
 
-func (c *ClientJwk) GetN() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetN() *string {
+	if o == nil {
 		return nil
 	}
-	return c.N
+	return o.N
 }
 
-func (c *ClientJwk) GetOth() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetOth() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Oth
+	return o.Oth
 }
 
-func (c *ClientJwk) GetP() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetP() *string {
+	if o == nil {
 		return nil
 	}
-	return c.P
+	return o.P
 }
 
-func (c *ClientJwk) GetQ() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetQ() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Q
+	return o.Q
 }
 
-func (c *ClientJwk) GetQi() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetQi() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Qi
+	return o.Qi
 }
 
-func (c *ClientJwk) GetR() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetR() *string {
+	if o == nil {
 		return nil
 	}
-	return c.R
+	return o.R
 }
 
-func (c *ClientJwk) GetT() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetT() *string {
+	if o == nil {
 		return nil
 	}
-	return c.T
+	return o.T
 }
 
-func (c *ClientJwk) GetUse() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetUse() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Use
+	return o.Use
 }
 
-func (c *ClientJwk) GetX() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetX() *string {
+	if o == nil {
 		return nil
 	}
-	return c.X
+	return o.X
 }
 
-func (c *ClientJwk) GetX5c() []string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetX5c() []string {
+	if o == nil {
 		return nil
 	}
-	return c.X5c
+	return o.X5c
 }
 
-func (c *ClientJwk) GetX5t() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetX5t() *string {
+	if o == nil {
 		return nil
 	}
-	return c.X5t
+	return o.X5t
 }
 
-func (c *ClientJwk) GetX5tNumberS256() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetX5tNumberS256() *string {
+	if o == nil {
 		return nil
 	}
-	return c.X5tNumberS256
+	return o.X5tNumberS256
 }
 
-func (c *ClientJwk) GetX5u() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetX5u() *string {
+	if o == nil {
 		return nil
 	}
-	return c.X5u
+	return o.X5u
 }
 
-func (c *ClientJwk) GetY() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClientJwk) GetY() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Y
+	return o.Y
 }
 
 type ClusterCacheItems string
@@ -752,7 +752,7 @@ func (e *OpenidConnectPluginSentinelRole) IsExact() bool {
 	return false
 }
 
-type ClusterCacheRedis struct {
+type OpenidConnectPluginClusterCacheRedis struct {
 	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
 	CloudAuthentication *OpenidConnectPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
@@ -799,8 +799,8 @@ type ClusterCacheRedis struct {
 	Username *string `default:"null" json:"username"`
 }
 
-func (c ClusterCacheRedis) MarshalJSON() ([]byte, error) {
-	jsonBytes, err := utils.MarshalJSON(c, "", false)
+func (o OpenidConnectPluginClusterCacheRedis) MarshalJSON() ([]byte, error) {
+	jsonBytes, err := utils.MarshalJSON(o, "", false)
 	if err != nil {
 		return nil, err
 	}
@@ -811,186 +811,186 @@ func (c ClusterCacheRedis) MarshalJSON() ([]byte, error) {
 	return out, nil
 }
 
-func (c *ClusterCacheRedis) UnmarshalJSON(data []byte) error {
+func (o *OpenidConnectPluginClusterCacheRedis) UnmarshalJSON(data []byte) error {
 	if out, err := utils.RunJQBytes(data, "if has(\"port\") then .port |= if type == \"number\" then tostring else . end else . end"); err != nil {
 		return err
 	} else {
 		data = out
 	}
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClusterCacheRedis) GetCloudAuthentication() *OpenidConnectPluginCloudAuthentication {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetCloudAuthentication() *OpenidConnectPluginCloudAuthentication {
+	if o == nil {
 		return nil
 	}
-	return c.CloudAuthentication
+	return o.CloudAuthentication
 }
 
-func (c *ClusterCacheRedis) GetClusterMaxRedirections() *int64 {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetClusterMaxRedirections() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.ClusterMaxRedirections
+	return o.ClusterMaxRedirections
 }
 
-func (c *ClusterCacheRedis) GetClusterNodes() []OpenidConnectPluginClusterNodes {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetClusterNodes() []OpenidConnectPluginClusterNodes {
+	if o == nil {
 		return nil
 	}
-	return c.ClusterNodes
+	return o.ClusterNodes
 }
 
-func (c *ClusterCacheRedis) GetConnectTimeout() *int64 {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetConnectTimeout() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.ConnectTimeout
+	return o.ConnectTimeout
 }
 
-func (c *ClusterCacheRedis) GetConnectionIsProxied() *bool {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetConnectionIsProxied() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.ConnectionIsProxied
+	return o.ConnectionIsProxied
 }
 
-func (c *ClusterCacheRedis) GetDatabase() *int64 {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetDatabase() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.Database
+	return o.Database
 }
 
-func (c *ClusterCacheRedis) GetHost() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetHost() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Host
+	return o.Host
 }
 
-func (c *ClusterCacheRedis) GetKeepaliveBacklog() *int64 {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetKeepaliveBacklog() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.KeepaliveBacklog
+	return o.KeepaliveBacklog
 }
 
-func (c *ClusterCacheRedis) GetKeepalivePoolSize() *int64 {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetKeepalivePoolSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.KeepalivePoolSize
+	return o.KeepalivePoolSize
 }
 
-func (c *ClusterCacheRedis) GetPassword() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetPassword() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Password
+	return o.Password
 }
 
-func (c *ClusterCacheRedis) GetPort() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetPort() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Port
+	return o.Port
 }
 
-func (c *ClusterCacheRedis) GetReadTimeout() *int64 {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetReadTimeout() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.ReadTimeout
+	return o.ReadTimeout
 }
 
-func (c *ClusterCacheRedis) GetSendTimeout() *int64 {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSendTimeout() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.SendTimeout
+	return o.SendTimeout
 }
 
-func (c *ClusterCacheRedis) GetSentinelMaster() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSentinelMaster() *string {
+	if o == nil {
 		return nil
 	}
-	return c.SentinelMaster
+	return o.SentinelMaster
 }
 
-func (c *ClusterCacheRedis) GetSentinelNodes() []OpenidConnectPluginSentinelNodes {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSentinelNodes() []OpenidConnectPluginSentinelNodes {
+	if o == nil {
 		return nil
 	}
-	return c.SentinelNodes
+	return o.SentinelNodes
 }
 
-func (c *ClusterCacheRedis) GetSentinelPassword() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSentinelPassword() *string {
+	if o == nil {
 		return nil
 	}
-	return c.SentinelPassword
+	return o.SentinelPassword
 }
 
-func (c *ClusterCacheRedis) GetSentinelRole() *OpenidConnectPluginSentinelRole {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSentinelRole() *OpenidConnectPluginSentinelRole {
+	if o == nil {
 		return nil
 	}
-	return c.SentinelRole
+	return o.SentinelRole
 }
 
-func (c *ClusterCacheRedis) GetSentinelUsername() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSentinelUsername() *string {
+	if o == nil {
 		return nil
 	}
-	return c.SentinelUsername
+	return o.SentinelUsername
 }
 
-func (c *ClusterCacheRedis) GetServerName() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetServerName() *string {
+	if o == nil {
 		return nil
 	}
-	return c.ServerName
+	return o.ServerName
 }
 
-func (c *ClusterCacheRedis) GetSsl() *bool {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSsl() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.Ssl
+	return o.Ssl
 }
 
-func (c *ClusterCacheRedis) GetSslVerify() *bool {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetSslVerify() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.SslVerify
+	return o.SslVerify
 }
 
-func (c *ClusterCacheRedis) GetUsername() *string {
-	if c == nil {
+func (o *OpenidConnectPluginClusterCacheRedis) GetUsername() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Username
+	return o.Username
 }
 
-// ClusterCacheStrategy - The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
-type ClusterCacheStrategy string
+// OpenidConnectPluginClusterCacheStrategy - The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
+type OpenidConnectPluginClusterCacheStrategy string
 
 const (
-	ClusterCacheStrategyOff   ClusterCacheStrategy = "off"
-	ClusterCacheStrategyRedis ClusterCacheStrategy = "redis"
+	OpenidConnectPluginClusterCacheStrategyOff   OpenidConnectPluginClusterCacheStrategy = "off"
+	OpenidConnectPluginClusterCacheStrategyRedis OpenidConnectPluginClusterCacheStrategy = "redis"
 )
 
-func (e ClusterCacheStrategy) ToPointer() *ClusterCacheStrategy {
+func (e OpenidConnectPluginClusterCacheStrategy) ToPointer() *OpenidConnectPluginClusterCacheStrategy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ClusterCacheStrategy) IsExact() bool {
+func (e *OpenidConnectPluginClusterCacheStrategy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "off", "redis":
@@ -1023,26 +1023,26 @@ func (e *OpenidConnectPluginConsumerBy) IsExact() bool {
 	return false
 }
 
-type DisableSession string
+type OpenidConnectPluginDisableSession string
 
 const (
-	DisableSessionAuthorizationCode DisableSession = "authorization_code"
-	DisableSessionBearer            DisableSession = "bearer"
-	DisableSessionClientCredentials DisableSession = "client_credentials"
-	DisableSessionIntrospection     DisableSession = "introspection"
-	DisableSessionKongOauth2        DisableSession = "kong_oauth2"
-	DisableSessionPassword          DisableSession = "password"
-	DisableSessionRefreshToken      DisableSession = "refresh_token"
-	DisableSessionSession           DisableSession = "session"
-	DisableSessionUserinfo          DisableSession = "userinfo"
+	OpenidConnectPluginDisableSessionAuthorizationCode OpenidConnectPluginDisableSession = "authorization_code"
+	OpenidConnectPluginDisableSessionBearer            OpenidConnectPluginDisableSession = "bearer"
+	OpenidConnectPluginDisableSessionClientCredentials OpenidConnectPluginDisableSession = "client_credentials"
+	OpenidConnectPluginDisableSessionIntrospection     OpenidConnectPluginDisableSession = "introspection"
+	OpenidConnectPluginDisableSessionKongOauth2        OpenidConnectPluginDisableSession = "kong_oauth2"
+	OpenidConnectPluginDisableSessionPassword          OpenidConnectPluginDisableSession = "password"
+	OpenidConnectPluginDisableSessionRefreshToken      OpenidConnectPluginDisableSession = "refresh_token"
+	OpenidConnectPluginDisableSessionSession           OpenidConnectPluginDisableSession = "session"
+	OpenidConnectPluginDisableSessionUserinfo          OpenidConnectPluginDisableSession = "userinfo"
 )
 
-func (e DisableSession) ToPointer() *DisableSession {
+func (e OpenidConnectPluginDisableSession) ToPointer() *OpenidConnectPluginDisableSession {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *DisableSession) IsExact() bool {
+func (e *OpenidConnectPluginDisableSession) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
@@ -1052,52 +1052,52 @@ func (e *DisableSession) IsExact() bool {
 	return false
 }
 
-type DownstreamHeaders struct {
+type OpenidConnectPluginDownstreamHeaders struct {
 	// The name of the header.
 	Header string `json:"header"`
 	// The path of the header value.
 	Path []string `json:"path"`
 }
 
-func (d DownstreamHeaders) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
+func (o OpenidConnectPluginDownstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
 }
 
-func (d *DownstreamHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"header", "path"}); err != nil {
+func (o *OpenidConnectPluginDownstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"header", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DownstreamHeaders) GetHeader() string {
-	if d == nil {
+func (o *OpenidConnectPluginDownstreamHeaders) GetHeader() string {
+	if o == nil {
 		return ""
 	}
-	return d.Header
+	return o.Header
 }
 
-func (d *DownstreamHeaders) GetPath() []string {
-	if d == nil {
+func (o *OpenidConnectPluginDownstreamHeaders) GetPath() []string {
+	if o == nil {
 		return []string{}
 	}
-	return d.Path
+	return o.Path
 }
 
-type IDTokenParamType string
+type OpenidConnectPluginIDTokenParamType string
 
 const (
-	IDTokenParamTypeBody   IDTokenParamType = "body"
-	IDTokenParamTypeHeader IDTokenParamType = "header"
-	IDTokenParamTypeQuery  IDTokenParamType = "query"
+	OpenidConnectPluginIDTokenParamTypeBody   OpenidConnectPluginIDTokenParamType = "body"
+	OpenidConnectPluginIDTokenParamTypeHeader OpenidConnectPluginIDTokenParamType = "header"
+	OpenidConnectPluginIDTokenParamTypeQuery  OpenidConnectPluginIDTokenParamType = "query"
 )
 
-func (e IDTokenParamType) ToPointer() *IDTokenParamType {
+func (e OpenidConnectPluginIDTokenParamType) ToPointer() *OpenidConnectPluginIDTokenParamType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *IDTokenParamType) IsExact() bool {
+func (e *OpenidConnectPluginIDTokenParamType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "header", "query":
@@ -1107,24 +1107,24 @@ func (e *IDTokenParamType) IsExact() bool {
 	return false
 }
 
-type IgnoreSignature string
+type OpenidConnectPluginIgnoreSignature string
 
 const (
-	IgnoreSignatureAuthorizationCode IgnoreSignature = "authorization_code"
-	IgnoreSignatureClientCredentials IgnoreSignature = "client_credentials"
-	IgnoreSignatureIntrospection     IgnoreSignature = "introspection"
-	IgnoreSignaturePassword          IgnoreSignature = "password"
-	IgnoreSignatureRefreshToken      IgnoreSignature = "refresh_token"
-	IgnoreSignatureSession           IgnoreSignature = "session"
-	IgnoreSignatureUserinfo          IgnoreSignature = "userinfo"
+	OpenidConnectPluginIgnoreSignatureAuthorizationCode OpenidConnectPluginIgnoreSignature = "authorization_code"
+	OpenidConnectPluginIgnoreSignatureClientCredentials OpenidConnectPluginIgnoreSignature = "client_credentials"
+	OpenidConnectPluginIgnoreSignatureIntrospection     OpenidConnectPluginIgnoreSignature = "introspection"
+	OpenidConnectPluginIgnoreSignaturePassword          OpenidConnectPluginIgnoreSignature = "password"
+	OpenidConnectPluginIgnoreSignatureRefreshToken      OpenidConnectPluginIgnoreSignature = "refresh_token"
+	OpenidConnectPluginIgnoreSignatureSession           OpenidConnectPluginIgnoreSignature = "session"
+	OpenidConnectPluginIgnoreSignatureUserinfo          OpenidConnectPluginIgnoreSignature = "userinfo"
 )
 
-func (e IgnoreSignature) ToPointer() *IgnoreSignature {
+func (e OpenidConnectPluginIgnoreSignature) ToPointer() *OpenidConnectPluginIgnoreSignature {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *IgnoreSignature) IsExact() bool {
+func (e *OpenidConnectPluginIgnoreSignature) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "authorization_code", "client_credentials", "introspection", "password", "refresh_token", "session", "userinfo":
@@ -1134,21 +1134,21 @@ func (e *IgnoreSignature) IsExact() bool {
 	return false
 }
 
-// IntrospectionAccept - The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
-type IntrospectionAccept string
+// OpenidConnectPluginIntrospectionAccept - The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
+type OpenidConnectPluginIntrospectionAccept string
 
 const (
-	IntrospectionAcceptApplicationJSON                      IntrospectionAccept = "application/json"
-	IntrospectionAcceptApplicationJwt                       IntrospectionAccept = "application/jwt"
-	IntrospectionAcceptApplicationTokenIntrospectionPlusJwt IntrospectionAccept = "application/token-introspection+jwt"
+	OpenidConnectPluginIntrospectionAcceptApplicationJSON                      OpenidConnectPluginIntrospectionAccept = "application/json"
+	OpenidConnectPluginIntrospectionAcceptApplicationJwt                       OpenidConnectPluginIntrospectionAccept = "application/jwt"
+	OpenidConnectPluginIntrospectionAcceptApplicationTokenIntrospectionPlusJwt OpenidConnectPluginIntrospectionAccept = "application/token-introspection+jwt"
 )
 
-func (e IntrospectionAccept) ToPointer() *IntrospectionAccept {
+func (e OpenidConnectPluginIntrospectionAccept) ToPointer() *OpenidConnectPluginIntrospectionAccept {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *IntrospectionAccept) IsExact() bool {
+func (e *OpenidConnectPluginIntrospectionAccept) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "application/json", "application/jwt", "application/token-introspection+jwt":
@@ -1158,25 +1158,25 @@ func (e *IntrospectionAccept) IsExact() bool {
 	return false
 }
 
-// IntrospectionEndpointAuthMethod - The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type IntrospectionEndpointAuthMethod string
+// OpenidConnectPluginIntrospectionEndpointAuthMethod - The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type OpenidConnectPluginIntrospectionEndpointAuthMethod string
 
 const (
-	IntrospectionEndpointAuthMethodClientSecretBasic       IntrospectionEndpointAuthMethod = "client_secret_basic"
-	IntrospectionEndpointAuthMethodClientSecretJwt         IntrospectionEndpointAuthMethod = "client_secret_jwt"
-	IntrospectionEndpointAuthMethodClientSecretPost        IntrospectionEndpointAuthMethod = "client_secret_post"
-	IntrospectionEndpointAuthMethodNone                    IntrospectionEndpointAuthMethod = "none"
-	IntrospectionEndpointAuthMethodPrivateKeyJwt           IntrospectionEndpointAuthMethod = "private_key_jwt"
-	IntrospectionEndpointAuthMethodSelfSignedTLSClientAuth IntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
-	IntrospectionEndpointAuthMethodTLSClientAuth           IntrospectionEndpointAuthMethod = "tls_client_auth"
+	OpenidConnectPluginIntrospectionEndpointAuthMethodClientSecretBasic       OpenidConnectPluginIntrospectionEndpointAuthMethod = "client_secret_basic"
+	OpenidConnectPluginIntrospectionEndpointAuthMethodClientSecretJwt         OpenidConnectPluginIntrospectionEndpointAuthMethod = "client_secret_jwt"
+	OpenidConnectPluginIntrospectionEndpointAuthMethodClientSecretPost        OpenidConnectPluginIntrospectionEndpointAuthMethod = "client_secret_post"
+	OpenidConnectPluginIntrospectionEndpointAuthMethodNone                    OpenidConnectPluginIntrospectionEndpointAuthMethod = "none"
+	OpenidConnectPluginIntrospectionEndpointAuthMethodPrivateKeyJwt           OpenidConnectPluginIntrospectionEndpointAuthMethod = "private_key_jwt"
+	OpenidConnectPluginIntrospectionEndpointAuthMethodSelfSignedTLSClientAuth OpenidConnectPluginIntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
+	OpenidConnectPluginIntrospectionEndpointAuthMethodTLSClientAuth           OpenidConnectPluginIntrospectionEndpointAuthMethod = "tls_client_auth"
 )
 
-func (e IntrospectionEndpointAuthMethod) ToPointer() *IntrospectionEndpointAuthMethod {
+func (e OpenidConnectPluginIntrospectionEndpointAuthMethod) ToPointer() *OpenidConnectPluginIntrospectionEndpointAuthMethod {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *IntrospectionEndpointAuthMethod) IsExact() bool {
+func (e *OpenidConnectPluginIntrospectionEndpointAuthMethod) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
@@ -1186,21 +1186,21 @@ func (e *IntrospectionEndpointAuthMethod) IsExact() bool {
 	return false
 }
 
-// LoginAction - What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
-type LoginAction string
+// OpenidConnectPluginLoginAction - What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
+type OpenidConnectPluginLoginAction string
 
 const (
-	LoginActionRedirect LoginAction = "redirect"
-	LoginActionResponse LoginAction = "response"
-	LoginActionUpstream LoginAction = "upstream"
+	OpenidConnectPluginLoginActionRedirect OpenidConnectPluginLoginAction = "redirect"
+	OpenidConnectPluginLoginActionResponse OpenidConnectPluginLoginAction = "response"
+	OpenidConnectPluginLoginActionUpstream OpenidConnectPluginLoginAction = "upstream"
 )
 
-func (e LoginAction) ToPointer() *LoginAction {
+func (e OpenidConnectPluginLoginAction) ToPointer() *OpenidConnectPluginLoginAction {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *LoginAction) IsExact() bool {
+func (e *OpenidConnectPluginLoginAction) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "redirect", "response", "upstream":
@@ -1210,26 +1210,26 @@ func (e *LoginAction) IsExact() bool {
 	return false
 }
 
-type LoginMethods string
+type OpenidConnectPluginLoginMethods string
 
 const (
-	LoginMethodsAuthorizationCode LoginMethods = "authorization_code"
-	LoginMethodsBearer            LoginMethods = "bearer"
-	LoginMethodsClientCredentials LoginMethods = "client_credentials"
-	LoginMethodsIntrospection     LoginMethods = "introspection"
-	LoginMethodsKongOauth2        LoginMethods = "kong_oauth2"
-	LoginMethodsPassword          LoginMethods = "password"
-	LoginMethodsRefreshToken      LoginMethods = "refresh_token"
-	LoginMethodsSession           LoginMethods = "session"
-	LoginMethodsUserinfo          LoginMethods = "userinfo"
+	OpenidConnectPluginLoginMethodsAuthorizationCode OpenidConnectPluginLoginMethods = "authorization_code"
+	OpenidConnectPluginLoginMethodsBearer            OpenidConnectPluginLoginMethods = "bearer"
+	OpenidConnectPluginLoginMethodsClientCredentials OpenidConnectPluginLoginMethods = "client_credentials"
+	OpenidConnectPluginLoginMethodsIntrospection     OpenidConnectPluginLoginMethods = "introspection"
+	OpenidConnectPluginLoginMethodsKongOauth2        OpenidConnectPluginLoginMethods = "kong_oauth2"
+	OpenidConnectPluginLoginMethodsPassword          OpenidConnectPluginLoginMethods = "password"
+	OpenidConnectPluginLoginMethodsRefreshToken      OpenidConnectPluginLoginMethods = "refresh_token"
+	OpenidConnectPluginLoginMethodsSession           OpenidConnectPluginLoginMethods = "session"
+	OpenidConnectPluginLoginMethodsUserinfo          OpenidConnectPluginLoginMethods = "userinfo"
 )
 
-func (e LoginMethods) ToPointer() *LoginMethods {
+func (e OpenidConnectPluginLoginMethods) ToPointer() *OpenidConnectPluginLoginMethods {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *LoginMethods) IsExact() bool {
+func (e *OpenidConnectPluginLoginMethods) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
@@ -1239,20 +1239,20 @@ func (e *LoginMethods) IsExact() bool {
 	return false
 }
 
-// LoginRedirectMode - Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
-type LoginRedirectMode string
+// OpenidConnectPluginLoginRedirectMode - Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
+type OpenidConnectPluginLoginRedirectMode string
 
 const (
-	LoginRedirectModeFragment LoginRedirectMode = "fragment"
-	LoginRedirectModeQuery    LoginRedirectMode = "query"
+	OpenidConnectPluginLoginRedirectModeFragment OpenidConnectPluginLoginRedirectMode = "fragment"
+	OpenidConnectPluginLoginRedirectModeQuery    OpenidConnectPluginLoginRedirectMode = "query"
 )
 
-func (e LoginRedirectMode) ToPointer() *LoginRedirectMode {
+func (e OpenidConnectPluginLoginRedirectMode) ToPointer() *OpenidConnectPluginLoginRedirectMode {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *LoginRedirectMode) IsExact() bool {
+func (e *OpenidConnectPluginLoginRedirectMode) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "fragment", "query":
@@ -1262,22 +1262,22 @@ func (e *LoginRedirectMode) IsExact() bool {
 	return false
 }
 
-type LoginTokens string
+type OpenidConnectPluginLoginTokens string
 
 const (
-	LoginTokensAccessToken   LoginTokens = "access_token"
-	LoginTokensIDToken       LoginTokens = "id_token"
-	LoginTokensIntrospection LoginTokens = "introspection"
-	LoginTokensRefreshToken  LoginTokens = "refresh_token"
-	LoginTokensTokens        LoginTokens = "tokens"
+	OpenidConnectPluginLoginTokensAccessToken   OpenidConnectPluginLoginTokens = "access_token"
+	OpenidConnectPluginLoginTokensIDToken       OpenidConnectPluginLoginTokens = "id_token"
+	OpenidConnectPluginLoginTokensIntrospection OpenidConnectPluginLoginTokens = "introspection"
+	OpenidConnectPluginLoginTokensRefreshToken  OpenidConnectPluginLoginTokens = "refresh_token"
+	OpenidConnectPluginLoginTokensTokens        OpenidConnectPluginLoginTokens = "tokens"
 )
 
-func (e LoginTokens) ToPointer() *LoginTokens {
+func (e OpenidConnectPluginLoginTokens) ToPointer() *OpenidConnectPluginLoginTokens {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *LoginTokens) IsExact() bool {
+func (e *OpenidConnectPluginLoginTokens) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "access_token", "id_token", "introspection", "refresh_token", "tokens":
@@ -1287,20 +1287,20 @@ func (e *LoginTokens) IsExact() bool {
 	return false
 }
 
-type LogoutMethods string
+type OpenidConnectPluginLogoutMethods string
 
 const (
-	LogoutMethodsDelete LogoutMethods = "DELETE"
-	LogoutMethodsGet    LogoutMethods = "GET"
-	LogoutMethodsPost   LogoutMethods = "POST"
+	OpenidConnectPluginLogoutMethodsDelete OpenidConnectPluginLogoutMethods = "DELETE"
+	OpenidConnectPluginLogoutMethodsGet    OpenidConnectPluginLogoutMethods = "GET"
+	OpenidConnectPluginLogoutMethodsPost   OpenidConnectPluginLogoutMethods = "POST"
 )
 
-func (e LogoutMethods) ToPointer() *LogoutMethods {
+func (e OpenidConnectPluginLogoutMethods) ToPointer() *OpenidConnectPluginLogoutMethods {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *LogoutMethods) IsExact() bool {
+func (e *OpenidConnectPluginLogoutMethods) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "DELETE", "GET", "POST":
@@ -1310,20 +1310,20 @@ func (e *LogoutMethods) IsExact() bool {
 	return false
 }
 
-type PasswordParamType string
+type OpenidConnectPluginPasswordParamType string
 
 const (
-	PasswordParamTypeBody   PasswordParamType = "body"
-	PasswordParamTypeHeader PasswordParamType = "header"
-	PasswordParamTypeQuery  PasswordParamType = "query"
+	OpenidConnectPluginPasswordParamTypeBody   OpenidConnectPluginPasswordParamType = "body"
+	OpenidConnectPluginPasswordParamTypeHeader OpenidConnectPluginPasswordParamType = "header"
+	OpenidConnectPluginPasswordParamTypeQuery  OpenidConnectPluginPasswordParamType = "query"
 )
 
-func (e PasswordParamType) ToPointer() *PasswordParamType {
+func (e OpenidConnectPluginPasswordParamType) ToPointer() *OpenidConnectPluginPasswordParamType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *PasswordParamType) IsExact() bool {
+func (e *OpenidConnectPluginPasswordParamType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "header", "query":
@@ -1411,21 +1411,21 @@ func (o *OpenidConnectPluginPrincipals) GetPrincipalClaim() []string {
 	return o.PrincipalClaim
 }
 
-// ProofOfPossessionDpop - Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
-type ProofOfPossessionDpop string
+// OpenidConnectPluginProofOfPossessionDpop - Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
+type OpenidConnectPluginProofOfPossessionDpop string
 
 const (
-	ProofOfPossessionDpopOff      ProofOfPossessionDpop = "off"
-	ProofOfPossessionDpopOptional ProofOfPossessionDpop = "optional"
-	ProofOfPossessionDpopStrict   ProofOfPossessionDpop = "strict"
+	OpenidConnectPluginProofOfPossessionDpopOff      OpenidConnectPluginProofOfPossessionDpop = "off"
+	OpenidConnectPluginProofOfPossessionDpopOptional OpenidConnectPluginProofOfPossessionDpop = "optional"
+	OpenidConnectPluginProofOfPossessionDpopStrict   OpenidConnectPluginProofOfPossessionDpop = "strict"
 )
 
-func (e ProofOfPossessionDpop) ToPointer() *ProofOfPossessionDpop {
+func (e OpenidConnectPluginProofOfPossessionDpop) ToPointer() *OpenidConnectPluginProofOfPossessionDpop {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ProofOfPossessionDpop) IsExact() bool {
+func (e *OpenidConnectPluginProofOfPossessionDpop) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "off", "optional", "strict":
@@ -1435,21 +1435,21 @@ func (e *ProofOfPossessionDpop) IsExact() bool {
 	return false
 }
 
-// ProofOfPossessionMtls - Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
-type ProofOfPossessionMtls string
+// OpenidConnectPluginProofOfPossessionMtls - Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
+type OpenidConnectPluginProofOfPossessionMtls string
 
 const (
-	ProofOfPossessionMtlsOff      ProofOfPossessionMtls = "off"
-	ProofOfPossessionMtlsOptional ProofOfPossessionMtls = "optional"
-	ProofOfPossessionMtlsStrict   ProofOfPossessionMtls = "strict"
+	OpenidConnectPluginProofOfPossessionMtlsOff      OpenidConnectPluginProofOfPossessionMtls = "off"
+	OpenidConnectPluginProofOfPossessionMtlsOptional OpenidConnectPluginProofOfPossessionMtls = "optional"
+	OpenidConnectPluginProofOfPossessionMtlsStrict   OpenidConnectPluginProofOfPossessionMtls = "strict"
 )
 
-func (e ProofOfPossessionMtls) ToPointer() *ProofOfPossessionMtls {
+func (e OpenidConnectPluginProofOfPossessionMtls) ToPointer() *OpenidConnectPluginProofOfPossessionMtls {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ProofOfPossessionMtls) IsExact() bool {
+func (e *OpenidConnectPluginProofOfPossessionMtls) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "off", "optional", "strict":
@@ -1506,8 +1506,8 @@ func (e *OpenidConnectPluginRevocationCheckMode) IsExact() bool {
 	return false
 }
 
-// ProofOfPossessionMtlsFromHeader - Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
-type ProofOfPossessionMtlsFromHeader struct {
+// OpenidConnectPluginProofOfPossessionMtlsFromHeader - Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
+type OpenidConnectPluginProofOfPossessionMtlsFromHeader struct {
 	// Allow certificate verification with only an intermediate certificate. When enabled, a full chain to the root CA is not required.
 	AllowPartialChain *bool `default:"false" json:"allow_partial_chain"`
 	// List of CA Certificate UUIDs to use when validating the client certificate chain. At least one is required.
@@ -1536,127 +1536,127 @@ type ProofOfPossessionMtlsFromHeader struct {
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 }
 
-func (p ProofOfPossessionMtlsFromHeader) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (o OpenidConnectPluginProofOfPossessionMtlsFromHeader) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ca_certificates", "certificate_header_name"}); err != nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"ca_certificates", "certificate_header_name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetAllowPartialChain() *bool {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetAllowPartialChain() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AllowPartialChain
+	return o.AllowPartialChain
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetCaCertificates() []string {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCaCertificates() []string {
+	if o == nil {
 		return []string{}
 	}
-	return p.CaCertificates
+	return o.CaCertificates
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetCertCacheTTL() *float64 {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCertCacheTTL() *float64 {
+	if o == nil {
 		return nil
 	}
-	return p.CertCacheTTL
+	return o.CertCacheTTL
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderFormat() *OpenidConnectPluginCertificateHeaderFormat {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCertificateHeaderFormat() *OpenidConnectPluginCertificateHeaderFormat {
+	if o == nil {
 		return nil
 	}
-	return p.CertificateHeaderFormat
+	return o.CertificateHeaderFormat
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderName() string {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCertificateHeaderName() string {
+	if o == nil {
 		return ""
 	}
-	return p.CertificateHeaderName
+	return o.CertificateHeaderName
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyHost() *string {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPProxyHost() *string {
+	if o == nil {
 		return nil
 	}
-	return p.HTTPProxyHost
+	return o.HTTPProxyHost
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyPort() *int64 {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPProxyPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return p.HTTPProxyPort
+	return o.HTTPProxyPort
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetHTTPTimeout() *float64 {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPTimeout() *float64 {
+	if o == nil {
 		return nil
 	}
-	return p.HTTPTimeout
+	return o.HTTPTimeout
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyHost() *string {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPSProxyHost() *string {
+	if o == nil {
 		return nil
 	}
-	return p.HTTPSProxyHost
+	return o.HTTPSProxyHost
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyPort() *int64 {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPSProxyPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return p.HTTPSProxyPort
+	return o.HTTPSProxyPort
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetRevocationCheckMode() *OpenidConnectPluginRevocationCheckMode {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetRevocationCheckMode() *OpenidConnectPluginRevocationCheckMode {
+	if o == nil {
 		return nil
 	}
-	return p.RevocationCheckMode
+	return o.RevocationCheckMode
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetSecureSource() *bool {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetSecureSource() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.SecureSource
+	return o.SecureSource
 }
 
-func (p *ProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
-	if p == nil {
+func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.SslVerify
+	return o.SslVerify
 }
 
-// PushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type PushedAuthorizationRequestEndpointAuthMethod string
+// OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod string
 
 const (
-	PushedAuthorizationRequestEndpointAuthMethodClientSecretBasic       PushedAuthorizationRequestEndpointAuthMethod = "client_secret_basic"
-	PushedAuthorizationRequestEndpointAuthMethodClientSecretJwt         PushedAuthorizationRequestEndpointAuthMethod = "client_secret_jwt"
-	PushedAuthorizationRequestEndpointAuthMethodClientSecretPost        PushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
-	PushedAuthorizationRequestEndpointAuthMethodNone                    PushedAuthorizationRequestEndpointAuthMethod = "none"
-	PushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           PushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
-	PushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth PushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
-	PushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           PushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
+	OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretBasic       OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_basic"
+	OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretJwt         OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_jwt"
+	OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretPost        OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
+	OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodNone                    OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "none"
+	OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
+	OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
+	OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
 )
 
-func (e PushedAuthorizationRequestEndpointAuthMethod) ToPointer() *PushedAuthorizationRequestEndpointAuthMethod {
+func (e OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod) ToPointer() *OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *PushedAuthorizationRequestEndpointAuthMethod) IsExact() bool {
+func (e *OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
@@ -2144,20 +2144,20 @@ func (o *OpenidConnectPluginRedis) GetUsername() *string {
 	return o.Username
 }
 
-type RefreshTokenParamType string
+type OpenidConnectPluginRefreshTokenParamType string
 
 const (
-	RefreshTokenParamTypeBody   RefreshTokenParamType = "body"
-	RefreshTokenParamTypeHeader RefreshTokenParamType = "header"
-	RefreshTokenParamTypeQuery  RefreshTokenParamType = "query"
+	OpenidConnectPluginRefreshTokenParamTypeBody   OpenidConnectPluginRefreshTokenParamType = "body"
+	OpenidConnectPluginRefreshTokenParamTypeHeader OpenidConnectPluginRefreshTokenParamType = "header"
+	OpenidConnectPluginRefreshTokenParamTypeQuery  OpenidConnectPluginRefreshTokenParamType = "query"
 )
 
-func (e RefreshTokenParamType) ToPointer() *RefreshTokenParamType {
+func (e OpenidConnectPluginRefreshTokenParamType) ToPointer() *OpenidConnectPluginRefreshTokenParamType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *RefreshTokenParamType) IsExact() bool {
+func (e *OpenidConnectPluginRefreshTokenParamType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "header", "query":
@@ -2167,25 +2167,25 @@ func (e *RefreshTokenParamType) IsExact() bool {
 	return false
 }
 
-// ResponseMode - Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
-type ResponseMode string
+// OpenidConnectPluginResponseMode - Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
+type OpenidConnectPluginResponseMode string
 
 const (
-	ResponseModeFormPost    ResponseMode = "form_post"
-	ResponseModeFormPostJwt ResponseMode = "form_post.jwt"
-	ResponseModeFragment    ResponseMode = "fragment"
-	ResponseModeFragmentJwt ResponseMode = "fragment.jwt"
-	ResponseModeJwt         ResponseMode = "jwt"
-	ResponseModeQuery       ResponseMode = "query"
-	ResponseModeQueryJwt    ResponseMode = "query.jwt"
+	OpenidConnectPluginResponseModeFormPost    OpenidConnectPluginResponseMode = "form_post"
+	OpenidConnectPluginResponseModeFormPostJwt OpenidConnectPluginResponseMode = "form_post.jwt"
+	OpenidConnectPluginResponseModeFragment    OpenidConnectPluginResponseMode = "fragment"
+	OpenidConnectPluginResponseModeFragmentJwt OpenidConnectPluginResponseMode = "fragment.jwt"
+	OpenidConnectPluginResponseModeJwt         OpenidConnectPluginResponseMode = "jwt"
+	OpenidConnectPluginResponseModeQuery       OpenidConnectPluginResponseMode = "query"
+	OpenidConnectPluginResponseModeQueryJwt    OpenidConnectPluginResponseMode = "query.jwt"
 )
 
-func (e ResponseMode) ToPointer() *ResponseMode {
+func (e OpenidConnectPluginResponseMode) ToPointer() *OpenidConnectPluginResponseMode {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ResponseMode) IsExact() bool {
+func (e *OpenidConnectPluginResponseMode) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt":
@@ -2195,25 +2195,25 @@ func (e *ResponseMode) IsExact() bool {
 	return false
 }
 
-// RevocationEndpointAuthMethod - The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type RevocationEndpointAuthMethod string
+// OpenidConnectPluginRevocationEndpointAuthMethod - The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type OpenidConnectPluginRevocationEndpointAuthMethod string
 
 const (
-	RevocationEndpointAuthMethodClientSecretBasic       RevocationEndpointAuthMethod = "client_secret_basic"
-	RevocationEndpointAuthMethodClientSecretJwt         RevocationEndpointAuthMethod = "client_secret_jwt"
-	RevocationEndpointAuthMethodClientSecretPost        RevocationEndpointAuthMethod = "client_secret_post"
-	RevocationEndpointAuthMethodNone                    RevocationEndpointAuthMethod = "none"
-	RevocationEndpointAuthMethodPrivateKeyJwt           RevocationEndpointAuthMethod = "private_key_jwt"
-	RevocationEndpointAuthMethodSelfSignedTLSClientAuth RevocationEndpointAuthMethod = "self_signed_tls_client_auth"
-	RevocationEndpointAuthMethodTLSClientAuth           RevocationEndpointAuthMethod = "tls_client_auth"
+	OpenidConnectPluginRevocationEndpointAuthMethodClientSecretBasic       OpenidConnectPluginRevocationEndpointAuthMethod = "client_secret_basic"
+	OpenidConnectPluginRevocationEndpointAuthMethodClientSecretJwt         OpenidConnectPluginRevocationEndpointAuthMethod = "client_secret_jwt"
+	OpenidConnectPluginRevocationEndpointAuthMethodClientSecretPost        OpenidConnectPluginRevocationEndpointAuthMethod = "client_secret_post"
+	OpenidConnectPluginRevocationEndpointAuthMethodNone                    OpenidConnectPluginRevocationEndpointAuthMethod = "none"
+	OpenidConnectPluginRevocationEndpointAuthMethodPrivateKeyJwt           OpenidConnectPluginRevocationEndpointAuthMethod = "private_key_jwt"
+	OpenidConnectPluginRevocationEndpointAuthMethodSelfSignedTLSClientAuth OpenidConnectPluginRevocationEndpointAuthMethod = "self_signed_tls_client_auth"
+	OpenidConnectPluginRevocationEndpointAuthMethodTLSClientAuth           OpenidConnectPluginRevocationEndpointAuthMethod = "tls_client_auth"
 )
 
-func (e RevocationEndpointAuthMethod) ToPointer() *RevocationEndpointAuthMethod {
+func (e OpenidConnectPluginRevocationEndpointAuthMethod) ToPointer() *OpenidConnectPluginRevocationEndpointAuthMethod {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *RevocationEndpointAuthMethod) IsExact() bool {
+func (e *OpenidConnectPluginRevocationEndpointAuthMethod) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
@@ -2223,20 +2223,20 @@ func (e *RevocationEndpointAuthMethod) IsExact() bool {
 	return false
 }
 
-type SessionBind string
+type OpenidConnectPluginSessionBind string
 
 const (
-	SessionBindIP        SessionBind = "ip"
-	SessionBindScheme    SessionBind = "scheme"
-	SessionBindUserAgent SessionBind = "user-agent"
+	OpenidConnectPluginSessionBindIP        OpenidConnectPluginSessionBind = "ip"
+	OpenidConnectPluginSessionBindScheme    OpenidConnectPluginSessionBind = "scheme"
+	OpenidConnectPluginSessionBindUserAgent OpenidConnectPluginSessionBind = "user-agent"
 )
 
-func (e SessionBind) ToPointer() *SessionBind {
+func (e OpenidConnectPluginSessionBind) ToPointer() *OpenidConnectPluginSessionBind {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SessionBind) IsExact() bool {
+func (e *OpenidConnectPluginSessionBind) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "ip", "scheme", "user-agent":
@@ -2246,22 +2246,22 @@ func (e *SessionBind) IsExact() bool {
 	return false
 }
 
-// SessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-type SessionCookieSameSite string
+// OpenidConnectPluginSessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+type OpenidConnectPluginSessionCookieSameSite string
 
 const (
-	SessionCookieSameSiteDefault SessionCookieSameSite = "Default"
-	SessionCookieSameSiteLax     SessionCookieSameSite = "Lax"
-	SessionCookieSameSiteNone    SessionCookieSameSite = "None"
-	SessionCookieSameSiteStrict  SessionCookieSameSite = "Strict"
+	OpenidConnectPluginSessionCookieSameSiteDefault OpenidConnectPluginSessionCookieSameSite = "Default"
+	OpenidConnectPluginSessionCookieSameSiteLax     OpenidConnectPluginSessionCookieSameSite = "Lax"
+	OpenidConnectPluginSessionCookieSameSiteNone    OpenidConnectPluginSessionCookieSameSite = "None"
+	OpenidConnectPluginSessionCookieSameSiteStrict  OpenidConnectPluginSessionCookieSameSite = "Strict"
 )
 
-func (e SessionCookieSameSite) ToPointer() *SessionCookieSameSite {
+func (e OpenidConnectPluginSessionCookieSameSite) ToPointer() *OpenidConnectPluginSessionCookieSameSite {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SessionCookieSameSite) IsExact() bool {
+func (e *OpenidConnectPluginSessionCookieSameSite) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "Default", "Lax", "None", "Strict":
@@ -2271,24 +2271,24 @@ func (e *SessionCookieSameSite) IsExact() bool {
 	return false
 }
 
-type SessionRequestHeaders string
+type OpenidConnectPluginSessionRequestHeaders string
 
 const (
-	SessionRequestHeadersAbsoluteTimeout SessionRequestHeaders = "absolute-timeout"
-	SessionRequestHeadersAudience        SessionRequestHeaders = "audience"
-	SessionRequestHeadersID              SessionRequestHeaders = "id"
-	SessionRequestHeadersIdlingTimeout   SessionRequestHeaders = "idling-timeout"
-	SessionRequestHeadersRollingTimeout  SessionRequestHeaders = "rolling-timeout"
-	SessionRequestHeadersSubject         SessionRequestHeaders = "subject"
-	SessionRequestHeadersTimeout         SessionRequestHeaders = "timeout"
+	OpenidConnectPluginSessionRequestHeadersAbsoluteTimeout OpenidConnectPluginSessionRequestHeaders = "absolute-timeout"
+	OpenidConnectPluginSessionRequestHeadersAudience        OpenidConnectPluginSessionRequestHeaders = "audience"
+	OpenidConnectPluginSessionRequestHeadersID              OpenidConnectPluginSessionRequestHeaders = "id"
+	OpenidConnectPluginSessionRequestHeadersIdlingTimeout   OpenidConnectPluginSessionRequestHeaders = "idling-timeout"
+	OpenidConnectPluginSessionRequestHeadersRollingTimeout  OpenidConnectPluginSessionRequestHeaders = "rolling-timeout"
+	OpenidConnectPluginSessionRequestHeadersSubject         OpenidConnectPluginSessionRequestHeaders = "subject"
+	OpenidConnectPluginSessionRequestHeadersTimeout         OpenidConnectPluginSessionRequestHeaders = "timeout"
 )
 
-func (e SessionRequestHeaders) ToPointer() *SessionRequestHeaders {
+func (e OpenidConnectPluginSessionRequestHeaders) ToPointer() *OpenidConnectPluginSessionRequestHeaders {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SessionRequestHeaders) IsExact() bool {
+func (e *OpenidConnectPluginSessionRequestHeaders) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
@@ -2298,24 +2298,24 @@ func (e *SessionRequestHeaders) IsExact() bool {
 	return false
 }
 
-type SessionResponseHeaders string
+type OpenidConnectPluginSessionResponseHeaders string
 
 const (
-	SessionResponseHeadersAbsoluteTimeout SessionResponseHeaders = "absolute-timeout"
-	SessionResponseHeadersAudience        SessionResponseHeaders = "audience"
-	SessionResponseHeadersID              SessionResponseHeaders = "id"
-	SessionResponseHeadersIdlingTimeout   SessionResponseHeaders = "idling-timeout"
-	SessionResponseHeadersRollingTimeout  SessionResponseHeaders = "rolling-timeout"
-	SessionResponseHeadersSubject         SessionResponseHeaders = "subject"
-	SessionResponseHeadersTimeout         SessionResponseHeaders = "timeout"
+	OpenidConnectPluginSessionResponseHeadersAbsoluteTimeout OpenidConnectPluginSessionResponseHeaders = "absolute-timeout"
+	OpenidConnectPluginSessionResponseHeadersAudience        OpenidConnectPluginSessionResponseHeaders = "audience"
+	OpenidConnectPluginSessionResponseHeadersID              OpenidConnectPluginSessionResponseHeaders = "id"
+	OpenidConnectPluginSessionResponseHeadersIdlingTimeout   OpenidConnectPluginSessionResponseHeaders = "idling-timeout"
+	OpenidConnectPluginSessionResponseHeadersRollingTimeout  OpenidConnectPluginSessionResponseHeaders = "rolling-timeout"
+	OpenidConnectPluginSessionResponseHeadersSubject         OpenidConnectPluginSessionResponseHeaders = "subject"
+	OpenidConnectPluginSessionResponseHeadersTimeout         OpenidConnectPluginSessionResponseHeaders = "timeout"
 )
 
-func (e SessionResponseHeaders) ToPointer() *SessionResponseHeaders {
+func (e OpenidConnectPluginSessionResponseHeaders) ToPointer() *OpenidConnectPluginSessionResponseHeaders {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SessionResponseHeaders) IsExact() bool {
+func (e *OpenidConnectPluginSessionResponseHeaders) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
@@ -2325,22 +2325,22 @@ func (e *SessionResponseHeaders) IsExact() bool {
 	return false
 }
 
-// SessionStorage - The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
-type SessionStorage string
+// OpenidConnectPluginSessionStorage - The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
+type OpenidConnectPluginSessionStorage string
 
 const (
-	SessionStorageCookie    SessionStorage = "cookie"
-	SessionStorageMemcache  SessionStorage = "memcache"
-	SessionStorageMemcached SessionStorage = "memcached"
-	SessionStorageRedis     SessionStorage = "redis"
+	OpenidConnectPluginSessionStorageCookie    OpenidConnectPluginSessionStorage = "cookie"
+	OpenidConnectPluginSessionStorageMemcache  OpenidConnectPluginSessionStorage = "memcache"
+	OpenidConnectPluginSessionStorageMemcached OpenidConnectPluginSessionStorage = "memcached"
+	OpenidConnectPluginSessionStorageRedis     OpenidConnectPluginSessionStorage = "redis"
 )
 
-func (e SessionStorage) ToPointer() *SessionStorage {
+func (e OpenidConnectPluginSessionStorage) ToPointer() *OpenidConnectPluginSessionStorage {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SessionStorage) IsExact() bool {
+func (e *OpenidConnectPluginSessionStorage) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "cookie", "memcache", "memcached", "redis":
@@ -2462,56 +2462,56 @@ func (o *OpenidConnectPluginRequest) GetScopes() []string {
 	return o.Scopes
 }
 
-// Conditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
-type Conditions struct {
+// OpenidConnectPluginConditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
+type OpenidConnectPluginConditions struct {
 	HasAudience     []string `json:"has_audience"`
 	HasScopes       []string `json:"has_scopes"`
 	MissingAudience []string `json:"missing_audience"`
 	MissingScopes   []string `json:"missing_scopes"`
 }
 
-func (c Conditions) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (o OpenidConnectPluginConditions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
 }
 
-func (c *Conditions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (o *OpenidConnectPluginConditions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Conditions) GetHasAudience() []string {
-	if c == nil {
+func (o *OpenidConnectPluginConditions) GetHasAudience() []string {
+	if o == nil {
 		return nil
 	}
-	return c.HasAudience
+	return o.HasAudience
 }
 
-func (c *Conditions) GetHasScopes() []string {
-	if c == nil {
+func (o *OpenidConnectPluginConditions) GetHasScopes() []string {
+	if o == nil {
 		return nil
 	}
-	return c.HasScopes
+	return o.HasScopes
 }
 
-func (c *Conditions) GetMissingAudience() []string {
-	if c == nil {
+func (o *OpenidConnectPluginConditions) GetMissingAudience() []string {
+	if o == nil {
 		return nil
 	}
-	return c.MissingAudience
+	return o.MissingAudience
 }
 
-func (c *Conditions) GetMissingScopes() []string {
-	if c == nil {
+func (o *OpenidConnectPluginConditions) GetMissingScopes() []string {
+	if o == nil {
 		return nil
 	}
-	return c.MissingScopes
+	return o.MissingScopes
 }
 
-type SubjectTokenIssuers struct {
+type OpenidConnectPluginSubjectTokenIssuers struct {
 	// A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
-	Conditions *Conditions `json:"conditions"`
+	Conditions *OpenidConnectPluginConditions `json:"conditions"`
 	// Tokens of whose iss claim matches this value will be exchanged.
 	Issuer string `json:"issuer"`
 	// An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
@@ -2520,43 +2520,43 @@ type SubjectTokenIssuers struct {
 	VerifySignature *bool `default:"false" json:"verify_signature"`
 }
 
-func (s SubjectTokenIssuers) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+func (o OpenidConnectPluginSubjectTokenIssuers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
 }
 
-func (s *SubjectTokenIssuers) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"issuer"}); err != nil {
+func (o *OpenidConnectPluginSubjectTokenIssuers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"issuer"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SubjectTokenIssuers) GetConditions() *Conditions {
-	if s == nil {
+func (o *OpenidConnectPluginSubjectTokenIssuers) GetConditions() *OpenidConnectPluginConditions {
+	if o == nil {
 		return nil
 	}
-	return s.Conditions
+	return o.Conditions
 }
 
-func (s *SubjectTokenIssuers) GetIssuer() string {
-	if s == nil {
+func (o *OpenidConnectPluginSubjectTokenIssuers) GetIssuer() string {
+	if o == nil {
 		return ""
 	}
-	return s.Issuer
+	return o.Issuer
 }
 
-func (s *SubjectTokenIssuers) GetJwksURI() *string {
-	if s == nil {
+func (o *OpenidConnectPluginSubjectTokenIssuers) GetJwksURI() *string {
+	if o == nil {
 		return nil
 	}
-	return s.JwksURI
+	return o.JwksURI
 }
 
-func (s *SubjectTokenIssuers) GetVerifySignature() *bool {
-	if s == nil {
+func (o *OpenidConnectPluginSubjectTokenIssuers) GetVerifySignature() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.VerifySignature
+	return o.VerifySignature
 }
 
 // OpenidConnectPluginTokenExchange - Details on how to accept tokens from other identity providers.
@@ -2566,7 +2566,7 @@ type OpenidConnectPluginTokenExchange struct {
 	// Parameters used in the token exchange request.
 	Request *OpenidConnectPluginRequest `json:"request"`
 	// Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.
-	SubjectTokenIssuers []SubjectTokenIssuers `json:"subject_token_issuers"`
+	SubjectTokenIssuers []OpenidConnectPluginSubjectTokenIssuers `json:"subject_token_issuers"`
 }
 
 func (o OpenidConnectPluginTokenExchange) MarshalJSON() ([]byte, error) {
@@ -2594,28 +2594,28 @@ func (o *OpenidConnectPluginTokenExchange) GetRequest() *OpenidConnectPluginRequ
 	return o.Request
 }
 
-func (o *OpenidConnectPluginTokenExchange) GetSubjectTokenIssuers() []SubjectTokenIssuers {
+func (o *OpenidConnectPluginTokenExchange) GetSubjectTokenIssuers() []OpenidConnectPluginSubjectTokenIssuers {
 	if o == nil {
-		return []SubjectTokenIssuers{}
+		return []OpenidConnectPluginSubjectTokenIssuers{}
 	}
 	return o.SubjectTokenIssuers
 }
 
-type TokenHeadersGrants string
+type OpenidConnectPluginTokenHeadersGrants string
 
 const (
-	TokenHeadersGrantsAuthorizationCode TokenHeadersGrants = "authorization_code"
-	TokenHeadersGrantsClientCredentials TokenHeadersGrants = "client_credentials"
-	TokenHeadersGrantsPassword          TokenHeadersGrants = "password"
-	TokenHeadersGrantsRefreshToken      TokenHeadersGrants = "refresh_token"
+	OpenidConnectPluginTokenHeadersGrantsAuthorizationCode OpenidConnectPluginTokenHeadersGrants = "authorization_code"
+	OpenidConnectPluginTokenHeadersGrantsClientCredentials OpenidConnectPluginTokenHeadersGrants = "client_credentials"
+	OpenidConnectPluginTokenHeadersGrantsPassword          OpenidConnectPluginTokenHeadersGrants = "password"
+	OpenidConnectPluginTokenHeadersGrantsRefreshToken      OpenidConnectPluginTokenHeadersGrants = "refresh_token"
 )
 
-func (e TokenHeadersGrants) ToPointer() *TokenHeadersGrants {
+func (e OpenidConnectPluginTokenHeadersGrants) ToPointer() *OpenidConnectPluginTokenHeadersGrants {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *TokenHeadersGrants) IsExact() bool {
+func (e *OpenidConnectPluginTokenHeadersGrants) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "authorization_code", "client_credentials", "password", "refresh_token":
@@ -2657,20 +2657,20 @@ func (o *OpenidConnectPluginUpstreamHeaders) GetPath() []string {
 	return o.Path
 }
 
-// UserinfoAccept - The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
-type UserinfoAccept string
+// OpenidConnectPluginUserinfoAccept - The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
+type OpenidConnectPluginUserinfoAccept string
 
 const (
-	UserinfoAcceptApplicationJSON UserinfoAccept = "application/json"
-	UserinfoAcceptApplicationJwt  UserinfoAccept = "application/jwt"
+	OpenidConnectPluginUserinfoAcceptApplicationJSON OpenidConnectPluginUserinfoAccept = "application/json"
+	OpenidConnectPluginUserinfoAcceptApplicationJwt  OpenidConnectPluginUserinfoAccept = "application/jwt"
 )
 
-func (e UserinfoAccept) ToPointer() *UserinfoAccept {
+func (e OpenidConnectPluginUserinfoAccept) ToPointer() *OpenidConnectPluginUserinfoAccept {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *UserinfoAccept) IsExact() bool {
+func (e *OpenidConnectPluginUserinfoAccept) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "application/json", "application/jwt":
@@ -2690,7 +2690,7 @@ type OpenidConnectPluginConfig struct {
 	// The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 	AudienceRequired []string `json:"audience_required"`
 	// Types of credentials/grants to enable.
-	AuthMethods []AuthMethods `json:"auth_methods,omitempty"`
+	AuthMethods []OpenidConnectPluginAuthMethods `json:"auth_methods,omitempty"`
 	// The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	AuthenticatedGroupsClaim []string `json:"authenticated_groups_claim"`
 	// The authorization cookie Domain flag.
@@ -2702,7 +2702,7 @@ type OpenidConnectPluginConfig struct {
 	// The authorization cookie Path flag.
 	AuthorizationCookiePath *string `default:"/" json:"authorization_cookie_path"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	AuthorizationCookieSameSite *AuthorizationCookieSameSite `default:"Default" json:"authorization_cookie_same_site"`
+	AuthorizationCookieSameSite *OpenidConnectPluginAuthorizationCookieSameSite `default:"Default" json:"authorization_cookie_same_site"`
 	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 	AuthorizationCookieSecure *bool `default:"null" json:"authorization_cookie_secure"`
 	// The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
@@ -2720,7 +2720,7 @@ type OpenidConnectPluginConfig struct {
 	// The name of the HTTP header from which the bearer token is retrieved. When configured, only this header is checked for the bearer token.
 	BearerTokenHeaderName *string `default:"null" json:"bearer_token_header_name"`
 	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
-	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
+	BearerTokenParamType []OpenidConnectPluginBearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
 	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
 	// Cache the introspection endpoint requests.
@@ -2752,18 +2752,18 @@ type OpenidConnectPluginConfig struct {
 	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
 	ClientAuth []OpenidConnectPluginClientAuth `json:"client_auth"`
 	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
-	ClientCredentialsParamType []ClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
+	ClientCredentialsParamType []OpenidConnectPluginClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
 	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
 	ClientID []string `json:"client_id"`
 	// The JWK used for the private_key_jwt authentication.
-	ClientJwk []ClientJwk `json:"client_jwk"`
+	ClientJwk []OpenidConnectPluginClientJwk `json:"client_jwk"`
 	// The client secret.
 	ClientSecret []string `json:"client_secret"`
 	// Specifies which items are stored in the cluster cache backend configured via `cluster_cache_strategy`. Allowed values are `"introspection"` and `"tokens"`. When `"tokens"` is included, access and refresh token material is AES-encrypted before being written to the cache; enable only when your Redis deployment meets your compliance requirements. Defaults to `["introspection"]`. An empty set disables all cluster caching regardless of `cluster_cache_strategy`.
-	ClusterCacheItems []ClusterCacheItems `json:"cluster_cache_items,omitempty"`
-	ClusterCacheRedis *ClusterCacheRedis  `json:"cluster_cache_redis,omitempty"`
+	ClusterCacheItems []ClusterCacheItems                   `json:"cluster_cache_items,omitempty"`
+	ClusterCacheRedis *OpenidConnectPluginClusterCacheRedis `json:"cluster_cache_redis,omitempty"`
 	// The strategy to use for the cluster cache. If set, the plugin will share introspection cache with nodes configured with the same strategy backend.
-	ClusterCacheStrategy *ClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
+	ClusterCacheStrategy *OpenidConnectPluginClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
 	ConsumerBy []OpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
@@ -2777,7 +2777,7 @@ type OpenidConnectPluginConfig struct {
 	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	CredentialClaim []string `json:"credential_claim,omitempty"`
 	// Disable issuing the session cookie with the specified grants.
-	DisableSession []DisableSession `json:"disable_session"`
+	DisableSession []OpenidConnectPluginDisableSession `json:"disable_session"`
 	// Extra header names passed to the discovery endpoint.
 	DiscoveryHeadersNames []string `json:"discovery_headers_names"`
 	// Extra header values passed to the discovery endpoint.
@@ -2791,7 +2791,7 @@ type OpenidConnectPluginConfig struct {
 	// The downstream access token JWK header.
 	DownstreamAccessTokenJwkHeader *string `default:"null" json:"downstream_access_token_jwk_header"`
 	// The downstream claim to header mappings.
-	DownstreamHeaders []DownstreamHeaders `json:"downstream_headers"`
+	DownstreamHeaders []OpenidConnectPluginDownstreamHeaders `json:"downstream_headers"`
 	// The downstream header claims. Only top level claims are supported.
 	DownstreamHeadersClaims []string `json:"downstream_headers_claims"`
 	// The downstream header names for the claim values.
@@ -2849,19 +2849,19 @@ type OpenidConnectPluginConfig struct {
 	// The name of the parameter used to pass the id token.
 	IDTokenParamName *string `default:"null" json:"id_token_param_name"`
 	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
-	IDTokenParamType []IDTokenParamType `json:"id_token_param_type,omitempty"`
+	IDTokenParamType []OpenidConnectPluginIDTokenParamType `json:"id_token_param_type,omitempty"`
 	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
-	IgnoreSignature []IgnoreSignature `json:"ignore_signature,omitempty"`
+	IgnoreSignature []OpenidConnectPluginIgnoreSignature `json:"ignore_signature,omitempty"`
 	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
 	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`
 	// The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
-	IntrospectionAccept *IntrospectionAccept `default:"application/json" json:"introspection_accept"`
+	IntrospectionAccept *OpenidConnectPluginIntrospectionAccept `default:"application/json" json:"introspection_accept"`
 	// Check that the introspection response has an `active` claim with a value of `true`.
 	IntrospectionCheckActive *bool `default:"true" json:"introspection_check_active"`
 	// The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
 	IntrospectionEndpoint *string `default:"null" json:"introspection_endpoint"`
 	// The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	IntrospectionEndpointAuthMethod *IntrospectionEndpointAuthMethod `json:"introspection_endpoint_auth_method,omitempty"`
+	IntrospectionEndpointAuthMethod *OpenidConnectPluginIntrospectionEndpointAuthMethod `json:"introspection_endpoint_auth_method,omitempty"`
 	// Extra headers passed from the client to the introspection endpoint.
 	IntrospectionHeadersClient []string `json:"introspection_headers_client"`
 	// Extra header names passed to the introspection endpoint.
@@ -2895,17 +2895,17 @@ type OpenidConnectPluginConfig struct {
 	// Defines leeway time (in seconds) for `auth_time`, `exp`, `iat`, and `nbf` claims
 	Leeway *float64 `default:"0" json:"leeway"`
 	// What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
-	LoginAction *LoginAction `default:"upstream" json:"login_action"`
+	LoginAction *OpenidConnectPluginLoginAction `default:"upstream" json:"login_action"`
 	// Enable login functionality with specified grants.
-	LoginMethods []LoginMethods `json:"login_methods,omitempty"`
+	LoginMethods []OpenidConnectPluginLoginMethods `json:"login_methods,omitempty"`
 	// Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
-	LoginRedirectMode *LoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
+	LoginRedirectMode *OpenidConnectPluginLoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
 	// Where to redirect the client when `login_action` is set to `redirect`.
 	LoginRedirectURI []string `json:"login_redirect_uri"`
 	// What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
-	LoginTokens []LoginTokens `json:"login_tokens,omitempty"`
+	LoginTokens []OpenidConnectPluginLoginTokens `json:"login_tokens,omitempty"`
 	// The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.
-	LogoutMethods []LogoutMethods `json:"logout_methods,omitempty"`
+	LogoutMethods []OpenidConnectPluginLogoutMethods `json:"logout_methods,omitempty"`
 	// The request body argument that activates the logout.
 	LogoutPostArg *string `default:"null" json:"logout_post_arg"`
 	// The request query argument that activates the logout.
@@ -2933,7 +2933,7 @@ type OpenidConnectPluginConfig struct {
 	// Do not use proxy with these hosts.
 	NoProxy *string `default:"null" json:"no_proxy"`
 	// Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
-	PasswordParamType []PasswordParamType `json:"password_param_type,omitempty"`
+	PasswordParamType []OpenidConnectPluginPasswordParamType `json:"password_param_type,omitempty"`
 	// With this parameter, you can preserve request query arguments even when doing authorization code flow.
 	PreserveQueryArgs *bool `default:"false" json:"preserve_query_args"`
 	// Configuration for Kong Identity principal hydration after token verification.
@@ -2941,15 +2941,15 @@ type OpenidConnectPluginConfig struct {
 	// If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
 	ProofOfPossessionAuthMethodsValidation *bool `default:"true" json:"proof_of_possession_auth_methods_validation"`
 	// Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
-	ProofOfPossessionDpop *ProofOfPossessionDpop `default:"off" json:"proof_of_possession_dpop"`
+	ProofOfPossessionDpop *OpenidConnectPluginProofOfPossessionDpop `default:"off" json:"proof_of_possession_dpop"`
 	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
-	ProofOfPossessionMtls *ProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
+	ProofOfPossessionMtls *OpenidConnectPluginProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
 	// Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
-	ProofOfPossessionMtlsFromHeader *ProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
+	ProofOfPossessionMtlsFromHeader *OpenidConnectPluginProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `default:"null" json:"pushed_authorization_request_endpoint"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	PushedAuthorizationRequestEndpointAuthMethod *PushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
+	PushedAuthorizationRequestEndpointAuthMethod *OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
 	// The redirect URI passed to the authorization and token endpoints.
 	RedirectURI []string                  `json:"redirect_uri"`
 	Redis       *OpenidConnectPluginRedis `json:"redis,omitempty"`
@@ -2958,7 +2958,7 @@ type OpenidConnectPluginConfig struct {
 	// The name of the parameter used to pass the refresh token.
 	RefreshTokenParamName *string `default:"null" json:"refresh_token_param_name"`
 	// Where to look for the refresh token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
-	RefreshTokenParamType []RefreshTokenParamType `json:"refresh_token_param_type,omitempty"`
+	RefreshTokenParamType []OpenidConnectPluginRefreshTokenParamType `json:"refresh_token_param_type,omitempty"`
 	// Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a `refresh_token` available.
 	RefreshTokens *bool `default:"true" json:"refresh_tokens"`
 	// Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of `code_challenge_methods_supported`, and enabled automatically (in case the `code_challenge_methods_supported` is missing, the PKCE will not be enabled).
@@ -2970,7 +2970,7 @@ type OpenidConnectPluginConfig struct {
 	// Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.
 	ResolveDistributedClaims *bool `default:"false" json:"resolve_distributed_claims"`
 	// Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
-	ResponseMode *ResponseMode `default:"query" json:"response_mode"`
+	ResponseMode *OpenidConnectPluginResponseMode `default:"query" json:"response_mode"`
 	// The response type passed to the authorization endpoint.
 	ResponseType []string `json:"response_type,omitempty"`
 	// Specifies whether to always verify tokens stored in the session.
@@ -2978,7 +2978,7 @@ type OpenidConnectPluginConfig struct {
 	// The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
 	RevocationEndpoint *string `default:"null" json:"revocation_endpoint"`
 	// The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	RevocationEndpointAuthMethod *RevocationEndpointAuthMethod `json:"revocation_endpoint_auth_method,omitempty"`
+	RevocationEndpointAuthMethod *OpenidConnectPluginRevocationEndpointAuthMethod `json:"revocation_endpoint_auth_method,omitempty"`
 	// Designate token's parameter name for revocation.
 	RevocationTokenParamName *string `default:"token" json:"revocation_token_param_name"`
 	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
@@ -3000,7 +3000,7 @@ type OpenidConnectPluginConfig struct {
 	// The session audience, which is the intended target application. For example `"my-application"`.
 	SessionAudience *string `default:"default" json:"session_audience"`
 	// Bind the session to data acquired from the HTTP request or connection.
-	SessionBind []SessionBind `json:"session_bind"`
+	SessionBind []OpenidConnectPluginSessionBind `json:"session_bind"`
 	// The session cookie Domain flag.
 	SessionCookieDomain *string `default:"null" json:"session_cookie_domain"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
@@ -3010,7 +3010,7 @@ type OpenidConnectPluginConfig struct {
 	// The session cookie Path flag.
 	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	SessionCookieSameSite *SessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
+	SessionCookieSameSite *OpenidConnectPluginSessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
 	// Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 	SessionCookieSecure *bool `default:"null" json:"session_cookie_secure"`
 	// When set to `true`, audiences are forced to share the same subject.
@@ -3042,15 +3042,15 @@ type OpenidConnectPluginConfig struct {
 	// Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
 	SessionRememberRollingTimeout *float64 `default:"604800" json:"session_remember_rolling_timeout"`
 	// Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.
-	SessionRequestHeaders []SessionRequestHeaders `json:"session_request_headers"`
+	SessionRequestHeaders []OpenidConnectPluginSessionRequestHeaders `json:"session_request_headers"`
 	// Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
-	SessionResponseHeaders []SessionResponseHeaders `json:"session_response_headers"`
+	SessionResponseHeaders []OpenidConnectPluginSessionResponseHeaders `json:"session_response_headers"`
 	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
 	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
 	// The session secret.
 	SessionSecret *string `default:"null" json:"session_secret"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
-	SessionStorage *SessionStorage `default:"cookie" json:"session_storage"`
+	SessionStorage *OpenidConnectPluginSessionStorage `default:"cookie" json:"session_storage"`
 	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
 	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
 	// Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.
@@ -3074,7 +3074,7 @@ type OpenidConnectPluginConfig struct {
 	// Extra headers passed from the client to the token endpoint.
 	TokenHeadersClient []string `json:"token_headers_client"`
 	// Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
-	TokenHeadersGrants []TokenHeadersGrants `json:"token_headers_grants"`
+	TokenHeadersGrants []OpenidConnectPluginTokenHeadersGrants `json:"token_headers_grants"`
 	// Extra header names passed to the token endpoint.
 	TokenHeadersNames []string `json:"token_headers_names"`
 	// Add a prefix to the token endpoint response headers before forwarding them to the downstream client.
@@ -3124,7 +3124,7 @@ type OpenidConnectPluginConfig struct {
 	// The upstream user info JWT header (in case the user info returns a JWT response).
 	UpstreamUserInfoJwtHeader *string `default:"null" json:"upstream_user_info_jwt_header"`
 	// The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
-	UserinfoAccept *UserinfoAccept `default:"application/json" json:"userinfo_accept"`
+	UserinfoAccept *OpenidConnectPluginUserinfoAccept `default:"application/json" json:"userinfo_accept"`
 	// The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
 	UserinfoEndpoint *string `default:"null" json:"userinfo_endpoint"`
 	// Extra headers passed from the client to the user info endpoint.
@@ -3192,7 +3192,7 @@ func (o *OpenidConnectPluginConfig) GetAudienceRequired() []string {
 	return o.AudienceRequired
 }
 
-func (o *OpenidConnectPluginConfig) GetAuthMethods() []AuthMethods {
+func (o *OpenidConnectPluginConfig) GetAuthMethods() []OpenidConnectPluginAuthMethods {
 	if o == nil {
 		return nil
 	}
@@ -3234,7 +3234,7 @@ func (o *OpenidConnectPluginConfig) GetAuthorizationCookiePath() *string {
 	return o.AuthorizationCookiePath
 }
 
-func (o *OpenidConnectPluginConfig) GetAuthorizationCookieSameSite() *AuthorizationCookieSameSite {
+func (o *OpenidConnectPluginConfig) GetAuthorizationCookieSameSite() *OpenidConnectPluginAuthorizationCookieSameSite {
 	if o == nil {
 		return nil
 	}
@@ -3297,7 +3297,7 @@ func (o *OpenidConnectPluginConfig) GetBearerTokenHeaderName() *string {
 	return o.BearerTokenHeaderName
 }
 
-func (o *OpenidConnectPluginConfig) GetBearerTokenParamType() []BearerTokenParamType {
+func (o *OpenidConnectPluginConfig) GetBearerTokenParamType() []OpenidConnectPluginBearerTokenParamType {
 	if o == nil {
 		return nil
 	}
@@ -3409,7 +3409,7 @@ func (o *OpenidConnectPluginConfig) GetClientAuth() []OpenidConnectPluginClientA
 	return o.ClientAuth
 }
 
-func (o *OpenidConnectPluginConfig) GetClientCredentialsParamType() []ClientCredentialsParamType {
+func (o *OpenidConnectPluginConfig) GetClientCredentialsParamType() []OpenidConnectPluginClientCredentialsParamType {
 	if o == nil {
 		return nil
 	}
@@ -3423,7 +3423,7 @@ func (o *OpenidConnectPluginConfig) GetClientID() []string {
 	return o.ClientID
 }
 
-func (o *OpenidConnectPluginConfig) GetClientJwk() []ClientJwk {
+func (o *OpenidConnectPluginConfig) GetClientJwk() []OpenidConnectPluginClientJwk {
 	if o == nil {
 		return nil
 	}
@@ -3444,14 +3444,14 @@ func (o *OpenidConnectPluginConfig) GetClusterCacheItems() []ClusterCacheItems {
 	return o.ClusterCacheItems
 }
 
-func (o *OpenidConnectPluginConfig) GetClusterCacheRedis() *ClusterCacheRedis {
+func (o *OpenidConnectPluginConfig) GetClusterCacheRedis() *OpenidConnectPluginClusterCacheRedis {
 	if o == nil {
 		return nil
 	}
 	return o.ClusterCacheRedis
 }
 
-func (o *OpenidConnectPluginConfig) GetClusterCacheStrategy() *ClusterCacheStrategy {
+func (o *OpenidConnectPluginConfig) GetClusterCacheStrategy() *OpenidConnectPluginClusterCacheStrategy {
 	if o == nil {
 		return nil
 	}
@@ -3500,7 +3500,7 @@ func (o *OpenidConnectPluginConfig) GetCredentialClaim() []string {
 	return o.CredentialClaim
 }
 
-func (o *OpenidConnectPluginConfig) GetDisableSession() []DisableSession {
+func (o *OpenidConnectPluginConfig) GetDisableSession() []OpenidConnectPluginDisableSession {
 	if o == nil {
 		return nil
 	}
@@ -3549,7 +3549,7 @@ func (o *OpenidConnectPluginConfig) GetDownstreamAccessTokenJwkHeader() *string 
 	return o.DownstreamAccessTokenJwkHeader
 }
 
-func (o *OpenidConnectPluginConfig) GetDownstreamHeaders() []DownstreamHeaders {
+func (o *OpenidConnectPluginConfig) GetDownstreamHeaders() []OpenidConnectPluginDownstreamHeaders {
 	if o == nil {
 		return nil
 	}
@@ -3752,14 +3752,14 @@ func (o *OpenidConnectPluginConfig) GetIDTokenParamName() *string {
 	return o.IDTokenParamName
 }
 
-func (o *OpenidConnectPluginConfig) GetIDTokenParamType() []IDTokenParamType {
+func (o *OpenidConnectPluginConfig) GetIDTokenParamType() []OpenidConnectPluginIDTokenParamType {
 	if o == nil {
 		return nil
 	}
 	return o.IDTokenParamType
 }
 
-func (o *OpenidConnectPluginConfig) GetIgnoreSignature() []IgnoreSignature {
+func (o *OpenidConnectPluginConfig) GetIgnoreSignature() []OpenidConnectPluginIgnoreSignature {
 	if o == nil {
 		return nil
 	}
@@ -3773,7 +3773,7 @@ func (o *OpenidConnectPluginConfig) GetIntrospectJwtTokens() *bool {
 	return o.IntrospectJwtTokens
 }
 
-func (o *OpenidConnectPluginConfig) GetIntrospectionAccept() *IntrospectionAccept {
+func (o *OpenidConnectPluginConfig) GetIntrospectionAccept() *OpenidConnectPluginIntrospectionAccept {
 	if o == nil {
 		return nil
 	}
@@ -3794,7 +3794,7 @@ func (o *OpenidConnectPluginConfig) GetIntrospectionEndpoint() *string {
 	return o.IntrospectionEndpoint
 }
 
-func (o *OpenidConnectPluginConfig) GetIntrospectionEndpointAuthMethod() *IntrospectionEndpointAuthMethod {
+func (o *OpenidConnectPluginConfig) GetIntrospectionEndpointAuthMethod() *OpenidConnectPluginIntrospectionEndpointAuthMethod {
 	if o == nil {
 		return nil
 	}
@@ -3913,21 +3913,21 @@ func (o *OpenidConnectPluginConfig) GetLeeway() *float64 {
 	return o.Leeway
 }
 
-func (o *OpenidConnectPluginConfig) GetLoginAction() *LoginAction {
+func (o *OpenidConnectPluginConfig) GetLoginAction() *OpenidConnectPluginLoginAction {
 	if o == nil {
 		return nil
 	}
 	return o.LoginAction
 }
 
-func (o *OpenidConnectPluginConfig) GetLoginMethods() []LoginMethods {
+func (o *OpenidConnectPluginConfig) GetLoginMethods() []OpenidConnectPluginLoginMethods {
 	if o == nil {
 		return nil
 	}
 	return o.LoginMethods
 }
 
-func (o *OpenidConnectPluginConfig) GetLoginRedirectMode() *LoginRedirectMode {
+func (o *OpenidConnectPluginConfig) GetLoginRedirectMode() *OpenidConnectPluginLoginRedirectMode {
 	if o == nil {
 		return nil
 	}
@@ -3941,14 +3941,14 @@ func (o *OpenidConnectPluginConfig) GetLoginRedirectURI() []string {
 	return o.LoginRedirectURI
 }
 
-func (o *OpenidConnectPluginConfig) GetLoginTokens() []LoginTokens {
+func (o *OpenidConnectPluginConfig) GetLoginTokens() []OpenidConnectPluginLoginTokens {
 	if o == nil {
 		return nil
 	}
 	return o.LoginTokens
 }
 
-func (o *OpenidConnectPluginConfig) GetLogoutMethods() []LogoutMethods {
+func (o *OpenidConnectPluginConfig) GetLogoutMethods() []OpenidConnectPluginLogoutMethods {
 	if o == nil {
 		return nil
 	}
@@ -4039,7 +4039,7 @@ func (o *OpenidConnectPluginConfig) GetNoProxy() *string {
 	return o.NoProxy
 }
 
-func (o *OpenidConnectPluginConfig) GetPasswordParamType() []PasswordParamType {
+func (o *OpenidConnectPluginConfig) GetPasswordParamType() []OpenidConnectPluginPasswordParamType {
 	if o == nil {
 		return nil
 	}
@@ -4067,21 +4067,21 @@ func (o *OpenidConnectPluginConfig) GetProofOfPossessionAuthMethodsValidation() 
 	return o.ProofOfPossessionAuthMethodsValidation
 }
 
-func (o *OpenidConnectPluginConfig) GetProofOfPossessionDpop() *ProofOfPossessionDpop {
+func (o *OpenidConnectPluginConfig) GetProofOfPossessionDpop() *OpenidConnectPluginProofOfPossessionDpop {
 	if o == nil {
 		return nil
 	}
 	return o.ProofOfPossessionDpop
 }
 
-func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtls() *ProofOfPossessionMtls {
+func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtls() *OpenidConnectPluginProofOfPossessionMtls {
 	if o == nil {
 		return nil
 	}
 	return o.ProofOfPossessionMtls
 }
 
-func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtlsFromHeader() *ProofOfPossessionMtlsFromHeader {
+func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtlsFromHeader() *OpenidConnectPluginProofOfPossessionMtlsFromHeader {
 	if o == nil {
 		return nil
 	}
@@ -4095,7 +4095,7 @@ func (o *OpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpoint() *str
 	return o.PushedAuthorizationRequestEndpoint
 }
 
-func (o *OpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpointAuthMethod() *PushedAuthorizationRequestEndpointAuthMethod {
+func (o *OpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpointAuthMethod() *OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod {
 	if o == nil {
 		return nil
 	}
@@ -4130,7 +4130,7 @@ func (o *OpenidConnectPluginConfig) GetRefreshTokenParamName() *string {
 	return o.RefreshTokenParamName
 }
 
-func (o *OpenidConnectPluginConfig) GetRefreshTokenParamType() []RefreshTokenParamType {
+func (o *OpenidConnectPluginConfig) GetRefreshTokenParamType() []OpenidConnectPluginRefreshTokenParamType {
 	if o == nil {
 		return nil
 	}
@@ -4172,7 +4172,7 @@ func (o *OpenidConnectPluginConfig) GetResolveDistributedClaims() *bool {
 	return o.ResolveDistributedClaims
 }
 
-func (o *OpenidConnectPluginConfig) GetResponseMode() *ResponseMode {
+func (o *OpenidConnectPluginConfig) GetResponseMode() *OpenidConnectPluginResponseMode {
 	if o == nil {
 		return nil
 	}
@@ -4200,7 +4200,7 @@ func (o *OpenidConnectPluginConfig) GetRevocationEndpoint() *string {
 	return o.RevocationEndpoint
 }
 
-func (o *OpenidConnectPluginConfig) GetRevocationEndpointAuthMethod() *RevocationEndpointAuthMethod {
+func (o *OpenidConnectPluginConfig) GetRevocationEndpointAuthMethod() *OpenidConnectPluginRevocationEndpointAuthMethod {
 	if o == nil {
 		return nil
 	}
@@ -4277,7 +4277,7 @@ func (o *OpenidConnectPluginConfig) GetSessionAudience() *string {
 	return o.SessionAudience
 }
 
-func (o *OpenidConnectPluginConfig) GetSessionBind() []SessionBind {
+func (o *OpenidConnectPluginConfig) GetSessionBind() []OpenidConnectPluginSessionBind {
 	if o == nil {
 		return nil
 	}
@@ -4312,7 +4312,7 @@ func (o *OpenidConnectPluginConfig) GetSessionCookiePath() *string {
 	return o.SessionCookiePath
 }
 
-func (o *OpenidConnectPluginConfig) GetSessionCookieSameSite() *SessionCookieSameSite {
+func (o *OpenidConnectPluginConfig) GetSessionCookieSameSite() *OpenidConnectPluginSessionCookieSameSite {
 	if o == nil {
 		return nil
 	}
@@ -4424,14 +4424,14 @@ func (o *OpenidConnectPluginConfig) GetSessionRememberRollingTimeout() *float64 
 	return o.SessionRememberRollingTimeout
 }
 
-func (o *OpenidConnectPluginConfig) GetSessionRequestHeaders() []SessionRequestHeaders {
+func (o *OpenidConnectPluginConfig) GetSessionRequestHeaders() []OpenidConnectPluginSessionRequestHeaders {
 	if o == nil {
 		return nil
 	}
 	return o.SessionRequestHeaders
 }
 
-func (o *OpenidConnectPluginConfig) GetSessionResponseHeaders() []SessionResponseHeaders {
+func (o *OpenidConnectPluginConfig) GetSessionResponseHeaders() []OpenidConnectPluginSessionResponseHeaders {
 	if o == nil {
 		return nil
 	}
@@ -4452,7 +4452,7 @@ func (o *OpenidConnectPluginConfig) GetSessionSecret() *string {
 	return o.SessionSecret
 }
 
-func (o *OpenidConnectPluginConfig) GetSessionStorage() *SessionStorage {
+func (o *OpenidConnectPluginConfig) GetSessionStorage() *OpenidConnectPluginSessionStorage {
 	if o == nil {
 		return nil
 	}
@@ -4536,7 +4536,7 @@ func (o *OpenidConnectPluginConfig) GetTokenHeadersClient() []string {
 	return o.TokenHeadersClient
 }
 
-func (o *OpenidConnectPluginConfig) GetTokenHeadersGrants() []TokenHeadersGrants {
+func (o *OpenidConnectPluginConfig) GetTokenHeadersGrants() []OpenidConnectPluginTokenHeadersGrants {
 	if o == nil {
 		return nil
 	}
@@ -4711,7 +4711,7 @@ func (o *OpenidConnectPluginConfig) GetUpstreamUserInfoJwtHeader() *string {
 	return o.UpstreamUserInfoJwtHeader
 }
 
-func (o *OpenidConnectPluginConfig) GetUserinfoAccept() *UserinfoAccept {
+func (o *OpenidConnectPluginConfig) GetUserinfoAccept() *OpenidConnectPluginUserinfoAccept {
 	if o == nil {
 		return nil
 	}

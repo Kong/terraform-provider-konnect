@@ -39,7 +39,7 @@ type GatewayControlPlaneDataSourceModel struct {
 	ID           types.String                          `tfsdk:"id"`
 	Labels       map[string]types.String               `tfsdk:"labels"`
 	Name         types.String                          `tfsdk:"name"`
-	ProxyUrls    []tfTypes.ProxyURL                    `tfsdk:"proxy_urls"`
+	ProxyUrls    []tfTypes.AIGatewayProxyURL           `tfsdk:"proxy_urls"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
 }
 

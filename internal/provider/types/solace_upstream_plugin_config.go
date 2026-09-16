@@ -4,5 +4,5 @@ package types
 
 type SolaceUpstreamPluginConfig struct {
 	Message *SolaceUpstreamPluginMessage `tfsdk:"message"`
-	Session *Session                     `tfsdk:"session"`
+	Session *SolaceConsumePluginSession  `tfsdk:"session"`
 }

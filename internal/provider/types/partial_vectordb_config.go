@@ -10,7 +10,7 @@ type PartialVectordbConfig struct {
 	Dimensions     types.Int64              `tfsdk:"dimensions"`
 	DistanceMetric types.String             `tfsdk:"distance_metric"`
 	Pgvector       *PartialVectordbPgvector `tfsdk:"pgvector"`
-	Redis          *PartialVectordbRedis    `tfsdk:"redis"`
+	Redis          *ClusterCacheRedis       `tfsdk:"redis"`
 	Strategy       types.String             `tfsdk:"strategy"`
 	Threshold      types.Float64            `tfsdk:"threshold"`
 }

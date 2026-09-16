@@ -7,15 +7,9 @@ import (
 )
 
 type Session struct {
-	Authentication         *SolaceConsumePluginAuthentication `tfsdk:"authentication"`
-	CalculateMessageExpiry types.Bool                         `tfsdk:"calculate_message_expiry"`
-	ConnectTimeout         types.Int64                        `tfsdk:"connect_timeout"`
-	GenerateRcvTimestamps  types.Bool                         `tfsdk:"generate_rcv_timestamps"`
-	GenerateSendTimestamps types.Bool                         `tfsdk:"generate_send_timestamps"`
-	GenerateSenderID       types.Bool                         `tfsdk:"generate_sender_id"`
-	GenerateSequenceNumber types.Bool                         `tfsdk:"generate_sequence_number"`
-	Host                   types.String                       `tfsdk:"host"`
-	Properties             map[string]types.String            `tfsdk:"properties"`
-	SslValidateCertificate types.Bool                         `tfsdk:"ssl_validate_certificate"`
-	VpnName                types.String                       `tfsdk:"vpn_name"`
+	Client     *AIGatewayMCPServerServerConfigBaseClient `tfsdk:"client"`
+	Managed    types.Bool                                `tfsdk:"managed"`
+	Redis      *AIGatewayRedisCloudConfiguration         `tfsdk:"redis"`
+	SessionTTL types.Int64                               `tfsdk:"session_ttl"`
+	Strategy   types.String                              `tfsdk:"strategy"`
 }
