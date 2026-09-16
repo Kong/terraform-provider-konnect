@@ -5,7 +5,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
 func TestIdentityProviderTeamGroupMapping(t *testing.T) {
@@ -22,12 +25,25 @@ func TestIdentityProviderTeamGroupMapping(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "team_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider.oidc_provider", "login_path"),
-
-						// Added validation for data-source to ensure it retrieves the correct identity provider by type
-						resource.TestCheckResourceAttr("data.konnect_identity_provider.by_type", "type", "oidc"),
-						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "id", "konnect_identity_provider.oidc_provider", "id"),
-						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "login_path", "konnect_identity_provider.oidc_provider", "login_path"),
 					),
+					// Validate both list (by type filter) and singular (by ID)  identity provider data sources.
+					ConfigStateChecks: []statecheck.StateCheck{
+						statecheck.ExpectKnownOutputValueAtPath(
+							"identity_provider_list",
+							tfjsonpath.New("data").AtSliceIndex(0).AtMapKey("type"),
+							knownvalue.StringExact("oidc"),
+						),
+						statecheck.ExpectKnownOutputValueAtPath(
+							"identity_provider_list",
+							tfjsonpath.New("data").AtSliceIndex(0).AtMapKey("login_path"),
+							knownvalue.StringExact("testoidcmapping"),
+						),
+						statecheck.ExpectKnownOutputValueAtPath(
+							"identity_provider",
+							tfjsonpath.New("type"),
+							knownvalue.StringExact("oidc"),
+						),
+					},
 				},
 				{
 					Config:          providerConfigUs,
@@ -55,12 +71,25 @@ func TestIdentityProviderTeamGroupMapping(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "team_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider.saml_provider", "login_path"),
-
-						// Added validation for data-source to ensure it retrieves the correct identity provider by type
-						resource.TestCheckResourceAttr("data.konnect_identity_provider.by_type", "type", "saml"),
-						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "id", "konnect_identity_provider.saml_provider", "id"),
-						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "login_path", "konnect_identity_provider.saml_provider", "login_path"),
 					),
+					// Validate both list and singular identity provider data sources.
+					ConfigStateChecks: []statecheck.StateCheck{
+						statecheck.ExpectKnownOutputValueAtPath(
+							"identity_provider_list",
+							tfjsonpath.New("data").AtSliceIndex(0).AtMapKey("type"),
+							knownvalue.StringExact("saml"),
+						),
+						statecheck.ExpectKnownOutputValueAtPath(
+							"identity_provider_list",
+							tfjsonpath.New("data").AtSliceIndex(0).AtMapKey("login_path"),
+							knownvalue.StringExact("testsamlmapping"),
+						),
+						statecheck.ExpectKnownOutputValueAtPath(
+							"identity_provider",
+							tfjsonpath.New("type"),
+							knownvalue.StringExact("saml"),
+						),
+					},
 				},
 				{
 					Config:          providerConfigUs,

@@ -9,16 +9,23 @@ resource "konnect_identity_provider" "saml_provider_tf" {
   }
 }
 
-data "konnect_identity_provider" "by_type" {
+data "konnect_identity_provider" "my_identity_provider" {
+  id = konnect_identity_provider.saml_provider_tf.id
+}
+
+data "konnect_identity_provider_list" "my_list_identity_provider" {
   filter = {
     type = {
-      eq = "saml"
+        eq = "saml"
+      }
     }
-  }
-
   depends_on = [konnect_identity_provider.saml_provider_tf]
 }
 
-output "idp_login_path" {
-  value = data.konnect_identity_provider.by_type.login_path
+output "identity_provider_list" {
+  value = data.konnect_identity_provider_list.my_list_identity_provider
+}
+
+output "identity_provider" {
+  value = data.konnect_identity_provider.my_identity_provider
 }

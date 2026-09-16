@@ -35,8 +35,13 @@ resource "konnect_identity_provider_team_group_mapping" "my_mapping" {
   team_id              = konnect_team.my_team.id
 }
 
-# Look up the OIDC Identity Provider created above
-data "konnect_identity_provider" "by_type" {
+# Look up the Identity Provider created above by its ID using the single-resource data source.
+data "konnect_identity_provider" "my_identity_provider" {
+  id = konnect_identity_provider.oidc_provider.id
+}
+
+# Look up Identity Providers by type using the list data source.
+data "konnect_identity_provider_list" "my_list_identity_provider" {
   filter = {
     type = {
       eq = "oidc"
@@ -44,4 +49,13 @@ data "konnect_identity_provider" "by_type" {
   }
 
   depends_on = [konnect_identity_provider.oidc_provider]
+}
+
+
+output "identity_provider_list" {
+  value = data.konnect_identity_provider_list.my_list_identity_provider
+}
+
+output "identity_provider" {
+  value = data.konnect_identity_provider.my_identity_provider
 }
