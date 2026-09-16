@@ -26,8 +26,8 @@ type AIGatewayAuthStrategyOpenIDConnectResponse struct {
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_  string                            `const:"openid-connect" json:"type"`
-	Config *AIGWOpenIDConnectGeneratedConfig `json:"config,omitempty"`
+	type_  string                                  `const:"openid-connect" json:"type"`
+	Config *AIGWOpenIDConnectGeneratedConfigOutput `json:"config,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -79,7 +79,7 @@ func (a *AIGatewayAuthStrategyOpenIDConnectResponse) GetType() string {
 	return "openid-connect"
 }
 
-func (a *AIGatewayAuthStrategyOpenIDConnectResponse) GetConfig() *AIGWOpenIDConnectGeneratedConfig {
+func (a *AIGatewayAuthStrategyOpenIDConnectResponse) GetConfig() *AIGWOpenIDConnectGeneratedConfigOutput {
 	if a == nil {
 		return nil
 	}

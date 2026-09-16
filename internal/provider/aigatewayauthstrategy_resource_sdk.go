@@ -85,10 +85,15 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 			r.UpdatedAt = r.KeyAuth.UpdatedAt
 		}
 		if resp.AIGatewayAuthStrategyOpenIDConnectResponse != nil {
+			openidConnectPriorData := r.OpenidConnect
 			r.OpenidConnect = &tfTypes.AIGatewayAuthStrategyOpenIDConnect{}
 			if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config == nil {
 				r.OpenidConnect.Config = nil
 			} else {
+				var configPriorData *tfTypes.AIGWOpenIDConnectGeneratedConfig
+				if openidConnectPriorData != nil {
+					configPriorData = openidConnectPriorData.Config
+				}
 				r.OpenidConnect.Config = &tfTypes.AIGWOpenIDConnectGeneratedConfig{}
 				r.OpenidConnect.Config.Anonymous = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Anonymous)
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Audience != nil {
@@ -258,14 +263,6 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					}
 				} else {
 					r.OpenidConnect.Config.ClientJwk = nil
-				}
-				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClientSecret != nil {
-					r.OpenidConnect.Config.ClientSecret = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClientSecret))
-					for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClientSecret {
-						r.OpenidConnect.Config.ClientSecret = append(r.OpenidConnect.Config.ClientSecret, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ClientSecret = nil
 				}
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis == nil {
 					r.OpenidConnect.Config.ClusterCacheRedis = nil
@@ -1162,6 +1159,9 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				r.OpenidConnect.Config.VerifyNonce = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.VerifyNonce)
 				r.OpenidConnect.Config.VerifyParameters = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.VerifyParameters)
 				r.OpenidConnect.Config.VerifySignature = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.VerifySignature)
+				if configPriorData != nil {
+					r.OpenidConnect.Config.ClientSecret = configPriorData.ClientSecret
+				}
 			}
 			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayAuthStrategyOpenIDConnectResponse.CreatedAt))
 			r.CreatedAt = r.OpenidConnect.CreatedAt

@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: d6d68f79ffdf562d94bf503d801e5357
+  docChecksum: aff84066227c36ed0fe0c468ed2d46a9
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.22.0
   configChecksum: c84339f673b5d852241f4b48815b69cb
 persistentEdits:
-  generation_id: 67254d33-227f-493c-87ed-b2f1f9a81aca
-  pristine_commit_hash: 791e1ec0af66abe8168f26093f66ee52cb19614e
-  pristine_tree_hash: 5267727fdcd1f2bcb162c1f8a73a56d8658c1753
+  generation_id: c2d434c6-29eb-4f6d-8c42-1dd4ec8d5e00
+  pristine_commit_hash: 7d3ad83943931f13e4825f9ca5fa60bd564fcc20
+  pristine_tree_hash: 44235b26c1968c7524af1c88d6510c084ae6f9fa
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3225,8 +3225,8 @@ trackedFiles:
     pristine_git_object: 8f2767a8049af3c2111d8f8cdd6c2808a626f189
   internal/provider/aigatewayauthstrategy_resource_sdk.go:
     id: 2b367aab6dff
-    last_write_checksum: sha1:2dd6716c1309cfc0d6e14658898dbd5141c262b1
-    pristine_git_object: 6c830a26c16f635d06a6cf33ac26581ad1c89c11
+    last_write_checksum: sha1:6f8275cedacdc1576e0ac567b85fde4df1788f1e
+    pristine_git_object: b0c4541d62495a5e447f8db0e450b8266f5ea505
   internal/provider/aigatewaycacertificate_resource.go:
     id: f1c11195a194
     last_write_checksum: sha1:4bd9c378f08e7b2c27bb12e244ecec365aeebae4
@@ -12589,8 +12589,8 @@ trackedFiles:
     pristine_git_object: 9f092f71e2a1dd84e90a27e653658912cf3f5136
   internal/sdk/models/shared/aigatewayauthstrategyopenidconnectresponse.go:
     id: 1e5c468fa45f
-    last_write_checksum: sha1:8a914f556deac34091ccdb8fe79bab4c33160c68
-    pristine_git_object: 4766b540475dd500c01032183f00a3f9911fc0ed
+    last_write_checksum: sha1:18265e8ef78ab2976e49a71778b32802d1dba42c
+    pristine_git_object: ac58c8d21e45c1a6dd3eab540418a59d646e7d07
   internal/sdk/models/shared/aigatewayazureembeddingsmodelconfig.go:
     id: e41426d3ffaf
     last_write_checksum: sha1:669f41e306ddd1086f9118d832bbd9d7308b12a2
@@ -13183,10 +13183,10 @@ trackedFiles:
     id: b8f79defddbe
     last_write_checksum: sha1:54baa000e00fd3f6547b603161ddb1dd829ebce6
     pristine_git_object: da06216a8146c6dcb646c9fa7095ee56eedd0e1c
-  internal/sdk/models/shared/aigwopenidconnectgeneratedconfig.go:
-    id: 65a6bd4759bb
-    last_write_checksum: sha1:90b3c08a1ab9b57ce6b67ac213f8490b82f82806
-    pristine_git_object: f7ffbb2cbe40103be079bec9d20b8cdd1e12e0aa
+  internal/sdk/models/shared/aigwopenidconnectgeneratedconfigoutput.go:
+    id: 12771a2d6895
+    last_write_checksum: sha1:6e8298562bfe69e4cf1feacb9f8c61ebd4c6c76b
+    pristine_git_object: 8326934bd62acb4d736df13846938f0c08d8547e
   internal/sdk/models/shared/ailakeraguardplugin.go:
     id: 0ed2b3c5abad
     last_write_checksum: sha1:9e04c27e409d847d9215179483743e4294244aef
