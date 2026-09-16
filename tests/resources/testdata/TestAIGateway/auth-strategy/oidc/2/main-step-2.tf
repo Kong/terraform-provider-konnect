@@ -18,9 +18,6 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy_oidc" {
       client_id = [
         "test-client-id"
       ]
-      client_secret = [
-        "test-client-secret"
-      ]
       issuer           = "https://example.com"
       jwks_endpoint    = "https://example.com/.well-known/jwks.json"
       hide_credentials = false

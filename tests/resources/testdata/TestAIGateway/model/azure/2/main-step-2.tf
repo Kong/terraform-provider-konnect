@@ -65,7 +65,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel_model" {
           azure = {
             api_version   = "2023-05-15"
             deployment_id = "ahagshhh-1sjn-akjnda"
-            type          = "azure"
           }
         }
         name     = "gpt-5.6-luna",
