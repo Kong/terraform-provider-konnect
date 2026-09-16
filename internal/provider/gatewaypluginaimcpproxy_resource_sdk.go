@@ -100,7 +100,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					if resp.Config.Server.Session.Redis.CloudAuthentication == nil {
 						r.Config.Server.Session.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+						r.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 						if resp.Config.Server.Session.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.Server.Session.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Server.Session.Redis.CloudAuthentication.AuthProvider))
 						} else {

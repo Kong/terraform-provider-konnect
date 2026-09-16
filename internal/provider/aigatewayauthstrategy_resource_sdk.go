@@ -21,7 +21,8 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 			if resp.AIGatewayAuthStrategyKeyAuthResponse.Config == nil {
 				r.KeyAuth.Config = nil
 			} else {
-				r.KeyAuth.Config = &tfTypes.AIGatewayAuthStrategyKeyAuthConfig{}
+				r.KeyAuth.Config = &tfTypes.AIGWKeyAuthGeneratedConfig{}
+				r.KeyAuth.Config.Anonymous = types.StringPointerValue(resp.AIGatewayAuthStrategyKeyAuthResponse.Config.Anonymous)
 				r.KeyAuth.Config.HideCredentials = types.BoolPointerValue(resp.AIGatewayAuthStrategyKeyAuthResponse.Config.HideCredentials)
 				if resp.AIGatewayAuthStrategyKeyAuthResponse.Config.IdentityRealms != nil {
 					r.KeyAuth.Config.IdentityRealms = []tfTypes.IdentityRealms{}
@@ -84,16 +85,11 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 			r.UpdatedAt = r.KeyAuth.UpdatedAt
 		}
 		if resp.AIGatewayAuthStrategyOpenIDConnectResponse != nil {
-			openidConnectPriorData := r.OpenidConnect
 			r.OpenidConnect = &tfTypes.AIGatewayAuthStrategyOpenIDConnect{}
 			if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config == nil {
 				r.OpenidConnect.Config = nil
 			} else {
-				var configPriorData *tfTypes.AIGatewayAuthStrategyOpenIDConnectConfig
-				if openidConnectPriorData != nil {
-					configPriorData = openidConnectPriorData.Config
-				}
-				r.OpenidConnect.Config = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfig{}
+				r.OpenidConnect.Config = &tfTypes.AIGWOpenIDConnectGeneratedConfig{}
 				r.OpenidConnect.Config.Anonymous = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Anonymous)
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Audience != nil {
 					r.OpenidConnect.Config.Audience = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Audience))
@@ -160,7 +156,6 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				}
 				r.OpenidConnect.Config.AuthorizationRollingTimeout = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.AuthorizationRollingTimeout)
 				r.OpenidConnect.Config.BearerTokenCookieName = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenCookieName)
-				r.OpenidConnect.Config.BearerTokenHeaderName = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenHeaderName)
 				r.OpenidConnect.Config.BearerTokenParamType = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenParamType))
 				for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenParamType {
 					r.OpenidConnect.Config.BearerTokenParamType = append(r.OpenidConnect.Config.BearerTokenParamType, types.StringValue(string(v)))
@@ -169,7 +164,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				r.OpenidConnect.Config.CacheIntrospection = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheIntrospection)
 				r.OpenidConnect.Config.CacheTokenExchange = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokenExchange)
 				r.OpenidConnect.Config.CacheTokens = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokens)
-				r.OpenidConnect.Config.CacheTokensSalt = types.StringValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokensSalt)
+				r.OpenidConnect.Config.CacheTokensSalt = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokensSalt)
 				r.OpenidConnect.Config.CacheTTL = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTTL)
 				r.OpenidConnect.Config.CacheTTLMax = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTTLMax)
 				r.OpenidConnect.Config.CacheTTLMin = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTTLMin)
@@ -264,6 +259,14 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				} else {
 					r.OpenidConnect.Config.ClientJwk = nil
 				}
+				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClientSecret != nil {
+					r.OpenidConnect.Config.ClientSecret = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClientSecret))
+					for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClientSecret {
+						r.OpenidConnect.Config.ClientSecret = append(r.OpenidConnect.Config.ClientSecret, types.StringValue(v))
+					}
+				} else {
+					r.OpenidConnect.Config.ClientSecret = nil
+				}
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis == nil {
 					r.OpenidConnect.Config.ClusterCacheRedis = nil
 				} else {
@@ -271,7 +274,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.CloudAuthentication == nil {
 						r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication = nil
 					} else {
-						r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+						r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 						if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider != nil {
 							r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider))
 						} else {
@@ -490,8 +493,10 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				}
 				r.OpenidConnect.Config.HideCredentials = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HideCredentials)
 				r.OpenidConnect.Config.HTTPProxy = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPProxy)
+				r.OpenidConnect.Config.HTTPProxyAuthorization = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPProxyAuthorization)
 				r.OpenidConnect.Config.HTTPVersion = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPVersion)
 				r.OpenidConnect.Config.HTTPSProxy = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPSProxy)
+				r.OpenidConnect.Config.HTTPSProxyAuthorization = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPSProxyAuthorization)
 				r.OpenidConnect.Config.IDTokenParamName = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IDTokenParamName)
 				r.OpenidConnect.Config.IDTokenParamType = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IDTokenParamType))
 				for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IDTokenParamType {
@@ -572,7 +577,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					r.OpenidConnect.Config.IntrospectionPostArgsValues = nil
 				}
 				r.OpenidConnect.Config.IntrospectionTokenParamName = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IntrospectionTokenParamName)
-				r.OpenidConnect.Config.Issuer = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Issuer)
+				r.OpenidConnect.Config.Issuer = types.StringValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Issuer)
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IssuersAllowed != nil {
 					r.OpenidConnect.Config.IssuersAllowed = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IssuersAllowed))
 					for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IssuersAllowed {
@@ -585,7 +590,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				r.OpenidConnect.Config.JwtSessionClaim = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.JwtSessionClaim)
 				r.OpenidConnect.Config.JwtSessionCookie = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.JwtSessionCookie)
 				r.OpenidConnect.Config.Keepalive = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Keepalive)
-				r.OpenidConnect.Config.Leeway = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Leeway)
+				r.OpenidConnect.Config.Leeway = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Leeway)
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.LoginAction != nil {
 					r.OpenidConnect.Config.LoginAction = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.LoginAction))
 				} else {
@@ -643,7 +648,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals == nil {
 					r.OpenidConnect.Config.Principals = nil
 				} else {
-					r.OpenidConnect.Config.Principals = &tfTypes.AIGatewayAuthStrategyOpenIDConnectPrincipals{}
+					r.OpenidConnect.Config.Principals = &tfTypes.AIGWOpenIDConnectGeneratedConfigPrincipals{}
 					r.OpenidConnect.Config.Principals.Directory = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals.Directory)
 					r.OpenidConnect.Config.Principals.Enabled = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals.Enabled)
 					r.OpenidConnect.Config.Principals.ErrorOnMiss = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Principals.ErrorOnMiss)
@@ -670,35 +675,6 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				} else {
 					r.OpenidConnect.Config.ProofOfPossessionMtls = types.StringNull()
 				}
-				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader == nil {
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader = nil
-				} else {
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader = &tfTypes.ProofOfPossessionMtlsFromHeader{}
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain)
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.CaCertificates))
-					for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.CaCertificates {
-						r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates = append(r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates, types.StringValue(v))
-					}
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL)
-					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat != nil {
-						r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat))
-					} else {
-						r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat = types.StringNull()
-					}
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderName = types.StringValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderName)
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost)
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort)
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout)
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost)
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort)
-					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode != nil {
-						r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode))
-					} else {
-						r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode = types.StringNull()
-					}
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SecureSource = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.SecureSource)
-					r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SslVerify = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.ProofOfPossessionMtlsFromHeader.SslVerify)
-				}
 				r.OpenidConnect.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.PushedAuthorizationRequestEndpoint)
 				if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
 					r.OpenidConnect.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.PushedAuthorizationRequestEndpointAuthMethod))
@@ -720,7 +696,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.CloudAuthentication == nil {
 						r.OpenidConnect.Config.Redis.CloudAuthentication = nil
 					} else {
-						r.OpenidConnect.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+						r.OpenidConnect.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 						if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.CloudAuthentication.AuthProvider != nil {
 							r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -909,7 +885,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				}
 				r.OpenidConnect.Config.SessionStoreMetadata = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.SessionStoreMetadata)
 				r.OpenidConnect.Config.SslVerify = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.SslVerify)
-				r.OpenidConnect.Config.Timeout = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Timeout)
+				r.OpenidConnect.Config.Timeout = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.Timeout)
 				r.OpenidConnect.Config.TLSClientAuthCertID = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TLSClientAuthCertID)
 				r.OpenidConnect.Config.TLSClientAuthSslVerify = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TLSClientAuthSslVerify)
 				r.OpenidConnect.Config.TokenCacheKeyIncludeScope = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenCacheKeyIncludeScope)
@@ -926,14 +902,14 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Cache == nil {
 						r.OpenidConnect.Config.TokenExchange.Cache = nil
 					} else {
-						r.OpenidConnect.Config.TokenExchange.Cache = &tfTypes.AIGatewayAuthStrategyOpenIDConnectCache{}
+						r.OpenidConnect.Config.TokenExchange.Cache = &tfTypes.Cache{}
 						r.OpenidConnect.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Cache.Enabled)
 						r.OpenidConnect.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Cache.TTL)
 					}
 					if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Request == nil {
 						r.OpenidConnect.Config.TokenExchange.Request = nil
 					} else {
-						r.OpenidConnect.Config.TokenExchange.Request = &tfTypes.AIGatewayAuthStrategyOpenIDConnectRequest{}
+						r.OpenidConnect.Config.TokenExchange.Request = &tfTypes.Request{}
 						if resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Request.Audience != nil {
 							r.OpenidConnect.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Request.Audience))
 							for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.TokenExchange.Request.Audience {
@@ -996,8 +972,6 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 							}
 						}
 						subjectTokenIssuers.Issuer = types.StringValue(subjectTokenIssuersItem.Issuer)
-						subjectTokenIssuers.JwksURI = types.StringPointerValue(subjectTokenIssuersItem.JwksURI)
-						subjectTokenIssuers.VerifySignature = types.BoolPointerValue(subjectTokenIssuersItem.VerifySignature)
 
 						r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers = append(r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers, subjectTokenIssuers)
 					}
@@ -1188,11 +1162,6 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				r.OpenidConnect.Config.VerifyNonce = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.VerifyNonce)
 				r.OpenidConnect.Config.VerifyParameters = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.VerifyParameters)
 				r.OpenidConnect.Config.VerifySignature = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.VerifySignature)
-				if configPriorData != nil {
-					r.OpenidConnect.Config.ClientSecret = configPriorData.ClientSecret
-					r.OpenidConnect.Config.HTTPProxyAuthorization = configPriorData.HTTPProxyAuthorization
-					r.OpenidConnect.Config.HTTPSProxyAuthorization = configPriorData.HTTPSProxyAuthorization
-				}
 			}
 			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayAuthStrategyOpenIDConnectResponse.CreatedAt))
 			r.CreatedAt = r.OpenidConnect.CreatedAt
@@ -1328,8 +1297,20 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 
 			managedBy[managedByKey] = managedByInst
 		}
-		var config *shared.AIGatewayAuthStrategyKeyAuthConfig
+		var config *shared.AIGWKeyAuthGeneratedConfig
 		if r.KeyAuth.Config != nil {
+			anonymous := new(string)
+			if !r.KeyAuth.Config.Anonymous.IsUnknown() && !r.KeyAuth.Config.Anonymous.IsNull() {
+				*anonymous = r.KeyAuth.Config.Anonymous.ValueString()
+			} else {
+				anonymous = nil
+			}
+			hideCredentials := new(bool)
+			if !r.KeyAuth.Config.HideCredentials.IsUnknown() && !r.KeyAuth.Config.HideCredentials.IsNull() {
+				*hideCredentials = r.KeyAuth.Config.HideCredentials.ValueBool()
+			} else {
+				hideCredentials = nil
+			}
 			var identityRealms []shared.IdentityRealms
 			if r.KeyAuth.Config.IdentityRealms != nil {
 				identityRealms = make([]shared.IdentityRealms, 0, len(r.KeyAuth.Config.IdentityRealms))
@@ -1346,9 +1327,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						region = nil
 					}
-					scope := new(shared.AIGatewayAuthStrategyKeyAuthScope)
+					scope := new(shared.AIGWKeyAuthGeneratedConfigScope)
 					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-						*scope = shared.AIGatewayAuthStrategyKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+						*scope = shared.AIGWKeyAuthGeneratedConfigScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
 					} else {
 						scope = nil
 					}
@@ -1358,12 +1339,6 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						Scope:  scope,
 					})
 				}
-			}
-			hideCredentials := new(bool)
-			if !r.KeyAuth.Config.HideCredentials.IsUnknown() && !r.KeyAuth.Config.HideCredentials.IsNull() {
-				*hideCredentials = r.KeyAuth.Config.HideCredentials.ValueBool()
-			} else {
-				hideCredentials = nil
 			}
 			keyInBody := new(bool)
 			if !r.KeyAuth.Config.KeyInBody.IsUnknown() && !r.KeyAuth.Config.KeyInBody.IsNull() {
@@ -1389,17 +1364,17 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			}
 			var principals *shared.Principals
 			if r.KeyAuth.Config.Principals != nil {
-				enabled := new(bool)
-				if !r.KeyAuth.Config.Principals.Enabled.IsUnknown() && !r.KeyAuth.Config.Principals.Enabled.IsNull() {
-					*enabled = r.KeyAuth.Config.Principals.Enabled.ValueBool()
-				} else {
-					enabled = nil
-				}
 				directory := new(string)
 				if !r.KeyAuth.Config.Principals.Directory.IsUnknown() && !r.KeyAuth.Config.Principals.Directory.IsNull() {
 					*directory = r.KeyAuth.Config.Principals.Directory.ValueString()
 				} else {
 					directory = nil
+				}
+				enabled := new(bool)
+				if !r.KeyAuth.Config.Principals.Enabled.IsUnknown() && !r.KeyAuth.Config.Principals.Enabled.IsNull() {
+					*enabled = r.KeyAuth.Config.Principals.Enabled.ValueBool()
+				} else {
+					enabled = nil
 				}
 				errorOnMiss := new(bool)
 				if !r.KeyAuth.Config.Principals.ErrorOnMiss.IsUnknown() && !r.KeyAuth.Config.Principals.ErrorOnMiss.IsNull() {
@@ -1408,8 +1383,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					errorOnMiss = nil
 				}
 				principals = &shared.Principals{
-					Enabled:     enabled,
 					Directory:   directory,
+					Enabled:     enabled,
 					ErrorOnMiss: errorOnMiss,
 				}
 			}
@@ -1425,9 +1400,10 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				runOnPreflight = nil
 			}
-			config = &shared.AIGatewayAuthStrategyKeyAuthConfig{
-				IdentityRealms:  identityRealms,
+			config = &shared.AIGWKeyAuthGeneratedConfig{
+				Anonymous:       anonymous,
 				HideCredentials: hideCredentials,
+				IdentityRealms:  identityRealms,
 				KeyInBody:       keyInBody,
 				KeyInHeader:     keyInHeader,
 				KeyInQuery:      keyInQuery,
@@ -1472,262 +1448,13 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		var config1 *shared.AIGatewayAuthStrategyOpenIDConnectConfig
+		var config1 *shared.AIGWOpenIDConnectGeneratedConfig
 		if r.OpenidConnect.Config != nil {
-			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
-			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
-				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
-			}
-			var clientID []string
-			if r.OpenidConnect.Config.ClientID != nil {
-				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
-				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
-					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
-				}
-			}
-			var clientSecret []string
-			if r.OpenidConnect.Config.ClientSecret != nil {
-				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
-				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
-					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
-				}
-			}
-			var clientAlg []shared.ClientAlg
-			if r.OpenidConnect.Config.ClientAlg != nil {
-				clientAlg = make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
-				for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
-					clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
-				}
-			}
-			var clientAuth []shared.ClientAuth
-			if r.OpenidConnect.Config.ClientAuth != nil {
-				clientAuth = make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
-				for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
-					clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
-				}
-			}
-			var consumerClaims [][]string
-			if r.OpenidConnect.Config.ConsumerClaims != nil {
-				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
-				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
-					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
-					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
-						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
-					}
-					consumerClaims = append(consumerClaims, consumerClaimsTmp)
-				}
-			}
-			var consumerGroupsClaim []string
-			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
-				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
-				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
-					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
-				}
-			}
-			consumerGroupsOptional := new(bool)
-			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
-				*consumerGroupsOptional = r.OpenidConnect.Config.ConsumerGroupsOptional.ValueBool()
-			} else {
-				consumerGroupsOptional = nil
-			}
-			consumerBy := make([]shared.ConsumerBy, 0, len(r.OpenidConnect.Config.ConsumerBy))
-			for _, consumerByItem := range r.OpenidConnect.Config.ConsumerBy {
-				consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
-			}
-			consumerOptional := new(bool)
-			if !r.OpenidConnect.Config.ConsumerOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerOptional.IsNull() {
-				*consumerOptional = r.OpenidConnect.Config.ConsumerOptional.ValueBool()
-			} else {
-				consumerOptional = nil
-			}
-			credentialClaim := make([]string, 0, len(r.OpenidConnect.Config.CredentialClaim))
-			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
-				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
-			}
-			issuer := new(string)
-			if !r.OpenidConnect.Config.Issuer.IsUnknown() && !r.OpenidConnect.Config.Issuer.IsNull() {
-				*issuer = r.OpenidConnect.Config.Issuer.ValueString()
-			} else {
-				issuer = nil
-			}
-			introspectionEndpoint := new(string)
-			if !r.OpenidConnect.Config.IntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.IntrospectionEndpoint.IsNull() {
-				*introspectionEndpoint = r.OpenidConnect.Config.IntrospectionEndpoint.ValueString()
-			} else {
-				introspectionEndpoint = nil
-			}
-			mtlsIntrospectionEndpoint := new(string)
-			if !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsNull() {
-				*mtlsIntrospectionEndpoint = r.OpenidConnect.Config.MtlsIntrospectionEndpoint.ValueString()
-			} else {
-				mtlsIntrospectionEndpoint = nil
-			}
-			cacheIntrospection := new(bool)
-			if !r.OpenidConnect.Config.CacheIntrospection.IsUnknown() && !r.OpenidConnect.Config.CacheIntrospection.IsNull() {
-				*cacheIntrospection = r.OpenidConnect.Config.CacheIntrospection.ValueBool()
-			} else {
-				cacheIntrospection = nil
-			}
-			jwksEndpoint := new(string)
-			if !r.OpenidConnect.Config.JwksEndpoint.IsUnknown() && !r.OpenidConnect.Config.JwksEndpoint.IsNull() {
-				*jwksEndpoint = r.OpenidConnect.Config.JwksEndpoint.ValueString()
-			} else {
-				jwksEndpoint = nil
-			}
-			leeway := new(int64)
-			if !r.OpenidConnect.Config.Leeway.IsUnknown() && !r.OpenidConnect.Config.Leeway.IsNull() {
-				*leeway = r.OpenidConnect.Config.Leeway.ValueInt64()
-			} else {
-				leeway = nil
-			}
-			scopes := make([]string, 0, len(r.OpenidConnect.Config.Scopes))
-			for scopesIndex := range r.OpenidConnect.Config.Scopes {
-				scopes = append(scopes, r.OpenidConnect.Config.Scopes[scopesIndex].ValueString())
-			}
-			audienceRequired := make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
-			for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
-				audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
-			}
-			sslVerify := new(bool)
-			if !r.OpenidConnect.Config.SslVerify.IsUnknown() && !r.OpenidConnect.Config.SslVerify.IsNull() {
-				*sslVerify = r.OpenidConnect.Config.SslVerify.ValueBool()
-			} else {
-				sslVerify = nil
-			}
-			hideCredentials1 := new(bool)
-			if !r.OpenidConnect.Config.HideCredentials.IsUnknown() && !r.OpenidConnect.Config.HideCredentials.IsNull() {
-				*hideCredentials1 = r.OpenidConnect.Config.HideCredentials.ValueBool()
-			} else {
-				hideCredentials1 = nil
-			}
-			keepalive := new(bool)
-			if !r.OpenidConnect.Config.Keepalive.IsUnknown() && !r.OpenidConnect.Config.Keepalive.IsNull() {
-				*keepalive = r.OpenidConnect.Config.Keepalive.ValueBool()
-			} else {
-				keepalive = nil
-			}
-			timeout := new(int64)
-			if !r.OpenidConnect.Config.Timeout.IsUnknown() && !r.OpenidConnect.Config.Timeout.IsNull() {
-				*timeout = r.OpenidConnect.Config.Timeout.ValueInt64()
-			} else {
-				timeout = nil
-			}
-			httpVersion := new(float64)
-			if !r.OpenidConnect.Config.HTTPVersion.IsUnknown() && !r.OpenidConnect.Config.HTTPVersion.IsNull() {
-				*httpVersion = r.OpenidConnect.Config.HTTPVersion.ValueFloat64()
-			} else {
-				httpVersion = nil
-			}
-			httpProxy := new(string)
-			if !r.OpenidConnect.Config.HTTPProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPProxy.IsNull() {
-				*httpProxy = r.OpenidConnect.Config.HTTPProxy.ValueString()
-			} else {
-				httpProxy = nil
-			}
-			httpProxyAuthorization := new(string)
-			if !r.OpenidConnect.Config.HTTPProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPProxyAuthorization.IsNull() {
-				*httpProxyAuthorization = r.OpenidConnect.Config.HTTPProxyAuthorization.ValueString()
-			} else {
-				httpProxyAuthorization = nil
-			}
-			httpsProxy := new(string)
-			if !r.OpenidConnect.Config.HTTPSProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxy.IsNull() {
-				*httpsProxy = r.OpenidConnect.Config.HTTPSProxy.ValueString()
-			} else {
-				httpsProxy = nil
-			}
-			httpsProxyAuthorization := new(string)
-			if !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsNull() {
-				*httpsProxyAuthorization = r.OpenidConnect.Config.HTTPSProxyAuthorization.ValueString()
-			} else {
-				httpsProxyAuthorization = nil
-			}
-			noProxy := new(string)
-			if !r.OpenidConnect.Config.NoProxy.IsUnknown() && !r.OpenidConnect.Config.NoProxy.IsNull() {
-				*noProxy = r.OpenidConnect.Config.NoProxy.ValueString()
-			} else {
-				noProxy = nil
-			}
-			var upstreamHeaders []shared.UpstreamHeaders
-			if r.OpenidConnect.Config.UpstreamHeaders != nil {
-				upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
-				for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
-					var header string
-					header = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
-
-					path := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
-					for pathIndex := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
-						path = append(path, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex].ValueString())
-					}
-					upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
-						Header: header,
-						Path:   path,
-					})
-				}
-			}
-			var cacheTokensSalt string
-			cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
-
-			var principals1 *shared.AIGatewayAuthStrategyOpenIDConnectPrincipals
-			if r.OpenidConnect.Config.Principals != nil {
-				enabled1 := new(bool)
-				if !r.OpenidConnect.Config.Principals.Enabled.IsUnknown() && !r.OpenidConnect.Config.Principals.Enabled.IsNull() {
-					*enabled1 = r.OpenidConnect.Config.Principals.Enabled.ValueBool()
-				} else {
-					enabled1 = nil
-				}
-				directory1 := new(string)
-				if !r.OpenidConnect.Config.Principals.Directory.IsUnknown() && !r.OpenidConnect.Config.Principals.Directory.IsNull() {
-					*directory1 = r.OpenidConnect.Config.Principals.Directory.ValueString()
-				} else {
-					directory1 = nil
-				}
-				principalBy := new(string)
-				if !r.OpenidConnect.Config.Principals.PrincipalBy.IsUnknown() && !r.OpenidConnect.Config.Principals.PrincipalBy.IsNull() {
-					*principalBy = r.OpenidConnect.Config.Principals.PrincipalBy.ValueString()
-				} else {
-					principalBy = nil
-				}
-				var principalClaim []string
-				if r.OpenidConnect.Config.Principals.PrincipalClaim != nil {
-					principalClaim = make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
-					for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
-						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
-					}
-				}
-				matchConsumer := new(bool)
-				if !r.OpenidConnect.Config.Principals.MatchConsumer.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumer.IsNull() {
-					*matchConsumer = r.OpenidConnect.Config.Principals.MatchConsumer.ValueBool()
-				} else {
-					matchConsumer = nil
-				}
-				matchConsumerGroups := new(bool)
-				if !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsNull() {
-					*matchConsumerGroups = r.OpenidConnect.Config.Principals.MatchConsumerGroups.ValueBool()
-				} else {
-					matchConsumerGroups = nil
-				}
-				errorOnMiss1 := new(bool)
-				if !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsUnknown() && !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsNull() {
-					*errorOnMiss1 = r.OpenidConnect.Config.Principals.ErrorOnMiss.ValueBool()
-				} else {
-					errorOnMiss1 = nil
-				}
-				principals1 = &shared.AIGatewayAuthStrategyOpenIDConnectPrincipals{
-					Enabled:             enabled1,
-					Directory:           directory1,
-					PrincipalBy:         principalBy,
-					PrincipalClaim:      principalClaim,
-					MatchConsumer:       matchConsumer,
-					MatchConsumerGroups: matchConsumerGroups,
-					ErrorOnMiss:         errorOnMiss1,
-				}
-			}
-			anonymous := new(string)
+			anonymous1 := new(string)
 			if !r.OpenidConnect.Config.Anonymous.IsUnknown() && !r.OpenidConnect.Config.Anonymous.IsNull() {
-				*anonymous = r.OpenidConnect.Config.Anonymous.ValueString()
+				*anonymous1 = r.OpenidConnect.Config.Anonymous.ValueString()
 			} else {
-				anonymous = nil
+				anonymous1 = nil
 			}
 			var audience []string
 			if r.OpenidConnect.Config.Audience != nil {
@@ -1739,6 +1466,14 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			audienceClaim := make([]string, 0, len(r.OpenidConnect.Config.AudienceClaim))
 			for audienceClaimIndex := range r.OpenidConnect.Config.AudienceClaim {
 				audienceClaim = append(audienceClaim, r.OpenidConnect.Config.AudienceClaim[audienceClaimIndex].ValueString())
+			}
+			audienceRequired := make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
+			for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
+				audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
+			}
+			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
+			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
+				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
 			}
 			var authenticatedGroupsClaim []string
 			if r.OpenidConnect.Config.AuthenticatedGroupsClaim != nil {
@@ -1822,12 +1557,6 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				bearerTokenCookieName = nil
 			}
-			bearerTokenHeaderName := new(string)
-			if !r.OpenidConnect.Config.BearerTokenHeaderName.IsUnknown() && !r.OpenidConnect.Config.BearerTokenHeaderName.IsNull() {
-				*bearerTokenHeaderName = r.OpenidConnect.Config.BearerTokenHeaderName.ValueString()
-			} else {
-				bearerTokenHeaderName = nil
-			}
 			bearerTokenParamType := make([]shared.BearerTokenParamType, 0, len(r.OpenidConnect.Config.BearerTokenParamType))
 			for _, bearerTokenParamTypeItem := range r.OpenidConnect.Config.BearerTokenParamType {
 				bearerTokenParamType = append(bearerTokenParamType, shared.BearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
@@ -1837,6 +1566,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*byUsernameIgnoreCase = r.OpenidConnect.Config.ByUsernameIgnoreCase.ValueBool()
 			} else {
 				byUsernameIgnoreCase = nil
+			}
+			cacheIntrospection := new(bool)
+			if !r.OpenidConnect.Config.CacheIntrospection.IsUnknown() && !r.OpenidConnect.Config.CacheIntrospection.IsNull() {
+				*cacheIntrospection = r.OpenidConnect.Config.CacheIntrospection.ValueBool()
+			} else {
+				cacheIntrospection = nil
 			}
 			cacheTokenExchange := new(bool)
 			if !r.OpenidConnect.Config.CacheTokenExchange.IsUnknown() && !r.OpenidConnect.Config.CacheTokenExchange.IsNull() {
@@ -1849,6 +1584,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*cacheTokens = r.OpenidConnect.Config.CacheTokens.ValueBool()
 			} else {
 				cacheTokens = nil
+			}
+			cacheTokensSalt := new(string)
+			if !r.OpenidConnect.Config.CacheTokensSalt.IsUnknown() && !r.OpenidConnect.Config.CacheTokensSalt.IsNull() {
+				*cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
+			} else {
+				cacheTokensSalt = nil
 			}
 			cacheTTL := new(float64)
 			if !r.OpenidConnect.Config.CacheTTL.IsUnknown() && !r.OpenidConnect.Config.CacheTTL.IsNull() {
@@ -1893,15 +1634,36 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					claimsForbidden = append(claimsForbidden, r.OpenidConnect.Config.ClaimsForbidden[claimsForbiddenIndex].ValueString())
 				}
 			}
+			var clientAlg []shared.ClientAlg
+			if r.OpenidConnect.Config.ClientAlg != nil {
+				clientAlg = make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
+				for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
+					clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
+				}
+			}
 			clientArg := new(string)
 			if !r.OpenidConnect.Config.ClientArg.IsUnknown() && !r.OpenidConnect.Config.ClientArg.IsNull() {
 				*clientArg = r.OpenidConnect.Config.ClientArg.ValueString()
 			} else {
 				clientArg = nil
 			}
+			var clientAuth []shared.ClientAuth
+			if r.OpenidConnect.Config.ClientAuth != nil {
+				clientAuth = make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
+				for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
+					clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
+				}
+			}
 			clientCredentialsParamType := make([]shared.ClientCredentialsParamType, 0, len(r.OpenidConnect.Config.ClientCredentialsParamType))
 			for _, clientCredentialsParamTypeItem := range r.OpenidConnect.Config.ClientCredentialsParamType {
 				clientCredentialsParamType = append(clientCredentialsParamType, shared.ClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
+			}
+			var clientID []string
+			if r.OpenidConnect.Config.ClientID != nil {
+				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
+				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
+					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
+				}
 			}
 			var clientJwk []shared.ClientJwk
 			if r.OpenidConnect.Config.ClientJwk != nil {
@@ -1943,11 +1705,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						e = nil
 					}
-					issuer1 := new(string)
+					issuer := new(string)
 					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsNull() {
-						*issuer1 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
+						*issuer = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
 					} else {
-						issuer1 = nil
+						issuer = nil
 					}
 					k := new(string)
 					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsNull() {
@@ -2066,7 +1828,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						Dp:            dp,
 						Dq:            dq,
 						E:             e,
-						Issuer:        issuer1,
+						Issuer:        issuer,
 						K:             k,
 						KeyOps:        keyOps,
 						Kid:           kid,
@@ -2088,9 +1850,16 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					})
 				}
 			}
+			var clientSecret []string
+			if r.OpenidConnect.Config.ClientSecret != nil {
+				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
+				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
+					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
+				}
+			}
 			var clusterCacheRedis *shared.ClusterCacheRedis
 			if r.OpenidConnect.Config.ClusterCacheRedis != nil {
-				var cloudAuthentication *shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication
+				var cloudAuthentication *shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication
 				if r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication != nil {
 					authProvider := new(shared.AuthProvider)
 					if !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsNull() {
@@ -2164,7 +1933,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJSON = nil
 					}
-					cloudAuthentication = &shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{
+					cloudAuthentication = &shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{
 						AuthProvider:          authProvider,
 						AwsAccessKeyID:        awsAccessKeyID,
 						AwsAssumeRoleArn:      awsAssumeRoleArn,
@@ -2325,11 +2094,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					ssl = nil
 				}
-				sslVerify1 := new(bool)
+				sslVerify := new(bool)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.IsNull() {
-					*sslVerify1 = r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.ValueBool()
+					*sslVerify = r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.ValueBool()
 				} else {
-					sslVerify1 = nil
+					sslVerify = nil
 				}
 				username := new(string)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.Username.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.Username.IsNull() {
@@ -2358,7 +2127,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					SentinelUsername:       sentinelUsername,
 					ServerName:             serverName,
 					Ssl:                    ssl,
-					SslVerify:              sslVerify1,
+					SslVerify:              sslVerify,
 					Username:               username,
 				}
 			}
@@ -2367,6 +2136,44 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*clusterCacheStrategy = shared.ClusterCacheStrategy(r.OpenidConnect.Config.ClusterCacheStrategy.ValueString())
 			} else {
 				clusterCacheStrategy = nil
+			}
+			consumerBy := make([]shared.ConsumerBy, 0, len(r.OpenidConnect.Config.ConsumerBy))
+			for _, consumerByItem := range r.OpenidConnect.Config.ConsumerBy {
+				consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
+			}
+			var consumerClaims [][]string
+			if r.OpenidConnect.Config.ConsumerClaims != nil {
+				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
+				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
+					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
+					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
+						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
+					}
+					consumerClaims = append(consumerClaims, consumerClaimsTmp)
+				}
+			}
+			var consumerGroupsClaim []string
+			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
+				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
+				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
+					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
+				}
+			}
+			consumerGroupsOptional := new(bool)
+			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
+				*consumerGroupsOptional = r.OpenidConnect.Config.ConsumerGroupsOptional.ValueBool()
+			} else {
+				consumerGroupsOptional = nil
+			}
+			consumerOptional := new(bool)
+			if !r.OpenidConnect.Config.ConsumerOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerOptional.IsNull() {
+				*consumerOptional = r.OpenidConnect.Config.ConsumerOptional.ValueBool()
+			} else {
+				consumerOptional = nil
+			}
+			credentialClaim := make([]string, 0, len(r.OpenidConnect.Config.CredentialClaim))
+			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
+				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
 			}
 			var disableSession []shared.DisableSession
 			if r.OpenidConnect.Config.DisableSession != nil {
@@ -2418,16 +2225,16 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			if r.OpenidConnect.Config.DownstreamHeaders != nil {
 				downstreamHeaders = make([]shared.DownstreamHeaders, 0, len(r.OpenidConnect.Config.DownstreamHeaders))
 				for downstreamHeadersIndex := range r.OpenidConnect.Config.DownstreamHeaders {
-					var header1 string
-					header1 = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
+					var header string
+					header = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
 
-					path1 := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
-					for pathIndex1 := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
-						path1 = append(path1, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex1].ValueString())
+					path := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
+					for pathIndex := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
+						path = append(path, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
 					}
 					downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
-						Header: header1,
-						Path:   path1,
+						Header: header,
+						Path:   path,
 					})
 				}
 			}
@@ -2560,6 +2367,42 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					groupsRequired = append(groupsRequired, r.OpenidConnect.Config.GroupsRequired[groupsRequiredIndex].ValueString())
 				}
 			}
+			hideCredentials1 := new(bool)
+			if !r.OpenidConnect.Config.HideCredentials.IsUnknown() && !r.OpenidConnect.Config.HideCredentials.IsNull() {
+				*hideCredentials1 = r.OpenidConnect.Config.HideCredentials.ValueBool()
+			} else {
+				hideCredentials1 = nil
+			}
+			httpProxy := new(string)
+			if !r.OpenidConnect.Config.HTTPProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPProxy.IsNull() {
+				*httpProxy = r.OpenidConnect.Config.HTTPProxy.ValueString()
+			} else {
+				httpProxy = nil
+			}
+			httpProxyAuthorization := new(string)
+			if !r.OpenidConnect.Config.HTTPProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPProxyAuthorization.IsNull() {
+				*httpProxyAuthorization = r.OpenidConnect.Config.HTTPProxyAuthorization.ValueString()
+			} else {
+				httpProxyAuthorization = nil
+			}
+			httpVersion := new(float64)
+			if !r.OpenidConnect.Config.HTTPVersion.IsUnknown() && !r.OpenidConnect.Config.HTTPVersion.IsNull() {
+				*httpVersion = r.OpenidConnect.Config.HTTPVersion.ValueFloat64()
+			} else {
+				httpVersion = nil
+			}
+			httpsProxy := new(string)
+			if !r.OpenidConnect.Config.HTTPSProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxy.IsNull() {
+				*httpsProxy = r.OpenidConnect.Config.HTTPSProxy.ValueString()
+			} else {
+				httpsProxy = nil
+			}
+			httpsProxyAuthorization := new(string)
+			if !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsNull() {
+				*httpsProxyAuthorization = r.OpenidConnect.Config.HTTPSProxyAuthorization.ValueString()
+			} else {
+				httpsProxyAuthorization = nil
+			}
 			idTokenParamName := new(string)
 			if !r.OpenidConnect.Config.IDTokenParamName.IsUnknown() && !r.OpenidConnect.Config.IDTokenParamName.IsNull() {
 				*idTokenParamName = r.OpenidConnect.Config.IDTokenParamName.ValueString()
@@ -2591,6 +2434,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*introspectionCheckActive = r.OpenidConnect.Config.IntrospectionCheckActive.ValueBool()
 			} else {
 				introspectionCheckActive = nil
+			}
+			introspectionEndpoint := new(string)
+			if !r.OpenidConnect.Config.IntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.IntrospectionEndpoint.IsNull() {
+				*introspectionEndpoint = r.OpenidConnect.Config.IntrospectionEndpoint.ValueString()
+			} else {
+				introspectionEndpoint = nil
 			}
 			introspectionEndpointAuthMethod := new(shared.IntrospectionEndpointAuthMethod)
 			if !r.OpenidConnect.Config.IntrospectionEndpointAuthMethod.IsUnknown() && !r.OpenidConnect.Config.IntrospectionEndpointAuthMethod.IsNull() {
@@ -2659,12 +2508,21 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				introspectionTokenParamName = nil
 			}
+			var issuer1 string
+			issuer1 = r.OpenidConnect.Config.Issuer.ValueString()
+
 			var issuersAllowed []string
 			if r.OpenidConnect.Config.IssuersAllowed != nil {
 				issuersAllowed = make([]string, 0, len(r.OpenidConnect.Config.IssuersAllowed))
 				for issuersAllowedIndex := range r.OpenidConnect.Config.IssuersAllowed {
 					issuersAllowed = append(issuersAllowed, r.OpenidConnect.Config.IssuersAllowed[issuersAllowedIndex].ValueString())
 				}
+			}
+			jwksEndpoint := new(string)
+			if !r.OpenidConnect.Config.JwksEndpoint.IsUnknown() && !r.OpenidConnect.Config.JwksEndpoint.IsNull() {
+				*jwksEndpoint = r.OpenidConnect.Config.JwksEndpoint.ValueString()
+			} else {
+				jwksEndpoint = nil
 			}
 			jwtSessionClaim := new(string)
 			if !r.OpenidConnect.Config.JwtSessionClaim.IsUnknown() && !r.OpenidConnect.Config.JwtSessionClaim.IsNull() {
@@ -2677,6 +2535,18 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*jwtSessionCookie = r.OpenidConnect.Config.JwtSessionCookie.ValueString()
 			} else {
 				jwtSessionCookie = nil
+			}
+			keepalive := new(bool)
+			if !r.OpenidConnect.Config.Keepalive.IsUnknown() && !r.OpenidConnect.Config.Keepalive.IsNull() {
+				*keepalive = r.OpenidConnect.Config.Keepalive.ValueBool()
+			} else {
+				keepalive = nil
+			}
+			leeway := new(float64)
+			if !r.OpenidConnect.Config.Leeway.IsUnknown() && !r.OpenidConnect.Config.Leeway.IsNull() {
+				*leeway = r.OpenidConnect.Config.Leeway.ValueFloat64()
+			} else {
+				leeway = nil
 			}
 			loginAction := new(shared.LoginAction)
 			if !r.OpenidConnect.Config.LoginAction.IsUnknown() && !r.OpenidConnect.Config.LoginAction.IsNull() {
@@ -2758,6 +2628,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				maxAge = nil
 			}
+			mtlsIntrospectionEndpoint := new(string)
+			if !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsNull() {
+				*mtlsIntrospectionEndpoint = r.OpenidConnect.Config.MtlsIntrospectionEndpoint.ValueString()
+			} else {
+				mtlsIntrospectionEndpoint = nil
+			}
 			mtlsRevocationEndpoint := new(string)
 			if !r.OpenidConnect.Config.MtlsRevocationEndpoint.IsUnknown() && !r.OpenidConnect.Config.MtlsRevocationEndpoint.IsNull() {
 				*mtlsRevocationEndpoint = r.OpenidConnect.Config.MtlsRevocationEndpoint.ValueString()
@@ -2770,6 +2646,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				mtlsTokenEndpoint = nil
 			}
+			noProxy := new(string)
+			if !r.OpenidConnect.Config.NoProxy.IsUnknown() && !r.OpenidConnect.Config.NoProxy.IsNull() {
+				*noProxy = r.OpenidConnect.Config.NoProxy.ValueString()
+			} else {
+				noProxy = nil
+			}
 			passwordParamType := make([]shared.PasswordParamType, 0, len(r.OpenidConnect.Config.PasswordParamType))
 			for _, passwordParamTypeItem := range r.OpenidConnect.Config.PasswordParamType {
 				passwordParamType = append(passwordParamType, shared.PasswordParamType(passwordParamTypeItem.ValueString()))
@@ -2779,6 +2661,61 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*preserveQueryArgs = r.OpenidConnect.Config.PreserveQueryArgs.ValueBool()
 			} else {
 				preserveQueryArgs = nil
+			}
+			var principals1 *shared.AIGWOpenIDConnectGeneratedConfigPrincipals
+			if r.OpenidConnect.Config.Principals != nil {
+				directory1 := new(string)
+				if !r.OpenidConnect.Config.Principals.Directory.IsUnknown() && !r.OpenidConnect.Config.Principals.Directory.IsNull() {
+					*directory1 = r.OpenidConnect.Config.Principals.Directory.ValueString()
+				} else {
+					directory1 = nil
+				}
+				enabled1 := new(bool)
+				if !r.OpenidConnect.Config.Principals.Enabled.IsUnknown() && !r.OpenidConnect.Config.Principals.Enabled.IsNull() {
+					*enabled1 = r.OpenidConnect.Config.Principals.Enabled.ValueBool()
+				} else {
+					enabled1 = nil
+				}
+				errorOnMiss1 := new(bool)
+				if !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsUnknown() && !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsNull() {
+					*errorOnMiss1 = r.OpenidConnect.Config.Principals.ErrorOnMiss.ValueBool()
+				} else {
+					errorOnMiss1 = nil
+				}
+				matchConsumer := new(bool)
+				if !r.OpenidConnect.Config.Principals.MatchConsumer.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumer.IsNull() {
+					*matchConsumer = r.OpenidConnect.Config.Principals.MatchConsumer.ValueBool()
+				} else {
+					matchConsumer = nil
+				}
+				matchConsumerGroups := new(bool)
+				if !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsNull() {
+					*matchConsumerGroups = r.OpenidConnect.Config.Principals.MatchConsumerGroups.ValueBool()
+				} else {
+					matchConsumerGroups = nil
+				}
+				principalBy := new(string)
+				if !r.OpenidConnect.Config.Principals.PrincipalBy.IsUnknown() && !r.OpenidConnect.Config.Principals.PrincipalBy.IsNull() {
+					*principalBy = r.OpenidConnect.Config.Principals.PrincipalBy.ValueString()
+				} else {
+					principalBy = nil
+				}
+				var principalClaim []string
+				if r.OpenidConnect.Config.Principals.PrincipalClaim != nil {
+					principalClaim = make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
+					for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
+						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
+					}
+				}
+				principals1 = &shared.AIGWOpenIDConnectGeneratedConfigPrincipals{
+					Directory:           directory1,
+					Enabled:             enabled1,
+					ErrorOnMiss:         errorOnMiss1,
+					MatchConsumer:       matchConsumer,
+					MatchConsumerGroups: matchConsumerGroups,
+					PrincipalBy:         principalBy,
+					PrincipalClaim:      principalClaim,
+				}
 			}
 			proofOfPossessionAuthMethodsValidation := new(bool)
 			if !r.OpenidConnect.Config.ProofOfPossessionAuthMethodsValidation.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionAuthMethodsValidation.IsNull() {
@@ -2797,97 +2734,6 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*proofOfPossessionMtls = shared.ProofOfPossessionMtls(r.OpenidConnect.Config.ProofOfPossessionMtls.ValueString())
 			} else {
 				proofOfPossessionMtls = nil
-			}
-			var proofOfPossessionMtlsFromHeader *shared.ProofOfPossessionMtlsFromHeader
-			if r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader != nil {
-				allowPartialChain := new(bool)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsNull() {
-					*allowPartialChain = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.ValueBool()
-				} else {
-					allowPartialChain = nil
-				}
-				caCertificates := make([]string, 0, len(r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates))
-				for caCertificatesIndex := range r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates {
-					caCertificates = append(caCertificates, r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates[caCertificatesIndex].ValueString())
-				}
-				certCacheTTL := new(float64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.IsNull() {
-					*certCacheTTL = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.ValueFloat64()
-				} else {
-					certCacheTTL = nil
-				}
-				certificateHeaderFormat := new(shared.AIGatewayAuthStrategyOpenIDConnectCertificateHeaderFormat)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.IsNull() {
-					*certificateHeaderFormat = shared.AIGatewayAuthStrategyOpenIDConnectCertificateHeaderFormat(r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.ValueString())
-				} else {
-					certificateHeaderFormat = nil
-				}
-				var certificateHeaderName string
-				certificateHeaderName = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderName.ValueString()
-
-				httpProxyHost := new(string)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.IsNull() {
-					*httpProxyHost = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.ValueString()
-				} else {
-					httpProxyHost = nil
-				}
-				httpProxyPort := new(int64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.IsNull() {
-					*httpProxyPort = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.ValueInt64()
-				} else {
-					httpProxyPort = nil
-				}
-				httpTimeout := new(float64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.IsNull() {
-					*httpTimeout = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.ValueFloat64()
-				} else {
-					httpTimeout = nil
-				}
-				httpsProxyHost := new(string)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.IsNull() {
-					*httpsProxyHost = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.ValueString()
-				} else {
-					httpsProxyHost = nil
-				}
-				httpsProxyPort := new(int64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.IsNull() {
-					*httpsProxyPort = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.ValueInt64()
-				} else {
-					httpsProxyPort = nil
-				}
-				revocationCheckMode := new(shared.AIGatewayAuthStrategyOpenIDConnectRevocationCheckMode)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.IsNull() {
-					*revocationCheckMode = shared.AIGatewayAuthStrategyOpenIDConnectRevocationCheckMode(r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.ValueString())
-				} else {
-					revocationCheckMode = nil
-				}
-				secureSource := new(bool)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SecureSource.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SecureSource.IsNull() {
-					*secureSource = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SecureSource.ValueBool()
-				} else {
-					secureSource = nil
-				}
-				sslVerify2 := new(bool)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsNull() {
-					*sslVerify2 = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SslVerify.ValueBool()
-				} else {
-					sslVerify2 = nil
-				}
-				proofOfPossessionMtlsFromHeader = &shared.ProofOfPossessionMtlsFromHeader{
-					AllowPartialChain:       allowPartialChain,
-					CaCertificates:          caCertificates,
-					CertCacheTTL:            certCacheTTL,
-					CertificateHeaderFormat: certificateHeaderFormat,
-					CertificateHeaderName:   certificateHeaderName,
-					HTTPProxyHost:           httpProxyHost,
-					HTTPProxyPort:           httpProxyPort,
-					HTTPTimeout:             httpTimeout,
-					HTTPSProxyHost:          httpsProxyHost,
-					HTTPSProxyPort:          httpsProxyPort,
-					RevocationCheckMode:     revocationCheckMode,
-					SecureSource:            secureSource,
-					SslVerify:               sslVerify2,
-				}
 			}
 			pushedAuthorizationRequestEndpoint := new(string)
 			if !r.OpenidConnect.Config.PushedAuthorizationRequestEndpoint.IsUnknown() && !r.OpenidConnect.Config.PushedAuthorizationRequestEndpoint.IsNull() {
@@ -2910,11 +2756,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			}
 			var redis *shared.Redis
 			if r.OpenidConnect.Config.Redis != nil {
-				var cloudAuthentication1 *shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication
+				var cloudAuthentication1 *shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication
 				if r.OpenidConnect.Config.Redis.CloudAuthentication != nil {
-					authProvider1 := new(shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider)
+					authProvider1 := new(shared.AIGWOpenIDConnectGeneratedConfigAuthProvider)
 					if !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
-						*authProvider1 = shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
+						*authProvider1 = shared.AIGWOpenIDConnectGeneratedConfigAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
 					} else {
 						authProvider1 = nil
 					}
@@ -2984,7 +2830,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJson1 = nil
 					}
-					cloudAuthentication1 = &shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication{
+					cloudAuthentication1 = &shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication{
 						AuthProvider:          authProvider1,
 						AwsAccessKeyID:        awsAccessKeyId1,
 						AwsAssumeRoleArn:      awsAssumeRoleArn1,
@@ -3005,9 +2851,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					clusterMaxRedirections1 = nil
 				}
-				var clusterNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes
+				var clusterNodes1 []shared.AIGWOpenIDConnectGeneratedConfigClusterNodes
 				if r.OpenidConnect.Config.Redis.ClusterNodes != nil {
-					clusterNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
+					clusterNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
 					for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
 						ip1 := new(string)
 						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
@@ -3021,7 +2867,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						} else {
 							port3 = nil
 						}
-						clusterNodes1 = append(clusterNodes1, shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes{
+						clusterNodes1 = append(clusterNodes1, shared.AIGWOpenIDConnectGeneratedConfigClusterNodes{
 							IP:   ip1,
 							Port: port3,
 						})
@@ -3099,9 +2945,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					sentinelMaster1 = nil
 				}
-				var sentinelNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes
+				var sentinelNodes1 []shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes
 				if r.OpenidConnect.Config.Redis.SentinelNodes != nil {
-					sentinelNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
+					sentinelNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
 					for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
 						host3 := new(string)
 						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
@@ -3115,7 +2961,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 						} else {
 							port5 = nil
 						}
-						sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes{
+						sentinelNodes1 = append(sentinelNodes1, shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes{
 							Host: host3,
 							Port: port5,
 						})
@@ -3127,9 +2973,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					sentinelPassword1 = nil
 				}
-				sentinelRole1 := new(shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole)
+				sentinelRole1 := new(shared.AIGWOpenIDConnectGeneratedConfigSentinelRole)
 				if !r.OpenidConnect.Config.Redis.SentinelRole.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelRole.IsNull() {
-					*sentinelRole1 = shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
+					*sentinelRole1 = shared.AIGWOpenIDConnectGeneratedConfigSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
 				} else {
 					sentinelRole1 = nil
 				}
@@ -3157,11 +3003,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				} else {
 					ssl1 = nil
 				}
-				sslVerify3 := new(bool)
+				sslVerify1 := new(bool)
 				if !r.OpenidConnect.Config.Redis.SslVerify.IsUnknown() && !r.OpenidConnect.Config.Redis.SslVerify.IsNull() {
-					*sslVerify3 = r.OpenidConnect.Config.Redis.SslVerify.ValueBool()
+					*sslVerify1 = r.OpenidConnect.Config.Redis.SslVerify.ValueBool()
 				} else {
-					sslVerify3 = nil
+					sslVerify1 = nil
 				}
 				username1 := new(string)
 				if !r.OpenidConnect.Config.Redis.Username.IsUnknown() && !r.OpenidConnect.Config.Redis.Username.IsNull() {
@@ -3192,7 +3038,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					ServerName:             serverName1,
 					Socket:                 socket,
 					Ssl:                    ssl1,
-					SslVerify:              sslVerify3,
+					SslVerify:              sslVerify1,
 					Username:               username1,
 				}
 			}
@@ -3292,6 +3138,10 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*runOnPreflight1 = r.OpenidConnect.Config.RunOnPreflight.ValueBool()
 			} else {
 				runOnPreflight1 = nil
+			}
+			scopes := make([]string, 0, len(r.OpenidConnect.Config.Scopes))
+			for scopesIndex := range r.OpenidConnect.Config.Scopes {
+				scopes = append(scopes, r.OpenidConnect.Config.Scopes[scopesIndex].ValueString())
 			}
 			scopesClaim := make([]string, 0, len(r.OpenidConnect.Config.ScopesClaim))
 			for scopesClaimIndex := range r.OpenidConnect.Config.ScopesClaim {
@@ -3487,6 +3337,18 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				sessionStoreMetadata = nil
 			}
+			sslVerify2 := new(bool)
+			if !r.OpenidConnect.Config.SslVerify.IsUnknown() && !r.OpenidConnect.Config.SslVerify.IsNull() {
+				*sslVerify2 = r.OpenidConnect.Config.SslVerify.ValueBool()
+			} else {
+				sslVerify2 = nil
+			}
+			timeout := new(float64)
+			if !r.OpenidConnect.Config.Timeout.IsUnknown() && !r.OpenidConnect.Config.Timeout.IsNull() {
+				*timeout = r.OpenidConnect.Config.Timeout.ValueFloat64()
+			} else {
+				timeout = nil
+			}
 			tlsClientAuthCertID := new(string)
 			if !r.OpenidConnect.Config.TLSClientAuthCertID.IsUnknown() && !r.OpenidConnect.Config.TLSClientAuthCertID.IsNull() {
 				*tlsClientAuthCertID = r.OpenidConnect.Config.TLSClientAuthCertID.ValueString()
@@ -3511,15 +3373,15 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				tokenEndpoint = nil
 			}
-			tokenEndpointAuthMethod := new(shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod)
+			tokenEndpointAuthMethod := new(shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod)
 			if !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsUnknown() && !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsNull() {
-				*tokenEndpointAuthMethod = shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
+				*tokenEndpointAuthMethod = shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
 			} else {
 				tokenEndpointAuthMethod = nil
 			}
 			var tokenExchange *shared.TokenExchange
 			if r.OpenidConnect.Config.TokenExchange != nil {
-				var cache *shared.AIGatewayAuthStrategyOpenIDConnectCache
+				var cache *shared.Cache
 				if r.OpenidConnect.Config.TokenExchange.Cache != nil {
 					enabled2 := new(bool)
 					if !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsNull() {
@@ -3533,12 +3395,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					} else {
 						ttl = nil
 					}
-					cache = &shared.AIGatewayAuthStrategyOpenIDConnectCache{
+					cache = &shared.Cache{
 						Enabled: enabled2,
 						TTL:     ttl,
 					}
 				}
-				var request *shared.AIGatewayAuthStrategyOpenIDConnectRequest
+				var request *shared.Request
 				if r.OpenidConnect.Config.TokenExchange.Request != nil {
 					var audience1 []string
 					if r.OpenidConnect.Config.TokenExchange.Request.Audience != nil {
@@ -3566,7 +3428,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 							scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
 						}
 					}
-					request = &shared.AIGatewayAuthStrategyOpenIDConnectRequest{
+					request = &shared.Request{
 						Audience:      audience1,
 						EmptyAudience: emptyAudience,
 						EmptyScopes:   emptyScopes,
@@ -3615,23 +3477,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 					var issuer2 string
 					issuer2 = r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Issuer.ValueString()
 
-					jwksURI := new(string)
-					if !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.IsNull() {
-						*jwksURI = r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.ValueString()
-					} else {
-						jwksURI = nil
-					}
-					verifySignature := new(bool)
-					if !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.IsNull() {
-						*verifySignature = r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.ValueBool()
-					} else {
-						verifySignature = nil
-					}
 					subjectTokenIssuers = append(subjectTokenIssuers, shared.SubjectTokenIssuers{
-						Conditions:      conditions,
-						Issuer:          issuer2,
-						JwksURI:         jwksURI,
-						VerifySignature: verifySignature,
+						Conditions: conditions,
+						Issuer:     issuer2,
 					})
 				}
 				tokenExchange = &shared.TokenExchange{
@@ -3745,6 +3593,23 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				*upstreamAccessTokenJwkHeader = r.OpenidConnect.Config.UpstreamAccessTokenJwkHeader.ValueString()
 			} else {
 				upstreamAccessTokenJwkHeader = nil
+			}
+			var upstreamHeaders []shared.UpstreamHeaders
+			if r.OpenidConnect.Config.UpstreamHeaders != nil {
+				upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
+				for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
+					var header1 string
+					header1 = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
+
+					path1 := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
+					for pathIndex1 := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
+						path1 = append(path1, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex1].ValueString())
+					}
+					upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
+						Header: header1,
+						Path:   path1,
+					})
+				}
 			}
 			var upstreamHeadersClaims []string
 			if r.OpenidConnect.Config.UpstreamHeadersClaims != nil {
@@ -3886,48 +3751,18 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				verifyParameters = nil
 			}
-			verifySignature1 := new(bool)
+			verifySignature := new(bool)
 			if !r.OpenidConnect.Config.VerifySignature.IsUnknown() && !r.OpenidConnect.Config.VerifySignature.IsNull() {
-				*verifySignature1 = r.OpenidConnect.Config.VerifySignature.ValueBool()
+				*verifySignature = r.OpenidConnect.Config.VerifySignature.ValueBool()
 			} else {
-				verifySignature1 = nil
+				verifySignature = nil
 			}
-			config1 = &shared.AIGatewayAuthStrategyOpenIDConnectConfig{
-				AuthMethods:                            authMethods,
-				ClientID:                               clientID,
-				ClientSecret:                           clientSecret,
-				ClientAlg:                              clientAlg,
-				ClientAuth:                             clientAuth,
-				ConsumerClaims:                         consumerClaims,
-				ConsumerGroupsClaim:                    consumerGroupsClaim,
-				ConsumerGroupsOptional:                 consumerGroupsOptional,
-				ConsumerBy:                             consumerBy,
-				ConsumerOptional:                       consumerOptional,
-				CredentialClaim:                        credentialClaim,
-				Issuer:                                 issuer,
-				IntrospectionEndpoint:                  introspectionEndpoint,
-				MtlsIntrospectionEndpoint:              mtlsIntrospectionEndpoint,
-				CacheIntrospection:                     cacheIntrospection,
-				JwksEndpoint:                           jwksEndpoint,
-				Leeway:                                 leeway,
-				Scopes:                                 scopes,
-				AudienceRequired:                       audienceRequired,
-				SslVerify:                              sslVerify,
-				HideCredentials:                        hideCredentials1,
-				Keepalive:                              keepalive,
-				Timeout:                                timeout,
-				HTTPVersion:                            httpVersion,
-				HTTPProxy:                              httpProxy,
-				HTTPProxyAuthorization:                 httpProxyAuthorization,
-				HTTPSProxy:                             httpsProxy,
-				HTTPSProxyAuthorization:                httpsProxyAuthorization,
-				NoProxy:                                noProxy,
-				UpstreamHeaders:                        upstreamHeaders,
-				CacheTokensSalt:                        cacheTokensSalt,
-				Principals:                             principals1,
-				Anonymous:                              anonymous,
+			config1 = &shared.AIGWOpenIDConnectGeneratedConfig{
+				Anonymous:                              anonymous1,
 				Audience:                               audience,
 				AudienceClaim:                          audienceClaim,
+				AudienceRequired:                       audienceRequired,
+				AuthMethods:                            authMethods,
 				AuthenticatedGroupsClaim:               authenticatedGroupsClaim,
 				AuthorizationCookieDomain:              authorizationCookieDomain,
 				AuthorizationCookieHTTPOnly:            authorizationCookieHTTPOnly,
@@ -3941,11 +3776,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
 				AuthorizationRollingTimeout:            authorizationRollingTimeout,
 				BearerTokenCookieName:                  bearerTokenCookieName,
-				BearerTokenHeaderName:                  bearerTokenHeaderName,
 				BearerTokenParamType:                   bearerTokenParamType,
 				ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
+				CacheIntrospection:                     cacheIntrospection,
 				CacheTokenExchange:                     cacheTokenExchange,
 				CacheTokens:                            cacheTokens,
+				CacheTokensSalt:                        cacheTokensSalt,
 				CacheTTL:                               cacheTTL,
 				CacheTTLMax:                            cacheTTLMax,
 				CacheTTLMin:                            cacheTTLMin,
@@ -3953,11 +3789,21 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				CacheTTLResurrect:                      cacheTTLResurrect,
 				CacheUserInfo:                          cacheUserInfo,
 				ClaimsForbidden:                        claimsForbidden,
+				ClientAlg:                              clientAlg,
 				ClientArg:                              clientArg,
+				ClientAuth:                             clientAuth,
 				ClientCredentialsParamType:             clientCredentialsParamType,
+				ClientID:                               clientID,
 				ClientJwk:                              clientJwk,
+				ClientSecret:                           clientSecret,
 				ClusterCacheRedis:                      clusterCacheRedis,
 				ClusterCacheStrategy:                   clusterCacheStrategy,
+				ConsumerBy:                             consumerBy,
+				ConsumerClaims:                         consumerClaims,
+				ConsumerGroupsClaim:                    consumerGroupsClaim,
+				ConsumerGroupsOptional:                 consumerGroupsOptional,
+				ConsumerOptional:                       consumerOptional,
+				CredentialClaim:                        credentialClaim,
 				DisableSession:                         disableSession,
 				DiscoveryHeadersNames:                  discoveryHeadersNames,
 				DiscoveryHeadersValues:                 discoveryHeadersValues,
@@ -3987,12 +3833,19 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				ForbiddenRedirectURI:                   forbiddenRedirectURI,
 				GroupsClaim:                            groupsClaim,
 				GroupsRequired:                         groupsRequired,
+				HideCredentials:                        hideCredentials1,
+				HTTPProxy:                              httpProxy,
+				HTTPProxyAuthorization:                 httpProxyAuthorization,
+				HTTPVersion:                            httpVersion,
+				HTTPSProxy:                             httpsProxy,
+				HTTPSProxyAuthorization:                httpsProxyAuthorization,
 				IDTokenParamName:                       idTokenParamName,
 				IDTokenParamType:                       idTokenParamType,
 				IgnoreSignature:                        ignoreSignature,
 				IntrospectJwtTokens:                    introspectJwtTokens,
 				IntrospectionAccept:                    introspectionAccept,
 				IntrospectionCheckActive:               introspectionCheckActive,
+				IntrospectionEndpoint:                  introspectionEndpoint,
 				IntrospectionEndpointAuthMethod:        introspectionEndpointAuthMethod,
 				IntrospectionHeadersClient:             introspectionHeadersClient,
 				IntrospectionHeadersNames:              introspectionHeadersNames,
@@ -4003,9 +3856,13 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				IntrospectionPostArgsNames:             introspectionPostArgsNames,
 				IntrospectionPostArgsValues:            introspectionPostArgsValues,
 				IntrospectionTokenParamName:            introspectionTokenParamName,
+				Issuer:                                 issuer1,
 				IssuersAllowed:                         issuersAllowed,
+				JwksEndpoint:                           jwksEndpoint,
 				JwtSessionClaim:                        jwtSessionClaim,
 				JwtSessionCookie:                       jwtSessionCookie,
+				Keepalive:                              keepalive,
+				Leeway:                                 leeway,
 				LoginAction:                            loginAction,
 				LoginMethods:                           loginMethods,
 				LoginRedirectMode:                      loginRedirectMode,
@@ -4020,14 +3877,16 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				LogoutRevokeRefreshToken:               logoutRevokeRefreshToken,
 				LogoutURISuffix:                        logoutURISuffix,
 				MaxAge:                                 maxAge,
+				MtlsIntrospectionEndpoint:              mtlsIntrospectionEndpoint,
 				MtlsRevocationEndpoint:                 mtlsRevocationEndpoint,
 				MtlsTokenEndpoint:                      mtlsTokenEndpoint,
+				NoProxy:                                noProxy,
 				PasswordParamType:                      passwordParamType,
 				PreserveQueryArgs:                      preserveQueryArgs,
+				Principals:                             principals1,
 				ProofOfPossessionAuthMethodsValidation: proofOfPossessionAuthMethodsValidation,
 				ProofOfPossessionDpop:                  proofOfPossessionDpop,
 				ProofOfPossessionMtls:                  proofOfPossessionMtls,
-				ProofOfPossessionMtlsFromHeader:        proofOfPossessionMtlsFromHeader,
 				PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
 				PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
 				RedirectURI:                        redirectURI,
@@ -4049,6 +3908,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				RolesClaim:                         rolesClaim,
 				RolesRequired:                      rolesRequired,
 				RunOnPreflight:                     runOnPreflight1,
+				Scopes:                             scopes,
 				ScopesClaim:                        scopesClaim,
 				ScopesRequired:                     scopesRequired,
 				SearchUserInfo:                     searchUserInfo,
@@ -4081,6 +3941,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				SessionSecret:                      sessionSecret,
 				SessionStorage:                     sessionStorage,
 				SessionStoreMetadata:               sessionStoreMetadata,
+				SslVerify:                          sslVerify2,
+				Timeout:                            timeout,
 				TLSClientAuthCertID:                tlsClientAuthCertID,
 				TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
 				TokenCacheKeyIncludeScope:          tokenCacheKeyIncludeScope,
@@ -4103,6 +3965,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				UnexpectedRedirectURI:              unexpectedRedirectURI,
 				UpstreamAccessTokenHeader:          upstreamAccessTokenHeader,
 				UpstreamAccessTokenJwkHeader:       upstreamAccessTokenJwkHeader,
+				UpstreamHeaders:                    upstreamHeaders,
 				UpstreamHeadersClaims:              upstreamHeadersClaims,
 				UpstreamHeadersNames:               upstreamHeadersNames,
 				UpstreamIDTokenHeader:              upstreamIDTokenHeader,
@@ -4125,7 +3988,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				VerifyClaims:                       verifyClaims,
 				VerifyNonce:                        verifyNonce,
 				VerifyParameters:                   verifyParameters,
-				VerifySignature:                    verifySignature1,
+				VerifySignature:                    verifySignature,
 			}
 		}
 		aiGatewayAuthStrategyOpenIDConnect = &shared.AIGatewayAuthStrategyOpenIDConnect{
@@ -4171,8 +4034,20 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 
 			managedBy[managedByKey] = managedByInst
 		}
-		var config *shared.AIGatewayAuthStrategyKeyAuthConfig
+		var config *shared.AIGWKeyAuthGeneratedConfig
 		if r.KeyAuth.Config != nil {
+			anonymous := new(string)
+			if !r.KeyAuth.Config.Anonymous.IsUnknown() && !r.KeyAuth.Config.Anonymous.IsNull() {
+				*anonymous = r.KeyAuth.Config.Anonymous.ValueString()
+			} else {
+				anonymous = nil
+			}
+			hideCredentials := new(bool)
+			if !r.KeyAuth.Config.HideCredentials.IsUnknown() && !r.KeyAuth.Config.HideCredentials.IsNull() {
+				*hideCredentials = r.KeyAuth.Config.HideCredentials.ValueBool()
+			} else {
+				hideCredentials = nil
+			}
 			var identityRealms []shared.IdentityRealms
 			if r.KeyAuth.Config.IdentityRealms != nil {
 				identityRealms = make([]shared.IdentityRealms, 0, len(r.KeyAuth.Config.IdentityRealms))
@@ -4189,9 +4064,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						region = nil
 					}
-					scope := new(shared.AIGatewayAuthStrategyKeyAuthScope)
+					scope := new(shared.AIGWKeyAuthGeneratedConfigScope)
 					if !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-						*scope = shared.AIGatewayAuthStrategyKeyAuthScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+						*scope = shared.AIGWKeyAuthGeneratedConfigScope(r.KeyAuth.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
 					} else {
 						scope = nil
 					}
@@ -4201,12 +4076,6 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						Scope:  scope,
 					})
 				}
-			}
-			hideCredentials := new(bool)
-			if !r.KeyAuth.Config.HideCredentials.IsUnknown() && !r.KeyAuth.Config.HideCredentials.IsNull() {
-				*hideCredentials = r.KeyAuth.Config.HideCredentials.ValueBool()
-			} else {
-				hideCredentials = nil
 			}
 			keyInBody := new(bool)
 			if !r.KeyAuth.Config.KeyInBody.IsUnknown() && !r.KeyAuth.Config.KeyInBody.IsNull() {
@@ -4232,17 +4101,17 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			}
 			var principals *shared.Principals
 			if r.KeyAuth.Config.Principals != nil {
-				enabled := new(bool)
-				if !r.KeyAuth.Config.Principals.Enabled.IsUnknown() && !r.KeyAuth.Config.Principals.Enabled.IsNull() {
-					*enabled = r.KeyAuth.Config.Principals.Enabled.ValueBool()
-				} else {
-					enabled = nil
-				}
 				directory := new(string)
 				if !r.KeyAuth.Config.Principals.Directory.IsUnknown() && !r.KeyAuth.Config.Principals.Directory.IsNull() {
 					*directory = r.KeyAuth.Config.Principals.Directory.ValueString()
 				} else {
 					directory = nil
+				}
+				enabled := new(bool)
+				if !r.KeyAuth.Config.Principals.Enabled.IsUnknown() && !r.KeyAuth.Config.Principals.Enabled.IsNull() {
+					*enabled = r.KeyAuth.Config.Principals.Enabled.ValueBool()
+				} else {
+					enabled = nil
 				}
 				errorOnMiss := new(bool)
 				if !r.KeyAuth.Config.Principals.ErrorOnMiss.IsUnknown() && !r.KeyAuth.Config.Principals.ErrorOnMiss.IsNull() {
@@ -4251,8 +4120,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					errorOnMiss = nil
 				}
 				principals = &shared.Principals{
-					Enabled:     enabled,
 					Directory:   directory,
+					Enabled:     enabled,
 					ErrorOnMiss: errorOnMiss,
 				}
 			}
@@ -4268,9 +4137,10 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				runOnPreflight = nil
 			}
-			config = &shared.AIGatewayAuthStrategyKeyAuthConfig{
-				IdentityRealms:  identityRealms,
+			config = &shared.AIGWKeyAuthGeneratedConfig{
+				Anonymous:       anonymous,
 				HideCredentials: hideCredentials,
+				IdentityRealms:  identityRealms,
 				KeyInBody:       keyInBody,
 				KeyInHeader:     keyInHeader,
 				KeyInQuery:      keyInQuery,
@@ -4315,262 +4185,13 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		var config1 *shared.AIGatewayAuthStrategyOpenIDConnectConfig
+		var config1 *shared.AIGWOpenIDConnectGeneratedConfig
 		if r.OpenidConnect.Config != nil {
-			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
-			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
-				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
-			}
-			var clientID []string
-			if r.OpenidConnect.Config.ClientID != nil {
-				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
-				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
-					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
-				}
-			}
-			var clientSecret []string
-			if r.OpenidConnect.Config.ClientSecret != nil {
-				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
-				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
-					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
-				}
-			}
-			var clientAlg []shared.ClientAlg
-			if r.OpenidConnect.Config.ClientAlg != nil {
-				clientAlg = make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
-				for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
-					clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
-				}
-			}
-			var clientAuth []shared.ClientAuth
-			if r.OpenidConnect.Config.ClientAuth != nil {
-				clientAuth = make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
-				for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
-					clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
-				}
-			}
-			var consumerClaims [][]string
-			if r.OpenidConnect.Config.ConsumerClaims != nil {
-				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
-				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
-					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
-					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
-						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
-					}
-					consumerClaims = append(consumerClaims, consumerClaimsTmp)
-				}
-			}
-			var consumerGroupsClaim []string
-			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
-				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
-				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
-					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
-				}
-			}
-			consumerGroupsOptional := new(bool)
-			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
-				*consumerGroupsOptional = r.OpenidConnect.Config.ConsumerGroupsOptional.ValueBool()
-			} else {
-				consumerGroupsOptional = nil
-			}
-			consumerBy := make([]shared.ConsumerBy, 0, len(r.OpenidConnect.Config.ConsumerBy))
-			for _, consumerByItem := range r.OpenidConnect.Config.ConsumerBy {
-				consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
-			}
-			consumerOptional := new(bool)
-			if !r.OpenidConnect.Config.ConsumerOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerOptional.IsNull() {
-				*consumerOptional = r.OpenidConnect.Config.ConsumerOptional.ValueBool()
-			} else {
-				consumerOptional = nil
-			}
-			credentialClaim := make([]string, 0, len(r.OpenidConnect.Config.CredentialClaim))
-			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
-				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
-			}
-			issuer := new(string)
-			if !r.OpenidConnect.Config.Issuer.IsUnknown() && !r.OpenidConnect.Config.Issuer.IsNull() {
-				*issuer = r.OpenidConnect.Config.Issuer.ValueString()
-			} else {
-				issuer = nil
-			}
-			introspectionEndpoint := new(string)
-			if !r.OpenidConnect.Config.IntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.IntrospectionEndpoint.IsNull() {
-				*introspectionEndpoint = r.OpenidConnect.Config.IntrospectionEndpoint.ValueString()
-			} else {
-				introspectionEndpoint = nil
-			}
-			mtlsIntrospectionEndpoint := new(string)
-			if !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsNull() {
-				*mtlsIntrospectionEndpoint = r.OpenidConnect.Config.MtlsIntrospectionEndpoint.ValueString()
-			} else {
-				mtlsIntrospectionEndpoint = nil
-			}
-			cacheIntrospection := new(bool)
-			if !r.OpenidConnect.Config.CacheIntrospection.IsUnknown() && !r.OpenidConnect.Config.CacheIntrospection.IsNull() {
-				*cacheIntrospection = r.OpenidConnect.Config.CacheIntrospection.ValueBool()
-			} else {
-				cacheIntrospection = nil
-			}
-			jwksEndpoint := new(string)
-			if !r.OpenidConnect.Config.JwksEndpoint.IsUnknown() && !r.OpenidConnect.Config.JwksEndpoint.IsNull() {
-				*jwksEndpoint = r.OpenidConnect.Config.JwksEndpoint.ValueString()
-			} else {
-				jwksEndpoint = nil
-			}
-			leeway := new(int64)
-			if !r.OpenidConnect.Config.Leeway.IsUnknown() && !r.OpenidConnect.Config.Leeway.IsNull() {
-				*leeway = r.OpenidConnect.Config.Leeway.ValueInt64()
-			} else {
-				leeway = nil
-			}
-			scopes := make([]string, 0, len(r.OpenidConnect.Config.Scopes))
-			for scopesIndex := range r.OpenidConnect.Config.Scopes {
-				scopes = append(scopes, r.OpenidConnect.Config.Scopes[scopesIndex].ValueString())
-			}
-			audienceRequired := make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
-			for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
-				audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
-			}
-			sslVerify := new(bool)
-			if !r.OpenidConnect.Config.SslVerify.IsUnknown() && !r.OpenidConnect.Config.SslVerify.IsNull() {
-				*sslVerify = r.OpenidConnect.Config.SslVerify.ValueBool()
-			} else {
-				sslVerify = nil
-			}
-			hideCredentials1 := new(bool)
-			if !r.OpenidConnect.Config.HideCredentials.IsUnknown() && !r.OpenidConnect.Config.HideCredentials.IsNull() {
-				*hideCredentials1 = r.OpenidConnect.Config.HideCredentials.ValueBool()
-			} else {
-				hideCredentials1 = nil
-			}
-			keepalive := new(bool)
-			if !r.OpenidConnect.Config.Keepalive.IsUnknown() && !r.OpenidConnect.Config.Keepalive.IsNull() {
-				*keepalive = r.OpenidConnect.Config.Keepalive.ValueBool()
-			} else {
-				keepalive = nil
-			}
-			timeout := new(int64)
-			if !r.OpenidConnect.Config.Timeout.IsUnknown() && !r.OpenidConnect.Config.Timeout.IsNull() {
-				*timeout = r.OpenidConnect.Config.Timeout.ValueInt64()
-			} else {
-				timeout = nil
-			}
-			httpVersion := new(float64)
-			if !r.OpenidConnect.Config.HTTPVersion.IsUnknown() && !r.OpenidConnect.Config.HTTPVersion.IsNull() {
-				*httpVersion = r.OpenidConnect.Config.HTTPVersion.ValueFloat64()
-			} else {
-				httpVersion = nil
-			}
-			httpProxy := new(string)
-			if !r.OpenidConnect.Config.HTTPProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPProxy.IsNull() {
-				*httpProxy = r.OpenidConnect.Config.HTTPProxy.ValueString()
-			} else {
-				httpProxy = nil
-			}
-			httpProxyAuthorization := new(string)
-			if !r.OpenidConnect.Config.HTTPProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPProxyAuthorization.IsNull() {
-				*httpProxyAuthorization = r.OpenidConnect.Config.HTTPProxyAuthorization.ValueString()
-			} else {
-				httpProxyAuthorization = nil
-			}
-			httpsProxy := new(string)
-			if !r.OpenidConnect.Config.HTTPSProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxy.IsNull() {
-				*httpsProxy = r.OpenidConnect.Config.HTTPSProxy.ValueString()
-			} else {
-				httpsProxy = nil
-			}
-			httpsProxyAuthorization := new(string)
-			if !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsNull() {
-				*httpsProxyAuthorization = r.OpenidConnect.Config.HTTPSProxyAuthorization.ValueString()
-			} else {
-				httpsProxyAuthorization = nil
-			}
-			noProxy := new(string)
-			if !r.OpenidConnect.Config.NoProxy.IsUnknown() && !r.OpenidConnect.Config.NoProxy.IsNull() {
-				*noProxy = r.OpenidConnect.Config.NoProxy.ValueString()
-			} else {
-				noProxy = nil
-			}
-			var upstreamHeaders []shared.UpstreamHeaders
-			if r.OpenidConnect.Config.UpstreamHeaders != nil {
-				upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
-				for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
-					var header string
-					header = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
-
-					path := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
-					for pathIndex := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
-						path = append(path, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex].ValueString())
-					}
-					upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
-						Header: header,
-						Path:   path,
-					})
-				}
-			}
-			var cacheTokensSalt string
-			cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
-
-			var principals1 *shared.AIGatewayAuthStrategyOpenIDConnectPrincipals
-			if r.OpenidConnect.Config.Principals != nil {
-				enabled1 := new(bool)
-				if !r.OpenidConnect.Config.Principals.Enabled.IsUnknown() && !r.OpenidConnect.Config.Principals.Enabled.IsNull() {
-					*enabled1 = r.OpenidConnect.Config.Principals.Enabled.ValueBool()
-				} else {
-					enabled1 = nil
-				}
-				directory1 := new(string)
-				if !r.OpenidConnect.Config.Principals.Directory.IsUnknown() && !r.OpenidConnect.Config.Principals.Directory.IsNull() {
-					*directory1 = r.OpenidConnect.Config.Principals.Directory.ValueString()
-				} else {
-					directory1 = nil
-				}
-				principalBy := new(string)
-				if !r.OpenidConnect.Config.Principals.PrincipalBy.IsUnknown() && !r.OpenidConnect.Config.Principals.PrincipalBy.IsNull() {
-					*principalBy = r.OpenidConnect.Config.Principals.PrincipalBy.ValueString()
-				} else {
-					principalBy = nil
-				}
-				var principalClaim []string
-				if r.OpenidConnect.Config.Principals.PrincipalClaim != nil {
-					principalClaim = make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
-					for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
-						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
-					}
-				}
-				matchConsumer := new(bool)
-				if !r.OpenidConnect.Config.Principals.MatchConsumer.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumer.IsNull() {
-					*matchConsumer = r.OpenidConnect.Config.Principals.MatchConsumer.ValueBool()
-				} else {
-					matchConsumer = nil
-				}
-				matchConsumerGroups := new(bool)
-				if !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsNull() {
-					*matchConsumerGroups = r.OpenidConnect.Config.Principals.MatchConsumerGroups.ValueBool()
-				} else {
-					matchConsumerGroups = nil
-				}
-				errorOnMiss1 := new(bool)
-				if !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsUnknown() && !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsNull() {
-					*errorOnMiss1 = r.OpenidConnect.Config.Principals.ErrorOnMiss.ValueBool()
-				} else {
-					errorOnMiss1 = nil
-				}
-				principals1 = &shared.AIGatewayAuthStrategyOpenIDConnectPrincipals{
-					Enabled:             enabled1,
-					Directory:           directory1,
-					PrincipalBy:         principalBy,
-					PrincipalClaim:      principalClaim,
-					MatchConsumer:       matchConsumer,
-					MatchConsumerGroups: matchConsumerGroups,
-					ErrorOnMiss:         errorOnMiss1,
-				}
-			}
-			anonymous := new(string)
+			anonymous1 := new(string)
 			if !r.OpenidConnect.Config.Anonymous.IsUnknown() && !r.OpenidConnect.Config.Anonymous.IsNull() {
-				*anonymous = r.OpenidConnect.Config.Anonymous.ValueString()
+				*anonymous1 = r.OpenidConnect.Config.Anonymous.ValueString()
 			} else {
-				anonymous = nil
+				anonymous1 = nil
 			}
 			var audience []string
 			if r.OpenidConnect.Config.Audience != nil {
@@ -4582,6 +4203,14 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			audienceClaim := make([]string, 0, len(r.OpenidConnect.Config.AudienceClaim))
 			for audienceClaimIndex := range r.OpenidConnect.Config.AudienceClaim {
 				audienceClaim = append(audienceClaim, r.OpenidConnect.Config.AudienceClaim[audienceClaimIndex].ValueString())
+			}
+			audienceRequired := make([]string, 0, len(r.OpenidConnect.Config.AudienceRequired))
+			for audienceRequiredIndex := range r.OpenidConnect.Config.AudienceRequired {
+				audienceRequired = append(audienceRequired, r.OpenidConnect.Config.AudienceRequired[audienceRequiredIndex].ValueString())
+			}
+			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
+			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
+				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
 			}
 			var authenticatedGroupsClaim []string
 			if r.OpenidConnect.Config.AuthenticatedGroupsClaim != nil {
@@ -4665,12 +4294,6 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				bearerTokenCookieName = nil
 			}
-			bearerTokenHeaderName := new(string)
-			if !r.OpenidConnect.Config.BearerTokenHeaderName.IsUnknown() && !r.OpenidConnect.Config.BearerTokenHeaderName.IsNull() {
-				*bearerTokenHeaderName = r.OpenidConnect.Config.BearerTokenHeaderName.ValueString()
-			} else {
-				bearerTokenHeaderName = nil
-			}
 			bearerTokenParamType := make([]shared.BearerTokenParamType, 0, len(r.OpenidConnect.Config.BearerTokenParamType))
 			for _, bearerTokenParamTypeItem := range r.OpenidConnect.Config.BearerTokenParamType {
 				bearerTokenParamType = append(bearerTokenParamType, shared.BearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
@@ -4680,6 +4303,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*byUsernameIgnoreCase = r.OpenidConnect.Config.ByUsernameIgnoreCase.ValueBool()
 			} else {
 				byUsernameIgnoreCase = nil
+			}
+			cacheIntrospection := new(bool)
+			if !r.OpenidConnect.Config.CacheIntrospection.IsUnknown() && !r.OpenidConnect.Config.CacheIntrospection.IsNull() {
+				*cacheIntrospection = r.OpenidConnect.Config.CacheIntrospection.ValueBool()
+			} else {
+				cacheIntrospection = nil
 			}
 			cacheTokenExchange := new(bool)
 			if !r.OpenidConnect.Config.CacheTokenExchange.IsUnknown() && !r.OpenidConnect.Config.CacheTokenExchange.IsNull() {
@@ -4692,6 +4321,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*cacheTokens = r.OpenidConnect.Config.CacheTokens.ValueBool()
 			} else {
 				cacheTokens = nil
+			}
+			cacheTokensSalt := new(string)
+			if !r.OpenidConnect.Config.CacheTokensSalt.IsUnknown() && !r.OpenidConnect.Config.CacheTokensSalt.IsNull() {
+				*cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
+			} else {
+				cacheTokensSalt = nil
 			}
 			cacheTTL := new(float64)
 			if !r.OpenidConnect.Config.CacheTTL.IsUnknown() && !r.OpenidConnect.Config.CacheTTL.IsNull() {
@@ -4736,15 +4371,36 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					claimsForbidden = append(claimsForbidden, r.OpenidConnect.Config.ClaimsForbidden[claimsForbiddenIndex].ValueString())
 				}
 			}
+			var clientAlg []shared.ClientAlg
+			if r.OpenidConnect.Config.ClientAlg != nil {
+				clientAlg = make([]shared.ClientAlg, 0, len(r.OpenidConnect.Config.ClientAlg))
+				for _, clientAlgItem := range r.OpenidConnect.Config.ClientAlg {
+					clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
+				}
+			}
 			clientArg := new(string)
 			if !r.OpenidConnect.Config.ClientArg.IsUnknown() && !r.OpenidConnect.Config.ClientArg.IsNull() {
 				*clientArg = r.OpenidConnect.Config.ClientArg.ValueString()
 			} else {
 				clientArg = nil
 			}
+			var clientAuth []shared.ClientAuth
+			if r.OpenidConnect.Config.ClientAuth != nil {
+				clientAuth = make([]shared.ClientAuth, 0, len(r.OpenidConnect.Config.ClientAuth))
+				for _, clientAuthItem := range r.OpenidConnect.Config.ClientAuth {
+					clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
+				}
+			}
 			clientCredentialsParamType := make([]shared.ClientCredentialsParamType, 0, len(r.OpenidConnect.Config.ClientCredentialsParamType))
 			for _, clientCredentialsParamTypeItem := range r.OpenidConnect.Config.ClientCredentialsParamType {
 				clientCredentialsParamType = append(clientCredentialsParamType, shared.ClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
+			}
+			var clientID []string
+			if r.OpenidConnect.Config.ClientID != nil {
+				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
+				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
+					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
+				}
 			}
 			var clientJwk []shared.ClientJwk
 			if r.OpenidConnect.Config.ClientJwk != nil {
@@ -4786,11 +4442,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						e = nil
 					}
-					issuer1 := new(string)
+					issuer := new(string)
 					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.IsNull() {
-						*issuer1 = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
+						*issuer = r.OpenidConnect.Config.ClientJwk[clientJwkIndex].Issuer.ValueString()
 					} else {
-						issuer1 = nil
+						issuer = nil
 					}
 					k := new(string)
 					if !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsUnknown() && !r.OpenidConnect.Config.ClientJwk[clientJwkIndex].K.IsNull() {
@@ -4909,7 +4565,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						Dp:            dp,
 						Dq:            dq,
 						E:             e,
-						Issuer:        issuer1,
+						Issuer:        issuer,
 						K:             k,
 						KeyOps:        keyOps,
 						Kid:           kid,
@@ -4931,9 +4587,16 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					})
 				}
 			}
+			var clientSecret []string
+			if r.OpenidConnect.Config.ClientSecret != nil {
+				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
+				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
+					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
+				}
+			}
 			var clusterCacheRedis *shared.ClusterCacheRedis
 			if r.OpenidConnect.Config.ClusterCacheRedis != nil {
-				var cloudAuthentication *shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication
+				var cloudAuthentication *shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication
 				if r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication != nil {
 					authProvider := new(shared.AuthProvider)
 					if !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider.IsNull() {
@@ -5007,7 +4670,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJSON = nil
 					}
-					cloudAuthentication = &shared.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{
+					cloudAuthentication = &shared.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{
 						AuthProvider:          authProvider,
 						AwsAccessKeyID:        awsAccessKeyID,
 						AwsAssumeRoleArn:      awsAssumeRoleArn,
@@ -5168,11 +4831,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					ssl = nil
 				}
-				sslVerify1 := new(bool)
+				sslVerify := new(bool)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.IsNull() {
-					*sslVerify1 = r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.ValueBool()
+					*sslVerify = r.OpenidConnect.Config.ClusterCacheRedis.SslVerify.ValueBool()
 				} else {
-					sslVerify1 = nil
+					sslVerify = nil
 				}
 				username := new(string)
 				if !r.OpenidConnect.Config.ClusterCacheRedis.Username.IsUnknown() && !r.OpenidConnect.Config.ClusterCacheRedis.Username.IsNull() {
@@ -5201,7 +4864,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					SentinelUsername:       sentinelUsername,
 					ServerName:             serverName,
 					Ssl:                    ssl,
-					SslVerify:              sslVerify1,
+					SslVerify:              sslVerify,
 					Username:               username,
 				}
 			}
@@ -5210,6 +4873,44 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*clusterCacheStrategy = shared.ClusterCacheStrategy(r.OpenidConnect.Config.ClusterCacheStrategy.ValueString())
 			} else {
 				clusterCacheStrategy = nil
+			}
+			consumerBy := make([]shared.ConsumerBy, 0, len(r.OpenidConnect.Config.ConsumerBy))
+			for _, consumerByItem := range r.OpenidConnect.Config.ConsumerBy {
+				consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
+			}
+			var consumerClaims [][]string
+			if r.OpenidConnect.Config.ConsumerClaims != nil {
+				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
+				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
+					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
+					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
+						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
+					}
+					consumerClaims = append(consumerClaims, consumerClaimsTmp)
+				}
+			}
+			var consumerGroupsClaim []string
+			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
+				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
+				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
+					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
+				}
+			}
+			consumerGroupsOptional := new(bool)
+			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
+				*consumerGroupsOptional = r.OpenidConnect.Config.ConsumerGroupsOptional.ValueBool()
+			} else {
+				consumerGroupsOptional = nil
+			}
+			consumerOptional := new(bool)
+			if !r.OpenidConnect.Config.ConsumerOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerOptional.IsNull() {
+				*consumerOptional = r.OpenidConnect.Config.ConsumerOptional.ValueBool()
+			} else {
+				consumerOptional = nil
+			}
+			credentialClaim := make([]string, 0, len(r.OpenidConnect.Config.CredentialClaim))
+			for credentialClaimIndex := range r.OpenidConnect.Config.CredentialClaim {
+				credentialClaim = append(credentialClaim, r.OpenidConnect.Config.CredentialClaim[credentialClaimIndex].ValueString())
 			}
 			var disableSession []shared.DisableSession
 			if r.OpenidConnect.Config.DisableSession != nil {
@@ -5261,16 +4962,16 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			if r.OpenidConnect.Config.DownstreamHeaders != nil {
 				downstreamHeaders = make([]shared.DownstreamHeaders, 0, len(r.OpenidConnect.Config.DownstreamHeaders))
 				for downstreamHeadersIndex := range r.OpenidConnect.Config.DownstreamHeaders {
-					var header1 string
-					header1 = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
+					var header string
+					header = r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
 
-					path1 := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
-					for pathIndex1 := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
-						path1 = append(path1, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex1].ValueString())
+					path := make([]string, 0, len(r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
+					for pathIndex := range r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
+						path = append(path, r.OpenidConnect.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
 					}
 					downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
-						Header: header1,
-						Path:   path1,
+						Header: header,
+						Path:   path,
 					})
 				}
 			}
@@ -5403,6 +5104,42 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					groupsRequired = append(groupsRequired, r.OpenidConnect.Config.GroupsRequired[groupsRequiredIndex].ValueString())
 				}
 			}
+			hideCredentials1 := new(bool)
+			if !r.OpenidConnect.Config.HideCredentials.IsUnknown() && !r.OpenidConnect.Config.HideCredentials.IsNull() {
+				*hideCredentials1 = r.OpenidConnect.Config.HideCredentials.ValueBool()
+			} else {
+				hideCredentials1 = nil
+			}
+			httpProxy := new(string)
+			if !r.OpenidConnect.Config.HTTPProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPProxy.IsNull() {
+				*httpProxy = r.OpenidConnect.Config.HTTPProxy.ValueString()
+			} else {
+				httpProxy = nil
+			}
+			httpProxyAuthorization := new(string)
+			if !r.OpenidConnect.Config.HTTPProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPProxyAuthorization.IsNull() {
+				*httpProxyAuthorization = r.OpenidConnect.Config.HTTPProxyAuthorization.ValueString()
+			} else {
+				httpProxyAuthorization = nil
+			}
+			httpVersion := new(float64)
+			if !r.OpenidConnect.Config.HTTPVersion.IsUnknown() && !r.OpenidConnect.Config.HTTPVersion.IsNull() {
+				*httpVersion = r.OpenidConnect.Config.HTTPVersion.ValueFloat64()
+			} else {
+				httpVersion = nil
+			}
+			httpsProxy := new(string)
+			if !r.OpenidConnect.Config.HTTPSProxy.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxy.IsNull() {
+				*httpsProxy = r.OpenidConnect.Config.HTTPSProxy.ValueString()
+			} else {
+				httpsProxy = nil
+			}
+			httpsProxyAuthorization := new(string)
+			if !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsUnknown() && !r.OpenidConnect.Config.HTTPSProxyAuthorization.IsNull() {
+				*httpsProxyAuthorization = r.OpenidConnect.Config.HTTPSProxyAuthorization.ValueString()
+			} else {
+				httpsProxyAuthorization = nil
+			}
 			idTokenParamName := new(string)
 			if !r.OpenidConnect.Config.IDTokenParamName.IsUnknown() && !r.OpenidConnect.Config.IDTokenParamName.IsNull() {
 				*idTokenParamName = r.OpenidConnect.Config.IDTokenParamName.ValueString()
@@ -5434,6 +5171,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*introspectionCheckActive = r.OpenidConnect.Config.IntrospectionCheckActive.ValueBool()
 			} else {
 				introspectionCheckActive = nil
+			}
+			introspectionEndpoint := new(string)
+			if !r.OpenidConnect.Config.IntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.IntrospectionEndpoint.IsNull() {
+				*introspectionEndpoint = r.OpenidConnect.Config.IntrospectionEndpoint.ValueString()
+			} else {
+				introspectionEndpoint = nil
 			}
 			introspectionEndpointAuthMethod := new(shared.IntrospectionEndpointAuthMethod)
 			if !r.OpenidConnect.Config.IntrospectionEndpointAuthMethod.IsUnknown() && !r.OpenidConnect.Config.IntrospectionEndpointAuthMethod.IsNull() {
@@ -5502,12 +5245,21 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				introspectionTokenParamName = nil
 			}
+			var issuer1 string
+			issuer1 = r.OpenidConnect.Config.Issuer.ValueString()
+
 			var issuersAllowed []string
 			if r.OpenidConnect.Config.IssuersAllowed != nil {
 				issuersAllowed = make([]string, 0, len(r.OpenidConnect.Config.IssuersAllowed))
 				for issuersAllowedIndex := range r.OpenidConnect.Config.IssuersAllowed {
 					issuersAllowed = append(issuersAllowed, r.OpenidConnect.Config.IssuersAllowed[issuersAllowedIndex].ValueString())
 				}
+			}
+			jwksEndpoint := new(string)
+			if !r.OpenidConnect.Config.JwksEndpoint.IsUnknown() && !r.OpenidConnect.Config.JwksEndpoint.IsNull() {
+				*jwksEndpoint = r.OpenidConnect.Config.JwksEndpoint.ValueString()
+			} else {
+				jwksEndpoint = nil
 			}
 			jwtSessionClaim := new(string)
 			if !r.OpenidConnect.Config.JwtSessionClaim.IsUnknown() && !r.OpenidConnect.Config.JwtSessionClaim.IsNull() {
@@ -5520,6 +5272,18 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*jwtSessionCookie = r.OpenidConnect.Config.JwtSessionCookie.ValueString()
 			} else {
 				jwtSessionCookie = nil
+			}
+			keepalive := new(bool)
+			if !r.OpenidConnect.Config.Keepalive.IsUnknown() && !r.OpenidConnect.Config.Keepalive.IsNull() {
+				*keepalive = r.OpenidConnect.Config.Keepalive.ValueBool()
+			} else {
+				keepalive = nil
+			}
+			leeway := new(float64)
+			if !r.OpenidConnect.Config.Leeway.IsUnknown() && !r.OpenidConnect.Config.Leeway.IsNull() {
+				*leeway = r.OpenidConnect.Config.Leeway.ValueFloat64()
+			} else {
+				leeway = nil
 			}
 			loginAction := new(shared.LoginAction)
 			if !r.OpenidConnect.Config.LoginAction.IsUnknown() && !r.OpenidConnect.Config.LoginAction.IsNull() {
@@ -5601,6 +5365,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				maxAge = nil
 			}
+			mtlsIntrospectionEndpoint := new(string)
+			if !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsUnknown() && !r.OpenidConnect.Config.MtlsIntrospectionEndpoint.IsNull() {
+				*mtlsIntrospectionEndpoint = r.OpenidConnect.Config.MtlsIntrospectionEndpoint.ValueString()
+			} else {
+				mtlsIntrospectionEndpoint = nil
+			}
 			mtlsRevocationEndpoint := new(string)
 			if !r.OpenidConnect.Config.MtlsRevocationEndpoint.IsUnknown() && !r.OpenidConnect.Config.MtlsRevocationEndpoint.IsNull() {
 				*mtlsRevocationEndpoint = r.OpenidConnect.Config.MtlsRevocationEndpoint.ValueString()
@@ -5613,6 +5383,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				mtlsTokenEndpoint = nil
 			}
+			noProxy := new(string)
+			if !r.OpenidConnect.Config.NoProxy.IsUnknown() && !r.OpenidConnect.Config.NoProxy.IsNull() {
+				*noProxy = r.OpenidConnect.Config.NoProxy.ValueString()
+			} else {
+				noProxy = nil
+			}
 			passwordParamType := make([]shared.PasswordParamType, 0, len(r.OpenidConnect.Config.PasswordParamType))
 			for _, passwordParamTypeItem := range r.OpenidConnect.Config.PasswordParamType {
 				passwordParamType = append(passwordParamType, shared.PasswordParamType(passwordParamTypeItem.ValueString()))
@@ -5622,6 +5398,61 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*preserveQueryArgs = r.OpenidConnect.Config.PreserveQueryArgs.ValueBool()
 			} else {
 				preserveQueryArgs = nil
+			}
+			var principals1 *shared.AIGWOpenIDConnectGeneratedConfigPrincipals
+			if r.OpenidConnect.Config.Principals != nil {
+				directory1 := new(string)
+				if !r.OpenidConnect.Config.Principals.Directory.IsUnknown() && !r.OpenidConnect.Config.Principals.Directory.IsNull() {
+					*directory1 = r.OpenidConnect.Config.Principals.Directory.ValueString()
+				} else {
+					directory1 = nil
+				}
+				enabled1 := new(bool)
+				if !r.OpenidConnect.Config.Principals.Enabled.IsUnknown() && !r.OpenidConnect.Config.Principals.Enabled.IsNull() {
+					*enabled1 = r.OpenidConnect.Config.Principals.Enabled.ValueBool()
+				} else {
+					enabled1 = nil
+				}
+				errorOnMiss1 := new(bool)
+				if !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsUnknown() && !r.OpenidConnect.Config.Principals.ErrorOnMiss.IsNull() {
+					*errorOnMiss1 = r.OpenidConnect.Config.Principals.ErrorOnMiss.ValueBool()
+				} else {
+					errorOnMiss1 = nil
+				}
+				matchConsumer := new(bool)
+				if !r.OpenidConnect.Config.Principals.MatchConsumer.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumer.IsNull() {
+					*matchConsumer = r.OpenidConnect.Config.Principals.MatchConsumer.ValueBool()
+				} else {
+					matchConsumer = nil
+				}
+				matchConsumerGroups := new(bool)
+				if !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsUnknown() && !r.OpenidConnect.Config.Principals.MatchConsumerGroups.IsNull() {
+					*matchConsumerGroups = r.OpenidConnect.Config.Principals.MatchConsumerGroups.ValueBool()
+				} else {
+					matchConsumerGroups = nil
+				}
+				principalBy := new(string)
+				if !r.OpenidConnect.Config.Principals.PrincipalBy.IsUnknown() && !r.OpenidConnect.Config.Principals.PrincipalBy.IsNull() {
+					*principalBy = r.OpenidConnect.Config.Principals.PrincipalBy.ValueString()
+				} else {
+					principalBy = nil
+				}
+				var principalClaim []string
+				if r.OpenidConnect.Config.Principals.PrincipalClaim != nil {
+					principalClaim = make([]string, 0, len(r.OpenidConnect.Config.Principals.PrincipalClaim))
+					for principalClaimIndex := range r.OpenidConnect.Config.Principals.PrincipalClaim {
+						principalClaim = append(principalClaim, r.OpenidConnect.Config.Principals.PrincipalClaim[principalClaimIndex].ValueString())
+					}
+				}
+				principals1 = &shared.AIGWOpenIDConnectGeneratedConfigPrincipals{
+					Directory:           directory1,
+					Enabled:             enabled1,
+					ErrorOnMiss:         errorOnMiss1,
+					MatchConsumer:       matchConsumer,
+					MatchConsumerGroups: matchConsumerGroups,
+					PrincipalBy:         principalBy,
+					PrincipalClaim:      principalClaim,
+				}
 			}
 			proofOfPossessionAuthMethodsValidation := new(bool)
 			if !r.OpenidConnect.Config.ProofOfPossessionAuthMethodsValidation.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionAuthMethodsValidation.IsNull() {
@@ -5640,97 +5471,6 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*proofOfPossessionMtls = shared.ProofOfPossessionMtls(r.OpenidConnect.Config.ProofOfPossessionMtls.ValueString())
 			} else {
 				proofOfPossessionMtls = nil
-			}
-			var proofOfPossessionMtlsFromHeader *shared.ProofOfPossessionMtlsFromHeader
-			if r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader != nil {
-				allowPartialChain := new(bool)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsNull() {
-					*allowPartialChain = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.ValueBool()
-				} else {
-					allowPartialChain = nil
-				}
-				caCertificates := make([]string, 0, len(r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates))
-				for caCertificatesIndex := range r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates {
-					caCertificates = append(caCertificates, r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CaCertificates[caCertificatesIndex].ValueString())
-				}
-				certCacheTTL := new(float64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.IsNull() {
-					*certCacheTTL = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertCacheTTL.ValueFloat64()
-				} else {
-					certCacheTTL = nil
-				}
-				certificateHeaderFormat := new(shared.AIGatewayAuthStrategyOpenIDConnectCertificateHeaderFormat)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.IsNull() {
-					*certificateHeaderFormat = shared.AIGatewayAuthStrategyOpenIDConnectCertificateHeaderFormat(r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderFormat.ValueString())
-				} else {
-					certificateHeaderFormat = nil
-				}
-				var certificateHeaderName string
-				certificateHeaderName = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.CertificateHeaderName.ValueString()
-
-				httpProxyHost := new(string)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.IsNull() {
-					*httpProxyHost = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyHost.ValueString()
-				} else {
-					httpProxyHost = nil
-				}
-				httpProxyPort := new(int64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.IsNull() {
-					*httpProxyPort = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPProxyPort.ValueInt64()
-				} else {
-					httpProxyPort = nil
-				}
-				httpTimeout := new(float64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.IsNull() {
-					*httpTimeout = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPTimeout.ValueFloat64()
-				} else {
-					httpTimeout = nil
-				}
-				httpsProxyHost := new(string)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.IsNull() {
-					*httpsProxyHost = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyHost.ValueString()
-				} else {
-					httpsProxyHost = nil
-				}
-				httpsProxyPort := new(int64)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.IsNull() {
-					*httpsProxyPort = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.HTTPSProxyPort.ValueInt64()
-				} else {
-					httpsProxyPort = nil
-				}
-				revocationCheckMode := new(shared.AIGatewayAuthStrategyOpenIDConnectRevocationCheckMode)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.IsNull() {
-					*revocationCheckMode = shared.AIGatewayAuthStrategyOpenIDConnectRevocationCheckMode(r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.RevocationCheckMode.ValueString())
-				} else {
-					revocationCheckMode = nil
-				}
-				secureSource := new(bool)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SecureSource.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SecureSource.IsNull() {
-					*secureSource = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SecureSource.ValueBool()
-				} else {
-					secureSource = nil
-				}
-				sslVerify2 := new(bool)
-				if !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsUnknown() && !r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsNull() {
-					*sslVerify2 = r.OpenidConnect.Config.ProofOfPossessionMtlsFromHeader.SslVerify.ValueBool()
-				} else {
-					sslVerify2 = nil
-				}
-				proofOfPossessionMtlsFromHeader = &shared.ProofOfPossessionMtlsFromHeader{
-					AllowPartialChain:       allowPartialChain,
-					CaCertificates:          caCertificates,
-					CertCacheTTL:            certCacheTTL,
-					CertificateHeaderFormat: certificateHeaderFormat,
-					CertificateHeaderName:   certificateHeaderName,
-					HTTPProxyHost:           httpProxyHost,
-					HTTPProxyPort:           httpProxyPort,
-					HTTPTimeout:             httpTimeout,
-					HTTPSProxyHost:          httpsProxyHost,
-					HTTPSProxyPort:          httpsProxyPort,
-					RevocationCheckMode:     revocationCheckMode,
-					SecureSource:            secureSource,
-					SslVerify:               sslVerify2,
-				}
 			}
 			pushedAuthorizationRequestEndpoint := new(string)
 			if !r.OpenidConnect.Config.PushedAuthorizationRequestEndpoint.IsUnknown() && !r.OpenidConnect.Config.PushedAuthorizationRequestEndpoint.IsNull() {
@@ -5753,11 +5493,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			}
 			var redis *shared.Redis
 			if r.OpenidConnect.Config.Redis != nil {
-				var cloudAuthentication1 *shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication
+				var cloudAuthentication1 *shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication
 				if r.OpenidConnect.Config.Redis.CloudAuthentication != nil {
-					authProvider1 := new(shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider)
+					authProvider1 := new(shared.AIGWOpenIDConnectGeneratedConfigAuthProvider)
 					if !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
-						*authProvider1 = shared.AIGatewayAuthStrategyOpenIDConnectAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
+						*authProvider1 = shared.AIGWOpenIDConnectGeneratedConfigAuthProvider(r.OpenidConnect.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
 					} else {
 						authProvider1 = nil
 					}
@@ -5827,7 +5567,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						gcpServiceAccountJson1 = nil
 					}
-					cloudAuthentication1 = &shared.AIGatewayAuthStrategyOpenIDConnectCloudAuthentication{
+					cloudAuthentication1 = &shared.AIGWOpenIDConnectGeneratedConfigCloudAuthentication{
 						AuthProvider:          authProvider1,
 						AwsAccessKeyID:        awsAccessKeyId1,
 						AwsAssumeRoleArn:      awsAssumeRoleArn1,
@@ -5848,9 +5588,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					clusterMaxRedirections1 = nil
 				}
-				var clusterNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes
+				var clusterNodes1 []shared.AIGWOpenIDConnectGeneratedConfigClusterNodes
 				if r.OpenidConnect.Config.Redis.ClusterNodes != nil {
-					clusterNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
+					clusterNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigClusterNodes, 0, len(r.OpenidConnect.Config.Redis.ClusterNodes))
 					for clusterNodesIndex1 := range r.OpenidConnect.Config.Redis.ClusterNodes {
 						ip1 := new(string)
 						if !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.OpenidConnect.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
@@ -5864,7 +5604,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						} else {
 							port3 = nil
 						}
-						clusterNodes1 = append(clusterNodes1, shared.AIGatewayAuthStrategyOpenIDConnectClusterNodes{
+						clusterNodes1 = append(clusterNodes1, shared.AIGWOpenIDConnectGeneratedConfigClusterNodes{
 							IP:   ip1,
 							Port: port3,
 						})
@@ -5942,9 +5682,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					sentinelMaster1 = nil
 				}
-				var sentinelNodes1 []shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes
+				var sentinelNodes1 []shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes
 				if r.OpenidConnect.Config.Redis.SentinelNodes != nil {
-					sentinelNodes1 = make([]shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
+					sentinelNodes1 = make([]shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes, 0, len(r.OpenidConnect.Config.Redis.SentinelNodes))
 					for sentinelNodesIndex1 := range r.OpenidConnect.Config.Redis.SentinelNodes {
 						host3 := new(string)
 						if !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
@@ -5958,7 +5698,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 						} else {
 							port5 = nil
 						}
-						sentinelNodes1 = append(sentinelNodes1, shared.AIGatewayAuthStrategyOpenIDConnectSentinelNodes{
+						sentinelNodes1 = append(sentinelNodes1, shared.AIGWOpenIDConnectGeneratedConfigSentinelNodes{
 							Host: host3,
 							Port: port5,
 						})
@@ -5970,9 +5710,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					sentinelPassword1 = nil
 				}
-				sentinelRole1 := new(shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole)
+				sentinelRole1 := new(shared.AIGWOpenIDConnectGeneratedConfigSentinelRole)
 				if !r.OpenidConnect.Config.Redis.SentinelRole.IsUnknown() && !r.OpenidConnect.Config.Redis.SentinelRole.IsNull() {
-					*sentinelRole1 = shared.AIGatewayAuthStrategyOpenIDConnectSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
+					*sentinelRole1 = shared.AIGWOpenIDConnectGeneratedConfigSentinelRole(r.OpenidConnect.Config.Redis.SentinelRole.ValueString())
 				} else {
 					sentinelRole1 = nil
 				}
@@ -6000,11 +5740,11 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				} else {
 					ssl1 = nil
 				}
-				sslVerify3 := new(bool)
+				sslVerify1 := new(bool)
 				if !r.OpenidConnect.Config.Redis.SslVerify.IsUnknown() && !r.OpenidConnect.Config.Redis.SslVerify.IsNull() {
-					*sslVerify3 = r.OpenidConnect.Config.Redis.SslVerify.ValueBool()
+					*sslVerify1 = r.OpenidConnect.Config.Redis.SslVerify.ValueBool()
 				} else {
-					sslVerify3 = nil
+					sslVerify1 = nil
 				}
 				username1 := new(string)
 				if !r.OpenidConnect.Config.Redis.Username.IsUnknown() && !r.OpenidConnect.Config.Redis.Username.IsNull() {
@@ -6035,7 +5775,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					ServerName:             serverName1,
 					Socket:                 socket,
 					Ssl:                    ssl1,
-					SslVerify:              sslVerify3,
+					SslVerify:              sslVerify1,
 					Username:               username1,
 				}
 			}
@@ -6135,6 +5875,10 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*runOnPreflight1 = r.OpenidConnect.Config.RunOnPreflight.ValueBool()
 			} else {
 				runOnPreflight1 = nil
+			}
+			scopes := make([]string, 0, len(r.OpenidConnect.Config.Scopes))
+			for scopesIndex := range r.OpenidConnect.Config.Scopes {
+				scopes = append(scopes, r.OpenidConnect.Config.Scopes[scopesIndex].ValueString())
 			}
 			scopesClaim := make([]string, 0, len(r.OpenidConnect.Config.ScopesClaim))
 			for scopesClaimIndex := range r.OpenidConnect.Config.ScopesClaim {
@@ -6330,6 +6074,18 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				sessionStoreMetadata = nil
 			}
+			sslVerify2 := new(bool)
+			if !r.OpenidConnect.Config.SslVerify.IsUnknown() && !r.OpenidConnect.Config.SslVerify.IsNull() {
+				*sslVerify2 = r.OpenidConnect.Config.SslVerify.ValueBool()
+			} else {
+				sslVerify2 = nil
+			}
+			timeout := new(float64)
+			if !r.OpenidConnect.Config.Timeout.IsUnknown() && !r.OpenidConnect.Config.Timeout.IsNull() {
+				*timeout = r.OpenidConnect.Config.Timeout.ValueFloat64()
+			} else {
+				timeout = nil
+			}
 			tlsClientAuthCertID := new(string)
 			if !r.OpenidConnect.Config.TLSClientAuthCertID.IsUnknown() && !r.OpenidConnect.Config.TLSClientAuthCertID.IsNull() {
 				*tlsClientAuthCertID = r.OpenidConnect.Config.TLSClientAuthCertID.ValueString()
@@ -6354,15 +6110,15 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				tokenEndpoint = nil
 			}
-			tokenEndpointAuthMethod := new(shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod)
+			tokenEndpointAuthMethod := new(shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod)
 			if !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsUnknown() && !r.OpenidConnect.Config.TokenEndpointAuthMethod.IsNull() {
-				*tokenEndpointAuthMethod = shared.AIGatewayAuthStrategyOpenIDConnectTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
+				*tokenEndpointAuthMethod = shared.AIGWOpenIDConnectGeneratedConfigTokenEndpointAuthMethod(r.OpenidConnect.Config.TokenEndpointAuthMethod.ValueString())
 			} else {
 				tokenEndpointAuthMethod = nil
 			}
 			var tokenExchange *shared.TokenExchange
 			if r.OpenidConnect.Config.TokenExchange != nil {
-				var cache *shared.AIGatewayAuthStrategyOpenIDConnectCache
+				var cache *shared.Cache
 				if r.OpenidConnect.Config.TokenExchange.Cache != nil {
 					enabled2 := new(bool)
 					if !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.Cache.Enabled.IsNull() {
@@ -6376,12 +6132,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					} else {
 						ttl = nil
 					}
-					cache = &shared.AIGatewayAuthStrategyOpenIDConnectCache{
+					cache = &shared.Cache{
 						Enabled: enabled2,
 						TTL:     ttl,
 					}
 				}
-				var request *shared.AIGatewayAuthStrategyOpenIDConnectRequest
+				var request *shared.Request
 				if r.OpenidConnect.Config.TokenExchange.Request != nil {
 					var audience1 []string
 					if r.OpenidConnect.Config.TokenExchange.Request.Audience != nil {
@@ -6409,7 +6165,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 							scopes1 = append(scopes1, r.OpenidConnect.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
 						}
 					}
-					request = &shared.AIGatewayAuthStrategyOpenIDConnectRequest{
+					request = &shared.Request{
 						Audience:      audience1,
 						EmptyAudience: emptyAudience,
 						EmptyScopes:   emptyScopes,
@@ -6458,23 +6214,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 					var issuer2 string
 					issuer2 = r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Issuer.ValueString()
 
-					jwksURI := new(string)
-					if !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.IsNull() {
-						*jwksURI = r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].JwksURI.ValueString()
-					} else {
-						jwksURI = nil
-					}
-					verifySignature := new(bool)
-					if !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.IsUnknown() && !r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.IsNull() {
-						*verifySignature = r.OpenidConnect.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].VerifySignature.ValueBool()
-					} else {
-						verifySignature = nil
-					}
 					subjectTokenIssuers = append(subjectTokenIssuers, shared.SubjectTokenIssuers{
-						Conditions:      conditions,
-						Issuer:          issuer2,
-						JwksURI:         jwksURI,
-						VerifySignature: verifySignature,
+						Conditions: conditions,
+						Issuer:     issuer2,
 					})
 				}
 				tokenExchange = &shared.TokenExchange{
@@ -6588,6 +6330,23 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				*upstreamAccessTokenJwkHeader = r.OpenidConnect.Config.UpstreamAccessTokenJwkHeader.ValueString()
 			} else {
 				upstreamAccessTokenJwkHeader = nil
+			}
+			var upstreamHeaders []shared.UpstreamHeaders
+			if r.OpenidConnect.Config.UpstreamHeaders != nil {
+				upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.OpenidConnect.Config.UpstreamHeaders))
+				for upstreamHeadersIndex := range r.OpenidConnect.Config.UpstreamHeaders {
+					var header1 string
+					header1 = r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
+
+					path1 := make([]string, 0, len(r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
+					for pathIndex1 := range r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
+						path1 = append(path1, r.OpenidConnect.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex1].ValueString())
+					}
+					upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
+						Header: header1,
+						Path:   path1,
+					})
+				}
 			}
 			var upstreamHeadersClaims []string
 			if r.OpenidConnect.Config.UpstreamHeadersClaims != nil {
@@ -6729,48 +6488,18 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				verifyParameters = nil
 			}
-			verifySignature1 := new(bool)
+			verifySignature := new(bool)
 			if !r.OpenidConnect.Config.VerifySignature.IsUnknown() && !r.OpenidConnect.Config.VerifySignature.IsNull() {
-				*verifySignature1 = r.OpenidConnect.Config.VerifySignature.ValueBool()
+				*verifySignature = r.OpenidConnect.Config.VerifySignature.ValueBool()
 			} else {
-				verifySignature1 = nil
+				verifySignature = nil
 			}
-			config1 = &shared.AIGatewayAuthStrategyOpenIDConnectConfig{
-				AuthMethods:                            authMethods,
-				ClientID:                               clientID,
-				ClientSecret:                           clientSecret,
-				ClientAlg:                              clientAlg,
-				ClientAuth:                             clientAuth,
-				ConsumerClaims:                         consumerClaims,
-				ConsumerGroupsClaim:                    consumerGroupsClaim,
-				ConsumerGroupsOptional:                 consumerGroupsOptional,
-				ConsumerBy:                             consumerBy,
-				ConsumerOptional:                       consumerOptional,
-				CredentialClaim:                        credentialClaim,
-				Issuer:                                 issuer,
-				IntrospectionEndpoint:                  introspectionEndpoint,
-				MtlsIntrospectionEndpoint:              mtlsIntrospectionEndpoint,
-				CacheIntrospection:                     cacheIntrospection,
-				JwksEndpoint:                           jwksEndpoint,
-				Leeway:                                 leeway,
-				Scopes:                                 scopes,
-				AudienceRequired:                       audienceRequired,
-				SslVerify:                              sslVerify,
-				HideCredentials:                        hideCredentials1,
-				Keepalive:                              keepalive,
-				Timeout:                                timeout,
-				HTTPVersion:                            httpVersion,
-				HTTPProxy:                              httpProxy,
-				HTTPProxyAuthorization:                 httpProxyAuthorization,
-				HTTPSProxy:                             httpsProxy,
-				HTTPSProxyAuthorization:                httpsProxyAuthorization,
-				NoProxy:                                noProxy,
-				UpstreamHeaders:                        upstreamHeaders,
-				CacheTokensSalt:                        cacheTokensSalt,
-				Principals:                             principals1,
-				Anonymous:                              anonymous,
+			config1 = &shared.AIGWOpenIDConnectGeneratedConfig{
+				Anonymous:                              anonymous1,
 				Audience:                               audience,
 				AudienceClaim:                          audienceClaim,
+				AudienceRequired:                       audienceRequired,
+				AuthMethods:                            authMethods,
 				AuthenticatedGroupsClaim:               authenticatedGroupsClaim,
 				AuthorizationCookieDomain:              authorizationCookieDomain,
 				AuthorizationCookieHTTPOnly:            authorizationCookieHTTPOnly,
@@ -6784,11 +6513,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
 				AuthorizationRollingTimeout:            authorizationRollingTimeout,
 				BearerTokenCookieName:                  bearerTokenCookieName,
-				BearerTokenHeaderName:                  bearerTokenHeaderName,
 				BearerTokenParamType:                   bearerTokenParamType,
 				ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
+				CacheIntrospection:                     cacheIntrospection,
 				CacheTokenExchange:                     cacheTokenExchange,
 				CacheTokens:                            cacheTokens,
+				CacheTokensSalt:                        cacheTokensSalt,
 				CacheTTL:                               cacheTTL,
 				CacheTTLMax:                            cacheTTLMax,
 				CacheTTLMin:                            cacheTTLMin,
@@ -6796,11 +6526,21 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				CacheTTLResurrect:                      cacheTTLResurrect,
 				CacheUserInfo:                          cacheUserInfo,
 				ClaimsForbidden:                        claimsForbidden,
+				ClientAlg:                              clientAlg,
 				ClientArg:                              clientArg,
+				ClientAuth:                             clientAuth,
 				ClientCredentialsParamType:             clientCredentialsParamType,
+				ClientID:                               clientID,
 				ClientJwk:                              clientJwk,
+				ClientSecret:                           clientSecret,
 				ClusterCacheRedis:                      clusterCacheRedis,
 				ClusterCacheStrategy:                   clusterCacheStrategy,
+				ConsumerBy:                             consumerBy,
+				ConsumerClaims:                         consumerClaims,
+				ConsumerGroupsClaim:                    consumerGroupsClaim,
+				ConsumerGroupsOptional:                 consumerGroupsOptional,
+				ConsumerOptional:                       consumerOptional,
+				CredentialClaim:                        credentialClaim,
 				DisableSession:                         disableSession,
 				DiscoveryHeadersNames:                  discoveryHeadersNames,
 				DiscoveryHeadersValues:                 discoveryHeadersValues,
@@ -6830,12 +6570,19 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				ForbiddenRedirectURI:                   forbiddenRedirectURI,
 				GroupsClaim:                            groupsClaim,
 				GroupsRequired:                         groupsRequired,
+				HideCredentials:                        hideCredentials1,
+				HTTPProxy:                              httpProxy,
+				HTTPProxyAuthorization:                 httpProxyAuthorization,
+				HTTPVersion:                            httpVersion,
+				HTTPSProxy:                             httpsProxy,
+				HTTPSProxyAuthorization:                httpsProxyAuthorization,
 				IDTokenParamName:                       idTokenParamName,
 				IDTokenParamType:                       idTokenParamType,
 				IgnoreSignature:                        ignoreSignature,
 				IntrospectJwtTokens:                    introspectJwtTokens,
 				IntrospectionAccept:                    introspectionAccept,
 				IntrospectionCheckActive:               introspectionCheckActive,
+				IntrospectionEndpoint:                  introspectionEndpoint,
 				IntrospectionEndpointAuthMethod:        introspectionEndpointAuthMethod,
 				IntrospectionHeadersClient:             introspectionHeadersClient,
 				IntrospectionHeadersNames:              introspectionHeadersNames,
@@ -6846,9 +6593,13 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				IntrospectionPostArgsNames:             introspectionPostArgsNames,
 				IntrospectionPostArgsValues:            introspectionPostArgsValues,
 				IntrospectionTokenParamName:            introspectionTokenParamName,
+				Issuer:                                 issuer1,
 				IssuersAllowed:                         issuersAllowed,
+				JwksEndpoint:                           jwksEndpoint,
 				JwtSessionClaim:                        jwtSessionClaim,
 				JwtSessionCookie:                       jwtSessionCookie,
+				Keepalive:                              keepalive,
+				Leeway:                                 leeway,
 				LoginAction:                            loginAction,
 				LoginMethods:                           loginMethods,
 				LoginRedirectMode:                      loginRedirectMode,
@@ -6863,14 +6614,16 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				LogoutRevokeRefreshToken:               logoutRevokeRefreshToken,
 				LogoutURISuffix:                        logoutURISuffix,
 				MaxAge:                                 maxAge,
+				MtlsIntrospectionEndpoint:              mtlsIntrospectionEndpoint,
 				MtlsRevocationEndpoint:                 mtlsRevocationEndpoint,
 				MtlsTokenEndpoint:                      mtlsTokenEndpoint,
+				NoProxy:                                noProxy,
 				PasswordParamType:                      passwordParamType,
 				PreserveQueryArgs:                      preserveQueryArgs,
+				Principals:                             principals1,
 				ProofOfPossessionAuthMethodsValidation: proofOfPossessionAuthMethodsValidation,
 				ProofOfPossessionDpop:                  proofOfPossessionDpop,
 				ProofOfPossessionMtls:                  proofOfPossessionMtls,
-				ProofOfPossessionMtlsFromHeader:        proofOfPossessionMtlsFromHeader,
 				PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
 				PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
 				RedirectURI:                        redirectURI,
@@ -6892,6 +6645,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				RolesClaim:                         rolesClaim,
 				RolesRequired:                      rolesRequired,
 				RunOnPreflight:                     runOnPreflight1,
+				Scopes:                             scopes,
 				ScopesClaim:                        scopesClaim,
 				ScopesRequired:                     scopesRequired,
 				SearchUserInfo:                     searchUserInfo,
@@ -6924,6 +6678,8 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				SessionSecret:                      sessionSecret,
 				SessionStorage:                     sessionStorage,
 				SessionStoreMetadata:               sessionStoreMetadata,
+				SslVerify:                          sslVerify2,
+				Timeout:                            timeout,
 				TLSClientAuthCertID:                tlsClientAuthCertID,
 				TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
 				TokenCacheKeyIncludeScope:          tokenCacheKeyIncludeScope,
@@ -6946,6 +6702,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				UnexpectedRedirectURI:              unexpectedRedirectURI,
 				UpstreamAccessTokenHeader:          upstreamAccessTokenHeader,
 				UpstreamAccessTokenJwkHeader:       upstreamAccessTokenJwkHeader,
+				UpstreamHeaders:                    upstreamHeaders,
 				UpstreamHeadersClaims:              upstreamHeadersClaims,
 				UpstreamHeadersNames:               upstreamHeadersNames,
 				UpstreamIDTokenHeader:              upstreamIDTokenHeader,
@@ -6968,7 +6725,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				VerifyClaims:                       verifyClaims,
 				VerifyNonce:                        verifyNonce,
 				VerifyParameters:                   verifyParameters,
-				VerifySignature:                    verifySignature1,
+				VerifySignature:                    verifySignature,
 			}
 		}
 		aiGatewayAuthStrategyOpenIDConnect = &shared.AIGatewayAuthStrategyOpenIDConnect{

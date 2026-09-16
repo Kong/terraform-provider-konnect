@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type OpenidConnectPluginConfig struct {
+type AIGWOpenIDConnectGeneratedConfig struct {
 	Anonymous                                    types.String                                `tfsdk:"anonymous"`
 	Audience                                     []types.String                              `tfsdk:"audience"`
 	AudienceClaim                                []types.String                              `tfsdk:"audience_claim"`
@@ -25,7 +25,6 @@ type OpenidConnectPluginConfig struct {
 	AuthorizationQueryArgsValues                 []types.String                              `tfsdk:"authorization_query_args_values"`
 	AuthorizationRollingTimeout                  types.Float64                               `tfsdk:"authorization_rolling_timeout"`
 	BearerTokenCookieName                        types.String                                `tfsdk:"bearer_token_cookie_name"`
-	BearerTokenHeaderName                        types.String                                `tfsdk:"bearer_token_header_name"`
 	BearerTokenParamType                         []types.String                              `tfsdk:"bearer_token_param_type"`
 	ByUsernameIgnoreCase                         types.Bool                                  `tfsdk:"by_username_ignore_case"`
 	CacheIntrospection                           types.Bool                                  `tfsdk:"cache_introspection"`
@@ -46,11 +45,9 @@ type OpenidConnectPluginConfig struct {
 	ClientID                                     []types.String                              `tfsdk:"client_id"`
 	ClientJwk                                    []ClientJwk                                 `tfsdk:"client_jwk"`
 	ClientSecret                                 []types.String                              `tfsdk:"client_secret"`
-	ClusterCacheItems                            []types.String                              `tfsdk:"cluster_cache_items"`
 	ClusterCacheRedis                            *ClusterCacheRedis                          `tfsdk:"cluster_cache_redis"`
 	ClusterCacheStrategy                         types.String                                `tfsdk:"cluster_cache_strategy"`
 	ConsumerBy                                   []types.String                              `tfsdk:"consumer_by"`
-	ConsumerClaim                                []types.String                              `tfsdk:"consumer_claim"`
 	ConsumerClaims                               [][]types.String                            `tfsdk:"consumer_claims"`
 	ConsumerGroupsClaim                          []types.String                              `tfsdk:"consumer_groups_claim"`
 	ConsumerGroupsOptional                       types.Bool                                  `tfsdk:"consumer_groups_optional"`
@@ -139,7 +136,6 @@ type OpenidConnectPluginConfig struct {
 	ProofOfPossessionAuthMethodsValidation       types.Bool                                  `tfsdk:"proof_of_possession_auth_methods_validation"`
 	ProofOfPossessionDpop                        types.String                                `tfsdk:"proof_of_possession_dpop"`
 	ProofOfPossessionMtls                        types.String                                `tfsdk:"proof_of_possession_mtls"`
-	ProofOfPossessionMtlsFromHeader              *ProofOfPossessionMtlsFromHeader            `tfsdk:"proof_of_possession_mtls_from_header"`
 	PushedAuthorizationRequestEndpoint           types.String                                `tfsdk:"pushed_authorization_request_endpoint"`
 	PushedAuthorizationRequestEndpointAuthMethod types.String                                `tfsdk:"pushed_authorization_request_endpoint_auth_method"`
 	RedirectURI                                  []types.String                              `tfsdk:"redirect_uri"`
@@ -201,7 +197,7 @@ type OpenidConnectPluginConfig struct {
 	TokenCacheKeyIncludeScope                    types.Bool                                  `tfsdk:"token_cache_key_include_scope"`
 	TokenEndpoint                                types.String                                `tfsdk:"token_endpoint"`
 	TokenEndpointAuthMethod                      types.String                                `tfsdk:"token_endpoint_auth_method"`
-	TokenExchange                                *OpenidConnectPluginTokenExchange           `tfsdk:"token_exchange"`
+	TokenExchange                                *TokenExchange                              `tfsdk:"token_exchange"`
 	TokenExchangeEndpoint                        types.String                                `tfsdk:"token_exchange_endpoint"`
 	TokenHeadersClient                           []types.String                              `tfsdk:"token_headers_client"`
 	TokenHeadersGrants                           []types.String                              `tfsdk:"token_headers_grants"`

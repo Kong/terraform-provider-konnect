@@ -3,7 +3,7 @@
 package types
 
 type RequestCalloutPluginConfig struct {
-	Cache    *Cache                        `tfsdk:"cache"`
+	Cache    *RequestCalloutPluginCache    `tfsdk:"cache"`
 	Callouts []Callouts                    `tfsdk:"callouts"`
 	Upstream *RequestCalloutPluginUpstream `tfsdk:"upstream"`
 }

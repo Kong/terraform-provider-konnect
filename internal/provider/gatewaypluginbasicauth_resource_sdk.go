@@ -32,7 +32,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 					if resp.Config.BruteForceProtection.Redis.CloudAuthentication == nil {
 						r.Config.BruteForceProtection.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 						if resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider))
 						} else {

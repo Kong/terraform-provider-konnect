@@ -50,7 +50,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				if resp.Config.Cache.Redis.CloudAuthentication == nil {
 					r.Config.Cache.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Cache.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+					r.Config.Cache.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 					if resp.Config.Cache.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Cache.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Cache.Redis.CloudAuthentication.AuthProvider))
 					} else {

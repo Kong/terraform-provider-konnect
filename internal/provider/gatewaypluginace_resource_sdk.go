@@ -37,7 +37,7 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					if resp.Config.RateLimiting.Redis.CloudAuthentication == nil {
 						r.Config.RateLimiting.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.RateLimiting.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+						r.Config.RateLimiting.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 						if resp.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider))
 						} else {

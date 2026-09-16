@@ -406,7 +406,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
 					r.Config.Vectordb.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 					if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
 					} else {

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication struct {
+type AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication struct {
 	AuthProvider          types.String `tfsdk:"auth_provider"`
 	AwsAccessKeyID        types.String `tfsdk:"aws_access_key_id"`
 	AwsAssumeRoleArn      types.String `tfsdk:"aws_assume_role_arn"`

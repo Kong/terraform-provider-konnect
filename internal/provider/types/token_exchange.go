@@ -3,7 +3,7 @@
 package types
 
 type TokenExchange struct {
-	Cache               *AIGatewayAuthStrategyOpenIDConnectCache   `tfsdk:"cache"`
-	Request             *AIGatewayAuthStrategyOpenIDConnectRequest `tfsdk:"request"`
-	SubjectTokenIssuers []SubjectTokenIssuers                      `tfsdk:"subject_token_issuers"`
+	Cache               *Cache                `tfsdk:"cache"`
+	Request             *Request              `tfsdk:"request"`
+	SubjectTokenIssuers []SubjectTokenIssuers `tfsdk:"subject_token_issuers"`
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayAuthStrategyOpenIDConnectCache struct {
-	Enabled types.Bool  `tfsdk:"enabled"`
-	TTL     types.Int64 `tfsdk:"ttl"`
+type RequestCalloutPluginConfigCache struct {
+	Bypass types.Bool `tfsdk:"bypass"`
 }

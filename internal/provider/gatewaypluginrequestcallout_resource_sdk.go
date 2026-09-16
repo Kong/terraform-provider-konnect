@@ -20,7 +20,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 		if resp.Config.Cache == nil {
 			r.Config.Cache = nil
 		} else {
-			r.Config.Cache = &tfTypes.Cache{}
+			r.Config.Cache = &tfTypes.RequestCalloutPluginCache{}
 			r.Config.Cache.CacheTTL = types.Int64PointerValue(resp.Config.Cache.CacheTTL)
 			if resp.Config.Cache.Memory == nil {
 				r.Config.Cache.Memory = nil
@@ -35,7 +35,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				if resp.Config.Cache.Redis.CloudAuthentication == nil {
 					r.Config.Cache.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Cache.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+					r.Config.Cache.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 					if resp.Config.Cache.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Cache.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Cache.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -119,7 +119,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if calloutsItem.Cache == nil {
 				callouts.Cache = nil
 			} else {
-				callouts.Cache = &tfTypes.RequestCalloutPluginCache{}
+				callouts.Cache = &tfTypes.RequestCalloutPluginConfigCache{}
 				callouts.Cache.Bypass = types.BoolPointerValue(calloutsItem.Cache.Bypass)
 			}
 			callouts.DependsOn = make([]types.String, 0, len(calloutsItem.DependsOn))
@@ -541,7 +541,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	} else {
 		updatedAt = nil
 	}
-	var cache *shared.Cache
+	var cache *shared.RequestCalloutPluginCache
 	if r.Config.Cache != nil {
 		cacheTTL := new(int64)
 		if !r.Config.Cache.CacheTTL.IsUnknown() && !r.Config.Cache.CacheTTL.IsNull() {
@@ -841,7 +841,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			strategy = nil
 		}
-		cache = &shared.Cache{
+		cache = &shared.RequestCalloutPluginCache{
 			CacheTTL: cacheTTL,
 			Memory:   memory,
 			Redis:    redis,
@@ -850,7 +850,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	}
 	callouts := make([]shared.Callouts, 0, len(r.Config.Callouts))
 	for calloutsIndex := range r.Config.Callouts {
-		var cache1 *shared.RequestCalloutPluginCache
+		var cache1 *shared.RequestCalloutPluginConfigCache
 		if r.Config.Callouts[calloutsIndex].Cache != nil {
 			bypass := new(bool)
 			if !r.Config.Callouts[calloutsIndex].Cache.Bypass.IsUnknown() && !r.Config.Callouts[calloutsIndex].Cache.Bypass.IsNull() {
@@ -858,7 +858,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				bypass = nil
 			}
-			cache1 = &shared.RequestCalloutPluginCache{
+			cache1 = &shared.RequestCalloutPluginConfigCache{
 				Bypass: bypass,
 			}
 		}

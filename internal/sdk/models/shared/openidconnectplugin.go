@@ -1506,8 +1506,8 @@ func (e *OpenidConnectPluginRevocationCheckMode) IsExact() bool {
 	return false
 }
 
-// OpenidConnectPluginProofOfPossessionMtlsFromHeader - Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
-type OpenidConnectPluginProofOfPossessionMtlsFromHeader struct {
+// ProofOfPossessionMtlsFromHeader - Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
+type ProofOfPossessionMtlsFromHeader struct {
 	// Allow certificate verification with only an intermediate certificate. When enabled, a full chain to the root CA is not required.
 	AllowPartialChain *bool `default:"false" json:"allow_partial_chain"`
 	// List of CA Certificate UUIDs to use when validating the client certificate chain. At least one is required.
@@ -1536,106 +1536,106 @@ type OpenidConnectPluginProofOfPossessionMtlsFromHeader struct {
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 }
 
-func (o OpenidConnectPluginProofOfPossessionMtlsFromHeader) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
+func (p ProofOfPossessionMtlsFromHeader) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"ca_certificates", "certificate_header_name"}); err != nil {
+func (p *ProofOfPossessionMtlsFromHeader) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ca_certificates", "certificate_header_name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetAllowPartialChain() *bool {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetAllowPartialChain() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.AllowPartialChain
+	return p.AllowPartialChain
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCaCertificates() []string {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetCaCertificates() []string {
+	if p == nil {
 		return []string{}
 	}
-	return o.CaCertificates
+	return p.CaCertificates
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCertCacheTTL() *float64 {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetCertCacheTTL() *float64 {
+	if p == nil {
 		return nil
 	}
-	return o.CertCacheTTL
+	return p.CertCacheTTL
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCertificateHeaderFormat() *OpenidConnectPluginCertificateHeaderFormat {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderFormat() *OpenidConnectPluginCertificateHeaderFormat {
+	if p == nil {
 		return nil
 	}
-	return o.CertificateHeaderFormat
+	return p.CertificateHeaderFormat
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetCertificateHeaderName() string {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetCertificateHeaderName() string {
+	if p == nil {
 		return ""
 	}
-	return o.CertificateHeaderName
+	return p.CertificateHeaderName
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPProxyHost() *string {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyHost() *string {
+	if p == nil {
 		return nil
 	}
-	return o.HTTPProxyHost
+	return p.HTTPProxyHost
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPProxyPort() *int64 {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPProxyPort() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.HTTPProxyPort
+	return p.HTTPProxyPort
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPTimeout() *float64 {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPTimeout() *float64 {
+	if p == nil {
 		return nil
 	}
-	return o.HTTPTimeout
+	return p.HTTPTimeout
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPSProxyHost() *string {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyHost() *string {
+	if p == nil {
 		return nil
 	}
-	return o.HTTPSProxyHost
+	return p.HTTPSProxyHost
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetHTTPSProxyPort() *int64 {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetHTTPSProxyPort() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.HTTPSProxyPort
+	return p.HTTPSProxyPort
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetRevocationCheckMode() *OpenidConnectPluginRevocationCheckMode {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetRevocationCheckMode() *OpenidConnectPluginRevocationCheckMode {
+	if p == nil {
 		return nil
 	}
-	return o.RevocationCheckMode
+	return p.RevocationCheckMode
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetSecureSource() *bool {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetSecureSource() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SecureSource
+	return p.SecureSource
 }
 
-func (o *OpenidConnectPluginProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
-	if o == nil {
+func (p *ProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SslVerify
+	return p.SslVerify
 }
 
 // OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2945,7 +2945,7 @@ type OpenidConnectPluginConfig struct {
 	// Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
 	ProofOfPossessionMtls *OpenidConnectPluginProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
 	// Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
-	ProofOfPossessionMtlsFromHeader *OpenidConnectPluginProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
+	ProofOfPossessionMtlsFromHeader *ProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `default:"null" json:"pushed_authorization_request_endpoint"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -4081,7 +4081,7 @@ func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtls() *OpenidConnectPlu
 	return o.ProofOfPossessionMtls
 }
 
-func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtlsFromHeader() *OpenidConnectPluginProofOfPossessionMtlsFromHeader {
+func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtlsFromHeader() *ProofOfPossessionMtlsFromHeader {
 	if o == nil {
 		return nil
 	}

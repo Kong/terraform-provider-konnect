@@ -43,7 +43,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {

@@ -210,7 +210,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			if resp.Config.ClusterCacheRedis.CloudAuthentication == nil {
 				r.Config.ClusterCacheRedis.CloudAuthentication = nil
 			} else {
-				r.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+				r.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 				if resp.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider != nil {
 					r.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider))
 				} else {
@@ -588,7 +588,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.Principals == nil {
 			r.Config.Principals = nil
 		} else {
-			r.Config.Principals = &tfTypes.AIGatewayAuthStrategyOpenIDConnectPrincipals{}
+			r.Config.Principals = &tfTypes.AIGWOpenIDConnectGeneratedConfigPrincipals{}
 			r.Config.Principals.Directory = types.StringPointerValue(resp.Config.Principals.Directory)
 			r.Config.Principals.Enabled = types.BoolPointerValue(resp.Config.Principals.Enabled)
 			r.Config.Principals.ErrorOnMiss = types.BoolPointerValue(resp.Config.Principals.ErrorOnMiss)
@@ -665,7 +665,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -871,18 +871,18 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.TokenExchange == nil {
 			r.Config.TokenExchange = nil
 		} else {
-			r.Config.TokenExchange = &tfTypes.TokenExchange{}
+			r.Config.TokenExchange = &tfTypes.OpenidConnectPluginTokenExchange{}
 			if resp.Config.TokenExchange.Cache == nil {
 				r.Config.TokenExchange.Cache = nil
 			} else {
-				r.Config.TokenExchange.Cache = &tfTypes.AIGatewayAuthStrategyOpenIDConnectCache{}
+				r.Config.TokenExchange.Cache = &tfTypes.Cache{}
 				r.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Cache.Enabled)
 				r.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.Config.TokenExchange.Cache.TTL)
 			}
 			if resp.Config.TokenExchange.Request == nil {
 				r.Config.TokenExchange.Request = nil
 			} else {
-				r.Config.TokenExchange.Request = &tfTypes.AIGatewayAuthStrategyOpenIDConnectRequest{}
+				r.Config.TokenExchange.Request = &tfTypes.Request{}
 				if resp.Config.TokenExchange.Request.Audience != nil {
 					r.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Audience))
 					for _, v := range resp.Config.TokenExchange.Request.Audience {
@@ -902,10 +902,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 					r.Config.TokenExchange.Request.Scopes = nil
 				}
 			}
-			r.Config.TokenExchange.SubjectTokenIssuers = []tfTypes.SubjectTokenIssuers{}
+			r.Config.TokenExchange.SubjectTokenIssuers = []tfTypes.OpenidConnectPluginSubjectTokenIssuers{}
 
 			for _, subjectTokenIssuersItem := range resp.Config.TokenExchange.SubjectTokenIssuers {
-				var subjectTokenIssuers tfTypes.SubjectTokenIssuers
+				var subjectTokenIssuers tfTypes.OpenidConnectPluginSubjectTokenIssuers
 
 				if subjectTokenIssuersItem.Conditions == nil {
 					subjectTokenIssuers.Conditions = nil
@@ -2686,7 +2686,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		proofOfPossessionMtls = nil
 	}
-	var proofOfPossessionMtlsFromHeader *shared.OpenidConnectPluginProofOfPossessionMtlsFromHeader
+	var proofOfPossessionMtlsFromHeader *shared.ProofOfPossessionMtlsFromHeader
 	if r.Config.ProofOfPossessionMtlsFromHeader != nil {
 		allowPartialChain := new(bool)
 		if !r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.AllowPartialChain.IsNull() {
@@ -2761,7 +2761,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			sslVerify1 = nil
 		}
-		proofOfPossessionMtlsFromHeader = &shared.OpenidConnectPluginProofOfPossessionMtlsFromHeader{
+		proofOfPossessionMtlsFromHeader = &shared.ProofOfPossessionMtlsFromHeader{
 			AllowPartialChain:       allowPartialChain,
 			CaCertificates:          caCertificates,
 			CertCacheTTL:            certCacheTTL,

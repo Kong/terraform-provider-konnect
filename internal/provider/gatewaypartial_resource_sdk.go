@@ -305,7 +305,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialRedisCe.Config.CloudAuthentication == nil {
 				r.RedisCe.Config.CloudAuthentication = nil
 			} else {
-				r.RedisCe.Config.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+				r.RedisCe.Config.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 				if resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider != nil {
 					r.RedisCe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider))
 				} else {
@@ -355,7 +355,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialRedisEe.Config.CloudAuthentication == nil {
 				r.RedisEe.Config.CloudAuthentication = nil
 			} else {
-				r.RedisEe.Config.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+				r.RedisEe.Config.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 				if resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider != nil {
 					r.RedisEe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider))
 				} else {
@@ -474,7 +474,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				if resp.PartialVectordb.Config.Redis.CloudAuthentication == nil {
 					r.Vectordb.Config.Redis.CloudAuthentication = nil
 				} else {
-					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 					if resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Vectordb.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider))
 					} else {

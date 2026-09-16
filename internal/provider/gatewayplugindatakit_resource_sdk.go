@@ -302,7 +302,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					if resp.Config.Resources.Cache.Redis.CloudAuthentication == nil {
 						r.Config.Resources.Cache.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.Resources.Cache.Redis.CloudAuthentication = &tfTypes.AIGatewayAuthStrategyOpenIDConnectConfigCloudAuthentication{}
+						r.Config.Resources.Cache.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 						if resp.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider))
 						} else {
