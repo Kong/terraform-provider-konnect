@@ -13,6 +13,7 @@
   * `konnect_catalog_mcp`
   * `konnect_catalog_mcp_version`
   * `konnect_catalog_mcp_implementation`
+* Add support for `konnect_identity_provider_list` and `konnect_identity_provider` datasource.
 
 # Bug Fixes
 * Fixed drift in `konnect_gateway_control_plane` resource during Terraform import.
