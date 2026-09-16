@@ -89978,6 +89978,7 @@ components:
             type: string
             x-referenceable: true
           nullable: true
+          writeOnly: true
           x-encrypted: true
           x-speakeasy-param-computed: false
         cluster_cache_redis:
