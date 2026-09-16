@@ -2,7 +2,12 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type QueryParamFilter struct {
-	Labels map[string]LegacyStringFieldFilterWithExists `queryParam:"name=labels" tfsdk:"labels"`
-	Name   *MeshControlPlaneFilterParametersName        `queryParam:"name=name" tfsdk:"name"`
+	Description    *MeshControlPlaneFilterParametersName `queryParam:"name=description" tfsdk:"description"`
+	KonnectManaged types.Bool                            `queryParam:"name=konnect_managed" tfsdk:"konnect_managed"`
+	Name           *MeshControlPlaneFilterParametersName `queryParam:"name=name" tfsdk:"name"`
 }
