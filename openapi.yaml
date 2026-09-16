@@ -19237,7 +19237,7 @@ paths:
     get:
       x-speakeasy-entity-operation:
         terraform-resource: null
-        terraform-datasource: IdentityProvider#read
+        terraform-datasource: IdentityProviderList#read
       operationId: get-identity-providers
       summary: List Identity Providers
       description: |
@@ -19302,7 +19302,7 @@ paths:
     get:
       x-speakeasy-entity-operation:
         terraform-resource: IdentityProvider#read
-        terraform-datasource: null
+        terraform-datasource: IdentityProvider#read
       operationId: get-identity-provider
       summary: Get Identity Provider
       description: |
