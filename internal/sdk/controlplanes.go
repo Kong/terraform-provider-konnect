@@ -73,6 +73,7 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 	if timeout == nil {
 		timeout = s.sdkConfiguration.Timeout
 	}
+	paginationCtx := ctx
 
 	if timeout != nil {
 		var cancel context.CancelFunc
@@ -254,7 +255,7 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 		request.PageNumber = &nP
 
 		return s.ListControlPlanes(
-			ctx,
+			paginationCtx,
 			request,
 			opts...,
 		)

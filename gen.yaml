@@ -79,4 +79,5 @@ terraform:
   providerTypeNameOverride: ""
   respectRequiredFields: true
   respectTitlesForPrimitiveUnionMembers: false
+  serverVariableProviderAttributes: {}
   unionStrategy: populated-fields

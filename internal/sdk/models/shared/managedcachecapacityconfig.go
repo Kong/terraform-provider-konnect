@@ -30,7 +30,14 @@ func CreateManagedCacheCapacityConfigTiered(tiered Tiered) ManagedCacheCapacityC
 	}
 }
 
-func (u *ManagedCacheCapacityConfig) UnmarshalJSON(data []byte) error {
+func (u *ManagedCacheCapacityConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = ManagedCacheCapacityConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

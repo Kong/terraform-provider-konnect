@@ -95,7 +95,14 @@ func CreateFormResponseEntryValueArrayOfStr(arrayOfStr []string) FormResponseEnt
 	}
 }
 
-func (u *FormResponseEntryValue) UnmarshalJSON(data []byte) error {
+func (u *FormResponseEntryValue) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = FormResponseEntryValue{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

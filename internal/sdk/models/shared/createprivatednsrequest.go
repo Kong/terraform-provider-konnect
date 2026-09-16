@@ -73,7 +73,14 @@ func CreatePrivateDNSAttachmentConfigAzurePrivateDNSResolverAttachmentConfig(azu
 	}
 }
 
-func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
+func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = PrivateDNSAttachmentConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

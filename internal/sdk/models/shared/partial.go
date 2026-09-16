@@ -3508,7 +3508,14 @@ func CreatePartialVectordb(vectordb PartialVectordb) Partial {
 	}
 }
 
-func (u *Partial) UnmarshalJSON(data []byte) error {
+func (u *Partial) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Partial{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

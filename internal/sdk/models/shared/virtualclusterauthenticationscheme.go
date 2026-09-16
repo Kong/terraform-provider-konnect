@@ -74,7 +74,14 @@ func CreateVirtualClusterAuthenticationSchemeClientCertificate(clientCertificate
 	}
 }
 
-func (u *VirtualClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
+func (u *VirtualClusterAuthenticationScheme) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = VirtualClusterAuthenticationScheme{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

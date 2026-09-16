@@ -74,7 +74,14 @@ func CreatePrivateDNSResponseAzurePrivateDNSResolverResponse(azurePrivateDNSReso
 	}
 }
 
-func (u *PrivateDNSResponse) UnmarshalJSON(data []byte) error {
+func (u *PrivateDNSResponse) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = PrivateDNSResponse{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

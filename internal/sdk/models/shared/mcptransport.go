@@ -52,7 +52,14 @@ func CreateMCPTransportSseTransport(sseTransport SseTransport) MCPTransport {
 	}
 }
 
-func (u *MCPTransport) UnmarshalJSON(data []byte) error {
+func (u *MCPTransport) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MCPTransport{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

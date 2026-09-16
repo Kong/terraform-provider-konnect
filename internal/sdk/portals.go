@@ -927,6 +927,7 @@ func (s *Portals) ListPortalsClassic(ctx context.Context, request operations.Lis
 	if timeout == nil {
 		timeout = s.sdkConfiguration.Timeout
 	}
+	paginationCtx := ctx
 
 	if timeout != nil {
 		var cancel context.CancelFunc
@@ -1116,7 +1117,7 @@ func (s *Portals) ListPortalsClassic(ctx context.Context, request operations.Lis
 		request.PageNumber = &nP
 
 		return s.ListPortalsClassic(
-			ctx,
+			paginationCtx,
 			request,
 			opts...,
 		)

@@ -40,7 +40,14 @@ func CreateConfigurationDataPlaneGroupAutoscaleInputConfigurationDataPlaneGroupA
 	}
 }
 
-func (u *ConfigurationDataPlaneGroupAutoscaleInput) UnmarshalJSON(data []byte) error {
+func (u *ConfigurationDataPlaneGroupAutoscaleInput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = ConfigurationDataPlaneGroupAutoscaleInput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

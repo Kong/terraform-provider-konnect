@@ -90,7 +90,14 @@ func CreateUpdateDcrProviderRequestHTTP(http UpdateDcrProviderRequestHTTP) Updat
 	}
 }
 
-func (u *UpdateDcrProviderRequest) UnmarshalJSON(data []byte) error {
+func (u *UpdateDcrProviderRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateDcrProviderRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		ProviderType string `json:"provider_type"`
