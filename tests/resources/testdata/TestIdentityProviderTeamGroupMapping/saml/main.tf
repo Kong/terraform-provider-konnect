@@ -23,8 +23,14 @@ resource "konnect_identity_provider_team_group_mapping" "my_mapping" {
   team_id              = konnect_team.my_team.id
 }
 
-# Look up the SAML Identity Provider created above
-data "konnect_identity_provider" "by_type" {
+# Identity Provider datasource.
+data "konnect_identity_provider" "my_identity_provider" {
+  id = konnect_identity_provider.saml_provider.id
+}
+
+
+// Identity Provider List datasource.
+data "konnect_identity_provider_list" "my_list_identity_provider" {
   filter = {
     type = {
       eq = "saml"
@@ -32,4 +38,12 @@ data "konnect_identity_provider" "by_type" {
   }
 
   depends_on = [konnect_identity_provider.saml_provider]
+}
+
+output "identity_provider_list" {
+  value = data.konnect_identity_provider_list.my_list_identity_provider
+}
+
+output "identity_provider" {
+  value = data.konnect_identity_provider.my_identity_provider
 }
