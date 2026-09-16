@@ -24,16 +24,14 @@ resource "konnect_catalog_mcp_version" "test_mcp_version" {
   ]
 }
 
-#example of creating an AI Gateway  to be used in the MCP implementation(currently in beta-provider as of 02/09/2026)
+#example of creating an AI Gateway  to be used in the MCP implementation
 resource "konnect_ai_gateway" "test_ai_gateway_mcp" {
-  provider     = konnect-beta
   name         = "test-ai-gateway-mcp-impl"
   display_name = "Test AI Gateway for MCP"
 }
 
-#example of creating an MCP Server to be used in the MCP implementation(currently in beta-provider as of 02/09/2026)
+#example of creating an MCP Server to be used in the MCP implementation
 resource "konnect_ai_gateway_mcp_server" "test_mcp_server" {
-  provider   = konnect-beta
   gateway_id = konnect_ai_gateway.test_ai_gateway_mcp.id
   upstream_server = {
     name         = "test-mcp-server"
