@@ -12,23 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *IdentityProviderDataSourceModel) RefreshFromArrayOfSharedIdentityProvider(ctx context.Context, resp []shared.IdentityProvider) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if len(resp) == 0 {
-		diags.AddError("Unexpected response from API", "Missing response body array data.")
-		return diags
-	}
-
-	diags.Append(r.RefreshFromSharedIdentityProvider(ctx, &resp[0])...)
-
-	if diags.HasError() {
-		return diags
-	}
-
-	return diags
-}
-
 func (r *IdentityProviderDataSourceModel) RefreshFromSharedIdentityProvider(ctx context.Context, resp *shared.IdentityProvider) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -77,29 +60,14 @@ func (r *IdentityProviderDataSourceModel) RefreshFromSharedIdentityProvider(ctx 
 	return diags
 }
 
-func (r *IdentityProviderDataSourceModel) ToOperationsGetIdentityProvidersRequest(ctx context.Context) (*operations.GetIdentityProvidersRequest, diag.Diagnostics) {
+func (r *IdentityProviderDataSourceModel) ToOperationsGetIdentityProviderRequest(ctx context.Context) (*operations.GetIdentityProviderRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var filter *operations.Filter
-	if r.Filter != nil {
-		var typeVar *shared.StringFieldEqualsFilter
-		if r.Filter.Type != nil {
-			eq := new(string)
-			if !r.Filter.Type.Eq.IsUnknown() && !r.Filter.Type.Eq.IsNull() {
-				*eq = r.Filter.Type.Eq.ValueString()
-			} else {
-				eq = nil
-			}
-			typeVar = &shared.StringFieldEqualsFilter{
-				Eq: eq,
-			}
-		}
-		filter = &operations.Filter{
-			Type: typeVar,
-		}
-	}
-	out := operations.GetIdentityProvidersRequest{
-		Filter: filter,
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetIdentityProviderRequest{
+		ID: id,
 	}
 
 	return &out, diags

@@ -32,7 +32,6 @@ type IdentityProviderDataSourceModel struct {
 	Config    *tfTypes.IdentityProviderConfig `tfsdk:"config"`
 	CreatedAt types.String                    `tfsdk:"created_at"`
 	Enabled   types.Bool                      `tfsdk:"enabled"`
-	Filter    *tfTypes.Filter                 `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 	ID        types.String                    `tfsdk:"id"`
 	LoginPath types.String                    `tfsdk:"login_path"`
 	Type      types.String                    `tfsdk:"type"`
@@ -131,23 +130,8 @@ func (r *IdentityProviderDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: `Indicates whether the identity provider is enabled.` + "\n" +
 					`Only one identity provider can be active at a time, such as SAML or OIDC.`,
 			},
-			"filter": schema.SingleNestedAttribute{
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"type": schema.SingleNestedAttribute{
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"eq": schema.StringAttribute{
-								Optional: true,
-							},
-						},
-						Description: `Filters on the given string field value by exact match.`,
-					},
-				},
-				Description: `Filter identity providers returned in the response.`,
-			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Required:    true,
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"login_path": schema.StringAttribute{
@@ -204,13 +188,13 @@ func (r *IdentityProviderDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetIdentityProvidersRequest(ctx)
+	request, requestDiags := data.ToOperationsGetIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthSettings.GetIdentityProviders(ctx, *request)
+	res, err := r.client.AuthSettings.GetIdentityProvider(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -226,11 +210,11 @@ func (r *IdentityProviderDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.IdentityProviders != nil) {
+	if !(res.IdentityProvider != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromArrayOfSharedIdentityProvider(ctx, res.IdentityProviders)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedIdentityProvider(ctx, res.IdentityProvider)...)
 
 	if resp.Diagnostics.HasError() {
 		return

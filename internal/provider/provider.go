@@ -405,6 +405,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayControlPlaneDataSource,
 		NewGatewayControlPlaneListDataSource,
 		NewIdentityProviderDataSource,
+		NewIdentityProviderListDataSource,
 		NewMeshControlPlanesDataSource,
 		NewPlatformAvailableRegionsDataSource,
 		NewPlatformIPAddressesDataSource,
