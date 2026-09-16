@@ -22,6 +22,11 @@ func TestIdentityProviderTeamGroupMapping(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "team_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider.oidc_provider", "login_path"),
+
+						// Added validation for data-source to ensure it retrieves the correct identity provider by type
+						resource.TestCheckResourceAttr("data.konnect_identity_provider.by_type", "type", "oidc"),
+						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "id", "konnect_identity_provider.oidc_provider", "id"),
+						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "login_path", "konnect_identity_provider.oidc_provider", "login_path"),
 					),
 				},
 				{
@@ -50,6 +55,11 @@ func TestIdentityProviderTeamGroupMapping(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "identity_provider_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider_team_group_mapping.my_mapping", "team_id"),
 						resource.TestCheckResourceAttrSet("konnect_identity_provider.saml_provider", "login_path"),
+
+						// Added validation for data-source to ensure it retrieves the correct identity provider by type
+						resource.TestCheckResourceAttr("data.konnect_identity_provider.by_type", "type", "saml"),
+						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "id", "konnect_identity_provider.saml_provider", "id"),
+						resource.TestCheckResourceAttrPair("data.konnect_identity_provider.by_type", "login_path", "konnect_identity_provider.saml_provider", "login_path"),
 					),
 				},
 				{

@@ -34,3 +34,14 @@ resource "konnect_identity_provider_team_group_mapping" "my_mapping" {
   identity_provider_id = konnect_identity_provider.oidc_provider.id
   team_id              = konnect_team.my_team.id
 }
+
+# Look up the OIDC Identity Provider created above
+data "konnect_identity_provider" "by_type" {
+  filter = {
+    type = {
+      eq = "oidc"
+    }
+  }
+
+  depends_on = [konnect_identity_provider.oidc_provider]
+}
