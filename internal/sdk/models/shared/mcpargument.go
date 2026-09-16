@@ -40,7 +40,14 @@ func CreateMCPArgumentNamedArgument(namedArgument NamedArgument) MCPArgument {
 	}
 }
 
-func (u *MCPArgument) UnmarshalJSON(data []byte) error {
+func (u *MCPArgument) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MCPArgument{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

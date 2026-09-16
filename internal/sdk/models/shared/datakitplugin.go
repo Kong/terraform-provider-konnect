@@ -1868,7 +1868,14 @@ func CreateNodesXMLToJSON(xmlToJSON XMLToJSON) Nodes {
 	}
 }
 
-func (u *Nodes) UnmarshalJSON(data []byte) error {
+func (u *Nodes) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Nodes{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

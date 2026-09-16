@@ -137,7 +137,14 @@ func CreateMCPRemoteTransportMCPSseTransportSseTransport(mcpSseTransportSseTrans
 	}
 }
 
-func (u *MCPRemoteTransport) UnmarshalJSON(data []byte) error {
+func (u *MCPRemoteTransport) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MCPRemoteTransport{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
