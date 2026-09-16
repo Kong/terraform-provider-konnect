@@ -12,7 +12,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
           client_id            = "test-client-id"
           client_secret        = "test-client-id"
           tenant_id            = "test-tenant-id"
-          type                 = "azure"
           use_managed_identity = true
         }
       }
