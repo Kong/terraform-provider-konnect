@@ -19234,6 +19234,37 @@ paths:
       tags:
         - Auth Settings
   /v3/identity-providers:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource: IdentityProvider#read
+      operationId: get-identity-providers
+      summary: List Identity Providers
+      description: |
+        Retrieves the identity providers available within the organization. This operation provides information about
+        various identity providers for SAML or OIDC authentication integrations.
+      parameters:
+        - name: filter
+          in: query
+          description: Filter identity providers returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              type:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/IdentityProviders'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
     post:
       x-speakeasy-entity-operation: IdentityProvider#create
       operationId: create-identity-provider
@@ -22973,6 +23004,12 @@ components:
           $ref: '#/components/schemas/BooleanFieldFilter'
       additionalProperties: false
       title: ControlPlaneFilterParameters
+    StringFieldEqualsFilter:
+      description: Filters on the given string field value by exact match.
+      properties:
+        eq:
+          type: string
+      title: StringFieldEqualsFilter
     BooleanFieldFilter:
       description: Filter by a boolean value (true/false).
       type: boolean
@@ -80969,6 +81006,16 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IdentityProvider'
+    IdentityProviders:
+      description: |
+        A collection of identity providers. This response contains a collection of identity providers, which may include both OIDC and SAML identity providers.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/IdentityProvider'
+            title: Identity Provider Collection Response
     RetrieveServerlessCloudGatewayResponse:
       description: A response to retrieving a serverless cloud gateway.
       content:
