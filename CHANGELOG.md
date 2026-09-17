@@ -1,9 +1,25 @@
 # Changelog
 
 ## 3.23.0
-> Released 2026/09/??
+> Released 2026/09/17
 
 # Features
+* Add support for AI Gateway 2.0 using which you can configure AI Gateway, MCP servers, AI Model Providers and AI Models
+  * `konnect_ai_gateway`
+  * `konnect_ai_gateway_agent`
+  * `konnect_ai_gateway_config_store`
+  * `konnect_ai_gateway_config_store_secret`
+  * `konnect_ai_gateway_consumer`
+  * `konnect_ai_gateway_consumer_credential`
+  * `konnect_ai_gateway_consumer_group`
+  * `konnect_ai_gateway_consumer_group_member`
+  * `konnect_ai_gateway_data_plane_certificate`
+  * `konnect_ai_gateway_auth_strategy`
+  * `konnect_ai_gateway_mcp_server`
+  * `konnect_ai_gateway_model`
+  * `konnect_ai_gateway_model_provider`
+  * `konnect_ai_gateway_policy`
+  * `konnect_ai_gateway_vault`
 * Add support for `konnect_platform_available_regions` datasource.
 * Add support for AI Model and MCP catalog resources, using which users can add AI Models, MCP Servers, and Agents directly to Catalog and link them to their corresponding AI Gateway entities
   * `konnect_catalog_ai_model`
