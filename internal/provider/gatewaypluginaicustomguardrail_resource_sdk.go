@@ -49,7 +49,7 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) RefreshFromSharedAiCustomG
 				r.Config.Params[key2] = types.StringValue(value2)
 			}
 		}
-		r.Config.Request = &tfTypes.Request{}
+		r.Config.Request = &tfTypes.AiCustomGuardrailPluginRequest{}
 		if resp.Config.Request.Auth == nil {
 			r.Config.Request.Auth = nil
 		} else {
@@ -426,9 +426,9 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToSharedAiCustomGuardrailP
 	}
 	var auth *shared.AiCustomGuardrailPluginAuth
 	if r.Config.Request.Auth != nil {
-		location := new(shared.Location)
+		location := new(shared.AiCustomGuardrailPluginLocation)
 		if !r.Config.Request.Auth.Location.IsUnknown() && !r.Config.Request.Auth.Location.IsNull() {
-			*location = shared.Location(r.Config.Request.Auth.Location.ValueString())
+			*location = shared.AiCustomGuardrailPluginLocation(r.Config.Request.Auth.Location.ValueString())
 		} else {
 			location = nil
 		}
@@ -483,7 +483,7 @@ func (r *GatewayPluginAiCustomGuardrailResourceModel) ToSharedAiCustomGuardrailP
 	var url string
 	url = r.Config.Request.URL.ValueString()
 
-	request := shared.Request{
+	request := shared.AiCustomGuardrailPluginRequest{
 		Auth:    auth,
 		Body:    body,
 		Headers: headers,

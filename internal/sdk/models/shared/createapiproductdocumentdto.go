@@ -6,16 +6,16 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// Metadata - metadata of the document
-type Metadata struct {
+// CreateAPIProductDocumentDTOMetadata - metadata of the document
+type CreateAPIProductDocumentDTOMetadata struct {
 }
 
-func (m Metadata) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(m, "", false)
+func (c CreateAPIProductDocumentDTOMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
 }
 
-func (m *Metadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+func (c *CreateAPIProductDocumentDTOMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -33,7 +33,7 @@ type CreateAPIProductDocumentDTO struct {
 	// Can be markdown string content or base64 encoded string
 	Content *string `default:"null" json:"content"`
 	// metadata of the document
-	Metadata *Metadata `json:"metadata,omitempty"`
+	Metadata *CreateAPIProductDocumentDTOMetadata `json:"metadata,omitempty"`
 }
 
 func (c CreateAPIProductDocumentDTO) MarshalJSON() ([]byte, error) {
@@ -82,7 +82,7 @@ func (c *CreateAPIProductDocumentDTO) GetContent() *string {
 	return c.Content
 }
 
-func (c *CreateAPIProductDocumentDTO) GetMetadata() *Metadata {
+func (c *CreateAPIProductDocumentDTO) GetMetadata() *CreateAPIProductDocumentDTOMetadata {
 	if c == nil {
 		return nil
 	}

@@ -526,8 +526,8 @@ func (s *SolaceConsumePluginAuthentication) GetUsername() *string {
 	return s.Username
 }
 
-// Session related configuration.
-type Session struct {
+// SolaceConsumePluginSession - Session related configuration.
+type SolaceConsumePluginSession struct {
 	// Session authentication related configuration.
 	Authentication *SolaceConsumePluginAuthentication `json:"authentication"`
 	// If this property is true and time-to-live has a positive value in a message, the expiration time is calculated when the message is sent or received
@@ -552,88 +552,88 @@ type Session struct {
 	VpnName *string `default:"null" json:"vpn_name"`
 }
 
-func (s Session) MarshalJSON() ([]byte, error) {
+func (s SolaceConsumePluginSession) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(s, "", false)
 }
 
-func (s *Session) UnmarshalJSON(data []byte) error {
+func (s *SolaceConsumePluginSession) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"host"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Session) GetAuthentication() *SolaceConsumePluginAuthentication {
+func (s *SolaceConsumePluginSession) GetAuthentication() *SolaceConsumePluginAuthentication {
 	if s == nil {
 		return nil
 	}
 	return s.Authentication
 }
 
-func (s *Session) GetCalculateMessageExpiry() *bool {
+func (s *SolaceConsumePluginSession) GetCalculateMessageExpiry() *bool {
 	if s == nil {
 		return nil
 	}
 	return s.CalculateMessageExpiry
 }
 
-func (s *Session) GetConnectTimeout() *int64 {
+func (s *SolaceConsumePluginSession) GetConnectTimeout() *int64 {
 	if s == nil {
 		return nil
 	}
 	return s.ConnectTimeout
 }
 
-func (s *Session) GetGenerateRcvTimestamps() *bool {
+func (s *SolaceConsumePluginSession) GetGenerateRcvTimestamps() *bool {
 	if s == nil {
 		return nil
 	}
 	return s.GenerateRcvTimestamps
 }
 
-func (s *Session) GetGenerateSendTimestamps() *bool {
+func (s *SolaceConsumePluginSession) GetGenerateSendTimestamps() *bool {
 	if s == nil {
 		return nil
 	}
 	return s.GenerateSendTimestamps
 }
 
-func (s *Session) GetGenerateSenderID() *bool {
+func (s *SolaceConsumePluginSession) GetGenerateSenderID() *bool {
 	if s == nil {
 		return nil
 	}
 	return s.GenerateSenderID
 }
 
-func (s *Session) GetGenerateSequenceNumber() *bool {
+func (s *SolaceConsumePluginSession) GetGenerateSequenceNumber() *bool {
 	if s == nil {
 		return nil
 	}
 	return s.GenerateSequenceNumber
 }
 
-func (s *Session) GetHost() string {
+func (s *SolaceConsumePluginSession) GetHost() string {
 	if s == nil {
 		return ""
 	}
 	return s.Host
 }
 
-func (s *Session) GetProperties() map[string]string {
+func (s *SolaceConsumePluginSession) GetProperties() map[string]string {
 	if s == nil {
 		return nil
 	}
 	return s.Properties
 }
 
-func (s *Session) GetSslValidateCertificate() *bool {
+func (s *SolaceConsumePluginSession) GetSslValidateCertificate() *bool {
 	if s == nil {
 		return nil
 	}
 	return s.SslValidateCertificate
 }
 
-func (s *Session) GetVpnName() *string {
+func (s *SolaceConsumePluginSession) GetVpnName() *string {
 	if s == nil {
 		return nil
 	}
@@ -690,7 +690,7 @@ type SolaceConsumePluginConfig struct {
 	// The `POLLING` mode related configuration settings.
 	Polling *Polling `json:"polling,omitempty"`
 	// Session related configuration.
-	Session Session `json:"session"`
+	Session SolaceConsumePluginSession `json:"session"`
 	// The `WEBSOCKET` mode related configuration settings.
 	Websocket *Websocket `json:"websocket,omitempty"`
 }
@@ -727,9 +727,9 @@ func (s *SolaceConsumePluginConfig) GetPolling() *Polling {
 	return s.Polling
 }
 
-func (s *SolaceConsumePluginConfig) GetSession() Session {
+func (s *SolaceConsumePluginConfig) GetSession() SolaceConsumePluginSession {
 	if s == nil {
-		return Session{}
+		return SolaceConsumePluginSession{}
 	}
 	return s.Session
 }

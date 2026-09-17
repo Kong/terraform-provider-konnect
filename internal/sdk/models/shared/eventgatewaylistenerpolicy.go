@@ -7,16 +7,16 @@ import (
 	"time"
 )
 
-// Config - The configuration of the policy.
-type Config struct {
+// EventGatewayListenerPolicyConfig - The configuration of the policy.
+type EventGatewayListenerPolicyConfig struct {
 }
 
-func (c Config) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (e EventGatewayListenerPolicyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
 }
 
-func (c *Config) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (e *EventGatewayListenerPolicyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -40,7 +40,7 @@ type EventGatewayListenerPolicy struct {
 	// The unique identifier of the policy.
 	ID string `json:"id"`
 	// The configuration of the policy.
-	Config Config `json:"config"`
+	Config EventGatewayListenerPolicyConfig `json:"config"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// The unique identifier of the parent policy, if any.
@@ -102,9 +102,9 @@ func (e *EventGatewayListenerPolicy) GetID() string {
 	return e.ID
 }
 
-func (e *EventGatewayListenerPolicy) GetConfig() Config {
+func (e *EventGatewayListenerPolicy) GetConfig() EventGatewayListenerPolicyConfig {
 	if e == nil {
-		return Config{}
+		return EventGatewayListenerPolicyConfig{}
 	}
 	return e.Config
 }

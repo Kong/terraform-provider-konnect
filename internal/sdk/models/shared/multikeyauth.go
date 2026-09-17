@@ -6,43 +6,43 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type Headers struct {
+type MultiKeyAuthHeaders struct {
 	// Name of the request header
 	Name string `json:"name"`
 	// The key used to populate the request header
 	Key string `json:"key"`
 }
 
-func (h Headers) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(h, "", false)
+func (m MultiKeyAuthHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
 }
 
-func (h *Headers) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name", "key"}); err != nil {
+func (m *MultiKeyAuthHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"name", "key"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (h *Headers) GetName() string {
-	if h == nil {
+func (m *MultiKeyAuthHeaders) GetName() string {
+	if m == nil {
 		return ""
 	}
-	return h.Name
+	return m.Name
 }
 
-func (h *Headers) GetKey() string {
-	if h == nil {
+func (m *MultiKeyAuthHeaders) GetKey() string {
+	if m == nil {
 		return ""
 	}
-	return h.Key
+	return m.Key
 }
 
 type CreateMultiKeyAuthCredentialConfig struct {
 	// A list of header key/value pairs used to transmit API credentials to the integration's external API.
 	// Header names are defined by the integration within its `Multi Key` authorization strategy definition.
 	//
-	Headers []Headers `json:"headers"`
+	Headers []MultiKeyAuthHeaders `json:"headers"`
 }
 
 func (c CreateMultiKeyAuthCredentialConfig) MarshalJSON() ([]byte, error) {
@@ -56,9 +56,9 @@ func (c *CreateMultiKeyAuthCredentialConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CreateMultiKeyAuthCredentialConfig) GetHeaders() []Headers {
+func (c *CreateMultiKeyAuthCredentialConfig) GetHeaders() []MultiKeyAuthHeaders {
 	if c == nil {
-		return []Headers{}
+		return []MultiKeyAuthHeaders{}
 	}
 	return c.Headers
 }

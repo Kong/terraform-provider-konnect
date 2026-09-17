@@ -442,7 +442,7 @@ func (b *BruteForceProtection) GetStrategy() *BasicAuthPluginStrategy {
 	return b.Strategy
 }
 
-type Principals struct {
+type BasicAuthPluginPrincipals struct {
 	// The Kong Identity directory instance to authenticate against.
 	Directory *string `default:"default" json:"directory"`
 	// When true, authenticate against Kong Identity instead of local credentials.
@@ -451,36 +451,36 @@ type Principals struct {
 	ErrorOnMiss *bool `default:"true" json:"error_on_miss"`
 }
 
-func (p Principals) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (b BasicAuthPluginPrincipals) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
 }
 
-func (p *Principals) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+func (b *BasicAuthPluginPrincipals) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *Principals) GetDirectory() *string {
-	if p == nil {
+func (b *BasicAuthPluginPrincipals) GetDirectory() *string {
+	if b == nil {
 		return nil
 	}
-	return p.Directory
+	return b.Directory
 }
 
-func (p *Principals) GetEnabled() *bool {
-	if p == nil {
+func (b *BasicAuthPluginPrincipals) GetEnabled() *bool {
+	if b == nil {
 		return nil
 	}
-	return p.Enabled
+	return b.Enabled
 }
 
-func (p *Principals) GetErrorOnMiss() *bool {
-	if p == nil {
+func (b *BasicAuthPluginPrincipals) GetErrorOnMiss() *bool {
+	if b == nil {
 		return nil
 	}
-	return p.ErrorOnMiss
+	return b.ErrorOnMiss
 }
 
 type BasicAuthPluginConfig struct {
@@ -488,8 +488,8 @@ type BasicAuthPluginConfig struct {
 	Anonymous            *string               `default:"null" json:"anonymous"`
 	BruteForceProtection *BruteForceProtection `json:"brute_force_protection,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.
-	HideCredentials *bool       `default:"false" json:"hide_credentials"`
-	Principals      *Principals `json:"principals,omitempty"`
+	HideCredentials *bool                      `default:"false" json:"hide_credentials"`
+	Principals      *BasicAuthPluginPrincipals `json:"principals,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `default:"service" json:"realm"`
 }
@@ -526,7 +526,7 @@ func (b *BasicAuthPluginConfig) GetHideCredentials() *bool {
 	return b.HideCredentials
 }
 
-func (b *BasicAuthPluginConfig) GetPrincipals() *Principals {
+func (b *BasicAuthPluginConfig) GetPrincipals() *BasicAuthPluginPrincipals {
 	if b == nil {
 		return nil
 	}

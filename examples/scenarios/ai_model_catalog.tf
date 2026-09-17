@@ -32,16 +32,14 @@ resource "konnect_catalog_ai_model_version_spec" "test_ai_model_version_spec" {
 }
 
 
-#example of creating an AI Gateway to be used in the AI Model implementation(currently in beta-provider as of 02/09/2026)
+#example of creating an AI Gateway to be used in the AI Model
 resource "konnect_ai_gateway" "test_ai_gateway" {
-  provider     = konnect-beta
   name         = "test-ai-gateway-impl"
   display_name = "Test AI Gateway"
 }
 
-#example of creating an AI Gateway Model Provider to be used in the AI Model implementation(currently in beta-provider as of 02/09/2026)
+#example of creating an AI Gateway Model Provider to be used in the AI Model implementation
 resource "konnect_ai_gateway_model_provider" "test_openai_provider" {
-  provider   = konnect-beta
   gateway_id = konnect_ai_gateway.test_ai_gateway.id
   openai = {
     name         = "openai"
@@ -52,9 +50,8 @@ resource "konnect_ai_gateway_model_provider" "test_openai_provider" {
   }
 }
 
-#example of creating an AI Gateway Model to be used in the AI Model implementation(currently in beta-provider as of 02/09/2026)
+#example of creating an AI Gateway Model to be used in the AI Model implementation
 resource "konnect_ai_gateway_model" "test_ai_gateway_model" {
-  provider   = konnect-beta
   gateway_id = konnect_ai_gateway.test_ai_gateway.id
   model = {
     name         = "gpt-4o-model"

@@ -166,21 +166,21 @@ func (e *ContentType) IsExact() bool {
 	return false
 }
 
-// Method - An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`.
-type Method string
+// HTTPLogPluginMethod - An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`.
+type HTTPLogPluginMethod string
 
 const (
-	MethodPatch Method = "PATCH"
-	MethodPost  Method = "POST"
-	MethodPut   Method = "PUT"
+	HTTPLogPluginMethodPatch HTTPLogPluginMethod = "PATCH"
+	HTTPLogPluginMethodPost  HTTPLogPluginMethod = "POST"
+	HTTPLogPluginMethodPut   HTTPLogPluginMethod = "PUT"
 )
 
-func (e Method) ToPointer() *Method {
+func (e HTTPLogPluginMethod) ToPointer() *HTTPLogPluginMethod {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Method) IsExact() bool {
+func (e *HTTPLogPluginMethod) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "PATCH", "POST", "PUT":
@@ -315,8 +315,8 @@ type HTTPLogPluginConfig struct {
 	// An optional value in milliseconds that defines how long an idle connection will live before being closed.
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`.
-	Method *Method             `default:"POST" json:"method"`
-	Queue  *HTTPLogPluginQueue `json:"queue"`
+	Method *HTTPLogPluginMethod `default:"POST" json:"method"`
+	Queue  *HTTPLogPluginQueue  `json:"queue"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
 	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.
@@ -387,7 +387,7 @@ func (h *HTTPLogPluginConfig) GetKeepalive() *float64 {
 	return h.Keepalive
 }
 
-func (h *HTTPLogPluginConfig) GetMethod() *Method {
+func (h *HTTPLogPluginConfig) GetMethod() *HTTPLogPluginMethod {
 	if h == nil {
 		return nil
 	}

@@ -41,7 +41,6 @@ const (
 
 	testAiGatewayForMcp = `
 		resource "konnect_ai_gateway" "test_ai_gateway_mcp" {
-			provider     = konnect-beta
 			name         = "test-ai-gateway-mcp-impl"
 			display_name = "Test AI Gateway for MCP"
 		}
@@ -49,7 +48,6 @@ const (
 
 	testMcpServer = `
 		resource "konnect_ai_gateway_mcp_server" "test_mcp_server" {
-			provider   = konnect-beta
 			gateway_id = konnect_ai_gateway.test_ai_gateway_mcp.id
 			upstream_server = {
 				name         = "test-mcp-server"
@@ -193,12 +191,6 @@ func TestCatalogMCP(t *testing.T) {
 
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
-			ExternalProviders: map[string]resource.ExternalProvider{
-				"konnect-beta": {
-					Source:            "Kong/konnect-beta",
-					VersionConstraint: "0.22.0",
-				},
-			},
 			Steps: []resource.TestStep{
 				{
 					Config: baseConfig,

@@ -7,10 +7,10 @@ import (
 )
 
 type ControlPlaneConfig struct {
-	AuthType             types.String `tfsdk:"auth_type"`
-	CloudGateway         types.Bool   `tfsdk:"cloud_gateway"`
-	ClusterType          types.String `tfsdk:"cluster_type"`
-	ControlPlaneEndpoint types.String `tfsdk:"control_plane_endpoint"`
-	ProxyUrls            []ProxyURL   `tfsdk:"proxy_urls"`
-	TelemetryEndpoint    types.String `tfsdk:"telemetry_endpoint"`
+	AuthType             types.String        `tfsdk:"auth_type"`
+	CloudGateway         types.Bool          `tfsdk:"cloud_gateway"`
+	ClusterType          types.String        `tfsdk:"cluster_type"`
+	ControlPlaneEndpoint types.String        `tfsdk:"control_plane_endpoint"`
+	ProxyUrls            []AIGatewayProxyURL `tfsdk:"proxy_urls"`
+	TelemetryEndpoint    types.String        `tfsdk:"telemetry_endpoint"`
 }

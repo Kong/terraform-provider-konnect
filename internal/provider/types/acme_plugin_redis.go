@@ -7,15 +7,15 @@ import (
 )
 
 type AcmePluginRedis struct {
-	CloudAuthentication *PartialRedisCeCloudAuthentication `tfsdk:"cloud_authentication"`
-	Database            types.Int64                        `tfsdk:"database"`
-	ExtraOptions        *ExtraOptions                      `tfsdk:"extra_options"`
-	Host                types.String                       `tfsdk:"host"`
-	Password            types.String                       `tfsdk:"password"`
-	Port                types.String                       `tfsdk:"port"`
-	ServerName          types.String                       `tfsdk:"server_name"`
-	Ssl                 types.Bool                         `tfsdk:"ssl"`
-	SslVerify           types.Bool                         `tfsdk:"ssl_verify"`
-	Timeout             types.Int64                        `tfsdk:"timeout"`
-	Username            types.String                       `tfsdk:"username"`
+	CloudAuthentication *AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication `tfsdk:"cloud_authentication"`
+	Database            types.Int64                                                           `tfsdk:"database"`
+	ExtraOptions        *ExtraOptions                                                         `tfsdk:"extra_options"`
+	Host                types.String                                                          `tfsdk:"host"`
+	Password            types.String                                                          `tfsdk:"password"`
+	Port                types.String                                                          `tfsdk:"port"`
+	ServerName          types.String                                                          `tfsdk:"server_name"`
+	Ssl                 types.Bool                                                            `tfsdk:"ssl"`
+	SslVerify           types.Bool                                                            `tfsdk:"ssl_verify"`
+	Timeout             types.Int64                                                           `tfsdk:"timeout"`
+	Username            types.String                                                          `tfsdk:"username"`
 }

@@ -39,18 +39,18 @@ type EventGatewayConsumePolicySkipRecordResource struct {
 
 // EventGatewayConsumePolicySkipRecordResourceModel describes the resource data model.
 type EventGatewayConsumePolicySkipRecordResourceModel struct {
-	Condition        types.String            `tfsdk:"condition"`
-	Config           *tfTypes.Metadata       `tfsdk:"config"`
-	CreatedAt        types.String            `tfsdk:"created_at"`
-	Description      types.String            `tfsdk:"description"`
-	Enabled          types.Bool              `tfsdk:"enabled"`
-	GatewayID        types.String            `tfsdk:"gateway_id"`
-	ID               types.String            `tfsdk:"id"`
-	Labels           map[string]types.String `tfsdk:"labels"`
-	Name             types.String            `tfsdk:"name"`
-	ParentPolicyID   types.String            `tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String            `tfsdk:"updated_at"`
-	VirtualClusterID types.String            `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                                 `tfsdk:"condition"`
+	Config           *tfTypes.CreateAPIProductDocumentDTOMetadata `tfsdk:"config"`
+	CreatedAt        types.String                                 `tfsdk:"created_at"`
+	Description      types.String                                 `tfsdk:"description"`
+	Enabled          types.Bool                                   `tfsdk:"enabled"`
+	GatewayID        types.String                                 `tfsdk:"gateway_id"`
+	ID               types.String                                 `tfsdk:"id"`
+	Labels           map[string]types.String                      `tfsdk:"labels"`
+	Name             types.String                                 `tfsdk:"name"`
+	ParentPolicyID   types.String                                 `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                                 `tfsdk:"updated_at"`
+	VirtualClusterID types.String                                 `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayConsumePolicySkipRecordResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

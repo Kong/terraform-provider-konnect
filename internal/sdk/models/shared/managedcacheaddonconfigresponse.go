@@ -6,8 +6,8 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// CloudAuthentication - Metadata describing the cloud authentication details for managed cache add-on.
-type CloudAuthentication struct {
+// ManagedCacheAddOnConfigResponseCloudAuthentication - Metadata describing the cloud authentication details for managed cache add-on.
+type ManagedCacheAddOnConfigResponseCloudAuthentication struct {
 	// Env vault path to cache auth provider.
 	AuthProvider *string `json:"auth_provider,omitempty"`
 	// Env vault path to aws cache name.
@@ -20,50 +20,50 @@ type CloudAuthentication struct {
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 }
 
-func (c CloudAuthentication) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (m ManagedCacheAddOnConfigResponseCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
 }
 
-func (c *CloudAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (m *ManagedCacheAddOnConfigResponseCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CloudAuthentication) GetAuthProvider() *string {
-	if c == nil {
+func (m *ManagedCacheAddOnConfigResponseCloudAuthentication) GetAuthProvider() *string {
+	if m == nil {
 		return nil
 	}
-	return c.AuthProvider
+	return m.AuthProvider
 }
 
-func (c *CloudAuthentication) GetAwsCacheName() *string {
-	if c == nil {
+func (m *ManagedCacheAddOnConfigResponseCloudAuthentication) GetAwsCacheName() *string {
+	if m == nil {
 		return nil
 	}
-	return c.AwsCacheName
+	return m.AwsCacheName
 }
 
-func (c *CloudAuthentication) GetAwsRegion() *string {
-	if c == nil {
+func (m *ManagedCacheAddOnConfigResponseCloudAuthentication) GetAwsRegion() *string {
+	if m == nil {
 		return nil
 	}
-	return c.AwsRegion
+	return m.AwsRegion
 }
 
-func (c *CloudAuthentication) GetAwsAssumeRoleArn() *string {
-	if c == nil {
+func (m *ManagedCacheAddOnConfigResponseCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if m == nil {
 		return nil
 	}
-	return c.AwsAssumeRoleArn
+	return m.AwsAssumeRoleArn
 }
 
-func (c *CloudAuthentication) GetAzureTenantID() *string {
-	if c == nil {
+func (m *ManagedCacheAddOnConfigResponseCloudAuthentication) GetAzureTenantID() *string {
+	if m == nil {
 		return nil
 	}
-	return c.AzureTenantID
+	return m.AzureTenantID
 }
 
 // ManagedCacheAddOnConfigResponseStateMetadata - Metadata describing the state of the managed cache add-on.
@@ -80,7 +80,7 @@ type ManagedCacheAddOnConfigResponseStateMetadata struct {
 	CacheUsername *string `json:"cache_username,omitempty"`
 	// Metadata describing the cloud authentication details for managed cache add-on.
 	//
-	CloudAuthentication *CloudAuthentication `json:"cloud_authentication,omitempty"`
+	CloudAuthentication *ManagedCacheAddOnConfigResponseCloudAuthentication `json:"cloud_authentication,omitempty"`
 }
 
 func (m ManagedCacheAddOnConfigResponseStateMetadata) MarshalJSON() ([]byte, error) {
@@ -129,7 +129,7 @@ func (m *ManagedCacheAddOnConfigResponseStateMetadata) GetCacheUsername() *strin
 	return m.CacheUsername
 }
 
-func (m *ManagedCacheAddOnConfigResponseStateMetadata) GetCloudAuthentication() *CloudAuthentication {
+func (m *ManagedCacheAddOnConfigResponseStateMetadata) GetCloudAuthentication() *ManagedCacheAddOnConfigResponseCloudAuthentication {
 	if m == nil {
 		return nil
 	}

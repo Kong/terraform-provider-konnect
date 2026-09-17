@@ -164,31 +164,31 @@ func (c *ClaimToHeader) GetHeader() string {
 	return c.Header
 }
 
-// ClientAlg - The client JWT signing algorithm.
-type ClientAlg string
+// AiMcpOauth2PluginClientAlg - The client JWT signing algorithm.
+type AiMcpOauth2PluginClientAlg string
 
 const (
-	ClientAlgEs256 ClientAlg = "ES256"
-	ClientAlgEs384 ClientAlg = "ES384"
-	ClientAlgEs512 ClientAlg = "ES512"
-	ClientAlgEdDsa ClientAlg = "EdDSA"
-	ClientAlgHs256 ClientAlg = "HS256"
-	ClientAlgHs384 ClientAlg = "HS384"
-	ClientAlgHs512 ClientAlg = "HS512"
-	ClientAlgPs256 ClientAlg = "PS256"
-	ClientAlgPs384 ClientAlg = "PS384"
-	ClientAlgPs512 ClientAlg = "PS512"
-	ClientAlgRs256 ClientAlg = "RS256"
-	ClientAlgRs384 ClientAlg = "RS384"
-	ClientAlgRs512 ClientAlg = "RS512"
+	AiMcpOauth2PluginClientAlgEs256 AiMcpOauth2PluginClientAlg = "ES256"
+	AiMcpOauth2PluginClientAlgEs384 AiMcpOauth2PluginClientAlg = "ES384"
+	AiMcpOauth2PluginClientAlgEs512 AiMcpOauth2PluginClientAlg = "ES512"
+	AiMcpOauth2PluginClientAlgEdDsa AiMcpOauth2PluginClientAlg = "EdDSA"
+	AiMcpOauth2PluginClientAlgHs256 AiMcpOauth2PluginClientAlg = "HS256"
+	AiMcpOauth2PluginClientAlgHs384 AiMcpOauth2PluginClientAlg = "HS384"
+	AiMcpOauth2PluginClientAlgHs512 AiMcpOauth2PluginClientAlg = "HS512"
+	AiMcpOauth2PluginClientAlgPs256 AiMcpOauth2PluginClientAlg = "PS256"
+	AiMcpOauth2PluginClientAlgPs384 AiMcpOauth2PluginClientAlg = "PS384"
+	AiMcpOauth2PluginClientAlgPs512 AiMcpOauth2PluginClientAlg = "PS512"
+	AiMcpOauth2PluginClientAlgRs256 AiMcpOauth2PluginClientAlg = "RS256"
+	AiMcpOauth2PluginClientAlgRs384 AiMcpOauth2PluginClientAlg = "RS384"
+	AiMcpOauth2PluginClientAlgRs512 AiMcpOauth2PluginClientAlg = "RS512"
 )
 
-func (e ClientAlg) ToPointer() *ClientAlg {
+func (e AiMcpOauth2PluginClientAlg) ToPointer() *AiMcpOauth2PluginClientAlg {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ClientAlg) IsExact() bool {
+func (e *AiMcpOauth2PluginClientAlg) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
@@ -198,25 +198,25 @@ func (e *ClientAlg) IsExact() bool {
 	return false
 }
 
-// ClientAuth - The client authentication method.
-type ClientAuth string
+// AiMcpOauth2PluginClientAuth - The client authentication method.
+type AiMcpOauth2PluginClientAuth string
 
 const (
-	ClientAuthClientSecretBasic       ClientAuth = "client_secret_basic"
-	ClientAuthClientSecretJwt         ClientAuth = "client_secret_jwt"
-	ClientAuthClientSecretPost        ClientAuth = "client_secret_post"
-	ClientAuthNone                    ClientAuth = "none"
-	ClientAuthPrivateKeyJwt           ClientAuth = "private_key_jwt"
-	ClientAuthSelfSignedTLSClientAuth ClientAuth = "self_signed_tls_client_auth"
-	ClientAuthTLSClientAuth           ClientAuth = "tls_client_auth"
+	AiMcpOauth2PluginClientAuthClientSecretBasic       AiMcpOauth2PluginClientAuth = "client_secret_basic"
+	AiMcpOauth2PluginClientAuthClientSecretJwt         AiMcpOauth2PluginClientAuth = "client_secret_jwt"
+	AiMcpOauth2PluginClientAuthClientSecretPost        AiMcpOauth2PluginClientAuth = "client_secret_post"
+	AiMcpOauth2PluginClientAuthNone                    AiMcpOauth2PluginClientAuth = "none"
+	AiMcpOauth2PluginClientAuthPrivateKeyJwt           AiMcpOauth2PluginClientAuth = "private_key_jwt"
+	AiMcpOauth2PluginClientAuthSelfSignedTLSClientAuth AiMcpOauth2PluginClientAuth = "self_signed_tls_client_auth"
+	AiMcpOauth2PluginClientAuthTLSClientAuth           AiMcpOauth2PluginClientAuth = "tls_client_auth"
 )
 
-func (e ClientAuth) ToPointer() *ClientAuth {
+func (e AiMcpOauth2PluginClientAuth) ToPointer() *AiMcpOauth2PluginClientAuth {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ClientAuth) IsExact() bool {
+func (e *AiMcpOauth2PluginClientAuth) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
@@ -226,20 +226,20 @@ func (e *ClientAuth) IsExact() bool {
 	return false
 }
 
-type ConsumerBy string
+type AiMcpOauth2PluginConsumerBy string
 
 const (
-	ConsumerByCustomID ConsumerBy = "custom_id"
-	ConsumerByID       ConsumerBy = "id"
-	ConsumerByUsername ConsumerBy = "username"
+	AiMcpOauth2PluginConsumerByCustomID AiMcpOauth2PluginConsumerBy = "custom_id"
+	AiMcpOauth2PluginConsumerByID       AiMcpOauth2PluginConsumerBy = "id"
+	AiMcpOauth2PluginConsumerByUsername AiMcpOauth2PluginConsumerBy = "username"
 )
 
-func (e ConsumerBy) ToPointer() *ConsumerBy {
+func (e AiMcpOauth2PluginConsumerBy) ToPointer() *AiMcpOauth2PluginConsumerBy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ConsumerBy) IsExact() bool {
+func (e *AiMcpOauth2PluginConsumerBy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "custom_id", "id", "username":
@@ -308,22 +308,22 @@ func (a *AiMcpOauth2PluginCache) GetTTL() *int64 {
 // #region class-body-aimcpoauth2plugincache
 // #endregion class-body-aimcpoauth2plugincache
 
-// AiMcpOauth2PluginClientAuth - The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint.
-type AiMcpOauth2PluginClientAuth string
+// AiMcpOauth2PluginConfigClientAuth - The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint.
+type AiMcpOauth2PluginConfigClientAuth string
 
 const (
-	AiMcpOauth2PluginClientAuthClientSecretBasic AiMcpOauth2PluginClientAuth = "client_secret_basic"
-	AiMcpOauth2PluginClientAuthClientSecretPost  AiMcpOauth2PluginClientAuth = "client_secret_post"
-	AiMcpOauth2PluginClientAuthInherit           AiMcpOauth2PluginClientAuth = "inherit"
-	AiMcpOauth2PluginClientAuthNone              AiMcpOauth2PluginClientAuth = "none"
+	AiMcpOauth2PluginConfigClientAuthClientSecretBasic AiMcpOauth2PluginConfigClientAuth = "client_secret_basic"
+	AiMcpOauth2PluginConfigClientAuthClientSecretPost  AiMcpOauth2PluginConfigClientAuth = "client_secret_post"
+	AiMcpOauth2PluginConfigClientAuthInherit           AiMcpOauth2PluginConfigClientAuth = "inherit"
+	AiMcpOauth2PluginConfigClientAuthNone              AiMcpOauth2PluginConfigClientAuth = "none"
 )
 
-func (e AiMcpOauth2PluginClientAuth) ToPointer() *AiMcpOauth2PluginClientAuth {
+func (e AiMcpOauth2PluginConfigClientAuth) ToPointer() *AiMcpOauth2PluginConfigClientAuth {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AiMcpOauth2PluginClientAuth) IsExact() bool {
+func (e *AiMcpOauth2PluginConfigClientAuth) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "client_secret_basic", "client_secret_post", "inherit", "none":
@@ -455,11 +455,11 @@ func (a *AiMcpOauth2PluginRequest) GetSubjectTokenType() *string {
 // #region class-body-aimcpoauth2pluginrequest
 // #endregion class-body-aimcpoauth2pluginrequest
 
-// TokenExchange - Configuration details about token exchange that should happen before reaching upstream MCP server
-type TokenExchange struct {
+// AiMcpOauth2PluginTokenExchange - Configuration details about token exchange that should happen before reaching upstream MCP server
+type AiMcpOauth2PluginTokenExchange struct {
 	Cache *AiMcpOauth2PluginCache `json:"cache"`
 	// The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint.
-	ClientAuth *AiMcpOauth2PluginClientAuth `default:"client_secret_basic" json:"client_auth"`
+	ClientAuth *AiMcpOauth2PluginConfigClientAuth `default:"client_secret_basic" json:"client_auth"`
 	// The client ID for authentication.
 	ClientID *string `default:"null" json:"client_id"`
 	// The client secret for authentication.
@@ -471,97 +471,103 @@ type TokenExchange struct {
 	TokenEndpoint string `json:"token_endpoint"`
 }
 
-func (t TokenExchange) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
+func (a AiMcpOauth2PluginTokenExchange) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (t *TokenExchange) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"token_endpoint"}); err != nil {
+func (a *AiMcpOauth2PluginTokenExchange) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"token_endpoint"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TokenExchange) GetCache() *AiMcpOauth2PluginCache {
-	if t == nil {
+func (a *AiMcpOauth2PluginTokenExchange) GetCache() *AiMcpOauth2PluginCache {
+	if a == nil {
 		return nil
 	}
-	return t.Cache
+	return a.Cache
 }
 
-func (t *TokenExchange) GetClientAuth() *AiMcpOauth2PluginClientAuth {
-	if t == nil {
+func (a *AiMcpOauth2PluginTokenExchange) GetClientAuth() *AiMcpOauth2PluginConfigClientAuth {
+	if a == nil {
 		return nil
 	}
-	return t.ClientAuth
+	return a.ClientAuth
 }
 
-func (t *TokenExchange) GetClientID() *string {
-	if t == nil {
+func (a *AiMcpOauth2PluginTokenExchange) GetClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return t.ClientID
+	return a.ClientID
 }
 
-func (t *TokenExchange) GetClientSecret() *string {
-	if t == nil {
+func (a *AiMcpOauth2PluginTokenExchange) GetClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return t.ClientSecret
+	return a.ClientSecret
 }
 
-func (t *TokenExchange) GetEnabled() *bool {
-	if t == nil {
+func (a *AiMcpOauth2PluginTokenExchange) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return t.Enabled
+	return a.Enabled
 }
 
-func (t *TokenExchange) GetRequest() *AiMcpOauth2PluginRequest {
-	if t == nil {
+func (a *AiMcpOauth2PluginTokenExchange) GetRequest() *AiMcpOauth2PluginRequest {
+	if a == nil {
 		return nil
 	}
-	return t.Request
+	return a.Request
 }
 
-func (t *TokenExchange) GetTokenEndpoint() string {
-	if t == nil {
+func (a *AiMcpOauth2PluginTokenExchange) GetTokenEndpoint() string {
+	if a == nil {
 		return ""
 	}
-	return t.TokenEndpoint
+	return a.TokenEndpoint
 }
 
-type UpstreamHeaders struct {
+// #region class-body-aimcpoauth2plugintokenexchange
+// #endregion class-body-aimcpoauth2plugintokenexchange
+
+type AiMcpOauth2PluginUpstreamHeaders struct {
 	// The name of the header.
 	Header string `json:"header"`
 	// The path of the header value.
 	Path []string `json:"path"`
 }
 
-func (u UpstreamHeaders) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
+func (a AiMcpOauth2PluginUpstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (u *UpstreamHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"header", "path"}); err != nil {
+func (a *AiMcpOauth2PluginUpstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"header", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpstreamHeaders) GetHeader() string {
-	if u == nil {
+func (a *AiMcpOauth2PluginUpstreamHeaders) GetHeader() string {
+	if a == nil {
 		return ""
 	}
-	return u.Header
+	return a.Header
 }
 
-func (u *UpstreamHeaders) GetPath() []string {
-	if u == nil {
+func (a *AiMcpOauth2PluginUpstreamHeaders) GetPath() []string {
+	if a == nil {
 		return []string{}
 	}
-	return u.Path
+	return a.Path
 }
+
+// #region class-body-aimcpoauth2pluginupstreamheaders
+// #endregion class-body-aimcpoauth2pluginupstreamheaders
 
 // AiMcpOauth2PluginConfig - The configuration for MCP authorization in OAuth2. If this is enabled, make sure the configured metadata_endpoint is also covered by the same route so the authorization can be applied correctly.
 type AiMcpOauth2PluginConfig struct {
@@ -573,9 +579,9 @@ type AiMcpOauth2PluginConfig struct {
 	// Map top-level token claims to upstream headers. Mutually exclusive with upstream_headers.
 	ClaimToHeader []ClaimToHeader `json:"claim_to_header"`
 	// The client JWT signing algorithm.
-	ClientAlg *ClientAlg `json:"client_alg,omitempty"`
+	ClientAlg *AiMcpOauth2PluginClientAlg `json:"client_alg,omitempty"`
 	// The client authentication method.
-	ClientAuth *ClientAuth `json:"client_auth,omitempty"`
+	ClientAuth *AiMcpOauth2PluginClientAuth `json:"client_auth,omitempty"`
 	// The client ID for authentication.
 	ClientID *string `default:"null" json:"client_id"`
 	// The client JWK for private_key_jwt authentication.
@@ -583,7 +589,7 @@ type AiMcpOauth2PluginConfig struct {
 	// The client secret for authentication.
 	ClientSecret *string `default:"null" json:"client_secret"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
-	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
+	ConsumerBy []AiMcpOauth2PluginConsumerBy `json:"consumer_by,omitempty"`
 	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ConsumerClaim []string `json:"consumer_claim"`
 	// The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
@@ -650,9 +656,9 @@ type AiMcpOauth2PluginConfig struct {
 	// Verify server certificate in mTLS.
 	TLSClientAuthSslVerify *bool `default:"true" json:"tls_client_auth_ssl_verify"`
 	// Configuration details about token exchange that should happen before reaching upstream MCP server
-	TokenExchange *TokenExchange `json:"token_exchange"`
+	TokenExchange *AiMcpOauth2PluginTokenExchange `json:"token_exchange"`
 	// Map token claims to upstream headers using path-based access. Each entry specifies a header name and a path (array of strings) to traverse the token claims. Mutually exclusive with claim_to_header.
-	UpstreamHeaders []UpstreamHeaders `json:"upstream_headers"`
+	UpstreamHeaders []AiMcpOauth2PluginUpstreamHeaders `json:"upstream_headers"`
 }
 
 func (a AiMcpOauth2PluginConfig) MarshalJSON() ([]byte, error) {
@@ -694,14 +700,14 @@ func (a *AiMcpOauth2PluginConfig) GetClaimToHeader() []ClaimToHeader {
 	return a.ClaimToHeader
 }
 
-func (a *AiMcpOauth2PluginConfig) GetClientAlg() *ClientAlg {
+func (a *AiMcpOauth2PluginConfig) GetClientAlg() *AiMcpOauth2PluginClientAlg {
 	if a == nil {
 		return nil
 	}
 	return a.ClientAlg
 }
 
-func (a *AiMcpOauth2PluginConfig) GetClientAuth() *ClientAuth {
+func (a *AiMcpOauth2PluginConfig) GetClientAuth() *AiMcpOauth2PluginClientAuth {
 	if a == nil {
 		return nil
 	}
@@ -729,7 +735,7 @@ func (a *AiMcpOauth2PluginConfig) GetClientSecret() *string {
 	return a.ClientSecret
 }
 
-func (a *AiMcpOauth2PluginConfig) GetConsumerBy() []ConsumerBy {
+func (a *AiMcpOauth2PluginConfig) GetConsumerBy() []AiMcpOauth2PluginConsumerBy {
 	if a == nil {
 		return nil
 	}
@@ -967,14 +973,14 @@ func (a *AiMcpOauth2PluginConfig) GetTLSClientAuthSslVerify() *bool {
 	return a.TLSClientAuthSslVerify
 }
 
-func (a *AiMcpOauth2PluginConfig) GetTokenExchange() *TokenExchange {
+func (a *AiMcpOauth2PluginConfig) GetTokenExchange() *AiMcpOauth2PluginTokenExchange {
 	if a == nil {
 		return nil
 	}
 	return a.TokenExchange
 }
 
-func (a *AiMcpOauth2PluginConfig) GetUpstreamHeaders() []UpstreamHeaders {
+func (a *AiMcpOauth2PluginConfig) GetUpstreamHeaders() []AiMcpOauth2PluginUpstreamHeaders {
 	if a == nil {
 		return nil
 	}

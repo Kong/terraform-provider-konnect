@@ -24,7 +24,6 @@ const (
 
 	testAiGateway = `
 		resource "konnect_ai_gateway" "test_ai_gateway" {
-			provider     = konnect-beta
 			name         = "test-ai-gateway-impl"
 			display_name = "Test AI Gateway"
 		}
@@ -32,7 +31,6 @@ const (
 
 	testAiGatewayModelProvider = `
 		resource "konnect_ai_gateway_model_provider" "test_openai_provider" {
-			provider   = konnect-beta
 			gateway_id = konnect_ai_gateway.test_ai_gateway.id
 			openai = {
 				name         = "openai"
@@ -46,7 +44,6 @@ const (
 
 	testAiGatewayModel = `
 		resource "konnect_ai_gateway_model" "test_ai_gateway_model" {
-			provider   = konnect-beta
 			gateway_id = konnect_ai_gateway.test_ai_gateway.id
 			model = {
 				name         = "gpt-4o-model"
@@ -177,11 +174,6 @@ func TestCatalogAiModel(t *testing.T) {
 
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
-			ExternalProviders: map[string]resource.ExternalProvider{
-				"konnect-beta": {
-					Source: "Kong/konnect-beta",
-				},
-			},
 			Steps: []resource.TestStep{
 				{
 					Config: baseConfig,

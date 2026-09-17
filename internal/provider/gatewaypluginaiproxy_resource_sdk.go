@@ -88,10 +88,10 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			r.Config.Model.Options.CacheReadCost = types.Float64PointerValue(resp.Config.Model.Options.CacheReadCost)
 			r.Config.Model.Options.CacheWriteCost = types.Float64PointerValue(resp.Config.Model.Options.CacheWriteCost)
 			if resp.Config.Model.Options.CacheWriteCostList != nil {
-				r.Config.Model.Options.CacheWriteCostList = []tfTypes.PartialModelCacheWriteCostList{}
+				r.Config.Model.Options.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
 				for _, cacheWriteCostListItem := range resp.Config.Model.Options.CacheWriteCostList {
-					var cacheWriteCostList tfTypes.PartialModelCacheWriteCostList
+					var cacheWriteCostList tfTypes.AIGatewayCacheWriteCost
 
 					cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
 					cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
@@ -113,10 +113,10 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 				r.Config.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Cohere.WaitForModel)
 			}
 			if resp.Config.Model.Options.ContextWindowFactor != nil {
-				r.Config.Model.Options.ContextWindowFactor = []tfTypes.PartialModelContextWindowFactor{}
+				r.Config.Model.Options.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
 
 				for _, contextWindowFactorItem := range resp.Config.Model.Options.ContextWindowFactor {
-					var contextWindowFactor tfTypes.PartialModelContextWindowFactor
+					var contextWindowFactor tfTypes.AIGatewayContextWindowFactor
 
 					contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
 					contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
@@ -170,10 +170,10 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			}
 			r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
 			if resp.Config.Model.Options.ServiceTierFactor != nil {
-				r.Config.Model.Options.ServiceTierFactor = []tfTypes.PartialModelServiceTierFactor{}
+				r.Config.Model.Options.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 				for _, serviceTierFactorItem := range resp.Config.Model.Options.ServiceTierFactor {
-					var serviceTierFactor tfTypes.PartialModelServiceTierFactor
+					var serviceTierFactor tfTypes.AIGatewayServiceTierFactor
 
 					serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
 					serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)
@@ -460,7 +460,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	} else {
 		updatedAt = nil
 	}
-	var auth *shared.Auth
+	var auth *shared.AiProxyPluginAuth
 	if r.Config.Auth != nil {
 		allowOverride := new(bool)
 		if !r.Config.Auth.AllowOverride.IsUnknown() && !r.Config.Auth.AllowOverride.IsNull() {
@@ -558,7 +558,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		} else {
 			paramValue = nil
 		}
-		auth = &shared.Auth{
+		auth = &shared.AiProxyPluginAuth{
 			AllowOverride:           allowOverride,
 			AwsAccessKeyID:          awsAccessKeyID,
 			AwsSecretAccessKey:      awsSecretAccessKey,
@@ -750,9 +750,9 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		}
 		var cohere *shared.Cohere
 		if r.Config.Model.Options.Cohere != nil {
-			embeddingInputType := new(shared.EmbeddingInputType)
+			embeddingInputType := new(shared.AiProxyPluginEmbeddingInputType)
 			if !r.Config.Model.Options.Cohere.EmbeddingInputType.IsUnknown() && !r.Config.Model.Options.Cohere.EmbeddingInputType.IsNull() {
-				*embeddingInputType = shared.EmbeddingInputType(r.Config.Model.Options.Cohere.EmbeddingInputType.ValueString())
+				*embeddingInputType = shared.AiProxyPluginEmbeddingInputType(r.Config.Model.Options.Cohere.EmbeddingInputType.ValueString())
 			} else {
 				embeddingInputType = nil
 			}
@@ -975,7 +975,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		}
 	}
 	provider := shared.Provider(r.Config.Model.Provider.ValueString())
-	model := shared.Model{
+	model := shared.AiProxyPluginModel{
 		ModelAlias: modelAlias,
 		Name:       name1,
 		Options:    optionsVar,
@@ -987,9 +987,9 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	} else {
 		modelNameHeader = nil
 	}
-	responseStreaming := new(shared.ResponseStreaming)
+	responseStreaming := new(shared.AiProxyPluginResponseStreaming)
 	if !r.Config.ResponseStreaming.IsUnknown() && !r.Config.ResponseStreaming.IsNull() {
-		*responseStreaming = shared.ResponseStreaming(r.Config.ResponseStreaming.ValueString())
+		*responseStreaming = shared.AiProxyPluginResponseStreaming(r.Config.ResponseStreaming.ValueString())
 	} else {
 		responseStreaming = nil
 	}

@@ -3,7 +3,7 @@
 package types
 
 type OpenidConnectPluginTokenExchange struct {
-	Cache               *OpenidConnectPluginCache   `tfsdk:"cache"`
-	Request             *OpenidConnectPluginRequest `tfsdk:"request"`
-	SubjectTokenIssuers []SubjectTokenIssuers       `tfsdk:"subject_token_issuers"`
+	Cache               *Cache                                   `tfsdk:"cache"`
+	Request             *Request                                 `tfsdk:"request"`
+	SubjectTokenIssuers []OpenidConnectPluginSubjectTokenIssuers `tfsdk:"subject_token_issuers"`
 }

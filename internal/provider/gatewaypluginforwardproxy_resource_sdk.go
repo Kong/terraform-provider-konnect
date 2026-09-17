@@ -354,9 +354,9 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin(ctx 
 		} else {
 			httpsVerify = nil
 		}
-		proxyScheme := new(shared.ProxyScheme)
+		proxyScheme := new(shared.ForwardProxyPluginProxyScheme)
 		if !r.Config.ProxyScheme.IsUnknown() && !r.Config.ProxyScheme.IsNull() {
-			*proxyScheme = shared.ProxyScheme(r.Config.ProxyScheme.ValueString())
+			*proxyScheme = shared.ForwardProxyPluginProxyScheme(r.Config.ProxyScheme.ValueString())
 		} else {
 			proxyScheme = nil
 		}

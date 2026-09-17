@@ -88,10 +88,10 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 				r.Config.Llm.Model.Options.CacheReadCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.CacheReadCost)
 				r.Config.Llm.Model.Options.CacheWriteCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.CacheWriteCost)
 				if resp.Config.Llm.Model.Options.CacheWriteCostList != nil {
-					r.Config.Llm.Model.Options.CacheWriteCostList = []tfTypes.PartialModelCacheWriteCostList{}
+					r.Config.Llm.Model.Options.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
 					for _, cacheWriteCostListItem := range resp.Config.Llm.Model.Options.CacheWriteCostList {
-						var cacheWriteCostList tfTypes.PartialModelCacheWriteCostList
+						var cacheWriteCostList tfTypes.AIGatewayCacheWriteCost
 
 						cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
 						cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
@@ -113,10 +113,10 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 					r.Config.Llm.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Cohere.WaitForModel)
 				}
 				if resp.Config.Llm.Model.Options.ContextWindowFactor != nil {
-					r.Config.Llm.Model.Options.ContextWindowFactor = []tfTypes.PartialModelContextWindowFactor{}
+					r.Config.Llm.Model.Options.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
 
 					for _, contextWindowFactorItem := range resp.Config.Llm.Model.Options.ContextWindowFactor {
-						var contextWindowFactor tfTypes.PartialModelContextWindowFactor
+						var contextWindowFactor tfTypes.AIGatewayContextWindowFactor
 
 						contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
 						contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
@@ -170,10 +170,10 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 				}
 				r.Config.Llm.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.OutputCost)
 				if resp.Config.Llm.Model.Options.ServiceTierFactor != nil {
-					r.Config.Llm.Model.Options.ServiceTierFactor = []tfTypes.PartialModelServiceTierFactor{}
+					r.Config.Llm.Model.Options.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem := range resp.Config.Llm.Model.Options.ServiceTierFactor {
-						var serviceTierFactor tfTypes.PartialModelServiceTierFactor
+						var serviceTierFactor tfTypes.AIGatewayServiceTierFactor
 
 						serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
 						serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)

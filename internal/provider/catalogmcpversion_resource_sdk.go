@@ -438,7 +438,7 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 					packages.Transport.SseTransport.URL = types.StringValue(packagesItem.Transport.SseTransport.URL)
 				}
 				if packagesItem.Transport.StdioTransport != nil {
-					packages.Transport.StdioTransport = &tfTypes.Metadata{}
+					packages.Transport.StdioTransport = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
 				}
 				if packagesItem.Transport.StreamableHTTPTransport != nil {
 					packages.Transport.StreamableHTTPTransport = &tfTypes.SseTransport{}
@@ -735,7 +735,7 @@ func (r *CatalogMCPVersionResourceModel) RefreshFromSharedCatalogMCPVersion(ctx 
 				if toolsItem.Annotations == nil {
 					tools.Annotations = nil
 				} else {
-					tools.Annotations = &tfTypes.CatalogMCPToolAnnotations{}
+					tools.Annotations = &tfTypes.AIGatewayMCPToolAnnotations{}
 					tools.Annotations.DestructiveHint = types.BoolPointerValue(toolsItem.Annotations.DestructiveHint)
 					tools.Annotations.IdempotentHint = types.BoolPointerValue(toolsItem.Annotations.IdempotentHint)
 					tools.Annotations.OpenWorldHint = types.BoolPointerValue(toolsItem.Annotations.OpenWorldHint)
@@ -1065,9 +1065,9 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 						} else {
 							isRequired = nil
 						}
-						format := new(shared.Format)
+						format := new(shared.MCPKeyValueInputFormat)
 						if !r.Remotes[remotesItem].StreamableHTTPTransport.Headers[headersIndex].Format.IsUnknown() && !r.Remotes[remotesItem].StreamableHTTPTransport.Headers[headersIndex].Format.IsNull() {
-							*format = shared.Format(r.Remotes[remotesItem].StreamableHTTPTransport.Headers[headersIndex].Format.ValueString())
+							*format = shared.MCPKeyValueInputFormat(r.Remotes[remotesItem].StreamableHTTPTransport.Headers[headersIndex].Format.ValueString())
 						} else {
 							format = nil
 						}
@@ -1271,9 +1271,9 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 						} else {
 							isRequired3 = nil
 						}
-						format3 := new(shared.Format)
+						format3 := new(shared.MCPKeyValueInputFormat)
 						if !r.Remotes[remotesItem].SseTransport.Headers[headersIndex1].Format.IsUnknown() && !r.Remotes[remotesItem].SseTransport.Headers[headersIndex1].Format.IsNull() {
-							*format3 = shared.Format(r.Remotes[remotesItem].SseTransport.Headers[headersIndex1].Format.ValueString())
+							*format3 = shared.MCPKeyValueInputFormat(r.Remotes[remotesItem].SseTransport.Headers[headersIndex1].Format.ValueString())
 						} else {
 							format3 = nil
 						}
@@ -1522,9 +1522,9 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 						} else {
 							isRequired6 = nil
 						}
-						format6 := new(shared.Format)
+						format6 := new(shared.MCPKeyValueInputFormat)
 						if !r.Packages[packagesIndex].Transport.StreamableHTTPTransport.Headers[headersIndex2].Format.IsUnknown() && !r.Packages[packagesIndex].Transport.StreamableHTTPTransport.Headers[headersIndex2].Format.IsNull() {
-							*format6 = shared.Format(r.Packages[packagesIndex].Transport.StreamableHTTPTransport.Headers[headersIndex2].Format.ValueString())
+							*format6 = shared.MCPKeyValueInputFormat(r.Packages[packagesIndex].Transport.StreamableHTTPTransport.Headers[headersIndex2].Format.ValueString())
 						} else {
 							format6 = nil
 						}
@@ -1667,9 +1667,9 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 						} else {
 							isRequired8 = nil
 						}
-						format8 := new(shared.Format)
+						format8 := new(shared.MCPKeyValueInputFormat)
 						if !r.Packages[packagesIndex].Transport.SseTransport.Headers[headersIndex3].Format.IsUnknown() && !r.Packages[packagesIndex].Transport.SseTransport.Headers[headersIndex3].Format.IsNull() {
-							*format8 = shared.Format(r.Packages[packagesIndex].Transport.SseTransport.Headers[headersIndex3].Format.ValueString())
+							*format8 = shared.MCPKeyValueInputFormat(r.Packages[packagesIndex].Transport.SseTransport.Headers[headersIndex3].Format.ValueString())
 						} else {
 							format8 = nil
 						}
@@ -2669,9 +2669,9 @@ func (r *CatalogMCPVersionResourceModel) ToSharedCreateCatalogMCPVersion(ctx con
 					} else {
 						isRequired22 = nil
 					}
-					format22 := new(shared.Format)
+					format22 := new(shared.MCPKeyValueInputFormat)
 					if !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.IsUnknown() && !r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.IsNull() {
-						*format22 = shared.Format(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.ValueString())
+						*format22 = shared.MCPKeyValueInputFormat(r.Packages[packagesIndex].EnvironmentVariables[environmentVariablesIndex].Format.ValueString())
 					} else {
 						format22 = nil
 					}

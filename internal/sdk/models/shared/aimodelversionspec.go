@@ -7,19 +7,19 @@ import (
 	"time"
 )
 
-type Source string
+type AiModelVersionSpecSource string
 
 const (
-	SourceAiGateway Source = "ai_gateway"
-	SourceProvider  Source = "provider"
+	AiModelVersionSpecSourceAiGateway AiModelVersionSpecSource = "ai_gateway"
+	AiModelVersionSpecSourceProvider  AiModelVersionSpecSource = "provider"
 )
 
-func (e Source) ToPointer() *Source {
+func (e AiModelVersionSpecSource) ToPointer() *AiModelVersionSpecSource {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Source) IsExact() bool {
+func (e *AiModelVersionSpecSource) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "ai_gateway", "provider":
@@ -31,7 +31,7 @@ func (e *Source) IsExact() bool {
 
 // SpecProvider - Provenance of the specification. `null` (or absent) for a user-uploaded specification.
 type SpecProvider struct {
-	Source Source `json:"source"`
+	Source AiModelVersionSpecSource `json:"source"`
 }
 
 func (s SpecProvider) MarshalJSON() ([]byte, error) {
@@ -45,9 +45,9 @@ func (s *SpecProvider) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (s *SpecProvider) GetSource() Source {
+func (s *SpecProvider) GetSource() AiModelVersionSpecSource {
 	if s == nil {
-		return Source("")
+		return AiModelVersionSpecSource("")
 	}
 	return s.Source
 }

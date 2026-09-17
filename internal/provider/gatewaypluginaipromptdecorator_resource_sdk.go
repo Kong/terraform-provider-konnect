@@ -354,9 +354,9 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 					var content string
 					content = r.Config.Prompts.Append[appendIndex].Content.ValueString()
 
-					role := new(shared.Role)
+					role := new(shared.AiPromptDecoratorPluginRole)
 					if !r.Config.Prompts.Append[appendIndex].Role.IsUnknown() && !r.Config.Prompts.Append[appendIndex].Role.IsNull() {
-						*role = shared.Role(r.Config.Prompts.Append[appendIndex].Role.ValueString())
+						*role = shared.AiPromptDecoratorPluginRole(r.Config.Prompts.Append[appendIndex].Role.ValueString())
 					} else {
 						role = nil
 					}
@@ -373,9 +373,9 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 					var content1 string
 					content1 = r.Config.Prompts.Prepend[prependIndex].Content.ValueString()
 
-					role1 := new(shared.AiPromptDecoratorPluginRole)
+					role1 := new(shared.AiPromptDecoratorPluginConfigRole)
 					if !r.Config.Prompts.Prepend[prependIndex].Role.IsUnknown() && !r.Config.Prompts.Prepend[prependIndex].Role.IsNull() {
-						*role1 = shared.AiPromptDecoratorPluginRole(r.Config.Prompts.Prepend[prependIndex].Role.ValueString())
+						*role1 = shared.AiPromptDecoratorPluginConfigRole(r.Config.Prompts.Prepend[prependIndex].Role.ValueString())
 					} else {
 						role1 = nil
 					}

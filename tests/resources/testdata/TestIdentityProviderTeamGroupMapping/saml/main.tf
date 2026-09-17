@@ -6,7 +6,7 @@ resource "konnect_team" "my_team" {
 
 # SAML Identity Provider
 resource "konnect_identity_provider" "saml_provider" {
-  enabled    = true
+  enabled    = false // to avoid race condition - konnect only allows one enabled idp at a time.
   type       = "saml"
   login_path = "testsamlmapping"
   config = {

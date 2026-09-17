@@ -122,27 +122,27 @@ func (f *ForwardProxyPluginPartials) GetPath() string {
 	return f.Path
 }
 
-// ProxyScheme - The proxy scheme to use when connecting. Only `http` is supported.
-type ProxyScheme string
+// ForwardProxyPluginProxyScheme - The proxy scheme to use when connecting. Only `http` is supported.
+type ForwardProxyPluginProxyScheme string
 
 const (
-	ProxySchemeHTTP ProxyScheme = "http"
+	ForwardProxyPluginProxySchemeHTTP ForwardProxyPluginProxyScheme = "http"
 )
 
-func (e ProxyScheme) ToPointer() *ProxyScheme {
+func (e ForwardProxyPluginProxyScheme) ToPointer() *ForwardProxyPluginProxyScheme {
 	return &e
 }
-func (e *ProxyScheme) UnmarshalJSON(data []byte) error {
+func (e *ForwardProxyPluginProxyScheme) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "http":
-		*e = ProxyScheme(v)
+		*e = ForwardProxyPluginProxyScheme(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ProxyScheme: %v", v)
+		return fmt.Errorf("invalid value for ForwardProxyPluginProxyScheme: %v", v)
 	}
 }
 
@@ -190,7 +190,7 @@ type ForwardProxyPluginConfig struct {
 	// Whether the server certificate will be verified. When ca_certificates is configured, those certificates are used for verification. Otherwise, verification uses the CA certificates specified in lua_ssl_trusted_certificate.
 	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// The proxy scheme to use when connecting. Only `http` is supported.
-	ProxyScheme *ProxyScheme `default:"http" json:"proxy_scheme"`
+	ProxyScheme *ForwardProxyPluginProxyScheme `default:"http" json:"proxy_scheme"`
 	// Determines how to handle headers when forwarding the request.
 	XHeaders *XHeaders `default:"append" json:"x_headers"`
 }
@@ -262,7 +262,7 @@ func (f *ForwardProxyPluginConfig) GetHTTPSVerify() *bool {
 	return f.HTTPSVerify
 }
 
-func (f *ForwardProxyPluginConfig) GetProxyScheme() *ProxyScheme {
+func (f *ForwardProxyPluginConfig) GetProxyScheme() *ForwardProxyPluginProxyScheme {
 	if f == nil {
 		return nil
 	}

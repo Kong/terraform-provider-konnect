@@ -3,7 +3,7 @@
 package types
 
 type BackendClusterAuthenticationScheme struct {
-	Anonymous *Metadata                              `queryParam:"inline" tfsdk:"anonymous"`
+	Anonymous *CreateAPIProductDocumentDTOMetadata   `queryParam:"inline" tfsdk:"anonymous"`
 	SaslPlain *BackendClusterAuthenticationSaslPlain `queryParam:"inline" tfsdk:"sasl_plain"`
 	SaslScram *BackendClusterAuthenticationSaslScram `queryParam:"inline" tfsdk:"sasl_scram"`
 }

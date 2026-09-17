@@ -19,7 +19,7 @@ func (r *GatewayPluginBotDetectionResourceModel) RefreshFromSharedBotDetectionPl
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.CollectionACLConfig{}
+			r.Config = &tfTypes.AIGatewayACLS{}
 			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
 			for _, v := range resp.Config.Allow {
 				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))

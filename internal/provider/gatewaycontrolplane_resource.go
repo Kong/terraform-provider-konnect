@@ -50,7 +50,7 @@ type GatewayControlPlaneResourceModel struct {
 	ID           types.String                `tfsdk:"id"`
 	Labels       map[string]types.String     `tfsdk:"labels"`
 	Name         types.String                `tfsdk:"name"`
-	ProxyUrls    []tfTypes.ProxyURL          `tfsdk:"proxy_urls"`
+	ProxyUrls    []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
 }
 
 func (r *GatewayControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

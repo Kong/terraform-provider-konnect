@@ -8,10 +8,10 @@ import (
 )
 
 type CatalogMCPTool struct {
-	Annotations  *CatalogMCPToolAnnotations `tfsdk:"annotations"`
-	Description  types.String               `tfsdk:"description"`
-	InputSchema  jsontypes.Normalized       `tfsdk:"input_schema"`
-	Name         types.String               `tfsdk:"name"`
-	OutputSchema jsontypes.Normalized       `tfsdk:"output_schema"`
-	Title        types.String               `tfsdk:"title"`
+	Annotations  *AIGatewayMCPToolAnnotations `tfsdk:"annotations"`
+	Description  types.String                 `tfsdk:"description"`
+	InputSchema  jsontypes.Normalized         `tfsdk:"input_schema"`
+	Name         types.String                 `tfsdk:"name"`
+	OutputSchema jsontypes.Normalized         `tfsdk:"output_schema"`
+	Title        types.String                 `tfsdk:"title"`
 }

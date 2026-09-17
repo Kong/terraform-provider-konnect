@@ -7,6 +7,6 @@ import (
 )
 
 type AiA2aProxyPluginConfig struct {
-	Logging            *Logging    `tfsdk:"logging"`
-	MaxRequestBodySize types.Int64 `tfsdk:"max_request_body_size"`
+	Logging            *AiA2aProxyPluginLogging `tfsdk:"logging"`
+	MaxRequestBodySize types.Int64              `tfsdk:"max_request_body_size"`
 }

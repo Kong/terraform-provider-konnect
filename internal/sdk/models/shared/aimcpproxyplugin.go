@@ -841,7 +841,7 @@ func (a *AiMcpProxyPluginSession) GetStrategy() *AiMcpProxyPluginStrategy {
 	return a.Strategy
 }
 
-type Server struct {
+type AiMcpProxyPluginServer struct {
 	// Whether to forward the client request headers to the upstream server when calling the tools.
 	ForwardClientHeaders *bool `default:"true" json:"forward_client_headers"`
 	// Enable managed session when Kong responds as MCP server in listener or conversion-listener modes. This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
@@ -852,43 +852,43 @@ type Server struct {
 	Timeout *float64 `default:"10000" json:"timeout"`
 }
 
-func (s Server) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+func (a AiMcpProxyPluginServer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (s *Server) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+func (a *AiMcpProxyPluginServer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Server) GetForwardClientHeaders() *bool {
-	if s == nil {
+func (a *AiMcpProxyPluginServer) GetForwardClientHeaders() *bool {
+	if a == nil {
 		return nil
 	}
-	return s.ForwardClientHeaders
+	return a.ForwardClientHeaders
 }
 
-func (s *Server) GetSession() *AiMcpProxyPluginSession {
-	if s == nil {
+func (a *AiMcpProxyPluginServer) GetSession() *AiMcpProxyPluginSession {
+	if a == nil {
 		return nil
 	}
-	return s.Session
+	return a.Session
 }
 
-func (s *Server) GetTag() *string {
-	if s == nil {
+func (a *AiMcpProxyPluginServer) GetTag() *string {
+	if a == nil {
 		return nil
 	}
-	return s.Tag
+	return a.Tag
 }
 
-func (s *Server) GetTimeout() *float64 {
-	if s == nil {
+func (a *AiMcpProxyPluginServer) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return s.Timeout
+	return a.Timeout
 }
 
 // AiMcpProxyPluginACL - Optional per-primitive ACL. `deny` has higher precedence than `allow`.
@@ -1085,20 +1085,20 @@ func (p *Parameters) GetDescription() *string {
 	return p.Description
 }
 
-// Scheme - The scheme of the exported API, which must be one of the route's scheme. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
-type Scheme string
+// AiMcpProxyPluginScheme - The scheme of the exported API, which must be one of the route's scheme. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
+type AiMcpProxyPluginScheme string
 
 const (
-	SchemeHTTP  Scheme = "http"
-	SchemeHTTPS Scheme = "https"
+	AiMcpProxyPluginSchemeHTTP  AiMcpProxyPluginScheme = "http"
+	AiMcpProxyPluginSchemeHTTPS AiMcpProxyPluginScheme = "https"
 )
 
-func (e Scheme) ToPointer() *Scheme {
+func (e AiMcpProxyPluginScheme) ToPointer() *AiMcpProxyPluginScheme {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Scheme) IsExact() bool {
+func (e *AiMcpProxyPluginScheme) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "http", "https":
@@ -1133,7 +1133,7 @@ type Tools struct {
 	// The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported.
 	Responses any `json:"responses,omitempty"`
 	// The scheme of the exported API, which must be one of the route's scheme. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
-	Scheme *Scheme `json:"scheme,omitempty"`
+	Scheme *AiMcpProxyPluginScheme `json:"scheme,omitempty"`
 }
 
 func (t Tools) MarshalJSON() ([]byte, error) {
@@ -1231,7 +1231,7 @@ func (t *Tools) GetResponses() any {
 	return t.Responses
 }
 
-func (t *Tools) GetScheme() *Scheme {
+func (t *Tools) GetScheme() *AiMcpProxyPluginScheme {
 	if t == nil {
 		return nil
 	}
@@ -1253,9 +1253,9 @@ type AiMcpProxyPluginConfig struct {
 	// max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'.
-	Mode   AiMcpProxyPluginMode `json:"mode"`
-	Server *Server              `json:"server"`
-	Tools  []Tools              `json:"tools"`
+	Mode   AiMcpProxyPluginMode    `json:"mode"`
+	Server *AiMcpProxyPluginServer `json:"server"`
+	Tools  []Tools                 `json:"tools"`
 }
 
 func (a AiMcpProxyPluginConfig) MarshalJSON() ([]byte, error) {
@@ -1325,7 +1325,7 @@ func (a *AiMcpProxyPluginConfig) GetMode() AiMcpProxyPluginMode {
 	return a.Mode
 }
 
-func (a *AiMcpProxyPluginConfig) GetServer() *Server {
+func (a *AiMcpProxyPluginConfig) GetServer() *AiMcpProxyPluginServer {
 	if a == nil {
 		return nil
 	}

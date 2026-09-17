@@ -7,5 +7,8 @@ import (
 )
 
 type RequestCalloutPluginCache struct {
-	Bypass types.Bool `tfsdk:"bypass"`
+	CacheTTL types.Int64          `tfsdk:"cache_ttl"`
+	Memory   *DatakitPluginMemory `tfsdk:"memory"`
+	Redis    *ClusterCacheRedis   `tfsdk:"redis"`
+	Strategy types.String         `tfsdk:"strategy"`
 }

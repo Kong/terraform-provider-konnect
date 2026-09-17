@@ -15,6 +15,6 @@ type AiMcpProxyPluginConfig struct {
 	Logging               *AiMcpProxyPluginLogging `tfsdk:"logging"`
 	MaxRequestBodySize    types.Int64              `tfsdk:"max_request_body_size"`
 	Mode                  types.String             `tfsdk:"mode"`
-	Server                *Server                  `tfsdk:"server"`
+	Server                *AiMcpProxyPluginServer  `tfsdk:"server"`
 	Tools                 []Tools                  `tfsdk:"tools"`
 }
