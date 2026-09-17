@@ -34,21 +34,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver_upstream" {
     name         = "tf-test-mcp-upstream"
     tools = [
       {
-        description = "aaaaaaa"
-        host        = "https://example.com"
-        method      = "GET"
-        name        = "search-examples"
-        path        = "/examples"
-        scheme      = "https"
-        annotations = {
-          destructive_hint = true
-        }
-        parameters = [
-          {
-            in   = "query"
-            name = "origin"
-          }
-        ]
+        description = "Search for available flights",
+        name = "search-flights",
       }
     ]
   }

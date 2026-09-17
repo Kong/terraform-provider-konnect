@@ -47,7 +47,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         provider = konnect_ai_gateway_model_provider.my_aigatewaymodelprovider.anthropic.name
         config = {
           anthropic = {
-            deployment_id = "claude-5"
             max_tokens    = 1024
             temperature   = 0.7
           }

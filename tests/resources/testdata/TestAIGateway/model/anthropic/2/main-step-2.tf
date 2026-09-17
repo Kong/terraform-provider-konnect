@@ -62,7 +62,6 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
             top_k                 = 2
             top_p                 = 0.5
             upstream_url          = "https://baggy-trash.biz/"
-            deployment_id         = "claude-5-model"
           }
         }
         name     = "claude-5-model"

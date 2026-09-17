@@ -18,22 +18,8 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
     }
     tools = [
       {
-        name        = "search-flights"
-        description = "Search for available flights"
-        host        = "https://api.example.com"
-        scheme      = "https"
-        method      = "GET"
-        path        = "/flights"
-        parameters = [
-          {
-            in   = "query"
-            name = "origin"
-          },
-          {
-            in   = "query"
-            name = "destination"
-          }
-        ]
+        description = "Search for available flights",
+        name = "search-flights",
       }
     ]
   }
