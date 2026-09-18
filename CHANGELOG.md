@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.23.0
-> Released 2026/09/17
+> Released 2026/09/18
 
 # Features
 * Add support for AI Gateway 2.0 using which you can configure AI Gateway, MCP servers, AI Model Providers and AI Models
@@ -20,7 +20,6 @@
   * `konnect_ai_gateway_model_provider`
   * `konnect_ai_gateway_policy`
   * `konnect_ai_gateway_vault`
-* Add support for `konnect_platform_available_regions` datasource.
 * Add support for AI Model and MCP catalog resources, using which users can add AI Models, MCP Servers, and Agents directly to Catalog and link them to their corresponding AI Gateway entities
   * `konnect_catalog_ai_model`
   * `konnect_catalog_ai_model_implementation`
@@ -29,6 +28,7 @@
   * `konnect_catalog_mcp`
   * `konnect_catalog_mcp_version`
   * `konnect_catalog_mcp_implementation`
+* Add support for `konnect_platform_available_regions` datasource
 
 # Bug Fixes
 * Fixed drift in `konnect_gateway_control_plane` resource during Terraform import.
