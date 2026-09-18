@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestGatewayCustomPlugin(t *testing.T) {
@@ -28,6 +29,16 @@ func TestGatewayCustomPlugin(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering.before.access.0", "acl"),
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering.after.access.0", "request-transformer"),
 					),
+				},
+				{
+					// Check that there are no phantom diffs
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
 				},
 				{ // Remove ordering and partial block
 					Config:          providerConfigUs,
