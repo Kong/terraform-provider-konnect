@@ -77,10 +77,3 @@ resource "konnect_ai_gateway_model" "test_ai_gateway_model" {
     ]
   }
 }
-
-#example of creating an AI Model implementation in the catalog that uses the AI Gateway and AI Gateway Model
-resource "konnect_catalog_ai_model_version_spec" "test_ai_model_version_spec" {
-  catalog_ai_model_id  = konnect_catalog_ai_model.test_ai_model.id
-  spec_content = "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Test AI Model\",\"version\":\"1.0.0\"},\"paths\":{}}"
-  depends_on = [konnect_catalog_ai_model_version.test_ai_model_version]
-}
