@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -12,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfReflect "github.com/kong/terraform-provider-konnect/v3/internal/provider/reflect"
@@ -19,6 +21,8 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 	"github.com/kong/terraform-provider-konnect/v3/src/utils"
 )
 
@@ -42,6 +46,13 @@ func (r *CustomPluginResource) Schema(ctx context.Context, req resource.SchemaRe
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Gateway Custom Plugin Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `Plugin ID`,
@@ -140,6 +151,38 @@ func (r *CustomPluginResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 					},
 				},
+			},
+			"partials": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
+						},
+						"name": schema.StringAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
+						},
+						"path": schema.StringAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `Not Null`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+							},
+						},
+					},
+				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -452,12 +495,25 @@ func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, cli
 
 	r.ID = types.StringPointerValue(resp.ID)
 	r.Name = types.StringValue(resp.Name)
+	r.Condition = types.StringPointerValue(resp.Condition)
 	r.Consumer = pointerToId(resp.Consumer)
 	r.ConsumerGroup = pointerToId(resp.ConsumerGroup)
 	r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 	r.Enabled = types.BoolPointerValue(resp.Enabled)
 	r.InstanceName = types.StringPointerValue(resp.InstanceName)
 	r.Ordering = orderingToValue(resp.Ordering)
+	if resp.Partials != nil {
+		r.Partials = make([]tfTypes.ACLPluginPartials, 0, len(resp.Partials))
+		for _, partial := range resp.Partials {
+			r.Partials = append(r.Partials, tfTypes.ACLPluginPartials{
+				ID:   types.StringPointerValue(partial.ID),
+				Name: types.StringPointerValue(partial.Name),
+				Path: types.StringPointerValue(partial.Path),
+			})
+		}
+	} else {
+		r.Partials = nil
+	}
 	r.Protocols = protocolsToStringSlice(resp.Protocols)
 	r.Route = pointerToId(resp.Route)
 	r.Service = pointerToId(resp.Service)

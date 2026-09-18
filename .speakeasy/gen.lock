@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: aff84066227c36ed0fe0c468ed2d46a9
+  docChecksum: 2b691e6d33693c134bab7aaaf9554de5
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.23.0
   configChecksum: d1f2ed0fe7c442fb00b5f0634cd367f9
 persistentEdits:
-  generation_id: a24cdf70-f5a1-48a8-a159-9fec91b1c218
-  pristine_commit_hash: 75a8054fbc1e7c382b5ebb04c99bef1c2d349dec
-  pristine_tree_hash: 17e8a643bd1de292ced61697b6ff7c12afa6b942
+  generation_id: e745839e-4a79-4f36-b1a5-ac3dc1336bac
+  pristine_commit_hash: 8481e50bc8ef48b93df41fe97ed384c9520a6efb
+  pristine_tree_hash: 06ca3d8d1189a0e28d85e9dde8b739ba4aed306b
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3977,8 +3977,8 @@ trackedFiles:
     pristine_git_object: 726c34014559d0c226a1443dd67b613faa6aaae5
   internal/provider/gatewaypluginace_resource_sdk.go:
     id: ebfd3d47ae6d
-    last_write_checksum: sha1:fe6993671d3ea46c9701ebf9acfb6724f67a4d6f
-    pristine_git_object: a376b79a91d4f85d0b5c8fee444202001c8a5d2b
+    last_write_checksum: sha1:42c9edb540dd2930760606c4041cb6d03e9ed000
+    pristine_git_object: 57292ccb4788a245da1a067058fe0a5ae3a403a1
   internal/provider/gatewaypluginacl_resource.go:
     id: 0bfe6319e354
     last_write_checksum: sha1:219889aed9b2ff583d1ef9dbfdaa7b43b2d2630a
@@ -12489,8 +12489,8 @@ trackedFiles:
     pristine_git_object: 1710af3209fbcdf9e43659fd204a29269929850d
   internal/sdk/models/shared/aceplugin.go:
     id: afce4687f017
-    last_write_checksum: sha1:ba45efe3b6597bfcdf0087c05d9d9b674d4c46ed
-    pristine_git_object: 1e45bc923be0beaa476b715dcda07a4a636656e4
+    last_write_checksum: sha1:02b0be24d218971d37f66c23d09e51ec822830e3
+    pristine_git_object: 245ebb1ddad9f91fa64912d577b9e89d008ab1d3
   internal/sdk/models/shared/acl.go:
     id: 1c547ab117d8
     last_write_checksum: sha1:4d2353a75032f68d0289aeed1e96df74c9075df4
@@ -15237,8 +15237,8 @@ trackedFiles:
     pristine_git_object: 2d32bff568be1154e7b68e66a23e3ddcfb37aaa4
   internal/sdk/models/shared/plugin.go:
     id: 991f65fc7406
-    last_write_checksum: sha1:c911712dc1f28eecb95e6f98ce39ae4bb9393f7b
-    pristine_git_object: 5c606e4aecb280259a9b9d93f617b883c9706d6e
+    last_write_checksum: sha1:4706f5af795ed085d881bdfe4f87d428e5d9ecb4
+    pristine_git_object: b99c80b3b9811b7320a6543bd35962a5653f6dd9
   internal/sdk/models/shared/pluginschemas.go:
     id: 79f8e3f907e7
     last_write_checksum: sha1:4c84f3c8ffbf56cfcce6d62dbd7968a38fd7b68c
@@ -18478,10 +18478,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
+        application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "partials": [{"id": "cff1230a-00f7-4ae8-b376-c370f0eb4dae", "name": "foo-partial", "path": "config.redis"}, {"id": "129ee345-cba8-4e55-9d6d-93c223ff91ae", "name": "bar-partial", "path": "config.redis"}], "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
       responses:
         "201":
-          application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
+          application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "partials": [{"id": "cff1230a-00f7-4ae8-b376-c370f0eb4dae", "name": "foo-partial", "path": "config.redis"}, {"id": "129ee345-cba8-4e55-9d6d-93c223ff91ae", "name": "bar-partial", "path": "config.redis"}], "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
         "401":
           application/json: {"message": "<value>", "status": 411057}
   delete-plugin:
@@ -18521,7 +18521,7 @@ examples:
           expand_partials: true
       responses:
         "200":
-          application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
+          application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "partials": [{"id": "cff1230a-00f7-4ae8-b376-c370f0eb4dae", "name": "foo-partial", "path": "config.redis"}, {"id": "129ee345-cba8-4e55-9d6d-93c223ff91ae", "name": "bar-partial", "path": "config.redis"}], "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
         "401":
           application/json: {"message": "<value>", "status": 939243}
   upsert-plugin:
@@ -18543,10 +18543,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
+        application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "partials": [{"id": "cff1230a-00f7-4ae8-b376-c370f0eb4dae", "name": "foo-partial", "path": "config.redis"}, {"id": "129ee345-cba8-4e55-9d6d-93c223ff91ae", "name": "bar-partial", "path": "config.redis"}], "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
       responses:
         "200":
-          application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
+          application/json: {"condition": null, "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "partials": [{"id": "cff1230a-00f7-4ae8-b376-c370f0eb4dae", "name": "foo-partial", "path": "config.redis"}, {"id": "129ee345-cba8-4e55-9d6d-93c223ff91ae", "name": "bar-partial", "path": "config.redis"}], "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
         "401":
           application/json: {"message": "<value>", "status": 294960}
   delete-acl-plugin:
