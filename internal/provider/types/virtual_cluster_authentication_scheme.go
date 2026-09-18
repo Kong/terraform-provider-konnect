@@ -3,7 +3,7 @@
 package types
 
 type VirtualClusterAuthenticationScheme struct {
-	Anonymous         *Metadata                                      `queryParam:"inline" tfsdk:"anonymous"`
+	Anonymous         *CreateAPIProductDocumentDTOMetadata           `queryParam:"inline" tfsdk:"anonymous"`
 	ClientCertificate *VirtualClusterAuthenticationClientCertificate `queryParam:"inline" tfsdk:"client_certificate"`
 	OauthBearer       *VirtualClusterAuthenticationOauthBearer       `queryParam:"inline" tfsdk:"oauth_bearer"`
 	SaslPlain         *VirtualClusterAuthenticationSaslPlain         `queryParam:"inline" tfsdk:"sasl_plain"`

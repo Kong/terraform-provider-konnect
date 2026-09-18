@@ -38,16 +38,16 @@ type APIProductDocumentResource struct {
 
 // APIProductDocumentResourceModel describes the resource data model.
 type APIProductDocumentResourceModel struct {
-	APIProductID     types.String                     `tfsdk:"api_product_id"`
-	Content          encodedstring.Base64OrPlainInput `tfsdk:"content"`
-	CreatedAt        types.String                     `tfsdk:"created_at"`
-	ID               types.String                     `tfsdk:"id"`
-	Metadata         *tfTypes.Metadata                `tfsdk:"metadata"`
-	ParentDocumentID types.String                     `tfsdk:"parent_document_id"`
-	Slug             types.String                     `tfsdk:"slug"`
-	Status           types.String                     `tfsdk:"status"`
-	Title            types.String                     `tfsdk:"title"`
-	UpdatedAt        types.String                     `tfsdk:"updated_at"`
+	APIProductID     types.String                                 `tfsdk:"api_product_id"`
+	Content          encodedstring.Base64OrPlainInput             `tfsdk:"content"`
+	CreatedAt        types.String                                 `tfsdk:"created_at"`
+	ID               types.String                                 `tfsdk:"id"`
+	Metadata         *tfTypes.CreateAPIProductDocumentDTOMetadata `tfsdk:"metadata"`
+	ParentDocumentID types.String                                 `tfsdk:"parent_document_id"`
+	Slug             types.String                                 `tfsdk:"slug"`
+	Status           types.String                                 `tfsdk:"status"`
+	Title            types.String                                 `tfsdk:"title"`
+	UpdatedAt        types.String                                 `tfsdk:"updated_at"`
 }
 
 func (r *APIProductDocumentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

@@ -7,9 +7,9 @@ import (
 )
 
 type AiMcpProxyPluginSession struct {
-	Client     *AiMcpProxyPluginClient `tfsdk:"client"`
-	Managed    types.Bool              `tfsdk:"managed"`
-	Redis      *PartialVectordbRedis   `tfsdk:"redis"`
-	SessionTTL types.Float64           `tfsdk:"session_ttl"`
-	Strategy   types.String            `tfsdk:"strategy"`
+	Client     *AIGatewayMCPServerServerConfigBaseClient `tfsdk:"client"`
+	Managed    types.Bool                                `tfsdk:"managed"`
+	Redis      *ClusterCacheRedis                        `tfsdk:"redis"`
+	SessionTTL types.Float64                             `tfsdk:"session_ttl"`
+	Strategy   types.String                              `tfsdk:"strategy"`
 }

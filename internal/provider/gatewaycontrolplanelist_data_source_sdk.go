@@ -22,17 +22,20 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 		for _, dataItem := range resp.Data {
 			var data tfTypes.ControlPlane1
 
+			data.AuthType = types.StringPointerValue(dataItem.AuthType)
+			data.CloudGateway = types.BoolPointerValue(dataItem.CloudGateway)
+			data.ClusterType = types.StringPointerValue(dataItem.ClusterType)
 			data.Config = &tfTypes.ControlPlaneConfig{}
 			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
 			data.Config.CloudGateway = types.BoolValue(dataItem.Config.CloudGateway)
 			data.Config.ClusterType = types.StringValue(string(dataItem.Config.ClusterType))
 			data.Config.ControlPlaneEndpoint = types.StringValue(dataItem.Config.ControlPlaneEndpoint)
 			if data.Config.ProxyUrls == nil {
-				data.Config.ProxyUrls = []tfTypes.ProxyURL{}
+				data.Config.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
 			}
 
 			for _, proxyUrlsItem := range dataItem.Config.ProxyUrls {
-				var proxyUrls tfTypes.ProxyURL
+				var proxyUrls tfTypes.AIGatewayProxyURL
 
 				proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
 				proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
@@ -50,6 +53,19 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 				}
 			}
 			data.Name = types.StringValue(dataItem.Name)
+			if data.ProxyUrls == nil {
+				data.ProxyUrls = []tfTypes.AIGatewayProxyURL{}
+			}
+
+			for _, proxyUrlsItem1 := range dataItem.ProxyUrls {
+				var proxyUrls1 tfTypes.AIGatewayProxyURL
+
+				proxyUrls1.Host = types.StringValue(proxyUrlsItem1.Host)
+				proxyUrls1.Port = types.Int64Value(proxyUrlsItem1.Port)
+				proxyUrls1.Protocol = types.StringValue(proxyUrlsItem1.Protocol)
+
+				data.ProxyUrls = append(data.ProxyUrls, proxyUrls1)
+			}
 
 			r.Data = append(r.Data, data)
 		}

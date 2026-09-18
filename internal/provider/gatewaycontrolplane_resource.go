@@ -21,6 +21,9 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -47,7 +50,7 @@ type GatewayControlPlaneResourceModel struct {
 	ID           types.String                `tfsdk:"id"`
 	Labels       map[string]types.String     `tfsdk:"labels"`
 	Name         types.String                `tfsdk:"name"`
-	ProxyUrls    []tfTypes.ProxyURL          `tfsdk:"proxy_urls"`
+	ProxyUrls    []tfTypes.AIGatewayProxyURL `tfsdk:"proxy_urls"`
 }
 
 func (r *GatewayControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,20 +62,25 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayControlPlane Resource",
 		Attributes: map[string]schema.Attribute{
 			"auth_type": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `The auth type value of the cluster associated with the Runtime Group. possible known values include one of ["pinned_client_certs", "pki_client_certs"]`,
 			},
 			"cloud_gateway": schema.BoolAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
 				Description: `Whether this control-plane can be used for cloud-gateways. Requires replacement if changed.`,
 			},
 			"cluster_type": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The ClusterType value of the cluster associated with the Control Plane. possible known values include one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_SERVERLESS_V1"]; Requires replacement if changed.`,
 			},
@@ -168,27 +176,37 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"proxy_urls": schema.SetNestedAttribute{
+				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"host": schema.StringAttribute{
-							Required:    true,
-							Description: `Hostname of the proxy URL.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `Hostname of the proxy URL. Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthBetween(1, 120),
 							},
 						},
 						"port": schema.Int64Attribute{
-							Required:    true,
-							Description: `Port of the proxy URL.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `Port of the proxy URL. Not Null`,
 							Validators: []validator.Int64{
+								speakeasy_int64validators.NotNull(),
 								int64validator.AtLeast(1),
 							},
 						},
 						"protocol": schema.StringAttribute{
-							Required:    true,
-							Description: `Protocol of the proxy URL.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `Protocol of the proxy URL. Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthBetween(1, 32),
 							},
 						},

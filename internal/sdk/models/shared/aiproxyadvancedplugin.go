@@ -369,28 +369,28 @@ func (e *AiProxyAdvancedPluginAlgorithm) IsExact() bool {
 	return false
 }
 
-type FailoverCriteria string
+type AiProxyAdvancedPluginFailoverCriteria string
 
 const (
-	FailoverCriteriaError         FailoverCriteria = "error"
-	FailoverCriteriaHttp403       FailoverCriteria = "http_403"
-	FailoverCriteriaHttp404       FailoverCriteria = "http_404"
-	FailoverCriteriaHttp429       FailoverCriteria = "http_429"
-	FailoverCriteriaHttp500       FailoverCriteria = "http_500"
-	FailoverCriteriaHttp502       FailoverCriteria = "http_502"
-	FailoverCriteriaHttp503       FailoverCriteria = "http_503"
-	FailoverCriteriaHttp504       FailoverCriteria = "http_504"
-	FailoverCriteriaInvalidHeader FailoverCriteria = "invalid_header"
-	FailoverCriteriaNonIdempotent FailoverCriteria = "non_idempotent"
-	FailoverCriteriaTimeout       FailoverCriteria = "timeout"
+	AiProxyAdvancedPluginFailoverCriteriaError         AiProxyAdvancedPluginFailoverCriteria = "error"
+	AiProxyAdvancedPluginFailoverCriteriaHttp403       AiProxyAdvancedPluginFailoverCriteria = "http_403"
+	AiProxyAdvancedPluginFailoverCriteriaHttp404       AiProxyAdvancedPluginFailoverCriteria = "http_404"
+	AiProxyAdvancedPluginFailoverCriteriaHttp429       AiProxyAdvancedPluginFailoverCriteria = "http_429"
+	AiProxyAdvancedPluginFailoverCriteriaHttp500       AiProxyAdvancedPluginFailoverCriteria = "http_500"
+	AiProxyAdvancedPluginFailoverCriteriaHttp502       AiProxyAdvancedPluginFailoverCriteria = "http_502"
+	AiProxyAdvancedPluginFailoverCriteriaHttp503       AiProxyAdvancedPluginFailoverCriteria = "http_503"
+	AiProxyAdvancedPluginFailoverCriteriaHttp504       AiProxyAdvancedPluginFailoverCriteria = "http_504"
+	AiProxyAdvancedPluginFailoverCriteriaInvalidHeader AiProxyAdvancedPluginFailoverCriteria = "invalid_header"
+	AiProxyAdvancedPluginFailoverCriteriaNonIdempotent AiProxyAdvancedPluginFailoverCriteria = "non_idempotent"
+	AiProxyAdvancedPluginFailoverCriteriaTimeout       AiProxyAdvancedPluginFailoverCriteria = "timeout"
 )
 
-func (e FailoverCriteria) ToPointer() *FailoverCriteria {
+func (e AiProxyAdvancedPluginFailoverCriteria) ToPointer() *AiProxyAdvancedPluginFailoverCriteria {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *FailoverCriteria) IsExact() bool {
+func (e *AiProxyAdvancedPluginFailoverCriteria) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
@@ -400,20 +400,20 @@ func (e *FailoverCriteria) IsExact() bool {
 	return false
 }
 
-// LatencyStrategy - What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.
-type LatencyStrategy string
+// AiProxyAdvancedPluginLatencyStrategy - What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.
+type AiProxyAdvancedPluginLatencyStrategy string
 
 const (
-	LatencyStrategyE2e  LatencyStrategy = "e2e"
-	LatencyStrategyTpot LatencyStrategy = "tpot"
+	AiProxyAdvancedPluginLatencyStrategyE2e  AiProxyAdvancedPluginLatencyStrategy = "e2e"
+	AiProxyAdvancedPluginLatencyStrategyTpot AiProxyAdvancedPluginLatencyStrategy = "tpot"
 )
 
-func (e LatencyStrategy) ToPointer() *LatencyStrategy {
+func (e AiProxyAdvancedPluginLatencyStrategy) ToPointer() *AiProxyAdvancedPluginLatencyStrategy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *LatencyStrategy) IsExact() bool {
+func (e *AiProxyAdvancedPluginLatencyStrategy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "e2e", "tpot":
@@ -456,11 +456,11 @@ type Balancer struct {
 	// The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`.
 	FailTimeout *int64 `default:"10000" json:"fail_timeout"`
 	// Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream
-	FailoverCriteria []FailoverCriteria `json:"failover_criteria,omitempty"`
+	FailoverCriteria []AiProxyAdvancedPluginFailoverCriteria `json:"failover_criteria,omitempty"`
 	// The header to use for consistent-hashing.
 	HashOnHeader *string `default:"X-Kong-LLM-Request-ID" json:"hash_on_header"`
 	// What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.
-	LatencyStrategy *LatencyStrategy `default:"tpot" json:"latency_strategy"`
+	LatencyStrategy *AiProxyAdvancedPluginLatencyStrategy `default:"tpot" json:"latency_strategy"`
 	// Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts.
 	MaxFails    *int64 `default:"0" json:"max_fails"`
 	ReadTimeout *int64 `default:"60000" json:"read_timeout"`
@@ -505,7 +505,7 @@ func (b *Balancer) GetFailTimeout() *int64 {
 	return b.FailTimeout
 }
 
-func (b *Balancer) GetFailoverCriteria() []FailoverCriteria {
+func (b *Balancer) GetFailoverCriteria() []AiProxyAdvancedPluginFailoverCriteria {
 	if b == nil {
 		return nil
 	}
@@ -519,7 +519,7 @@ func (b *Balancer) GetHashOnHeader() *string {
 	return b.HashOnHeader
 }
 
-func (b *Balancer) GetLatencyStrategy() *LatencyStrategy {
+func (b *Balancer) GetLatencyStrategy() *AiProxyAdvancedPluginLatencyStrategy {
 	if b == nil {
 		return nil
 	}
@@ -1083,34 +1083,34 @@ func (a *AiProxyAdvancedPluginModel) GetProvider() AiProxyAdvancedPluginProvider
 	return a.Provider
 }
 
-type Embeddings struct {
+type AiProxyAdvancedPluginEmbeddings struct {
 	Auth  *AiProxyAdvancedPluginAuth `json:"auth"`
 	Model AiProxyAdvancedPluginModel `json:"model"`
 }
 
-func (e Embeddings) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
+func (a AiProxyAdvancedPluginEmbeddings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (e *Embeddings) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"model"}); err != nil {
+func (a *AiProxyAdvancedPluginEmbeddings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *Embeddings) GetAuth() *AiProxyAdvancedPluginAuth {
-	if e == nil {
+func (a *AiProxyAdvancedPluginEmbeddings) GetAuth() *AiProxyAdvancedPluginAuth {
+	if a == nil {
 		return nil
 	}
-	return e.Auth
+	return a.Auth
 }
 
-func (e *Embeddings) GetModel() AiProxyAdvancedPluginModel {
-	if e == nil {
+func (a *AiProxyAdvancedPluginEmbeddings) GetModel() AiProxyAdvancedPluginModel {
+	if a == nil {
 		return AiProxyAdvancedPluginModel{}
 	}
-	return e.Model
+	return a.Model
 }
 
 // AiProxyAdvancedPluginGenaiCategory - Generative AI category of the request
@@ -2274,20 +2274,20 @@ func (t *Targets) GetWeight() *int64 {
 	return t.Weight
 }
 
-// DistanceMetric - the distance metric to use for vector searches
-type DistanceMetric string
+// AiProxyAdvancedPluginDistanceMetric - the distance metric to use for vector searches
+type AiProxyAdvancedPluginDistanceMetric string
 
 const (
-	DistanceMetricCosine    DistanceMetric = "cosine"
-	DistanceMetricEuclidean DistanceMetric = "euclidean"
+	AiProxyAdvancedPluginDistanceMetricCosine    AiProxyAdvancedPluginDistanceMetric = "cosine"
+	AiProxyAdvancedPluginDistanceMetricEuclidean AiProxyAdvancedPluginDistanceMetric = "euclidean"
 )
 
-func (e DistanceMetric) ToPointer() *DistanceMetric {
+func (e AiProxyAdvancedPluginDistanceMetric) ToPointer() *AiProxyAdvancedPluginDistanceMetric {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *DistanceMetric) IsExact() bool {
+func (e *AiProxyAdvancedPluginDistanceMetric) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "cosine", "euclidean":
@@ -2930,9 +2930,9 @@ type Vectordb struct {
 	// the desired dimensionality for the vectors
 	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
-	DistanceMetric DistanceMetric              `json:"distance_metric"`
-	Pgvector       *Pgvector                   `json:"pgvector"`
-	Redis          *AiProxyAdvancedPluginRedis `json:"redis"`
+	DistanceMetric AiProxyAdvancedPluginDistanceMetric `json:"distance_metric"`
+	Pgvector       *Pgvector                           `json:"pgvector"`
+	Redis          *AiProxyAdvancedPluginRedis         `json:"redis"`
 	// which vector database driver to use
 	Strategy AiProxyAdvancedPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
@@ -2957,9 +2957,9 @@ func (v *Vectordb) GetDimensions() int64 {
 	return v.Dimensions
 }
 
-func (v *Vectordb) GetDistanceMetric() DistanceMetric {
+func (v *Vectordb) GetDistanceMetric() AiProxyAdvancedPluginDistanceMetric {
 	if v == nil {
-		return DistanceMetric("")
+		return AiProxyAdvancedPluginDistanceMetric("")
 	}
 	return v.DistanceMetric
 }
@@ -2994,9 +2994,9 @@ func (v *Vectordb) GetThreshold() *float64 {
 
 type AiProxyAdvancedPluginConfig struct {
 	// Optional ACL rules. Deny rules take precedence over allow rules.
-	Acls       *Acls       `json:"acls"`
-	Balancer   *Balancer   `json:"balancer,omitempty"`
-	Embeddings *Embeddings `json:"embeddings"`
+	Acls       *Acls                            `json:"acls"`
+	Balancer   *Balancer                        `json:"balancer,omitempty"`
+	Embeddings *AiProxyAdvancedPluginEmbeddings `json:"embeddings"`
 	// Generative AI category of the request
 	GenaiCategory *AiProxyAdvancedPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
@@ -3036,7 +3036,7 @@ func (a *AiProxyAdvancedPluginConfig) GetBalancer() *Balancer {
 	return a.Balancer
 }
 
-func (a *AiProxyAdvancedPluginConfig) GetEmbeddings() *Embeddings {
+func (a *AiProxyAdvancedPluginConfig) GetEmbeddings() *AiProxyAdvancedPluginEmbeddings {
 	if a == nil {
 		return nil
 	}

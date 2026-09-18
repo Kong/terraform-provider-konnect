@@ -38,13 +38,13 @@ type PortalCustomizationResource struct {
 
 // PortalCustomizationResourceModel describes the resource data model.
 type PortalCustomizationResourceModel struct {
-	CSS          types.String          `tfsdk:"css"`
-	Layout       types.String          `tfsdk:"layout"`
-	Menu         *tfTypes.Menu         `tfsdk:"menu"`
-	PortalID     types.String          `tfsdk:"portal_id"`
-	Robots       types.String          `tfsdk:"robots"`
-	SpecRenderer *tfTypes.SpecRenderer `tfsdk:"spec_renderer"`
-	Theme        *tfTypes.Theme        `tfsdk:"theme"`
+	CSS          types.String                             `tfsdk:"css"`
+	Layout       types.String                             `tfsdk:"layout"`
+	Menu         *tfTypes.Menu                            `tfsdk:"menu"`
+	PortalID     types.String                             `tfsdk:"portal_id"`
+	Robots       types.String                             `tfsdk:"robots"`
+	SpecRenderer *tfTypes.PortalCustomizationSpecRenderer `tfsdk:"spec_renderer"`
+	Theme        *tfTypes.Theme                           `tfsdk:"theme"`
 }
 
 func (r *PortalCustomizationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -272,6 +272,7 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Description: `Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true`,
 					},
 				},
+				Description: `The spec renderer settings of this portal`,
 			},
 			"theme": schema.SingleNestedAttribute{
 				Optional: true,

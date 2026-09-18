@@ -132,7 +132,7 @@ func (a *AiA2aProxyPluginPartials) GetPath() string {
 // #region class-body-aia2aproxypluginpartials
 // #endregion class-body-aia2aproxypluginpartials
 
-type Logging struct {
+type AiA2aProxyPluginLogging struct {
 	// If enabled, logs request/response bodies to Kong log plugin(s) output. Requires log_statistics to be enabled.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled, adds A2A metrics to Kong log plugin(s) output.
@@ -141,40 +141,43 @@ type Logging struct {
 	MaxPayloadSize *int64 `default:"1048576" json:"max_payload_size"`
 }
 
-func (l Logging) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
+func (a AiA2aProxyPluginLogging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (l *Logging) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+func (a *AiA2aProxyPluginLogging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (l *Logging) GetLogPayloads() *bool {
-	if l == nil {
+func (a *AiA2aProxyPluginLogging) GetLogPayloads() *bool {
+	if a == nil {
 		return nil
 	}
-	return l.LogPayloads
+	return a.LogPayloads
 }
 
-func (l *Logging) GetLogStatistics() *bool {
-	if l == nil {
+func (a *AiA2aProxyPluginLogging) GetLogStatistics() *bool {
+	if a == nil {
 		return nil
 	}
-	return l.LogStatistics
+	return a.LogStatistics
 }
 
-func (l *Logging) GetMaxPayloadSize() *int64 {
-	if l == nil {
+func (a *AiA2aProxyPluginLogging) GetMaxPayloadSize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return l.MaxPayloadSize
+	return a.MaxPayloadSize
 }
+
+// #region class-body-aia2aproxypluginlogging
+// #endregion class-body-aia2aproxypluginlogging
 
 type AiA2aProxyPluginConfig struct {
-	Logging *Logging `json:"logging,omitempty"`
+	Logging *AiA2aProxyPluginLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse for A2A metadata. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 }
@@ -190,7 +193,7 @@ func (a *AiA2aProxyPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AiA2aProxyPluginConfig) GetLogging() *Logging {
+func (a *AiA2aProxyPluginConfig) GetLogging() *AiA2aProxyPluginLogging {
 	if a == nil {
 		return nil
 	}

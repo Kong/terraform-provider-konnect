@@ -627,59 +627,14 @@ func (e *RequestCalloutPluginStrategy) IsExact() bool {
 	return false
 }
 
-// Cache - Plugin global caching configuration.
-type Cache struct {
+// RequestCalloutPluginCache - Plugin global caching configuration.
+type RequestCalloutPluginCache struct {
 	// TTL in seconds of cache entities.
 	CacheTTL *int64                      `default:"300" json:"cache_ttl"`
 	Memory   *RequestCalloutPluginMemory `json:"memory,omitempty"`
 	Redis    *RequestCalloutPluginRedis  `json:"redis,omitempty"`
 	// The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.
 	Strategy *RequestCalloutPluginStrategy `default:"off" json:"strategy"`
-}
-
-func (c Cache) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *Cache) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Cache) GetCacheTTL() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.CacheTTL
-}
-
-func (c *Cache) GetMemory() *RequestCalloutPluginMemory {
-	if c == nil {
-		return nil
-	}
-	return c.Memory
-}
-
-func (c *Cache) GetRedis() *RequestCalloutPluginRedis {
-	if c == nil {
-		return nil
-	}
-	return c.Redis
-}
-
-func (c *Cache) GetStrategy() *RequestCalloutPluginStrategy {
-	if c == nil {
-		return nil
-	}
-	return c.Strategy
-}
-
-// RequestCalloutPluginCache - Callout caching configuration.
-type RequestCalloutPluginCache struct {
-	// If `true`, skips caching the callout response.
-	Bypass *bool `default:"false" json:"bypass"`
 }
 
 func (r RequestCalloutPluginCache) MarshalJSON() ([]byte, error) {
@@ -693,7 +648,52 @@ func (r *RequestCalloutPluginCache) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *RequestCalloutPluginCache) GetBypass() *bool {
+func (r *RequestCalloutPluginCache) GetCacheTTL() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.CacheTTL
+}
+
+func (r *RequestCalloutPluginCache) GetMemory() *RequestCalloutPluginMemory {
+	if r == nil {
+		return nil
+	}
+	return r.Memory
+}
+
+func (r *RequestCalloutPluginCache) GetRedis() *RequestCalloutPluginRedis {
+	if r == nil {
+		return nil
+	}
+	return r.Redis
+}
+
+func (r *RequestCalloutPluginCache) GetStrategy() *RequestCalloutPluginStrategy {
+	if r == nil {
+		return nil
+	}
+	return r.Strategy
+}
+
+// RequestCalloutPluginConfigCache - Callout caching configuration.
+type RequestCalloutPluginConfigCache struct {
+	// If `true`, skips caching the callout response.
+	Bypass *bool `default:"false" json:"bypass"`
+}
+
+func (r RequestCalloutPluginConfigCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginConfigCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *RequestCalloutPluginConfigCache) GetBypass() *bool {
 	if r == nil {
 		return nil
 	}
@@ -1220,7 +1220,7 @@ func (r *RequestCalloutPluginResponse) GetHeaders() *RequestCalloutPluginConfigH
 
 type Callouts struct {
 	// Callout caching configuration.
-	Cache *RequestCalloutPluginCache `json:"cache"`
+	Cache *RequestCalloutPluginConfigCache `json:"cache"`
 	// An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.
 	DependsOn []string `json:"depends_on,omitempty"`
 	// A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`
@@ -1242,7 +1242,7 @@ func (c *Callouts) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *Callouts) GetCache() *RequestCalloutPluginCache {
+func (c *Callouts) GetCache() *RequestCalloutPluginConfigCache {
 	if c == nil {
 		return nil
 	}
@@ -1438,7 +1438,7 @@ func (r *RequestCalloutPluginUpstream) GetQuery() *Query {
 
 type RequestCalloutPluginConfig struct {
 	// Plugin global caching configuration.
-	Cache *Cache `json:"cache,omitempty"`
+	Cache *RequestCalloutPluginCache `json:"cache,omitempty"`
 	// A collection of callout objects, where each object represents an HTTP request made in the context of a proxy request.
 	Callouts []Callouts `json:"callouts"`
 	// Customizations to the upstream request.
@@ -1456,7 +1456,7 @@ func (r *RequestCalloutPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *RequestCalloutPluginConfig) GetCache() *Cache {
+func (r *RequestCalloutPluginConfig) GetCache() *RequestCalloutPluginCache {
 	if r == nil {
 		return nil
 	}

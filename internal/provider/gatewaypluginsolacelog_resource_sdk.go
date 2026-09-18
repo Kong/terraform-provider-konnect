@@ -50,7 +50,7 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 		r.Config.Message.Tracing = types.BoolPointerValue(resp.Config.Message.Tracing)
 		r.Config.Message.TracingSampled = types.BoolPointerValue(resp.Config.Message.TracingSampled)
 		r.Config.Message.TTL = types.Int64PointerValue(resp.Config.Message.TTL)
-		r.Config.Session = &tfTypes.Session{}
+		r.Config.Session = &tfTypes.SolaceConsumePluginSession{}
 		if resp.Config.Session.Authentication == nil {
 			r.Config.Session.Authentication = nil
 		} else {

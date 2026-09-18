@@ -2,16 +2,8 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type TokenExchange struct {
-	Cache         *AiMcpOauth2PluginCache   `tfsdk:"cache"`
-	ClientAuth    types.String              `tfsdk:"client_auth"`
-	ClientID      types.String              `tfsdk:"client_id"`
-	ClientSecret  types.String              `tfsdk:"client_secret"`
-	Enabled       types.Bool                `tfsdk:"enabled"`
-	Request       *AiMcpOauth2PluginRequest `tfsdk:"request"`
-	TokenEndpoint types.String              `tfsdk:"token_endpoint"`
+	Cache               *Cache                `tfsdk:"cache"`
+	Request             *Request              `tfsdk:"request"`
+	SubjectTokenIssuers []SubjectTokenIssuers `tfsdk:"subject_token_issuers"`
 }

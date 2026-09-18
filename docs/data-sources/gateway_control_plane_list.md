@@ -95,6 +95,9 @@ Optional:
 
 Read-Only:
 
+- `auth_type` (String) The auth type value of the cluster associated with the Runtime Group.
+- `cloud_gateway` (Boolean) Whether this control-plane can be used for cloud-gateways.
+- `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane.
 - `config` (Attributes) CP configuration object for related access endpoints. (see [below for nested schema](#nestedatt--data--config))
 - `description` (String) The description of the control plane in Konnect.
 - `id` (String) The control plane ID.
@@ -102,6 +105,7 @@ Read-Only:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the control plane.
+- `proxy_urls` (Attributes Set) Array of proxy URLs associated with reaching the data-planes connected to a control-plane. (see [below for nested schema](#nestedatt--data--proxy_urls))
 
 <a id="nestedatt--data--config"></a>
 ### Nested Schema for `data.config`
@@ -117,6 +121,17 @@ Read-Only:
 
 <a id="nestedatt--data--config--proxy_urls"></a>
 ### Nested Schema for `data.config.proxy_urls`
+
+Read-Only:
+
+- `host` (String) Hostname of the proxy URL.
+- `port` (Number) Port of the proxy URL.
+- `protocol` (String) Protocol of the proxy URL.
+
+
+
+<a id="nestedatt--data--proxy_urls"></a>
+### Nested Schema for `data.proxy_urls`
 
 Read-Only:
 

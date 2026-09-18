@@ -7,9 +7,13 @@ import (
 )
 
 type ControlPlane1 struct {
-	Config      *ControlPlaneConfig     `tfsdk:"config"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
+	AuthType     types.String            `tfsdk:"auth_type"`
+	CloudGateway types.Bool              `tfsdk:"cloud_gateway"`
+	ClusterType  types.String            `tfsdk:"cluster_type"`
+	Config       *ControlPlaneConfig     `tfsdk:"config"`
+	Description  types.String            `tfsdk:"description"`
+	ID           types.String            `tfsdk:"id"`
+	Labels       map[string]types.String `tfsdk:"labels"`
+	Name         types.String            `tfsdk:"name"`
+	ProxyUrls    []AIGatewayProxyURL     `tfsdk:"proxy_urls"`
 }

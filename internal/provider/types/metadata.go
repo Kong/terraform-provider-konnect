@@ -2,5 +2,20 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type Metadata struct {
+	DNSNames       []types.String `tfsdk:"dns_names"`
+	EmailAddresses []types.String `tfsdk:"email_addresses"`
+	Expiry         types.Int64    `tfsdk:"expiry"`
+	IPAddresses    []types.String `tfsdk:"ip_addresses"`
+	IsCa           types.Bool     `tfsdk:"is_ca"`
+	Issuer         types.String   `tfsdk:"issuer"`
+	KeyUsages      []types.String `tfsdk:"key_usages"`
+	SanNames       []types.String `tfsdk:"san_names"`
+	Snis           []types.String `tfsdk:"snis"`
+	Subject        types.String   `tfsdk:"subject"`
+	Uris           []types.String `tfsdk:"uris"`
 }

@@ -120,21 +120,21 @@ func (r *RequestValidatorPluginPartials) GetPath() string {
 	return r.Path
 }
 
-// In - The location of the parameter.
-type In string
+// RequestValidatorPluginIn - The location of the parameter.
+type RequestValidatorPluginIn string
 
 const (
-	InHeader In = "header"
-	InPath   In = "path"
-	InQuery  In = "query"
+	RequestValidatorPluginInHeader RequestValidatorPluginIn = "header"
+	RequestValidatorPluginInPath   RequestValidatorPluginIn = "path"
+	RequestValidatorPluginInQuery  RequestValidatorPluginIn = "query"
 )
 
-func (e In) ToPointer() *In {
+func (e RequestValidatorPluginIn) ToPointer() *RequestValidatorPluginIn {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *In) IsExact() bool {
+func (e *RequestValidatorPluginIn) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "header", "path", "query":
@@ -176,7 +176,7 @@ type ParameterSchema struct {
 	// Required when `schema` and `style` are set. When `explode` is `true`, parameter values of type `array` or `object` generate separate parameters for each value of the array or key-value pair of the map. For other types of parameters, this property has no effect.
 	Explode *bool `default:"null" json:"explode"`
 	// The location of the parameter.
-	In In `json:"in"`
+	In RequestValidatorPluginIn `json:"in"`
 	// The name of the parameter. Parameter names are case-sensitive, and correspond to the parameter name used by the `in` property. If `in` is `path`, the `name` field MUST correspond to the named capture group from the configured `route`.
 	Name string `json:"name"`
 	// Determines whether this parameter is mandatory.
@@ -205,9 +205,9 @@ func (p *ParameterSchema) GetExplode() *bool {
 	return p.Explode
 }
 
-func (p *ParameterSchema) GetIn() In {
+func (p *ParameterSchema) GetIn() RequestValidatorPluginIn {
 	if p == nil {
-		return In("")
+		return RequestValidatorPluginIn("")
 	}
 	return p.In
 }
@@ -240,24 +240,24 @@ func (p *ParameterSchema) GetStyle() *Style {
 	return p.Style
 }
 
-// Version - Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.
-type Version string
+// RequestValidatorPluginVersion - Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.
+type RequestValidatorPluginVersion string
 
 const (
-	VersionDraft201909 Version = "draft201909"
-	VersionDraft202012 Version = "draft202012"
-	VersionDraft4      Version = "draft4"
-	VersionDraft6      Version = "draft6"
-	VersionDraft7      Version = "draft7"
-	VersionKong        Version = "kong"
+	RequestValidatorPluginVersionDraft201909 RequestValidatorPluginVersion = "draft201909"
+	RequestValidatorPluginVersionDraft202012 RequestValidatorPluginVersion = "draft202012"
+	RequestValidatorPluginVersionDraft4      RequestValidatorPluginVersion = "draft4"
+	RequestValidatorPluginVersionDraft6      RequestValidatorPluginVersion = "draft6"
+	RequestValidatorPluginVersionDraft7      RequestValidatorPluginVersion = "draft7"
+	RequestValidatorPluginVersionKong        RequestValidatorPluginVersion = "kong"
 )
 
-func (e Version) ToPointer() *Version {
+func (e RequestValidatorPluginVersion) ToPointer() *RequestValidatorPluginVersion {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Version) IsExact() bool {
+func (e *RequestValidatorPluginVersion) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "draft201909", "draft202012", "draft4", "draft6", "draft7", "kong":
@@ -281,7 +281,7 @@ type RequestValidatorPluginConfig struct {
 	// If enabled, the plugin returns more verbose and detailed validation errors.
 	VerboseResponse *bool `default:"false" json:"verbose_response"`
 	// Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.
-	Version *Version `default:"kong" json:"version"`
+	Version *RequestValidatorPluginVersion `default:"kong" json:"version"`
 }
 
 func (r RequestValidatorPluginConfig) MarshalJSON() ([]byte, error) {
@@ -337,7 +337,7 @@ func (r *RequestValidatorPluginConfig) GetVerboseResponse() *bool {
 	return r.VerboseResponse
 }
 
-func (r *RequestValidatorPluginConfig) GetVersion() *Version {
+func (r *RequestValidatorPluginConfig) GetVersion() *RequestValidatorPluginVersion {
 	if r == nil {
 		return nil
 	}

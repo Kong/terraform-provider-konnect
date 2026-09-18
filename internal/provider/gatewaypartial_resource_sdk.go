@@ -178,10 +178,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.Model.Config.Model.Options.CacheReadCost = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.CacheReadCost)
 				r.Model.Config.Model.Options.CacheWriteCost = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.CacheWriteCost)
 				if resp.PartialModel.Config.Model.Options.CacheWriteCostList != nil {
-					r.Model.Config.Model.Options.CacheWriteCostList = []tfTypes.PartialModelCacheWriteCostList{}
+					r.Model.Config.Model.Options.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
 					for _, cacheWriteCostListItem := range resp.PartialModel.Config.Model.Options.CacheWriteCostList {
-						var cacheWriteCostList tfTypes.PartialModelCacheWriteCostList
+						var cacheWriteCostList tfTypes.AIGatewayCacheWriteCost
 
 						cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
 						cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
@@ -203,10 +203,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 					r.Model.Config.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.PartialModel.Config.Model.Options.Cohere.WaitForModel)
 				}
 				if resp.PartialModel.Config.Model.Options.ContextWindowFactor != nil {
-					r.Model.Config.Model.Options.ContextWindowFactor = []tfTypes.PartialModelContextWindowFactor{}
+					r.Model.Config.Model.Options.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
 
 					for _, contextWindowFactorItem := range resp.PartialModel.Config.Model.Options.ContextWindowFactor {
-						var contextWindowFactor tfTypes.PartialModelContextWindowFactor
+						var contextWindowFactor tfTypes.AIGatewayContextWindowFactor
 
 						contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
 						contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
@@ -260,10 +260,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				}
 				r.Model.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.PartialModel.Config.Model.Options.OutputCost)
 				if resp.PartialModel.Config.Model.Options.ServiceTierFactor != nil {
-					r.Model.Config.Model.Options.ServiceTierFactor = []tfTypes.PartialModelServiceTierFactor{}
+					r.Model.Config.Model.Options.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem := range resp.PartialModel.Config.Model.Options.ServiceTierFactor {
-						var serviceTierFactor tfTypes.PartialModelServiceTierFactor
+						var serviceTierFactor tfTypes.AIGatewayServiceTierFactor
 
 						serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
 						serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)
@@ -305,7 +305,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialRedisCe.Config.CloudAuthentication == nil {
 				r.RedisCe.Config.CloudAuthentication = nil
 			} else {
-				r.RedisCe.Config.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.RedisCe.Config.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 				if resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider != nil {
 					r.RedisCe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider))
 				} else {
@@ -355,7 +355,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialRedisEe.Config.CloudAuthentication == nil {
 				r.RedisEe.Config.CloudAuthentication = nil
 			} else {
-				r.RedisEe.Config.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.RedisEe.Config.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 				if resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider != nil {
 					r.RedisEe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider))
 				} else {
@@ -375,10 +375,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			}
 			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEe.Config.ClusterMaxRedirections)
 			if resp.PartialRedisEe.Config.ClusterNodes != nil {
-				r.RedisEe.Config.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				r.RedisEe.Config.ClusterNodes = []tfTypes.ClusterNodes{}
 
 				for _, clusterNodesItem := range resp.PartialRedisEe.Config.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+					var clusterNodes tfTypes.ClusterNodes
 
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -400,10 +400,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			r.RedisEe.Config.SendTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.SendTimeout)
 			r.RedisEe.Config.SentinelMaster = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelMaster)
 			if resp.PartialRedisEe.Config.SentinelNodes != nil {
-				r.RedisEe.Config.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				r.RedisEe.Config.SentinelNodes = []tfTypes.SentinelNodes{}
 
 				for _, sentinelNodesItem := range resp.PartialRedisEe.Config.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+					var sentinelNodes tfTypes.SentinelNodes
 
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -470,11 +470,11 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialVectordb.Config.Redis == nil {
 				r.Vectordb.Config.Redis = nil
 			} else {
-				r.Vectordb.Config.Redis = &tfTypes.PartialVectordbRedis{}
+				r.Vectordb.Config.Redis = &tfTypes.ClusterCacheRedis{}
 				if resp.PartialVectordb.Config.Redis.CloudAuthentication == nil {
 					r.Vectordb.Config.Redis.CloudAuthentication = nil
 				} else {
-					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 					if resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Vectordb.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -494,10 +494,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				}
 				r.Vectordb.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ClusterMaxRedirections)
 				if resp.PartialVectordb.Config.Redis.ClusterNodes != nil {
-					r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+					r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 					for _, clusterNodesItem1 := range resp.PartialVectordb.Config.Redis.ClusterNodes {
-						var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
+						var clusterNodes1 tfTypes.ClusterNodes
 
 						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
 						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
@@ -519,10 +519,10 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.Vectordb.Config.Redis.SendTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.SendTimeout)
 				r.Vectordb.Config.Redis.SentinelMaster = types.StringPointerValue(resp.PartialVectordb.Config.Redis.SentinelMaster)
 				if resp.PartialVectordb.Config.Redis.SentinelNodes != nil {
-					r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+					r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 					for _, sentinelNodesItem1 := range resp.PartialVectordb.Config.Redis.SentinelNodes {
-						var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
+						var sentinelNodes1 tfTypes.SentinelNodes
 
 						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)

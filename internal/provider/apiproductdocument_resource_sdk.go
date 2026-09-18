@@ -23,7 +23,7 @@ func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ct
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		if r.Metadata == nil {
-			r.Metadata = &tfTypes.Metadata{}
+			r.Metadata = &tfTypes.CreateAPIProductDocumentDTOMetadata{}
 		}
 		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
 		r.Slug = types.StringValue(resp.Slug)
@@ -137,9 +137,9 @@ func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO(ct
 	} else {
 		content = nil
 	}
-	var metadata *shared.Metadata
+	var metadata *shared.CreateAPIProductDocumentDTOMetadata
 	if r.Metadata != nil {
-		metadata = &shared.Metadata{}
+		metadata = &shared.CreateAPIProductDocumentDTOMetadata{}
 	}
 	out := shared.CreateAPIProductDocumentDTO{
 		ParentDocumentID: parentDocumentID,

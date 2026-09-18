@@ -23,7 +23,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) RefreshFromSharedAiA2aProxyPlugin
 			if resp.Config.Logging == nil {
 				r.Config.Logging = nil
 			} else {
-				r.Config.Logging = &tfTypes.Logging{}
+				r.Config.Logging = &tfTypes.AiA2aProxyPluginLogging{}
 				r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 				r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 				r.Config.Logging.MaxPayloadSize = types.Int64PointerValue(resp.Config.Logging.MaxPayloadSize)
@@ -283,7 +283,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2aProxyPlugin(ctx cont
 	}
 	var config *shared.AiA2aProxyPluginConfig
 	if r.Config != nil {
-		var logging *shared.Logging
+		var logging *shared.AiA2aProxyPluginLogging
 		if r.Config.Logging != nil {
 			logPayloads := new(bool)
 			if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
@@ -303,7 +303,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2aProxyPlugin(ctx cont
 			} else {
 				maxPayloadSize = nil
 			}
-			logging = &shared.Logging{
+			logging = &shared.AiA2aProxyPluginLogging{
 				LogPayloads:    logPayloads,
 				LogStatistics:  logStatistics,
 				MaxPayloadSize: maxPayloadSize,

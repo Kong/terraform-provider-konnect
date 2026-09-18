@@ -7,8 +7,6 @@ import (
 )
 
 type Cache struct {
-	CacheTTL types.Int64           `tfsdk:"cache_ttl"`
-	Memory   *DatakitPluginMemory  `tfsdk:"memory"`
-	Redis    *PartialVectordbRedis `tfsdk:"redis"`
-	Strategy types.String          `tfsdk:"strategy"`
+	Enabled types.Bool  `tfsdk:"enabled"`
+	TTL     types.Int64 `tfsdk:"ttl"`
 }

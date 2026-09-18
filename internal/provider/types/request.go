@@ -7,9 +7,8 @@ import (
 )
 
 type Request struct {
-	Auth    *AiCustomGuardrailPluginAuth `tfsdk:"auth"`
-	Body    map[string]types.String      `tfsdk:"body"`
-	Headers map[string]types.String      `tfsdk:"headers"`
-	Queries map[string]types.String      `tfsdk:"queries"`
-	URL     types.String                 `tfsdk:"url"`
+	Audience      []types.String `tfsdk:"audience"`
+	EmptyAudience types.Bool     `tfsdk:"empty_audience"`
+	EmptyScopes   types.Bool     `tfsdk:"empty_scopes"`
+	Scopes        []types.String `tfsdk:"scopes"`
 }

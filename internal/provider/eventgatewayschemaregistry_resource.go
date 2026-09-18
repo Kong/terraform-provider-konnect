@@ -38,16 +38,16 @@ type EventGatewaySchemaRegistryResource struct {
 
 // EventGatewaySchemaRegistryResourceModel describes the resource data model.
 type EventGatewaySchemaRegistryResourceModel struct {
-	Config      *tfTypes.Metadata                `tfsdk:"config"`
-	Confluent   *tfTypes.SchemaRegistryConfluent `queryParam:"inline" tfsdk:"confluent"`
-	CreatedAt   types.String                     `tfsdk:"created_at"`
-	Description types.String                     `tfsdk:"description"`
-	GatewayID   types.String                     `tfsdk:"gateway_id"`
-	ID          types.String                     `tfsdk:"id"`
-	Labels      map[string]types.String          `tfsdk:"labels"`
-	Name        types.String                     `tfsdk:"name"`
-	Type        types.String                     `tfsdk:"type"`
-	UpdatedAt   types.String                     `tfsdk:"updated_at"`
+	Config      *tfTypes.CreateAPIProductDocumentDTOMetadata `tfsdk:"config"`
+	Confluent   *tfTypes.SchemaRegistryConfluent             `queryParam:"inline" tfsdk:"confluent"`
+	CreatedAt   types.String                                 `tfsdk:"created_at"`
+	Description types.String                                 `tfsdk:"description"`
+	GatewayID   types.String                                 `tfsdk:"gateway_id"`
+	ID          types.String                                 `tfsdk:"id"`
+	Labels      map[string]types.String                      `tfsdk:"labels"`
+	Name        types.String                                 `tfsdk:"name"`
+	Type        types.String                                 `tfsdk:"type"`
+	UpdatedAt   types.String                                 `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewaySchemaRegistryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

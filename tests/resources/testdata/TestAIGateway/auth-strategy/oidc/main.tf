@@ -1,0 +1,28 @@
+resource "konnect_ai_gateway" "my_aigateway" {
+  display_name = "TF Test AIGW - auth-strategy"
+  name         = "tf-test-aigw-auth-strategy"
+}
+
+resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy_oidc" {
+  gateway_id = konnect_ai_gateway.my_aigateway.id
+
+  openid_connect = {
+    config = {
+      cache_tokens_salt = "my_cache_tokens_salt"
+      client_alg = [
+        "RS256"
+      ]
+      client_auth = [
+        "client_secret_basic"
+      ]
+      client_id = [
+        "test-client-id"
+      ]
+      issuer           = "https://example.com"
+      jwks_endpoint    = "https://example.com/.well-known/jwks.json"
+      hide_credentials = false
+    }
+    display_name = "TF Test OpenID Connect"
+    name         = "tf-test-oidc"
+  }
+}

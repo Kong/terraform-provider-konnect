@@ -7,6 +7,6 @@ import (
 )
 
 type Headers struct {
-	Key  types.String `tfsdk:"key"`
-	Name types.String `tfsdk:"name"`
+	Name  types.String `tfsdk:"name"`
+	Value types.String `tfsdk:"value"`
 }

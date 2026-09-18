@@ -185,21 +185,21 @@ func (m *Metrics) GetMasked() *string {
 	return m.Masked
 }
 
-// Location - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-type Location string
+// AiCustomGuardrailPluginLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
+type AiCustomGuardrailPluginLocation string
 
 const (
-	LocationBody   Location = "body"
-	LocationHeader Location = "header"
-	LocationQuery  Location = "query"
+	AiCustomGuardrailPluginLocationBody   AiCustomGuardrailPluginLocation = "body"
+	AiCustomGuardrailPluginLocationHeader AiCustomGuardrailPluginLocation = "header"
+	AiCustomGuardrailPluginLocationQuery  AiCustomGuardrailPluginLocation = "query"
 )
 
-func (e Location) ToPointer() *Location {
+func (e AiCustomGuardrailPluginLocation) ToPointer() *AiCustomGuardrailPluginLocation {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Location) IsExact() bool {
+func (e *AiCustomGuardrailPluginLocation) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "body", "header", "query":
@@ -212,7 +212,7 @@ func (e *Location) IsExact() bool {
 // AiCustomGuardrailPluginAuth - Authentication configuration for HTTP request.
 type AiCustomGuardrailPluginAuth struct {
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
-	Location *Location `default:"header" json:"location"`
+	Location *AiCustomGuardrailPluginLocation `default:"header" json:"location"`
 	// Specify name here.
 	Name *string `default:"null" json:"name"`
 	// Specify the full token value for 'name'.
@@ -230,7 +230,7 @@ func (a *AiCustomGuardrailPluginAuth) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AiCustomGuardrailPluginAuth) GetLocation() *Location {
+func (a *AiCustomGuardrailPluginAuth) GetLocation() *AiCustomGuardrailPluginLocation {
 	if a == nil {
 		return nil
 	}
@@ -251,8 +251,8 @@ func (a *AiCustomGuardrailPluginAuth) GetValue() *string {
 	return a.Value
 }
 
-// Request - Configuration specific to guardrail request.
-type Request struct {
+// AiCustomGuardrailPluginRequest - Configuration specific to guardrail request.
+type AiCustomGuardrailPluginRequest struct {
 	// Authentication configuration for HTTP request.
 	Auth *AiCustomGuardrailPluginAuth `json:"auth,omitempty"`
 	// A map used to evaluate a JSON object. Keys are the field names in the new object, and values can be either Lua expressions in the form `$(some_lua_expression)`or string. For expression, it will be evaluated as the value for the corresponding key. For string, it will be decoded as string in JSON format or be used as is.
@@ -265,50 +265,50 @@ type Request struct {
 	URL string `json:"url"`
 }
 
-func (r Request) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+func (a AiCustomGuardrailPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (r *Request) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"url"}); err != nil {
+func (a *AiCustomGuardrailPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"url"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Request) GetAuth() *AiCustomGuardrailPluginAuth {
-	if r == nil {
+func (a *AiCustomGuardrailPluginRequest) GetAuth() *AiCustomGuardrailPluginAuth {
+	if a == nil {
 		return nil
 	}
-	return r.Auth
+	return a.Auth
 }
 
-func (r *Request) GetBody() map[string]string {
-	if r == nil {
+func (a *AiCustomGuardrailPluginRequest) GetBody() map[string]string {
+	if a == nil {
 		return nil
 	}
-	return r.Body
+	return a.Body
 }
 
-func (r *Request) GetHeaders() map[string]string {
-	if r == nil {
+func (a *AiCustomGuardrailPluginRequest) GetHeaders() map[string]string {
+	if a == nil {
 		return nil
 	}
-	return r.Headers
+	return a.Headers
 }
 
-func (r *Request) GetQueries() map[string]string {
-	if r == nil {
+func (a *AiCustomGuardrailPluginRequest) GetQueries() map[string]string {
+	if a == nil {
 		return nil
 	}
-	return r.Queries
+	return a.Queries
 }
 
-func (r *Request) GetURL() string {
-	if r == nil {
+func (a *AiCustomGuardrailPluginRequest) GetURL() string {
+	if a == nil {
 		return ""
 	}
-	return r.URL
+	return a.URL
 }
 
 // Response - Configuration specific to parse guardrail response.
@@ -381,7 +381,7 @@ type AiCustomGuardrailPluginConfig struct {
 	// Parameters to be used in the guardrail service request. Keys are the parameter name and values can be either Lua expressions in the form `$(some_lua_expression)`or string. For expression, it will be evaluated as the value for the corresponding key. For string, it will be attempted to be parsed as string in JSON format, otherwise it will be used as is.
 	Params map[string]string `json:"params,omitempty"`
 	// Configuration specific to guardrail request.
-	Request Request `json:"request"`
+	Request AiCustomGuardrailPluginRequest `json:"request"`
 	// Configuration specific to parse guardrail response.
 	Response Response `json:"response"`
 	// The amount of bytes receiving from upstream to be buffered before sending to the guardrail service. This only applies to the response content guard.
@@ -449,9 +449,9 @@ func (a *AiCustomGuardrailPluginConfig) GetParams() map[string]string {
 	return a.Params
 }
 
-func (a *AiCustomGuardrailPluginConfig) GetRequest() Request {
+func (a *AiCustomGuardrailPluginConfig) GetRequest() AiCustomGuardrailPluginRequest {
 	if a == nil {
-		return Request{}
+		return AiCustomGuardrailPluginRequest{}
 	}
 	return a.Request
 }

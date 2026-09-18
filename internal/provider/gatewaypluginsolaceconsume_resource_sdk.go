@@ -66,7 +66,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 			r.Config.Polling = &tfTypes.Polling{}
 			r.Config.Polling.Timeout = types.Int64PointerValue(resp.Config.Polling.Timeout)
 		}
-		r.Config.Session = &tfTypes.Session{}
+		r.Config.Session = &tfTypes.SolaceConsumePluginSession{}
 		if resp.Config.Session.Authentication == nil {
 			r.Config.Session.Authentication = nil
 		} else {
@@ -629,7 +629,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	} else {
 		vpnName = nil
 	}
-	session := shared.Session{
+	session := shared.SolaceConsumePluginSession{
 		Authentication:         authentication,
 		CalculateMessageExpiry: calculateMessageExpiry,
 		ConnectTimeout:         connectTimeout,

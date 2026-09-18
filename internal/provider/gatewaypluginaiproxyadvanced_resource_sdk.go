@@ -265,10 +265,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				targets.Model.Options.CacheReadCost = types.Float64PointerValue(targetsItem.Model.Options.CacheReadCost)
 				targets.Model.Options.CacheWriteCost = types.Float64PointerValue(targetsItem.Model.Options.CacheWriteCost)
 				if targetsItem.Model.Options.CacheWriteCostList != nil {
-					targets.Model.Options.CacheWriteCostList = []tfTypes.PartialModelCacheWriteCostList{}
+					targets.Model.Options.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
 					for _, cacheWriteCostListItem := range targetsItem.Model.Options.CacheWriteCostList {
-						var cacheWriteCostList tfTypes.PartialModelCacheWriteCostList
+						var cacheWriteCostList tfTypes.AIGatewayCacheWriteCost
 
 						cacheWriteCostList.Cost = types.Float64Value(cacheWriteCostListItem.Cost)
 						cacheWriteCostList.TTL = types.StringValue(cacheWriteCostListItem.TTL)
@@ -290,10 +290,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 					targets.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(targetsItem.Model.Options.Cohere.WaitForModel)
 				}
 				if targetsItem.Model.Options.ContextWindowFactor != nil {
-					targets.Model.Options.ContextWindowFactor = []tfTypes.PartialModelContextWindowFactor{}
+					targets.Model.Options.ContextWindowFactor = []tfTypes.AIGatewayContextWindowFactor{}
 
 					for _, contextWindowFactorItem := range targetsItem.Model.Options.ContextWindowFactor {
-						var contextWindowFactor tfTypes.PartialModelContextWindowFactor
+						var contextWindowFactor tfTypes.AIGatewayContextWindowFactor
 
 						contextWindowFactor.Above = types.StringValue(contextWindowFactorItem.Above)
 						contextWindowFactor.InputFactor = types.Float64Value(contextWindowFactorItem.InputFactor)
@@ -347,10 +347,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				}
 				targets.Model.Options.OutputCost = types.Float64PointerValue(targetsItem.Model.Options.OutputCost)
 				if targetsItem.Model.Options.ServiceTierFactor != nil {
-					targets.Model.Options.ServiceTierFactor = []tfTypes.PartialModelServiceTierFactor{}
+					targets.Model.Options.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem := range targetsItem.Model.Options.ServiceTierFactor {
-						var serviceTierFactor tfTypes.PartialModelServiceTierFactor
+						var serviceTierFactor tfTypes.AIGatewayServiceTierFactor
 
 						serviceTierFactor.Factor = types.Float64Value(serviceTierFactorItem.Factor)
 						serviceTierFactor.Tier = types.StringValue(serviceTierFactorItem.Tier)
@@ -402,11 +402,11 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if resp.Config.Vectordb.Redis == nil {
 				r.Config.Vectordb.Redis = nil
 			} else {
-				r.Config.Vectordb.Redis = &tfTypes.PartialVectordbRedis{}
+				r.Config.Vectordb.Redis = &tfTypes.ClusterCacheRedis{}
 				if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
 					r.Config.Vectordb.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 					if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -426,10 +426,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				}
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
-					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
 
 					for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-						var clusterNodes tfTypes.PartialRedisEeClusterNodes
+						var clusterNodes tfTypes.ClusterNodes
 
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
@@ -451,10 +451,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
 				if resp.Config.Vectordb.Redis.SentinelNodes != nil {
-					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
 
 					for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+						var sentinelNodes tfTypes.SentinelNodes
 
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
@@ -825,9 +825,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		} else {
 			failTimeout = nil
 		}
-		failoverCriteria := make([]shared.FailoverCriteria, 0, len(r.Config.Balancer.FailoverCriteria))
+		failoverCriteria := make([]shared.AiProxyAdvancedPluginFailoverCriteria, 0, len(r.Config.Balancer.FailoverCriteria))
 		for _, failoverCriteriaItem := range r.Config.Balancer.FailoverCriteria {
-			failoverCriteria = append(failoverCriteria, shared.FailoverCriteria(failoverCriteriaItem.ValueString()))
+			failoverCriteria = append(failoverCriteria, shared.AiProxyAdvancedPluginFailoverCriteria(failoverCriteriaItem.ValueString()))
 		}
 		hashOnHeader := new(string)
 		if !r.Config.Balancer.HashOnHeader.IsUnknown() && !r.Config.Balancer.HashOnHeader.IsNull() {
@@ -835,9 +835,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		} else {
 			hashOnHeader = nil
 		}
-		latencyStrategy := new(shared.LatencyStrategy)
+		latencyStrategy := new(shared.AiProxyAdvancedPluginLatencyStrategy)
 		if !r.Config.Balancer.LatencyStrategy.IsUnknown() && !r.Config.Balancer.LatencyStrategy.IsNull() {
-			*latencyStrategy = shared.LatencyStrategy(r.Config.Balancer.LatencyStrategy.ValueString())
+			*latencyStrategy = shared.AiProxyAdvancedPluginLatencyStrategy(r.Config.Balancer.LatencyStrategy.ValueString())
 		} else {
 			latencyStrategy = nil
 		}
@@ -892,7 +892,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			WriteTimeout:        writeTimeout,
 		}
 	}
-	var embeddings *shared.Embeddings
+	var embeddings *shared.AiProxyAdvancedPluginEmbeddings
 	if r.Config.Embeddings != nil {
 		var auth *shared.AiProxyAdvancedPluginAuth
 		if r.Config.Embeddings.Auth != nil {
@@ -1175,7 +1175,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			Options:  optionsVar,
 			Provider: provider,
 		}
-		embeddings = &shared.Embeddings{
+		embeddings = &shared.AiProxyAdvancedPluginEmbeddings{
 			Auth:  auth,
 			Model: model,
 		}
@@ -1745,7 +1745,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		var dimensions int64
 		dimensions = r.Config.Vectordb.Dimensions.ValueInt64()
 
-		distanceMetric := shared.DistanceMetric(r.Config.Vectordb.DistanceMetric.ValueString())
+		distanceMetric := shared.AiProxyAdvancedPluginDistanceMetric(r.Config.Vectordb.DistanceMetric.ValueString())
 		var pgvector *shared.Pgvector
 		if r.Config.Vectordb.Pgvector != nil {
 			database := new(string)

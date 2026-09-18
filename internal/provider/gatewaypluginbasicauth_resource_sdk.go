@@ -32,7 +32,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 					if resp.Config.BruteForceProtection.Redis.CloudAuthentication == nil {
 						r.Config.BruteForceProtection.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
 						if resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -513,7 +513,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 		} else {
 			hideCredentials = nil
 		}
-		var principals *shared.Principals
+		var principals *shared.BasicAuthPluginPrincipals
 		if r.Config.Principals != nil {
 			directory := new(string)
 			if !r.Config.Principals.Directory.IsUnknown() && !r.Config.Principals.Directory.IsNull() {
@@ -533,7 +533,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 			} else {
 				errorOnMiss = nil
 			}
-			principals = &shared.Principals{
+			principals = &shared.BasicAuthPluginPrincipals{
 				Directory:   directory,
 				Enabled:     enabled1,
 				ErrorOnMiss: errorOnMiss,

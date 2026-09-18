@@ -61,9 +61,48 @@ func Pointer[T any](v T) *T { return &v }
 // https://developer.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
 	SDKVersion string
+	// Konnect region availability
+	PlatformRegions *PlatformRegions
 	// Konnect IP inventory
 	PlatformIPs             *PlatformIPs
 	ServerlessCloudGateways *ServerlessCloudGateways
+	// API related to the management of Konnect AI Gateway resources.
+	AIGateways *AIGateways
+	// AI Agents registered with the AI Gateway.
+	AIGatewayAgents *AIGatewayAgents
+	// Auth strategies for authenticating clients accessing AI Gateway resources.
+	AIGatewayAuthStrategies *AIGatewayAuthStrategies
+	// API related to the management of AI Gateway CA Certificates.
+	AIGatewayCACertificates *AIGatewayCACertificates
+	// API related to the management of AI Gateway Certificates.
+	AIGatewayCertificates *AIGatewayCertificates
+	// API related to the management of AI Gateway Config Stores.
+	AIGatewayConfigStores *AIGatewayConfigStores
+	// Consumer groups for applying rate-limiting and access policies to AI Gateway traffic.
+	AIGatewayConsumerGroups *AIGatewayConsumerGroups
+	// Individual consumers with credentials and group memberships for AI Gateway access control.
+	AIGatewayConsumers *AIGatewayConsumers
+	// API related to the management of AI Gateway DataPlane Certificates.
+	AIGatewayDataPlaneCertificates *AIGatewayDataPlaneCertificates
+	// MCP Servers that expose tools for AI Gateway integrations.
+	AIGatewayMCPServers *AIGatewayMCPServers
+	// Model providers that define the backend AI service connections for the AI Gateway.
+	AIGatewayModelProviders *AIGatewayModelProviders
+	// Models that define routing, capabilities, and backend targets for the AI Gateway.
+	AIGatewayModels *AIGatewayModels
+	// Policies that control security, rate-limiting, and guardrail behavior for the AI Gateway.
+	AIGatewayPolicies *AIGatewayPolicies
+	AIGatewaySNIs     *AIGatewaySNIs
+	// API related to the management of AI Gateway vaults for storing secrets.
+	AIGatewayVaults *AIGatewayVaults
+	// Manage AI Models - a catalogable proxy for AI Gateway models
+	CatalogAIModels *CatalogAIModels
+	// Link an AI Model to an AI Gateway model.
+	CatalogAIModelImplementations *CatalogAIModelImplementations
+	// Manage an AI Model's version.
+	CatalogAIModelVersions *CatalogAIModelVersions
+	// Manage an AI Model version's oas specification.
+	CatalogAIModelSpecs *CatalogAIModelSpecs
 	// Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
 	AuthServer *AuthServer
 	// Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.
@@ -165,7 +204,13 @@ type Konnect struct {
 	// The integration instance's auth credentials can be removed or updated while retaining all resources which have already been discovered.
 	//
 	IntegrationInstanceAuthCredentials *IntegrationInstanceAuthCredentials
-	Mesh                               *Mesh
+	// Manage MCPs - a catalogable proxy for AI Gateway MCPs
+	CatalogMCPs *CatalogMCPs
+	// Link an MCP to an AI Gateway MCP.
+	CatalogMCPImplementations *CatalogMCPImplementations
+	// Manage an MCP's version.
+	CatalogMCPVersions *CatalogMCPVersions
+	Mesh               *Mesh
 	// Use a realm to group consumers around an identity, defined by organizational boundaries, such as a production realm or a development realm. Realms are connected to a [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in realms can be used across multiple control planes.
 	//
 	Realms *Realms
@@ -422,9 +467,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.22.0",
+		SDKVersion: "3.23.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.22.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.23.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -445,8 +490,28 @@ func New(opts ...SDKOption) *Konnect {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
+	sdk.PlatformRegions = newPlatformRegions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PlatformIPs = newPlatformIPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGateways = newAIGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayAgents = newAIGatewayAgents(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayAuthStrategies = newAIGatewayAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCACertificates = newAIGatewayCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCertificates = newAIGatewayCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConsumerGroups = newAIGatewayConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayModels = newAIGatewayModels(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayPolicies = newAIGatewayPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewaySNIs = newAIGatewaySNIs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayVaults = newAIGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModels = newCatalogAIModels(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModelImplementations = newCatalogAIModelImplementations(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModelVersions = newCatalogAIModelVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogAIModelSpecs = newCatalogAIModelSpecs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClaims = newAuthServerClaims(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -468,6 +533,9 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.IntegrationInstances = newIntegrationInstances(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.IntegrationInstanceAuthConfig = newIntegrationInstanceAuthConfig(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.IntegrationInstanceAuthCredentials = newIntegrationInstanceAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogMCPs = newCatalogMCPs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogMCPImplementations = newCatalogMCPImplementations(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CatalogMCPVersions = newCatalogMCPVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Realms = newRealms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CentrallyManagedConsumers = newCentrallyManagedConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)

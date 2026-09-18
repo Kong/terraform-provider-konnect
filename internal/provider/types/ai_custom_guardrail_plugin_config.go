@@ -7,17 +7,17 @@ import (
 )
 
 type AiCustomGuardrailPluginConfig struct {
-	AllowMasking       types.Bool              `tfsdk:"allow_masking"`
-	CustomMetrics      map[string]types.String `tfsdk:"custom_metrics"`
-	Functions          map[string]types.String `tfsdk:"functions"`
-	GuardingMode       types.String            `tfsdk:"guarding_mode"`
-	Metrics            *Metrics                `tfsdk:"metrics"`
-	Params             map[string]types.String `tfsdk:"params"`
-	Request            *Request                `tfsdk:"request"`
-	Response           *Response               `tfsdk:"response"`
-	ResponseBufferSize types.Float64           `tfsdk:"response_buffer_size"`
-	SslVerify          types.Bool              `tfsdk:"ssl_verify"`
-	StopOnError        types.Bool              `tfsdk:"stop_on_error"`
-	TextSource         types.String            `tfsdk:"text_source"`
-	Timeout            types.Float64           `tfsdk:"timeout"`
+	AllowMasking       types.Bool                      `tfsdk:"allow_masking"`
+	CustomMetrics      map[string]types.String         `tfsdk:"custom_metrics"`
+	Functions          map[string]types.String         `tfsdk:"functions"`
+	GuardingMode       types.String                    `tfsdk:"guarding_mode"`
+	Metrics            *Metrics                        `tfsdk:"metrics"`
+	Params             map[string]types.String         `tfsdk:"params"`
+	Request            *AiCustomGuardrailPluginRequest `tfsdk:"request"`
+	Response           *Response                       `tfsdk:"response"`
+	ResponseBufferSize types.Float64                   `tfsdk:"response_buffer_size"`
+	SslVerify          types.Bool                      `tfsdk:"ssl_verify"`
+	StopOnError        types.Bool                      `tfsdk:"stop_on_error"`
+	TextSource         types.String                    `tfsdk:"text_source"`
+	Timeout            types.Float64                   `tfsdk:"timeout"`
 }

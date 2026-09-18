@@ -337,7 +337,7 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToSharedMeteringAndBillin
 			var lookUpValueIn string
 			lookUpValueIn = r.Config.Attributes[attributesIndex].LookUpValueIn.ValueString()
 
-			source := shared.Source(r.Config.Attributes[attributesIndex].Source.ValueString())
+			source := shared.MeteringAndBillingPluginSource(r.Config.Attributes[attributesIndex].Source.ValueString())
 			attributes = append(attributes, shared.Attributes{
 				EventPropertyName: eventPropertyName,
 				LookUpValueIn:     lookUpValueIn,
