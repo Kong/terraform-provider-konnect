@@ -80,7 +80,7 @@ func (a *AcePluginOrdering) GetBefore() *AcePluginBefore {
 	return a.Before
 }
 
-type Partials struct {
+type AcePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
@@ -88,36 +88,36 @@ type Partials struct {
 	Path string  `json:"path"`
 }
 
-func (p Partials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (a AcePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (p *Partials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"path"}); err != nil {
+func (a *AcePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *Partials) GetID() *string {
-	if p == nil {
+func (a *AcePluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return p.ID
+	return a.ID
 }
 
-func (p *Partials) GetName() *string {
-	if p == nil {
+func (a *AcePluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return p.Name
+	return a.Name
 }
 
-func (p *Partials) GetPath() string {
-	if p == nil {
+func (a *AcePluginPartials) GetPath() string {
+	if a == nil {
 		return ""
 	}
-	return p.Path
+	return a.Path
 }
 
 // MatchPolicy - Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The `required` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The `if_present` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE.
@@ -760,7 +760,7 @@ type AcePlugin struct {
 	name     string             `const:"ace" json:"name"`
 	Ordering *AcePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []Partials `json:"partials"`
+	Partials []AcePluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
@@ -831,7 +831,7 @@ func (a *AcePlugin) GetOrdering() *AcePluginOrdering {
 	return a.Ordering
 }
 
-func (a *AcePlugin) GetPartials() []Partials {
+func (a *AcePlugin) GetPartials() []AcePluginPartials {
 	if a == nil {
 		return nil
 	}

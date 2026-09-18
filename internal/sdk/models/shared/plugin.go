@@ -126,6 +126,46 @@ func (o *Ordering) GetBefore() *Before {
 	return o.Before
 }
 
+type Partials struct {
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p Partials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Partials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Partials) GetID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ID
+}
+
+func (p *Partials) GetName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
+func (p *Partials) GetPath() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Path
+}
+
 // Protocols - A string representing a protocol, such as HTTP or HTTPS.
 type Protocols string
 
@@ -224,6 +264,8 @@ type Plugin struct {
 	// The name of the Plugin that's going to be added. Currently, the Plugin must be installed in every Kong instance separately.
 	Name     string    `json:"name"`
 	Ordering *Ordering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []Partials `json:"partials"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []Protocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
@@ -315,6 +357,13 @@ func (p *Plugin) GetOrdering() *Ordering {
 		return nil
 	}
 	return p.Ordering
+}
+
+func (p *Plugin) GetPartials() []Partials {
+	if p == nil {
+		return nil
+	}
+	return p.Partials
 }
 
 func (p *Plugin) GetProtocols() []Protocols {
