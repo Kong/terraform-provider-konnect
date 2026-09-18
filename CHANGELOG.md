@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.24.0
+> Released 2026/??/??
+
+# Features
+* Added `condition` and `partials` support to custom plugins
+
 ## 3.23.0
 > Released 2026/09/18
 
