@@ -79068,6 +79068,30 @@ components:
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
+        partials:
+          description: A list of partials to be used by the plugin.
+          type: array
+          items:
+            properties:
+              id:
+                description: A string representing a UUID (universally unique identifier).
+                type: string
+                minLength: 1
+              name:
+                description: A unique string representing a UTF-8 encoded name.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              path:
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            type: object
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         protocols:
           description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.'
           type: array
@@ -79138,6 +79162,13 @@ components:
         enabled: true
         id: 3fd1eea1-885a-4011-b986-289943ff8177
         name: key-auth
+        partials:
+          - id: cff1230a-00f7-4ae8-b376-c370f0eb4dae
+            name: foo-partial
+            path: config.redis
+          - id: 129ee345-cba8-4e55-9d6d-93c223ff91ae
+            name: bar-partial
+            path: config.redis
         protocols:
           - grpc
           - grpcs
