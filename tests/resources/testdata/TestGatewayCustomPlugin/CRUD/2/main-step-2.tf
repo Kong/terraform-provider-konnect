@@ -27,7 +27,7 @@ resource "konnect_gateway_plugin_acl" "my_acl" {
 
   config = {
     include_consumer_groups = true
-    allow = ["dev", "admin"]
+    allow                   = ["dev", "admin"]
   }
 
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
@@ -37,28 +37,56 @@ resource "konnect_gateway_plugin_request_transformer" "my_request_transformer" {
   enabled = true
 
   config = {
-   add = {
-    headers = ["New-Header:Header Value"]
-   }
+    add = {
+      headers = ["New-Header:Header Value"]
+    }
     http_method = "GET"
   }
 
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
 
+resource "konnect_gateway_partial" "custom_plugin_redis_ce" {
+  redis_ce = {
+    name = "custom-plugin-redis-ce-partial"
+    config = {
+      host = "redis.example.com"
+      port = 6379
+    }
+  }
+
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_custom_plugin" "custom_rate_limiting_with_partial" {
+  name      = "rate-limiting"
+  condition = "http.method == \"GET\""
+  enabled   = true
+  config = {
+    policy = "redis"
+    hour   = 1000
+    redis = {
+      host = "redis.example.com"
+      port = 6379
+    }
+  }
+  tags             = ["custom-plugin", "partials"]
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
 resource "konnect_gateway_custom_plugin" "custom_basic_auth" {
-  name             = "basic-auth"
-  instance_name    = "custom-plugin-test"
-  config           = jsonencode({
-    "anonymous": "capybara"
+  name          = "basic-auth"
+  instance_name = "custom-plugin-test"
+  config = jsonencode({
+    "anonymous" : "capybara"
   })
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
 
 resource "konnect_gateway_custom_plugin" "custom_basic_auth_nested" {
-  name             = "basic-auth"
-  instance_name    = "custom-nested-plugin-test"
-  config           = {
+  name          = "basic-auth"
+  instance_name = "custom-nested-plugin-test"
+  config = {
     anonymous = "capybara"
   }
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
