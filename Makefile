@@ -18,6 +18,9 @@ remove-data-sources:
 check-speakeasy:
 	@command -v speakeasy >/dev/null 2>&1 || { echo >&2 "speakeasy CLI is not installed. Please install before continuing."; exit 1; }
 
+check-custom-plugin-synchronized:
+	@go run ./.ci_scripts/check_custom_plugin_synchronized.go
+
 OS=$(shell uname | tr "[:upper:]" "[:lower:]")
 ARCH=$(shell uname -m | sed 's/aarch64/arm64/' | sed 's/x86_64/amd64/')
 test:

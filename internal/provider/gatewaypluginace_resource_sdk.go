@@ -322,9 +322,9 @@ func (r *GatewayPluginAceResourceModel) ToSharedAcePlugin(ctx context.Context) (
 			Before: before,
 		}
 	}
-	var partials []shared.Partials
+	var partials []shared.AcePluginPartials
 	if r.Partials != nil {
-		partials = make([]shared.Partials, 0, len(r.Partials))
+		partials = make([]shared.AcePluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
 			id1 := new(string)
 			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
@@ -341,7 +341,7 @@ func (r *GatewayPluginAceResourceModel) ToSharedAcePlugin(ctx context.Context) (
 			var path string
 			path = r.Partials[partialsIndex].Path.ValueString()
 
-			partials = append(partials, shared.Partials{
+			partials = append(partials, shared.AcePluginPartials{
 				ID:   id1,
 				Name: name,
 				Path: path,
