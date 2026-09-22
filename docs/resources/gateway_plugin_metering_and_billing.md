@@ -16,6 +16,9 @@ GatewayPluginMeteringAndBilling Resource
 resource "konnect_gateway_plugin_metering_and_billing" "my_gatewaypluginmeteringandbilling" {
   condition = "...my_condition..."
   config = {
+    allow_status_codes = [
+      "..."
+    ]
     api_token = "...my_api_token..."
     attributes = [
       {
@@ -29,7 +32,9 @@ resource "konnect_gateway_plugin_metering_and_billing" "my_gatewaypluginmetering
     meter_ai_token_usage = true
     meter_api_requests   = true
     queue = {
+      breaker_cooldown     = 60
       concurrency_limit    = 1
+      failure_threshold    = 0
       initial_retry_delay  = 396586.03
       max_batch_size       = 1
       max_bytes            = 9
@@ -122,6 +127,7 @@ Required:
 
 Optional:
 
+- `allow_status_codes` (List of String) List of status code ranges that are allowed to be logged in usage events.
 - `attributes` (Attributes List) Capture custom properties to the usage event data payload for pricing dimensions or reporting. Attributes add dimensions like provider, department or project that your billing model needs for tiered or per-dimension pricing. (see [below for nested schema](#nestedatt--config--attributes))
 - `keepalive` (Number) How long in milliseconds an idle connection to the ingest endpoint is kept open before being closed. Default: 60000
 - `meter_ai_token_usage` (Boolean) Emit events for LLM input and output tokens on AI Gateway requests. Default: true
@@ -146,7 +152,9 @@ Optional:
 
 Optional:
 
+- `breaker_cooldown` (Number) Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered. Default: 60
 - `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
+- `failure_threshold` (Number) Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker. Default: 0
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.

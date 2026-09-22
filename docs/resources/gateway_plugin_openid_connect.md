@@ -122,7 +122,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     ]
     cluster_cache_redis = {
       cloud_authentication = {
-        auth_provider            = "azure"
+        auth_provider            = "gcp"
         aws_access_key_id        = "...my_aws_access_key_id..."
         aws_assume_role_arn      = "...my_aws_assume_role_arn..."
         aws_cache_name           = "...my_aws_cache_name..."
@@ -134,6 +134,29 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         azure_client_secret      = "...my_azure_client_secret..."
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
+        oauth = {
+          auth_method           = "client_secret_post"
+          client_id             = "...my_client_id..."
+          client_secret         = "...my_client_secret..."
+          client_secret_jwt_alg = "HS512"
+          grant_type            = "client_credentials"
+          password              = "...my_password..."
+          redis_username        = "...my_redis_username..."
+          redis_username_claim  = "...my_redis_username_claim..."
+          scopes = [
+            "..."
+          ]
+          ssl_verify     = true
+          timeout        = 10000
+          token_endpoint = "...my_token_endpoint..."
+          token_headers = {
+            key = "value"
+          }
+          token_post_args = {
+            key = "value"
+          }
+          username = "...my_username..."
+        }
       }
       cluster_max_redirections = 5
       cluster_nodes = [
@@ -356,6 +379,16 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       secure_source             = true
       ssl_verify                = true
     }
+    protected_resource_metadata = {
+      authorization_servers = [
+        "..."
+      ]
+      metadata_endpoint = "...my_metadata_endpoint..."
+      resource          = "...my_resource..."
+      scopes_supported = [
+        "..."
+      ]
+    }
     pushed_authorization_request_endpoint             = "...my_pushed_authorization_request_endpoint..."
     pushed_authorization_request_endpoint_auth_method = "tls_client_auth"
     redirect_uri = [
@@ -375,6 +408,29 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         azure_client_secret      = "...my_azure_client_secret..."
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
+        oauth = {
+          auth_method           = "client_secret_post"
+          client_id             = "...my_client_id..."
+          client_secret         = "...my_client_secret..."
+          client_secret_jwt_alg = "HS512"
+          grant_type            = "client_credentials"
+          password              = "...my_password..."
+          redis_username        = "...my_redis_username..."
+          redis_username_claim  = "...my_redis_username_claim..."
+          scopes = [
+            "..."
+          ]
+          ssl_verify     = true
+          timeout        = 10000
+          token_endpoint = "...my_token_endpoint..."
+          token_headers = {
+            key = "value"
+          }
+          token_post_args = {
+            key = "value"
+          }
+          username = "...my_username..."
+        }
       }
       cluster_max_redirections = 5
       cluster_nodes = [
@@ -492,12 +548,35 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         enabled = true
         ttl     = 10
       }
+      grant_type          = "token_exchange"
+      map_identities_from = "exchanged_tokens"
+      provider            = "standard"
       request = {
+        actor_token = {
+          header_name  = "...my_header_name..."
+          source       = "none"
+          static_token = "...my_static_token..."
+          type         = "urn:ietf:params:oauth:token-type:access_token"
+        }
         audience = [
           "..."
         ]
-        empty_audience = false
-        empty_scopes   = false
+        empty_audience  = false
+        empty_headers   = false
+        empty_post_args = false
+        empty_scopes    = false
+        headers_names = [
+          "..."
+        ]
+        headers_values = [
+          "..."
+        ]
+        post_args_names = [
+          "..."
+        ]
+        post_args_values = [
+          "..."
+        ]
         scopes = [
           "..."
         ]
@@ -683,7 +762,7 @@ Optional:
 - `anonymous` (String) An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 - `audience` (List of String) The audience passed to the authorization endpoint.
 - `audience_claim` (List of String) The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["aud"]
-- `audience_required` (List of String) The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+- `audience_required` (List of String) The audiences (`audience_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both audiences `a` and `b`, or a token that has audience `c`.
 - `auth_methods` (List of String) Types of credentials/grants to enable. Default: ["authorization_code","bearer","client_credentials","introspection","kong_oauth2","password","refresh_token","session","userinfo"]
 - `authenticated_groups_claim` (List of String) The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `authorization_cookie_domain` (String) The authorization cookie Domain flag.
@@ -757,8 +836,8 @@ Optional:
 - `forbidden_error_message` (String) The error message for the forbidden requests (when not using the redirection). Default: "Forbidden"
 - `forbidden_redirect_uri` (List of String) Where to redirect the client on forbidden requests.
 - `groups_claim` (List of String) The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["groups"]
-- `groups_required` (List of String) The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-- `hide_credentials` (Boolean) Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: false
+- `groups_required` (List of String) The groups (`groups_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both groups `a` and `b`, or a token that has group `c`.
+- `hide_credentials` (Boolean) Remove the credentials used for authentication from the downstream request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. This setting does not control how the plugin sends the access token to the upstream service. To control that, use `upstream_access_token_header`. Default: false
 - `http_proxy` (String) The HTTP proxy.
 - `http_proxy_authorization` (String) The HTTP proxy authorization.
 - `http_version` (Number) The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
@@ -766,7 +845,7 @@ Optional:
 - `https_proxy_authorization` (String) The HTTPS proxy authorization.
 - `id_token_param_name` (String) The name of the parameter used to pass the id token.
 - `id_token_param_type` (List of String) Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body. Default: ["body","header","query"]
-- `ignore_signature` (List of String) Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication. Default: []
+- `ignore_signature` (List of String) Skip the token signature verification on certain grants. This is insecure and logs a warning; use it only for providers that publish no verification key. Grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication. Default: []
 - `introspect_jwt_tokens` (Boolean) Specifies whether to introspect the JWT access tokens (can be used to check for revocations). Default: false
 - `introspection_accept` (String) The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document). possible known values include one of ["application/json", "application/jwt", "application/token-introspection+jwt"]; Default: "application/json"
 - `introspection_check_active` (Boolean) Check that the introspection response has an `active` claim with a value of `true`. Default: true
@@ -815,6 +894,7 @@ Default: false
 - `proof_of_possession_dpop` (String) Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. possible known values include one of ["off", "optional", "strict"]; Default: "off"
 - `proof_of_possession_mtls` (String) Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. possible known values include one of ["off", "optional", "strict"]; Default: "off"
 - `proof_of_possession_mtls_from_header` (Attributes) Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate. (see [below for nested schema](#nestedatt--config--proof_of_possession_mtls_from_header))
+- `protected_resource_metadata` (Attributes) When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers. (see [below for nested schema](#nestedatt--config--protected_resource_metadata))
 - `pushed_authorization_request_endpoint` (String) The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 - `pushed_authorization_request_endpoint_auth_method` (String) The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `redirect_uri` (List of String) The redirect URI passed to the authorization and token endpoints.
@@ -834,11 +914,11 @@ Default: false
 - `revocation_endpoint_auth_method` (String) The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `revocation_token_param_name` (String) Designate token's parameter name for revocation. Default: "token"
 - `roles_claim` (List of String) The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["roles"]
-- `roles_required` (List of String) The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+- `roles_required` (List of String) The roles (`roles_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both roles `a` and `b`, or a token that has role `c`.
 - `run_on_preflight` (Boolean) Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests. Default: true
 - `scopes` (List of String) The scopes passed to the authorization and token endpoints. Default: []
 - `scopes_claim` (List of String) The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["scope"]
-- `scopes_required` (List of String) The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+- `scopes_required` (List of String) The scopes (`scopes_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both scopes `a` and `b`, or a token that has scope `c`.
 - `search_user_info` (Boolean) Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers. Default: false
 - `session_absolute_timeout` (Number) Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 86400
 - `session_audience` (String) The session audience, which is the intended target application. For example `"my-application"`. Default: "default"
@@ -891,7 +971,7 @@ Default: false
 - `unauthorized_error_message` (String) The error message for the unauthorized requests (when not using the redirection). Default: "Unauthorized"
 - `unauthorized_redirect_uri` (List of String) Where to redirect the client on unauthorized requests.
 - `unexpected_redirect_uri` (List of String) Where to redirect the client when unexpected errors happen with the requests.
-- `upstream_access_token_header` (String) The upstream access token header. Default: "authorization:bearer"
+- `upstream_access_token_header` (String) The upstream access token header. The access token is sent to the upstream service using this header regardless of the `hide_credentials` setting. Set this field to `null` to prevent sending the access token to the upstream. Default: "authorization:bearer"
 - `upstream_access_token_jwk_header` (String) The upstream access token JWK header.
 - `upstream_headers` (Attributes List) The upstream claim to header mappings. (see [below for nested schema](#nestedatt--config--upstream_headers))
 - `upstream_headers_claims` (List of String) The upstream header claims. Only top level claims are supported.
@@ -916,7 +996,7 @@ Default: false
 - `verify_claims` (Boolean) Verify tokens for standard claims. Default: true
 - `verify_nonce` (Boolean) Verify nonce on authorization code flow. Default: true
 - `verify_parameters` (Boolean) Verify plugin configuration against discovery. Default: false
-- `verify_signature` (Boolean) Verify signature of tokens. Default: true
+- `verify_signature` (Boolean) Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens. Default: true
 
 <a id="nestedatt--config--client_jwk"></a>
 ### Nested Schema for `config.client_jwk`
@@ -983,7 +1063,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp", "oauth"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -995,6 +1075,29 @@ Optional:
 - `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
 - `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
 - `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+- `oauth` (Attributes) OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`. (see [below for nested schema](#nestedatt--config--cluster_cache_redis--cloud_authentication--oauth))
+
+<a id="nestedatt--config--cluster_cache_redis--cloud_authentication--oauth"></a>
+### Nested Schema for `config.cluster_cache_redis.cloud_authentication.oauth`
+
+Optional:
+
+- `auth_method` (String) Client authentication method used against the token endpoint. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post"]; Default: "client_secret_post"
+- `client_id` (String) OAuth 2.0 client ID.
+- `client_secret` (String) OAuth 2.0 client secret.
+- `client_secret_jwt_alg` (String) Signing algorithm used for `client_secret_jwt` client authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
+- `grant_type` (String) OAuth 2.0 grant type used to request access tokens. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
+- `password` (String) Resource owner password, used with the `password` grant type.
+- `redis_username` (String) Static Redis ACL username sent with `AUTH <username> <token>`.
+- `redis_username_claim` (String) JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+- `scopes` (List of String) OAuth 2.0 scopes to request. Default: []
+- `ssl_verify` (Boolean) Whether to verify the TLS certificate of the token endpoint. Default: true
+- `timeout` (Number) Timeout, in milliseconds, for requests to the token endpoint. Default: 10000
+- `token_endpoint` (String) OAuth 2.0 token endpoint URL used to request access tokens.
+- `token_headers` (Map of String) Additional HTTP headers to send with the token request.
+- `token_post_args` (Map of String) Additional POST body arguments to send with the token request.
+- `username` (String) Resource owner username, used with the `password` grant type.
+
 
 
 <a id="nestedatt--config--cluster_cache_redis--cluster_nodes"></a>
@@ -1062,6 +1165,20 @@ Optional:
 - `ssl_verify` (Boolean) Verify the TLS certificate of the OCSP responder or CRL distribution point server. Default: true
 
 
+<a id="nestedatt--config--protected_resource_metadata"></a>
+### Nested Schema for `config.protected_resource_metadata`
+
+Required:
+
+- `authorization_servers` (List of String) List of authorization server issuer URIs to advertise in the RFC 9728 metadata document.
+- `resource` (String) The URI of the protected resource. Used as the resource field in the RFC 9728 metadata document and to derive the well-known endpoint path.
+
+Optional:
+
+- `metadata_endpoint` (String) Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.
+- `scopes_supported` (List of String) Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.
+
+
 <a id="nestedatt--config--redis"></a>
 ### Nested Schema for `config.redis`
 
@@ -1097,7 +1214,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp", "oauth"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -1109,6 +1226,29 @@ Optional:
 - `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
 - `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
 - `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+- `oauth` (Attributes) OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`. (see [below for nested schema](#nestedatt--config--redis--cloud_authentication--oauth))
+
+<a id="nestedatt--config--redis--cloud_authentication--oauth"></a>
+### Nested Schema for `config.redis.cloud_authentication.oauth`
+
+Optional:
+
+- `auth_method` (String) Client authentication method used against the token endpoint. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post"]; Default: "client_secret_post"
+- `client_id` (String) OAuth 2.0 client ID.
+- `client_secret` (String) OAuth 2.0 client secret.
+- `client_secret_jwt_alg` (String) Signing algorithm used for `client_secret_jwt` client authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
+- `grant_type` (String) OAuth 2.0 grant type used to request access tokens. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
+- `password` (String) Resource owner password, used with the `password` grant type.
+- `redis_username` (String) Static Redis ACL username sent with `AUTH <username> <token>`.
+- `redis_username_claim` (String) JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+- `scopes` (List of String) OAuth 2.0 scopes to request. Default: []
+- `ssl_verify` (Boolean) Whether to verify the TLS certificate of the token endpoint. Default: true
+- `timeout` (Number) Timeout, in milliseconds, for requests to the token endpoint. Default: 10000
+- `token_endpoint` (String) OAuth 2.0 token endpoint URL used to request access tokens.
+- `token_headers` (Map of String) Additional HTTP headers to send with the token request.
+- `token_post_args` (Map of String) Additional POST body arguments to send with the token request.
+- `username` (String) Resource owner username, used with the `password` grant type.
+
 
 
 <a id="nestedatt--config--redis--cluster_nodes"></a>
@@ -1140,6 +1280,9 @@ Required:
 Optional:
 
 - `cache` (Attributes) Cache support for token exchange (see [below for nested schema](#nestedatt--config--token_exchange--cache))
+- `grant_type` (String) The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode. possible known values include one of ["jwt_bearer", "token_exchange"]; Default: "token_exchange"
+- `map_identities_from` (String) Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead. possible known values include one of ["exchanged_tokens", "subject_token"]; Default: "exchanged_tokens"
+- `provider` (String) Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`. possible known values include one of ["microsoft", "standard"]; Default: "standard"
 - `request` (Attributes) Parameters used in the token exchange request. (see [below for nested schema](#nestedatt--config--token_exchange--request))
 
 <a id="nestedatt--config--token_exchange--subject_token_issuers"></a>
@@ -1147,20 +1290,20 @@ Optional:
 
 Optional:
 
-- `conditions` (Attributes) A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined. (see [below for nested schema](#nestedatt--config--token_exchange--subject_token_issuers--conditions))
+- `conditions` (Attributes) A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined. (see [below for nested schema](#nestedatt--config--token_exchange--subject_token_issuers--conditions))
 - `issuer` (String) Tokens of whose iss claim matches this value will be exchanged. Not Null
 - `jwks_uri` (String) An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
-- `verify_signature` (Boolean) When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility. Default: false
+- `verify_signature` (Boolean) When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. Defaults to `false` for backward compatibility, which skips this local check; the token exchange request to the issuer still validates the subject token itself, so this is defense in depth, not the only safeguard. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Default: false
 
 <a id="nestedatt--config--token_exchange--subject_token_issuers--conditions"></a>
 ### Nested Schema for `config.token_exchange.subject_token_issuers.conditions`
 
 Optional:
 
-- `has_audience` (List of String)
-- `has_scopes` (List of String)
-- `missing_audience` (List of String)
-- `missing_scopes` (List of String)
+- `has_audience` (List of String) Audience values that must all be present in the token, matched against `audience_claim`.
+- `has_scopes` (List of String) Scope values that must all be present in the token, matched against `scopes_claim`.
+- `missing_audience` (List of String) Audience values that must all be absent from the token, matched against `audience_claim`.
+- `missing_scopes` (List of String) Scope values that must all be absent from the token, matched against `scopes_claim`.
 
 
 
@@ -1178,10 +1321,28 @@ Optional:
 
 Optional:
 
+- `actor_token` (Attributes) How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject. (see [below for nested schema](#nestedatt--config--token_exchange--request--actor_token))
 - `audience` (List of String) Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
 - `empty_audience` (Boolean) Use empty audiences. Use this field to remove audiences defined in `config.audience`. Default: false
+- `empty_headers` (Boolean) Use no extra headers on the token exchange request. Use this field to remove extra headers defined in `config.token_headers_names`. Default: false
+- `empty_post_args` (Boolean) Use no extra POST arguments on the token exchange request. Use this field to remove extra POST arguments defined in `config.token_post_args_names`. Default: false
 - `empty_scopes` (Boolean) Use empty scopes. Use this field to remove scopes defined in `config.scopes`. Default: false
+- `headers_names` (List of String) Extra header names sent only on the token exchange request. Overrides `config.token_headers_names` for this request.
+- `headers_values` (List of String) Values paired by index with `headers_names`.
+- `post_args_names` (List of String) Extra POST argument names sent only on the token exchange request. Overrides `config.token_post_args_names` for this request. Use this, not the top-level field, for parameters that must not be attached to the plugin's other token endpoint calls, for example `requested_token_use` for Entra ID's On-Behalf-Of flow.
+- `post_args_values` (List of String) Values paired by index with `post_args_names`.
 - `scopes` (List of String) Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
+
+<a id="nestedatt--config--token_exchange--request--actor_token"></a>
+### Nested Schema for `config.token_exchange.request.actor_token`
+
+Optional:
+
+- `header_name` (String) Header name containing the actor token. Required when `source` is `header`.
+- `source` (String) Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support. possible known values include one of ["config", "header", "none"]; Default: "none"
+- `static_token` (String) Static actor token value. Required when `source` is `config`.
+- `type` (String) The RFC 8693 token type identifier of the actor token (the `actor_token_type` request parameter). Default: "urn:ietf:params:oauth:token-type:access_token"
+
 
 
 
