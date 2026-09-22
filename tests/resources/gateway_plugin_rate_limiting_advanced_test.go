@@ -90,4 +90,32 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("CRUD-with-expressions", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					// Create the plugin with expressions set.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "config.namespace", "my-namespace"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.custom_key", "net.src.ip"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.limit.0", "200"),
+					),
+				},
+				{
+					// Update expressions to different values.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.custom_key", "net.dst.ip"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.limit.0", "300"),
+					),
+				},
+			},
+		})
+	})
 }
