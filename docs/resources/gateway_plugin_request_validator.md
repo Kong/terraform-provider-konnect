@@ -22,6 +22,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
     array_length_compat               = true
     body_schema                       = "...my_body_schema..."
     content_type_parameter_validation = true
+    enforcement_mode                  = "block"
     parameter_schema = [
       {
         explode  = true
@@ -111,6 +112,7 @@ Optional:
 - `array_length_compat` (Boolean) If true, `minLength`/`maxLength` also apply to arrays using item count. Compatibility option for legacy schemas that use these keywords instead of `minItems`/`maxItems`. Default: true
 - `body_schema` (String) The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
 - `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type. Default: true
+- `enforcement_mode` (String) Determines the action to take when a request fails validation. When set to `block`, the request is rejected with an HTTP 400 response. When set to `log_only`, the request is allowed to proceed and a warning is logged. possible known values include one of ["block", "log_only"]; Default: "block"
 - `parameter_schema` (Attributes List) Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified. (see [below for nested schema](#nestedatt--config--parameter_schema))
 - `verbose_response` (Boolean) If enabled, the plugin returns more verbose and detailed validation errors. Default: false
 - `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators. possible known values include one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]; Default: "kong"

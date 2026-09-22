@@ -66,7 +66,9 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
             password = "...my_password..."
             username = "...my_username..."
           }
-          mode = "none"
+          identity_pool_id   = "...my_identity_pool_id..."
+          logical_cluster_id = "...my_logical_cluster_id..."
+          mode               = "none"
           oauth2 = {
             audience = [
               "..."
@@ -121,7 +123,9 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
                 password = "...my_password..."
                 username = "...my_username..."
               }
-              mode = "none"
+              identity_pool_id   = "...my_identity_pool_id..."
+              logical_cluster_id = "...my_logical_cluster_id..."
+              mode               = "none"
               oauth2 = {
                 audience = [
                   "..."
@@ -292,6 +296,8 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--basic))
+- `identity_pool_id` (String) The Confluent Cloud OAuth identity pool ID, sent as the `Confluent-Identity-Pool-Id` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.
+- `logical_cluster_id` (String) The Confluent Cloud Schema Registry cluster ID, sent as the `target-sr-cluster` request header. Confluent Cloud requires this when `mode` is 'oauth2'.
 - `mode` (String) Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"
 - `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--oauth2))
 - `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--oauth2_client))
@@ -410,6 +416,8 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
+- `identity_pool_id` (String) The Confluent Cloud OAuth identity pool ID, sent as the `Confluent-Identity-Pool-Id` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.
+- `logical_cluster_id` (String) The Confluent Cloud Schema Registry cluster ID, sent as the `target-sr-cluster` request header. Confluent Cloud requires this when `mode` is 'oauth2'.
 - `mode` (String) Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"
 - `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2))
 - `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2_client))

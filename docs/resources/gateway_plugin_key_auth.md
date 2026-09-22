@@ -109,7 +109,7 @@ Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request. Default: false
-- `identity_realms` (Attributes List) A configuration of Konnect Identity Realms that indicate where to source a consumer from. (see [below for nested schema](#nestedatt--config--identity_realms))
+- `identity_realms` (Attributes List) A configuration of Konnect Identity Realms that indicate where to source a consumer from. Defaults to a single local realm. Set this field to an empty array explicitly when the plugin enables Kong Identity `principals`, since the two are mutually exclusive. (see [below for nested schema](#nestedatt--config--identity_realms))
 - `key_in_body` (Boolean) If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`. Default: false
 - `key_in_header` (Boolean) If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true
 - `key_in_query` (Boolean) If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it. Default: true

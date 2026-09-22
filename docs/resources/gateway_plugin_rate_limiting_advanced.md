@@ -17,12 +17,13 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
   condition = "...my_condition..."
   config = {
     compound_identifier = [
-      "header"
+      "ip"
     ]
     consumer_groups = [
       "..."
     ]
     counter_key             = "consumer.custom_id"
+    custom_key              = "...my_custom_key..."
     dictionary_name         = "kong_rate_limiting_counters"
     disable_penalty         = false
     enforce_consumer_groups = false
@@ -51,6 +52,29 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
         azure_client_secret      = "...my_azure_client_secret..."
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
+        oauth = {
+          auth_method           = "client_secret_post"
+          client_id             = "...my_client_id..."
+          client_secret         = "...my_client_secret..."
+          client_secret_jwt_alg = "HS512"
+          grant_type            = "client_credentials"
+          password              = "...my_password..."
+          redis_username        = "...my_redis_username..."
+          redis_username_claim  = "...my_redis_username_claim..."
+          scopes = [
+            "..."
+          ]
+          ssl_verify     = true
+          timeout        = 10000
+          token_endpoint = "...my_token_endpoint..."
+          token_headers = {
+            key = "value"
+          }
+          token_post_args = {
+            key = "value"
+          }
+          username = "...my_username..."
+        }
       }
       cluster_max_redirections = 5
       cluster_nodes = [
@@ -108,8 +132,14 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 4
   enabled          = true
-  id               = "...my_id..."
-  instance_name    = "...my_instance_name..."
+  expressions = {
+    custom_key = "...my_custom_key..."
+    limit = [
+      "..."
+    ]
+  }
+  id            = "...my_id..."
+  instance_name = "...my_instance_name..."
   ordering = {
     after = {
       access = [
@@ -160,6 +190,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `expressions` (Attributes) (see [below for nested schema](#nestedatt--expressions))
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -183,6 +214,7 @@ Optional:
 - `compound_identifier` (List of String) Similar to `identifer`, but supports combining multiple items. The priority of `compound_identifier` is higher than `identifier`, which means if `compound_identifer` is set, it will be used, otherwise `identifier` will be used.
 - `consumer_groups` (List of String) List of consumer groups allowed to override the rate limiting settings for the given Route or Service. Required if `enforce_consumer_groups` is set to `true`.
 - `counter_key` (String) The key used to identify the counter for rate limiting. This can be based on consumer attributes such as `consumer.id`, `consumer.username`, or `consumer.custom_id`. Only applicable when `identifier` is set to `consumer`. possible known values include one of ["consumer.custom_id", "consumer.id", "consumer.username"]
+- `custom_key` (String) Overrides the computed rate-limiting key with a literal value for this request, regardless of `identifier` or `compound_identifier`.
 - `dictionary_name` (String) The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle. Default: "kong_rate_limiting_counters"
 - `disable_penalty` (Boolean) If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type. Default: false
 - `enforce_consumer_groups` (Boolean) Determines if consumer groups are allowed to override the rate limiting settings for the given Route or Service. Flipping `enforce_consumer_groups` from `true` to `false` disables the group override, but does not clear the list of consumer groups. You can then flip `enforce_consumer_groups` to `true` to re-enforce the groups. Default: false
@@ -190,7 +222,7 @@ Optional:
 - `error_message` (String) Set a custom error message to return when the rate limit is exceeded. Default: "API rate limit exceeded"
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters. Default: false
-- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. possible known values include one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "route", "service"]; Default: "consumer"
+- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. possible known values include one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "principal", "route", "service"]; Default: "consumer"
 - `lock_dictionary_name` (String) The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declare in nginx-kong.conf. Default: "kong_locks"
 - `namespace` (String) Specifies the rate-limiting namespace for this plugin instance. A namespace acts as a logical grouping for configuration and counter data used by the rate-limiting algorithm. Namespaces define how and where counter data is stored and synchronized. When multiple plugin instances share the same namespace, they also share the same rate-limiting counters and synchronization configuration. Conversely, using different namespaces ensures that each plugin instance maintains its own independent counters.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
@@ -235,7 +267,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp", "oauth"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -247,6 +279,29 @@ Optional:
 - `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
 - `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
 - `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+- `oauth` (Attributes) OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`. (see [below for nested schema](#nestedatt--config--redis--cloud_authentication--oauth))
+
+<a id="nestedatt--config--redis--cloud_authentication--oauth"></a>
+### Nested Schema for `config.redis.cloud_authentication.oauth`
+
+Optional:
+
+- `auth_method` (String) Client authentication method used against the token endpoint. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post"]; Default: "client_secret_post"
+- `client_id` (String) OAuth 2.0 client ID.
+- `client_secret` (String) OAuth 2.0 client secret.
+- `client_secret_jwt_alg` (String) Signing algorithm used for `client_secret_jwt` client authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
+- `grant_type` (String) OAuth 2.0 grant type used to request access tokens. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
+- `password` (String) Resource owner password, used with the `password` grant type.
+- `redis_username` (String) Static Redis ACL username sent with `AUTH <username> <token>`.
+- `redis_username_claim` (String) JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+- `scopes` (List of String) OAuth 2.0 scopes to request. Default: []
+- `ssl_verify` (Boolean) Whether to verify the TLS certificate of the token endpoint. Default: true
+- `timeout` (Number) Timeout, in milliseconds, for requests to the token endpoint. Default: 10000
+- `token_endpoint` (String) OAuth 2.0 token endpoint URL used to request access tokens.
+- `token_headers` (Map of String) Additional HTTP headers to send with the token request.
+- `token_post_args` (Map of String) Additional POST body arguments to send with the token request.
+- `username` (String) Resource owner username, used with the `password` grant type.
+
 
 
 <a id="nestedatt--config--redis--cluster_nodes"></a>
@@ -294,6 +349,15 @@ Optional:
 Optional:
 
 - `id` (String)
+
+
+<a id="nestedatt--expressions"></a>
+### Nested Schema for `expressions`
+
+Optional:
+
+- `custom_key` (String)
+- `limit` (List of String)
 
 
 <a id="nestedatt--ordering"></a>
