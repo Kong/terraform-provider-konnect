@@ -82,6 +82,11 @@ func (r *GatewayPluginMeteringAndBillingResource) Schema(ctx context.Context, re
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"allow_status_codes": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `List of status code ranges that are allowed to be logged in usage events.`,
+					},
 					"api_token": schema.StringAttribute{
 						Required:    true,
 						Description: `Bearer token for authenticating with the ingest endpoint.`,
@@ -147,11 +152,29 @@ func (r *GatewayPluginMeteringAndBillingResource) Schema(ctx context.Context, re
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"breaker_cooldown": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered. Default: 60`,
+								Validators: []validator.Float64{
+									float64validator.Between(0, 1000000),
+								},
+							},
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
 								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
+							},
+							"failure_threshold": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     int64default.StaticInt64(0),
+								Description: `Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker. Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 1000000),
+								},
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,

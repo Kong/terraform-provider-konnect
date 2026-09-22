@@ -8,7 +8,9 @@ import (
 
 // KonnectCPLegacyBadRequestError - standard error
 type KonnectCPLegacyBadRequestError struct {
-	Message any `json:"message,omitempty"`
+	// A short summary of the problem.
+	//
+	Message *string `json:"message,omitempty"`
 }
 
 func (k KonnectCPLegacyBadRequestError) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (k *KonnectCPLegacyBadRequestError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (k *KonnectCPLegacyBadRequestError) GetMessage() any {
+func (k *KonnectCPLegacyBadRequestError) GetMessage() *string {
 	if k == nil {
 		return nil
 	}

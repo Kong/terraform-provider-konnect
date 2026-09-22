@@ -37,7 +37,7 @@ type InvalidParameterDependentItem struct {
 	// invalid parameters rules
 	Rule       *InvalidParameterDependentItemRule `json:"rule"`
 	Reason     string                             `json:"reason"`
-	Dependents []any                              `json:"dependents"`
+	Dependents []string                           `json:"dependents"`
 	Source     *string                            `default:"null" json:"source"`
 }
 
@@ -73,7 +73,7 @@ func (i *InvalidParameterDependentItem) GetReason() string {
 	return i.Reason
 }
 
-func (i *InvalidParameterDependentItem) GetDependents() []any {
+func (i *InvalidParameterDependentItem) GetDependents() []string {
 	if i == nil {
 		return nil
 	}

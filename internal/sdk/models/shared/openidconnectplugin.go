@@ -524,6 +524,7 @@ const (
 	OpenidConnectPluginAuthProviderAws   OpenidConnectPluginAuthProvider = "aws"
 	OpenidConnectPluginAuthProviderAzure OpenidConnectPluginAuthProvider = "azure"
 	OpenidConnectPluginAuthProviderGcp   OpenidConnectPluginAuthProvider = "gcp"
+	OpenidConnectPluginAuthProviderOauth OpenidConnectPluginAuthProvider = "oauth"
 )
 
 func (e OpenidConnectPluginAuthProvider) ToPointer() *OpenidConnectPluginAuthProvider {
@@ -534,11 +535,231 @@ func (e OpenidConnectPluginAuthProvider) ToPointer() *OpenidConnectPluginAuthPro
 func (e *OpenidConnectPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// OpenidConnectPluginAuthMethod - Client authentication method used against the token endpoint.
+type OpenidConnectPluginAuthMethod string
+
+const (
+	OpenidConnectPluginAuthMethodClientSecretBasic OpenidConnectPluginAuthMethod = "client_secret_basic"
+	OpenidConnectPluginAuthMethodClientSecretJwt   OpenidConnectPluginAuthMethod = "client_secret_jwt"
+	OpenidConnectPluginAuthMethodClientSecretPost  OpenidConnectPluginAuthMethod = "client_secret_post"
+)
+
+func (e OpenidConnectPluginAuthMethod) ToPointer() *OpenidConnectPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type OpenidConnectPluginClientSecretJwtAlg string
+
+const (
+	OpenidConnectPluginClientSecretJwtAlgHs256 OpenidConnectPluginClientSecretJwtAlg = "HS256"
+	OpenidConnectPluginClientSecretJwtAlgHs512 OpenidConnectPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e OpenidConnectPluginClientSecretJwtAlg) ToPointer() *OpenidConnectPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginConfigClusterCacheRedisGrantType - OAuth 2.0 grant type used to request access tokens.
+type OpenidConnectPluginConfigClusterCacheRedisGrantType string
+
+const (
+	OpenidConnectPluginConfigClusterCacheRedisGrantTypeClientCredentials OpenidConnectPluginConfigClusterCacheRedisGrantType = "client_credentials"
+	OpenidConnectPluginConfigClusterCacheRedisGrantTypePassword          OpenidConnectPluginConfigClusterCacheRedisGrantType = "password"
+)
+
+func (e OpenidConnectPluginConfigClusterCacheRedisGrantType) ToPointer() *OpenidConnectPluginConfigClusterCacheRedisGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginConfigClusterCacheRedisGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type OpenidConnectPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *OpenidConnectPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *OpenidConnectPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *OpenidConnectPluginConfigClusterCacheRedisGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (o OpenidConnectPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginOauth) GetAuthMethod() *OpenidConnectPluginAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthMethod
+}
+
+func (o *OpenidConnectPluginOauth) GetClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientID
+}
+
+func (o *OpenidConnectPluginOauth) GetClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecret
+}
+
+func (o *OpenidConnectPluginOauth) GetClientSecretJwtAlg() *OpenidConnectPluginClientSecretJwtAlg {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecretJwtAlg
+}
+
+func (o *OpenidConnectPluginOauth) GetGrantType() *OpenidConnectPluginConfigClusterCacheRedisGrantType {
+	if o == nil {
+		return nil
+	}
+	return o.GrantType
+}
+
+func (o *OpenidConnectPluginOauth) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OpenidConnectPluginOauth) GetRedisUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisUsername
+}
+
+func (o *OpenidConnectPluginOauth) GetRedisUsernameClaim() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisUsernameClaim
+}
+
+func (o *OpenidConnectPluginOauth) GetScopes() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Scopes
+}
+
+func (o *OpenidConnectPluginOauth) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *OpenidConnectPluginOauth) GetTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Timeout
+}
+
+func (o *OpenidConnectPluginOauth) GetTokenEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenEndpoint
+}
+
+func (o *OpenidConnectPluginOauth) GetTokenHeaders() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeaders
+}
+
+func (o *OpenidConnectPluginOauth) GetTokenPostArgs() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenPostArgs
+}
+
+func (o *OpenidConnectPluginOauth) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
 }
 
 // OpenidConnectPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -567,6 +788,8 @@ type OpenidConnectPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *OpenidConnectPluginOauth `json:"oauth"`
 }
 
 func (o OpenidConnectPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -662,6 +885,13 @@ func (o *OpenidConnectPluginCloudAuthentication) GetGcpServiceAccountJSON() *str
 		return nil
 	}
 	return o.GcpServiceAccountJSON
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetOauth() *OpenidConnectPluginOauth {
+	if o == nil {
+		return nil
+	}
+	return o.Oauth
 }
 
 type OpenidConnectPluginClusterNodes struct {
@@ -1638,6 +1868,57 @@ func (p *ProofOfPossessionMtlsFromHeader) GetSslVerify() *bool {
 	return p.SslVerify
 }
 
+// ProtectedResourceMetadata - When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+type ProtectedResourceMetadata struct {
+	// List of authorization server issuer URIs to advertise in the RFC 9728 metadata document.
+	AuthorizationServers []string `json:"authorization_servers"`
+	// Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.
+	MetadataEndpoint *string `default:"null" json:"metadata_endpoint"`
+	// The URI of the protected resource. Used as the resource field in the RFC 9728 metadata document and to derive the well-known endpoint path.
+	Resource string `json:"resource"`
+	// Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.
+	ScopesSupported []string `json:"scopes_supported"`
+}
+
+func (p ProtectedResourceMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProtectedResourceMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"authorization_servers", "resource"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ProtectedResourceMetadata) GetAuthorizationServers() []string {
+	if p == nil {
+		return []string{}
+	}
+	return p.AuthorizationServers
+}
+
+func (p *ProtectedResourceMetadata) GetMetadataEndpoint() *string {
+	if p == nil {
+		return nil
+	}
+	return p.MetadataEndpoint
+}
+
+func (p *ProtectedResourceMetadata) GetResource() string {
+	if p == nil {
+		return ""
+	}
+	return p.Resource
+}
+
+func (p *ProtectedResourceMetadata) GetScopesSupported() []string {
+	if p == nil {
+		return nil
+	}
+	return p.ScopesSupported
+}
+
 // OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 type OpenidConnectPluginPushedAuthorizationRequestEndpointAuthMethod string
 
@@ -1673,6 +1954,7 @@ const (
 	OpenidConnectPluginConfigAuthProviderAws   OpenidConnectPluginConfigAuthProvider = "aws"
 	OpenidConnectPluginConfigAuthProviderAzure OpenidConnectPluginConfigAuthProvider = "azure"
 	OpenidConnectPluginConfigAuthProviderGcp   OpenidConnectPluginConfigAuthProvider = "gcp"
+	OpenidConnectPluginConfigAuthProviderOauth OpenidConnectPluginConfigAuthProvider = "oauth"
 )
 
 func (e OpenidConnectPluginConfigAuthProvider) ToPointer() *OpenidConnectPluginConfigAuthProvider {
@@ -1683,11 +1965,231 @@ func (e OpenidConnectPluginConfigAuthProvider) ToPointer() *OpenidConnectPluginC
 func (e *OpenidConnectPluginConfigAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// OpenidConnectPluginConfigAuthMethod - Client authentication method used against the token endpoint.
+type OpenidConnectPluginConfigAuthMethod string
+
+const (
+	OpenidConnectPluginConfigAuthMethodClientSecretBasic OpenidConnectPluginConfigAuthMethod = "client_secret_basic"
+	OpenidConnectPluginConfigAuthMethodClientSecretJwt   OpenidConnectPluginConfigAuthMethod = "client_secret_jwt"
+	OpenidConnectPluginConfigAuthMethodClientSecretPost  OpenidConnectPluginConfigAuthMethod = "client_secret_post"
+)
+
+func (e OpenidConnectPluginConfigAuthMethod) ToPointer() *OpenidConnectPluginConfigAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginConfigAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginConfigClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type OpenidConnectPluginConfigClientSecretJwtAlg string
+
+const (
+	OpenidConnectPluginConfigClientSecretJwtAlgHs256 OpenidConnectPluginConfigClientSecretJwtAlg = "HS256"
+	OpenidConnectPluginConfigClientSecretJwtAlgHs512 OpenidConnectPluginConfigClientSecretJwtAlg = "HS512"
+)
+
+func (e OpenidConnectPluginConfigClientSecretJwtAlg) ToPointer() *OpenidConnectPluginConfigClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginConfigClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginConfigGrantType - OAuth 2.0 grant type used to request access tokens.
+type OpenidConnectPluginConfigGrantType string
+
+const (
+	OpenidConnectPluginConfigGrantTypeClientCredentials OpenidConnectPluginConfigGrantType = "client_credentials"
+	OpenidConnectPluginConfigGrantTypePassword          OpenidConnectPluginConfigGrantType = "password"
+)
+
+func (e OpenidConnectPluginConfigGrantType) ToPointer() *OpenidConnectPluginConfigGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginConfigGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginConfigOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type OpenidConnectPluginConfigOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *OpenidConnectPluginConfigAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *OpenidConnectPluginConfigClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *OpenidConnectPluginConfigGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (o OpenidConnectPluginConfigOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginConfigOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetAuthMethod() *OpenidConnectPluginConfigAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.AuthMethod
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientID
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecret
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetClientSecretJwtAlg() *OpenidConnectPluginConfigClientSecretJwtAlg {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecretJwtAlg
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetGrantType() *OpenidConnectPluginConfigGrantType {
+	if o == nil {
+		return nil
+	}
+	return o.GrantType
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetRedisUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisUsername
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetRedisUsernameClaim() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RedisUsernameClaim
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetScopes() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Scopes
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetTimeout() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Timeout
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetTokenEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenEndpoint
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetTokenHeaders() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenHeaders
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetTokenPostArgs() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.TokenPostArgs
+}
+
+func (o *OpenidConnectPluginConfigOauth) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
 }
 
 // OpenidConnectPluginConfigCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1716,6 +2218,8 @@ type OpenidConnectPluginConfigCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *OpenidConnectPluginConfigOauth `json:"oauth"`
 }
 
 func (o OpenidConnectPluginConfigCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -1811,6 +2315,13 @@ func (o *OpenidConnectPluginConfigCloudAuthentication) GetGcpServiceAccountJSON(
 		return nil
 	}
 	return o.GcpServiceAccountJSON
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetOauth() *OpenidConnectPluginConfigOauth {
+	if o == nil {
+		return nil
+	}
+	return o.Oauth
 }
 
 type OpenidConnectPluginConfigClusterNodes struct {
@@ -2411,14 +2922,172 @@ func (o *OpenidConnectPluginCache) GetTTL() *int64 {
 	return o.TTL
 }
 
+// OpenidConnectPluginGrantType - The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode.
+type OpenidConnectPluginGrantType string
+
+const (
+	OpenidConnectPluginGrantTypeJwtBearer     OpenidConnectPluginGrantType = "jwt_bearer"
+	OpenidConnectPluginGrantTypeTokenExchange OpenidConnectPluginGrantType = "token_exchange"
+)
+
+func (e OpenidConnectPluginGrantType) ToPointer() *OpenidConnectPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "jwt_bearer", "token_exchange":
+			return true
+		}
+	}
+	return false
+}
+
+// MapIdentitiesFrom - Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
+type MapIdentitiesFrom string
+
+const (
+	MapIdentitiesFromExchangedTokens MapIdentitiesFrom = "exchanged_tokens"
+	MapIdentitiesFromSubjectToken    MapIdentitiesFrom = "subject_token"
+)
+
+func (e MapIdentitiesFrom) ToPointer() *MapIdentitiesFrom {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MapIdentitiesFrom) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "exchanged_tokens", "subject_token":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginProvider - Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`.
+type OpenidConnectPluginProvider string
+
+const (
+	OpenidConnectPluginProviderMicrosoft OpenidConnectPluginProvider = "microsoft"
+	OpenidConnectPluginProviderStandard  OpenidConnectPluginProvider = "standard"
+)
+
+func (e OpenidConnectPluginProvider) ToPointer() *OpenidConnectPluginProvider {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "microsoft", "standard":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginSource - Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support.
+type OpenidConnectPluginSource string
+
+const (
+	OpenidConnectPluginSourceConfig OpenidConnectPluginSource = "config"
+	OpenidConnectPluginSourceHeader OpenidConnectPluginSource = "header"
+	OpenidConnectPluginSourceNone   OpenidConnectPluginSource = "none"
+)
+
+func (e OpenidConnectPluginSource) ToPointer() *OpenidConnectPluginSource {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "config", "header", "none":
+			return true
+		}
+	}
+	return false
+}
+
+// ActorToken - How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
+type ActorToken struct {
+	// Header name containing the actor token. Required when `source` is `header`.
+	HeaderName *string `default:"null" json:"header_name"`
+	// Where to obtain the actor token. `header` reads it from a request header. `config` uses a fixed value. `none` disables actor token support.
+	Source *OpenidConnectPluginSource `default:"none" json:"source"`
+	// Static actor token value. Required when `source` is `config`.
+	StaticToken *string `default:"null" json:"static_token"`
+	// The RFC 8693 token type identifier of the actor token (the `actor_token_type` request parameter).
+	Type *string `default:"urn:ietf:params:oauth:token-type:access_token" json:"type"`
+}
+
+func (a ActorToken) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ActorToken) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *ActorToken) GetHeaderName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.HeaderName
+}
+
+func (a *ActorToken) GetSource() *OpenidConnectPluginSource {
+	if a == nil {
+		return nil
+	}
+	return a.Source
+}
+
+func (a *ActorToken) GetStaticToken() *string {
+	if a == nil {
+		return nil
+	}
+	return a.StaticToken
+}
+
+func (a *ActorToken) GetType() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Type
+}
+
 // OpenidConnectPluginRequest - Parameters used in the token exchange request.
 type OpenidConnectPluginRequest struct {
+	// How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.
+	ActorToken *ActorToken `json:"actor_token"`
 	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
 	Audience []string `json:"audience"`
 	// Use empty audiences. Use this field to remove audiences defined in `config.audience`.
 	EmptyAudience *bool `default:"false" json:"empty_audience"`
+	// Use no extra headers on the token exchange request. Use this field to remove extra headers defined in `config.token_headers_names`.
+	EmptyHeaders *bool `default:"false" json:"empty_headers"`
+	// Use no extra POST arguments on the token exchange request. Use this field to remove extra POST arguments defined in `config.token_post_args_names`.
+	EmptyPostArgs *bool `default:"false" json:"empty_post_args"`
 	// Use empty scopes. Use this field to remove scopes defined in `config.scopes`.
 	EmptyScopes *bool `default:"false" json:"empty_scopes"`
+	// Extra header names sent only on the token exchange request. Overrides `config.token_headers_names` for this request.
+	HeadersNames []string `json:"headers_names"`
+	// Values paired by index with `headers_names`.
+	HeadersValues []string `json:"headers_values"`
+	// Extra POST argument names sent only on the token exchange request. Overrides `config.token_post_args_names` for this request. Use this, not the top-level field, for parameters that must not be attached to the plugin's other token endpoint calls, for example `requested_token_use` for Entra ID's On-Behalf-Of flow.
+	PostArgsNames []string `json:"post_args_names"`
+	// Values paired by index with `post_args_names`.
+	PostArgsValues []string `json:"post_args_values"`
 	// Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
 	Scopes []string `json:"scopes"`
 }
@@ -2432,6 +3101,13 @@ func (o *OpenidConnectPluginRequest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *OpenidConnectPluginRequest) GetActorToken() *ActorToken {
+	if o == nil {
+		return nil
+	}
+	return o.ActorToken
 }
 
 func (o *OpenidConnectPluginRequest) GetAudience() []string {
@@ -2448,11 +3124,53 @@ func (o *OpenidConnectPluginRequest) GetEmptyAudience() *bool {
 	return o.EmptyAudience
 }
 
+func (o *OpenidConnectPluginRequest) GetEmptyHeaders() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyHeaders
+}
+
+func (o *OpenidConnectPluginRequest) GetEmptyPostArgs() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyPostArgs
+}
+
 func (o *OpenidConnectPluginRequest) GetEmptyScopes() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.EmptyScopes
+}
+
+func (o *OpenidConnectPluginRequest) GetHeadersNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.HeadersNames
+}
+
+func (o *OpenidConnectPluginRequest) GetHeadersValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.HeadersValues
+}
+
+func (o *OpenidConnectPluginRequest) GetPostArgsNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.PostArgsNames
+}
+
+func (o *OpenidConnectPluginRequest) GetPostArgsValues() []string {
+	if o == nil {
+		return nil
+	}
+	return o.PostArgsValues
 }
 
 func (o *OpenidConnectPluginRequest) GetScopes() []string {
@@ -2462,12 +3180,16 @@ func (o *OpenidConnectPluginRequest) GetScopes() []string {
 	return o.Scopes
 }
 
-// OpenidConnectPluginConditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
+// OpenidConnectPluginConditions - A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
 type OpenidConnectPluginConditions struct {
-	HasAudience     []string `json:"has_audience"`
-	HasScopes       []string `json:"has_scopes"`
+	// Audience values that must all be present in the token, matched against `audience_claim`.
+	HasAudience []string `json:"has_audience"`
+	// Scope values that must all be present in the token, matched against `scopes_claim`.
+	HasScopes []string `json:"has_scopes"`
+	// Audience values that must all be absent from the token, matched against `audience_claim`.
 	MissingAudience []string `json:"missing_audience"`
-	MissingScopes   []string `json:"missing_scopes"`
+	// Scope values that must all be absent from the token, matched against `scopes_claim`.
+	MissingScopes []string `json:"missing_scopes"`
 }
 
 func (o OpenidConnectPluginConditions) MarshalJSON() ([]byte, error) {
@@ -2510,13 +3232,13 @@ func (o *OpenidConnectPluginConditions) GetMissingScopes() []string {
 }
 
 type OpenidConnectPluginSubjectTokenIssuers struct {
-	// A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
+	// A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, `conditions` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, `conditions` must be defined.
 	Conditions *OpenidConnectPluginConditions `json:"conditions"`
 	// Tokens of whose iss claim matches this value will be exchanged.
 	Issuer string `json:"issuer"`
 	// An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when `verify_signature` is `true`. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.
 	JwksURI *string `default:"null" json:"jwks_uri"`
-	// When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to `false` when this issuer is the same as the target issuer. Defaults to `false` for backward compatibility.
+	// When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. Defaults to `false` for backward compatibility, which skips this local check; the token exchange request to the issuer still validates the subject token itself, so this is defense in depth, not the only safeguard. This field should be left empty or set to `false` when this issuer is the same as the target issuer.
 	VerifySignature *bool `default:"false" json:"verify_signature"`
 }
 
@@ -2562,7 +3284,13 @@ func (o *OpenidConnectPluginSubjectTokenIssuers) GetVerifySignature() *bool {
 // OpenidConnectPluginTokenExchange - Details on how to accept tokens from other identity providers.
 type OpenidConnectPluginTokenExchange struct {
 	// Cache support for token exchange
-	Cache *OpenidConnectPluginCache `json:"cache"`
+	Cache *OpenidConnectPluginCache `json:"cache,omitempty"`
+	// The token exchange grant. `token_exchange` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). `jwt_bearer` uses the JWT Bearer authorization-grant flow (RFC 7523); see `token_exchange.provider` for provider-specific defaults in this mode.
+	GrantType *OpenidConnectPluginGrantType `default:"token_exchange" json:"grant_type"`
+	// Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. `exchanged_tokens` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. `subject_token` uses the original, pre-exchange bearer token's claims instead.
+	MapIdentitiesFrom *MapIdentitiesFrom `default:"exchanged_tokens" json:"map_identities_from"`
+	// Identity provider used with `grant_type = jwt_bearer`; not allowed with `grant_type = token_exchange`. `standard` (default) adds no provider-specific parameter. `microsoft` adds the required `requested_token_use=on_behalf_of`, which is fixed and cannot be overridden via `post_args_names/values`.
+	Provider *OpenidConnectPluginProvider `default:"standard" json:"provider"`
 	// Parameters used in the token exchange request.
 	Request *OpenidConnectPluginRequest `json:"request"`
 	// Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.
@@ -2585,6 +3313,27 @@ func (o *OpenidConnectPluginTokenExchange) GetCache() *OpenidConnectPluginCache 
 		return nil
 	}
 	return o.Cache
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetGrantType() *OpenidConnectPluginGrantType {
+	if o == nil {
+		return nil
+	}
+	return o.GrantType
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetMapIdentitiesFrom() *MapIdentitiesFrom {
+	if o == nil {
+		return nil
+	}
+	return o.MapIdentitiesFrom
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetProvider() *OpenidConnectPluginProvider {
+	if o == nil {
+		return nil
+	}
+	return o.Provider
 }
 
 func (o *OpenidConnectPluginTokenExchange) GetRequest() *OpenidConnectPluginRequest {
@@ -2687,7 +3436,7 @@ type OpenidConnectPluginConfig struct {
 	Audience []string `json:"audience"`
 	// The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	AudienceClaim []string `json:"audience_claim,omitempty"`
-	// The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	// The audiences (`audience_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both audiences `a` and `b`, or a token that has audience `c`.
 	AudienceRequired []string `json:"audience_required"`
 	// Types of credentials/grants to enable.
 	AuthMethods []OpenidConnectPluginAuthMethods `json:"auth_methods,omitempty"`
@@ -2832,9 +3581,9 @@ type OpenidConnectPluginConfig struct {
 	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri"`
 	// The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	GroupsClaim []string `json:"groups_claim,omitempty"`
-	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	// The groups (`groups_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both groups `a` and `b`, or a token that has group `c`.
 	GroupsRequired []string `json:"groups_required"`
-	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
+	// Remove the credentials used for authentication from the downstream request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. This setting does not control how the plugin sends the access token to the upstream service. To control that, use `upstream_access_token_header`.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// The HTTP proxy.
 	HTTPProxy *string `default:"null" json:"http_proxy"`
@@ -2850,7 +3599,7 @@ type OpenidConnectPluginConfig struct {
 	IDTokenParamName *string `default:"null" json:"id_token_param_name"`
 	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 	IDTokenParamType []OpenidConnectPluginIDTokenParamType `json:"id_token_param_type,omitempty"`
-	// Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
+	// Skip the token signature verification on certain grants. This is insecure and logs a warning; use it only for providers that publish no verification key. Grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
 	IgnoreSignature []OpenidConnectPluginIgnoreSignature `json:"ignore_signature,omitempty"`
 	// Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
 	IntrospectJwtTokens *bool `default:"false" json:"introspect_jwt_tokens"`
@@ -2946,6 +3695,8 @@ type OpenidConnectPluginConfig struct {
 	ProofOfPossessionMtls *OpenidConnectPluginProofOfPossessionMtls `default:"off" json:"proof_of_possession_mtls"`
 	// Configuration for reading the client certificate from an HTTP header injected by a WAF or L7 proxy that terminates TLS. When configured, the plugin reads and validates the certificate from the specified header for mTLS Proof-of-Possession (PoP) verification instead of (or in addition to) the TLS layer certificate.
 	ProofOfPossessionMtlsFromHeader *ProofOfPossessionMtlsFromHeader `json:"proof_of_possession_mtls_from_header"`
+	// When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.
+	ProtectedResourceMetadata *ProtectedResourceMetadata `json:"protected_resource_metadata"`
 	// The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
 	PushedAuthorizationRequestEndpoint *string `default:"null" json:"pushed_authorization_request_endpoint"`
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2983,7 +3734,7 @@ type OpenidConnectPluginConfig struct {
 	RevocationTokenParamName *string `default:"token" json:"revocation_token_param_name"`
 	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	RolesClaim []string `json:"roles_claim,omitempty"`
-	// The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	// The roles (`roles_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both roles `a` and `b`, or a token that has role `c`.
 	RolesRequired []string `json:"roles_required"`
 	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
 	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
@@ -2991,7 +3742,7 @@ type OpenidConnectPluginConfig struct {
 	Scopes []string `json:"scopes"`
 	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ScopesClaim []string `json:"scopes_claim,omitempty"`
-	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+	// The scopes (`scopes_claim` claim) required for successful authorization. The plugin checks these values against the access token (or introspection results). Each array element is an alternative (**OR**). To require several values together, put them in one element separated by spaces (**AND**). For example, `["a b", "c"]` authorizes a token that has both scopes `a` and `b`, or a token that has scope `c`.
 	ScopesRequired []string `json:"scopes_required"`
 	// Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
 	SearchUserInfo *bool `default:"false" json:"search_user_info"`
@@ -3097,7 +3848,7 @@ type OpenidConnectPluginConfig struct {
 	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri"`
 	// Where to redirect the client when unexpected errors happen with the requests.
 	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri"`
-	// The upstream access token header.
+	// The upstream access token header. The access token is sent to the upstream service using this header regardless of the `hide_credentials` setting. Set this field to `null` to prevent sending the access token to the upstream.
 	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
 	// The upstream access token JWK header.
 	UpstreamAccessTokenJwkHeader *string `default:"null" json:"upstream_access_token_jwk_header"`
@@ -3147,7 +3898,7 @@ type OpenidConnectPluginConfig struct {
 	VerifyNonce *bool `default:"true" json:"verify_nonce"`
 	// Verify plugin configuration against discovery.
 	VerifyParameters *bool `default:"false" json:"verify_parameters"`
-	// Verify signature of tokens.
+	// Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
 	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ConsumerClaim []string `json:"consumer_claim,omitempty"`
@@ -4086,6 +4837,13 @@ func (o *OpenidConnectPluginConfig) GetProofOfPossessionMtlsFromHeader() *ProofO
 		return nil
 	}
 	return o.ProofOfPossessionMtlsFromHeader
+}
+
+func (o *OpenidConnectPluginConfig) GetProtectedResourceMetadata() *ProtectedResourceMetadata {
+	if o == nil {
+		return nil
+	}
+	return o.ProtectedResourceMetadata
 }
 
 func (o *OpenidConnectPluginConfig) GetPushedAuthorizationRequestEndpoint() *string {

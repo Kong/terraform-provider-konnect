@@ -83,6 +83,15 @@ type AIGateway struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
+	// The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
+	//
+	// Data planes older than this version still connect for topology visibility.
+	//
+	// When not specified, the latest generally available runtime version is used.
+	//
+	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
+	// Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version.
+	RuntimeAutoUpgrade *bool `default:"false" json:"runtime_auto_upgrade"`
 	// How this AI Gateway's control plane is deployed.
 	DeploymentType *AIGatewayDeploymentType `default:"hybrid" json:"deployment_type"`
 	// Object containing AI Gateway access endpoints.
@@ -150,6 +159,20 @@ func (a *AIGateway) GetID() string {
 		return ""
 	}
 	return a.ID
+}
+
+func (a *AIGateway) GetMinRuntimeVersion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.MinRuntimeVersion
+}
+
+func (a *AIGateway) GetRuntimeAutoUpgrade() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RuntimeAutoUpgrade
 }
 
 func (a *AIGateway) GetDeploymentType() *AIGatewayDeploymentType {

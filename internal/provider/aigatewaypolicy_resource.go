@@ -38,6 +38,7 @@ type AIGatewayPolicyResource struct {
 
 // AIGatewayPolicyResourceModel describes the resource data model.
 type AIGatewayPolicyResourceModel struct {
+	Condition   types.String            `tfsdk:"condition"`
 	Config      jsontypes.Normalized    `tfsdk:"config"`
 	CreatedAt   types.String            `tfsdk:"created_at"`
 	DisplayName types.String            `tfsdk:"display_name"`
@@ -60,6 +61,15 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayPolicy Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional: true,
+				MarkdownDescription: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.` + "\n" +
+					`` + "\n" +
+					`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.StringAttribute{
 				CustomType: jsontypes.NormalizedType{},
 				Required:   true,

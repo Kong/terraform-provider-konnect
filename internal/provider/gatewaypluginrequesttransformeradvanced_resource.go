@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -119,8 +120,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 							},
 						},
 					},
-					"dots_in_keys": types.BoolType,
-					"http_method":  types.StringType,
+					"dots_in_keys":          types.BoolType,
+					"http_method":           types.StringType,
+					"max_request_body_size": types.Int64Type,
 					"remove": types.ObjectType{
 						AttrTypes: map[string]attr.Type{
 							`body`: types.ListType{
@@ -253,6 +255,12 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"http_method": schema.StringAttribute{
 						Optional:    true,
 						Description: `A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.`,
+					},
+					"max_request_body_size": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(-1),
+						Description: `The maximum request body size, in bytes, that the plugin reads to apply body transformations. Bodies larger than ` + "`" + `client_body_buffer_size` + "`" + ` are buffered by Nginx to a temporary file. ` + "`" + `-1` + "`" + ` (the default) disables reading such buffered bodies, so their body transformations are skipped to avoid the extra disk I/O. ` + "`" + `0` + "`" + ` means unlimited (still bounded by Nginx's ` + "`" + `client_max_body_size` + "`" + `), and any positive value caps how much of the buffered body is read from the temporary file. Default: -1`,
 					},
 					"remove": schema.SingleNestedAttribute{
 						Computed: true,

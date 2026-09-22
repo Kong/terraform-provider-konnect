@@ -8,14 +8,17 @@ import (
 
 type AIGatewayTargetMistralConfig struct {
 	CacheReadCost        types.Float64                  `tfsdk:"cache_read_cost"`
+	CacheReadCostList    []AIGatewayModalCostList       `tfsdk:"cache_read_cost_list"`
 	CacheWriteCost       types.Float64                  `tfsdk:"cache_write_cost"`
 	CacheWriteCostList   []AIGatewayCacheWriteCost      `tfsdk:"cache_write_cost_list"`
 	ContextWindowFactor  []AIGatewayContextWindowFactor `tfsdk:"context_window_factor"`
 	EmbeddingsDimensions types.Int64                    `tfsdk:"embeddings_dimensions"`
 	Format               types.String                   `tfsdk:"format"`
 	InputCost            types.Float64                  `tfsdk:"input_cost"`
+	InputCostList        []AIGatewayModalCostList       `tfsdk:"input_cost_list"`
 	MaxTokens            types.Int64                    `tfsdk:"max_tokens"`
 	OutputCost           types.Float64                  `tfsdk:"output_cost"`
+	OutputCostList       []AIGatewayModalCostList       `tfsdk:"output_cost_list"`
 	ServiceTierFactor    []AIGatewayServiceTierFactor   `tfsdk:"service_tier_factor"`
 	Temperature          types.Float64                  `tfsdk:"temperature"`
 	TopK                 types.Int64                    `tfsdk:"top_k"`

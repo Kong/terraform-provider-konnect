@@ -120,6 +120,29 @@ func (r *RequestValidatorPluginPartials) GetPath() string {
 	return r.Path
 }
 
+// RequestValidatorPluginEnforcementMode - Determines the action to take when a request fails validation. When set to `block`, the request is rejected with an HTTP 400 response. When set to `log_only`, the request is allowed to proceed and a warning is logged.
+type RequestValidatorPluginEnforcementMode string
+
+const (
+	RequestValidatorPluginEnforcementModeBlock   RequestValidatorPluginEnforcementMode = "block"
+	RequestValidatorPluginEnforcementModeLogOnly RequestValidatorPluginEnforcementMode = "log_only"
+)
+
+func (e RequestValidatorPluginEnforcementMode) ToPointer() *RequestValidatorPluginEnforcementMode {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestValidatorPluginEnforcementMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "block", "log_only":
+			return true
+		}
+	}
+	return false
+}
+
 // RequestValidatorPluginIn - The location of the parameter.
 type RequestValidatorPluginIn string
 
@@ -276,6 +299,8 @@ type RequestValidatorPluginConfig struct {
 	BodySchema *string `default:"null" json:"body_schema"`
 	// Determines whether to enable parameters validation of request content-type.
 	ContentTypeParameterValidation *bool `default:"true" json:"content_type_parameter_validation"`
+	// Determines the action to take when a request fails validation. When set to `block`, the request is rejected with an HTTP 400 response. When set to `log_only`, the request is allowed to proceed and a warning is logged.
+	EnforcementMode *RequestValidatorPluginEnforcementMode `default:"block" json:"enforcement_mode"`
 	// Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified.
 	ParameterSchema []ParameterSchema `json:"parameter_schema"`
 	// If enabled, the plugin returns more verbose and detailed validation errors.
@@ -321,6 +346,13 @@ func (r *RequestValidatorPluginConfig) GetContentTypeParameterValidation() *bool
 		return nil
 	}
 	return r.ContentTypeParameterValidation
+}
+
+func (r *RequestValidatorPluginConfig) GetEnforcementMode() *RequestValidatorPluginEnforcementMode {
+	if r == nil {
+		return nil
+	}
+	return r.EnforcementMode
 }
 
 func (r *RequestValidatorPluginConfig) GetParameterSchema() []ParameterSchema {

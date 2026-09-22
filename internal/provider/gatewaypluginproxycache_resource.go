@@ -81,6 +81,12 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"cache_by_principal": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `When enabled, use the authenticated Principal's UUID to compose the cache key. Default: false`,
+					},
 					"cache_control": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,

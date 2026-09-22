@@ -306,6 +306,7 @@ const (
 	AiMcpProxyPluginAuthProviderAws   AiMcpProxyPluginAuthProvider = "aws"
 	AiMcpProxyPluginAuthProviderAzure AiMcpProxyPluginAuthProvider = "azure"
 	AiMcpProxyPluginAuthProviderGcp   AiMcpProxyPluginAuthProvider = "gcp"
+	AiMcpProxyPluginAuthProviderOauth AiMcpProxyPluginAuthProvider = "oauth"
 )
 
 func (e AiMcpProxyPluginAuthProvider) ToPointer() *AiMcpProxyPluginAuthProvider {
@@ -316,11 +317,231 @@ func (e AiMcpProxyPluginAuthProvider) ToPointer() *AiMcpProxyPluginAuthProvider 
 func (e *AiMcpProxyPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// AiMcpProxyPluginAuthMethod - Client authentication method used against the token endpoint.
+type AiMcpProxyPluginAuthMethod string
+
+const (
+	AiMcpProxyPluginAuthMethodClientSecretBasic AiMcpProxyPluginAuthMethod = "client_secret_basic"
+	AiMcpProxyPluginAuthMethodClientSecretJwt   AiMcpProxyPluginAuthMethod = "client_secret_jwt"
+	AiMcpProxyPluginAuthMethodClientSecretPost  AiMcpProxyPluginAuthMethod = "client_secret_post"
+)
+
+func (e AiMcpProxyPluginAuthMethod) ToPointer() *AiMcpProxyPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// AiMcpProxyPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type AiMcpProxyPluginClientSecretJwtAlg string
+
+const (
+	AiMcpProxyPluginClientSecretJwtAlgHs256 AiMcpProxyPluginClientSecretJwtAlg = "HS256"
+	AiMcpProxyPluginClientSecretJwtAlgHs512 AiMcpProxyPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e AiMcpProxyPluginClientSecretJwtAlg) ToPointer() *AiMcpProxyPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// AiMcpProxyPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type AiMcpProxyPluginGrantType string
+
+const (
+	AiMcpProxyPluginGrantTypeClientCredentials AiMcpProxyPluginGrantType = "client_credentials"
+	AiMcpProxyPluginGrantTypePassword          AiMcpProxyPluginGrantType = "password"
+)
+
+func (e AiMcpProxyPluginGrantType) ToPointer() *AiMcpProxyPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// AiMcpProxyPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type AiMcpProxyPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *AiMcpProxyPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *AiMcpProxyPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *AiMcpProxyPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (a AiMcpProxyPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpProxyPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiMcpProxyPluginOauth) GetAuthMethod() *AiMcpProxyPluginAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.AuthMethod
+}
+
+func (a *AiMcpProxyPluginOauth) GetClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientID
+}
+
+func (a *AiMcpProxyPluginOauth) GetClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecret
+}
+
+func (a *AiMcpProxyPluginOauth) GetClientSecretJwtAlg() *AiMcpProxyPluginClientSecretJwtAlg {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecretJwtAlg
+}
+
+func (a *AiMcpProxyPluginOauth) GetGrantType() *AiMcpProxyPluginGrantType {
+	if a == nil {
+		return nil
+	}
+	return a.GrantType
+}
+
+func (a *AiMcpProxyPluginOauth) GetPassword() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Password
+}
+
+func (a *AiMcpProxyPluginOauth) GetRedisUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsername
+}
+
+func (a *AiMcpProxyPluginOauth) GetRedisUsernameClaim() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsernameClaim
+}
+
+func (a *AiMcpProxyPluginOauth) GetScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Scopes
+}
+
+func (a *AiMcpProxyPluginOauth) GetSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SslVerify
+}
+
+func (a *AiMcpProxyPluginOauth) GetTimeout() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Timeout
+}
+
+func (a *AiMcpProxyPluginOauth) GetTokenEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenEndpoint
+}
+
+func (a *AiMcpProxyPluginOauth) GetTokenHeaders() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeaders
+}
+
+func (a *AiMcpProxyPluginOauth) GetTokenPostArgs() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgs
+}
+
+func (a *AiMcpProxyPluginOauth) GetUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Username
 }
 
 // AiMcpProxyPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -349,6 +570,8 @@ type AiMcpProxyPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *AiMcpProxyPluginOauth `json:"oauth"`
 }
 
 func (a AiMcpProxyPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -444,6 +667,13 @@ func (a *AiMcpProxyPluginCloudAuthentication) GetGcpServiceAccountJSON() *string
 		return nil
 	}
 	return a.GcpServiceAccountJSON
+}
+
+func (a *AiMcpProxyPluginCloudAuthentication) GetOauth() *AiMcpProxyPluginOauth {
+	if a == nil {
+		return nil
+	}
+	return a.Oauth
 }
 
 type AiMcpProxyPluginClusterNodes struct {

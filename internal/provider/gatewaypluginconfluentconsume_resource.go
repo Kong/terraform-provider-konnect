@@ -283,7 +283,9 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 													`username`: types.StringType,
 												},
 											},
-											`mode`: types.StringType,
+											`identity_pool_id`:   types.StringType,
+											`logical_cluster_id`: types.StringType,
+											`mode`:               types.StringType,
 											`oauth2`: types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`audience`: types.ListType{
@@ -342,7 +344,9 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 													`username`: types.StringType,
 												},
 											},
-											`mode`: types.StringType,
+											`identity_pool_id`:   types.StringType,
+											`logical_cluster_id`: types.StringType,
+											`mode`:               types.StringType,
 											`oauth2`: types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`audience`: types.ListType{
@@ -397,7 +401,9 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 													`username`: types.StringType,
 												},
 											},
-											"mode": types.StringType,
+											"identity_pool_id":   types.StringType,
+											"logical_cluster_id": types.StringType,
+											"mode":               types.StringType,
 											"oauth2": types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`audience`: types.ListType{
@@ -452,6 +458,14 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 														Required: true,
 													},
 												},
+											},
+											"identity_pool_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `The Confluent Cloud OAuth identity pool ID, sent as the ` + "`" + `Confluent-Identity-Pool-Id` + "`" + ` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.`,
+											},
+											"logical_cluster_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `The Confluent Cloud Schema Registry cluster ID, sent as the ` + "`" + `target-sr-cluster` + "`" + ` request header. Confluent Cloud requires this when ` + "`" + `mode` + "`" + ` is 'oauth2'.`,
 											},
 											"mode": schema.StringAttribute{
 												Computed:    true,
@@ -686,7 +700,9 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																`username`: types.StringType,
 															},
 														},
-														`mode`: types.StringType,
+														`identity_pool_id`:   types.StringType,
+														`logical_cluster_id`: types.StringType,
+														`mode`:               types.StringType,
 														`oauth2`: types.ObjectType{
 															AttrTypes: map[string]attr.Type{
 																`audience`: types.ListType{
@@ -745,7 +761,9 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																`username`: types.StringType,
 															},
 														},
-														`mode`: types.StringType,
+														`identity_pool_id`:   types.StringType,
+														`logical_cluster_id`: types.StringType,
+														`mode`:               types.StringType,
 														`oauth2`: types.ObjectType{
 															AttrTypes: map[string]attr.Type{
 																`audience`: types.ListType{
@@ -800,7 +818,9 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																`username`: types.StringType,
 															},
 														},
-														"mode": types.StringType,
+														"identity_pool_id":   types.StringType,
+														"logical_cluster_id": types.StringType,
+														"mode":               types.StringType,
 														"oauth2": types.ObjectType{
 															AttrTypes: map[string]attr.Type{
 																`audience`: types.ListType{
@@ -865,6 +885,14 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																	},
 																},
 															},
+														},
+														"identity_pool_id": schema.StringAttribute{
+															Optional:    true,
+															Description: `The Confluent Cloud OAuth identity pool ID, sent as the ` + "`" + `Confluent-Identity-Pool-Id` + "`" + ` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.`,
+														},
+														"logical_cluster_id": schema.StringAttribute{
+															Optional:    true,
+															Description: `The Confluent Cloud Schema Registry cluster ID, sent as the ` + "`" + `target-sr-cluster` + "`" + ` request header. Confluent Cloud requires this when ` + "`" + `mode` + "`" + ` is 'oauth2'.`,
 														},
 														"mode": schema.StringAttribute{
 															Computed:    true,

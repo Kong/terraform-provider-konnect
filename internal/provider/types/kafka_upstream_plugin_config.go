@@ -11,6 +11,7 @@ type KafkaUpstreamPluginConfig struct {
 	Authentication                               *Authentication                `tfsdk:"authentication"`
 	BootstrapServers                             []BootstrapServers             `tfsdk:"bootstrap_servers"`
 	ClusterName                                  types.String                   `tfsdk:"cluster_name"`
+	CompressionType                              types.String                   `tfsdk:"compression_type"`
 	ErrorHandling                                *ErrorHandling                 `tfsdk:"error_handling"`
 	ForwardBody                                  types.Bool                     `tfsdk:"forward_body"`
 	ForwardHeaders                               types.Bool                     `tfsdk:"forward_headers"`
@@ -21,9 +22,14 @@ type KafkaUpstreamPluginConfig struct {
 	KeepaliveEnabled                             types.Bool                     `tfsdk:"keepalive_enabled"`
 	KeyQueryArg                                  types.String                   `tfsdk:"key_query_arg"`
 	MessageByLuaFunctions                        []types.String                 `tfsdk:"message_by_lua_functions"`
+	NewKafkaAsyncProducer                        types.Bool                     `tfsdk:"new_kafka_async_producer"`
 	ProducerAsync                                types.Bool                     `tfsdk:"producer_async"`
 	ProducerAsyncBufferingLimitsMessagesInMemory types.Int64                    `tfsdk:"producer_async_buffering_limits_messages_in_memory"`
 	ProducerAsyncFlushTimeout                    types.Int64                    `tfsdk:"producer_async_flush_timeout"`
+	ProducerAsyncHealthFailureThreshold          types.Int64                    `tfsdk:"producer_async_health_failure_threshold"`
+	ProducerAsyncHealthGating                    types.Bool                     `tfsdk:"producer_async_health_gating"`
+	ProducerAsyncHealthProbeInterval             types.Int64                    `tfsdk:"producer_async_health_probe_interval"`
+	ProducerAsyncHealthRecoveryThreshold         types.Int64                    `tfsdk:"producer_async_health_recovery_threshold"`
 	ProducerRequestAcks                          types.Int64                    `tfsdk:"producer_request_acks"`
 	ProducerRequestLimitsBytesPerRequest         types.Int64                    `tfsdk:"producer_request_limits_bytes_per_request"`
 	ProducerRequestLimitsMessagesPerRequest      types.Int64                    `tfsdk:"producer_request_limits_messages_per_request"`

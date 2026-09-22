@@ -10,6 +10,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	CompoundIdentifier    []types.String                   `tfsdk:"compound_identifier"`
 	ConsumerGroups        []types.String                   `tfsdk:"consumer_groups"`
 	CounterKey            types.String                     `tfsdk:"counter_key"`
+	CustomKey             types.String                     `tfsdk:"custom_key"`
 	DictionaryName        types.String                     `tfsdk:"dictionary_name"`
 	DisablePenalty        types.Bool                       `tfsdk:"disable_penalty"`
 	EnforceConsumerGroups types.Bool                       `tfsdk:"enforce_consumer_groups"`

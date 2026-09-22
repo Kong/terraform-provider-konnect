@@ -7,6 +7,15 @@ import (
 )
 
 type UpdateAIGatewayRequest struct {
+	// The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
+	//
+	// It may be lowered only when no configuration already stored uses a feature that requires a runtime version above the requested one. Otherwise the request is rejected, naming the entities and fields that stand in the way so that they can be removed or downgraded first.
+	//
+	// When not specified, the minimum runtime version is left unchanged.
+	//
+	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
+	// Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version.
+	RuntimeAutoUpgrade *bool `default:"false" json:"runtime_auto_upgrade"`
 	// The display name for this AI Gateway.
 	DisplayName string `json:"display_name"`
 	// The name for this AI Gateway. This value is immutable after creation.
@@ -33,6 +42,20 @@ func (u *UpdateAIGatewayRequest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (u *UpdateAIGatewayRequest) GetMinRuntimeVersion() *string {
+	if u == nil {
+		return nil
+	}
+	return u.MinRuntimeVersion
+}
+
+func (u *UpdateAIGatewayRequest) GetRuntimeAutoUpgrade() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.RuntimeAutoUpgrade
 }
 
 func (u *UpdateAIGatewayRequest) GetDisplayName() string {

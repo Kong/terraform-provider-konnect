@@ -7,16 +7,16 @@ import (
 )
 
 type AIGatewayMCPServerConversionListener struct {
-	Access      *AIGatewayMCPServerListenerAccess            `tfsdk:"access"`
-	Config      *AIGatewayMCPServerWithUpstreamNoProxyConfig `tfsdk:"config"`
-	CreatedAt   types.String                                 `tfsdk:"created_at"`
-	DisplayName types.String                                 `tfsdk:"display_name"`
-	Enabled     types.Bool                                   `tfsdk:"enabled"`
-	ID          types.String                                 `tfsdk:"id"`
-	Labels      map[string]types.String                      `tfsdk:"labels"`
-	ManagedBy   map[string]types.String                      `tfsdk:"managed_by"`
-	Name        types.String                                 `tfsdk:"name"`
-	Policies    []types.String                               `tfsdk:"policies"`
-	Tools       []AIGatewayMCPConversionTool                 `tfsdk:"tools"`
-	UpdatedAt   types.String                                 `tfsdk:"updated_at"`
+	Access      *AIGatewayMCPServerListenerAccess     `tfsdk:"access"`
+	Config      *AIGatewayMCPServerKongListenerConfig `tfsdk:"config"`
+	CreatedAt   types.String                          `tfsdk:"created_at"`
+	DisplayName types.String                          `tfsdk:"display_name"`
+	Enabled     types.Bool                            `tfsdk:"enabled"`
+	ID          types.String                          `tfsdk:"id"`
+	Labels      map[string]types.String               `tfsdk:"labels"`
+	ManagedBy   map[string]types.String               `tfsdk:"managed_by"`
+	Name        types.String                          `tfsdk:"name"`
+	Policies    []types.String                        `tfsdk:"policies"`
+	Tools       []AIGatewayMCPConversionTool          `tfsdk:"tools"`
+	UpdatedAt   types.String                          `tfsdk:"updated_at"`
 }

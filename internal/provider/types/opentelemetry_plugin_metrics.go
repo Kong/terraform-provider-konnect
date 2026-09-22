@@ -11,6 +11,7 @@ type OpentelemetryPluginMetrics struct {
 	EnableBandwidthMetrics      types.Bool    `tfsdk:"enable_bandwidth_metrics"`
 	EnableConsumerAttribute     types.Bool    `tfsdk:"enable_consumer_attribute"`
 	EnableLatencyMetrics        types.Bool    `tfsdk:"enable_latency_metrics"`
+	EnablePrincipalAttribute    types.Bool    `tfsdk:"enable_principal_attribute"`
 	EnableRequestMetrics        types.Bool    `tfsdk:"enable_request_metrics"`
 	EnableUpstreamHealthMetrics types.Bool    `tfsdk:"enable_upstream_health_metrics"`
 	Endpoint                    types.String  `tfsdk:"endpoint"`

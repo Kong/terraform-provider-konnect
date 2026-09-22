@@ -17,6 +17,7 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.ProxyCachePluginConfig{}
+		r.Config.CacheByPrincipal = types.BoolPointerValue(resp.Config.CacheByPrincipal)
 		r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
 		r.Config.CacheTTL = types.Int64PointerValue(resp.Config.CacheTTL)
 		r.Config.ContentType = make([]types.String, 0, len(resp.Config.ContentType))
@@ -327,6 +328,12 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 	} else {
 		updatedAt = nil
 	}
+	cacheByPrincipal := new(bool)
+	if !r.Config.CacheByPrincipal.IsUnknown() && !r.Config.CacheByPrincipal.IsNull() {
+		*cacheByPrincipal = r.Config.CacheByPrincipal.ValueBool()
+	} else {
+		cacheByPrincipal = nil
+	}
 	cacheControl := new(bool)
 	if !r.Config.CacheControl.IsUnknown() && !r.Config.CacheControl.IsNull() {
 		*cacheControl = r.Config.CacheControl.ValueBool()
@@ -417,18 +424,19 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 		}
 	}
 	config := shared.ProxyCachePluginConfig{
-		CacheControl:    cacheControl,
-		CacheTTL:        cacheTTL,
-		ContentType:     contentType,
-		IgnoreURICase:   ignoreURICase,
-		Memory:          memory,
-		RequestMethod:   requestMethod,
-		ResponseCode:    responseCode,
-		ResponseHeaders: responseHeaders,
-		StorageTTL:      storageTTL,
-		Strategy:        strategy,
-		VaryHeaders:     varyHeaders,
-		VaryQueryParams: varyQueryParams,
+		CacheByPrincipal: cacheByPrincipal,
+		CacheControl:     cacheControl,
+		CacheTTL:         cacheTTL,
+		ContentType:      contentType,
+		IgnoreURICase:    ignoreURICase,
+		Memory:           memory,
+		RequestMethod:    requestMethod,
+		ResponseCode:     responseCode,
+		ResponseHeaders:  responseHeaders,
+		StorageTTL:       storageTTL,
+		Strategy:         strategy,
+		VaryHeaders:      varyHeaders,
+		VaryQueryParams:  varyQueryParams,
 	}
 	var consumer *shared.ProxyCachePluginConsumer
 	if r.Consumer != nil {

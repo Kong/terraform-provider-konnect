@@ -7,12 +7,13 @@ import (
 )
 
 type RequestTransformerAdvancedPluginConfig struct {
-	Add        *RequestTransformerAdvancedPluginAdd     `tfsdk:"add"`
-	Allow      *Allow                                   `tfsdk:"allow"`
-	Append     *RequestTransformerAdvancedPluginAdd     `tfsdk:"append"`
-	DotsInKeys types.Bool                               `tfsdk:"dots_in_keys"`
-	HTTPMethod types.String                             `tfsdk:"http_method"`
-	Remove     *Add                                     `tfsdk:"remove"`
-	Rename     *Add                                     `tfsdk:"rename"`
-	Replace    *RequestTransformerAdvancedPluginReplace `tfsdk:"replace"`
+	Add                *RequestTransformerAdvancedPluginAdd     `tfsdk:"add"`
+	Allow              *Allow                                   `tfsdk:"allow"`
+	Append             *RequestTransformerAdvancedPluginAdd     `tfsdk:"append"`
+	DotsInKeys         types.Bool                               `tfsdk:"dots_in_keys"`
+	HTTPMethod         types.String                             `tfsdk:"http_method"`
+	MaxRequestBodySize types.Int64                              `tfsdk:"max_request_body_size"`
+	Remove             *Add                                     `tfsdk:"remove"`
+	Rename             *Add                                     `tfsdk:"rename"`
+	Replace            *RequestTransformerAdvancedPluginReplace `tfsdk:"replace"`
 }

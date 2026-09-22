@@ -472,6 +472,7 @@ const (
 	AiRateLimitingAdvancedPluginAuthProviderAws   AiRateLimitingAdvancedPluginAuthProvider = "aws"
 	AiRateLimitingAdvancedPluginAuthProviderAzure AiRateLimitingAdvancedPluginAuthProvider = "azure"
 	AiRateLimitingAdvancedPluginAuthProviderGcp   AiRateLimitingAdvancedPluginAuthProvider = "gcp"
+	AiRateLimitingAdvancedPluginAuthProviderOauth AiRateLimitingAdvancedPluginAuthProvider = "oauth"
 )
 
 func (e AiRateLimitingAdvancedPluginAuthProvider) ToPointer() *AiRateLimitingAdvancedPluginAuthProvider {
@@ -482,11 +483,231 @@ func (e AiRateLimitingAdvancedPluginAuthProvider) ToPointer() *AiRateLimitingAdv
 func (e *AiRateLimitingAdvancedPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// AiRateLimitingAdvancedPluginAuthMethod - Client authentication method used against the token endpoint.
+type AiRateLimitingAdvancedPluginAuthMethod string
+
+const (
+	AiRateLimitingAdvancedPluginAuthMethodClientSecretBasic AiRateLimitingAdvancedPluginAuthMethod = "client_secret_basic"
+	AiRateLimitingAdvancedPluginAuthMethodClientSecretJwt   AiRateLimitingAdvancedPluginAuthMethod = "client_secret_jwt"
+	AiRateLimitingAdvancedPluginAuthMethodClientSecretPost  AiRateLimitingAdvancedPluginAuthMethod = "client_secret_post"
+)
+
+func (e AiRateLimitingAdvancedPluginAuthMethod) ToPointer() *AiRateLimitingAdvancedPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// AiRateLimitingAdvancedPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type AiRateLimitingAdvancedPluginClientSecretJwtAlg string
+
+const (
+	AiRateLimitingAdvancedPluginClientSecretJwtAlgHs256 AiRateLimitingAdvancedPluginClientSecretJwtAlg = "HS256"
+	AiRateLimitingAdvancedPluginClientSecretJwtAlgHs512 AiRateLimitingAdvancedPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e AiRateLimitingAdvancedPluginClientSecretJwtAlg) ToPointer() *AiRateLimitingAdvancedPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// AiRateLimitingAdvancedPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type AiRateLimitingAdvancedPluginGrantType string
+
+const (
+	AiRateLimitingAdvancedPluginGrantTypeClientCredentials AiRateLimitingAdvancedPluginGrantType = "client_credentials"
+	AiRateLimitingAdvancedPluginGrantTypePassword          AiRateLimitingAdvancedPluginGrantType = "password"
+)
+
+func (e AiRateLimitingAdvancedPluginGrantType) ToPointer() *AiRateLimitingAdvancedPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// AiRateLimitingAdvancedPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type AiRateLimitingAdvancedPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *AiRateLimitingAdvancedPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *AiRateLimitingAdvancedPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *AiRateLimitingAdvancedPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (a AiRateLimitingAdvancedPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetAuthMethod() *AiRateLimitingAdvancedPluginAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.AuthMethod
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientID
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecret
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetClientSecretJwtAlg() *AiRateLimitingAdvancedPluginClientSecretJwtAlg {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecretJwtAlg
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetGrantType() *AiRateLimitingAdvancedPluginGrantType {
+	if a == nil {
+		return nil
+	}
+	return a.GrantType
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetPassword() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Password
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetRedisUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsername
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetRedisUsernameClaim() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsernameClaim
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Scopes
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SslVerify
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetTimeout() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Timeout
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetTokenEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenEndpoint
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetTokenHeaders() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeaders
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetTokenPostArgs() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgs
+}
+
+func (a *AiRateLimitingAdvancedPluginOauth) GetUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Username
 }
 
 // AiRateLimitingAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -515,6 +736,8 @@ type AiRateLimitingAdvancedPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *AiRateLimitingAdvancedPluginOauth `json:"oauth"`
 }
 
 func (a AiRateLimitingAdvancedPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -610,6 +833,13 @@ func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetGcpServiceAccountJS
 		return nil
 	}
 	return a.GcpServiceAccountJSON
+}
+
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetOauth() *AiRateLimitingAdvancedPluginOauth {
+	if a == nil {
+		return nil
+	}
+	return a.Oauth
 }
 
 type AiRateLimitingAdvancedPluginClusterNodes struct {

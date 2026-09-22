@@ -116,6 +116,35 @@ func (a *AIGatewayMCPServerUpstreamServerServerConfigSessionOutput) GetStrategy(
 	return a.Strategy
 }
 
+// UpstreamProtocolVersion - The MCP protocol revision Kong speaks to the upstream MCP server. Leave unset to
+// negotiate a handshake revision with an `initialize` exchange, which is the default. Set a
+// per-request revision to reach an upstream that answers no handshake and mints no session.
+//
+// **Requires a minimum runtime version of `2.1`**.
+type UpstreamProtocolVersion string
+
+const (
+	UpstreamProtocolVersionTwoThousandAndTwentySixMinus07Minus28  UpstreamProtocolVersion = "2026-07-28"
+	UpstreamProtocolVersionTwoThousandAndTwentyFiveMinus11Minus25 UpstreamProtocolVersion = "2025-11-25"
+	UpstreamProtocolVersionTwoThousandAndTwentyFiveMinus06Minus18 UpstreamProtocolVersion = "2025-06-18"
+	UpstreamProtocolVersionTwoThousandAndTwentyFiveMinus03Minus26 UpstreamProtocolVersion = "2025-03-26"
+)
+
+func (e UpstreamProtocolVersion) ToPointer() *UpstreamProtocolVersion {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamProtocolVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26":
+			return true
+		}
+	}
+	return false
+}
+
 // AIGatewayMCPServerUpstreamServerServerConfigOutput - Server-side configuration specific to `upstream-server` mode.
 type AIGatewayMCPServerUpstreamServerServerConfigOutput struct {
 	// Whether to forward the client request headers to the upstream server when calling the tools.
@@ -133,6 +162,12 @@ type AIGatewayMCPServerUpstreamServerServerConfigOutput struct {
 	PreserveUpstreamToolNames *bool `default:"false" json:"preserve_upstream_tool_names"`
 	// Configuration for an Upstream Server's MCP Server Tools' Authentication.
 	ToolsListAuth *AIGatewayMCPServerUpstreamServerServerToolAuthConfigOutput `json:"tools_list_auth,omitempty"`
+	// The MCP protocol revision Kong speaks to the upstream MCP server. Leave unset to
+	// negotiate a handshake revision with an `initialize` exchange, which is the default. Set a
+	// per-request revision to reach an upstream that answers no handshake and mints no session.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	UpstreamProtocolVersion *UpstreamProtocolVersion `json:"upstream_protocol_version,omitempty"`
 }
 
 func (a AIGatewayMCPServerUpstreamServerServerConfigOutput) MarshalJSON() ([]byte, error) {
@@ -193,6 +228,13 @@ func (a *AIGatewayMCPServerUpstreamServerServerConfigOutput) GetToolsListAuthCre
 		return v.AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentialsOutput
 	}
 	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerServerConfigOutput) GetUpstreamProtocolVersion() *UpstreamProtocolVersion {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamProtocolVersion
 }
 
 // AIGatewayMCPServerUpstreamServerServerConfigSession - Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
@@ -273,6 +315,12 @@ type AIGatewayMCPServerUpstreamServerServerConfig struct {
 	PreserveUpstreamToolNames *bool `default:"false" json:"preserve_upstream_tool_names"`
 	// Configuration for an Upstream Server's MCP Server Tools' Authentication.
 	ToolsListAuth *AIGatewayMCPServerUpstreamServerServerToolAuthConfig `json:"tools_list_auth,omitempty"`
+	// The MCP protocol revision Kong speaks to the upstream MCP server. Leave unset to
+	// negotiate a handshake revision with an `initialize` exchange, which is the default. Set a
+	// per-request revision to reach an upstream that answers no handshake and mints no session.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	UpstreamProtocolVersion *UpstreamProtocolVersion `json:"upstream_protocol_version,omitempty"`
 }
 
 func (a AIGatewayMCPServerUpstreamServerServerConfig) MarshalJSON() ([]byte, error) {
@@ -333,4 +381,11 @@ func (a *AIGatewayMCPServerUpstreamServerServerConfig) GetToolsListAuthCredentia
 		return v.AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials
 	}
 	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerServerConfig) GetUpstreamProtocolVersion() *UpstreamProtocolVersion {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamProtocolVersion
 }

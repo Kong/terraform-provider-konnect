@@ -14,6 +14,8 @@ type PortalCreateTeamRequest struct {
 	Description *string `default:"null" json:"description"`
 	// Whether the team is allowed to own applications
 	CanOwnApplications *bool `json:"can_own_applications,omitempty"`
+	// Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to `false` (default) to let identity provider team mappings keep syncing members into this team. Set to `true` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team.
+	KonnectManaged *bool `default:"false" json:"konnect_managed"`
 }
 
 func (p PortalCreateTeamRequest) MarshalJSON() ([]byte, error) {
@@ -46,4 +48,11 @@ func (p *PortalCreateTeamRequest) GetCanOwnApplications() *bool {
 		return nil
 	}
 	return p.CanOwnApplications
+}
+
+func (p *PortalCreateTeamRequest) GetKonnectManaged() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.KonnectManaged
 }

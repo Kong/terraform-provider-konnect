@@ -227,7 +227,7 @@ type KeyAuthPluginConfig struct {
 	Anonymous *string `default:"null" json:"anonymous"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
-	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
+	// A configuration of Konnect Identity Realms that indicate where to source a consumer from. Defaults to a single local realm. Set this field to an empty array explicitly when the plugin enables Kong Identity `principals`, since the two are mutually exclusive.
 	IdentityRealms []KeyAuthPluginIdentityRealms `json:"identity_realms,omitempty"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	KeyInBody *bool `default:"false" json:"key_in_body"`

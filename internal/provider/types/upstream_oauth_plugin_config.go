@@ -3,8 +3,8 @@
 package types
 
 type UpstreamOauthPluginConfig struct {
-	Behavior *Behavior                 `tfsdk:"behavior"`
-	Cache    *UpstreamOauthPluginCache `tfsdk:"cache"`
-	Client   *Oauth2Client             `tfsdk:"client"`
-	Oauth    *Oauth                    `tfsdk:"oauth"`
+	Behavior *Behavior                  `tfsdk:"behavior"`
+	Cache    *UpstreamOauthPluginCache  `tfsdk:"cache"`
+	Client   *UpstreamOauthPluginClient `tfsdk:"client"`
+	Oauth    *Oauth                     `tfsdk:"oauth"`
 }

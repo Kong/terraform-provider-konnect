@@ -9,14 +9,17 @@ import (
 type AIGatewayTargetCohereConfig struct {
 	APIVersion           types.String                   `tfsdk:"api_version"`
 	CacheReadCost        types.Float64                  `tfsdk:"cache_read_cost"`
+	CacheReadCostList    []AIGatewayModalCostList       `tfsdk:"cache_read_cost_list"`
 	CacheWriteCost       types.Float64                  `tfsdk:"cache_write_cost"`
 	CacheWriteCostList   []AIGatewayCacheWriteCost      `tfsdk:"cache_write_cost_list"`
 	ContextWindowFactor  []AIGatewayContextWindowFactor `tfsdk:"context_window_factor"`
 	EmbeddingInputType   types.String                   `tfsdk:"embedding_input_type"`
 	EmbeddingsDimensions types.Int64                    `tfsdk:"embeddings_dimensions"`
 	InputCost            types.Float64                  `tfsdk:"input_cost"`
+	InputCostList        []AIGatewayModalCostList       `tfsdk:"input_cost_list"`
 	MaxTokens            types.Int64                    `tfsdk:"max_tokens"`
 	OutputCost           types.Float64                  `tfsdk:"output_cost"`
+	OutputCostList       []AIGatewayModalCostList       `tfsdk:"output_cost_list"`
 	ServiceTierFactor    []AIGatewayServiceTierFactor   `tfsdk:"service_tier_factor"`
 	Temperature          types.Float64                  `tfsdk:"temperature"`
 	TopK                 types.Int64                    `tfsdk:"top_k"`

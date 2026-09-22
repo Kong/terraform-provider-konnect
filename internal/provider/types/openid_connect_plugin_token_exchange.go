@@ -2,8 +2,15 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type OpenidConnectPluginTokenExchange struct {
 	Cache               *Cache                                   `tfsdk:"cache"`
-	Request             *Request                                 `tfsdk:"request"`
+	GrantType           types.String                             `tfsdk:"grant_type"`
+	MapIdentitiesFrom   types.String                             `tfsdk:"map_identities_from"`
+	Provider            types.String                             `tfsdk:"provider"`
+	Request             *OpenidConnectPluginRequest              `tfsdk:"request"`
 	SubjectTokenIssuers []OpenidConnectPluginSubjectTokenIssuers `tfsdk:"subject_token_issuers"`
 }
