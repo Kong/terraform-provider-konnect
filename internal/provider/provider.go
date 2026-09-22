@@ -291,6 +291,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginDatadogResource,
 		NewGatewayPluginDatakitResource,
 		NewGatewayPluginDegraphqlResource,
+		NewGatewayPluginEntitlementEnforcementResource,
 		NewGatewayPluginExitTransformerResource,
 		NewGatewayPluginFileLogResource,
 		NewGatewayPluginForwardProxyResource,

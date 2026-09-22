@@ -11,6 +11,7 @@ type RequestValidatorPluginConfig struct {
 	ArrayLengthCompat              types.Bool        `tfsdk:"array_length_compat"`
 	BodySchema                     types.String      `tfsdk:"body_schema"`
 	ContentTypeParameterValidation types.Bool        `tfsdk:"content_type_parameter_validation"`
+	EnforcementMode                types.String      `tfsdk:"enforcement_mode"`
 	ParameterSchema                []ParameterSchema `tfsdk:"parameter_schema"`
 	VerboseResponse                types.Bool        `tfsdk:"verbose_response"`
 	Version                        types.String      `tfsdk:"version"`

@@ -1899,6 +1899,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -1983,6 +2013,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -1993,6 +2053,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -2086,6 +2176,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2186,6 +2306,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -2196,6 +2346,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -2281,6 +2461,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2372,6 +2582,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -2382,6 +2622,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"performance_config_latency": schema.StringAttribute{
 													Optional:    true,
@@ -2477,6 +2747,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -2561,6 +2861,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -2571,6 +2901,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -2660,6 +3020,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -2751,6 +3141,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -2761,6 +3181,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -2849,6 +3299,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -2933,6 +3413,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"international": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
@@ -2949,6 +3459,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3031,6 +3571,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -3115,6 +3685,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -3125,6 +3725,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3215,6 +3845,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -3299,6 +3959,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -3309,6 +3999,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3390,6 +4110,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3506,6 +4256,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -3516,6 +4296,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3597,6 +4407,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -3682,6 +4522,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -3692,6 +4562,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3786,6 +4686,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -3870,6 +4800,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"international": schema.BoolAttribute{
 													Computed: true,
 													Optional: true,
@@ -3888,6 +4848,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -3969,6 +4959,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4062,6 +5082,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -4072,6 +5122,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4156,6 +5236,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -4249,6 +5359,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -4259,6 +5399,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4341,6 +5511,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -4425,6 +5625,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -4435,6 +5665,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4517,6 +5777,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -4601,6 +5891,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -4611,6 +5931,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4721,6 +6071,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -4805,6 +6185,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -4815,6 +6225,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -4920,6 +6360,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -5004,6 +6474,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -5014,6 +6514,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -5096,6 +6626,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -5180,6 +6740,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -5190,6 +6780,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -5275,6 +6895,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -5359,6 +7009,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -5369,6 +7049,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -7370,6 +9080,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -7454,6 +9194,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -7464,6 +9234,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -7557,6 +9357,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -7657,6 +9487,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -7667,6 +9527,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -7752,6 +9642,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -7843,6 +9763,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -7853,6 +9803,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"performance_config_latency": schema.StringAttribute{
 													Optional:    true,
@@ -7948,6 +9928,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -8032,6 +10042,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -8042,6 +10082,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -8131,6 +10201,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8222,6 +10322,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -8232,6 +10362,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -8320,6 +10480,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -8404,6 +10594,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"international": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
@@ -8420,6 +10640,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -8502,6 +10752,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -8586,6 +10866,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -8596,6 +10906,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -8686,6 +11026,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -8770,6 +11140,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -8780,6 +11180,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -8861,6 +11291,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -8977,6 +11437,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -8987,6 +11477,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -9068,6 +11588,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9153,6 +11703,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -9163,6 +11743,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -9257,6 +11867,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -9341,6 +11981,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"international": schema.BoolAttribute{
 													Computed: true,
 													Optional: true,
@@ -9359,6 +12029,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -9440,6 +12140,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9533,6 +12263,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -9543,6 +12303,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -9627,6 +12417,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -9720,6 +12540,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -9730,6 +12580,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -9812,6 +12692,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -9896,6 +12806,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -9906,6 +12846,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -9988,6 +12958,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -10072,6 +13072,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -10082,6 +13112,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -10192,6 +13252,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -10276,6 +13366,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -10286,6 +13406,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -10391,6 +13541,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -10475,6 +13655,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -10485,6 +13695,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -10567,6 +13807,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -10651,6 +13921,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -10661,6 +13961,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,
@@ -10746,6 +14076,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
 												},
+												"cache_read_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `cache_read_cost` + "`" + `, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
@@ -10830,6 +14190,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
 												},
+												"input_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `input_cost` + "`" + `, in cost per 1M prompt tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
 													Description: `The maximum number of tokens to generate in the response.`,
@@ -10840,6 +14230,36 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+												},
+												"output_cost_list": schema.ListNestedAttribute{
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"cost": schema.Float64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Cost per 1M tokens for this modal type. Not Null`,
+																Validators: []validator.Float64{
+																	speakeasy_float64validators.NotNull(),
+																	float64validator.AtLeast(0),
+																},
+															},
+															"modal": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+													},
+													MarkdownDescription: `Per-modality override of ` + "`" + `output_cost` + "`" + `, in cost per 1M output tokens. Set it for models that price each modality separately.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
 												},
 												"service_tier_factor": schema.ListNestedAttribute{
 													Computed: true,

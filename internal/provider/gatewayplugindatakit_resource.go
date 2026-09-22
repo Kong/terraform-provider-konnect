@@ -84,6 +84,11 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"ca_certificates": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Array of CA Certificate object UUIDs used to build the trust store for verifying the TLS certificate of servers contacted by ` + "`" + `call` + "`" + ` nodes. Applies only when a node's ` + "`" + `ssl_verify` + "`" + ` is enabled (the default). When set, the referenced CA certificates replace (they do not augment) the global ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` trust set for those requests; when unset or empty, the global trust set is used.`,
+					},
 					"debug": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -1255,6 +1260,31 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													`azure_client_secret`:      types.StringType,
 													`azure_tenant_id`:          types.StringType,
 													`gcp_service_account_json`: types.StringType,
+													`oauth`: types.ObjectType{
+														AttrTypes: map[string]attr.Type{
+															`auth_method`:           types.StringType,
+															`client_id`:             types.StringType,
+															`client_secret`:         types.StringType,
+															`client_secret_jwt_alg`: types.StringType,
+															`grant_type`:            types.StringType,
+															`password`:              types.StringType,
+															`redis_username`:        types.StringType,
+															`redis_username_claim`:  types.StringType,
+															`scopes`: types.ListType{
+																ElemType: types.StringType,
+															},
+															`ssl_verify`:     types.BoolType,
+															`timeout`:        types.Int64Type,
+															`token_endpoint`: types.StringType,
+															`token_headers`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`token_post_args`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`username`: types.StringType,
+														},
+													},
 												},
 											},
 											`cluster_max_redirections`: types.Int64Type,
@@ -1327,6 +1357,31 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													`azure_client_secret`:      types.StringType,
 													`azure_tenant_id`:          types.StringType,
 													`gcp_service_account_json`: types.StringType,
+													`oauth`: types.ObjectType{
+														AttrTypes: map[string]attr.Type{
+															`auth_method`:           types.StringType,
+															`client_id`:             types.StringType,
+															`client_secret`:         types.StringType,
+															`client_secret_jwt_alg`: types.StringType,
+															`grant_type`:            types.StringType,
+															`password`:              types.StringType,
+															`redis_username`:        types.StringType,
+															`redis_username_claim`:  types.StringType,
+															`scopes`: types.ListType{
+																ElemType: types.StringType,
+															},
+															`ssl_verify`:     types.BoolType,
+															`timeout`:        types.Int64Type,
+															`token_endpoint`: types.StringType,
+															`token_headers`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`token_post_args`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`username`: types.StringType,
+														},
+													},
 												},
 											},
 											`cluster_max_redirections`: types.Int64Type,
@@ -1402,6 +1457,31 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													`azure_client_secret`:      types.StringType,
 													`azure_tenant_id`:          types.StringType,
 													`gcp_service_account_json`: types.StringType,
+													`oauth`: types.ObjectType{
+														AttrTypes: map[string]attr.Type{
+															`auth_method`:           types.StringType,
+															`client_id`:             types.StringType,
+															`client_secret`:         types.StringType,
+															`client_secret_jwt_alg`: types.StringType,
+															`grant_type`:            types.StringType,
+															`password`:              types.StringType,
+															`redis_username`:        types.StringType,
+															`redis_username_claim`:  types.StringType,
+															`scopes`: types.ListType{
+																ElemType: types.StringType,
+															},
+															`ssl_verify`:     types.BoolType,
+															`timeout`:        types.Int64Type,
+															`token_endpoint`: types.StringType,
+															`token_headers`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`token_post_args`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`username`: types.StringType,
+														},
+													},
 												},
 											},
 											"cluster_max_redirections": types.Int64Type,
@@ -1457,12 +1537,37 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													"azure_client_secret":      types.StringType,
 													"azure_tenant_id":          types.StringType,
 													"gcp_service_account_json": types.StringType,
+													"oauth": types.ObjectType{
+														AttrTypes: map[string]attr.Type{
+															`auth_method`:           types.StringType,
+															`client_id`:             types.StringType,
+															`client_secret`:         types.StringType,
+															`client_secret_jwt_alg`: types.StringType,
+															`grant_type`:            types.StringType,
+															`password`:              types.StringType,
+															`redis_username`:        types.StringType,
+															`redis_username_claim`:  types.StringType,
+															`scopes`: types.ListType{
+																ElemType: types.StringType,
+															},
+															`ssl_verify`:     types.BoolType,
+															`timeout`:        types.Int64Type,
+															`token_endpoint`: types.StringType,
+															`token_headers`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`token_post_args`: types.MapType{
+																ElemType: types.StringType,
+															},
+															`username`: types.StringType,
+														},
+													},
 												})),
 												Attributes: map[string]schema.Attribute{
 													"auth_provider": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
+														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp", "oauth"]`,
 													},
 													"aws_access_key_id": schema.StringAttribute{
 														Optional:    true,
@@ -1509,6 +1614,114 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													"gcp_service_account_json": schema.StringAttribute{
 														Optional:    true,
 														Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+													},
+													"oauth": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+															"auth_method":           types.StringType,
+															"client_id":             types.StringType,
+															"client_secret":         types.StringType,
+															"client_secret_jwt_alg": types.StringType,
+															"grant_type":            types.StringType,
+															"password":              types.StringType,
+															"redis_username":        types.StringType,
+															"redis_username_claim":  types.StringType,
+															"scopes": types.ListType{
+																ElemType: types.StringType,
+															},
+															"ssl_verify":     types.BoolType,
+															"timeout":        types.Int64Type,
+															"token_endpoint": types.StringType,
+															"token_headers": types.MapType{
+																ElemType: types.StringType,
+															},
+															"token_post_args": types.MapType{
+																ElemType: types.StringType,
+															},
+															"username": types.StringType,
+														})),
+														Attributes: map[string]schema.Attribute{
+															"auth_method": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     stringdefault.StaticString(`client_secret_post`),
+																Description: `Client authentication method used against the token endpoint. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post"]; Default: "client_secret_post"`,
+															},
+															"client_id": schema.StringAttribute{
+																Optional:    true,
+																Description: `OAuth 2.0 client ID.`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional:    true,
+																Description: `OAuth 2.0 client secret.`,
+															},
+															"client_secret_jwt_alg": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     stringdefault.StaticString(`HS512`),
+																Description: `Signing algorithm used for ` + "`" + `client_secret_jwt` + "`" + ` client authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"`,
+															},
+															"grant_type": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     stringdefault.StaticString(`client_credentials`),
+																Description: `OAuth 2.0 grant type used to request access tokens. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"`,
+															},
+															"password": schema.StringAttribute{
+																Optional:    true,
+																Description: `Resource owner password, used with the ` + "`" + `password` + "`" + ` grant type.`,
+															},
+															"redis_username": schema.StringAttribute{
+																Optional:    true,
+																Description: `Static Redis ACL username sent with ` + "`" + `AUTH <username> <token>` + "`" + `.`,
+															},
+															"redis_username_claim": schema.StringAttribute{
+																Optional:    true,
+																Description: `JWT claim in the access token used to derive the Redis ACL username (for example, ` + "`" + `oid` + "`" + ` for Microsoft Entra ID).`,
+															},
+															"scopes": schema.ListAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+																ElementType: types.StringType,
+																Description: `OAuth 2.0 scopes to request. Default: []`,
+															},
+															"ssl_verify": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `Whether to verify the TLS certificate of the token endpoint. Default: true`,
+															},
+															"timeout": schema.Int64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     int64default.StaticInt64(10000),
+																Description: `Timeout, in milliseconds, for requests to the token endpoint. Default: 10000`,
+																Validators: []validator.Int64{
+																	int64validator.Between(0, 2147483646),
+																},
+															},
+															"token_endpoint": schema.StringAttribute{
+																Optional:    true,
+																Description: `OAuth 2.0 token endpoint URL used to request access tokens.`,
+															},
+															"token_headers": schema.MapAttribute{
+																Optional:    true,
+																ElementType: types.StringType,
+																Description: `Additional HTTP headers to send with the token request.`,
+															},
+															"token_post_args": schema.MapAttribute{
+																Optional:    true,
+																ElementType: types.StringType,
+																Description: `Additional POST body arguments to send with the token request.`,
+															},
+															"username": schema.StringAttribute{
+																Optional:    true,
+																Description: `Resource owner username, used with the ` + "`" + `password` + "`" + ` grant type.`,
+															},
+														},
+														Description: `OAuth 2.0 client configuration used to authenticate to Redis when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `oauth` + "`" + `.`,
 													},
 												},
 												Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,

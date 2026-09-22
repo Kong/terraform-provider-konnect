@@ -18,6 +18,7 @@ type OasValidationPluginConfig struct {
 	NotifyOnlyRequestValidationFailure      types.Bool   `tfsdk:"notify_only_request_validation_failure"`
 	NotifyOnlyResponseBodyValidationFailure types.Bool   `tfsdk:"notify_only_response_body_validation_failure"`
 	QueryParameterCheck                     types.Bool   `tfsdk:"query_parameter_check"`
+	Rfc9457ErrorResponse                    types.Bool   `tfsdk:"rfc9457_error_response"`
 	StructuredErrors                        types.Bool   `tfsdk:"structured_errors"`
 	ValidateRequestBody                     types.Bool   `tfsdk:"validate_request_body"`
 	ValidateRequestHeaderParams             types.Bool   `tfsdk:"validate_request_header_params"`

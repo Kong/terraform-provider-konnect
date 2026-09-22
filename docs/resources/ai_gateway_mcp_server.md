@@ -54,6 +54,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
+      allowed_versions = [
+        "2025-06-18"
+      ]
+      cache = {
+        discover = {
+          cache_scope = "private"
+          ttl_ms      = 5
+        }
+        tools_list = {
+          cache_scope = "private"
+          ttl_ms      = 1
+        }
+      }
       logging = {
         audits   = false
         payloads = false
@@ -359,6 +372,19 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
       }
     }
     config = {
+      allowed_versions = [
+        "2025-11-25"
+      ]
+      cache = {
+        discover = {
+          cache_scope = "private"
+          ttl_ms      = 8
+        }
+        tools_list = {
+          cache_scope = "private"
+          ttl_ms      = 6
+        }
+      }
       logging = {
         audits   = false
         payloads = false
@@ -753,6 +779,7 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
             scope               = "...my_scope..."
           }
         }
+        upstream_protocol_version = "2025-06-18"
       }
       tools_cache_ttl_seconds = 7
       upstream = {
@@ -841,7 +868,7 @@ resource "konnect_ai_gateway_mcp_server" "my_aigatewaymcpserver" {
 Optional:
 
 - `access` (Attributes) (see [below for nested schema](#nestedatt--conversion_listener--access))
-- `config` (Attributes) Routing, logging, and server configuration for the MCP Server. Not Null (see [below for nested schema](#nestedatt--conversion_listener--config))
+- `config` (Attributes) Server-side configuration specific to modes where Kong answers as the MCP server. Not Null (see [below for nested schema](#nestedatt--conversion_listener--config))
 - `display_name` (String) The display name for the MCP Server. Not Null
 - `enabled` (Boolean) Whether the MCP Server is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
@@ -990,6 +1017,16 @@ Optional:
 
 Optional:
 
+- `allowed_versions` (List of String) The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong
+implements, which is the default. When set, `server/discover` advertises exactly this
+list and a request declaring anything else is rejected. Listing only per-request
+revisions refuses handshake clients.
+
+**Requires a minimum runtime version of `2.1`**.
+- `cache` (Attributes) Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol
+revision that defines them receive them.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--conversion_listener--config--cache))
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--conversion_listener--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
@@ -1000,6 +1037,39 @@ incoming requests. (see [below for nested schema](#nestedatt--conversion_listene
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 Not Null
+
+<a id="nestedatt--conversion_listener--config--cache"></a>
+### Nested Schema for `conversion_listener.config.cache`
+
+Optional:
+
+- `discover` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--discover))
+- `tools_list` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--conversion_listener--config--cache--tools_list))
+
+<a id="nestedatt--conversion_listener--config--cache--discover"></a>
+### Nested Schema for `conversion_listener.config.cache.discover`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
+<a id="nestedatt--conversion_listener--config--cache--tools_list"></a>
+### Nested Schema for `conversion_listener.config.cache.tools_list`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
 
 <a id="nestedatt--conversion_listener--config--logging"></a>
 ### Nested Schema for `conversion_listener.config.logging`
@@ -1478,7 +1548,7 @@ Optional:
 Optional:
 
 - `access` (Attributes) (see [below for nested schema](#nestedatt--listener--access))
-- `config` (Attributes) Routing, logging, and server configuration for the MCP Server. Not Null (see [below for nested schema](#nestedatt--listener--config))
+- `config` (Attributes) Server-side configuration specific to modes where Kong answers as the MCP server. Not Null (see [below for nested schema](#nestedatt--listener--config))
 - `display_name` (String) The display name for the MCP Server. Not Null
 - `enabled` (Boolean) Whether the MCP Server is enabled. Default: true
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
@@ -1628,12 +1698,55 @@ Optional:
 
 Optional:
 
+- `allowed_versions` (List of String) The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong
+implements, which is the default. When set, `server/discover` advertises exactly this
+list and a request declaring anything else is rejected. Listing only per-request
+revisions refuses handshake clients.
+
+**Requires a minimum runtime version of `2.1`**.
+- `cache` (Attributes) Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol
+revision that defines them receive them.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--listener--config--cache))
 - `logging` (Attributes) Configuration for AI Gateway logging. (see [below for nested schema](#nestedatt--listener--config--logging))
 - `max_request_body_size` (Number) Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--listener--config--route))
 - `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--listener--config--server))
+
+<a id="nestedatt--listener--config--cache"></a>
+### Nested Schema for `listener.config.cache`
+
+Optional:
+
+- `discover` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--listener--config--cache--discover))
+- `tools_list` (Attributes) A cache hint Kong emits on a cacheable operation it serves. (see [below for nested schema](#nestedatt--listener--config--cache--tools_list))
+
+<a id="nestedatt--listener--config--cache--discover"></a>
+### Nested Schema for `listener.config.cache.discover`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
+<a id="nestedatt--listener--config--cache--tools_list"></a>
+### Nested Schema for `listener.config.cache.tools_list`
+
+Optional:
+
+- `cache_scope` (String) Whether the result may be cached across authorization contexts. `public` is rejected when
+the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
+`access.acls`.
+possible known values include one of ["public", "private"]; Default: "private"
+- `ttl_ms` (Number) How long a client may treat the result as fresh, in milliseconds.
+
+
 
 <a id="nestedatt--listener--config--logging"></a>
 ### Nested Schema for `listener.config.logging`
@@ -1988,7 +2101,7 @@ Optional:
 - `route` (Attributes) Route configuration for an MCP Server that terminates its own listener. At least one
 of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 incoming requests. (see [below for nested schema](#nestedatt--passthrough_listener--config--route))
-- `server` (Attributes) Server-side configuration specific to modes where Kong answers as the MCP server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
+- `server` (Attributes) Server-side configuration for the MCP Server. (see [below for nested schema](#nestedatt--passthrough_listener--config--server))
 - `upstream` (Attributes) Configuration applied when proxying to the upstream service, including authentication. (see [below for nested schema](#nestedatt--passthrough_listener--config--upstream))
 - `url` (String) Helper field to set protocol, host, port and path of the upstream service using a URL.
 This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
@@ -2379,6 +2492,12 @@ Default: false
 This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers. (see [below for nested schema](#nestedatt--upstream_server--config--server--session))
 - `timeout` (Number) The timeout for calling the tools in milliseconds. Default: 10000
 - `tools_list_auth` (Attributes) Configuration for an Upstream Server's MCP Server Tools' Authentication. (see [below for nested schema](#nestedatt--upstream_server--config--server--tools_list_auth))
+- `upstream_protocol_version` (String) The MCP protocol revision Kong speaks to the upstream MCP server. Leave unset to
+negotiate a handshake revision with an `initialize` exchange, which is the default. Set a
+per-request revision to reach an upstream that answers no handshake and mints no session.
+
+**Requires a minimum runtime version of `2.1`**.
+possible known values include one of ["2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26"]
 
 <a id="nestedatt--upstream_server--config--server--session"></a>
 ### Nested Schema for `upstream_server.config.server.session`

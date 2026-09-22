@@ -19,6 +19,7 @@ func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx contex
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
+		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		r.Name = types.StringValue(resp.Name)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
@@ -124,10 +125,17 @@ func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest(ctx context.Co
 	} else {
 		canOwnApplications = nil
 	}
+	konnectManaged := new(bool)
+	if !r.KonnectManaged.IsUnknown() && !r.KonnectManaged.IsNull() {
+		*konnectManaged = r.KonnectManaged.ValueBool()
+	} else {
+		konnectManaged = nil
+	}
 	out := shared.PortalCreateTeamRequest{
 		Name:               name,
 		Description:        description,
 		CanOwnApplications: canOwnApplications,
+		KonnectManaged:     konnectManaged,
 	}
 
 	return &out, diags
@@ -154,10 +162,17 @@ func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest(ctx context.Co
 	} else {
 		canOwnApplications = nil
 	}
+	konnectManaged := new(bool)
+	if !r.KonnectManaged.IsUnknown() && !r.KonnectManaged.IsNull() {
+		*konnectManaged = r.KonnectManaged.ValueBool()
+	} else {
+		konnectManaged = nil
+	}
 	out := shared.PortalUpdateTeamRequest{
 		Name:               name,
 		Description:        description,
 		CanOwnApplications: canOwnApplications,
+		KonnectManaged:     konnectManaged,
 	}
 
 	return &out, diags

@@ -130,6 +130,7 @@ const (
 	LimitByHeader        LimitBy = "header"
 	LimitByIP            LimitBy = "ip"
 	LimitByPath          LimitBy = "path"
+	LimitByPrincipal     LimitBy = "principal"
 	LimitByService       LimitBy = "service"
 )
 
@@ -141,7 +142,7 @@ func (e LimitBy) ToPointer() *LimitBy {
 func (e *LimitBy) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "consumer", "consumer-group", "credential", "header", "ip", "path", "service":
+		case "consumer", "consumer-group", "credential", "header", "ip", "path", "principal", "service":
 			return true
 		}
 	}
@@ -179,6 +180,7 @@ const (
 	RateLimitingPluginAuthProviderAws   RateLimitingPluginAuthProvider = "aws"
 	RateLimitingPluginAuthProviderAzure RateLimitingPluginAuthProvider = "azure"
 	RateLimitingPluginAuthProviderGcp   RateLimitingPluginAuthProvider = "gcp"
+	RateLimitingPluginAuthProviderOauth RateLimitingPluginAuthProvider = "oauth"
 )
 
 func (e RateLimitingPluginAuthProvider) ToPointer() *RateLimitingPluginAuthProvider {
@@ -189,11 +191,231 @@ func (e RateLimitingPluginAuthProvider) ToPointer() *RateLimitingPluginAuthProvi
 func (e *RateLimitingPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// RateLimitingPluginAuthMethod - Client authentication method used against the token endpoint.
+type RateLimitingPluginAuthMethod string
+
+const (
+	RateLimitingPluginAuthMethodClientSecretBasic RateLimitingPluginAuthMethod = "client_secret_basic"
+	RateLimitingPluginAuthMethodClientSecretJwt   RateLimitingPluginAuthMethod = "client_secret_jwt"
+	RateLimitingPluginAuthMethodClientSecretPost  RateLimitingPluginAuthMethod = "client_secret_post"
+)
+
+func (e RateLimitingPluginAuthMethod) ToPointer() *RateLimitingPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// RateLimitingPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type RateLimitingPluginClientSecretJwtAlg string
+
+const (
+	RateLimitingPluginClientSecretJwtAlgHs256 RateLimitingPluginClientSecretJwtAlg = "HS256"
+	RateLimitingPluginClientSecretJwtAlgHs512 RateLimitingPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e RateLimitingPluginClientSecretJwtAlg) ToPointer() *RateLimitingPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// RateLimitingPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type RateLimitingPluginGrantType string
+
+const (
+	RateLimitingPluginGrantTypeClientCredentials RateLimitingPluginGrantType = "client_credentials"
+	RateLimitingPluginGrantTypePassword          RateLimitingPluginGrantType = "password"
+)
+
+func (e RateLimitingPluginGrantType) ToPointer() *RateLimitingPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// RateLimitingPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type RateLimitingPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *RateLimitingPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *RateLimitingPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *RateLimitingPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *float64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (r RateLimitingPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *RateLimitingPluginOauth) GetAuthMethod() *RateLimitingPluginAuthMethod {
+	if r == nil {
+		return nil
+	}
+	return r.AuthMethod
+}
+
+func (r *RateLimitingPluginOauth) GetClientID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ClientID
+}
+
+func (r *RateLimitingPluginOauth) GetClientSecret() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ClientSecret
+}
+
+func (r *RateLimitingPluginOauth) GetClientSecretJwtAlg() *RateLimitingPluginClientSecretJwtAlg {
+	if r == nil {
+		return nil
+	}
+	return r.ClientSecretJwtAlg
+}
+
+func (r *RateLimitingPluginOauth) GetGrantType() *RateLimitingPluginGrantType {
+	if r == nil {
+		return nil
+	}
+	return r.GrantType
+}
+
+func (r *RateLimitingPluginOauth) GetPassword() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Password
+}
+
+func (r *RateLimitingPluginOauth) GetRedisUsername() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RedisUsername
+}
+
+func (r *RateLimitingPluginOauth) GetRedisUsernameClaim() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RedisUsernameClaim
+}
+
+func (r *RateLimitingPluginOauth) GetScopes() []string {
+	if r == nil {
+		return nil
+	}
+	return r.Scopes
+}
+
+func (r *RateLimitingPluginOauth) GetSslVerify() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.SslVerify
+}
+
+func (r *RateLimitingPluginOauth) GetTimeout() *float64 {
+	if r == nil {
+		return nil
+	}
+	return r.Timeout
+}
+
+func (r *RateLimitingPluginOauth) GetTokenEndpoint() *string {
+	if r == nil {
+		return nil
+	}
+	return r.TokenEndpoint
+}
+
+func (r *RateLimitingPluginOauth) GetTokenHeaders() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.TokenHeaders
+}
+
+func (r *RateLimitingPluginOauth) GetTokenPostArgs() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.TokenPostArgs
+}
+
+func (r *RateLimitingPluginOauth) GetUsername() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Username
 }
 
 // RateLimitingPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -222,6 +444,8 @@ type RateLimitingPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *RateLimitingPluginOauth `json:"oauth"`
 }
 
 func (r RateLimitingPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -317,6 +541,13 @@ func (r *RateLimitingPluginCloudAuthentication) GetGcpServiceAccountJSON() *stri
 		return nil
 	}
 	return r.GcpServiceAccountJSON
+}
+
+func (r *RateLimitingPluginCloudAuthentication) GetOauth() *RateLimitingPluginOauth {
+	if r == nil {
+		return nil
+	}
+	return r.Oauth
 }
 
 // RateLimitingPluginRedis - Redis configuration
@@ -438,6 +669,8 @@ func (r *RateLimitingPluginRedis) GetUsername() *string {
 }
 
 type RateLimitingPluginConfig struct {
+	// Overrides the computed rate-limiting key with a literal value for this request, regardless of `limit_by`.
+	CustomKey *string `default:"null" json:"custom_key"`
 	// The number of HTTP requests that can be made per day.
 	Day *float64 `default:"null" json:"day"`
 	// Set a custom error code to return when the rate limit is exceeded.
@@ -481,6 +714,13 @@ func (r *RateLimitingPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *RateLimitingPluginConfig) GetCustomKey() *string {
+	if r == nil {
+		return nil
+	}
+	return r.CustomKey
 }
 
 func (r *RateLimitingPluginConfig) GetDay() *float64 {
@@ -641,6 +881,76 @@ func (r *RateLimitingPluginConsumerGroup) GetID() *string {
 	return r.ID
 }
 
+type Expressions struct {
+	CustomKey *string `json:"custom_key,omitempty"`
+	Day       *string `json:"day,omitempty"`
+	Hour      *string `json:"hour,omitempty"`
+	Minute    *string `json:"minute,omitempty"`
+	Month     *string `json:"month,omitempty"`
+	Second    *string `json:"second,omitempty"`
+	Year      *string `json:"year,omitempty"`
+}
+
+func (e Expressions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *Expressions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *Expressions) GetCustomKey() *string {
+	if e == nil {
+		return nil
+	}
+	return e.CustomKey
+}
+
+func (e *Expressions) GetDay() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Day
+}
+
+func (e *Expressions) GetHour() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Hour
+}
+
+func (e *Expressions) GetMinute() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Minute
+}
+
+func (e *Expressions) GetMonth() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Month
+}
+
+func (e *Expressions) GetSecond() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Second
+}
+
+func (e *Expressions) GetYear() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Year
+}
+
 type RateLimitingPluginProtocols string
 
 const (
@@ -737,6 +1047,7 @@ type RateLimitingPlugin struct {
 	Consumer *RateLimitingPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group"`
+	Expressions   *Expressions                     `json:"expressions,omitempty"`
 	// A set of strings representing HTTP protocols.
 	Protocols []RateLimitingPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -842,6 +1153,13 @@ func (r *RateLimitingPlugin) GetConsumerGroup() *RateLimitingPluginConsumerGroup
 		return nil
 	}
 	return r.ConsumerGroup
+}
+
+func (r *RateLimitingPlugin) GetExpressions() *Expressions {
+	if r == nil {
+		return nil
+	}
+	return r.Expressions
 }
 
 func (r *RateLimitingPlugin) GetProtocols() []RateLimitingPluginProtocols {

@@ -17,6 +17,7 @@ func (r *AIGatewayPolicyResourceModel) RefreshFromSharedAIGatewayPolicy(ctx cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		configResult, _ := json.Marshal(resp.Config)
 		r.Config = jsontypes.NewNormalizedValue(string(configResult))
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
@@ -150,6 +151,12 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 	}
 	var config interface{}
 	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string
@@ -171,6 +178,7 @@ func (r *AIGatewayPolicyResourceModel) ToSharedCreateAIGatewayPolicyRequest(ctx 
 		Enabled:     enabled,
 		Global:      global,
 		Config:      config,
+		Condition:   condition,
 		Labels:      labels,
 		ManagedBy:   managedBy,
 	}
@@ -204,6 +212,12 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 	}
 	var config interface{}
 	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
 		var labelsInst string
@@ -225,6 +239,7 @@ func (r *AIGatewayPolicyResourceModel) ToSharedUpdateAIGatewayPolicyRequest(ctx 
 		Enabled:     enabled,
 		Global:      global,
 		Config:      config,
+		Condition:   condition,
 		Labels:      labels,
 		ManagedBy:   managedBy,
 	}

@@ -12,4 +12,5 @@ type AIGatewayMCPServerUpstreamServerServerConfig struct {
 	Session                   *Session                                              `tfsdk:"session"`
 	Timeout                   types.Int64                                           `tfsdk:"timeout"`
 	ToolsListAuth             *AIGatewayMCPServerUpstreamServerServerToolAuthConfig `tfsdk:"tools_list_auth"`
+	UpstreamProtocolVersion   types.String                                          `tfsdk:"upstream_protocol_version"`
 }

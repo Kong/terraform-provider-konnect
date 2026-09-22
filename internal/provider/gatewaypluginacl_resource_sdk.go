@@ -28,6 +28,14 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 			} else {
 				r.Config.Allow = nil
 			}
+			if resp.Config.AllowWhen != nil {
+				r.Config.AllowWhen = make([]types.String, 0, len(resp.Config.AllowWhen))
+				for _, v := range resp.Config.AllowWhen {
+					r.Config.AllowWhen = append(r.Config.AllowWhen, types.StringValue(v))
+				}
+			} else {
+				r.Config.AllowWhen = nil
+			}
 			r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
 			if resp.Config.Deny != nil {
 				r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
@@ -36,6 +44,14 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 				}
 			} else {
 				r.Config.Deny = nil
+			}
+			if resp.Config.DenyWhen != nil {
+				r.Config.DenyWhen = make([]types.String, 0, len(resp.Config.DenyWhen))
+				for _, v := range resp.Config.DenyWhen {
+					r.Config.DenyWhen = append(r.Config.DenyWhen, types.StringValue(v))
+				}
+			} else {
+				r.Config.DenyWhen = nil
 			}
 			r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
 			r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
@@ -300,6 +316,13 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (
 				allow = append(allow, r.Config.Allow[allowIndex].ValueString())
 			}
 		}
+		var allowWhen []string
+		if r.Config.AllowWhen != nil {
+			allowWhen = make([]string, 0, len(r.Config.AllowWhen))
+			for allowWhenIndex := range r.Config.AllowWhen {
+				allowWhen = append(allowWhen, r.Config.AllowWhen[allowWhenIndex].ValueString())
+			}
+		}
 		alwaysUseAuthenticatedGroups := new(bool)
 		if !r.Config.AlwaysUseAuthenticatedGroups.IsUnknown() && !r.Config.AlwaysUseAuthenticatedGroups.IsNull() {
 			*alwaysUseAuthenticatedGroups = r.Config.AlwaysUseAuthenticatedGroups.ValueBool()
@@ -311,6 +334,13 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (
 			deny = make([]string, 0, len(r.Config.Deny))
 			for denyIndex := range r.Config.Deny {
 				deny = append(deny, r.Config.Deny[denyIndex].ValueString())
+			}
+		}
+		var denyWhen []string
+		if r.Config.DenyWhen != nil {
+			denyWhen = make([]string, 0, len(r.Config.DenyWhen))
+			for denyWhenIndex := range r.Config.DenyWhen {
+				denyWhen = append(denyWhen, r.Config.DenyWhen[denyWhenIndex].ValueString())
 			}
 		}
 		hideGroupsHeader := new(bool)
@@ -327,8 +357,10 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (
 		}
 		config = &shared.ACLPluginConfig{
 			Allow:                        allow,
+			AllowWhen:                    allowWhen,
 			AlwaysUseAuthenticatedGroups: alwaysUseAuthenticatedGroups,
 			Deny:                         deny,
+			DenyWhen:                     denyWhen,
 			HideGroupsHeader:             hideGroupsHeader,
 			IncludeConsumerGroups:        includeConsumerGroups,
 		}

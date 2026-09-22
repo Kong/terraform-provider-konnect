@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -40,6 +41,7 @@ type PortalTeamResourceModel struct {
 	CreatedAt          types.String `tfsdk:"created_at"`
 	Description        types.String `tfsdk:"description"`
 	ID                 types.String `tfsdk:"id"`
+	KonnectManaged     types.Bool   `tfsdk:"konnect_managed"`
 	Name               types.String `tfsdk:"name"`
 	PortalID           types.String `tfsdk:"portal_id"`
 	UpdatedAt          types.String `tfsdk:"updated_at"`
@@ -76,6 +78,12 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to ` + "`" + `false` + "`" + ` (default) to let identity provider team mappings keep syncing members into this team. Set to ` + "`" + `true` + "`" + ` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team. Default: false`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

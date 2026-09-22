@@ -7,6 +7,7 @@ import (
 )
 
 type KeySchema struct {
-	SchemaVersion types.String `tfsdk:"schema_version"`
-	SubjectName   types.String `tfsdk:"subject_name"`
+	PayloadEncoding types.String `tfsdk:"payload_encoding"`
+	SchemaVersion   types.String `tfsdk:"schema_version"`
+	SubjectName     types.String `tfsdk:"subject_name"`
 }

@@ -2105,6 +2105,7 @@ const (
 	DatakitPluginAuthProviderAws   DatakitPluginAuthProvider = "aws"
 	DatakitPluginAuthProviderAzure DatakitPluginAuthProvider = "azure"
 	DatakitPluginAuthProviderGcp   DatakitPluginAuthProvider = "gcp"
+	DatakitPluginAuthProviderOauth DatakitPluginAuthProvider = "oauth"
 )
 
 func (e DatakitPluginAuthProvider) ToPointer() *DatakitPluginAuthProvider {
@@ -2115,11 +2116,231 @@ func (e DatakitPluginAuthProvider) ToPointer() *DatakitPluginAuthProvider {
 func (e *DatakitPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// DatakitPluginAuthMethod - Client authentication method used against the token endpoint.
+type DatakitPluginAuthMethod string
+
+const (
+	DatakitPluginAuthMethodClientSecretBasic DatakitPluginAuthMethod = "client_secret_basic"
+	DatakitPluginAuthMethodClientSecretJwt   DatakitPluginAuthMethod = "client_secret_jwt"
+	DatakitPluginAuthMethodClientSecretPost  DatakitPluginAuthMethod = "client_secret_post"
+)
+
+func (e DatakitPluginAuthMethod) ToPointer() *DatakitPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatakitPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// DatakitPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type DatakitPluginClientSecretJwtAlg string
+
+const (
+	DatakitPluginClientSecretJwtAlgHs256 DatakitPluginClientSecretJwtAlg = "HS256"
+	DatakitPluginClientSecretJwtAlgHs512 DatakitPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e DatakitPluginClientSecretJwtAlg) ToPointer() *DatakitPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatakitPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// DatakitPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type DatakitPluginGrantType string
+
+const (
+	DatakitPluginGrantTypeClientCredentials DatakitPluginGrantType = "client_credentials"
+	DatakitPluginGrantTypePassword          DatakitPluginGrantType = "password"
+)
+
+func (e DatakitPluginGrantType) ToPointer() *DatakitPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatakitPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// DatakitPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type DatakitPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *DatakitPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *DatakitPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *DatakitPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (d DatakitPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginOauth) GetAuthMethod() *DatakitPluginAuthMethod {
+	if d == nil {
+		return nil
+	}
+	return d.AuthMethod
+}
+
+func (d *DatakitPluginOauth) GetClientID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ClientID
+}
+
+func (d *DatakitPluginOauth) GetClientSecret() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ClientSecret
+}
+
+func (d *DatakitPluginOauth) GetClientSecretJwtAlg() *DatakitPluginClientSecretJwtAlg {
+	if d == nil {
+		return nil
+	}
+	return d.ClientSecretJwtAlg
+}
+
+func (d *DatakitPluginOauth) GetGrantType() *DatakitPluginGrantType {
+	if d == nil {
+		return nil
+	}
+	return d.GrantType
+}
+
+func (d *DatakitPluginOauth) GetPassword() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Password
+}
+
+func (d *DatakitPluginOauth) GetRedisUsername() *string {
+	if d == nil {
+		return nil
+	}
+	return d.RedisUsername
+}
+
+func (d *DatakitPluginOauth) GetRedisUsernameClaim() *string {
+	if d == nil {
+		return nil
+	}
+	return d.RedisUsernameClaim
+}
+
+func (d *DatakitPluginOauth) GetScopes() []string {
+	if d == nil {
+		return nil
+	}
+	return d.Scopes
+}
+
+func (d *DatakitPluginOauth) GetSslVerify() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.SslVerify
+}
+
+func (d *DatakitPluginOauth) GetTimeout() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.Timeout
+}
+
+func (d *DatakitPluginOauth) GetTokenEndpoint() *string {
+	if d == nil {
+		return nil
+	}
+	return d.TokenEndpoint
+}
+
+func (d *DatakitPluginOauth) GetTokenHeaders() map[string]string {
+	if d == nil {
+		return nil
+	}
+	return d.TokenHeaders
+}
+
+func (d *DatakitPluginOauth) GetTokenPostArgs() map[string]string {
+	if d == nil {
+		return nil
+	}
+	return d.TokenPostArgs
+}
+
+func (d *DatakitPluginOauth) GetUsername() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Username
 }
 
 // DatakitPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -2148,6 +2369,8 @@ type DatakitPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *DatakitPluginOauth `json:"oauth"`
 }
 
 func (d DatakitPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -2243,6 +2466,13 @@ func (d *DatakitPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
 		return nil
 	}
 	return d.GcpServiceAccountJSON
+}
+
+func (d *DatakitPluginCloudAuthentication) GetOauth() *DatakitPluginOauth {
+	if d == nil {
+		return nil
+	}
+	return d.Oauth
 }
 
 type DatakitPluginClusterNodes struct {
@@ -2651,9 +2881,11 @@ func (r *Resources) GetVault() map[string]string {
 }
 
 type DatakitPluginConfig struct {
-	Debug     *bool                `default:"false" json:"debug"`
-	Nodes     []DatakitPluginNodes `json:"nodes"`
-	Resources *Resources           `json:"resources"`
+	// Array of CA Certificate object UUIDs used to build the trust store for verifying the TLS certificate of servers contacted by `call` nodes. Applies only when a node's `ssl_verify` is enabled (the default). When set, the referenced CA certificates replace (they do not augment) the global `lua_ssl_trusted_certificate` trust set for those requests; when unset or empty, the global trust set is used.
+	CaCertificates []string             `json:"ca_certificates"`
+	Debug          *bool                `default:"false" json:"debug"`
+	Nodes          []DatakitPluginNodes `json:"nodes"`
+	Resources      *Resources           `json:"resources"`
 }
 
 func (d DatakitPluginConfig) MarshalJSON() ([]byte, error) {
@@ -2665,6 +2897,13 @@ func (d *DatakitPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (d *DatakitPluginConfig) GetCaCertificates() []string {
+	if d == nil {
+		return nil
+	}
+	return d.CaCertificates
 }
 
 func (d *DatakitPluginConfig) GetDebug() *bool {

@@ -14,7 +14,10 @@ IdentityAuthServer Resource
 
 ```terraform
 resource "konnect_identity_auth_server" "my_identityauthserver" {
-  audience      = "...my_audience..."
+  audience = "...my_audience..."
+  dcr = {
+    default_access_token_duration = 300
+  }
   description   = "...my_description..."
   force_destroy = "false"
   labels = {
@@ -38,6 +41,7 @@ resource "konnect_identity_auth_server" "my_identityauthserver" {
 
 ### Optional
 
+- `dcr` (Attributes) Dynamic Client Registration settings for the auth server. Both fields are optional; an omitted field falls back to its default. (see [below for nested schema](#nestedatt--dcr))
 - `description` (String) The description of the auth server
 - `force_destroy` (String) If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -54,6 +58,13 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `jwks_uri` (String) The URI of the JWKS endpoint for the auth server
 - `metadata_uri` (String) The URI of the metadata document for the auth server
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+<a id="nestedatt--dcr"></a>
+### Nested Schema for `dcr`
+
+Optional:
+
+- `default_access_token_duration` (Number) The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300
 
 ## Import
 

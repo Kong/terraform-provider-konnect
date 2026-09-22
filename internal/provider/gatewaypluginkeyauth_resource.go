@@ -141,7 +141,7 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 								},
 							},
 						},
-						Description: `A configuration of Konnect Identity Realms that indicate where to source a consumer from.`,
+						Description: `A configuration of Konnect Identity Realms that indicate where to source a consumer from. Defaults to a single local realm. Set this field to an empty array explicitly when the plugin enables Kong Identity ` + "`" + `principals` + "`" + `, since the two are mutually exclusive.`,
 					},
 					"key_in_body": schema.BoolAttribute{
 						Computed:    true,

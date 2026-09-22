@@ -28,6 +28,7 @@ func (r *GatewayPluginOasValidationResourceModel) RefreshFromSharedOasValidation
 		r.Config.NotifyOnlyRequestValidationFailure = types.BoolPointerValue(resp.Config.NotifyOnlyRequestValidationFailure)
 		r.Config.NotifyOnlyResponseBodyValidationFailure = types.BoolPointerValue(resp.Config.NotifyOnlyResponseBodyValidationFailure)
 		r.Config.QueryParameterCheck = types.BoolPointerValue(resp.Config.QueryParameterCheck)
+		r.Config.Rfc9457ErrorResponse = types.BoolPointerValue(resp.Config.Rfc9457ErrorResponse)
 		r.Config.StructuredErrors = types.BoolPointerValue(resp.Config.StructuredErrors)
 		r.Config.ValidateRequestBody = types.BoolPointerValue(resp.Config.ValidateRequestBody)
 		r.Config.ValidateRequestHeaderParams = types.BoolPointerValue(resp.Config.ValidateRequestHeaderParams)
@@ -355,6 +356,12 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin(ct
 	} else {
 		queryParameterCheck = nil
 	}
+	rfc9457ErrorResponse := new(bool)
+	if !r.Config.Rfc9457ErrorResponse.IsUnknown() && !r.Config.Rfc9457ErrorResponse.IsNull() {
+		*rfc9457ErrorResponse = r.Config.Rfc9457ErrorResponse.ValueBool()
+	} else {
+		rfc9457ErrorResponse = nil
+	}
 	structuredErrors := new(bool)
 	if !r.Config.StructuredErrors.IsUnknown() && !r.Config.StructuredErrors.IsNull() {
 		*structuredErrors = r.Config.StructuredErrors.ValueBool()
@@ -409,6 +416,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin(ct
 		NotifyOnlyRequestValidationFailure:      notifyOnlyRequestValidationFailure,
 		NotifyOnlyResponseBodyValidationFailure: notifyOnlyResponseBodyValidationFailure,
 		QueryParameterCheck:                     queryParameterCheck,
+		Rfc9457ErrorResponse:                    rfc9457ErrorResponse,
 		StructuredErrors:                        structuredErrors,
 		ValidateRequestBody:                     validateRequestBody,
 		ValidateRequestHeaderParams:             validateRequestHeaderParams,

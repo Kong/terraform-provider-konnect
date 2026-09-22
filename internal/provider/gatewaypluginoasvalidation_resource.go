@@ -138,6 +138,12 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 						Default:     booldefault.StaticBool(false),
 						Description: `If set to true, checks if query parameters in the request exist in the API specification. Default: false`,
 					},
+					"rfc9457_error_response": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to ` + "`" + `true` + "`" + `, interrupting non-gRPC HTTP validation failures are returned as ` + "`" + `application/problem+json` + "`" + ` using RFC 9457 top-level fields plus Kong extensions ` + "`" + `message` + "`" + `, ` + "`" + `errors` + "`" + `, and optional ` + "`" + `more` + "`" + `. Requires ` + "`" + `structured_errors` + "`" + ` and ` + "`" + `verbose_response` + "`" + ` to both be set to ` + "`" + `true` + "`" + `. When set to ` + "`" + `false` + "`" + `, the legacy response format is preserved. Default: false`,
+					},
 					"structured_errors": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,

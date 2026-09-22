@@ -8,15 +8,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
@@ -36,15 +39,16 @@ type APIPublicationResource struct {
 
 // APIPublicationResourceModel describes the resource data model.
 type APIPublicationResourceModel struct {
-	APIID                    types.String   `tfsdk:"api_id"`
-	AuthStrategyIds          []types.String `tfsdk:"auth_strategy_ids"`
-	AutoApproveRegistrations types.Bool     `tfsdk:"auto_approve_registrations"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	FormID                   types.String   `tfsdk:"form_id"`
-	PortalID                 types.String   `tfsdk:"portal_id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	Visibility               types.String   `tfsdk:"visibility"`
-	Warnings                 []types.String `tfsdk:"warnings"`
+	APIID                    types.String                        `tfsdk:"api_id"`
+	AuthStrategyIds          []types.String                      `tfsdk:"auth_strategy_ids"`
+	AutoApproveRegistrations types.Bool                          `tfsdk:"auto_approve_registrations"`
+	CreatedAt                types.String                        `tfsdk:"created_at"`
+	FormID                   types.String                        `tfsdk:"form_id"`
+	PortalID                 types.String                        `tfsdk:"portal_id"`
+	SpecRenderer             *tfTypes.APIPublicationSpecRenderer `tfsdk:"spec_renderer"`
+	UpdatedAt                types.String                        `tfsdk:"updated_at"`
+	Visibility               types.String                        `tfsdk:"visibility"`
+	Warnings                 []types.String                      `tfsdk:"warnings"`
 }
 
 func (r *APIPublicationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -91,6 +95,25 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The Portal identifier`,
+			},
+			"spec_renderer": schema.SingleNestedAttribute{
+				Computed: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"try_it_ui_audience": types.StringType,
+				})),
+				Attributes: map[string]schema.Attribute{
+					"try_it_ui_audience": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `The audience for the Try It UI feature.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `all` + "`" + ` means that the Try It UI will be available to all users, including unauthenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `authenticated` + "`" + ` means that the Try It UI will only be available to authenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `registered` + "`" + ` means that the Try It UI will only be available to users who have registered for the API.`,
+					},
+				},
+				Description: `Customization settings for the API spec renderer in the portal.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

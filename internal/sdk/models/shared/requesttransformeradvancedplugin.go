@@ -440,10 +440,12 @@ type RequestTransformerAdvancedPluginConfig struct {
 	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.
 	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
-	HTTPMethod *string                                  `default:"null" json:"http_method"`
-	Remove     *RequestTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
-	Rename     *RequestTransformerAdvancedPluginRename  `json:"rename,omitempty"`
-	Replace    *RequestTransformerAdvancedPluginReplace `json:"replace,omitempty"`
+	HTTPMethod *string `default:"null" json:"http_method"`
+	// The maximum request body size, in bytes, that the plugin reads to apply body transformations. Bodies larger than `client_body_buffer_size` are buffered by Nginx to a temporary file. `-1` (the default) disables reading such buffered bodies, so their body transformations are skipped to avoid the extra disk I/O. `0` means unlimited (still bounded by Nginx's `client_max_body_size`), and any positive value caps how much of the buffered body is read from the temporary file.
+	MaxRequestBodySize *int64                                   `default:"-1" json:"max_request_body_size"`
+	Remove             *RequestTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
+	Rename             *RequestTransformerAdvancedPluginRename  `json:"rename,omitempty"`
+	Replace            *RequestTransformerAdvancedPluginReplace `json:"replace,omitempty"`
 }
 
 func (r RequestTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -490,6 +492,13 @@ func (r *RequestTransformerAdvancedPluginConfig) GetHTTPMethod() *string {
 		return nil
 	}
 	return r.HTTPMethod
+}
+
+func (r *RequestTransformerAdvancedPluginConfig) GetMaxRequestBodySize() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.MaxRequestBodySize
 }
 
 func (r *RequestTransformerAdvancedPluginConfig) GetRemove() *RequestTransformerAdvancedPluginRemove {

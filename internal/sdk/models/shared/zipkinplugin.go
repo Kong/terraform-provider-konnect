@@ -390,8 +390,12 @@ func (e *ZipkinPluginConcurrencyLimit) IsExact() bool {
 }
 
 type ZipkinPluginQueue struct {
+	// Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered.
+	BreakerCooldown *float64 `default:"60" json:"breaker_cooldown"`
 	// The number of of queue delivery timers. -1 indicates unlimited.
 	ConcurrencyLimit *ZipkinPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
+	// Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker.
+	FailureThreshold *int64 `default:"0" json:"failure_threshold"`
 	// Time in seconds before the initial retry is made for a failing batch.
 	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
@@ -419,11 +423,25 @@ func (z *ZipkinPluginQueue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (z *ZipkinPluginQueue) GetBreakerCooldown() *float64 {
+	if z == nil {
+		return nil
+	}
+	return z.BreakerCooldown
+}
+
 func (z *ZipkinPluginQueue) GetConcurrencyLimit() *ZipkinPluginConcurrencyLimit {
 	if z == nil {
 		return nil
 	}
 	return z.ConcurrencyLimit
+}
+
+func (z *ZipkinPluginQueue) GetFailureThreshold() *int64 {
+	if z == nil {
+		return nil
+	}
+	return z.FailureThreshold
 }
 
 func (z *ZipkinPluginQueue) GetInitialRetryDelay() *float64 {

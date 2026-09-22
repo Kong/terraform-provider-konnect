@@ -8,7 +8,9 @@ import (
 
 // KonnectCPLegacyConflictError - standard error
 type KonnectCPLegacyConflictError struct {
-	Message any `json:"message,omitempty"`
+	// A short summary of the problem.
+	//
+	Message *string `json:"message,omitempty"`
 }
 
 func (k KonnectCPLegacyConflictError) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (k *KonnectCPLegacyConflictError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (k *KonnectCPLegacyConflictError) GetMessage() any {
+func (k *KonnectCPLegacyConflictError) GetMessage() *string {
 	if k == nil {
 		return nil
 	}

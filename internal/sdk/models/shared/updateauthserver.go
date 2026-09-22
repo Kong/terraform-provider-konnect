@@ -25,6 +25,8 @@ type UpdateAuthServer struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 	// A list or trusted origins to apply the CORS header on for the auth server
 	TrustedOrigins []string `json:"trusted_origins,omitempty"`
+	// Dynamic Client Registration settings for the auth server
+	Dcr *UpdateDcrSettings `json:"dcr,omitempty"`
 }
 
 func (u UpdateAuthServer) MarshalJSON() ([]byte, error) {
@@ -78,4 +80,11 @@ func (u *UpdateAuthServer) GetTrustedOrigins() []string {
 		return nil
 	}
 	return u.TrustedOrigins
+}
+
+func (u *UpdateAuthServer) GetDcr() *UpdateDcrSettings {
+	if u == nil {
+		return nil
+	}
+	return u.Dcr
 }

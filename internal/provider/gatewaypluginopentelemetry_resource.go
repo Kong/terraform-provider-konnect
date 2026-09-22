@@ -168,6 +168,12 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Default:     booldefault.StaticBool(false),
 								Description: `A boolean value that determines if latency metrics should be collected. If enabled, ` + "`" + `kong.latency.total` + "`" + `, ` + "`" + `kong.latency.internal` + "`" + ` and ` + "`" + `kong.latency.upstream` + "`" + ` metrics will be exported. Default: false`,
 							},
+							"enable_principal_attribute": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if ` + "`" + `http.server.request.count` + "`" + `, ` + "`" + `http.server.request.size` + "`" + ` and ` + "`" + `http.server.response.size` + "`" + ` metrics should fill in the principal attributes when an authenticated principal is available. Default: false`,
+							},
 							"enable_request_metrics": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -224,11 +230,29 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"breaker_cooldown": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered. Default: 60`,
+								Validators: []validator.Float64{
+									float64validator.Between(0, 1000000),
+								},
+							},
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
 								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
+							},
+							"failure_threshold": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     int64default.StaticInt64(0),
+								Description: `Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker. Default: 0`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 1000000),
+								},
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,

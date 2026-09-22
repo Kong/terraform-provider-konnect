@@ -9,7 +9,7 @@ import (
 type AiMcpProxyPluginSession struct {
 	Client     *AIGatewayMCPServerServerConfigBaseClient `tfsdk:"client"`
 	Managed    types.Bool                                `tfsdk:"managed"`
-	Redis      *ClusterCacheRedis                        `tfsdk:"redis"`
+	Redis      *PartialVectordbRedis                     `tfsdk:"redis"`
 	SessionTTL types.Float64                             `tfsdk:"session_ttl"`
 	Strategy   types.String                              `tfsdk:"strategy"`
 }
