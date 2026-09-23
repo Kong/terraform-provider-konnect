@@ -684,14 +684,12 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_key": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),
 						},
 					},
 					"limit": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 					},

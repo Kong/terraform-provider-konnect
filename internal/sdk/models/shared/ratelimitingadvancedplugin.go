@@ -1291,8 +1291,8 @@ func (r *RateLimitingAdvancedPluginConsumerGroup) GetID() *string {
 }
 
 type RateLimitingAdvancedPluginExpressions struct {
-	CustomKey *string  `json:"custom_key,omitempty"`
-	Limit     []string `json:"limit,omitempty"`
+	CustomKey *string  `default:"null" json:"custom_key"`
+	Limit     []string `json:"limit"`
 }
 
 func (r RateLimitingAdvancedPluginExpressions) MarshalJSON() ([]byte, error) {

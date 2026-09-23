@@ -549,49 +549,42 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_key": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),
 						},
 					},
 					"day": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),
 						},
 					},
 					"hour": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),
 						},
 					},
 					"minute": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),
 						},
 					},
 					"month": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),
 						},
 					},
 					"second": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),
 						},
 					},
 					"year": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(1024),

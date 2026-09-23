@@ -882,13 +882,13 @@ func (r *RateLimitingPluginConsumerGroup) GetID() *string {
 }
 
 type Expressions struct {
-	CustomKey *string `json:"custom_key,omitempty"`
-	Day       *string `json:"day,omitempty"`
-	Hour      *string `json:"hour,omitempty"`
-	Minute    *string `json:"minute,omitempty"`
-	Month     *string `json:"month,omitempty"`
-	Second    *string `json:"second,omitempty"`
-	Year      *string `json:"year,omitempty"`
+	CustomKey *string `default:"null" json:"custom_key"`
+	Day       *string `default:"null" json:"day"`
+	Hour      *string `default:"null" json:"hour"`
+	Minute    *string `default:"null" json:"minute"`
+	Month     *string `default:"null" json:"month"`
+	Second    *string `default:"null" json:"second"`
+	Year      *string `default:"null" json:"year"`
 }
 
 func (e Expressions) MarshalJSON() ([]byte, error) {

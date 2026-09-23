@@ -229,9 +229,13 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		} else {
 			r.Expressions = &tfTypes.RateLimitingAdvancedPluginExpressions{}
 			r.Expressions.CustomKey = types.StringPointerValue(resp.Expressions.CustomKey)
-			r.Expressions.Limit = make([]types.String, 0, len(resp.Expressions.Limit))
-			for _, v := range resp.Expressions.Limit {
-				r.Expressions.Limit = append(r.Expressions.Limit, types.StringValue(v))
+			if resp.Expressions.Limit != nil {
+				r.Expressions.Limit = make([]types.String, 0, len(resp.Expressions.Limit))
+				for _, v := range resp.Expressions.Limit {
+					r.Expressions.Limit = append(r.Expressions.Limit, types.StringValue(v))
+				}
+			} else {
+				r.Expressions.Limit = nil
 			}
 		}
 		r.ID = types.StringPointerValue(resp.ID)
@@ -1095,9 +1099,12 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		} else {
 			customKey1 = nil
 		}
-		limit1 := make([]string, 0, len(r.Expressions.Limit))
-		for limitIndex1 := range r.Expressions.Limit {
-			limit1 = append(limit1, r.Expressions.Limit[limitIndex1].ValueString())
+		var limit1 []string
+		if r.Expressions.Limit != nil {
+			limit1 = make([]string, 0, len(r.Expressions.Limit))
+			for limitIndex1 := range r.Expressions.Limit {
+				limit1 = append(limit1, r.Expressions.Limit[limitIndex1].ValueString())
+			}
 		}
 		expressions = &shared.RateLimitingAdvancedPluginExpressions{
 			CustomKey: customKey1,
