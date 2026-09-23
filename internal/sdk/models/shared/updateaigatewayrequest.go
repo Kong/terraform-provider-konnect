@@ -15,7 +15,7 @@ type UpdateAIGatewayRequest struct {
 	//
 	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
 	// Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version.
-	RuntimeAutoUpgrade *bool `default:"false" json:"runtime_auto_upgrade"`
+	RuntimeAutoUpgrade *bool `default:"true" json:"runtime_auto_upgrade"`
 	// The display name for this AI Gateway.
 	DisplayName string `json:"display_name"`
 	// The name for this AI Gateway. This value is immutable after creation.

@@ -91,7 +91,7 @@ type AIGateway struct {
 	//
 	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
 	// Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version.
-	RuntimeAutoUpgrade *bool `default:"false" json:"runtime_auto_upgrade"`
+	RuntimeAutoUpgrade *bool `default:"true" json:"runtime_auto_upgrade"`
 	// How this AI Gateway's control plane is deployed.
 	DeploymentType *AIGatewayDeploymentType `default:"hybrid" json:"deployment_type"`
 	// Object containing AI Gateway access endpoints.

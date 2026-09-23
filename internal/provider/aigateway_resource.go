@@ -201,8 +201,8 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 			"runtime_auto_upgrade": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(false),
-				Description: `Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version. Default: false`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version. Default: true`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

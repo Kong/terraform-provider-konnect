@@ -29,7 +29,7 @@ resource "konnect_ai_gateway" "my_aigateway" {
       protocol = "...my_protocol..."
     }
   ]
-  runtime_auto_upgrade = false
+  runtime_auto_upgrade = true
 }
 ```
 
@@ -56,7 +56,7 @@ Data planes older than this version still connect for topology visibility.
 
 When not specified, the latest generally available runtime version is used.
 - `proxy_urls` (Attributes Set) Array of proxy URLs associated with reaching the data-planes connected to a control-plane. (see [below for nested schema](#nestedatt--proxy_urls))
-- `runtime_auto_upgrade` (Boolean) Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version. Default: false
+- `runtime_auto_upgrade` (Boolean) Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version. Default: true
 
 ### Read-Only
 
