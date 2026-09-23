@@ -5,6 +5,7 @@
 
 # Features
 * Added `condition` and `partials` support to custom plugins
+* Add support for Kong Gateway v3.16 - including `konnect_gateway_plugin_entitlement_enforcement` resource and new `expressions` field in `konnect_gateway_plugin_rate_limiting` and `konnect_gateway_plugin_rate_limiting_advanced` resource.
 
 ## 3.23.0
 > Released 2026/09/18
