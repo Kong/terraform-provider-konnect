@@ -70220,12 +70220,10 @@ components:
                       default: 403
                       maximum: 599
                       minimum: 100
-                      x-speakeasy-param-computed: true
                     message:
                       description: Message to return when enforcement is triggered.
                       type: string
                       default: Customer is not found by subject.
-                      x-speakeasy-param-computed: true
                   x-speakeasy-param-computed: true
                 FEATURE_NOT_FOUND:
                   type: object
@@ -70236,12 +70234,10 @@ components:
                       default: 403
                       maximum: 599
                       minimum: 100
-                      x-speakeasy-param-computed: true
                     message:
                       description: Message to return when enforcement is triggered.
                       type: string
                       default: Feature not found.
-                      x-speakeasy-param-computed: true
                   x-speakeasy-param-computed: true
                 FEATURE_UNAVAILABLE:
                   type: object
@@ -70252,12 +70248,10 @@ components:
                       default: 403
                       maximum: 599
                       minimum: 100
-                      x-speakeasy-param-computed: true
                     message:
                       description: Message to return when enforcement is triggered.
                       type: string
                       default: Feature is not available for the customer.
-                      x-speakeasy-param-computed: true
                   x-speakeasy-param-computed: true
                 NO_CREDIT_AVAILABLE:
                   type: object
@@ -70268,12 +70262,10 @@ components:
                       default: 402
                       maximum: 599
                       minimum: 100
-                      x-speakeasy-param-computed: true
                     message:
                       description: Message to return when enforcement is triggered.
                       type: string
                       default: Customer has no credit available.
-                      x-speakeasy-param-computed: true
                   x-speakeasy-param-computed: true
                 USAGE_LIMIT_REACHED:
                   type: object
@@ -70284,12 +70276,10 @@ components:
                       default: 429
                       maximum: 599
                       minimum: 100
-                      x-speakeasy-param-computed: true
                     message:
                       description: Message to return when enforcement is triggered.
                       type: string
                       default: Customer has reached usage limit for feature.
-                      x-speakeasy-param-computed: true
                   x-speakeasy-param-computed: true
               x-speakeasy-param-computed: true
             ssl_verify:
@@ -85501,14 +85491,18 @@ components:
           properties:
             custom_key:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
             limit:
               type: array
               items:
                 maxLength: 1024
                 type: string
-              x-speakeasy-param-computed: true
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
           x-speakeasy-param-computed: true
         name:
           const: rate-limiting-advanced
@@ -85966,32 +85960,46 @@ components:
           properties:
             custom_key:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
             day:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
             hour:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
             minute:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
             month:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
             second:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
             year:
               type: string
+              default: null
               maxLength: 1024
-              x-speakeasy-param-computed: true
+              nullable: true
+              x-speakeasy-param-computed: false
           x-speakeasy-param-computed: true
         name:
           const: rate-limiting
