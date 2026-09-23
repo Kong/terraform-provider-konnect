@@ -115,6 +115,15 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.limit.0", "300"),
 					),
 				},
+				{
+					// Remove only expressions.limit, keep custom_key.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.custom_key", "net.dst.ip"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced_expressions", "expressions.limit.0"),
+					),
+				},
 			},
 		})
 	})
