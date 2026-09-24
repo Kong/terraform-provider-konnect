@@ -13,6 +13,7 @@
   * Add support for per-modality usage cost for text, audio, image and video tokens for `konnect_ai_gateway_model`.
   * Add support for `conditions` for `konnect_ai_gateway_policy` resource, which allows users to define conditions based execution for the policy.
   * Add support for `allowed_versions` for `konnect_ai_gateway_mcp_server` resource, which allows users to define the MCP protocol revisions for the  server.
+* Add support for `konnect_identity_provider_list` and `konnect_identity_provider` datasource.
 
 ## 3.23.0
 > Released 2026/09/18
