@@ -69764,8 +69764,6 @@ components:
             customer:
               description: The customer identifies who gets billed for each request. Choose where the plugin should look for the customer identifier.
               type: object
-              default: null
-              nullable: true
               properties:
                 field:
                   description: 'The header name, query parameter, consumer field, or application field that contains the customer identifier, e.g. ''x-customer-id'''
@@ -69783,7 +69781,7 @@ components:
                     - header
                     - query
                   x-speakeasy-unknown-values: allow
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             deny_unknown_customers:
               description: 'If set to true, gateway will deny access to any unknown subjects.'
               type: boolean
@@ -69826,8 +69824,6 @@ components:
               default: 60
             redis:
               type: object
-              default: null
-              nullable: true
               properties:
                 cloud_authentication:
                   description: Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -70196,7 +70192,7 @@ components:
                   nullable: true
                   x-referenceable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
               x-speakeasy-transform-from-api:
                 jq: |
                   if has("port") then .port |= if type == "number" then tostring else . end else . end
