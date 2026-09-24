@@ -21121,6 +21121,37 @@ paths:
       tags:
         - Auth Settings
   /v3/identity-providers:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource: IdentityProviderList#read
+      operationId: get-identity-providers
+      summary: List Identity Providers
+      description: |
+        Retrieves the identity providers available within the organization. This operation provides information about
+        various identity providers for SAML or OIDC authentication integrations.
+      parameters:
+        - name: filter
+          in: query
+          description: Filter identity providers returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              type:
+                $ref: '#/components/schemas/StringFieldEqualsFilter'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/IdentityProviders'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
     post:
       x-speakeasy-entity-operation: IdentityProvider#create
       operationId: create-identity-provider
@@ -21158,7 +21189,7 @@ paths:
     get:
       x-speakeasy-entity-operation:
         terraform-resource: IdentityProvider#read
-        terraform-datasource: null
+        terraform-datasource: IdentityProvider#read
       operationId: get-identity-provider
       summary: Get Identity Provider
       description: |
@@ -21557,10 +21588,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - Applications
       x-terraform-id-to-object:
         auth_strategy_id: auth_strategy.id
+        environment_id: environment.id
   '/v3/portals/{portalId}/applications/{applicationId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -25059,6 +25093,12 @@ components:
           $ref: '#/components/schemas/BooleanFieldFilter'
       additionalProperties: false
       title: ControlPlaneFilterParameters
+    StringFieldEqualsFilter:
+      description: Filters on the given string field value by exact match.
+      properties:
+        eq:
+          type: string
+      title: StringFieldEqualsFilter
     BooleanFieldFilter:
       description: Filter by a boolean value (true/false).
       type: boolean
@@ -42315,13 +42355,12 @@ components:
           x-speakeasy-param-computed: false
         values:
           description: |
-            An optional model alias. When omitted, the model name is used.
+            Optional model aliases. When omitted, the model name is used.
             When no selector location is configured, the format default selector is used.
           type: array
           items:
             type: string
             minLength: 1
-          maxItems: 1
           minItems: 1
           x-speakeasy-param-computed: true
       additionalProperties: false
@@ -51137,6 +51176,45 @@ components:
         - display_name
         - name
         - config
+    AIGatewayModelProviderTypesafe:
+      description: |
+        Configuration for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: typesafe
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: 'A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.'
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+      required:
+        - type
+        - display_name
+        - name
+        - config
+      x-min-runtime-version: '2.2'
+      x-speakeasy-param-computed: false
     AIGatewayModelProviderConfigAuthBasic:
       description: |
         Basic auth config for an upstream model provider.
@@ -51831,6 +51909,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
+          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -51851,6 +51930,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
+        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
     UpdateAIGatewayModelProviderRequest:
       discriminator:
         propertyName: type
@@ -51874,6 +51954,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
+          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -51894,6 +51975,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
+        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
     AIGatewayModelProvider:
       type: object
       properties:
@@ -51925,6 +52007,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
+          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -51945,6 +52028,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
+        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
       required:
         - id
         - created_at
@@ -69824,6 +69908,8 @@ components:
               default: 60
             redis:
               type: object
+              default: null
+              nullable: true
               properties:
                 cloud_authentication:
                   description: Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -70192,7 +70278,7 @@ components:
                   nullable: true
                   x-referenceable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: true
+              x-speakeasy-param-computed: false
               x-speakeasy-transform-from-api:
                 jq: |
                   if has("port") then .port |= if type == "number" then tostring else . end else . end
@@ -100926,6 +101012,16 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IdentityProvider'
+    IdentityProviders:
+      description: |
+        A collection of identity providers. This response contains a collection of identity providers, which may include both OIDC and SAML identity providers.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/IdentityProvider'
+            title: Identity Provider Collection Response
     RetrieveServerlessCloudGatewayResponse:
       description: A response to retrieving a serverless cloud gateway.
       content:
