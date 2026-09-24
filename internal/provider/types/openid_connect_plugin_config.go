@@ -47,7 +47,7 @@ type OpenidConnectPluginConfig struct {
 	ClientJwk                                    []ClientJwk                                 `tfsdk:"client_jwk"`
 	ClientSecret                                 []types.String                              `tfsdk:"client_secret"`
 	ClusterCacheItems                            []types.String                              `tfsdk:"cluster_cache_items"`
-	ClusterCacheRedis                            *ClusterCacheRedis                          `tfsdk:"cluster_cache_redis"`
+	ClusterCacheRedis                            *PartialVectordbRedis                       `tfsdk:"cluster_cache_redis"`
 	ClusterCacheStrategy                         types.String                                `tfsdk:"cluster_cache_strategy"`
 	ConsumerBy                                   []types.String                              `tfsdk:"consumer_by"`
 	ConsumerClaim                                []types.String                              `tfsdk:"consumer_claim"`
@@ -140,10 +140,11 @@ type OpenidConnectPluginConfig struct {
 	ProofOfPossessionDpop                        types.String                                `tfsdk:"proof_of_possession_dpop"`
 	ProofOfPossessionMtls                        types.String                                `tfsdk:"proof_of_possession_mtls"`
 	ProofOfPossessionMtlsFromHeader              *ProofOfPossessionMtlsFromHeader            `tfsdk:"proof_of_possession_mtls_from_header"`
+	ProtectedResourceMetadata                    *ProtectedResourceMetadata                  `tfsdk:"protected_resource_metadata"`
 	PushedAuthorizationRequestEndpoint           types.String                                `tfsdk:"pushed_authorization_request_endpoint"`
 	PushedAuthorizationRequestEndpointAuthMethod types.String                                `tfsdk:"pushed_authorization_request_endpoint_auth_method"`
 	RedirectURI                                  []types.String                              `tfsdk:"redirect_uri"`
-	Redis                                        *Redis                                      `tfsdk:"redis"`
+	Redis                                        *OpenidConnectPluginRedis                   `tfsdk:"redis"`
 	RediscoveryLifetime                          types.Float64                               `tfsdk:"rediscovery_lifetime"`
 	RefreshTokenParamName                        types.String                                `tfsdk:"refresh_token_param_name"`
 	RefreshTokenParamType                        []types.String                              `tfsdk:"refresh_token_param_type"`

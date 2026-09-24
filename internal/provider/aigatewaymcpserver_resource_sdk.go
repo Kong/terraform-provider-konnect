@@ -131,15 +131,50 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			var configPriorData *tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfig
+			var configPriorData *tfTypes.AIGatewayMCPServerKongListenerConfig
 			if conversionListenerPriorData != nil {
 				configPriorData = conversionListenerPriorData.Config
 			}
-			r.ConversionListener.Config = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfig{}
+			r.ConversionListener.Config = &tfTypes.AIGatewayMCPServerKongListenerConfig{}
+			if resp.AIGatewayMCPServerConversionListenerResponse.Config.AllowedVersions != nil {
+				r.ConversionListener.Config.AllowedVersions = make([]types.String, 0, len(resp.AIGatewayMCPServerConversionListenerResponse.Config.AllowedVersions))
+				for _, v := range resp.AIGatewayMCPServerConversionListenerResponse.Config.AllowedVersions {
+					r.ConversionListener.Config.AllowedVersions = append(r.ConversionListener.Config.AllowedVersions, types.StringValue(string(v)))
+				}
+			} else {
+				r.ConversionListener.Config.AllowedVersions = nil
+			}
+			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache == nil {
+				r.ConversionListener.Config.Cache = nil
+			} else {
+				r.ConversionListener.Config.Cache = &tfTypes.AIGatewayMCPServerConversionListenerCache{}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.Discover == nil {
+					r.ConversionListener.Config.Cache.Discover = nil
+				} else {
+					r.ConversionListener.Config.Cache.Discover = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.Discover.CacheScope != nil {
+						r.ConversionListener.Config.Cache.Discover.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.Discover.CacheScope))
+					} else {
+						r.ConversionListener.Config.Cache.Discover.CacheScope = types.StringNull()
+					}
+					r.ConversionListener.Config.Cache.Discover.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.Discover.TTLMs)
+				}
+				if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ToolsList == nil {
+					r.ConversionListener.Config.Cache.ToolsList = nil
+				} else {
+					r.ConversionListener.Config.Cache.ToolsList = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ToolsList.CacheScope != nil {
+						r.ConversionListener.Config.Cache.ToolsList.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ToolsList.CacheScope))
+					} else {
+						r.ConversionListener.Config.Cache.ToolsList.CacheScope = types.StringNull()
+					}
+					r.ConversionListener.Config.Cache.ToolsList.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Cache.ToolsList.TTLMs)
+				}
+			}
 			if resp.AIGatewayMCPServerConversionListenerResponse.Config.Logging == nil {
 				r.ConversionListener.Config.Logging = nil
 			} else {
-				r.ConversionListener.Config.Logging = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging{}
+				r.ConversionListener.Config.Logging = &tfTypes.AIGatewayMCPServerConversionListenerLogging{}
 				r.ConversionListener.Config.Logging.Audits = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Logging.Audits)
 				r.ConversionListener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerConversionListenerResponse.Config.Logging.Payloads)
 			}
@@ -498,7 +533,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			if resp.AIGatewayMCPServerConversionOnlyResponse.Config.Logging == nil {
 				r.ConversionOnly.Config.Logging = nil
 			} else {
-				r.ConversionOnly.Config.Logging = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging{}
+				r.ConversionOnly.Config.Logging = &tfTypes.AIGatewayMCPServerConversionListenerLogging{}
 				r.ConversionOnly.Config.Logging.Audits = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Logging.Audits)
 				r.ConversionOnly.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerConversionOnlyResponse.Config.Logging.Payloads)
 			}
@@ -802,15 +837,50 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					}
 				}
 			}
-			var configPriorData2 *tfTypes.AIGatewayMCPServerNoUpstreamConfig
+			var configPriorData2 *tfTypes.AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig
 			if listenerPriorData != nil {
 				configPriorData2 = listenerPriorData.Config
 			}
-			r.Listener.Config = &tfTypes.AIGatewayMCPServerNoUpstreamConfig{}
+			r.Listener.Config = &tfTypes.AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig{}
+			if resp.AIGatewayMCPServerListenerResponse.Config.AllowedVersions != nil {
+				r.Listener.Config.AllowedVersions = make([]types.String, 0, len(resp.AIGatewayMCPServerListenerResponse.Config.AllowedVersions))
+				for _, v := range resp.AIGatewayMCPServerListenerResponse.Config.AllowedVersions {
+					r.Listener.Config.AllowedVersions = append(r.Listener.Config.AllowedVersions, types.StringValue(string(v)))
+				}
+			} else {
+				r.Listener.Config.AllowedVersions = nil
+			}
+			if resp.AIGatewayMCPServerListenerResponse.Config.Cache == nil {
+				r.Listener.Config.Cache = nil
+			} else {
+				r.Listener.Config.Cache = &tfTypes.AIGatewayMCPServerConversionListenerCache{}
+				if resp.AIGatewayMCPServerListenerResponse.Config.Cache.Discover == nil {
+					r.Listener.Config.Cache.Discover = nil
+				} else {
+					r.Listener.Config.Cache.Discover = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerListenerResponse.Config.Cache.Discover.CacheScope != nil {
+						r.Listener.Config.Cache.Discover.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.Config.Cache.Discover.CacheScope))
+					} else {
+						r.Listener.Config.Cache.Discover.CacheScope = types.StringNull()
+					}
+					r.Listener.Config.Cache.Discover.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Cache.Discover.TTLMs)
+				}
+				if resp.AIGatewayMCPServerListenerResponse.Config.Cache.ToolsList == nil {
+					r.Listener.Config.Cache.ToolsList = nil
+				} else {
+					r.Listener.Config.Cache.ToolsList = &tfTypes.AIGatewayMCPServerCacheHint{}
+					if resp.AIGatewayMCPServerListenerResponse.Config.Cache.ToolsList.CacheScope != nil {
+						r.Listener.Config.Cache.ToolsList.CacheScope = types.StringValue(string(*resp.AIGatewayMCPServerListenerResponse.Config.Cache.ToolsList.CacheScope))
+					} else {
+						r.Listener.Config.Cache.ToolsList.CacheScope = types.StringNull()
+					}
+					r.Listener.Config.Cache.ToolsList.TTLMs = types.Int64PointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Cache.ToolsList.TTLMs)
+				}
+			}
 			if resp.AIGatewayMCPServerListenerResponse.Config.Logging == nil {
 				r.Listener.Config.Logging = nil
 			} else {
-				r.Listener.Config.Logging = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging{}
+				r.Listener.Config.Logging = &tfTypes.AIGatewayMCPServerConversionListenerLogging{}
 				r.Listener.Config.Logging.Audits = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Logging.Audits)
 				r.Listener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerListenerResponse.Config.Logging.Payloads)
 			}
@@ -1164,7 +1234,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			if resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Logging == nil {
 				r.PassthroughListener.Config.Logging = nil
 			} else {
-				r.PassthroughListener.Config.Logging = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging{}
+				r.PassthroughListener.Config.Logging = &tfTypes.AIGatewayMCPServerConversionListenerLogging{}
 				r.PassthroughListener.Config.Logging.Audits = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Logging.Audits)
 				r.PassthroughListener.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerPassthroughListenerResponse.Config.Logging.Payloads)
 			}
@@ -1499,7 +1569,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 			if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Logging == nil {
 				r.UpstreamServer.Config.Logging = nil
 			} else {
-				r.UpstreamServer.Config.Logging = &tfTypes.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging{}
+				r.UpstreamServer.Config.Logging = &tfTypes.AIGatewayMCPServerConversionListenerLogging{}
 				r.UpstreamServer.Config.Logging.Audits = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Logging.Audits)
 				r.UpstreamServer.Config.Logging.Payloads = types.BoolPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Logging.Payloads)
 			}
@@ -1723,6 +1793,11 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 						r.UpstreamServer.Config.Server.ToolsListAuth.Jwt.IDTokenHeader = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.ToolsListAuth.AIGatewayMCPServerUpstreamServerToolOauth2ConfigJwt.IDTokenHeader)
 						r.UpstreamServer.Config.Server.ToolsListAuth.Jwt.Scope = types.StringPointerValue(resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.ToolsListAuth.AIGatewayMCPServerUpstreamServerToolOauth2ConfigJwt.Scope)
 					}
+				}
+				if resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.UpstreamProtocolVersion != nil {
+					r.UpstreamServer.Config.Server.UpstreamProtocolVersion = types.StringValue(string(*resp.AIGatewayMCPServerUpstreamServerResponse.Config.Server.UpstreamProtocolVersion))
+				} else {
+					r.UpstreamServer.Config.Server.UpstreamProtocolVersion = types.StringNull()
 				}
 			}
 			r.UpstreamServer.Config.ToolsCacheTTLSeconds = types.Int64Value(resp.AIGatewayMCPServerUpstreamServerResponse.Config.ToolsCacheTTLSeconds)
@@ -2387,7 +2462,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Tags:                    tags1,
 			}
 		}
-		var logging1 *shared.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging
+		var logging1 *shared.AIGatewayMCPServerConversionListenerLogging
 		if r.ConversionListener.Config.Logging != nil {
 			payloads1 := new(bool)
 			if !r.ConversionListener.Config.Logging.Payloads.IsUnknown() && !r.ConversionListener.Config.Logging.Payloads.IsNull() {
@@ -2401,7 +2476,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				audits1 = nil
 			}
-			logging1 = &shared.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging{
+			logging1 = &shared.AIGatewayMCPServerConversionListenerLogging{
 				Payloads: payloads1,
 				Audits:   audits1,
 			}
@@ -2857,13 +2932,67 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Auth: auth1,
 			}
 		}
-		config1 := shared.AIGatewayMCPServerWithUpstreamNoProxyConfig{
+		var allowedVersions []shared.AllowedVersions
+		if r.ConversionListener.Config.AllowedVersions != nil {
+			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
+			for _, allowedVersionsItem := range r.ConversionListener.Config.AllowedVersions {
+				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
+			}
+		}
+		var cache *shared.AIGatewayMCPServerConversionListenerCache
+		if r.ConversionListener.Config.Cache != nil {
+			var toolsList *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.ToolsList != nil {
+				ttlMs := new(int64)
+				if !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsNull() {
+					*ttlMs = r.ConversionListener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs = nil
+				}
+				cacheScope := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsNull() {
+					*cacheScope = shared.CacheScope(r.ConversionListener.Config.Cache.ToolsList.CacheScope.ValueString())
+				} else {
+					cacheScope = nil
+				}
+				toolsList = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs,
+					CacheScope: cacheScope,
+				}
+			}
+			var discover *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.Discover != nil {
+				ttlMs1 := new(int64)
+				if !r.ConversionListener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.TTLMs.IsNull() {
+					*ttlMs1 = r.ConversionListener.Config.Cache.Discover.TTLMs.ValueInt64()
+				} else {
+					ttlMs1 = nil
+				}
+				cacheScope1 := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.CacheScope.IsNull() {
+					*cacheScope1 = shared.CacheScope(r.ConversionListener.Config.Cache.Discover.CacheScope.ValueString())
+				} else {
+					cacheScope1 = nil
+				}
+				discover = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs1,
+					CacheScope: cacheScope1,
+				}
+			}
+			cache = &shared.AIGatewayMCPServerConversionListenerCache{
+				ToolsList: toolsList,
+				Discover:  discover,
+			}
+		}
+		config1 := shared.AIGatewayMCPServerKongListenerConfig{
 			Route:              route1,
 			Logging:            logging1,
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
 			Upstream:           upstream1,
+			AllowedVersions:    allowedVersions,
+			Cache:              cache,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -3330,7 +3459,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Tags:                    tags2,
 			}
 		}
-		var logging2 *shared.AIGatewayMCPServerNoUpstreamConfigLogging
+		var logging2 *shared.AIGatewayMCPServerListenerLogging
 		if r.Listener.Config.Logging != nil {
 			payloads2 := new(bool)
 			if !r.Listener.Config.Logging.Payloads.IsUnknown() && !r.Listener.Config.Logging.Payloads.IsNull() {
@@ -3344,7 +3473,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				audits2 = nil
 			}
-			logging2 = &shared.AIGatewayMCPServerNoUpstreamConfigLogging{
+			logging2 = &shared.AIGatewayMCPServerListenerLogging{
 				Payloads: payloads2,
 				Audits:   audits2,
 			}
@@ -3729,11 +3858,65 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 				Timeout:              timeout1,
 			}
 		}
-		config2 := shared.AIGatewayMCPServerNoUpstreamConfig{
+		var allowedVersions1 []shared.AIGatewayMCPServerListenerAllowedVersions
+		if r.Listener.Config.AllowedVersions != nil {
+			allowedVersions1 = make([]shared.AIGatewayMCPServerListenerAllowedVersions, 0, len(r.Listener.Config.AllowedVersions))
+			for _, allowedVersionsItem1 := range r.Listener.Config.AllowedVersions {
+				allowedVersions1 = append(allowedVersions1, shared.AIGatewayMCPServerListenerAllowedVersions(allowedVersionsItem1.ValueString()))
+			}
+		}
+		var cache1 *shared.AIGatewayMCPServerListenerCache
+		if r.Listener.Config.Cache != nil {
+			var toolsList1 *shared.AIGatewayMCPServerCacheHint
+			if r.Listener.Config.Cache.ToolsList != nil {
+				ttlMs2 := new(int64)
+				if !r.Listener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.ToolsList.TTLMs.IsNull() {
+					*ttlMs2 = r.Listener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs2 = nil
+				}
+				cacheScope2 := new(shared.CacheScope)
+				if !r.Listener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.ToolsList.CacheScope.IsNull() {
+					*cacheScope2 = shared.CacheScope(r.Listener.Config.Cache.ToolsList.CacheScope.ValueString())
+				} else {
+					cacheScope2 = nil
+				}
+				toolsList1 = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs2,
+					CacheScope: cacheScope2,
+				}
+			}
+			var discover1 *shared.AIGatewayMCPServerCacheHint
+			if r.Listener.Config.Cache.Discover != nil {
+				ttlMs3 := new(int64)
+				if !r.Listener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.Listener.Config.Cache.Discover.TTLMs.IsNull() {
+					*ttlMs3 = r.Listener.Config.Cache.Discover.TTLMs.ValueInt64()
+				} else {
+					ttlMs3 = nil
+				}
+				cacheScope3 := new(shared.CacheScope)
+				if !r.Listener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.Listener.Config.Cache.Discover.CacheScope.IsNull() {
+					*cacheScope3 = shared.CacheScope(r.Listener.Config.Cache.Discover.CacheScope.ValueString())
+				} else {
+					cacheScope3 = nil
+				}
+				discover1 = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs3,
+					CacheScope: cacheScope3,
+				}
+			}
+			cache1 = &shared.AIGatewayMCPServerListenerCache{
+				ToolsList: toolsList1,
+				Discover:  discover1,
+			}
+		}
+		config2 := shared.AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig{
 			Route:              route2,
 			Logging:            logging2,
 			MaxRequestBodySize: maxRequestBodySize2,
 			Server:             server1,
+			AllowedVersions:    allowedVersions1,
+			Cache:              cache1,
 		}
 		sources := make([]string, 0, len(r.Listener.Sources))
 		for sourcesIndex := range r.Listener.Sources {
@@ -5430,12 +5613,19 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 					}
 				}
 			}
+			upstreamProtocolVersion := new(shared.UpstreamProtocolVersion)
+			if !r.UpstreamServer.Config.Server.UpstreamProtocolVersion.IsUnknown() && !r.UpstreamServer.Config.Server.UpstreamProtocolVersion.IsNull() {
+				*upstreamProtocolVersion = shared.UpstreamProtocolVersion(r.UpstreamServer.Config.Server.UpstreamProtocolVersion.ValueString())
+			} else {
+				upstreamProtocolVersion = nil
+			}
 			server3 = &shared.AIGatewayMCPServerUpstreamServerServerConfig{
 				ForwardClientHeaders:      forwardClientHeaders3,
 				Session:                   session3,
 				Timeout:                   timeout3,
 				PreserveUpstreamToolNames: preserveUpstreamToolNames,
 				ToolsListAuth:             toolsListAuth,
+				UpstreamProtocolVersion:   upstreamProtocolVersion,
 			}
 		}
 		var url3 string
@@ -6127,7 +6317,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Tags:                    tags1,
 			}
 		}
-		var logging1 *shared.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging
+		var logging1 *shared.AIGatewayMCPServerConversionListenerLogging
 		if r.ConversionListener.Config.Logging != nil {
 			payloads1 := new(bool)
 			if !r.ConversionListener.Config.Logging.Payloads.IsUnknown() && !r.ConversionListener.Config.Logging.Payloads.IsNull() {
@@ -6141,7 +6331,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				audits1 = nil
 			}
-			logging1 = &shared.AIGatewayMCPServerWithUpstreamNoProxyConfigLogging{
+			logging1 = &shared.AIGatewayMCPServerConversionListenerLogging{
 				Payloads: payloads1,
 				Audits:   audits1,
 			}
@@ -6597,13 +6787,67 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Auth: auth1,
 			}
 		}
-		config1 := shared.AIGatewayMCPServerWithUpstreamNoProxyConfig{
+		var allowedVersions []shared.AllowedVersions
+		if r.ConversionListener.Config.AllowedVersions != nil {
+			allowedVersions = make([]shared.AllowedVersions, 0, len(r.ConversionListener.Config.AllowedVersions))
+			for _, allowedVersionsItem := range r.ConversionListener.Config.AllowedVersions {
+				allowedVersions = append(allowedVersions, shared.AllowedVersions(allowedVersionsItem.ValueString()))
+			}
+		}
+		var cache *shared.AIGatewayMCPServerConversionListenerCache
+		if r.ConversionListener.Config.Cache != nil {
+			var toolsList *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.ToolsList != nil {
+				ttlMs := new(int64)
+				if !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.TTLMs.IsNull() {
+					*ttlMs = r.ConversionListener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs = nil
+				}
+				cacheScope := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.ToolsList.CacheScope.IsNull() {
+					*cacheScope = shared.CacheScope(r.ConversionListener.Config.Cache.ToolsList.CacheScope.ValueString())
+				} else {
+					cacheScope = nil
+				}
+				toolsList = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs,
+					CacheScope: cacheScope,
+				}
+			}
+			var discover *shared.AIGatewayMCPServerCacheHint
+			if r.ConversionListener.Config.Cache.Discover != nil {
+				ttlMs1 := new(int64)
+				if !r.ConversionListener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.TTLMs.IsNull() {
+					*ttlMs1 = r.ConversionListener.Config.Cache.Discover.TTLMs.ValueInt64()
+				} else {
+					ttlMs1 = nil
+				}
+				cacheScope1 := new(shared.CacheScope)
+				if !r.ConversionListener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.ConversionListener.Config.Cache.Discover.CacheScope.IsNull() {
+					*cacheScope1 = shared.CacheScope(r.ConversionListener.Config.Cache.Discover.CacheScope.ValueString())
+				} else {
+					cacheScope1 = nil
+				}
+				discover = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs1,
+					CacheScope: cacheScope1,
+				}
+			}
+			cache = &shared.AIGatewayMCPServerConversionListenerCache{
+				ToolsList: toolsList,
+				Discover:  discover,
+			}
+		}
+		config1 := shared.AIGatewayMCPServerKongListenerConfig{
 			Route:              route1,
 			Logging:            logging1,
 			MaxRequestBodySize: maxRequestBodySize1,
 			Server:             server,
 			URL:                url1,
 			Upstream:           upstream1,
+			AllowedVersions:    allowedVersions,
+			Cache:              cache,
 		}
 		tools1 := make([]shared.AIGatewayMCPConversionTool, 0, len(r.ConversionListener.Tools))
 		for toolsIndex1 := range r.ConversionListener.Tools {
@@ -7070,7 +7314,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Tags:                    tags2,
 			}
 		}
-		var logging2 *shared.AIGatewayMCPServerNoUpstreamConfigLogging
+		var logging2 *shared.AIGatewayMCPServerListenerLogging
 		if r.Listener.Config.Logging != nil {
 			payloads2 := new(bool)
 			if !r.Listener.Config.Logging.Payloads.IsUnknown() && !r.Listener.Config.Logging.Payloads.IsNull() {
@@ -7084,7 +7328,7 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				audits2 = nil
 			}
-			logging2 = &shared.AIGatewayMCPServerNoUpstreamConfigLogging{
+			logging2 = &shared.AIGatewayMCPServerListenerLogging{
 				Payloads: payloads2,
 				Audits:   audits2,
 			}
@@ -7469,11 +7713,65 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 				Timeout:              timeout1,
 			}
 		}
-		config2 := shared.AIGatewayMCPServerNoUpstreamConfig{
+		var allowedVersions1 []shared.AIGatewayMCPServerListenerAllowedVersions
+		if r.Listener.Config.AllowedVersions != nil {
+			allowedVersions1 = make([]shared.AIGatewayMCPServerListenerAllowedVersions, 0, len(r.Listener.Config.AllowedVersions))
+			for _, allowedVersionsItem1 := range r.Listener.Config.AllowedVersions {
+				allowedVersions1 = append(allowedVersions1, shared.AIGatewayMCPServerListenerAllowedVersions(allowedVersionsItem1.ValueString()))
+			}
+		}
+		var cache1 *shared.AIGatewayMCPServerListenerCache
+		if r.Listener.Config.Cache != nil {
+			var toolsList1 *shared.AIGatewayMCPServerCacheHint
+			if r.Listener.Config.Cache.ToolsList != nil {
+				ttlMs2 := new(int64)
+				if !r.Listener.Config.Cache.ToolsList.TTLMs.IsUnknown() && !r.Listener.Config.Cache.ToolsList.TTLMs.IsNull() {
+					*ttlMs2 = r.Listener.Config.Cache.ToolsList.TTLMs.ValueInt64()
+				} else {
+					ttlMs2 = nil
+				}
+				cacheScope2 := new(shared.CacheScope)
+				if !r.Listener.Config.Cache.ToolsList.CacheScope.IsUnknown() && !r.Listener.Config.Cache.ToolsList.CacheScope.IsNull() {
+					*cacheScope2 = shared.CacheScope(r.Listener.Config.Cache.ToolsList.CacheScope.ValueString())
+				} else {
+					cacheScope2 = nil
+				}
+				toolsList1 = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs2,
+					CacheScope: cacheScope2,
+				}
+			}
+			var discover1 *shared.AIGatewayMCPServerCacheHint
+			if r.Listener.Config.Cache.Discover != nil {
+				ttlMs3 := new(int64)
+				if !r.Listener.Config.Cache.Discover.TTLMs.IsUnknown() && !r.Listener.Config.Cache.Discover.TTLMs.IsNull() {
+					*ttlMs3 = r.Listener.Config.Cache.Discover.TTLMs.ValueInt64()
+				} else {
+					ttlMs3 = nil
+				}
+				cacheScope3 := new(shared.CacheScope)
+				if !r.Listener.Config.Cache.Discover.CacheScope.IsUnknown() && !r.Listener.Config.Cache.Discover.CacheScope.IsNull() {
+					*cacheScope3 = shared.CacheScope(r.Listener.Config.Cache.Discover.CacheScope.ValueString())
+				} else {
+					cacheScope3 = nil
+				}
+				discover1 = &shared.AIGatewayMCPServerCacheHint{
+					TTLMs:      ttlMs3,
+					CacheScope: cacheScope3,
+				}
+			}
+			cache1 = &shared.AIGatewayMCPServerListenerCache{
+				ToolsList: toolsList1,
+				Discover:  discover1,
+			}
+		}
+		config2 := shared.AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig{
 			Route:              route2,
 			Logging:            logging2,
 			MaxRequestBodySize: maxRequestBodySize2,
 			Server:             server1,
+			AllowedVersions:    allowedVersions1,
+			Cache:              cache1,
 		}
 		sources := make([]string, 0, len(r.Listener.Sources))
 		for sourcesIndex := range r.Listener.Sources {
@@ -9170,12 +9468,19 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 					}
 				}
 			}
+			upstreamProtocolVersion := new(shared.UpstreamProtocolVersion)
+			if !r.UpstreamServer.Config.Server.UpstreamProtocolVersion.IsUnknown() && !r.UpstreamServer.Config.Server.UpstreamProtocolVersion.IsNull() {
+				*upstreamProtocolVersion = shared.UpstreamProtocolVersion(r.UpstreamServer.Config.Server.UpstreamProtocolVersion.ValueString())
+			} else {
+				upstreamProtocolVersion = nil
+			}
 			server3 = &shared.AIGatewayMCPServerUpstreamServerServerConfig{
 				ForwardClientHeaders:      forwardClientHeaders3,
 				Session:                   session3,
 				Timeout:                   timeout3,
 				PreserveUpstreamToolNames: preserveUpstreamToolNames,
 				ToolsListAuth:             toolsListAuth,
+				UpstreamProtocolVersion:   upstreamProtocolVersion,
 			}
 		}
 		var url3 string

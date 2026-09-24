@@ -80,8 +80,14 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 					"allow": types.ListType{
 						ElemType: types.StringType,
 					},
+					"allow_when": types.ListType{
+						ElemType: types.StringType,
+					},
 					"always_use_authenticated_groups": types.BoolType,
 					"deny": types.ListType{
+						ElemType: types.StringType,
+					},
+					"deny_when": types.ListType{
 						ElemType: types.StringType,
 					},
 					"hide_groups_header":      types.BoolType,
@@ -91,30 +97,40 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 					"allow": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `Arbitrary group names that are allowed to consume the service or route. One of ` + "`" + `config.allow` + "`" + ` or ` + "`" + `config.deny` + "`" + ` must be specified.`,
+						Description: `Arbitrary group names that are allowed to consume the service or route. Exactly one of ` + "`" + `config.allow` + "`" + `, ` + "`" + `config.deny` + "`" + `, ` + "`" + `config.allow_when` + "`" + `, or ` + "`" + `config.deny_when` + "`" + ` must be specified.`,
+					},
+					"allow_when": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `config.allow` + "`" + `, ` + "`" + `config.deny` + "`" + `, ` + "`" + `config.allow_when` + "`" + `, or ` + "`" + `config.deny_when` + "`" + ` must be specified.`,
 					},
 					"always_use_authenticated_groups": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
-						Description: `If enabled (` + "`" + `true` + "`" + `), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous. Default: false`,
+						Description: `If enabled (` + "`" + `true` + "`" + `), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous. This option is ignored when ` + "`" + `allow_when` + "`" + ` or ` + "`" + `deny_when` + "`" + ` is effective. Default: false`,
 					},
 					"deny": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `Arbitrary group names that are not allowed to consume the service or route. One of ` + "`" + `config.allow` + "`" + ` or ` + "`" + `config.deny` + "`" + ` must be specified.`,
+						Description: `Arbitrary group names that are not allowed to consume the service or route. Exactly one of ` + "`" + `config.allow` + "`" + `, ` + "`" + `config.deny` + "`" + `, ` + "`" + `config.allow_when` + "`" + `, or ` + "`" + `config.deny_when` + "`" + ` must be specified.`,
+					},
+					"deny_when": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `config.allow` + "`" + `, ` + "`" + `config.deny` + "`" + `, ` + "`" + `config.allow_when` + "`" + `, or ` + "`" + `config.deny_when` + "`" + ` must be specified.`,
 					},
 					"hide_groups_header": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
-						Description: `If enabled (` + "`" + `true` + "`" + `), prevents the ` + "`" + `X-Consumer-Groups` + "`" + ` header from being sent in the request to the upstream service. Default: false`,
+						Description: `If enabled (` + "`" + `true` + "`" + `), prevents the ` + "`" + `X-Consumer-Groups` + "`" + ` header from being sent in the request to the upstream service. This header is not set when allow_when or deny_when is used. Default: false`,
 					},
 					"include_consumer_groups": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
-						Description: `If enabled (` + "`" + `true` + "`" + `), allows the consumer-groups to be used in the ` + "`" + `allow|deny` + "`" + ` fields. Default: false`,
+						Description: `If enabled (` + "`" + `true` + "`" + `), allows the consumer-groups to be used in the ` + "`" + `allow|deny` + "`" + ` fields. This option is ignored when ` + "`" + `allow_when` + "`" + ` or ` + "`" + `deny_when` + "`" + ` is used. Default: false`,
 					},
 				},
 			},

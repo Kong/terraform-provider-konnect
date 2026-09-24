@@ -7,6 +7,7 @@ import (
 )
 
 type RateLimitingPluginConfig struct {
+	CustomKey         types.String          `tfsdk:"custom_key"`
 	Day               types.Float64         `tfsdk:"day"`
 	ErrorCode         types.Float64         `tfsdk:"error_code"`
 	ErrorMessage      types.String          `tfsdk:"error_message"`

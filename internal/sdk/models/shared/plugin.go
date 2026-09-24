@@ -29,7 +29,7 @@ func (p *PluginConsumer) GetID() *string {
 	return p.ID
 }
 
-// PluginConsumerGroup - If set, the plugin will activate only for requests where the specified group has been authenticated
+// PluginConsumerGroup - If set, the plugin will activate only for requests where the specified group has been authenticated.
 type PluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -251,7 +251,7 @@ type Plugin struct {
 	Config map[string]any `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *PluginConsumer `json:"consumer"`
-	// If set, the plugin will activate only for requests where the specified group has been authenticated
+	// If set, the plugin will activate only for requests where the specified group has been authenticated.
 	ConsumerGroup *PluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`

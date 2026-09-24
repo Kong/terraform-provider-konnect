@@ -49,8 +49,9 @@ resource "konnect_gateway_plugin_request_transformer_advanced" "my_gatewayplugin
         "..."
       ]
     }
-    dots_in_keys = true
-    http_method  = "...my_http_method..."
+    dots_in_keys          = true
+    http_method           = "...my_http_method..."
+    max_request_body_size = -1
     remove = {
       body = [
         "..."
@@ -170,6 +171,7 @@ Optional:
 - `append` (Attributes) (see [below for nested schema](#nestedatt--config--append))
 - `dots_in_keys` (Boolean) Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects. Default: true
 - `http_method` (String) A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
+- `max_request_body_size` (Number) The maximum request body size, in bytes, that the plugin reads to apply body transformations. Bodies larger than `client_body_buffer_size` are buffered by Nginx to a temporary file. `-1` (the default) disables reading such buffered bodies, so their body transformations are skipped to avoid the extra disk I/O. `0` means unlimited (still bounded by Nginx's `client_max_body_size`), and any positive value caps how much of the buffered body is read from the temporary file. Default: -1
 - `remove` (Attributes) (see [below for nested schema](#nestedatt--config--remove))
 - `rename` (Attributes) (see [below for nested schema](#nestedatt--config--rename))
 - `replace` (Attributes) (see [below for nested schema](#nestedatt--config--replace))

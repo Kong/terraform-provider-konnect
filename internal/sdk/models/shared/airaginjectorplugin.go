@@ -977,6 +977,7 @@ const (
 	AiRagInjectorPluginAuthProviderAws   AiRagInjectorPluginAuthProvider = "aws"
 	AiRagInjectorPluginAuthProviderAzure AiRagInjectorPluginAuthProvider = "azure"
 	AiRagInjectorPluginAuthProviderGcp   AiRagInjectorPluginAuthProvider = "gcp"
+	AiRagInjectorPluginAuthProviderOauth AiRagInjectorPluginAuthProvider = "oauth"
 )
 
 func (e AiRagInjectorPluginAuthProvider) ToPointer() *AiRagInjectorPluginAuthProvider {
@@ -987,11 +988,231 @@ func (e AiRagInjectorPluginAuthProvider) ToPointer() *AiRagInjectorPluginAuthPro
 func (e *AiRagInjectorPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// AiRagInjectorPluginAuthMethod - Client authentication method used against the token endpoint.
+type AiRagInjectorPluginAuthMethod string
+
+const (
+	AiRagInjectorPluginAuthMethodClientSecretBasic AiRagInjectorPluginAuthMethod = "client_secret_basic"
+	AiRagInjectorPluginAuthMethodClientSecretJwt   AiRagInjectorPluginAuthMethod = "client_secret_jwt"
+	AiRagInjectorPluginAuthMethodClientSecretPost  AiRagInjectorPluginAuthMethod = "client_secret_post"
+)
+
+func (e AiRagInjectorPluginAuthMethod) ToPointer() *AiRagInjectorPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// AiRagInjectorPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type AiRagInjectorPluginClientSecretJwtAlg string
+
+const (
+	AiRagInjectorPluginClientSecretJwtAlgHs256 AiRagInjectorPluginClientSecretJwtAlg = "HS256"
+	AiRagInjectorPluginClientSecretJwtAlgHs512 AiRagInjectorPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e AiRagInjectorPluginClientSecretJwtAlg) ToPointer() *AiRagInjectorPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// AiRagInjectorPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type AiRagInjectorPluginGrantType string
+
+const (
+	AiRagInjectorPluginGrantTypeClientCredentials AiRagInjectorPluginGrantType = "client_credentials"
+	AiRagInjectorPluginGrantTypePassword          AiRagInjectorPluginGrantType = "password"
+)
+
+func (e AiRagInjectorPluginGrantType) ToPointer() *AiRagInjectorPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// AiRagInjectorPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type AiRagInjectorPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *AiRagInjectorPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *AiRagInjectorPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *AiRagInjectorPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (a AiRagInjectorPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRagInjectorPluginOauth) GetAuthMethod() *AiRagInjectorPluginAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.AuthMethod
+}
+
+func (a *AiRagInjectorPluginOauth) GetClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientID
+}
+
+func (a *AiRagInjectorPluginOauth) GetClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecret
+}
+
+func (a *AiRagInjectorPluginOauth) GetClientSecretJwtAlg() *AiRagInjectorPluginClientSecretJwtAlg {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecretJwtAlg
+}
+
+func (a *AiRagInjectorPluginOauth) GetGrantType() *AiRagInjectorPluginGrantType {
+	if a == nil {
+		return nil
+	}
+	return a.GrantType
+}
+
+func (a *AiRagInjectorPluginOauth) GetPassword() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Password
+}
+
+func (a *AiRagInjectorPluginOauth) GetRedisUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsername
+}
+
+func (a *AiRagInjectorPluginOauth) GetRedisUsernameClaim() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsernameClaim
+}
+
+func (a *AiRagInjectorPluginOauth) GetScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Scopes
+}
+
+func (a *AiRagInjectorPluginOauth) GetSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SslVerify
+}
+
+func (a *AiRagInjectorPluginOauth) GetTimeout() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Timeout
+}
+
+func (a *AiRagInjectorPluginOauth) GetTokenEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenEndpoint
+}
+
+func (a *AiRagInjectorPluginOauth) GetTokenHeaders() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeaders
+}
+
+func (a *AiRagInjectorPluginOauth) GetTokenPostArgs() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgs
+}
+
+func (a *AiRagInjectorPluginOauth) GetUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Username
 }
 
 // AiRagInjectorPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1020,6 +1241,8 @@ type AiRagInjectorPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *AiRagInjectorPluginOauth `json:"oauth"`
 }
 
 func (a AiRagInjectorPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -1115,6 +1338,13 @@ func (a *AiRagInjectorPluginCloudAuthentication) GetGcpServiceAccountJSON() *str
 		return nil
 	}
 	return a.GcpServiceAccountJSON
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetOauth() *AiRagInjectorPluginOauth {
+	if a == nil {
+		return nil
+	}
+	return a.Oauth
 }
 
 type AiRagInjectorPluginClusterNodes struct {

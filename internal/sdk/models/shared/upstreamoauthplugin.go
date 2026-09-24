@@ -218,6 +218,7 @@ const (
 	UpstreamOauthPluginAuthProviderAws   UpstreamOauthPluginAuthProvider = "aws"
 	UpstreamOauthPluginAuthProviderAzure UpstreamOauthPluginAuthProvider = "azure"
 	UpstreamOauthPluginAuthProviderGcp   UpstreamOauthPluginAuthProvider = "gcp"
+	UpstreamOauthPluginAuthProviderOauth UpstreamOauthPluginAuthProvider = "oauth"
 )
 
 func (e UpstreamOauthPluginAuthProvider) ToPointer() *UpstreamOauthPluginAuthProvider {
@@ -228,11 +229,231 @@ func (e UpstreamOauthPluginAuthProvider) ToPointer() *UpstreamOauthPluginAuthPro
 func (e *UpstreamOauthPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// UpstreamOauthPluginAuthMethod - Client authentication method used against the token endpoint.
+type UpstreamOauthPluginAuthMethod string
+
+const (
+	UpstreamOauthPluginAuthMethodClientSecretBasic UpstreamOauthPluginAuthMethod = "client_secret_basic"
+	UpstreamOauthPluginAuthMethodClientSecretJwt   UpstreamOauthPluginAuthMethod = "client_secret_jwt"
+	UpstreamOauthPluginAuthMethodClientSecretPost  UpstreamOauthPluginAuthMethod = "client_secret_post"
+)
+
+func (e UpstreamOauthPluginAuthMethod) ToPointer() *UpstreamOauthPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// UpstreamOauthPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type UpstreamOauthPluginClientSecretJwtAlg string
+
+const (
+	UpstreamOauthPluginClientSecretJwtAlgHs256 UpstreamOauthPluginClientSecretJwtAlg = "HS256"
+	UpstreamOauthPluginClientSecretJwtAlgHs512 UpstreamOauthPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e UpstreamOauthPluginClientSecretJwtAlg) ToPointer() *UpstreamOauthPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// UpstreamOauthPluginConfigGrantType - OAuth 2.0 grant type used to request access tokens.
+type UpstreamOauthPluginConfigGrantType string
+
+const (
+	UpstreamOauthPluginConfigGrantTypeClientCredentials UpstreamOauthPluginConfigGrantType = "client_credentials"
+	UpstreamOauthPluginConfigGrantTypePassword          UpstreamOauthPluginConfigGrantType = "password"
+)
+
+func (e UpstreamOauthPluginConfigGrantType) ToPointer() *UpstreamOauthPluginConfigGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginConfigGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// UpstreamOauthPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type UpstreamOauthPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *UpstreamOauthPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *UpstreamOauthPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *UpstreamOauthPluginConfigGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (u UpstreamOauthPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpstreamOauthPluginOauth) GetAuthMethod() *UpstreamOauthPluginAuthMethod {
+	if u == nil {
+		return nil
+	}
+	return u.AuthMethod
+}
+
+func (u *UpstreamOauthPluginOauth) GetClientID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ClientID
+}
+
+func (u *UpstreamOauthPluginOauth) GetClientSecret() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ClientSecret
+}
+
+func (u *UpstreamOauthPluginOauth) GetClientSecretJwtAlg() *UpstreamOauthPluginClientSecretJwtAlg {
+	if u == nil {
+		return nil
+	}
+	return u.ClientSecretJwtAlg
+}
+
+func (u *UpstreamOauthPluginOauth) GetGrantType() *UpstreamOauthPluginConfigGrantType {
+	if u == nil {
+		return nil
+	}
+	return u.GrantType
+}
+
+func (u *UpstreamOauthPluginOauth) GetPassword() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Password
+}
+
+func (u *UpstreamOauthPluginOauth) GetRedisUsername() *string {
+	if u == nil {
+		return nil
+	}
+	return u.RedisUsername
+}
+
+func (u *UpstreamOauthPluginOauth) GetRedisUsernameClaim() *string {
+	if u == nil {
+		return nil
+	}
+	return u.RedisUsernameClaim
+}
+
+func (u *UpstreamOauthPluginOauth) GetScopes() []string {
+	if u == nil {
+		return nil
+	}
+	return u.Scopes
+}
+
+func (u *UpstreamOauthPluginOauth) GetSslVerify() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.SslVerify
+}
+
+func (u *UpstreamOauthPluginOauth) GetTimeout() *int64 {
+	if u == nil {
+		return nil
+	}
+	return u.Timeout
+}
+
+func (u *UpstreamOauthPluginOauth) GetTokenEndpoint() *string {
+	if u == nil {
+		return nil
+	}
+	return u.TokenEndpoint
+}
+
+func (u *UpstreamOauthPluginOauth) GetTokenHeaders() map[string]string {
+	if u == nil {
+		return nil
+	}
+	return u.TokenHeaders
+}
+
+func (u *UpstreamOauthPluginOauth) GetTokenPostArgs() map[string]string {
+	if u == nil {
+		return nil
+	}
+	return u.TokenPostArgs
+}
+
+func (u *UpstreamOauthPluginOauth) GetUsername() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Username
 }
 
 // UpstreamOauthPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -261,6 +482,8 @@ type UpstreamOauthPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *UpstreamOauthPluginOauth `json:"oauth"`
 }
 
 func (u UpstreamOauthPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -356,6 +579,13 @@ func (u *UpstreamOauthPluginCloudAuthentication) GetGcpServiceAccountJSON() *str
 		return nil
 	}
 	return u.GcpServiceAccountJSON
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetOauth() *UpstreamOauthPluginOauth {
+	if u == nil {
+		return nil
+	}
+	return u.Oauth
 }
 
 type UpstreamOauthPluginClusterNodes struct {
@@ -751,7 +981,7 @@ func (u *UpstreamOauthPluginCache) GetStrategy() *UpstreamOauthPluginStrategy {
 	return u.Strategy
 }
 
-// AuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+// AuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body, `private_key_jwt` to send a JWT signed with a private key, or `none` to send no client authentication.
 type AuthMethod string
 
 const (
@@ -759,6 +989,7 @@ const (
 	AuthMethodClientSecretJwt   AuthMethod = "client_secret_jwt"
 	AuthMethodClientSecretPost  AuthMethod = "client_secret_post"
 	AuthMethodNone              AuthMethod = "none"
+	AuthMethodPrivateKeyJwt     AuthMethod = "private_key_jwt"
 )
 
 func (e AuthMethod) ToPointer() *AuthMethod {
@@ -769,7 +1000,7 @@ func (e AuthMethod) ToPointer() *AuthMethod {
 func (e *AuthMethod) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt":
 			return true
 		}
 	}
@@ -799,8 +1030,82 @@ func (e *ClientSecretJwtAlg) IsExact() bool {
 	return false
 }
 
+// PrivateKeyJwtAlg - The algorithm to use when signing the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`.
+type PrivateKeyJwtAlg string
+
+const (
+	PrivateKeyJwtAlgEs256   PrivateKeyJwtAlg = "ES256"
+	PrivateKeyJwtAlgEs256K  PrivateKeyJwtAlg = "ES256K"
+	PrivateKeyJwtAlgEs384   PrivateKeyJwtAlg = "ES384"
+	PrivateKeyJwtAlgEs512   PrivateKeyJwtAlg = "ES512"
+	PrivateKeyJwtAlgEsb256  PrivateKeyJwtAlg = "ESB256"
+	PrivateKeyJwtAlgEsb320  PrivateKeyJwtAlg = "ESB320"
+	PrivateKeyJwtAlgEsb384  PrivateKeyJwtAlg = "ESB384"
+	PrivateKeyJwtAlgEsb512  PrivateKeyJwtAlg = "ESB512"
+	PrivateKeyJwtAlgEsp256  PrivateKeyJwtAlg = "ESP256"
+	PrivateKeyJwtAlgEsp384  PrivateKeyJwtAlg = "ESP384"
+	PrivateKeyJwtAlgEsp512  PrivateKeyJwtAlg = "ESP512"
+	PrivateKeyJwtAlgEd25519 PrivateKeyJwtAlg = "Ed25519"
+	PrivateKeyJwtAlgEd448   PrivateKeyJwtAlg = "Ed448"
+	PrivateKeyJwtAlgEdDsa   PrivateKeyJwtAlg = "EdDSA"
+	PrivateKeyJwtAlgPs256   PrivateKeyJwtAlg = "PS256"
+	PrivateKeyJwtAlgPs384   PrivateKeyJwtAlg = "PS384"
+	PrivateKeyJwtAlgPs512   PrivateKeyJwtAlg = "PS512"
+	PrivateKeyJwtAlgRs256   PrivateKeyJwtAlg = "RS256"
+	PrivateKeyJwtAlgRs384   PrivateKeyJwtAlg = "RS384"
+	PrivateKeyJwtAlgRs512   PrivateKeyJwtAlg = "RS512"
+)
+
+func (e PrivateKeyJwtAlg) ToPointer() *PrivateKeyJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PrivateKeyJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
+	}
+	return false
+}
+
+// PrivateKeyJwtKey - The Kong Keys entity reference used to sign the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`.
+type PrivateKeyJwtKey struct {
+	// The Key ID. This maps to the `kid` field of the Kong Keys entity and is used as the JWT header `kid`.
+	KeyID string `json:"key_id"`
+	// The optional name of the Kong Key Set used to scope the key lookup.
+	KeySet *string `default:"null" json:"key_set"`
+}
+
+func (p PrivateKeyJwtKey) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PrivateKeyJwtKey) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"key_id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PrivateKeyJwtKey) GetKeyID() string {
+	if p == nil {
+		return ""
+	}
+	return p.KeyID
+}
+
+func (p *PrivateKeyJwtKey) GetKeySet() *string {
+	if p == nil {
+		return nil
+	}
+	return p.KeySet
+}
+
 type UpstreamOauthPluginClient struct {
-	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body, `private_key_jwt` to send a JWT signed with a private key, or `none` to send no client authentication.
 	AuthMethod *AuthMethod `default:"client_secret_post" json:"auth_method"`
 	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
 	ClientSecretJwtAlg *ClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
@@ -818,6 +1123,12 @@ type UpstreamOauthPluginClient struct {
 	KeepAlive *bool `default:"true" json:"keep_alive"`
 	// A comma-separated list of hosts that should not be proxied.
 	NoProxy *string `default:"null" json:"no_proxy"`
+	// The algorithm to use when signing the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`.
+	PrivateKeyJwtAlg *PrivateKeyJwtAlg `default:"RS256" json:"private_key_jwt_alg"`
+	// Whether to include the configured Key ID as the `kid` header in the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`.
+	PrivateKeyJwtIncludeKid *bool `default:"true" json:"private_key_jwt_include_kid"`
+	// The Kong Keys entity reference used to sign the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`.
+	PrivateKeyJwtKey *PrivateKeyJwtKey `json:"private_key_jwt_key"`
 	// Whether to verify the certificate presented by the IdP when using HTTPS.
 	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Network I/O timeout for requests to the IdP in milliseconds.
@@ -896,6 +1207,27 @@ func (u *UpstreamOauthPluginClient) GetNoProxy() *string {
 		return nil
 	}
 	return u.NoProxy
+}
+
+func (u *UpstreamOauthPluginClient) GetPrivateKeyJwtAlg() *PrivateKeyJwtAlg {
+	if u == nil {
+		return nil
+	}
+	return u.PrivateKeyJwtAlg
+}
+
+func (u *UpstreamOauthPluginClient) GetPrivateKeyJwtIncludeKid() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.PrivateKeyJwtIncludeKid
+}
+
+func (u *UpstreamOauthPluginClient) GetPrivateKeyJwtKey() *PrivateKeyJwtKey {
+	if u == nil {
+		return nil
+	}
+	return u.PrivateKeyJwtKey
 }
 
 func (u *UpstreamOauthPluginClient) GetSslVerify() *bool {

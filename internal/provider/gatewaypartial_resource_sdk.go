@@ -305,7 +305,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialRedisCe.Config.CloudAuthentication == nil {
 				r.RedisCe.Config.CloudAuthentication = nil
 			} else {
-				r.RedisCe.Config.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+				r.RedisCe.Config.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
 				if resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider != nil {
 					r.RedisCe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider))
 				} else {
@@ -322,6 +322,51 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.RedisCe.Config.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AzureClientSecret)
 				r.RedisCe.Config.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AzureTenantID)
 				r.RedisCe.Config.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.GcpServiceAccountJSON)
+				if resp.PartialRedisCe.Config.CloudAuthentication.Oauth == nil {
+					r.RedisCe.Config.CloudAuthentication.Oauth = nil
+				} else {
+					r.RedisCe.Config.CloudAuthentication.Oauth = &tfTypes.PartialRedisCeOauth{}
+					if resp.PartialRedisCe.Config.CloudAuthentication.Oauth.AuthMethod != nil {
+						r.RedisCe.Config.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.PartialRedisCe.Config.CloudAuthentication.Oauth.AuthMethod))
+					} else {
+						r.RedisCe.Config.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+					}
+					r.RedisCe.Config.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.ClientID)
+					r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.ClientSecret)
+					if resp.PartialRedisCe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+						r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.PartialRedisCe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+					} else {
+						r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+					}
+					if resp.PartialRedisCe.Config.CloudAuthentication.Oauth.GrantType != nil {
+						r.RedisCe.Config.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.PartialRedisCe.Config.CloudAuthentication.Oauth.GrantType))
+					} else {
+						r.RedisCe.Config.CloudAuthentication.Oauth.GrantType = types.StringNull()
+					}
+					r.RedisCe.Config.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.Password)
+					r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.RedisUsername)
+					r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.RedisUsernameClaim)
+					r.RedisCe.Config.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.Scopes))
+					for _, v := range resp.PartialRedisCe.Config.CloudAuthentication.Oauth.Scopes {
+						r.RedisCe.Config.CloudAuthentication.Oauth.Scopes = append(r.RedisCe.Config.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+					}
+					r.RedisCe.Config.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.SslVerify)
+					r.RedisCe.Config.CloudAuthentication.Oauth.Timeout = types.Float64PointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.Timeout)
+					r.RedisCe.Config.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.TokenEndpoint)
+					if resp.PartialRedisCe.Config.CloudAuthentication.Oauth.TokenHeaders != nil {
+						r.RedisCe.Config.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.TokenHeaders))
+						for key, value := range resp.PartialRedisCe.Config.CloudAuthentication.Oauth.TokenHeaders {
+							r.RedisCe.Config.CloudAuthentication.Oauth.TokenHeaders[key] = types.StringValue(value)
+						}
+					}
+					if resp.PartialRedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs != nil {
+						r.RedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs))
+						for key1, value1 := range resp.PartialRedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs {
+							r.RedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs[key1] = types.StringValue(value1)
+						}
+					}
+					r.RedisCe.Config.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.Oauth.Username)
+				}
 			}
 			r.RedisCe.Config.Database = types.Int64PointerValue(resp.PartialRedisCe.Config.Database)
 			r.RedisCe.Config.Host = types.StringPointerValue(resp.PartialRedisCe.Config.Host)
@@ -355,7 +400,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialRedisEe.Config.CloudAuthentication == nil {
 				r.RedisEe.Config.CloudAuthentication = nil
 			} else {
-				r.RedisEe.Config.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+				r.RedisEe.Config.CloudAuthentication = &tfTypes.PartialRedisEeCloudAuthentication{}
 				if resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider != nil {
 					r.RedisEe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider))
 				} else {
@@ -372,6 +417,51 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.RedisEe.Config.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AzureClientSecret)
 				r.RedisEe.Config.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AzureTenantID)
 				r.RedisEe.Config.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.GcpServiceAccountJSON)
+				if resp.PartialRedisEe.Config.CloudAuthentication.Oauth == nil {
+					r.RedisEe.Config.CloudAuthentication.Oauth = nil
+				} else {
+					r.RedisEe.Config.CloudAuthentication.Oauth = &tfTypes.PartialRedisEeOauth{}
+					if resp.PartialRedisEe.Config.CloudAuthentication.Oauth.AuthMethod != nil {
+						r.RedisEe.Config.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.PartialRedisEe.Config.CloudAuthentication.Oauth.AuthMethod))
+					} else {
+						r.RedisEe.Config.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+					}
+					r.RedisEe.Config.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.ClientID)
+					r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.ClientSecret)
+					if resp.PartialRedisEe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+						r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.PartialRedisEe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+					} else {
+						r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+					}
+					if resp.PartialRedisEe.Config.CloudAuthentication.Oauth.GrantType != nil {
+						r.RedisEe.Config.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.PartialRedisEe.Config.CloudAuthentication.Oauth.GrantType))
+					} else {
+						r.RedisEe.Config.CloudAuthentication.Oauth.GrantType = types.StringNull()
+					}
+					r.RedisEe.Config.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.Password)
+					r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.RedisUsername)
+					r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.RedisUsernameClaim)
+					r.RedisEe.Config.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.Scopes))
+					for _, v := range resp.PartialRedisEe.Config.CloudAuthentication.Oauth.Scopes {
+						r.RedisEe.Config.CloudAuthentication.Oauth.Scopes = append(r.RedisEe.Config.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+					}
+					r.RedisEe.Config.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.SslVerify)
+					r.RedisEe.Config.CloudAuthentication.Oauth.Timeout = types.Int64PointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.Timeout)
+					r.RedisEe.Config.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.TokenEndpoint)
+					if resp.PartialRedisEe.Config.CloudAuthentication.Oauth.TokenHeaders != nil {
+						r.RedisEe.Config.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.TokenHeaders))
+						for key2, value2 := range resp.PartialRedisEe.Config.CloudAuthentication.Oauth.TokenHeaders {
+							r.RedisEe.Config.CloudAuthentication.Oauth.TokenHeaders[key2] = types.StringValue(value2)
+						}
+					}
+					if resp.PartialRedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs != nil {
+						r.RedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs))
+						for key3, value3 := range resp.PartialRedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs {
+							r.RedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs[key3] = types.StringValue(value3)
+						}
+					}
+					r.RedisEe.Config.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.Oauth.Username)
+				}
 			}
 			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEe.Config.ClusterMaxRedirections)
 			if resp.PartialRedisEe.Config.ClusterNodes != nil {
@@ -470,11 +560,11 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			if resp.PartialVectordb.Config.Redis == nil {
 				r.Vectordb.Config.Redis = nil
 			} else {
-				r.Vectordb.Config.Redis = &tfTypes.ClusterCacheRedis{}
+				r.Vectordb.Config.Redis = &tfTypes.PartialVectordbRedis{}
 				if resp.PartialVectordb.Config.Redis.CloudAuthentication == nil {
 					r.Vectordb.Config.Redis.CloudAuthentication = nil
 				} else {
-					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisEeCloudAuthentication{}
 					if resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Vectordb.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -491,6 +581,51 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 					r.Vectordb.Config.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.AzureClientSecret)
 					r.Vectordb.Config.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.AzureTenantID)
 					r.Vectordb.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
+					if resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth == nil {
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth = nil
+					} else {
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth = &tfTypes.PartialRedisEeOauth{}
+						if resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.AuthMethod != nil {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.AuthMethod))
+						} else {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+						}
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.ClientID)
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecret)
+						if resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+						} else {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+						}
+						if resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.GrantType != nil {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.GrantType))
+						} else {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.GrantType = types.StringNull()
+						}
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.Password)
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsername)
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim)
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.Scopes))
+						for _, v := range resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.Scopes {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Scopes = append(r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+						}
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.SslVerify)
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Timeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.Timeout)
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint)
+						if resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders))
+							for key4, value4 := range resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders {
+								r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders[key4] = types.StringValue(value4)
+							}
+						}
+						if resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+							r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs))
+							for key5, value5 := range resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+								r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs[key5] = types.StringValue(value5)
+							}
+						}
+						r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.Oauth.Username)
+					}
 				}
 				r.Vectordb.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ClusterMaxRedirections)
 				if resp.PartialVectordb.Config.Redis.ClusterNodes != nil {
@@ -728,6 +863,122 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				gcpServiceAccountJSON = nil
 			}
+			var oauth *shared.PartialRedisCeOauth
+			if r.RedisCe.Config.CloudAuthentication.Oauth != nil {
+				authMethod := new(shared.PartialRedisCeAuthMethod)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+					*authMethod = shared.PartialRedisCeAuthMethod(r.RedisCe.Config.CloudAuthentication.Oauth.AuthMethod.ValueString())
+				} else {
+					authMethod = nil
+				}
+				clientID := new(string)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.ClientID.IsNull() {
+					*clientID = r.RedisCe.Config.CloudAuthentication.Oauth.ClientID.ValueString()
+				} else {
+					clientID = nil
+				}
+				clientSecret := new(string)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+					*clientSecret = r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecret.ValueString()
+				} else {
+					clientSecret = nil
+				}
+				clientSecretJwtAlg := new(shared.PartialRedisCeClientSecretJwtAlg)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+					*clientSecretJwtAlg = shared.PartialRedisCeClientSecretJwtAlg(r.RedisCe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+				} else {
+					clientSecretJwtAlg = nil
+				}
+				grantType := new(shared.PartialRedisCeGrantType)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.GrantType.IsNull() {
+					*grantType = shared.PartialRedisCeGrantType(r.RedisCe.Config.CloudAuthentication.Oauth.GrantType.ValueString())
+				} else {
+					grantType = nil
+				}
+				password := new(string)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.Password.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.Password.IsNull() {
+					*password = r.RedisCe.Config.CloudAuthentication.Oauth.Password.ValueString()
+				} else {
+					password = nil
+				}
+				redisUsername := new(string)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+					*redisUsername = r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsername.ValueString()
+				} else {
+					redisUsername = nil
+				}
+				redisUsernameClaim := new(string)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+					*redisUsernameClaim = r.RedisCe.Config.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+				} else {
+					redisUsernameClaim = nil
+				}
+				scopes := make([]string, 0, len(r.RedisCe.Config.CloudAuthentication.Oauth.Scopes))
+				for scopesIndex := range r.RedisCe.Config.CloudAuthentication.Oauth.Scopes {
+					scopes = append(scopes, r.RedisCe.Config.CloudAuthentication.Oauth.Scopes[scopesIndex].ValueString())
+				}
+				sslVerify := new(bool)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.SslVerify.IsNull() {
+					*sslVerify = r.RedisCe.Config.CloudAuthentication.Oauth.SslVerify.ValueBool()
+				} else {
+					sslVerify = nil
+				}
+				timeout := new(float64)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.Timeout.IsNull() {
+					*timeout = r.RedisCe.Config.CloudAuthentication.Oauth.Timeout.ValueFloat64()
+				} else {
+					timeout = nil
+				}
+				tokenEndpoint := new(string)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+					*tokenEndpoint = r.RedisCe.Config.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+				} else {
+					tokenEndpoint = nil
+				}
+				var tokenHeaders map[string]string
+				if r.RedisCe.Config.CloudAuthentication.Oauth.TokenHeaders != nil {
+					tokenHeaders = make(map[string]string)
+					for tokenHeadersKey := range r.RedisCe.Config.CloudAuthentication.Oauth.TokenHeaders {
+						var tokenHeadersInst string
+						tokenHeadersInst = r.RedisCe.Config.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey].ValueString()
+
+						tokenHeaders[tokenHeadersKey] = tokenHeadersInst
+					}
+				}
+				var tokenPostArgs map[string]string
+				if r.RedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs != nil {
+					tokenPostArgs = make(map[string]string)
+					for tokenPostArgsKey := range r.RedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs {
+						var tokenPostArgsInst string
+						tokenPostArgsInst = r.RedisCe.Config.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey].ValueString()
+
+						tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
+					}
+				}
+				username := new(string)
+				if !r.RedisCe.Config.CloudAuthentication.Oauth.Username.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.Oauth.Username.IsNull() {
+					*username = r.RedisCe.Config.CloudAuthentication.Oauth.Username.ValueString()
+				} else {
+					username = nil
+				}
+				oauth = &shared.PartialRedisCeOauth{
+					AuthMethod:         authMethod,
+					ClientID:           clientID,
+					ClientSecret:       clientSecret,
+					ClientSecretJwtAlg: clientSecretJwtAlg,
+					GrantType:          grantType,
+					Password:           password,
+					RedisUsername:      redisUsername,
+					RedisUsernameClaim: redisUsernameClaim,
+					Scopes:             scopes,
+					SslVerify:          sslVerify,
+					Timeout:            timeout,
+					TokenEndpoint:      tokenEndpoint,
+					TokenHeaders:       tokenHeaders,
+					TokenPostArgs:      tokenPostArgs,
+					Username:           username,
+				}
+			}
 			cloudAuthentication = &shared.PartialRedisCeCloudAuthentication{
 				AuthProvider:          authProvider,
 				AwsAccessKeyID:        awsAccessKeyID,
@@ -741,6 +992,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				AzureClientSecret:     azureClientSecret,
 				AzureTenantID:         azureTenantID,
 				GcpServiceAccountJSON: gcpServiceAccountJSON,
+				Oauth:                 oauth,
 			}
 		}
 		database := new(int64)
@@ -755,11 +1007,11 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			host = nil
 		}
-		password := new(string)
+		password1 := new(string)
 		if !r.RedisCe.Config.Password.IsUnknown() && !r.RedisCe.Config.Password.IsNull() {
-			*password = r.RedisCe.Config.Password.ValueString()
+			*password1 = r.RedisCe.Config.Password.ValueString()
 		} else {
-			password = nil
+			password1 = nil
 		}
 		port := new(string)
 		if !r.RedisCe.Config.Port.IsUnknown() && !r.RedisCe.Config.Port.IsNull() {
@@ -779,35 +1031,35 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			ssl = nil
 		}
-		sslVerify := new(bool)
+		sslVerify1 := new(bool)
 		if !r.RedisCe.Config.SslVerify.IsUnknown() && !r.RedisCe.Config.SslVerify.IsNull() {
-			*sslVerify = r.RedisCe.Config.SslVerify.ValueBool()
+			*sslVerify1 = r.RedisCe.Config.SslVerify.ValueBool()
 		} else {
-			sslVerify = nil
+			sslVerify1 = nil
 		}
-		timeout := new(int64)
+		timeout1 := new(int64)
 		if !r.RedisCe.Config.Timeout.IsUnknown() && !r.RedisCe.Config.Timeout.IsNull() {
-			*timeout = r.RedisCe.Config.Timeout.ValueInt64()
+			*timeout1 = r.RedisCe.Config.Timeout.ValueInt64()
 		} else {
-			timeout = nil
+			timeout1 = nil
 		}
-		username := new(string)
+		username1 := new(string)
 		if !r.RedisCe.Config.Username.IsUnknown() && !r.RedisCe.Config.Username.IsNull() {
-			*username = r.RedisCe.Config.Username.ValueString()
+			*username1 = r.RedisCe.Config.Username.ValueString()
 		} else {
-			username = nil
+			username1 = nil
 		}
 		config := shared.PartialRedisCeConfig{
 			CloudAuthentication: cloudAuthentication,
 			Database:            database,
 			Host:                host,
-			Password:            password,
+			Password:            password1,
 			Port:                port,
 			ServerName:          serverName,
 			Ssl:                 ssl,
-			SslVerify:           sslVerify,
-			Timeout:             timeout,
-			Username:            username,
+			SslVerify:           sslVerify1,
+			Timeout:             timeout1,
+			Username:            username1,
 		}
 		createdAt := new(int64)
 		if !r.RedisCe.CreatedAt.IsUnknown() && !r.RedisCe.CreatedAt.IsNull() {
@@ -930,6 +1182,122 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				gcpServiceAccountJson1 = nil
 			}
+			var oauth1 *shared.PartialRedisEeOauth
+			if r.RedisEe.Config.CloudAuthentication.Oauth != nil {
+				authMethod1 := new(shared.PartialRedisEeAuthMethod)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+					*authMethod1 = shared.PartialRedisEeAuthMethod(r.RedisEe.Config.CloudAuthentication.Oauth.AuthMethod.ValueString())
+				} else {
+					authMethod1 = nil
+				}
+				clientId1 := new(string)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.ClientID.IsNull() {
+					*clientId1 = r.RedisEe.Config.CloudAuthentication.Oauth.ClientID.ValueString()
+				} else {
+					clientId1 = nil
+				}
+				clientSecret1 := new(string)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+					*clientSecret1 = r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecret.ValueString()
+				} else {
+					clientSecret1 = nil
+				}
+				clientSecretJwtAlg1 := new(shared.PartialRedisEeClientSecretJwtAlg)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+					*clientSecretJwtAlg1 = shared.PartialRedisEeClientSecretJwtAlg(r.RedisEe.Config.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+				} else {
+					clientSecretJwtAlg1 = nil
+				}
+				grantType1 := new(shared.PartialRedisEeGrantType)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.GrantType.IsNull() {
+					*grantType1 = shared.PartialRedisEeGrantType(r.RedisEe.Config.CloudAuthentication.Oauth.GrantType.ValueString())
+				} else {
+					grantType1 = nil
+				}
+				password2 := new(string)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.Password.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.Password.IsNull() {
+					*password2 = r.RedisEe.Config.CloudAuthentication.Oauth.Password.ValueString()
+				} else {
+					password2 = nil
+				}
+				redisUsername1 := new(string)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+					*redisUsername1 = r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsername.ValueString()
+				} else {
+					redisUsername1 = nil
+				}
+				redisUsernameClaim1 := new(string)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+					*redisUsernameClaim1 = r.RedisEe.Config.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+				} else {
+					redisUsernameClaim1 = nil
+				}
+				scopes1 := make([]string, 0, len(r.RedisEe.Config.CloudAuthentication.Oauth.Scopes))
+				for scopesIndex1 := range r.RedisEe.Config.CloudAuthentication.Oauth.Scopes {
+					scopes1 = append(scopes1, r.RedisEe.Config.CloudAuthentication.Oauth.Scopes[scopesIndex1].ValueString())
+				}
+				sslVerify2 := new(bool)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.SslVerify.IsNull() {
+					*sslVerify2 = r.RedisEe.Config.CloudAuthentication.Oauth.SslVerify.ValueBool()
+				} else {
+					sslVerify2 = nil
+				}
+				timeout2 := new(int64)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.Timeout.IsNull() {
+					*timeout2 = r.RedisEe.Config.CloudAuthentication.Oauth.Timeout.ValueInt64()
+				} else {
+					timeout2 = nil
+				}
+				tokenEndpoint1 := new(string)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+					*tokenEndpoint1 = r.RedisEe.Config.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+				} else {
+					tokenEndpoint1 = nil
+				}
+				var tokenHeaders1 map[string]string
+				if r.RedisEe.Config.CloudAuthentication.Oauth.TokenHeaders != nil {
+					tokenHeaders1 = make(map[string]string)
+					for tokenHeadersKey1 := range r.RedisEe.Config.CloudAuthentication.Oauth.TokenHeaders {
+						var tokenHeadersInst1 string
+						tokenHeadersInst1 = r.RedisEe.Config.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey1].ValueString()
+
+						tokenHeaders1[tokenHeadersKey1] = tokenHeadersInst1
+					}
+				}
+				var tokenPostArgs1 map[string]string
+				if r.RedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs != nil {
+					tokenPostArgs1 = make(map[string]string)
+					for tokenPostArgsKey1 := range r.RedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs {
+						var tokenPostArgsInst1 string
+						tokenPostArgsInst1 = r.RedisEe.Config.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey1].ValueString()
+
+						tokenPostArgs1[tokenPostArgsKey1] = tokenPostArgsInst1
+					}
+				}
+				username2 := new(string)
+				if !r.RedisEe.Config.CloudAuthentication.Oauth.Username.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.Oauth.Username.IsNull() {
+					*username2 = r.RedisEe.Config.CloudAuthentication.Oauth.Username.ValueString()
+				} else {
+					username2 = nil
+				}
+				oauth1 = &shared.PartialRedisEeOauth{
+					AuthMethod:         authMethod1,
+					ClientID:           clientId1,
+					ClientSecret:       clientSecret1,
+					ClientSecretJwtAlg: clientSecretJwtAlg1,
+					GrantType:          grantType1,
+					Password:           password2,
+					RedisUsername:      redisUsername1,
+					RedisUsernameClaim: redisUsernameClaim1,
+					Scopes:             scopes1,
+					SslVerify:          sslVerify2,
+					Timeout:            timeout2,
+					TokenEndpoint:      tokenEndpoint1,
+					TokenHeaders:       tokenHeaders1,
+					TokenPostArgs:      tokenPostArgs1,
+					Username:           username2,
+				}
+			}
 			cloudAuthentication1 = &shared.PartialRedisEeCloudAuthentication{
 				AuthProvider:          authProvider1,
 				AwsAccessKeyID:        awsAccessKeyId1,
@@ -943,6 +1311,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				AzureClientSecret:     azureClientSecret1,
 				AzureTenantID:         azureTenantId1,
 				GcpServiceAccountJSON: gcpServiceAccountJson1,
+				Oauth:                 oauth1,
 			}
 		}
 		clusterMaxRedirections := new(int64)
@@ -1009,11 +1378,11 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			keepalivePoolSize = nil
 		}
-		password1 := new(string)
+		password3 := new(string)
 		if !r.RedisEe.Config.Password.IsUnknown() && !r.RedisEe.Config.Password.IsNull() {
-			*password1 = r.RedisEe.Config.Password.ValueString()
+			*password3 = r.RedisEe.Config.Password.ValueString()
 		} else {
-			password1 = nil
+			password3 = nil
 		}
 		port2 := new(string)
 		if !r.RedisEe.Config.Port.IsUnknown() && !r.RedisEe.Config.Port.IsNull() {
@@ -1091,17 +1460,17 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			ssl1 = nil
 		}
-		sslVerify1 := new(bool)
+		sslVerify3 := new(bool)
 		if !r.RedisEe.Config.SslVerify.IsUnknown() && !r.RedisEe.Config.SslVerify.IsNull() {
-			*sslVerify1 = r.RedisEe.Config.SslVerify.ValueBool()
+			*sslVerify3 = r.RedisEe.Config.SslVerify.ValueBool()
 		} else {
-			sslVerify1 = nil
+			sslVerify3 = nil
 		}
-		username1 := new(string)
+		username3 := new(string)
 		if !r.RedisEe.Config.Username.IsUnknown() && !r.RedisEe.Config.Username.IsNull() {
-			*username1 = r.RedisEe.Config.Username.ValueString()
+			*username3 = r.RedisEe.Config.Username.ValueString()
 		} else {
-			username1 = nil
+			username3 = nil
 		}
 		config1 := shared.PartialRedisEeConfig{
 			CloudAuthentication:    cloudAuthentication1,
@@ -1113,7 +1482,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			Host:                   host1,
 			KeepaliveBacklog:       keepaliveBacklog,
 			KeepalivePoolSize:      keepalivePoolSize,
-			Password:               password1,
+			Password:               password3,
 			Port:                   port2,
 			ReadTimeout:            readTimeout,
 			SendTimeout:            sendTimeout,
@@ -1124,8 +1493,8 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			SentinelUsername:       sentinelUsername,
 			ServerName:             serverName1,
 			Ssl:                    ssl1,
-			SslVerify:              sslVerify1,
-			Username:               username1,
+			SslVerify:              sslVerify3,
+			Username:               username3,
 		}
 		createdAt1 := new(int64)
 		if !r.RedisEe.CreatedAt.IsUnknown() && !r.RedisEe.CreatedAt.IsNull() {
@@ -1192,11 +1561,11 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				host3 = nil
 			}
-			password2 := new(string)
+			password4 := new(string)
 			if !r.Vectordb.Config.Pgvector.Password.IsUnknown() && !r.Vectordb.Config.Pgvector.Password.IsNull() {
-				*password2 = r.Vectordb.Config.Pgvector.Password.ValueString()
+				*password4 = r.Vectordb.Config.Pgvector.Password.ValueString()
 			} else {
-				password2 = nil
+				password4 = nil
 			}
 			port4 := new(int64)
 			if !r.Vectordb.Config.Pgvector.Port.IsUnknown() && !r.Vectordb.Config.Pgvector.Port.IsNull() {
@@ -1228,11 +1597,11 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				sslRequired = nil
 			}
-			sslVerify2 := new(bool)
+			sslVerify4 := new(bool)
 			if !r.Vectordb.Config.Pgvector.SslVerify.IsUnknown() && !r.Vectordb.Config.Pgvector.SslVerify.IsNull() {
-				*sslVerify2 = r.Vectordb.Config.Pgvector.SslVerify.ValueBool()
+				*sslVerify4 = r.Vectordb.Config.Pgvector.SslVerify.ValueBool()
 			} else {
-				sslVerify2 = nil
+				sslVerify4 = nil
 			}
 			sslVersion := new(shared.PartialVectordbSslVersion)
 			if !r.Vectordb.Config.Pgvector.SslVersion.IsUnknown() && !r.Vectordb.Config.Pgvector.SslVersion.IsNull() {
@@ -1240,11 +1609,11 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				sslVersion = nil
 			}
-			timeout1 := new(float64)
+			timeout3 := new(float64)
 			if !r.Vectordb.Config.Pgvector.Timeout.IsUnknown() && !r.Vectordb.Config.Pgvector.Timeout.IsNull() {
-				*timeout1 = r.Vectordb.Config.Pgvector.Timeout.ValueFloat64()
+				*timeout3 = r.Vectordb.Config.Pgvector.Timeout.ValueFloat64()
 			} else {
-				timeout1 = nil
+				timeout3 = nil
 			}
 			user := new(string)
 			if !r.Vectordb.Config.Pgvector.User.IsUnknown() && !r.Vectordb.Config.Pgvector.User.IsNull() {
@@ -1255,15 +1624,15 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			pgvector = &shared.PartialVectordbPgvector{
 				Database:    database2,
 				Host:        host3,
-				Password:    password2,
+				Password:    password4,
 				Port:        port4,
 				Ssl:         ssl2,
 				SslCert:     sslCert,
 				SslCertKey:  sslCertKey,
 				SslRequired: sslRequired,
-				SslVerify:   sslVerify2,
+				SslVerify:   sslVerify4,
 				SslVersion:  sslVersion,
-				Timeout:     timeout1,
+				Timeout:     timeout3,
 				User:        user,
 			}
 		}
@@ -1343,6 +1712,122 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				} else {
 					gcpServiceAccountJson2 = nil
 				}
+				var oauth2 *shared.PartialVectordbOauth
+				if r.Vectordb.Config.Redis.CloudAuthentication.Oauth != nil {
+					authMethod2 := new(shared.PartialVectordbAuthMethod)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+						*authMethod2 = shared.PartialVectordbAuthMethod(r.Vectordb.Config.Redis.CloudAuthentication.Oauth.AuthMethod.ValueString())
+					} else {
+						authMethod2 = nil
+					}
+					clientId2 := new(string)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientID.IsNull() {
+						*clientId2 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientID.ValueString()
+					} else {
+						clientId2 = nil
+					}
+					clientSecret2 := new(string)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+						*clientSecret2 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecret.ValueString()
+					} else {
+						clientSecret2 = nil
+					}
+					clientSecretJwtAlg2 := new(shared.PartialVectordbClientSecretJwtAlg)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+						*clientSecretJwtAlg2 = shared.PartialVectordbClientSecretJwtAlg(r.Vectordb.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+					} else {
+						clientSecretJwtAlg2 = nil
+					}
+					grantType2 := new(shared.PartialVectordbGrantType)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.GrantType.IsNull() {
+						*grantType2 = shared.PartialVectordbGrantType(r.Vectordb.Config.Redis.CloudAuthentication.Oauth.GrantType.ValueString())
+					} else {
+						grantType2 = nil
+					}
+					password5 := new(string)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Password.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Password.IsNull() {
+						*password5 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Password.ValueString()
+					} else {
+						password5 = nil
+					}
+					redisUsername2 := new(string)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+						*redisUsername2 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsername.ValueString()
+					} else {
+						redisUsername2 = nil
+					}
+					redisUsernameClaim2 := new(string)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+						*redisUsernameClaim2 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+					} else {
+						redisUsernameClaim2 = nil
+					}
+					scopes2 := make([]string, 0, len(r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Scopes))
+					for scopesIndex2 := range r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Scopes {
+						scopes2 = append(scopes2, r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Scopes[scopesIndex2].ValueString())
+					}
+					sslVerify5 := new(bool)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.SslVerify.IsNull() {
+						*sslVerify5 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.SslVerify.ValueBool()
+					} else {
+						sslVerify5 = nil
+					}
+					timeout4 := new(int64)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Timeout.IsNull() {
+						*timeout4 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Timeout.ValueInt64()
+					} else {
+						timeout4 = nil
+					}
+					tokenEndpoint2 := new(string)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+						*tokenEndpoint2 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+					} else {
+						tokenEndpoint2 = nil
+					}
+					var tokenHeaders2 map[string]string
+					if r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+						tokenHeaders2 = make(map[string]string)
+						for tokenHeadersKey2 := range r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders {
+							var tokenHeadersInst2 string
+							tokenHeadersInst2 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey2].ValueString()
+
+							tokenHeaders2[tokenHeadersKey2] = tokenHeadersInst2
+						}
+					}
+					var tokenPostArgs2 map[string]string
+					if r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+						tokenPostArgs2 = make(map[string]string)
+						for tokenPostArgsKey2 := range r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+							var tokenPostArgsInst2 string
+							tokenPostArgsInst2 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey2].ValueString()
+
+							tokenPostArgs2[tokenPostArgsKey2] = tokenPostArgsInst2
+						}
+					}
+					username4 := new(string)
+					if !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Username.IsUnknown() && !r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Username.IsNull() {
+						*username4 = r.Vectordb.Config.Redis.CloudAuthentication.Oauth.Username.ValueString()
+					} else {
+						username4 = nil
+					}
+					oauth2 = &shared.PartialVectordbOauth{
+						AuthMethod:         authMethod2,
+						ClientID:           clientId2,
+						ClientSecret:       clientSecret2,
+						ClientSecretJwtAlg: clientSecretJwtAlg2,
+						GrantType:          grantType2,
+						Password:           password5,
+						RedisUsername:      redisUsername2,
+						RedisUsernameClaim: redisUsernameClaim2,
+						Scopes:             scopes2,
+						SslVerify:          sslVerify5,
+						Timeout:            timeout4,
+						TokenEndpoint:      tokenEndpoint2,
+						TokenHeaders:       tokenHeaders2,
+						TokenPostArgs:      tokenPostArgs2,
+						Username:           username4,
+					}
+				}
 				cloudAuthentication2 = &shared.PartialVectordbCloudAuthentication{
 					AuthProvider:          authProvider2,
 					AwsAccessKeyID:        awsAccessKeyId2,
@@ -1356,6 +1841,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 					AzureClientSecret:     azureClientSecret2,
 					AzureTenantID:         azureTenantId2,
 					GcpServiceAccountJSON: gcpServiceAccountJson2,
+					Oauth:                 oauth2,
 				}
 			}
 			clusterMaxRedirections1 := new(int64)
@@ -1422,11 +1908,11 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				keepalivePoolSize1 = nil
 			}
-			password3 := new(string)
+			password6 := new(string)
 			if !r.Vectordb.Config.Redis.Password.IsUnknown() && !r.Vectordb.Config.Redis.Password.IsNull() {
-				*password3 = r.Vectordb.Config.Redis.Password.ValueString()
+				*password6 = r.Vectordb.Config.Redis.Password.ValueString()
 			} else {
-				password3 = nil
+				password6 = nil
 			}
 			port6 := new(string)
 			if !r.Vectordb.Config.Redis.Port.IsUnknown() && !r.Vectordb.Config.Redis.Port.IsNull() {
@@ -1504,17 +1990,17 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				ssl3 = nil
 			}
-			sslVerify3 := new(bool)
+			sslVerify6 := new(bool)
 			if !r.Vectordb.Config.Redis.SslVerify.IsUnknown() && !r.Vectordb.Config.Redis.SslVerify.IsNull() {
-				*sslVerify3 = r.Vectordb.Config.Redis.SslVerify.ValueBool()
+				*sslVerify6 = r.Vectordb.Config.Redis.SslVerify.ValueBool()
 			} else {
-				sslVerify3 = nil
+				sslVerify6 = nil
 			}
-			username2 := new(string)
+			username5 := new(string)
 			if !r.Vectordb.Config.Redis.Username.IsUnknown() && !r.Vectordb.Config.Redis.Username.IsNull() {
-				*username2 = r.Vectordb.Config.Redis.Username.ValueString()
+				*username5 = r.Vectordb.Config.Redis.Username.ValueString()
 			} else {
-				username2 = nil
+				username5 = nil
 			}
 			redis = &shared.PartialVectordbRedis{
 				CloudAuthentication:    cloudAuthentication2,
@@ -1526,7 +2012,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				Host:                   host4,
 				KeepaliveBacklog:       keepaliveBacklog1,
 				KeepalivePoolSize:      keepalivePoolSize1,
-				Password:               password3,
+				Password:               password6,
 				Port:                   port6,
 				ReadTimeout:            readTimeout1,
 				SendTimeout:            sendTimeout1,
@@ -1537,8 +2023,8 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				SentinelUsername:       sentinelUsername1,
 				ServerName:             serverName2,
 				Ssl:                    ssl3,
-				SslVerify:              sslVerify3,
-				Username:               username2,
+				SslVerify:              sslVerify6,
+				Username:               username5,
 			}
 		}
 		strategy := shared.PartialVectordbStrategy(r.Vectordb.Config.Strategy.ValueString())

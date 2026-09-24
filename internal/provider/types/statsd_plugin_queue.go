@@ -7,7 +7,9 @@ import (
 )
 
 type StatsdPluginQueue struct {
+	BreakerCooldown    types.Float64 `tfsdk:"breaker_cooldown"`
 	ConcurrencyLimit   types.Int64   `tfsdk:"concurrency_limit"`
+	FailureThreshold   types.Int64   `tfsdk:"failure_threshold"`
 	InitialRetryDelay  types.Float64 `tfsdk:"initial_retry_delay"`
 	MaxBatchSize       types.Int64   `tfsdk:"max_batch_size"`
 	MaxBytes           types.Int64   `tfsdk:"max_bytes"`

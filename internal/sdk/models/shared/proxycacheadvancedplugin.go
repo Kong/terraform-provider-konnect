@@ -150,6 +150,7 @@ const (
 	ProxyCacheAdvancedPluginAuthProviderAws   ProxyCacheAdvancedPluginAuthProvider = "aws"
 	ProxyCacheAdvancedPluginAuthProviderAzure ProxyCacheAdvancedPluginAuthProvider = "azure"
 	ProxyCacheAdvancedPluginAuthProviderGcp   ProxyCacheAdvancedPluginAuthProvider = "gcp"
+	ProxyCacheAdvancedPluginAuthProviderOauth ProxyCacheAdvancedPluginAuthProvider = "oauth"
 )
 
 func (e ProxyCacheAdvancedPluginAuthProvider) ToPointer() *ProxyCacheAdvancedPluginAuthProvider {
@@ -160,11 +161,231 @@ func (e ProxyCacheAdvancedPluginAuthProvider) ToPointer() *ProxyCacheAdvancedPlu
 func (e *ProxyCacheAdvancedPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// ProxyCacheAdvancedPluginAuthMethod - Client authentication method used against the token endpoint.
+type ProxyCacheAdvancedPluginAuthMethod string
+
+const (
+	ProxyCacheAdvancedPluginAuthMethodClientSecretBasic ProxyCacheAdvancedPluginAuthMethod = "client_secret_basic"
+	ProxyCacheAdvancedPluginAuthMethodClientSecretJwt   ProxyCacheAdvancedPluginAuthMethod = "client_secret_jwt"
+	ProxyCacheAdvancedPluginAuthMethodClientSecretPost  ProxyCacheAdvancedPluginAuthMethod = "client_secret_post"
+)
+
+func (e ProxyCacheAdvancedPluginAuthMethod) ToPointer() *ProxyCacheAdvancedPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// ProxyCacheAdvancedPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type ProxyCacheAdvancedPluginClientSecretJwtAlg string
+
+const (
+	ProxyCacheAdvancedPluginClientSecretJwtAlgHs256 ProxyCacheAdvancedPluginClientSecretJwtAlg = "HS256"
+	ProxyCacheAdvancedPluginClientSecretJwtAlgHs512 ProxyCacheAdvancedPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e ProxyCacheAdvancedPluginClientSecretJwtAlg) ToPointer() *ProxyCacheAdvancedPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// ProxyCacheAdvancedPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type ProxyCacheAdvancedPluginGrantType string
+
+const (
+	ProxyCacheAdvancedPluginGrantTypeClientCredentials ProxyCacheAdvancedPluginGrantType = "client_credentials"
+	ProxyCacheAdvancedPluginGrantTypePassword          ProxyCacheAdvancedPluginGrantType = "password"
+)
+
+func (e ProxyCacheAdvancedPluginGrantType) ToPointer() *ProxyCacheAdvancedPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// ProxyCacheAdvancedPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type ProxyCacheAdvancedPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *ProxyCacheAdvancedPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *ProxyCacheAdvancedPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *ProxyCacheAdvancedPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (p ProxyCacheAdvancedPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetAuthMethod() *ProxyCacheAdvancedPluginAuthMethod {
+	if p == nil {
+		return nil
+	}
+	return p.AuthMethod
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetClientID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ClientID
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetClientSecret() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ClientSecret
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetClientSecretJwtAlg() *ProxyCacheAdvancedPluginClientSecretJwtAlg {
+	if p == nil {
+		return nil
+	}
+	return p.ClientSecretJwtAlg
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetGrantType() *ProxyCacheAdvancedPluginGrantType {
+	if p == nil {
+		return nil
+	}
+	return p.GrantType
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetPassword() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Password
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetRedisUsername() *string {
+	if p == nil {
+		return nil
+	}
+	return p.RedisUsername
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetRedisUsernameClaim() *string {
+	if p == nil {
+		return nil
+	}
+	return p.RedisUsernameClaim
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetScopes() []string {
+	if p == nil {
+		return nil
+	}
+	return p.Scopes
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetSslVerify() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.SslVerify
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetTimeout() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.Timeout
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetTokenEndpoint() *string {
+	if p == nil {
+		return nil
+	}
+	return p.TokenEndpoint
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetTokenHeaders() map[string]string {
+	if p == nil {
+		return nil
+	}
+	return p.TokenHeaders
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetTokenPostArgs() map[string]string {
+	if p == nil {
+		return nil
+	}
+	return p.TokenPostArgs
+}
+
+func (p *ProxyCacheAdvancedPluginOauth) GetUsername() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Username
 }
 
 // ProxyCacheAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -193,6 +414,8 @@ type ProxyCacheAdvancedPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *ProxyCacheAdvancedPluginOauth `json:"oauth"`
 }
 
 func (p ProxyCacheAdvancedPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -288,6 +511,13 @@ func (p *ProxyCacheAdvancedPluginCloudAuthentication) GetGcpServiceAccountJSON()
 		return nil
 	}
 	return p.GcpServiceAccountJSON
+}
+
+func (p *ProxyCacheAdvancedPluginCloudAuthentication) GetOauth() *ProxyCacheAdvancedPluginOauth {
+	if p == nil {
+		return nil
+	}
+	return p.Oauth
 }
 
 type ProxyCacheAdvancedPluginClusterNodes struct {
@@ -693,6 +923,8 @@ func (e *ProxyCacheAdvancedPluginStrategy) IsExact() bool {
 type ProxyCacheAdvancedPluginConfig struct {
 	// Unhandled errors while trying to retrieve a cache entry (such as redis down) are resolved with `Bypass`, with the request going upstream.
 	BypassOnErr *bool `default:"false" json:"bypass_on_err"`
+	// When enabled, use the authenticated Principal's UUID to compose the cache key.
+	CacheByPrincipal *bool `default:"false" json:"cache_by_principal"`
 	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
 	CacheControl *bool `default:"false" json:"cache_control"`
 	// TTL in seconds of cache entities.
@@ -735,6 +967,13 @@ func (p *ProxyCacheAdvancedPluginConfig) GetBypassOnErr() *bool {
 		return nil
 	}
 	return p.BypassOnErr
+}
+
+func (p *ProxyCacheAdvancedPluginConfig) GetCacheByPrincipal() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.CacheByPrincipal
 }
 
 func (p *ProxyCacheAdvancedPluginConfig) GetCacheControl() *bool {

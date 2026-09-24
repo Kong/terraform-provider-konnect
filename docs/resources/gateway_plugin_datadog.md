@@ -33,7 +33,9 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
     port   = 8125
     prefix = "kong"
     queue = {
+      breaker_cooldown     = 60
       concurrency_limit    = 1
+      failure_threshold    = 0
       initial_retry_delay  = 632515.49
       max_batch_size       = 1
       max_bytes            = 2
@@ -150,7 +152,9 @@ Optional:
 
 Optional:
 
+- `breaker_cooldown` (Number) Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered. Default: 60
 - `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
+- `failure_threshold` (Number) Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker. Default: 0
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.

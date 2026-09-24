@@ -49,11 +49,13 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 				r.Config.Queue = nil
 			} else {
 				r.Config.Queue = &tfTypes.Queue{}
+				r.Config.Queue.BreakerCooldown = types.Float64PointerValue(resp.Config.Queue.BreakerCooldown)
 				if resp.Config.Queue.ConcurrencyLimit != nil {
 					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
 				} else {
 					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
 				}
+				r.Config.Queue.FailureThreshold = types.Int64PointerValue(resp.Config.Queue.FailureThreshold)
 				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
 				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
 				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
@@ -387,11 +389,23 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		}
 		var queue *shared.Queue
 		if r.Config.Queue != nil {
+			breakerCooldown := new(float64)
+			if !r.Config.Queue.BreakerCooldown.IsUnknown() && !r.Config.Queue.BreakerCooldown.IsNull() {
+				*breakerCooldown = r.Config.Queue.BreakerCooldown.ValueFloat64()
+			} else {
+				breakerCooldown = nil
+			}
 			concurrencyLimit := new(shared.ConcurrencyLimit)
 			if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
 				*concurrencyLimit = shared.ConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
 			} else {
 				concurrencyLimit = nil
+			}
+			failureThreshold := new(int64)
+			if !r.Config.Queue.FailureThreshold.IsUnknown() && !r.Config.Queue.FailureThreshold.IsNull() {
+				*failureThreshold = r.Config.Queue.FailureThreshold.ValueInt64()
+			} else {
+				failureThreshold = nil
 			}
 			initialRetryDelay := new(float64)
 			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
@@ -436,7 +450,9 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 				maxRetryTime = nil
 			}
 			queue = &shared.Queue{
+				BreakerCooldown:    breakerCooldown,
 				ConcurrencyLimit:   concurrencyLimit,
+				FailureThreshold:   failureThreshold,
 				InitialRetryDelay:  initialRetryDelay,
 				MaxBatchSize:       maxBatchSize,
 				MaxBytes:           maxBytes,

@@ -7,14 +7,15 @@ import (
 )
 
 type MeteringAndBillingPluginConfig struct {
-	APIToken          types.String  `tfsdk:"api_token"`
-	Attributes        []Attributes  `tfsdk:"attributes"`
-	IngestEndpoint    types.String  `tfsdk:"ingest_endpoint"`
-	Keepalive         types.Float64 `tfsdk:"keepalive"`
-	MeterAiTokenUsage types.Bool    `tfsdk:"meter_ai_token_usage"`
-	MeterAPIRequests  types.Bool    `tfsdk:"meter_api_requests"`
-	Queue             *Queue        `tfsdk:"queue"`
-	SslVerify         types.Bool    `tfsdk:"ssl_verify"`
-	Subject           *Subject      `tfsdk:"subject"`
-	Timeout           types.Float64 `tfsdk:"timeout"`
+	AllowStatusCodes  []types.String `tfsdk:"allow_status_codes"`
+	APIToken          types.String   `tfsdk:"api_token"`
+	Attributes        []Attributes   `tfsdk:"attributes"`
+	IngestEndpoint    types.String   `tfsdk:"ingest_endpoint"`
+	Keepalive         types.Float64  `tfsdk:"keepalive"`
+	MeterAiTokenUsage types.Bool     `tfsdk:"meter_ai_token_usage"`
+	MeterAPIRequests  types.Bool     `tfsdk:"meter_api_requests"`
+	Queue             *Queue         `tfsdk:"queue"`
+	SslVerify         types.Bool     `tfsdk:"ssl_verify"`
+	Subject           *Customer      `tfsdk:"subject"`
+	Timeout           types.Float64  `tfsdk:"timeout"`
 }

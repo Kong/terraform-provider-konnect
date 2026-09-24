@@ -10,10 +10,12 @@ type KafkaLogPluginConfig struct {
 	Authentication                               *Authentication                `tfsdk:"authentication"`
 	BootstrapServers                             []BootstrapServers             `tfsdk:"bootstrap_servers"`
 	ClusterName                                  types.String                   `tfsdk:"cluster_name"`
+	CompressionType                              types.String                   `tfsdk:"compression_type"`
 	CustomFieldsByLua                            map[string]types.String        `tfsdk:"custom_fields_by_lua"`
 	Keepalive                                    types.Int64                    `tfsdk:"keepalive"`
 	KeepaliveEnabled                             types.Bool                     `tfsdk:"keepalive_enabled"`
 	KeyQueryArg                                  types.String                   `tfsdk:"key_query_arg"`
+	NewKafkaAsyncProducer                        types.Bool                     `tfsdk:"new_kafka_async_producer"`
 	ProducerAsync                                types.Bool                     `tfsdk:"producer_async"`
 	ProducerAsyncBufferingLimitsMessagesInMemory types.Int64                    `tfsdk:"producer_async_buffering_limits_messages_in_memory"`
 	ProducerAsyncFlushTimeout                    types.Int64                    `tfsdk:"producer_async_flush_timeout"`

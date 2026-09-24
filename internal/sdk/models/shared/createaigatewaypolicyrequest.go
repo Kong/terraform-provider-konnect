@@ -24,6 +24,10 @@ type CreateAIGatewayPolicyRequest struct {
 	// Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
 	//
 	Config any `json:"config"`
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	Condition *string `json:"condition,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -89,6 +93,13 @@ func (c *CreateAIGatewayPolicyRequest) GetConfig() any {
 		return nil
 	}
 	return c.Config
+}
+
+func (c *CreateAIGatewayPolicyRequest) GetCondition() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Condition
 }
 
 func (c *CreateAIGatewayPolicyRequest) GetLabels() map[string]string {

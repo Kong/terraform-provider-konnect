@@ -87,6 +87,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"array_length_compat":               types.BoolType,
 					"body_schema":                       types.StringType,
 					"content_type_parameter_validation": types.BoolType,
+					"enforcement_mode":                  types.StringType,
 					"parameter_schema": types.ListType{
 						ElemType: types.ObjectType{
 							AttrTypes: map[string]attr.Type{
@@ -125,6 +126,12 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
 						Description: `Determines whether to enable parameters validation of request content-type. Default: true`,
+					},
+					"enforcement_mode": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`block`),
+						Description: `Determines the action to take when a request fails validation. When set to ` + "`" + `block` + "`" + `, the request is rejected with an HTTP 400 response. When set to ` + "`" + `log_only` + "`" + `, the request is allowed to proceed and a warning is logged. possible known values include one of ["block", "log_only"]; Default: "block"`,
 					},
 					"parameter_schema": schema.ListNestedAttribute{
 						Optional: true,

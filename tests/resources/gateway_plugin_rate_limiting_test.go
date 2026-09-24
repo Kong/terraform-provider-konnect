@@ -69,4 +69,41 @@ func TestGatewayPluginRateLimiting(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("CRUD-with-expressions", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					// Create the plugin with expressions set.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "config.hour", "1000"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "expressions.custom_key", "net.src.ip"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "expressions.day", "200"),
+					),
+				},
+				{
+					// Update expressions to different values.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "expressions.custom_key", "net.dst.ip"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "expressions.day", "300"),
+					),
+				},
+				{
+					// Remove only expressions.day, keep custom_key.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "expressions.custom_key", "net.dst.ip"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting.my_rate_limiting_expressions", "expressions.day"),
+					),
+				},
+			},
+		})
+	})
 }

@@ -14,6 +14,7 @@ AIGatewayPolicy Resource
 
 ```terraform
 resource "konnect_ai_gateway_policy" "my_aigatewaypolicy" {
+  condition    = "...my_condition..."
   config       = "{ \"see\": \"documentation\" }"
   display_name = "My Cool AI PII Sanitizer Policy"
   enabled      = true
@@ -47,6 +48,9 @@ Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+
+**Requires a minimum runtime version of `2.1`**.
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `global` (Boolean) Whether the policy is globally applied to all resources. Default: false
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.

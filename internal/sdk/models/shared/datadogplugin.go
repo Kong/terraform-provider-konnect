@@ -282,8 +282,12 @@ func (e *ConcurrencyLimit) IsExact() bool {
 }
 
 type Queue struct {
+	// Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered.
+	BreakerCooldown *float64 `default:"60" json:"breaker_cooldown"`
 	// The number of of queue delivery timers. -1 indicates unlimited.
 	ConcurrencyLimit *ConcurrencyLimit `default:"1" json:"concurrency_limit"`
+	// Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker.
+	FailureThreshold *int64 `default:"0" json:"failure_threshold"`
 	// Time in seconds before the initial retry is made for a failing batch.
 	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
@@ -311,11 +315,25 @@ func (q *Queue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *Queue) GetBreakerCooldown() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BreakerCooldown
+}
+
 func (q *Queue) GetConcurrencyLimit() *ConcurrencyLimit {
 	if q == nil {
 		return nil
 	}
 	return q.ConcurrencyLimit
+}
+
+func (q *Queue) GetFailureThreshold() *int64 {
+	if q == nil {
+		return nil
+	}
+	return q.FailureThreshold
 }
 
 func (q *Queue) GetInitialRetryDelay() *float64 {

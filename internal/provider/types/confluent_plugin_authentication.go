@@ -7,8 +7,10 @@ import (
 )
 
 type ConfluentPluginAuthentication struct {
-	Basic        *BackendClusterAuthenticationSaslPlain `tfsdk:"basic"`
-	Mode         types.String                           `tfsdk:"mode"`
-	Oauth2       *Oauth2                                `tfsdk:"oauth2"`
-	Oauth2Client *Oauth2Client                          `tfsdk:"oauth2_client"`
+	Basic            *BackendClusterAuthenticationSaslPlain `tfsdk:"basic"`
+	IdentityPoolID   types.String                           `tfsdk:"identity_pool_id"`
+	LogicalClusterID types.String                           `tfsdk:"logical_cluster_id"`
+	Mode             types.String                           `tfsdk:"mode"`
+	Oauth2           *Oauth2                                `tfsdk:"oauth2"`
+	Oauth2Client     *Oauth2Client                          `tfsdk:"oauth2_client"`
 }

@@ -143,6 +143,8 @@ type OasValidationPluginConfig struct {
 	NotifyOnlyResponseBodyValidationFailure *bool `default:"false" json:"notify_only_response_body_validation_failure"`
 	// If set to true, checks if query parameters in the request exist in the API specification.
 	QueryParameterCheck *bool `default:"false" json:"query_parameter_check"`
+	// If set to `true`, interrupting non-gRPC HTTP validation failures are returned as `application/problem+json` using RFC 9457 top-level fields plus Kong extensions `message`, `errors`, and optional `more`. Requires `structured_errors` and `verbose_response` to both be set to `true`. When set to `false`, the legacy response format is preserved.
+	Rfc9457ErrorResponse *bool `default:"false" json:"rfc9457_error_response"`
 	// If set to true, schema validation failures are returned as a structured `errors` array, where each entry contains `instanceLocation`, `keywordLocation`, and `error`. Pre-validation failures such as path-not-found or unsupported content-type also return an `errors` array, but entries contain only an `error` field. Requires `verbose_response` to be enabled. Use `max_structured_errors` to cap the response size.
 	StructuredErrors *bool `default:"false" json:"structured_errors"`
 	// If set to true, validates the request body content against the API specification.
@@ -245,6 +247,13 @@ func (o *OasValidationPluginConfig) GetQueryParameterCheck() *bool {
 		return nil
 	}
 	return o.QueryParameterCheck
+}
+
+func (o *OasValidationPluginConfig) GetRfc9457ErrorResponse() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Rfc9457ErrorResponse
 }
 
 func (o *OasValidationPluginConfig) GetStructuredErrors() *bool {

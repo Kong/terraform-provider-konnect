@@ -8,7 +8,9 @@ import (
 
 // KonnectCPLegacyUnauthorizedError - standard error
 type KonnectCPLegacyUnauthorizedError struct {
-	Message any `json:"message,omitempty"`
+	// A short summary of the problem.
+	//
+	Message *string `json:"message,omitempty"`
 }
 
 func (k KonnectCPLegacyUnauthorizedError) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (k *KonnectCPLegacyUnauthorizedError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (k *KonnectCPLegacyUnauthorizedError) GetMessage() any {
+func (k *KonnectCPLegacyUnauthorizedError) GetMessage() *string {
 	if k == nil {
 		return nil
 	}
