@@ -51176,45 +51176,6 @@ components:
         - display_name
         - name
         - config
-    AIGatewayModelProviderTypesafe:
-      description: |
-        Configuration for an upstream model provider.
-      type: object
-      properties:
-        type:
-          type: string
-          const: typesafe
-        display_name:
-          description: The display name for this model provider instance.
-          type: string
-          example: Azure AI SE
-          maxLength: 256
-          minLength: 1
-        name:
-          description: 'A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.'
-          example: azure-ai-se
-          allOf:
-            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
-        labels:
-          $ref: '#/components/schemas/PublicLabels'
-        managed_by:
-          $ref: '#/components/schemas/ManagedBy'
-        config:
-          description: Configuration for the model provider.
-          type: object
-          additionalProperties: false
-          properties:
-            auth:
-              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
-          required:
-            - auth
-      required:
-        - type
-        - display_name
-        - name
-        - config
-      x-min-runtime-version: '2.2'
-      x-speakeasy-param-computed: false
     AIGatewayModelProviderConfigAuthBasic:
       description: |
         Basic auth config for an upstream model provider.
@@ -51909,7 +51870,6 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
-          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -51930,7 +51890,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
-        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
     UpdateAIGatewayModelProviderRequest:
       discriminator:
         propertyName: type
@@ -51954,7 +51913,6 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
-          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -51975,7 +51933,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
-        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
     AIGatewayModelProvider:
       type: object
       properties:
@@ -52007,7 +51964,6 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
-          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -52028,7 +51984,6 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
-        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
       required:
         - id
         - created_at
