@@ -452,33 +452,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
     }
     name = "azure-ai-se"
   }
-  typesafe = {
-    config = {
-      auth = {
-        headers = [
-          {
-            name  = "...my_name..."
-            value = "...my_value..."
-          }
-        ]
-        params = [
-          {
-            location = "query"
-            name     = "...my_name..."
-            value    = "...my_value..."
-          }
-        ]
-      }
-    }
-    display_name = "Azure AI SE"
-    labels = {
-      key = "value"
-    }
-    managed_by = {
-      key = "value"
-    }
-    name = "azure-ai-se"
-  }
   vercel = {
     config = {
       auth = {
@@ -588,7 +561,6 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider" {
 - `ollama` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--ollama))
 - `openai` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--openai))
 - `sagemaker` (Attributes) Config for Sagemaker model provider. (see [below for nested schema](#nestedatt--sagemaker))
-- `typesafe` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--typesafe))
 - `vercel` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--vercel))
 - `vllm` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--vllm))
 - `xai` (Attributes) Configuration for an upstream model provider. (see [below for nested schema](#nestedatt--xai))
@@ -1766,72 +1738,6 @@ Optional:
 - `secret_access_key` (String) static IAM user credential; overrides AWS_SECRET_ACCESS_KEY env var
 - `session_token` (String) static IAM user credential; overrides AWS_SESSION_TOKEN env var
 
-
-
-
-
-
-<a id="nestedatt--typesafe"></a>
-### Nested Schema for `typesafe`
-
-Required:
-
-- `config` (Attributes) Configuration for the model provider. (see [below for nested schema](#nestedatt--typesafe--config))
-- `display_name` (String) The display name for this model provider instance.
-- `name` (String) A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
-
-Optional:
-
-- `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
-
-Public labels are intended to store **PUBLIC** metadata. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-Keys must be 1–63 characters long and start with an alphanumeric character.
-
-Read-Only:
-
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) Contains a unique identifier used for this resource.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--typesafe--config"></a>
-### Nested Schema for `typesafe.config`
-
-Required:
-
-- `auth` (Attributes) Basic auth config for an upstream model provider. (see [below for nested schema](#nestedatt--typesafe--config--auth))
-
-<a id="nestedatt--typesafe--config--auth"></a>
-### Nested Schema for `typesafe.config.auth`
-
-Optional:
-
-- `headers` (Attributes List) (see [below for nested schema](#nestedatt--typesafe--config--auth--headers))
-- `params` (Attributes List) (see [below for nested schema](#nestedatt--typesafe--config--auth--params))
-
-<a id="nestedatt--typesafe--config--auth--headers"></a>
-### Nested Schema for `typesafe.config.auth.headers`
-
-Optional:
-
-- `name` (String) The name of the header used for authentication.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-Not Null
-- `value` (String) The auth header value for ‘header_name’, for example ‘Bearer key...’.
-This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-
-
-<a id="nestedatt--typesafe--config--auth--params"></a>
-### Nested Schema for `typesafe.config.auth.params`
-
-Optional:
-
-- `location` (String) Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
-- `name` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault). Not Null
-- `value` (String) This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 
