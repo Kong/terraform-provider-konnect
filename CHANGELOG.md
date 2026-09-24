@@ -5,7 +5,14 @@
 
 # Features
 * Added `condition` and `partials` support to custom plugins
-* Add support for Kong Gateway v3.16 - including `konnect_gateway_plugin_entitlement_enforcement` resource and new `expressions` field in `konnect_gateway_plugin_rate_limiting` and `konnect_gateway_plugin_rate_limiting_advanced` resource.
+* Add support for Kong Gateway v3.16
+    * Add support new Gateway plugin `konnect_gateway_plugin_entitlement_enforcement` .
+    * Add support for Dynamic plugin configuration to `konnect_gateway_plugin_rate_limiting` and `konnect_gateway_plugin_rate_limiting_advanced`  using which users can now provide expression-based configuration. 
+    * Add support for `default_access_token_duration` with `dcr_client` in `konnect_identity_auth_server` resource, which allows users to set the default access token duration for dcr client.
+* Add support for AI Gateway v2.1
+  * Add support for per-modality usage cost for text, audio, image and video tokens for `konnect_ai_gateway_model`.
+  * Add support for `conditions` for `konnect_ai_gateway_policy` resource, which allows users to define conditions based execution for the policy.
+  * Add support for `allowed_versions` for `konnect_ai_gateway_mcp_server` resource, which allows users to define the MCP protocol revisions for the  server.
 
 ## 3.23.0
 > Released 2026/09/18
