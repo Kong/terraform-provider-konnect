@@ -29,13 +29,13 @@ type SystemAccountDataSource struct {
 
 // SystemAccountDataSourceModel describes the data model.
 type SystemAccountDataSourceModel struct {
-	CreatedAt      types.String    `tfsdk:"created_at"`
-	Description    types.String    `tfsdk:"description"`
-	Filter         *tfTypes.Filter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
-	ID             types.String    `tfsdk:"id"`
-	KonnectManaged types.Bool      `tfsdk:"konnect_managed"`
-	Name           types.String    `tfsdk:"name"`
-	UpdatedAt      types.String    `tfsdk:"updated_at"`
+	CreatedAt      types.String              `tfsdk:"created_at"`
+	Description    types.String              `tfsdk:"description"`
+	Filter         *tfTypes.QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
+	ID             types.String              `tfsdk:"id"`
+	KonnectManaged types.Bool                `tfsdk:"konnect_managed"`
+	Name           types.String              `tfsdk:"name"`
+	UpdatedAt      types.String              `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.

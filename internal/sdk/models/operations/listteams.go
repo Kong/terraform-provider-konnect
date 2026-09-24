@@ -12,38 +12,38 @@ var ListTeamsServerList = []string{
 	"https://global.api.konghq.com/",
 }
 
-// QueryParamFilter - Filter teams returned in the response. Supports filtering by label value using
+// ListTeamsQueryParamFilter - Filter teams returned in the response. Supports filtering by label value using
 // dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
 // `eq`, `contains`, or `exists`.
-type QueryParamFilter struct {
+type ListTeamsQueryParamFilter struct {
 	// Filter using **one** of the following operators: `eq`, `contains`
 	Name   *shared.LegacyStringFieldFilter                     `queryParam:"name=name"`
 	Labels map[string]shared.LegacyStringFieldFilterWithExists `queryParam:"name=labels"`
 }
 
-func (q QueryParamFilter) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(q, "", false)
+func (l ListTeamsQueryParamFilter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
 }
 
-func (q *QueryParamFilter) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &q, "", false, nil); err != nil {
+func (l *ListTeamsQueryParamFilter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (q *QueryParamFilter) GetName() *shared.LegacyStringFieldFilter {
-	if q == nil {
+func (l *ListTeamsQueryParamFilter) GetName() *shared.LegacyStringFieldFilter {
+	if l == nil {
 		return nil
 	}
-	return q.Name
+	return l.Name
 }
 
-func (q *QueryParamFilter) GetLabels() map[string]shared.LegacyStringFieldFilterWithExists {
-	if q == nil {
+func (l *ListTeamsQueryParamFilter) GetLabels() map[string]shared.LegacyStringFieldFilterWithExists {
+	if l == nil {
 		return nil
 	}
-	return q.Labels
+	return l.Labels
 }
 
 type ListTeamsRequest struct {
@@ -54,7 +54,7 @@ type ListTeamsRequest struct {
 	// Filter teams returned in the response. Supports filtering by label value using
 	// dot-notation, e.g. `filter[labels.<key>][<op>]=<value>`, where `<op>` is one of
 	// `eq`, `contains`, or `exists`.
-	Filter *QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter"`
+	Filter *ListTeamsQueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter"`
 }
 
 func (l ListTeamsRequest) MarshalJSON() ([]byte, error) {
@@ -82,7 +82,7 @@ func (l *ListTeamsRequest) GetPageNumber() *int64 {
 	return l.PageNumber
 }
 
-func (l *ListTeamsRequest) GetFilter() *QueryParamFilter {
+func (l *ListTeamsRequest) GetFilter() *ListTeamsQueryParamFilter {
 	if l == nil {
 		return nil
 	}

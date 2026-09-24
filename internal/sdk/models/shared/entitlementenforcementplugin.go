@@ -1152,7 +1152,7 @@ type EntitlementEnforcementPluginConfig struct {
 	L2CacheTTLSeconds *float64 `default:"120" json:"l2_cache_ttl_seconds"`
 	// Maximum age in seconds of cached enforcement state before it is considered stale and must be refreshed from Redis
 	MaxStaleSeconds *float64                           `default:"60" json:"max_stale_seconds"`
-	Redis           *EntitlementEnforcementPluginRedis `json:"redis,omitempty"`
+	Redis           *EntitlementEnforcementPluginRedis `json:"redis"`
 	// How often in seconds to poll enforcement state from the entitlement access endpoint
 	RefreshInterval *float64       `default:"30" json:"refresh_interval"`
 	ResponseCodes   *ResponseCodes `json:"response_codes,omitempty"`

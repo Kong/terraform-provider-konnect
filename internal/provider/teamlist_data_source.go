@@ -29,8 +29,8 @@ type TeamListDataSource struct {
 
 // TeamListDataSourceModel describes the data model.
 type TeamListDataSourceModel struct {
-	Data   []tfTypes.TeamResponse    `tfsdk:"data"`
-	Filter *tfTypes.QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
+	Data   []tfTypes.TeamResponse             `tfsdk:"data"`
+	Filter *tfTypes.ListTeamsQueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 }
 
 // Metadata returns the data source type name.
