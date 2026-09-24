@@ -12,8 +12,8 @@ var GetSystemAccountsServerList = []string{
 	"https://global.api.konghq.com/",
 }
 
-// Filter system accounts returned in the response.
-type Filter struct {
+// QueryParamFilter - Filter system accounts returned in the response.
+type QueryParamFilter struct {
 	// Filter using **one** of the following operators: `eq`, `contains`
 	Name *shared.LegacyStringFieldFilter `queryParam:"name=name"`
 	// Filter using **one** of the following operators: `eq`, `contains`
@@ -22,36 +22,36 @@ type Filter struct {
 	KonnectManaged *bool `queryParam:"name=konnect_managed"`
 }
 
-func (f Filter) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(f, "", false)
+func (q QueryParamFilter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(q, "", false)
 }
 
-func (f *Filter) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+func (q *QueryParamFilter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &q, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *Filter) GetName() *shared.LegacyStringFieldFilter {
-	if f == nil {
+func (q *QueryParamFilter) GetName() *shared.LegacyStringFieldFilter {
+	if q == nil {
 		return nil
 	}
-	return f.Name
+	return q.Name
 }
 
-func (f *Filter) GetDescription() *shared.LegacyStringFieldFilter {
-	if f == nil {
+func (q *QueryParamFilter) GetDescription() *shared.LegacyStringFieldFilter {
+	if q == nil {
 		return nil
 	}
-	return f.Description
+	return q.Description
 }
 
-func (f *Filter) GetKonnectManaged() *bool {
-	if f == nil {
+func (q *QueryParamFilter) GetKonnectManaged() *bool {
+	if q == nil {
 		return nil
 	}
-	return f.KonnectManaged
+	return q.KonnectManaged
 }
 
 type GetSystemAccountsRequest struct {
@@ -60,7 +60,7 @@ type GetSystemAccountsRequest struct {
 	// Determines which page of the entities to retrieve.
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
 	// Filter system accounts returned in the response.
-	Filter *Filter `queryParam:"style=deepObject,explode=true,name=filter"`
+	Filter *QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter"`
 }
 
 func (g GetSystemAccountsRequest) MarshalJSON() ([]byte, error) {
@@ -88,7 +88,7 @@ func (g *GetSystemAccountsRequest) GetPageNumber() *int64 {
 	return g.PageNumber
 }
 
-func (g *GetSystemAccountsRequest) GetFilter() *Filter {
+func (g *GetSystemAccountsRequest) GetFilter() *QueryParamFilter {
 	if g == nil {
 		return nil
 	}

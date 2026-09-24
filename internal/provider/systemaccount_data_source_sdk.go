@@ -47,7 +47,7 @@ func (r *SystemAccountDataSourceModel) RefreshFromSharedSystemAccountCollection(
 func (r *SystemAccountDataSourceModel) ToOperationsGetSystemAccountsRequest(ctx context.Context) (*operations.GetSystemAccountsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var filter *operations.Filter
+	var filter *operations.QueryParamFilter
 	if r.Filter != nil {
 		var name *shared.LegacyStringFieldFilter
 		if r.Filter.Name != nil {
@@ -93,7 +93,7 @@ func (r *SystemAccountDataSourceModel) ToOperationsGetSystemAccountsRequest(ctx 
 		} else {
 			konnectManaged = nil
 		}
-		filter = &operations.Filter{
+		filter = &operations.QueryParamFilter{
 			Name:           name,
 			Description:    description,
 			KonnectManaged: konnectManaged,

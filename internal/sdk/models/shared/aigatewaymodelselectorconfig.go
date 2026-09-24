@@ -17,7 +17,7 @@ type AIGatewayModelSelectorConfig struct {
 	// The name of the regex capture group defined in the route path for routing.
 	//
 	PathParam *string `json:"path_param,omitempty"`
-	// An optional model alias. When omitted, the model name is used.
+	// Optional model aliases. When omitted, the model name is used.
 	// When no selector location is configured, the format default selector is used.
 	//
 	Values []string `json:"values,omitempty"`

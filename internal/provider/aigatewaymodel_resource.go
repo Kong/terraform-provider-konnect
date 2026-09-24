@@ -1710,11 +1710,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `An optional model alias. When omitted, the model name is used.` + "\n" +
+												MarkdownDescription: `Optional model aliases. When omitted, the model name is used.` + "\n" +
 													`When no selector location is configured, the format default selector is used.`,
 												Validators: []validator.List{
 													listvalidator.SizeAtLeast(1),
-													listvalidator.SizeAtMost(1),
 												},
 											},
 										},
@@ -8891,11 +8890,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
-												MarkdownDescription: `An optional model alias. When omitted, the model name is used.` + "\n" +
+												MarkdownDescription: `Optional model aliases. When omitted, the model name is used.` + "\n" +
 													`When no selector location is configured, the format default selector is used.`,
 												Validators: []validator.List{
 													listvalidator.SizeAtLeast(1),
-													listvalidator.SizeAtMost(1),
 												},
 											},
 										},

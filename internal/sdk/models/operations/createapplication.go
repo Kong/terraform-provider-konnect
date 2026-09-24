@@ -55,6 +55,8 @@ type CreateApplicationResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (c CreateApplicationResponse) MarshalJSON() ([]byte, error) {
@@ -115,4 +117,11 @@ func (c *CreateApplicationResponse) GetForbiddenError() *shared.ForbiddenError {
 		return nil
 	}
 	return c.ForbiddenError
+}
+
+func (c *CreateApplicationResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
+		return nil
+	}
+	return c.NotFoundError
 }

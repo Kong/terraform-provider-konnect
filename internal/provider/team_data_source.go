@@ -29,14 +29,14 @@ type TeamDataSource struct {
 
 // TeamDataSourceModel describes the data model.
 type TeamDataSourceModel struct {
-	CreatedAt   types.String              `tfsdk:"created_at"`
-	Description types.String              `tfsdk:"description"`
-	Filter      *tfTypes.QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
-	ID          types.String              `tfsdk:"id"`
-	Labels      map[string]types.String   `tfsdk:"labels"`
-	Name        types.String              `tfsdk:"name"`
-	SystemTeam  types.Bool                `tfsdk:"system_team"`
-	UpdatedAt   types.String              `tfsdk:"updated_at"`
+	CreatedAt   types.String                       `tfsdk:"created_at"`
+	Description types.String                       `tfsdk:"description"`
+	Filter      *tfTypes.ListTeamsQueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
+	ID          types.String                       `tfsdk:"id"`
+	Labels      map[string]types.String            `tfsdk:"labels"`
+	Name        types.String                       `tfsdk:"name"`
+	SystemTeam  types.Bool                         `tfsdk:"system_team"`
+	UpdatedAt   types.String                       `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.

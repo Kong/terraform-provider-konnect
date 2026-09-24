@@ -961,7 +961,7 @@ Optional:
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
 - `path_param` (String) The name of the regex capture group defined in the route path for routing.
-- `values` (List of String) An optional model alias. When omitted, the model name is used.
+- `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 
 
@@ -3232,7 +3232,7 @@ Optional:
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
 - `path_param` (String) The name of the regex capture group defined in the route path for routing.
-- `values` (List of String) An optional model alias. When omitted, the model name is used.
+- `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 
 

@@ -53,7 +53,7 @@ func (r *TeamDataSourceModel) RefreshFromSharedTeamResponse(ctx context.Context,
 func (r *TeamDataSourceModel) ToOperationsListTeamsRequest(ctx context.Context) (*operations.ListTeamsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var filter *operations.QueryParamFilter
+	var filter *operations.ListTeamsQueryParamFilter
 	if r.Filter != nil {
 		var name *shared.LegacyStringFieldFilter
 		if r.Filter.Name != nil {
@@ -101,7 +101,7 @@ func (r *TeamDataSourceModel) ToOperationsListTeamsRequest(ctx context.Context) 
 			}
 			labels[labelsKey] = labelsInst
 		}
-		filter = &operations.QueryParamFilter{
+		filter = &operations.ListTeamsQueryParamFilter{
 			Name:   name,
 			Labels: labels,
 		}
