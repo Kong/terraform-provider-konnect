@@ -384,7 +384,9 @@ type Konnect struct {
 	// APIs related to configuration of Konnect Developer Portal developer teams.
 	PortalTeams *PortalTeams
 	// APIs related to Konnect Developer Portal developer team roles.
-	PortalTeamRoles              *PortalTeamRoles
+	PortalTeamRoles *PortalTeamRoles
+	// APIs related to Konnect Developer Portal developer team membership.
+	PortalTeamMembership         *PortalTeamMembership
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
@@ -601,6 +603,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamMembership = newPortalTeamMembership(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk, sdk.sdkConfiguration, sdk.hooks)

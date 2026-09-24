@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 58ea64676bbc1b8c7f6e55316d25819d
+  docChecksum: 9b760f87f887f15ef7480235cccfa76b
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.23.0
   configChecksum: d1f2ed0fe7c442fb00b5f0634cd367f9
 persistentEdits:
-  generation_id: 541e0c4c-349c-4984-bc0f-d2cddc5c7e29
-  pristine_commit_hash: 981fadd4ddc3b12ed61772cdbb9c510bc1fe4199
-  pristine_tree_hash: d226285857187f980757d59b6b323e018ea0aeda
+  generation_id: b692d629-f44f-43b3-baba-ba44075f4cdc
+  pristine_commit_hash: c6498d74be9346540d14d89f8561155b10a90384
+  pristine_tree_hash: 42b15aa08bbcd814f8f8d054c92a86ad6911f293
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2971,6 +2971,10 @@ trackedFiles:
     id: 7d22c6bb2dd9
     last_write_checksum: sha1:f43326060d25bfdfd58339a7df2169c3acc8f7fd
     pristine_git_object: 4bbdf3df85fa8a60d7f4ed4563e7979a041eb097
+  examples/resources/konnect_portal_team_developer/resource.tf:
+    id: a962f62b3c3f
+    last_write_checksum: sha1:8ac79cd994b8ed73cacd54ccc435751ff9a1dd3b
+    pristine_git_object: 0ee743cbab24da70dfbef9f20b1aad6e6d59efe0
   examples/resources/konnect_portal_team_role/resource.tf:
     id: 66183c75bce6
     last_write_checksum: sha1:33022414363de4a576c3231bdfc2194237546f55
@@ -5247,6 +5251,14 @@ trackedFiles:
     id: ecdf2c88d25f
     last_write_checksum: sha1:88dac266704aea382419fb2b6986332541eb5565
     pristine_git_object: 75a6cd81767e10579686648a5f180046de91a1ad
+  internal/provider/portalteamdeveloper_resource.go:
+    id: be51fc09da35
+    last_write_checksum: sha1:bd698cf9db9bb828afee00c98f58ced12bb1c62b
+    pristine_git_object: a9de48bf569e28f71df56952b1e53c11cc02d12d
+  internal/provider/portalteamdeveloper_resource_sdk.go:
+    id: 586afe4d3d4f
+    last_write_checksum: sha1:0d35b55da30737adccba10babf5311effc9bc54b
+    pristine_git_object: ee99c59c66800a4a1b79f6c17d66ef18c4fd6e34
   internal/provider/portalteamrole_resource.go:
     id: 546c373a146e
     last_write_checksum: sha1:51721a99766bf58591da5e71d2365c3b55210fc7
@@ -5257,8 +5269,8 @@ trackedFiles:
     pristine_git_object: 47ecfc7393d52fb98a5bac2c40c6c49e8d4b4d1e
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:56ad0870661d9d9302525c519140995b76a098db
-    pristine_git_object: 4ae26d4ee9acc918a08cdbc10b1f0fa58d0b5c8f
+    last_write_checksum: sha1:1ba65de15067f66ecf35abceb1bcb1be0b22fe4b
+    pristine_git_object: e53054601d27ea2dc151b8245091207c49c39300
   internal/provider/realm_resource.go:
     id: 288745fe66d4
     last_write_checksum: sha1:84cfafee418c410926378f7ecbd147dd45e933e8
@@ -8745,8 +8757,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:fe2ec6d45b037dcc87d84e9ec63e403021a33694
-    pristine_git_object: cf175b23db9b0d18c3b096d9601c1be3a79f0e15
+    last_write_checksum: sha1:3bc2fc29247434365145856238a1068d76c1d347
+    pristine_git_object: f12c9a20ee15cc1e2c34ecc69c398c43f2df082e
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
@@ -8763,6 +8775,10 @@ trackedFiles:
     id: a98d9df9dfc0
     last_write_checksum: sha1:b977a25883266d3f43cf3e60748a0263786f0763
     pristine_git_object: fc7b308dce1cf0c5cbdd441e36c6ff1ef457e19a
+  internal/sdk/models/operations/adddevelopertoportalteam.go:
+    id: fde1de5db307
+    last_write_checksum: sha1:a7a87317e4b583094fcba05d31a29bd2b5e18eb0
+    pristine_git_object: 392433c4a031d4939bb1d7de46c3a972c1c00486
   internal/sdk/models/operations/addusertoteam.go:
     id: 7ba869b946d3
     last_write_checksum: sha1:51a15186a38011023bab783e2990f0038e4ec7ee
@@ -11747,6 +11763,10 @@ trackedFiles:
     id: 7663ee196f6b
     last_write_checksum: sha1:54421b00f9716f2414b1adf1d4bd9c7dd689822a
     pristine_git_object: 6e657864fcc363e7a2e6b7bee7226e671485a8b4
+  internal/sdk/models/operations/removedeveloperfromportalteam.go:
+    id: eb6f9759f740
+    last_write_checksum: sha1:976b6fbc905d22b67b046dbc87c28de4886f140b
+    pristine_git_object: c6d2251d65859b31ebcfa2536520d9b06086e926
   internal/sdk/models/operations/removerolefromportalteam.go:
     id: 04af489ba058
     last_write_checksum: sha1:c0b8b248dff2f4856d032b9c575d52eefd90ec90
@@ -12679,6 +12699,10 @@ trackedFiles:
     id: 8db17ec14a87
     last_write_checksum: sha1:135ebb7efe97f753b7720dc1e9025a1ec2af9587
     pristine_git_object: 2106b594a22e0c9e2ec4b1d97e2c281dac139e65
+  internal/sdk/models/shared/adddevelopertoteamrequest.go:
+    id: 256d7b0a7242
+    last_write_checksum: sha1:cfb418979d69ca581c233a77870e8008eb252c04
+    pristine_git_object: 7af9635d0c674b9e540003efbc1ed06e289b3de4
   internal/sdk/models/shared/addonconfigresponse.go:
     id: 0560eb7f8344
     last_write_checksum: sha1:a5380761a974e881139c8a53a45ba33317ac2b78
@@ -16515,6 +16539,10 @@ trackedFiles:
     id: 5465b622db96
     last_write_checksum: sha1:05cffe0b5e33a701910dbd7a410482661aacbaa6
     pristine_git_object: 7ebbf9c468da226d1889d41570c67097d88ac856
+  internal/sdk/portalteammembership.go:
+    id: a6e52bb8e546
+    last_write_checksum: sha1:c0da4cb2a9dc26b3a202d4acb8f68d95672f00f0
+    pristine_git_object: 83be7fabf130a85cddd687ec21a83708a2675b1f
   internal/sdk/portalteamroles.go:
     id: 633be7c70af7
     last_write_checksum: sha1:b553746592b8a916bf4075d35dabbf76d9acecc5
@@ -33618,6 +33646,39 @@ examples:
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  add-developer-to-portal-team:
+    speakeasy-default-add-developer-to-portal-team:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+          teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"id": "df120cb4-f60b-47bc-a2f8-6a28e6a3c63b"}
+      responses:
+        "400":
+          application/problem+json: {"status": 808391, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  remove-developer-from-portal-team:
+    speakeasy-default-remove-developer-from-portal-team:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+          developerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}
 generatedFiles:

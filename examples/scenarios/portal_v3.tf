@@ -85,3 +85,18 @@ resource "konnect_portal_team_role" "my_portal_team_role" {
 
   depends_on = [konnect_api_publication.my_publication]
 }
+
+
+resource "konnect_portal_developer" "my_developer" {
+  portal_id             = konnect_portal.my_portal.id
+  email                 = "developer@example.com"
+  full_name             = "Test Developer"
+  send_invitation_email = false
+  status                = "pending"
+}
+
+resource "konnect_portal_team_developer" "my_portalteamdeveloper" {
+  developer_id = konnect_portal_developer.my_developer.id
+  portal_id    = konnect_portal.my_portal.id
+  team_id      = konnect_portal_team.my_portal_team.id
+}

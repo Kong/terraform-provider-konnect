@@ -402,6 +402,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewPortalProductVersionResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
+		NewPortalTeamDeveloperResource,
 		NewPortalTeamRoleResource,
 		NewRealmResource,
 		NewServerlessCloudGatewayResource,
