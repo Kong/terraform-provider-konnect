@@ -14,26 +14,9 @@ resource "konnect_gateway_plugin_entitlement_enforcement" "my_entitlement_enforc
     feature = {
       key = "premium-api-access"
     }
-
-    customer = {
-      field            = "x-customer-id"
-      look_up_value_in = "header"
-    }
-
     redis = {
       host = "redis.example.com"
       port = 6379
-    }
-
-    response_codes = {
-      no_credit_available = {
-        http_status = 402
-        message     = "Customer has no credit remaining."
-      }
-      usage_limit_reached = {
-        http_status = 429
-        message     = "Customer has reached usage limit for feature."
-      }
     }
   }
 
