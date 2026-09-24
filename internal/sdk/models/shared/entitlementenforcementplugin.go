@@ -1135,7 +1135,7 @@ type EntitlementEnforcementPluginConfig struct {
 	// If set to true, gateway will fetch credit balance for subject.
 	CreditBalanceRequired *bool `default:"true" json:"credit_balance_required"`
 	// The customer identifies who gets billed for each request. Choose where the plugin should look for the customer identifier.
-	Customer *Customer `json:"customer"`
+	Customer *Customer `json:"customer,omitempty"`
 	// If set to true, gateway will deny access to any unknown subjects.
 	DenyUnknownCustomers *bool `default:"true" json:"deny_unknown_customers"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
@@ -1152,7 +1152,7 @@ type EntitlementEnforcementPluginConfig struct {
 	L2CacheTTLSeconds *float64 `default:"120" json:"l2_cache_ttl_seconds"`
 	// Maximum age in seconds of cached enforcement state before it is considered stale and must be refreshed from Redis
 	MaxStaleSeconds *float64                           `default:"60" json:"max_stale_seconds"`
-	Redis           *EntitlementEnforcementPluginRedis `json:"redis"`
+	Redis           *EntitlementEnforcementPluginRedis `json:"redis,omitempty"`
 	// How often in seconds to poll enforcement state from the entitlement access endpoint
 	RefreshInterval *float64       `default:"30" json:"refresh_interval"`
 	ResponseCodes   *ResponseCodes `json:"response_codes,omitempty"`

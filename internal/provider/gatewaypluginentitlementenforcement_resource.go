@@ -96,10 +96,6 @@ func (r *GatewayPluginEntitlementEnforcementResource) Schema(ctx context.Context
 					"customer": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"field":            types.StringType,
-							"look_up_value_in": types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"field": schema.StringAttribute{
 								Optional:    true,
@@ -167,84 +163,6 @@ func (r *GatewayPluginEntitlementEnforcementResource) Schema(ctx context.Context
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"cloud_authentication": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`auth_provider`:            types.StringType,
-									`aws_access_key_id`:        types.StringType,
-									`aws_assume_role_arn`:      types.StringType,
-									`aws_cache_name`:           types.StringType,
-									`aws_is_serverless`:        types.BoolType,
-									`aws_region`:               types.StringType,
-									`aws_role_session_name`:    types.StringType,
-									`aws_secret_access_key`:    types.StringType,
-									`azure_client_id`:          types.StringType,
-									`azure_client_secret`:      types.StringType,
-									`azure_tenant_id`:          types.StringType,
-									`gcp_service_account_json`: types.StringType,
-									`oauth`: types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`auth_method`:           types.StringType,
-											`client_id`:             types.StringType,
-											`client_secret`:         types.StringType,
-											`client_secret_jwt_alg`: types.StringType,
-											`grant_type`:            types.StringType,
-											`password`:              types.StringType,
-											`redis_username`:        types.StringType,
-											`redis_username_claim`:  types.StringType,
-											`scopes`: types.ListType{
-												ElemType: types.StringType,
-											},
-											`ssl_verify`:     types.BoolType,
-											`timeout`:        types.Int64Type,
-											`token_endpoint`: types.StringType,
-											`token_headers`: types.MapType{
-												ElemType: types.StringType,
-											},
-											`token_post_args`: types.MapType{
-												ElemType: types.StringType,
-											},
-											`username`: types.StringType,
-										},
-									},
-								},
-							},
-							"cluster_max_redirections": types.Int64Type,
-							"cluster_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`ip`:   types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"connect_timeout":       types.Int64Type,
-							"connection_is_proxied": types.BoolType,
-							"database":              types.Int64Type,
-							"host":                  types.StringType,
-							"keepalive_backlog":     types.Int64Type,
-							"keepalive_pool_size":   types.Int64Type,
-							"password":              types.StringType,
-							"port":                  types.StringType,
-							"read_timeout":          types.Int64Type,
-							"send_timeout":          types.Int64Type,
-							"sentinel_master":       types.StringType,
-							"sentinel_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`host`: types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"sentinel_password": types.StringType,
-							"sentinel_role":     types.StringType,
-							"sentinel_username": types.StringType,
-							"server_name":       types.StringType,
-							"ssl":               types.BoolType,
-							"ssl_verify":        types.BoolType,
-							"username":          types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"cloud_authentication": schema.SingleNestedAttribute{
 								Computed: true,

@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 937979e3015689833ad84cd58c616552
+  docChecksum: d97cff73d5cbcbea87e3d3d6ce2be2ad
   docVersion: 2.0.0
   speakeasyVersion: 1.795.1
   generationVersion: 2.932.9
   releaseVersion: 3.23.0
   configChecksum: d1f2ed0fe7c442fb00b5f0634cd367f9
 persistentEdits:
-  generation_id: 0635f11a-0850-43fe-a00f-22737b65b0f9
-  pristine_commit_hash: 13b4ae8db403e7b894769524155ce9125de299c0
-  pristine_tree_hash: 6485fe4e30ae160d8e32e2c13b48905b1e4ea011
+  generation_id: 06db7e05-f140-4c3f-9ec5-af2611bf8aea
+  pristine_commit_hash: 6e097b71fb43fdb8ae587371fa809259823d5d3c
+  pristine_tree_hash: 5c9a10f5331596fae180c10fec20db798f69e4cb
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4297,8 +4297,8 @@ trackedFiles:
     pristine_git_object: 0cb3fa6b532f9f53ce711a59909854d97f315ad0
   internal/provider/gatewaypluginentitlementenforcement_resource.go:
     id: "7682231319e3"
-    last_write_checksum: sha1:7c694f5a2acb3ac66834632e6982b89b7ad0dae0
-    pristine_git_object: e5fc2ee774884fa4082284ff0ae5b3aabaa30afa
+    last_write_checksum: sha1:3afc65713079f0149afcf58902505ebae1e34c96
+    pristine_git_object: c0aacc3f6614dec94051fe1d62d5a8117c7c5dad
   internal/provider/gatewaypluginentitlementenforcement_resource_sdk.go:
     id: d07489b36454
     last_write_checksum: sha1:464fea6b0536424a652461128b3597960a0b7526
@@ -14533,8 +14533,8 @@ trackedFiles:
     pristine_git_object: 4d0f16019df14394e6f40f01dc387f50e3d6a01e
   internal/sdk/models/shared/entitlementenforcementplugin.go:
     id: ae346179b858
-    last_write_checksum: sha1:27ca9356c2f3bcf71b678caddbe0ce746d4a924f
-    pristine_git_object: e25168f87eb6b29b43155d291cf8b28ed77d6e4d
+    last_write_checksum: sha1:9497df82d1cf476f8360b2043e4d90aa5f011ba6
+    pristine_git_object: 69412f0e7797b39b4b4c7207ee4fdf324b7ecc6d
   internal/sdk/models/shared/entitytype.go:
     id: 0ea44d62a768
     last_write_checksum: sha1:0d4f40dfb042f296576bc78eed65fc9a1cbe1e6a
@@ -33527,7 +33527,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "customer": null, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "redis": null, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 710719}
   update-entitlementenforcement-plugin:
@@ -33537,10 +33537,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "customer": null, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "redis": null, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "customer": null, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "redis": null, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 348151}
   create-entitlementenforcement-plugin:
@@ -33549,10 +33549,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "customer": null, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "redis": null, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "customer": null, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "redis": null, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "entitlement-enforcement", "ordering": null, "partials": null, "tags": null, "config": {"api_token": "<value>", "credit_balance_required": true, "deny_unknown_customers": true, "entitlement_access_endpoint": "<value>", "fail_policy": "allow", "feature": {"key": "<key>"}, "keepalive": 60000, "l1_cache_ttl_seconds": 5, "l2_cache_ttl_seconds": 120, "max_stale_seconds": 60, "refresh_interval": 30, "ssl_verify": true, "sync_rate": 2, "timeout": 10000}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 443187}
 examplesVersion: 1.0.2
