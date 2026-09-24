@@ -22810,6 +22810,61 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Team Roles
+  '/v3/portals/{portalId}/teams/{teamId}/developers':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeamDeveloper#create
+        terraform-datasource: null
+      operationId: add-developer-to-portal-team
+      summary: Add Developer to Team
+      description: 'Adds a developer to a team. This associates them with all of the roles that have been assigned to the team, providing specific permissions to perform actions on resources.'
+      requestBody:
+        $ref: '#/components/requestBodies/AddDeveloperToTeam'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Team Membership
+  '/v3/portals/{portalId}/teams/{teamId}/developers/{developerId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/DeveloperId'
+      - $ref: '#/components/parameters/TeamId'
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeamDeveloper#delete
+        terraform-datasource: null
+      operationId: remove-developer-from-portal-team
+      summary: Remove Developer from Team
+      description: Removes a developer from a team. This removes the association of the team's roles from the developer.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Team Membership
   /v3/system-accounts:
     get:
       x-speakeasy-entity-operation:
@@ -24282,6 +24337,15 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
+    DeveloperId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: developerId
+      in: path
+      required: true
+      description: ID of the developer.
     DeveloperIdToMatchResourceID:
       name: developerId
       in: path
@@ -34103,6 +34167,21 @@ components:
             oidc_scopes: .oidc_config.scopes
           }
           | del(.oidc_config)
+    AddDeveloperToTeamRequest:
+      description: Add a developer to a team by specifying the developer ID.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+          writeOnly: true
+          x-speakeasy-name-override: developer_id
+      example:
+        id: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
+      required:
+        - id
+      title: AddDeveloperToTeamRequest
     PortalAssignRoleRequest:
       description: An assigned role associates a service and an action to a team.
       type: object
@@ -99186,6 +99265,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAssignRoleRequest'
+    AddDeveloperToTeam:
+      description: Add a developer to a team.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddDeveloperToTeamRequest'
     CreatePortalSourceIPRestriction:
       content:
         application/json:
@@ -102489,6 +102574,8 @@ tags:
     description: APIs related to Konnect Developer Portal developers.
   - name: Portal Teams
     description: APIs related to configuration of Konnect Developer Portal developer teams.
+  - name: Portal Team Membership
+    description: APIs related to Konnect Developer Portal developer team membership.
   - name: Portal Team Roles
     description: APIs related to Konnect Developer Portal developer team roles.
   - name: Assets
