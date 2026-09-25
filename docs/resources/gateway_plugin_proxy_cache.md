@@ -16,8 +16,9 @@ GatewayPluginProxyCache Resource
 resource "konnect_gateway_plugin_proxy_cache" "my_gatewaypluginproxycache" {
   condition = "...my_condition..."
   config = {
-    cache_control = false
-    cache_ttl     = 300
+    cache_by_principal = false
+    cache_control      = false
+    cache_ttl          = 300
     content_type = [
       "..."
     ]
@@ -125,6 +126,7 @@ Required:
 
 Optional:
 
+- `cache_by_principal` (Boolean) When enabled, use the authenticated Principal's UUID to compose the cache key. Default: false
 - `cache_control` (Boolean) When enabled, respect the Cache-Control behaviors defined in RFC7234. Default: false
 - `cache_ttl` (Number) TTL, in seconds, of cache entities. Default: 300
 - `content_type` (List of String) Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value. Default: ["application/json","text/plain"]

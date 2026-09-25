@@ -27,6 +27,7 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
     notify_only_request_validation_failure       = false
     notify_only_response_body_validation_failure = false
     query_parameter_check                        = false
+    rfc9457_error_response                       = false
     structured_errors                            = false
     validate_request_body                        = true
     validate_request_header_params               = true
@@ -121,6 +122,7 @@ Optional:
 - `notify_only_request_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow. Default: false
 - `notify_only_response_body_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow. Default: false
 - `query_parameter_check` (Boolean) If set to true, checks if query parameters in the request exist in the API specification. Default: false
+- `rfc9457_error_response` (Boolean) If set to `true`, interrupting non-gRPC HTTP validation failures are returned as `application/problem+json` using RFC 9457 top-level fields plus Kong extensions `message`, `errors`, and optional `more`. Requires `structured_errors` and `verbose_response` to both be set to `true`. When set to `false`, the legacy response format is preserved. Default: false
 - `structured_errors` (Boolean) If set to true, schema validation failures are returned as a structured `errors` array, where each entry contains `instanceLocation`, `keywordLocation`, and `error`. Pre-validation failures such as path-not-found or unsupported content-type also return an `errors` array, but entries contain only an `error` field. Requires `verbose_response` to be enabled. Use `max_structured_errors` to cap the response size. Default: false
 - `validate_request_body` (Boolean) If set to true, validates the request body content against the API specification. Default: true
 - `validate_request_header_params` (Boolean) If set to true, validates HTTP header parameters against the API specification. Default: true

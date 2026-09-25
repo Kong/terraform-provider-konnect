@@ -147,7 +147,7 @@ func (a *AIGatewayMCPServerWithUpstreamConfigSessionOutput) GetStrategy() *AIGat
 	return a.Strategy
 }
 
-// AIGatewayMCPServerWithUpstreamConfigServer - Server-side configuration specific to modes where Kong answers as the MCP server.
+// AIGatewayMCPServerWithUpstreamConfigServer - Server-side configuration for the MCP Server.
 type AIGatewayMCPServerWithUpstreamConfigServer struct {
 	// Whether to forward the client request headers to the upstream server when calling the tools.
 	ForwardClientHeaders *bool `default:"true" json:"forward_client_headers"`
@@ -202,7 +202,7 @@ type AIGatewayMCPServerWithUpstreamConfigOutput struct {
 	Logging *AIGatewayMCPServerWithUpstreamConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
-	// Server-side configuration specific to modes where Kong answers as the MCP server.
+	// Server-side configuration for the MCP Server.
 	Server *AIGatewayMCPServerWithUpstreamConfigServer `json:"server"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
@@ -335,7 +335,7 @@ func (a *AIGatewayMCPServerWithUpstreamConfigSession) GetStrategy() *AIGatewayMC
 	return a.Strategy
 }
 
-// Server - Server-side configuration specific to modes where Kong answers as the MCP server.
+// Server - Server-side configuration for the MCP Server.
 type Server struct {
 	// Whether to forward the client request headers to the upstream server when calling the tools.
 	ForwardClientHeaders *bool `default:"true" json:"forward_client_headers"`
@@ -390,7 +390,7 @@ type AIGatewayMCPServerWithUpstreamConfig struct {
 	Logging *AIGatewayMCPServerWithUpstreamConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
-	// Server-side configuration specific to modes where Kong answers as the MCP server.
+	// Server-side configuration for the MCP Server.
 	Server *Server `json:"server"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}

@@ -206,11 +206,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
-			r.Config.ClusterCacheRedis = &tfTypes.ClusterCacheRedis{}
+			r.Config.ClusterCacheRedis = &tfTypes.PartialVectordbRedis{}
 			if resp.Config.ClusterCacheRedis.CloudAuthentication == nil {
 				r.Config.ClusterCacheRedis.CloudAuthentication = nil
 			} else {
-				r.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+				r.Config.ClusterCacheRedis.CloudAuthentication = &tfTypes.PartialRedisEeCloudAuthentication{}
 				if resp.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider != nil {
 					r.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.ClusterCacheRedis.CloudAuthentication.AuthProvider))
 				} else {
@@ -227,6 +227,51 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 				r.Config.ClusterCacheRedis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.AzureClientSecret)
 				r.Config.ClusterCacheRedis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.AzureTenantID)
 				r.Config.ClusterCacheRedis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.GcpServiceAccountJSON)
+				if resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth == nil {
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth = nil
+				} else {
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth = &tfTypes.PartialRedisEeOauth{}
+					if resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.AuthMethod != nil {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.AuthMethod))
+					} else {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+					}
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientID)
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecret)
+					if resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+					} else {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+					}
+					if resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.GrantType != nil {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.GrantType))
+					} else {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.GrantType = types.StringNull()
+					}
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Password)
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsername)
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsernameClaim)
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes))
+					for _, v := range resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes = append(r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+					}
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.SslVerify)
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Timeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Timeout)
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenEndpoint)
+					if resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders != nil {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders))
+						for key, value := range resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders {
+							r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders[key] = types.StringValue(value)
+						}
+					}
+					if resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+						r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs))
+						for key1, value1 := range resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs {
+							r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs[key1] = types.StringValue(value1)
+						}
+					}
+					r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Username)
+				}
 			}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
 			if resp.Config.ClusterCacheRedis.ClusterNodes != nil {
@@ -644,6 +689,25 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ProofOfPossessionMtlsFromHeader.SecureSource = types.BoolPointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.SecureSource)
 			r.Config.ProofOfPossessionMtlsFromHeader.SslVerify = types.BoolPointerValue(resp.Config.ProofOfPossessionMtlsFromHeader.SslVerify)
 		}
+		if resp.Config.ProtectedResourceMetadata == nil {
+			r.Config.ProtectedResourceMetadata = nil
+		} else {
+			r.Config.ProtectedResourceMetadata = &tfTypes.ProtectedResourceMetadata{}
+			r.Config.ProtectedResourceMetadata.AuthorizationServers = make([]types.String, 0, len(resp.Config.ProtectedResourceMetadata.AuthorizationServers))
+			for _, v := range resp.Config.ProtectedResourceMetadata.AuthorizationServers {
+				r.Config.ProtectedResourceMetadata.AuthorizationServers = append(r.Config.ProtectedResourceMetadata.AuthorizationServers, types.StringValue(v))
+			}
+			r.Config.ProtectedResourceMetadata.MetadataEndpoint = types.StringPointerValue(resp.Config.ProtectedResourceMetadata.MetadataEndpoint)
+			r.Config.ProtectedResourceMetadata.Resource = types.StringValue(resp.Config.ProtectedResourceMetadata.Resource)
+			if resp.Config.ProtectedResourceMetadata.ScopesSupported != nil {
+				r.Config.ProtectedResourceMetadata.ScopesSupported = make([]types.String, 0, len(resp.Config.ProtectedResourceMetadata.ScopesSupported))
+				for _, v := range resp.Config.ProtectedResourceMetadata.ScopesSupported {
+					r.Config.ProtectedResourceMetadata.ScopesSupported = append(r.Config.ProtectedResourceMetadata.ScopesSupported, types.StringValue(v))
+				}
+			} else {
+				r.Config.ProtectedResourceMetadata.ScopesSupported = nil
+			}
+		}
 		r.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(resp.Config.PushedAuthorizationRequestEndpoint)
 		if resp.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
 			r.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*resp.Config.PushedAuthorizationRequestEndpointAuthMethod))
@@ -661,11 +725,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.Redis{}
+			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisEeCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -682,6 +746,51 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 				r.Config.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureClientSecret)
 				r.Config.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureTenantID)
 				r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
+				if resp.Config.Redis.CloudAuthentication.Oauth == nil {
+					r.Config.Redis.CloudAuthentication.Oauth = nil
+				} else {
+					r.Config.Redis.CloudAuthentication.Oauth = &tfTypes.PartialRedisEeOauth{}
+					if resp.Config.Redis.CloudAuthentication.Oauth.AuthMethod != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.Oauth.AuthMethod))
+					} else {
+						r.Config.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.ClientID)
+					r.Config.Redis.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.ClientSecret)
+					if resp.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+					} else {
+						r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+					}
+					if resp.Config.Redis.CloudAuthentication.Oauth.GrantType != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.Oauth.GrantType))
+					} else {
+						r.Config.Redis.CloudAuthentication.Oauth.GrantType = types.StringNull()
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.Password)
+					r.Config.Redis.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.RedisUsername)
+					r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim)
+					r.Config.Redis.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Redis.CloudAuthentication.Oauth.Scopes))
+					for _, v := range resp.Config.Redis.CloudAuthentication.Oauth.Scopes {
+						r.Config.Redis.CloudAuthentication.Oauth.Scopes = append(r.Config.Redis.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.SslVerify)
+					r.Config.Redis.CloudAuthentication.Oauth.Timeout = types.Int64PointerValue(resp.Config.Redis.CloudAuthentication.Oauth.Timeout)
+					r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint)
+					if resp.Config.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Redis.CloudAuthentication.Oauth.TokenHeaders))
+						for key2, value2 := range resp.Config.Redis.CloudAuthentication.Oauth.TokenHeaders {
+							r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders[key2] = types.StringValue(value2)
+						}
+					}
+					if resp.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs))
+						for key3, value3 := range resp.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+							r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs[key3] = types.StringValue(value3)
+						}
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.Username)
+				}
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
@@ -879,10 +988,38 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 				r.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Cache.Enabled)
 				r.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.Config.TokenExchange.Cache.TTL)
 			}
+			if resp.Config.TokenExchange.GrantType != nil {
+				r.Config.TokenExchange.GrantType = types.StringValue(string(*resp.Config.TokenExchange.GrantType))
+			} else {
+				r.Config.TokenExchange.GrantType = types.StringNull()
+			}
+			if resp.Config.TokenExchange.MapIdentitiesFrom != nil {
+				r.Config.TokenExchange.MapIdentitiesFrom = types.StringValue(string(*resp.Config.TokenExchange.MapIdentitiesFrom))
+			} else {
+				r.Config.TokenExchange.MapIdentitiesFrom = types.StringNull()
+			}
+			if resp.Config.TokenExchange.Provider != nil {
+				r.Config.TokenExchange.Provider = types.StringValue(string(*resp.Config.TokenExchange.Provider))
+			} else {
+				r.Config.TokenExchange.Provider = types.StringNull()
+			}
 			if resp.Config.TokenExchange.Request == nil {
 				r.Config.TokenExchange.Request = nil
 			} else {
-				r.Config.TokenExchange.Request = &tfTypes.Request{}
+				r.Config.TokenExchange.Request = &tfTypes.OpenidConnectPluginRequest{}
+				if resp.Config.TokenExchange.Request.ActorToken == nil {
+					r.Config.TokenExchange.Request.ActorToken = nil
+				} else {
+					r.Config.TokenExchange.Request.ActorToken = &tfTypes.ActorToken{}
+					r.Config.TokenExchange.Request.ActorToken.HeaderName = types.StringPointerValue(resp.Config.TokenExchange.Request.ActorToken.HeaderName)
+					if resp.Config.TokenExchange.Request.ActorToken.Source != nil {
+						r.Config.TokenExchange.Request.ActorToken.Source = types.StringValue(string(*resp.Config.TokenExchange.Request.ActorToken.Source))
+					} else {
+						r.Config.TokenExchange.Request.ActorToken.Source = types.StringNull()
+					}
+					r.Config.TokenExchange.Request.ActorToken.StaticToken = types.StringPointerValue(resp.Config.TokenExchange.Request.ActorToken.StaticToken)
+					r.Config.TokenExchange.Request.ActorToken.Type = types.StringPointerValue(resp.Config.TokenExchange.Request.ActorToken.Type)
+				}
 				if resp.Config.TokenExchange.Request.Audience != nil {
 					r.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Audience))
 					for _, v := range resp.Config.TokenExchange.Request.Audience {
@@ -892,7 +1029,41 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 					r.Config.TokenExchange.Request.Audience = nil
 				}
 				r.Config.TokenExchange.Request.EmptyAudience = types.BoolPointerValue(resp.Config.TokenExchange.Request.EmptyAudience)
+				r.Config.TokenExchange.Request.EmptyHeaders = types.BoolPointerValue(resp.Config.TokenExchange.Request.EmptyHeaders)
+				r.Config.TokenExchange.Request.EmptyPostArgs = types.BoolPointerValue(resp.Config.TokenExchange.Request.EmptyPostArgs)
 				r.Config.TokenExchange.Request.EmptyScopes = types.BoolPointerValue(resp.Config.TokenExchange.Request.EmptyScopes)
+				if resp.Config.TokenExchange.Request.HeadersNames != nil {
+					r.Config.TokenExchange.Request.HeadersNames = make([]types.String, 0, len(resp.Config.TokenExchange.Request.HeadersNames))
+					for _, v := range resp.Config.TokenExchange.Request.HeadersNames {
+						r.Config.TokenExchange.Request.HeadersNames = append(r.Config.TokenExchange.Request.HeadersNames, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.HeadersNames = nil
+				}
+				if resp.Config.TokenExchange.Request.HeadersValues != nil {
+					r.Config.TokenExchange.Request.HeadersValues = make([]types.String, 0, len(resp.Config.TokenExchange.Request.HeadersValues))
+					for _, v := range resp.Config.TokenExchange.Request.HeadersValues {
+						r.Config.TokenExchange.Request.HeadersValues = append(r.Config.TokenExchange.Request.HeadersValues, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.HeadersValues = nil
+				}
+				if resp.Config.TokenExchange.Request.PostArgsNames != nil {
+					r.Config.TokenExchange.Request.PostArgsNames = make([]types.String, 0, len(resp.Config.TokenExchange.Request.PostArgsNames))
+					for _, v := range resp.Config.TokenExchange.Request.PostArgsNames {
+						r.Config.TokenExchange.Request.PostArgsNames = append(r.Config.TokenExchange.Request.PostArgsNames, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.PostArgsNames = nil
+				}
+				if resp.Config.TokenExchange.Request.PostArgsValues != nil {
+					r.Config.TokenExchange.Request.PostArgsValues = make([]types.String, 0, len(resp.Config.TokenExchange.Request.PostArgsValues))
+					for _, v := range resp.Config.TokenExchange.Request.PostArgsValues {
+						r.Config.TokenExchange.Request.PostArgsValues = append(r.Config.TokenExchange.Request.PostArgsValues, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.PostArgsValues = nil
+				}
 				if resp.Config.TokenExchange.Request.Scopes != nil {
 					r.Config.TokenExchange.Request.Scopes = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Scopes))
 					for _, v := range resp.Config.TokenExchange.Request.Scopes {
@@ -1884,6 +2055,122 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			} else {
 				gcpServiceAccountJSON = nil
 			}
+			var oauth *shared.OpenidConnectPluginOauth
+			if r.Config.ClusterCacheRedis.CloudAuthentication.Oauth != nil {
+				authMethod := new(shared.OpenidConnectPluginAuthMethod)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+					*authMethod = shared.OpenidConnectPluginAuthMethod(r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.AuthMethod.ValueString())
+				} else {
+					authMethod = nil
+				}
+				clientId1 := new(string)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientID.IsNull() {
+					*clientId1 = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientID.ValueString()
+				} else {
+					clientId1 = nil
+				}
+				clientSecret1 := new(string)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+					*clientSecret1 = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecret.ValueString()
+				} else {
+					clientSecret1 = nil
+				}
+				clientSecretJwtAlg := new(shared.OpenidConnectPluginClientSecretJwtAlg)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+					*clientSecretJwtAlg = shared.OpenidConnectPluginClientSecretJwtAlg(r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+				} else {
+					clientSecretJwtAlg = nil
+				}
+				grantType := new(shared.OpenidConnectPluginConfigClusterCacheRedisGrantType)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.GrantType.IsNull() {
+					*grantType = shared.OpenidConnectPluginConfigClusterCacheRedisGrantType(r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.GrantType.ValueString())
+				} else {
+					grantType = nil
+				}
+				password := new(string)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Password.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Password.IsNull() {
+					*password = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Password.ValueString()
+				} else {
+					password = nil
+				}
+				redisUsername := new(string)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+					*redisUsername = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsername.ValueString()
+				} else {
+					redisUsername = nil
+				}
+				redisUsernameClaim := new(string)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+					*redisUsernameClaim = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+				} else {
+					redisUsernameClaim = nil
+				}
+				scopes := make([]string, 0, len(r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes))
+				for scopesIndex := range r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes {
+					scopes = append(scopes, r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Scopes[scopesIndex].ValueString())
+				}
+				sslVerify := new(bool)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.SslVerify.IsNull() {
+					*sslVerify = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.SslVerify.ValueBool()
+				} else {
+					sslVerify = nil
+				}
+				timeout := new(int64)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Timeout.IsNull() {
+					*timeout = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Timeout.ValueInt64()
+				} else {
+					timeout = nil
+				}
+				tokenEndpoint := new(string)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+					*tokenEndpoint = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+				} else {
+					tokenEndpoint = nil
+				}
+				var tokenHeaders map[string]string
+				if r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders != nil {
+					tokenHeaders = make(map[string]string)
+					for tokenHeadersKey := range r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders {
+						var tokenHeadersInst string
+						tokenHeadersInst = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey].ValueString()
+
+						tokenHeaders[tokenHeadersKey] = tokenHeadersInst
+					}
+				}
+				var tokenPostArgs map[string]string
+				if r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+					tokenPostArgs = make(map[string]string)
+					for tokenPostArgsKey := range r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs {
+						var tokenPostArgsInst string
+						tokenPostArgsInst = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey].ValueString()
+
+						tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
+					}
+				}
+				username := new(string)
+				if !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Username.IsUnknown() && !r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Username.IsNull() {
+					*username = r.Config.ClusterCacheRedis.CloudAuthentication.Oauth.Username.ValueString()
+				} else {
+					username = nil
+				}
+				oauth = &shared.OpenidConnectPluginOauth{
+					AuthMethod:         authMethod,
+					ClientID:           clientId1,
+					ClientSecret:       clientSecret1,
+					ClientSecretJwtAlg: clientSecretJwtAlg,
+					GrantType:          grantType,
+					Password:           password,
+					RedisUsername:      redisUsername,
+					RedisUsernameClaim: redisUsernameClaim,
+					Scopes:             scopes,
+					SslVerify:          sslVerify,
+					Timeout:            timeout,
+					TokenEndpoint:      tokenEndpoint,
+					TokenHeaders:       tokenHeaders,
+					TokenPostArgs:      tokenPostArgs,
+					Username:           username,
+				}
+			}
 			cloudAuthentication = &shared.OpenidConnectPluginCloudAuthentication{
 				AuthProvider:          authProvider,
 				AwsAccessKeyID:        awsAccessKeyID,
@@ -1897,6 +2184,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 				AzureClientSecret:     azureClientSecret,
 				AzureTenantID:         azureTenantID,
 				GcpServiceAccountJSON: gcpServiceAccountJSON,
+				Oauth:                 oauth,
 			}
 		}
 		clusterMaxRedirections := new(int64)
@@ -1963,11 +2251,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			keepalivePoolSize = nil
 		}
-		password := new(string)
+		password1 := new(string)
 		if !r.Config.ClusterCacheRedis.Password.IsUnknown() && !r.Config.ClusterCacheRedis.Password.IsNull() {
-			*password = r.Config.ClusterCacheRedis.Password.ValueString()
+			*password1 = r.Config.ClusterCacheRedis.Password.ValueString()
 		} else {
-			password = nil
+			password1 = nil
 		}
 		port1 := new(string)
 		if !r.Config.ClusterCacheRedis.Port.IsUnknown() && !r.Config.ClusterCacheRedis.Port.IsNull() {
@@ -2045,17 +2333,17 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			ssl = nil
 		}
-		sslVerify := new(bool)
+		sslVerify1 := new(bool)
 		if !r.Config.ClusterCacheRedis.SslVerify.IsUnknown() && !r.Config.ClusterCacheRedis.SslVerify.IsNull() {
-			*sslVerify = r.Config.ClusterCacheRedis.SslVerify.ValueBool()
+			*sslVerify1 = r.Config.ClusterCacheRedis.SslVerify.ValueBool()
 		} else {
-			sslVerify = nil
+			sslVerify1 = nil
 		}
-		username := new(string)
+		username1 := new(string)
 		if !r.Config.ClusterCacheRedis.Username.IsUnknown() && !r.Config.ClusterCacheRedis.Username.IsNull() {
-			*username = r.Config.ClusterCacheRedis.Username.ValueString()
+			*username1 = r.Config.ClusterCacheRedis.Username.ValueString()
 		} else {
-			username = nil
+			username1 = nil
 		}
 		clusterCacheRedis = &shared.OpenidConnectPluginClusterCacheRedis{
 			CloudAuthentication:    cloudAuthentication,
@@ -2067,7 +2355,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			Host:                   host,
 			KeepaliveBacklog:       keepaliveBacklog,
 			KeepalivePoolSize:      keepalivePoolSize,
-			Password:               password,
+			Password:               password1,
 			Port:                   port1,
 			ReadTimeout:            readTimeout,
 			SendTimeout:            sendTimeout,
@@ -2078,8 +2366,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			SentinelUsername:       sentinelUsername,
 			ServerName:             serverName,
 			Ssl:                    ssl,
-			SslVerify:              sslVerify,
-			Username:               username,
+			SslVerify:              sslVerify1,
+			Username:               username1,
 		}
 	}
 	clusterCacheStrategy := new(shared.OpenidConnectPluginClusterCacheStrategy)
@@ -2755,11 +3043,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			secureSource = nil
 		}
-		sslVerify1 := new(bool)
+		sslVerify2 := new(bool)
 		if !r.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsUnknown() && !r.Config.ProofOfPossessionMtlsFromHeader.SslVerify.IsNull() {
-			*sslVerify1 = r.Config.ProofOfPossessionMtlsFromHeader.SslVerify.ValueBool()
+			*sslVerify2 = r.Config.ProofOfPossessionMtlsFromHeader.SslVerify.ValueBool()
 		} else {
-			sslVerify1 = nil
+			sslVerify2 = nil
 		}
 		proofOfPossessionMtlsFromHeader = &shared.ProofOfPossessionMtlsFromHeader{
 			AllowPartialChain:       allowPartialChain,
@@ -2774,7 +3062,36 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			HTTPSProxyPort:          httpsProxyPort,
 			RevocationCheckMode:     revocationCheckMode,
 			SecureSource:            secureSource,
-			SslVerify:               sslVerify1,
+			SslVerify:               sslVerify2,
+		}
+	}
+	var protectedResourceMetadata *shared.ProtectedResourceMetadata
+	if r.Config.ProtectedResourceMetadata != nil {
+		authorizationServers := make([]string, 0, len(r.Config.ProtectedResourceMetadata.AuthorizationServers))
+		for authorizationServersIndex := range r.Config.ProtectedResourceMetadata.AuthorizationServers {
+			authorizationServers = append(authorizationServers, r.Config.ProtectedResourceMetadata.AuthorizationServers[authorizationServersIndex].ValueString())
+		}
+		metadataEndpoint := new(string)
+		if !r.Config.ProtectedResourceMetadata.MetadataEndpoint.IsUnknown() && !r.Config.ProtectedResourceMetadata.MetadataEndpoint.IsNull() {
+			*metadataEndpoint = r.Config.ProtectedResourceMetadata.MetadataEndpoint.ValueString()
+		} else {
+			metadataEndpoint = nil
+		}
+		var resource string
+		resource = r.Config.ProtectedResourceMetadata.Resource.ValueString()
+
+		var scopesSupported []string
+		if r.Config.ProtectedResourceMetadata.ScopesSupported != nil {
+			scopesSupported = make([]string, 0, len(r.Config.ProtectedResourceMetadata.ScopesSupported))
+			for scopesSupportedIndex := range r.Config.ProtectedResourceMetadata.ScopesSupported {
+				scopesSupported = append(scopesSupported, r.Config.ProtectedResourceMetadata.ScopesSupported[scopesSupportedIndex].ValueString())
+			}
+		}
+		protectedResourceMetadata = &shared.ProtectedResourceMetadata{
+			AuthorizationServers: authorizationServers,
+			MetadataEndpoint:     metadataEndpoint,
+			Resource:             resource,
+			ScopesSupported:      scopesSupported,
 		}
 	}
 	pushedAuthorizationRequestEndpoint := new(string)
@@ -2872,6 +3189,122 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			} else {
 				gcpServiceAccountJson1 = nil
 			}
+			var oauth1 *shared.OpenidConnectPluginConfigOauth
+			if r.Config.Redis.CloudAuthentication.Oauth != nil {
+				authMethod1 := new(shared.OpenidConnectPluginConfigAuthMethod)
+				if !r.Config.Redis.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+					*authMethod1 = shared.OpenidConnectPluginConfigAuthMethod(r.Config.Redis.CloudAuthentication.Oauth.AuthMethod.ValueString())
+				} else {
+					authMethod1 = nil
+				}
+				clientId2 := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.ClientID.IsNull() {
+					*clientId2 = r.Config.Redis.CloudAuthentication.Oauth.ClientID.ValueString()
+				} else {
+					clientId2 = nil
+				}
+				clientSecret2 := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+					*clientSecret2 = r.Config.Redis.CloudAuthentication.Oauth.ClientSecret.ValueString()
+				} else {
+					clientSecret2 = nil
+				}
+				clientSecretJwtAlg1 := new(shared.OpenidConnectPluginConfigClientSecretJwtAlg)
+				if !r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+					*clientSecretJwtAlg1 = shared.OpenidConnectPluginConfigClientSecretJwtAlg(r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+				} else {
+					clientSecretJwtAlg1 = nil
+				}
+				grantType1 := new(shared.OpenidConnectPluginConfigGrantType)
+				if !r.Config.Redis.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.GrantType.IsNull() {
+					*grantType1 = shared.OpenidConnectPluginConfigGrantType(r.Config.Redis.CloudAuthentication.Oauth.GrantType.ValueString())
+				} else {
+					grantType1 = nil
+				}
+				password2 := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.Password.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.Password.IsNull() {
+					*password2 = r.Config.Redis.CloudAuthentication.Oauth.Password.ValueString()
+				} else {
+					password2 = nil
+				}
+				redisUsername1 := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+					*redisUsername1 = r.Config.Redis.CloudAuthentication.Oauth.RedisUsername.ValueString()
+				} else {
+					redisUsername1 = nil
+				}
+				redisUsernameClaim1 := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+					*redisUsernameClaim1 = r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+				} else {
+					redisUsernameClaim1 = nil
+				}
+				scopes1 := make([]string, 0, len(r.Config.Redis.CloudAuthentication.Oauth.Scopes))
+				for scopesIndex1 := range r.Config.Redis.CloudAuthentication.Oauth.Scopes {
+					scopes1 = append(scopes1, r.Config.Redis.CloudAuthentication.Oauth.Scopes[scopesIndex1].ValueString())
+				}
+				sslVerify3 := new(bool)
+				if !r.Config.Redis.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.SslVerify.IsNull() {
+					*sslVerify3 = r.Config.Redis.CloudAuthentication.Oauth.SslVerify.ValueBool()
+				} else {
+					sslVerify3 = nil
+				}
+				timeout1 := new(int64)
+				if !r.Config.Redis.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.Timeout.IsNull() {
+					*timeout1 = r.Config.Redis.CloudAuthentication.Oauth.Timeout.ValueInt64()
+				} else {
+					timeout1 = nil
+				}
+				tokenEndpoint1 := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+					*tokenEndpoint1 = r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+				} else {
+					tokenEndpoint1 = nil
+				}
+				var tokenHeaders1 map[string]string
+				if r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+					tokenHeaders1 = make(map[string]string)
+					for tokenHeadersKey1 := range r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders {
+						var tokenHeadersInst1 string
+						tokenHeadersInst1 = r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey1].ValueString()
+
+						tokenHeaders1[tokenHeadersKey1] = tokenHeadersInst1
+					}
+				}
+				var tokenPostArgs1 map[string]string
+				if r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+					tokenPostArgs1 = make(map[string]string)
+					for tokenPostArgsKey1 := range r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+						var tokenPostArgsInst1 string
+						tokenPostArgsInst1 = r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey1].ValueString()
+
+						tokenPostArgs1[tokenPostArgsKey1] = tokenPostArgsInst1
+					}
+				}
+				username2 := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.Username.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.Username.IsNull() {
+					*username2 = r.Config.Redis.CloudAuthentication.Oauth.Username.ValueString()
+				} else {
+					username2 = nil
+				}
+				oauth1 = &shared.OpenidConnectPluginConfigOauth{
+					AuthMethod:         authMethod1,
+					ClientID:           clientId2,
+					ClientSecret:       clientSecret2,
+					ClientSecretJwtAlg: clientSecretJwtAlg1,
+					GrantType:          grantType1,
+					Password:           password2,
+					RedisUsername:      redisUsername1,
+					RedisUsernameClaim: redisUsernameClaim1,
+					Scopes:             scopes1,
+					SslVerify:          sslVerify3,
+					Timeout:            timeout1,
+					TokenEndpoint:      tokenEndpoint1,
+					TokenHeaders:       tokenHeaders1,
+					TokenPostArgs:      tokenPostArgs1,
+					Username:           username2,
+				}
+			}
 			cloudAuthentication1 = &shared.OpenidConnectPluginConfigCloudAuthentication{
 				AuthProvider:          authProvider1,
 				AwsAccessKeyID:        awsAccessKeyId1,
@@ -2885,6 +3318,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 				AzureClientSecret:     azureClientSecret1,
 				AzureTenantID:         azureTenantId1,
 				GcpServiceAccountJSON: gcpServiceAccountJson1,
+				Oauth:                 oauth1,
 			}
 		}
 		clusterMaxRedirections1 := new(int64)
@@ -2951,11 +3385,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			keepalivePoolSize1 = nil
 		}
-		password1 := new(string)
+		password3 := new(string)
 		if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
-			*password1 = r.Config.Redis.Password.ValueString()
+			*password3 = r.Config.Redis.Password.ValueString()
 		} else {
-			password1 = nil
+			password3 = nil
 		}
 		port4 := new(string)
 		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
@@ -3045,17 +3479,17 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			ssl1 = nil
 		}
-		sslVerify2 := new(bool)
+		sslVerify4 := new(bool)
 		if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
-			*sslVerify2 = r.Config.Redis.SslVerify.ValueBool()
+			*sslVerify4 = r.Config.Redis.SslVerify.ValueBool()
 		} else {
-			sslVerify2 = nil
+			sslVerify4 = nil
 		}
-		username1 := new(string)
+		username3 := new(string)
 		if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
-			*username1 = r.Config.Redis.Username.ValueString()
+			*username3 = r.Config.Redis.Username.ValueString()
 		} else {
-			username1 = nil
+			username3 = nil
 		}
 		redis = &shared.OpenidConnectPluginRedis{
 			CloudAuthentication:    cloudAuthentication1,
@@ -3067,7 +3501,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			Host:                   host2,
 			KeepaliveBacklog:       keepaliveBacklog1,
 			KeepalivePoolSize:      keepalivePoolSize1,
-			Password:               password1,
+			Password:               password3,
 			Port:                   port4,
 			Prefix:                 prefix,
 			ReadTimeout:            readTimeout1,
@@ -3080,8 +3514,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			ServerName:             serverName1,
 			Socket:                 socket,
 			Ssl:                    ssl1,
-			SslVerify:              sslVerify2,
-			Username:               username1,
+			SslVerify:              sslVerify4,
+			Username:               username3,
 		}
 	}
 	rediscoveryLifetime := new(float64)
@@ -3181,11 +3615,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		runOnPreflight = nil
 	}
-	var scopes []string
+	var scopes2 []string
 	if r.Config.Scopes != nil {
-		scopes = make([]string, 0, len(r.Config.Scopes))
-		for scopesIndex := range r.Config.Scopes {
-			scopes = append(scopes, r.Config.Scopes[scopesIndex].ValueString())
+		scopes2 = make([]string, 0, len(r.Config.Scopes))
+		for scopesIndex2 := range r.Config.Scopes {
+			scopes2 = append(scopes2, r.Config.Scopes[scopesIndex2].ValueString())
 		}
 	}
 	scopesClaim := make([]string, 0, len(r.Config.ScopesClaim))
@@ -3382,17 +3816,17 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionStoreMetadata = nil
 	}
-	sslVerify3 := new(bool)
+	sslVerify5 := new(bool)
 	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
-		*sslVerify3 = r.Config.SslVerify.ValueBool()
+		*sslVerify5 = r.Config.SslVerify.ValueBool()
 	} else {
-		sslVerify3 = nil
+		sslVerify5 = nil
 	}
-	timeout := new(float64)
+	timeout2 := new(float64)
 	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout = r.Config.Timeout.ValueFloat64()
+		*timeout2 = r.Config.Timeout.ValueFloat64()
 	} else {
-		timeout = nil
+		timeout2 = nil
 	}
 	tlsClientAuthCertID := new(string)
 	if !r.Config.TLSClientAuthCertID.IsUnknown() && !r.Config.TLSClientAuthCertID.IsNull() {
@@ -3412,11 +3846,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		tokenCacheKeyIncludeScope = nil
 	}
-	tokenEndpoint := new(string)
+	tokenEndpoint2 := new(string)
 	if !r.Config.TokenEndpoint.IsUnknown() && !r.Config.TokenEndpoint.IsNull() {
-		*tokenEndpoint = r.Config.TokenEndpoint.ValueString()
+		*tokenEndpoint2 = r.Config.TokenEndpoint.ValueString()
 	} else {
-		tokenEndpoint = nil
+		tokenEndpoint2 = nil
 	}
 	tokenEndpointAuthMethod := new(shared.OpenidConnectPluginTokenEndpointAuthMethod)
 	if !r.Config.TokenEndpointAuthMethod.IsUnknown() && !r.Config.TokenEndpointAuthMethod.IsNull() {
@@ -3445,8 +3879,59 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 				TTL:     ttl,
 			}
 		}
+		grantType2 := new(shared.OpenidConnectPluginGrantType)
+		if !r.Config.TokenExchange.GrantType.IsUnknown() && !r.Config.TokenExchange.GrantType.IsNull() {
+			*grantType2 = shared.OpenidConnectPluginGrantType(r.Config.TokenExchange.GrantType.ValueString())
+		} else {
+			grantType2 = nil
+		}
+		mapIdentitiesFrom := new(shared.MapIdentitiesFrom)
+		if !r.Config.TokenExchange.MapIdentitiesFrom.IsUnknown() && !r.Config.TokenExchange.MapIdentitiesFrom.IsNull() {
+			*mapIdentitiesFrom = shared.MapIdentitiesFrom(r.Config.TokenExchange.MapIdentitiesFrom.ValueString())
+		} else {
+			mapIdentitiesFrom = nil
+		}
+		provider := new(shared.OpenidConnectPluginProvider)
+		if !r.Config.TokenExchange.Provider.IsUnknown() && !r.Config.TokenExchange.Provider.IsNull() {
+			*provider = shared.OpenidConnectPluginProvider(r.Config.TokenExchange.Provider.ValueString())
+		} else {
+			provider = nil
+		}
 		var request *shared.OpenidConnectPluginRequest
 		if r.Config.TokenExchange.Request != nil {
+			var actorToken *shared.ActorToken
+			if r.Config.TokenExchange.Request.ActorToken != nil {
+				headerName := new(string)
+				if !r.Config.TokenExchange.Request.ActorToken.HeaderName.IsUnknown() && !r.Config.TokenExchange.Request.ActorToken.HeaderName.IsNull() {
+					*headerName = r.Config.TokenExchange.Request.ActorToken.HeaderName.ValueString()
+				} else {
+					headerName = nil
+				}
+				source := new(shared.OpenidConnectPluginSource)
+				if !r.Config.TokenExchange.Request.ActorToken.Source.IsUnknown() && !r.Config.TokenExchange.Request.ActorToken.Source.IsNull() {
+					*source = shared.OpenidConnectPluginSource(r.Config.TokenExchange.Request.ActorToken.Source.ValueString())
+				} else {
+					source = nil
+				}
+				staticToken := new(string)
+				if !r.Config.TokenExchange.Request.ActorToken.StaticToken.IsUnknown() && !r.Config.TokenExchange.Request.ActorToken.StaticToken.IsNull() {
+					*staticToken = r.Config.TokenExchange.Request.ActorToken.StaticToken.ValueString()
+				} else {
+					staticToken = nil
+				}
+				typeVar := new(string)
+				if !r.Config.TokenExchange.Request.ActorToken.Type.IsUnknown() && !r.Config.TokenExchange.Request.ActorToken.Type.IsNull() {
+					*typeVar = r.Config.TokenExchange.Request.ActorToken.Type.ValueString()
+				} else {
+					typeVar = nil
+				}
+				actorToken = &shared.ActorToken{
+					HeaderName:  headerName,
+					Source:      source,
+					StaticToken: staticToken,
+					Type:        typeVar,
+				}
+			}
 			var audience1 []string
 			if r.Config.TokenExchange.Request.Audience != nil {
 				audience1 = make([]string, 0, len(r.Config.TokenExchange.Request.Audience))
@@ -3460,24 +3945,71 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			} else {
 				emptyAudience = nil
 			}
+			emptyHeaders := new(bool)
+			if !r.Config.TokenExchange.Request.EmptyHeaders.IsUnknown() && !r.Config.TokenExchange.Request.EmptyHeaders.IsNull() {
+				*emptyHeaders = r.Config.TokenExchange.Request.EmptyHeaders.ValueBool()
+			} else {
+				emptyHeaders = nil
+			}
+			emptyPostArgs := new(bool)
+			if !r.Config.TokenExchange.Request.EmptyPostArgs.IsUnknown() && !r.Config.TokenExchange.Request.EmptyPostArgs.IsNull() {
+				*emptyPostArgs = r.Config.TokenExchange.Request.EmptyPostArgs.ValueBool()
+			} else {
+				emptyPostArgs = nil
+			}
 			emptyScopes := new(bool)
 			if !r.Config.TokenExchange.Request.EmptyScopes.IsUnknown() && !r.Config.TokenExchange.Request.EmptyScopes.IsNull() {
 				*emptyScopes = r.Config.TokenExchange.Request.EmptyScopes.ValueBool()
 			} else {
 				emptyScopes = nil
 			}
-			var scopes1 []string
+			var headersNames []string
+			if r.Config.TokenExchange.Request.HeadersNames != nil {
+				headersNames = make([]string, 0, len(r.Config.TokenExchange.Request.HeadersNames))
+				for headersNamesIndex := range r.Config.TokenExchange.Request.HeadersNames {
+					headersNames = append(headersNames, r.Config.TokenExchange.Request.HeadersNames[headersNamesIndex].ValueString())
+				}
+			}
+			var headersValues []string
+			if r.Config.TokenExchange.Request.HeadersValues != nil {
+				headersValues = make([]string, 0, len(r.Config.TokenExchange.Request.HeadersValues))
+				for headersValuesIndex := range r.Config.TokenExchange.Request.HeadersValues {
+					headersValues = append(headersValues, r.Config.TokenExchange.Request.HeadersValues[headersValuesIndex].ValueString())
+				}
+			}
+			var postArgsNames []string
+			if r.Config.TokenExchange.Request.PostArgsNames != nil {
+				postArgsNames = make([]string, 0, len(r.Config.TokenExchange.Request.PostArgsNames))
+				for postArgsNamesIndex := range r.Config.TokenExchange.Request.PostArgsNames {
+					postArgsNames = append(postArgsNames, r.Config.TokenExchange.Request.PostArgsNames[postArgsNamesIndex].ValueString())
+				}
+			}
+			var postArgsValues []string
+			if r.Config.TokenExchange.Request.PostArgsValues != nil {
+				postArgsValues = make([]string, 0, len(r.Config.TokenExchange.Request.PostArgsValues))
+				for postArgsValuesIndex := range r.Config.TokenExchange.Request.PostArgsValues {
+					postArgsValues = append(postArgsValues, r.Config.TokenExchange.Request.PostArgsValues[postArgsValuesIndex].ValueString())
+				}
+			}
+			var scopes3 []string
 			if r.Config.TokenExchange.Request.Scopes != nil {
-				scopes1 = make([]string, 0, len(r.Config.TokenExchange.Request.Scopes))
-				for scopesIndex1 := range r.Config.TokenExchange.Request.Scopes {
-					scopes1 = append(scopes1, r.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
+				scopes3 = make([]string, 0, len(r.Config.TokenExchange.Request.Scopes))
+				for scopesIndex3 := range r.Config.TokenExchange.Request.Scopes {
+					scopes3 = append(scopes3, r.Config.TokenExchange.Request.Scopes[scopesIndex3].ValueString())
 				}
 			}
 			request = &shared.OpenidConnectPluginRequest{
-				Audience:      audience1,
-				EmptyAudience: emptyAudience,
-				EmptyScopes:   emptyScopes,
-				Scopes:        scopes1,
+				ActorToken:     actorToken,
+				Audience:       audience1,
+				EmptyAudience:  emptyAudience,
+				EmptyHeaders:   emptyHeaders,
+				EmptyPostArgs:  emptyPostArgs,
+				EmptyScopes:    emptyScopes,
+				HeadersNames:   headersNames,
+				HeadersValues:  headersValues,
+				PostArgsNames:  postArgsNames,
+				PostArgsValues: postArgsValues,
+				Scopes:         scopes3,
 			}
 		}
 		subjectTokenIssuers := make([]shared.OpenidConnectPluginSubjectTokenIssuers, 0, len(r.Config.TokenExchange.SubjectTokenIssuers))
@@ -3543,6 +4075,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		}
 		tokenExchange = &shared.OpenidConnectPluginTokenExchange{
 			Cache:               cache,
+			GrantType:           grantType2,
+			MapIdentitiesFrom:   mapIdentitiesFrom,
+			Provider:            provider,
 			Request:             request,
 			SubjectTokenIssuers: subjectTokenIssuers,
 		}
@@ -3953,6 +4488,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		ProofOfPossessionDpop:                  proofOfPossessionDpop,
 		ProofOfPossessionMtls:                  proofOfPossessionMtls,
 		ProofOfPossessionMtlsFromHeader:        proofOfPossessionMtlsFromHeader,
+		ProtectedResourceMetadata:              protectedResourceMetadata,
 		PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
 		PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
 		RedirectURI:                        redirectURI,
@@ -3974,7 +4510,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		RolesClaim:                         rolesClaim,
 		RolesRequired:                      rolesRequired,
 		RunOnPreflight:                     runOnPreflight,
-		Scopes:                             scopes,
+		Scopes:                             scopes2,
 		ScopesClaim:                        scopesClaim,
 		ScopesRequired:                     scopesRequired,
 		SearchUserInfo:                     searchUserInfo,
@@ -4007,12 +4543,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		SessionSecret:                      sessionSecret,
 		SessionStorage:                     sessionStorage,
 		SessionStoreMetadata:               sessionStoreMetadata,
-		SslVerify:                          sslVerify3,
-		Timeout:                            timeout,
+		SslVerify:                          sslVerify5,
+		Timeout:                            timeout2,
 		TLSClientAuthCertID:                tlsClientAuthCertID,
 		TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
 		TokenCacheKeyIncludeScope:          tokenCacheKeyIncludeScope,
-		TokenEndpoint:                      tokenEndpoint,
+		TokenEndpoint:                      tokenEndpoint2,
 		TokenEndpointAuthMethod:            tokenEndpointAuthMethod,
 		TokenExchange:                      tokenExchange,
 		TokenExchangeEndpoint:              tokenExchangeEndpoint,

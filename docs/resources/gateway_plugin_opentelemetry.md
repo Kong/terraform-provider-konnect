@@ -37,6 +37,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
       enable_bandwidth_metrics       = false
       enable_consumer_attribute      = false
       enable_latency_metrics         = false
+      enable_principal_attribute     = false
       enable_request_metrics         = false
       enable_upstream_health_metrics = false
       endpoint                       = "...my_endpoint..."
@@ -55,7 +56,9 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
       ]
     }
     queue = {
+      breaker_cooldown     = 60
       concurrency_limit    = 1
+      failure_threshold    = 0
       initial_retry_delay  = 226722.01
       max_batch_size       = 200
       max_bytes            = 9
@@ -182,6 +185,7 @@ Optional:
 - `enable_bandwidth_metrics` (Boolean) A boolean value that determines if bandwidth metrics should be collected. If enabled, `http.server.request.size` and `http.server.response.size` metrics will be exported. Default: false
 - `enable_consumer_attribute` (Boolean) A boolean value that determines if `http.server.request.count`, `http.server.request.size` and `http.server.response.size` metrics should fill in the consumer attribute when available. Default: false
 - `enable_latency_metrics` (Boolean) A boolean value that determines if latency metrics should be collected. If enabled, `kong.latency.total`, `kong.latency.internal` and `kong.latency.upstream` metrics will be exported. Default: false
+- `enable_principal_attribute` (Boolean) A boolean value that determines if `http.server.request.count`, `http.server.request.size` and `http.server.response.size` metrics should fill in the principal attributes when an authenticated principal is available. Default: false
 - `enable_request_metrics` (Boolean) A boolean value that determines if request count metrics should be collected. If enabled, `http.server.request.count` metrics will be exported. Default: false
 - `enable_upstream_health_metrics` (Boolean) A boolean value that determines if upstream health metrics should be collected. If enabled, `kong.upstream.target.status` metrics will be exported. Default: false
 - `endpoint` (String) An HTTP URL endpoint where metrics are exported.
@@ -204,7 +208,9 @@ Optional:
 
 Optional:
 
+- `breaker_cooldown` (Number) Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered. Default: 60
 - `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
+- `failure_threshold` (Number) Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker. Default: 0
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 200
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.

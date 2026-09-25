@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -26,6 +27,12 @@ func (r *APIPublicationResourceModel) RefreshFromSharedAPIPublicationResponse(ct
 		r.AutoApproveRegistrations = types.BoolPointerValue(resp.AutoApproveRegistrations)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.FormID = types.StringPointerValue(resp.FormID)
+		if resp.SpecRenderer == nil {
+			r.SpecRenderer = nil
+		} else {
+			r.SpecRenderer = &tfTypes.APIPublicationSpecRenderer{}
+			r.SpecRenderer.TryItUIAudience = types.StringValue(string(resp.SpecRenderer.TryItUIAudience))
+		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		r.Visibility = types.StringValue(string(resp.Visibility))
 		r.Warnings = make([]types.String, 0, len(resp.Warnings))

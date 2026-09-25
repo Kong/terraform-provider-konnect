@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestGatewayCustomPlugin(t *testing.T) {
@@ -27,13 +28,26 @@ func TestGatewayCustomPlugin(t *testing.T) {
 						resource.TestCheckNoResourceAttr("konnect_gateway_custom_plugin.custom_no_instance_name", "instance_name"),
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering.before.access.0", "acl"),
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering.after.access.0", "request-transformer"),
+						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_rate_limiting_with_partial", "partials.0.name", "custom-plugin-redis-ce-partial"),
+						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_rate_limiting_with_partial", "condition", "http.method == \"GET\""),
 					),
 				},
-				{ // Remove ordering block
+				{
+					// Check that there are no phantom diffs
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{ // Remove ordering and partial block
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckNoResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_custom_plugin.custom_rate_limiting_with_partial", "partials"),
 					),
 				},
 			},

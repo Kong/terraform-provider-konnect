@@ -8,7 +8,9 @@ import (
 
 // KonnectCPLegacyNotFoundError - standard error
 type KonnectCPLegacyNotFoundError struct {
-	Message any `json:"message,omitempty"`
+	// A short summary of the problem.
+	//
+	Message *string `json:"message,omitempty"`
 }
 
 func (k KonnectCPLegacyNotFoundError) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (k *KonnectCPLegacyNotFoundError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (k *KonnectCPLegacyNotFoundError) GetMessage() any {
+func (k *KonnectCPLegacyNotFoundError) GetMessage() *string {
 	if k == nil {
 		return nil
 	}

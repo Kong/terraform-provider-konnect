@@ -234,6 +234,8 @@ func (e *ProxyCachePluginStrategy) UnmarshalJSON(data []byte) error {
 }
 
 type ProxyCachePluginConfig struct {
+	// When enabled, use the authenticated Principal's UUID to compose the cache key.
+	CacheByPrincipal *bool `default:"false" json:"cache_by_principal"`
 	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
 	CacheControl *bool `default:"false" json:"cache_control"`
 	// TTL, in seconds, of cache entities.
@@ -267,6 +269,13 @@ func (p *ProxyCachePluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *ProxyCachePluginConfig) GetCacheByPrincipal() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.CacheByPrincipal
 }
 
 func (p *ProxyCachePluginConfig) GetCacheControl() *bool {

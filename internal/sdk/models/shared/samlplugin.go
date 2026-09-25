@@ -152,6 +152,7 @@ const (
 	SamlPluginAuthProviderAws   SamlPluginAuthProvider = "aws"
 	SamlPluginAuthProviderAzure SamlPluginAuthProvider = "azure"
 	SamlPluginAuthProviderGcp   SamlPluginAuthProvider = "gcp"
+	SamlPluginAuthProviderOauth SamlPluginAuthProvider = "oauth"
 )
 
 func (e SamlPluginAuthProvider) ToPointer() *SamlPluginAuthProvider {
@@ -162,11 +163,231 @@ func (e SamlPluginAuthProvider) ToPointer() *SamlPluginAuthProvider {
 func (e *SamlPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// SamlPluginAuthMethod - Client authentication method used against the token endpoint.
+type SamlPluginAuthMethod string
+
+const (
+	SamlPluginAuthMethodClientSecretBasic SamlPluginAuthMethod = "client_secret_basic"
+	SamlPluginAuthMethodClientSecretJwt   SamlPluginAuthMethod = "client_secret_jwt"
+	SamlPluginAuthMethodClientSecretPost  SamlPluginAuthMethod = "client_secret_post"
+)
+
+func (e SamlPluginAuthMethod) ToPointer() *SamlPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// SamlPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type SamlPluginClientSecretJwtAlg string
+
+const (
+	SamlPluginClientSecretJwtAlgHs256 SamlPluginClientSecretJwtAlg = "HS256"
+	SamlPluginClientSecretJwtAlgHs512 SamlPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e SamlPluginClientSecretJwtAlg) ToPointer() *SamlPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// SamlPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type SamlPluginGrantType string
+
+const (
+	SamlPluginGrantTypeClientCredentials SamlPluginGrantType = "client_credentials"
+	SamlPluginGrantTypePassword          SamlPluginGrantType = "password"
+)
+
+func (e SamlPluginGrantType) ToPointer() *SamlPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// SamlPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type SamlPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *SamlPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *SamlPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *SamlPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (s SamlPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SamlPluginOauth) GetAuthMethod() *SamlPluginAuthMethod {
+	if s == nil {
+		return nil
+	}
+	return s.AuthMethod
+}
+
+func (s *SamlPluginOauth) GetClientID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ClientID
+}
+
+func (s *SamlPluginOauth) GetClientSecret() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ClientSecret
+}
+
+func (s *SamlPluginOauth) GetClientSecretJwtAlg() *SamlPluginClientSecretJwtAlg {
+	if s == nil {
+		return nil
+	}
+	return s.ClientSecretJwtAlg
+}
+
+func (s *SamlPluginOauth) GetGrantType() *SamlPluginGrantType {
+	if s == nil {
+		return nil
+	}
+	return s.GrantType
+}
+
+func (s *SamlPluginOauth) GetPassword() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Password
+}
+
+func (s *SamlPluginOauth) GetRedisUsername() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RedisUsername
+}
+
+func (s *SamlPluginOauth) GetRedisUsernameClaim() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RedisUsernameClaim
+}
+
+func (s *SamlPluginOauth) GetScopes() []string {
+	if s == nil {
+		return nil
+	}
+	return s.Scopes
+}
+
+func (s *SamlPluginOauth) GetSslVerify() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.SslVerify
+}
+
+func (s *SamlPluginOauth) GetTimeout() *int64 {
+	if s == nil {
+		return nil
+	}
+	return s.Timeout
+}
+
+func (s *SamlPluginOauth) GetTokenEndpoint() *string {
+	if s == nil {
+		return nil
+	}
+	return s.TokenEndpoint
+}
+
+func (s *SamlPluginOauth) GetTokenHeaders() map[string]string {
+	if s == nil {
+		return nil
+	}
+	return s.TokenHeaders
+}
+
+func (s *SamlPluginOauth) GetTokenPostArgs() map[string]string {
+	if s == nil {
+		return nil
+	}
+	return s.TokenPostArgs
+}
+
+func (s *SamlPluginOauth) GetUsername() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Username
 }
 
 // SamlPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -195,6 +416,8 @@ type SamlPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *SamlPluginOauth `json:"oauth"`
 }
 
 func (s SamlPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -290,6 +513,13 @@ func (s *SamlPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
 		return nil
 	}
 	return s.GcpServiceAccountJSON
+}
+
+func (s *SamlPluginCloudAuthentication) GetOauth() *SamlPluginOauth {
+	if s == nil {
+		return nil
+	}
+	return s.Oauth
 }
 
 type SamlPluginClusterNodes struct {

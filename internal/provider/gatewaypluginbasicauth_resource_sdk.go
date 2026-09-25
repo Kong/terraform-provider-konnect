@@ -32,7 +32,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 					if resp.Config.BruteForceProtection.Redis.CloudAuthentication == nil {
 						r.Config.BruteForceProtection.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
 						if resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -49,6 +49,51 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 						r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientSecret)
 						r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AzureTenantID)
 						r.Config.BruteForceProtection.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.GcpServiceAccountJSON)
+						if resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth == nil {
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth = nil
+						} else {
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth = &tfTypes.PartialRedisCeOauth{}
+							if resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.AuthMethod != nil {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.AuthMethod))
+							} else {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+							}
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientID)
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecret)
+							if resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+							} else {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+							}
+							if resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.GrantType != nil {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.GrantType))
+							} else {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.GrantType = types.StringNull()
+							}
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Password)
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsername)
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsernameClaim)
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes))
+							for _, v := range resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes = append(r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+							}
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.SslVerify)
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Timeout = types.Float64PointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Timeout)
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenEndpoint)
+							if resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders))
+								for key, value := range resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders {
+									r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders[key] = types.StringValue(value)
+								}
+							}
+							if resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+								r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs))
+								for key1, value1 := range resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+									r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs[key1] = types.StringValue(value1)
+								}
+							}
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Username)
+						}
 					}
 					r.Config.BruteForceProtection.Redis.Database = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Database)
 					r.Config.BruteForceProtection.Redis.Host = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Host)
@@ -414,6 +459,122 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 					} else {
 						gcpServiceAccountJSON = nil
 					}
+					var oauth *shared.BasicAuthPluginOauth
+					if r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth != nil {
+						authMethod := new(shared.BasicAuthPluginAuthMethod)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+							*authMethod = shared.BasicAuthPluginAuthMethod(r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.AuthMethod.ValueString())
+						} else {
+							authMethod = nil
+						}
+						clientID := new(string)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientID.IsNull() {
+							*clientID = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientID.ValueString()
+						} else {
+							clientID = nil
+						}
+						clientSecret := new(string)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+							*clientSecret = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecret.ValueString()
+						} else {
+							clientSecret = nil
+						}
+						clientSecretJwtAlg := new(shared.BasicAuthPluginClientSecretJwtAlg)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+							*clientSecretJwtAlg = shared.BasicAuthPluginClientSecretJwtAlg(r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+						} else {
+							clientSecretJwtAlg = nil
+						}
+						grantType := new(shared.BasicAuthPluginGrantType)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.GrantType.IsNull() {
+							*grantType = shared.BasicAuthPluginGrantType(r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.GrantType.ValueString())
+						} else {
+							grantType = nil
+						}
+						password := new(string)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Password.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Password.IsNull() {
+							*password = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Password.ValueString()
+						} else {
+							password = nil
+						}
+						redisUsername := new(string)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+							*redisUsername = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsername.ValueString()
+						} else {
+							redisUsername = nil
+						}
+						redisUsernameClaim := new(string)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+							*redisUsernameClaim = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+						} else {
+							redisUsernameClaim = nil
+						}
+						scopes := make([]string, 0, len(r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes))
+						for scopesIndex := range r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes {
+							scopes = append(scopes, r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Scopes[scopesIndex].ValueString())
+						}
+						sslVerify := new(bool)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.SslVerify.IsNull() {
+							*sslVerify = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.SslVerify.ValueBool()
+						} else {
+							sslVerify = nil
+						}
+						timeout := new(float64)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Timeout.IsNull() {
+							*timeout = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Timeout.ValueFloat64()
+						} else {
+							timeout = nil
+						}
+						tokenEndpoint := new(string)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+							*tokenEndpoint = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+						} else {
+							tokenEndpoint = nil
+						}
+						var tokenHeaders map[string]string
+						if r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+							tokenHeaders = make(map[string]string)
+							for tokenHeadersKey := range r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders {
+								var tokenHeadersInst string
+								tokenHeadersInst = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey].ValueString()
+
+								tokenHeaders[tokenHeadersKey] = tokenHeadersInst
+							}
+						}
+						var tokenPostArgs map[string]string
+						if r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+							tokenPostArgs = make(map[string]string)
+							for tokenPostArgsKey := range r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+								var tokenPostArgsInst string
+								tokenPostArgsInst = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey].ValueString()
+
+								tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
+							}
+						}
+						username := new(string)
+						if !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Username.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Username.IsNull() {
+							*username = r.Config.BruteForceProtection.Redis.CloudAuthentication.Oauth.Username.ValueString()
+						} else {
+							username = nil
+						}
+						oauth = &shared.BasicAuthPluginOauth{
+							AuthMethod:         authMethod,
+							ClientID:           clientID,
+							ClientSecret:       clientSecret,
+							ClientSecretJwtAlg: clientSecretJwtAlg,
+							GrantType:          grantType,
+							Password:           password,
+							RedisUsername:      redisUsername,
+							RedisUsernameClaim: redisUsernameClaim,
+							Scopes:             scopes,
+							SslVerify:          sslVerify,
+							Timeout:            timeout,
+							TokenEndpoint:      tokenEndpoint,
+							TokenHeaders:       tokenHeaders,
+							TokenPostArgs:      tokenPostArgs,
+							Username:           username,
+						}
+					}
 					cloudAuthentication = &shared.BasicAuthPluginCloudAuthentication{
 						AuthProvider:          authProvider,
 						AwsAccessKeyID:        awsAccessKeyID,
@@ -427,6 +588,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 						AzureClientSecret:     azureClientSecret,
 						AzureTenantID:         azureTenantID,
 						GcpServiceAccountJSON: gcpServiceAccountJSON,
+						Oauth:                 oauth,
 					}
 				}
 				database := new(int64)
@@ -441,11 +603,11 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 				} else {
 					host = nil
 				}
-				password := new(string)
+				password1 := new(string)
 				if !r.Config.BruteForceProtection.Redis.Password.IsUnknown() && !r.Config.BruteForceProtection.Redis.Password.IsNull() {
-					*password = r.Config.BruteForceProtection.Redis.Password.ValueString()
+					*password1 = r.Config.BruteForceProtection.Redis.Password.ValueString()
 				} else {
-					password = nil
+					password1 = nil
 				}
 				port := new(string)
 				if !r.Config.BruteForceProtection.Redis.Port.IsUnknown() && !r.Config.BruteForceProtection.Redis.Port.IsNull() {
@@ -465,35 +627,35 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 				} else {
 					ssl = nil
 				}
-				sslVerify := new(bool)
+				sslVerify1 := new(bool)
 				if !r.Config.BruteForceProtection.Redis.SslVerify.IsUnknown() && !r.Config.BruteForceProtection.Redis.SslVerify.IsNull() {
-					*sslVerify = r.Config.BruteForceProtection.Redis.SslVerify.ValueBool()
+					*sslVerify1 = r.Config.BruteForceProtection.Redis.SslVerify.ValueBool()
 				} else {
-					sslVerify = nil
+					sslVerify1 = nil
 				}
-				timeout := new(int64)
+				timeout1 := new(int64)
 				if !r.Config.BruteForceProtection.Redis.Timeout.IsUnknown() && !r.Config.BruteForceProtection.Redis.Timeout.IsNull() {
-					*timeout = r.Config.BruteForceProtection.Redis.Timeout.ValueInt64()
+					*timeout1 = r.Config.BruteForceProtection.Redis.Timeout.ValueInt64()
 				} else {
-					timeout = nil
+					timeout1 = nil
 				}
-				username := new(string)
+				username1 := new(string)
 				if !r.Config.BruteForceProtection.Redis.Username.IsUnknown() && !r.Config.BruteForceProtection.Redis.Username.IsNull() {
-					*username = r.Config.BruteForceProtection.Redis.Username.ValueString()
+					*username1 = r.Config.BruteForceProtection.Redis.Username.ValueString()
 				} else {
-					username = nil
+					username1 = nil
 				}
 				redis = &shared.BasicAuthPluginRedis{
 					CloudAuthentication: cloudAuthentication,
 					Database:            database,
 					Host:                host,
-					Password:            password,
+					Password:            password1,
 					Port:                port,
 					ServerName:          serverName,
 					Ssl:                 ssl,
-					SslVerify:           sslVerify,
-					Timeout:             timeout,
-					Username:            username,
+					SslVerify:           sslVerify1,
+					Timeout:             timeout1,
+					Username:            username1,
 				}
 			}
 			strategy := new(shared.BasicAuthPluginStrategy)

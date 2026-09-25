@@ -150,6 +150,7 @@ const (
 	GraphqlProxyCacheAdvancedPluginAuthProviderAws   GraphqlProxyCacheAdvancedPluginAuthProvider = "aws"
 	GraphqlProxyCacheAdvancedPluginAuthProviderAzure GraphqlProxyCacheAdvancedPluginAuthProvider = "azure"
 	GraphqlProxyCacheAdvancedPluginAuthProviderGcp   GraphqlProxyCacheAdvancedPluginAuthProvider = "gcp"
+	GraphqlProxyCacheAdvancedPluginAuthProviderOauth GraphqlProxyCacheAdvancedPluginAuthProvider = "oauth"
 )
 
 func (e GraphqlProxyCacheAdvancedPluginAuthProvider) ToPointer() *GraphqlProxyCacheAdvancedPluginAuthProvider {
@@ -160,11 +161,231 @@ func (e GraphqlProxyCacheAdvancedPluginAuthProvider) ToPointer() *GraphqlProxyCa
 func (e *GraphqlProxyCacheAdvancedPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// GraphqlProxyCacheAdvancedPluginAuthMethod - Client authentication method used against the token endpoint.
+type GraphqlProxyCacheAdvancedPluginAuthMethod string
+
+const (
+	GraphqlProxyCacheAdvancedPluginAuthMethodClientSecretBasic GraphqlProxyCacheAdvancedPluginAuthMethod = "client_secret_basic"
+	GraphqlProxyCacheAdvancedPluginAuthMethodClientSecretJwt   GraphqlProxyCacheAdvancedPluginAuthMethod = "client_secret_jwt"
+	GraphqlProxyCacheAdvancedPluginAuthMethodClientSecretPost  GraphqlProxyCacheAdvancedPluginAuthMethod = "client_secret_post"
+)
+
+func (e GraphqlProxyCacheAdvancedPluginAuthMethod) ToPointer() *GraphqlProxyCacheAdvancedPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlProxyCacheAdvancedPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg string
+
+const (
+	GraphqlProxyCacheAdvancedPluginClientSecretJwtAlgHs256 GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg = "HS256"
+	GraphqlProxyCacheAdvancedPluginClientSecretJwtAlgHs512 GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg) ToPointer() *GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// GraphqlProxyCacheAdvancedPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type GraphqlProxyCacheAdvancedPluginGrantType string
+
+const (
+	GraphqlProxyCacheAdvancedPluginGrantTypeClientCredentials GraphqlProxyCacheAdvancedPluginGrantType = "client_credentials"
+	GraphqlProxyCacheAdvancedPluginGrantTypePassword          GraphqlProxyCacheAdvancedPluginGrantType = "password"
+)
+
+func (e GraphqlProxyCacheAdvancedPluginGrantType) ToPointer() *GraphqlProxyCacheAdvancedPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlProxyCacheAdvancedPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// GraphqlProxyCacheAdvancedPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type GraphqlProxyCacheAdvancedPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *GraphqlProxyCacheAdvancedPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *GraphqlProxyCacheAdvancedPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (g GraphqlProxyCacheAdvancedPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetAuthMethod() *GraphqlProxyCacheAdvancedPluginAuthMethod {
+	if g == nil {
+		return nil
+	}
+	return g.AuthMethod
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetClientID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ClientID
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetClientSecret() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ClientSecret
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetClientSecretJwtAlg() *GraphqlProxyCacheAdvancedPluginClientSecretJwtAlg {
+	if g == nil {
+		return nil
+	}
+	return g.ClientSecretJwtAlg
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetGrantType() *GraphqlProxyCacheAdvancedPluginGrantType {
+	if g == nil {
+		return nil
+	}
+	return g.GrantType
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetPassword() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Password
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetRedisUsername() *string {
+	if g == nil {
+		return nil
+	}
+	return g.RedisUsername
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetRedisUsernameClaim() *string {
+	if g == nil {
+		return nil
+	}
+	return g.RedisUsernameClaim
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetScopes() []string {
+	if g == nil {
+		return nil
+	}
+	return g.Scopes
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetSslVerify() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.SslVerify
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetTimeout() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.Timeout
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetTokenEndpoint() *string {
+	if g == nil {
+		return nil
+	}
+	return g.TokenEndpoint
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetTokenHeaders() map[string]string {
+	if g == nil {
+		return nil
+	}
+	return g.TokenHeaders
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetTokenPostArgs() map[string]string {
+	if g == nil {
+		return nil
+	}
+	return g.TokenPostArgs
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginOauth) GetUsername() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Username
 }
 
 // GraphqlProxyCacheAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -193,6 +414,8 @@ type GraphqlProxyCacheAdvancedPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *GraphqlProxyCacheAdvancedPluginOauth `json:"oauth"`
 }
 
 func (g GraphqlProxyCacheAdvancedPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -288,6 +511,13 @@ func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetGcpServiceAccoun
 		return nil
 	}
 	return g.GcpServiceAccountJSON
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetOauth() *GraphqlProxyCacheAdvancedPluginOauth {
+	if g == nil {
+		return nil
+	}
+	return g.Oauth
 }
 
 type GraphqlProxyCacheAdvancedPluginClusterNodes struct {

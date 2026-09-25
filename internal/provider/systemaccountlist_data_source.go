@@ -29,8 +29,8 @@ type SystemAccountListDataSource struct {
 
 // SystemAccountListDataSourceModel describes the data model.
 type SystemAccountListDataSourceModel struct {
-	Data   []tfTypes.SystemAccount `tfsdk:"data"`
-	Filter *tfTypes.Filter         `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
+	Data   []tfTypes.SystemAccount   `tfsdk:"data"`
+	Filter *tfTypes.QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 }
 
 // Metadata returns the data source type name.

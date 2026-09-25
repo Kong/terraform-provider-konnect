@@ -2450,6 +2450,7 @@ const (
 	AiProxyAdvancedPluginAuthProviderAws   AiProxyAdvancedPluginAuthProvider = "aws"
 	AiProxyAdvancedPluginAuthProviderAzure AiProxyAdvancedPluginAuthProvider = "azure"
 	AiProxyAdvancedPluginAuthProviderGcp   AiProxyAdvancedPluginAuthProvider = "gcp"
+	AiProxyAdvancedPluginAuthProviderOauth AiProxyAdvancedPluginAuthProvider = "oauth"
 )
 
 func (e AiProxyAdvancedPluginAuthProvider) ToPointer() *AiProxyAdvancedPluginAuthProvider {
@@ -2460,11 +2461,231 @@ func (e AiProxyAdvancedPluginAuthProvider) ToPointer() *AiProxyAdvancedPluginAut
 func (e *AiProxyAdvancedPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// AiProxyAdvancedPluginAuthMethod - Client authentication method used against the token endpoint.
+type AiProxyAdvancedPluginAuthMethod string
+
+const (
+	AiProxyAdvancedPluginAuthMethodClientSecretBasic AiProxyAdvancedPluginAuthMethod = "client_secret_basic"
+	AiProxyAdvancedPluginAuthMethodClientSecretJwt   AiProxyAdvancedPluginAuthMethod = "client_secret_jwt"
+	AiProxyAdvancedPluginAuthMethodClientSecretPost  AiProxyAdvancedPluginAuthMethod = "client_secret_post"
+)
+
+func (e AiProxyAdvancedPluginAuthMethod) ToPointer() *AiProxyAdvancedPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// AiProxyAdvancedPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type AiProxyAdvancedPluginClientSecretJwtAlg string
+
+const (
+	AiProxyAdvancedPluginClientSecretJwtAlgHs256 AiProxyAdvancedPluginClientSecretJwtAlg = "HS256"
+	AiProxyAdvancedPluginClientSecretJwtAlgHs512 AiProxyAdvancedPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e AiProxyAdvancedPluginClientSecretJwtAlg) ToPointer() *AiProxyAdvancedPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// AiProxyAdvancedPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type AiProxyAdvancedPluginGrantType string
+
+const (
+	AiProxyAdvancedPluginGrantTypeClientCredentials AiProxyAdvancedPluginGrantType = "client_credentials"
+	AiProxyAdvancedPluginGrantTypePassword          AiProxyAdvancedPluginGrantType = "password"
+)
+
+func (e AiProxyAdvancedPluginGrantType) ToPointer() *AiProxyAdvancedPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// AiProxyAdvancedPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type AiProxyAdvancedPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *AiProxyAdvancedPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *AiProxyAdvancedPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *AiProxyAdvancedPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (a AiProxyAdvancedPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetAuthMethod() *AiProxyAdvancedPluginAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.AuthMethod
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientID
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecret
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetClientSecretJwtAlg() *AiProxyAdvancedPluginClientSecretJwtAlg {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecretJwtAlg
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetGrantType() *AiProxyAdvancedPluginGrantType {
+	if a == nil {
+		return nil
+	}
+	return a.GrantType
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetPassword() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Password
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetRedisUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsername
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetRedisUsernameClaim() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsernameClaim
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Scopes
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SslVerify
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetTimeout() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Timeout
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetTokenEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenEndpoint
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetTokenHeaders() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeaders
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetTokenPostArgs() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgs
+}
+
+func (a *AiProxyAdvancedPluginOauth) GetUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Username
 }
 
 // AiProxyAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -2493,6 +2714,8 @@ type AiProxyAdvancedPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *AiProxyAdvancedPluginOauth `json:"oauth"`
 }
 
 func (a AiProxyAdvancedPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -2588,6 +2811,13 @@ func (a *AiProxyAdvancedPluginCloudAuthentication) GetGcpServiceAccountJSON() *s
 		return nil
 	}
 	return a.GcpServiceAccountJSON
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetOauth() *AiProxyAdvancedPluginOauth {
+	if a == nil {
+		return nil
+	}
+	return a.Oauth
 }
 
 type AiProxyAdvancedPluginClusterNodes struct {

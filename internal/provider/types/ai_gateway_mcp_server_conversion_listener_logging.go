@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type Subject struct {
-	Field         types.String `tfsdk:"field"`
-	LookUpValueIn types.String `tfsdk:"look_up_value_in"`
+type AIGatewayMCPServerConversionListenerLogging struct {
+	Audits   types.Bool `tfsdk:"audits"`
+	Payloads types.Bool `tfsdk:"payloads"`
 }

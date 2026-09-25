@@ -8,8 +8,10 @@ import (
 
 type ACLPluginConfig struct {
 	Allow                        []types.String `tfsdk:"allow"`
+	AllowWhen                    []types.String `tfsdk:"allow_when"`
 	AlwaysUseAuthenticatedGroups types.Bool     `tfsdk:"always_use_authenticated_groups"`
 	Deny                         []types.String `tfsdk:"deny"`
+	DenyWhen                     []types.String `tfsdk:"deny_when"`
 	HideGroupsHeader             types.Bool     `tfsdk:"hide_groups_header"`
 	IncludeConsumerGroups        types.Bool     `tfsdk:"include_consumer_groups"`
 }

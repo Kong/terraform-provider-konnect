@@ -15,21 +15,23 @@ type ForeignKeyWithId struct {
 }
 
 type CustomPluginResourceModel struct {
-	ID             types.String               `tfsdk:"id"`
-	Name           types.String               `tfsdk:"name"`
-	Config         types.Dynamic              `tfsdk:"config"`
-	Consumer       *ForeignKeyWithId          `tfsdk:"consumer"`
-	ConsumerGroup  *ForeignKeyWithId          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                `tfsdk:"created_at"`
-	Enabled        types.Bool                 `tfsdk:"enabled"`
-	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
-	Protocols      []types.String             `tfsdk:"protocols"`
-	Route          *ForeignKeyWithId          `tfsdk:"route"`
-	Service        *ForeignKeyWithId          `tfsdk:"service"`
-	Tags           []types.String             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
+	ID             types.String                `tfsdk:"id"`
+	Name           types.String                `tfsdk:"name"`
+	Condition      types.String                `tfsdk:"condition"`
+	Config         types.Dynamic               `tfsdk:"config"`
+	Consumer       *ForeignKeyWithId           `tfsdk:"consumer"`
+	ConsumerGroup  *ForeignKeyWithId           `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                 `tfsdk:"created_at"`
+	Enabled        types.Bool                  `tfsdk:"enabled"`
+	InstanceName   types.String                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Partials       []tfTypes.ACLPluginPartials `tfsdk:"partials"`
+	Protocols      []types.String              `tfsdk:"protocols"`
+	Route          *ForeignKeyWithId           `tfsdk:"route"`
+	Service        *ForeignKeyWithId           `tfsdk:"service"`
+	Tags           []types.String              `tfsdk:"tags"`
+	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
 }
 
 func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.Plugin, error) {
@@ -56,6 +58,36 @@ func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.Plugin, error)
 	pluginInput := shared.Plugin{
 		Name:   *sdk.String(r.Name.ValueString()),
 		Config: configJson,
+	}
+
+	if !r.Condition.IsNull() && !r.Condition.IsUnknown() {
+		pluginInput.Condition = sdk.String(r.Condition.ValueString())
+	}
+
+	if r.Partials != nil {
+		pluginInput.Partials = make([]shared.Partials, 0, len(r.Partials))
+		for _, partial := range r.Partials {
+			var id *string
+			if !partial.ID.IsNull() && !partial.ID.IsUnknown() {
+				id = sdk.String(partial.ID.ValueString())
+			}
+
+			var name *string
+			if !partial.Name.IsNull() && !partial.Name.IsUnknown() {
+				name = sdk.String(partial.Name.ValueString())
+			}
+
+			var path *string
+			if !partial.Path.IsNull() && !partial.Path.IsUnknown() {
+				path = sdk.String(partial.Path.ValueString())
+			}
+
+			pluginInput.Partials = append(pluginInput.Partials, shared.Partials{
+				ID:   id,
+				Name: name,
+				Path: path,
+			})
+		}
 	}
 
 	if r.Enabled.ValueBoolPointer() != nil {

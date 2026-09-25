@@ -384,7 +384,9 @@ type Konnect struct {
 	// APIs related to configuration of Konnect Developer Portal developer teams.
 	PortalTeams *PortalTeams
 	// APIs related to Konnect Developer Portal developer team roles.
-	PortalTeamRoles              *PortalTeamRoles
+	PortalTeamRoles *PortalTeamRoles
+	// APIs related to Konnect Developer Portal developer team membership.
+	PortalTeamMembership         *PortalTeamMembership
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
@@ -467,9 +469,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.23.0",
+		SDKVersion: "3.24.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.23.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.24.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -601,6 +603,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamMembership = newPortalTeamMembership(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk, sdk.sdkConfiguration, sdk.hooks)

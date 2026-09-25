@@ -16,6 +16,7 @@ PortalTeam Resource
 resource "konnect_portal_team" "my_portalteam" {
   can_own_applications = true
   description          = "The Identity Management (IDM) team."
+  konnect_managed      = false
   name                 = "IDM - Developers"
   portal_id            = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 }
@@ -33,6 +34,7 @@ resource "konnect_portal_team" "my_portalteam" {
 
 - `can_own_applications` (Boolean) Whether the team is allowed to own applications
 - `description` (String) The description of the team.
+- `konnect_managed` (Boolean) Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to `false` (default) to let identity provider team mappings keep syncing members into this team. Set to `true` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team. Default: false
 
 ### Read-Only
 

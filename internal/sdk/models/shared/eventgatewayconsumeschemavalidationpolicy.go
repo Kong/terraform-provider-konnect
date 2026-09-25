@@ -86,6 +86,10 @@ func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfigJSON() *EventGatewa
 	return e.GetConfig().EventGatewayConsumeSchemaValidationPolicyJSONConfig
 }
 
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfigInlineSchema() *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig {
+	return e.GetConfig().EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig
+}
+
 func (e *EventGatewayConsumeSchemaValidationPolicy) GetCondition() *string {
 	if e == nil {
 		return nil

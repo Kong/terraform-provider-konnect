@@ -978,6 +978,7 @@ const (
 	AiSemanticPromptGuardPluginAuthProviderAws   AiSemanticPromptGuardPluginAuthProvider = "aws"
 	AiSemanticPromptGuardPluginAuthProviderAzure AiSemanticPromptGuardPluginAuthProvider = "azure"
 	AiSemanticPromptGuardPluginAuthProviderGcp   AiSemanticPromptGuardPluginAuthProvider = "gcp"
+	AiSemanticPromptGuardPluginAuthProviderOauth AiSemanticPromptGuardPluginAuthProvider = "oauth"
 )
 
 func (e AiSemanticPromptGuardPluginAuthProvider) ToPointer() *AiSemanticPromptGuardPluginAuthProvider {
@@ -988,11 +989,231 @@ func (e AiSemanticPromptGuardPluginAuthProvider) ToPointer() *AiSemanticPromptGu
 func (e *AiSemanticPromptGuardPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// AiSemanticPromptGuardPluginAuthMethod - Client authentication method used against the token endpoint.
+type AiSemanticPromptGuardPluginAuthMethod string
+
+const (
+	AiSemanticPromptGuardPluginAuthMethodClientSecretBasic AiSemanticPromptGuardPluginAuthMethod = "client_secret_basic"
+	AiSemanticPromptGuardPluginAuthMethodClientSecretJwt   AiSemanticPromptGuardPluginAuthMethod = "client_secret_jwt"
+	AiSemanticPromptGuardPluginAuthMethodClientSecretPost  AiSemanticPromptGuardPluginAuthMethod = "client_secret_post"
+)
+
+func (e AiSemanticPromptGuardPluginAuthMethod) ToPointer() *AiSemanticPromptGuardPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// AiSemanticPromptGuardPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type AiSemanticPromptGuardPluginClientSecretJwtAlg string
+
+const (
+	AiSemanticPromptGuardPluginClientSecretJwtAlgHs256 AiSemanticPromptGuardPluginClientSecretJwtAlg = "HS256"
+	AiSemanticPromptGuardPluginClientSecretJwtAlgHs512 AiSemanticPromptGuardPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e AiSemanticPromptGuardPluginClientSecretJwtAlg) ToPointer() *AiSemanticPromptGuardPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// AiSemanticPromptGuardPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type AiSemanticPromptGuardPluginGrantType string
+
+const (
+	AiSemanticPromptGuardPluginGrantTypeClientCredentials AiSemanticPromptGuardPluginGrantType = "client_credentials"
+	AiSemanticPromptGuardPluginGrantTypePassword          AiSemanticPromptGuardPluginGrantType = "password"
+)
+
+func (e AiSemanticPromptGuardPluginGrantType) ToPointer() *AiSemanticPromptGuardPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// AiSemanticPromptGuardPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type AiSemanticPromptGuardPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *AiSemanticPromptGuardPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *AiSemanticPromptGuardPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *AiSemanticPromptGuardPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *int64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (a AiSemanticPromptGuardPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetAuthMethod() *AiSemanticPromptGuardPluginAuthMethod {
+	if a == nil {
+		return nil
+	}
+	return a.AuthMethod
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientID
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecret
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetClientSecretJwtAlg() *AiSemanticPromptGuardPluginClientSecretJwtAlg {
+	if a == nil {
+		return nil
+	}
+	return a.ClientSecretJwtAlg
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetGrantType() *AiSemanticPromptGuardPluginGrantType {
+	if a == nil {
+		return nil
+	}
+	return a.GrantType
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetPassword() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Password
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetRedisUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsername
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetRedisUsernameClaim() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RedisUsernameClaim
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Scopes
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SslVerify
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetTimeout() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Timeout
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetTokenEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenEndpoint
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetTokenHeaders() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenHeaders
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetTokenPostArgs() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.TokenPostArgs
+}
+
+func (a *AiSemanticPromptGuardPluginOauth) GetUsername() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Username
 }
 
 // AiSemanticPromptGuardPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1021,6 +1242,8 @@ type AiSemanticPromptGuardPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *AiSemanticPromptGuardPluginOauth `json:"oauth"`
 }
 
 func (a AiSemanticPromptGuardPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -1116,6 +1339,13 @@ func (a *AiSemanticPromptGuardPluginCloudAuthentication) GetGcpServiceAccountJSO
 		return nil
 	}
 	return a.GcpServiceAccountJSON
+}
+
+func (a *AiSemanticPromptGuardPluginCloudAuthentication) GetOauth() *AiSemanticPromptGuardPluginOauth {
+	if a == nil {
+		return nil
+	}
+	return a.Oauth
 }
 
 type AiSemanticPromptGuardPluginClusterNodes struct {

@@ -128,7 +128,13 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow_auth_override = false
         config = {
           xai = {
-            cache_read_cost  = 4.42
+            cache_read_cost = 4.42
+            cache_read_cost_list = [
+              {
+                cost  = 3.96
+                modal = "audio"
+              }
+            ]
             cache_write_cost = 3.9
             cache_write_cost_list = [
               {
@@ -145,8 +151,20 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
             ]
             embeddings_dimensions = 1556463673
             input_cost            = 3.7
-            max_tokens            = 1227329724
-            output_cost           = 6.56
+            input_cost_list = [
+              {
+                cost  = 0.91
+                modal = "audio"
+              }
+            ]
+            max_tokens  = 1227329724
+            output_cost = 6.56
+            output_cost_list = [
+              {
+                cost  = 7.08
+                modal = "text"
+              }
+            ]
             service_tier_factor = [
               {
                 factor = 8.57
@@ -314,7 +332,13 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow_auth_override = false
         config = {
           databricks = {
-            cache_read_cost  = 8.45
+            cache_read_cost = 8.45
+            cache_read_cost_list = [
+              {
+                cost  = 7.35
+                modal = "text"
+              }
+            ]
             cache_write_cost = 3.62
             cache_write_cost_list = [
               {
@@ -331,8 +355,20 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
             ]
             embeddings_dimensions = 1316728274
             input_cost            = 9.06
-            max_tokens            = 1585442569
-            output_cost           = 7.78
+            input_cost_list = [
+              {
+                cost  = 3.11
+                modal = "image"
+              }
+            ]
+            max_tokens  = 1585442569
+            output_cost = 7.78
+            output_cost_list = [
+              {
+                cost  = 0.74
+                modal = "audio"
+              }
+            ]
             service_tier_factor = [
               {
                 factor = 6.01
@@ -925,7 +961,7 @@ Optional:
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
 - `path_param` (String) The name of the regex capture group defined in the route path for routing.
-- `values` (List of String) An optional model alias. When omitted, the model name is used.
+- `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 
 
@@ -983,19 +1019,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--anthropic--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
+
+<a id="nestedatt--api--targets--config--anthropic--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.anthropic.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--anthropic--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.anthropic.cache_write_cost_list`
@@ -1016,6 +1070,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--anthropic--input_cost_list"></a>
+### Nested Schema for `api.targets.config.anthropic.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--anthropic--output_cost_list"></a>
+### Nested Schema for `api.targets.config.anthropic.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--anthropic--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.anthropic.service_tier_factor`
 
@@ -1033,6 +1105,9 @@ Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--azure--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--azure--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--azure--context_window_factor))
@@ -1045,13 +1120,28 @@ targets the Anthropic surface. Applies when the Azure provider's `service` is
 `azure-foundry`.
 possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "/openai/v1"
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--azure--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--azure--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--azure--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--azure--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.azure.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--azure--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.azure.cache_write_cost_list`
@@ -1072,6 +1162,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--azure--input_cost_list"></a>
+### Nested Schema for `api.targets.config.azure.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--azure--output_cost_list"></a>
+### Nested Schema for `api.targets.config.azure.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--azure--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.azure.service_tier_factor`
 
@@ -1089,14 +1197,23 @@ Optional:
 
 - `batch_bucket_prefix` (String) S3 bucket prefix for batch inference jobs.
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `embeddings_normalize` (Boolean) Whether to normalize embedding vectors in the response. Default: false
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--bedrock--output_cost_list))
 - `performance_config_latency` (String) Latency performance configuration for the model invocation.
 - `region` (String) The AWS region for the model.
 Setting this option overrides the AWS_REGION environment variable.
@@ -1106,6 +1223,15 @@ Setting this option overrides the AWS_REGION environment variable.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+
+<a id="nestedatt--api--targets--config--bedrock--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.bedrock.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--bedrock--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.bedrock.cache_write_cost_list`
@@ -1126,6 +1252,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--bedrock--input_cost_list"></a>
+### Nested Schema for `api.targets.config.bedrock.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--bedrock--output_cost_list"></a>
+### Nested Schema for `api.targets.config.bedrock.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--bedrock--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.bedrock.service_tier_factor`
 
@@ -1142,18 +1286,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--cerebras--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--cerebras--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.cerebras.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--cerebras--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.cerebras.cache_write_cost_list`
@@ -1172,6 +1334,24 @@ Optional:
 - `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
 - `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--cerebras--input_cost_list"></a>
+### Nested Schema for `api.targets.config.cerebras.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--cerebras--output_cost_list"></a>
+### Nested Schema for `api.targets.config.cerebras.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--api--targets--config--cerebras--service_tier_factor"></a>
@@ -1193,20 +1373,38 @@ Optional:
 uses `/v2/chat` and supports tool calling.
 possible known values include one of ["v1", "v2"]; Default: "v2"
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--cohere--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--cohere--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--cohere--context_window_factor))
 - `embedding_input_type` (String) The intended downstream use of the embeddings to improve model quality. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--cohere--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--cohere--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--cohere--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
+
+<a id="nestedatt--api--targets--config--cohere--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.cohere.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--cohere--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.cohere.cache_write_cost_list`
@@ -1227,6 +1425,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--cohere--input_cost_list"></a>
+### Nested Schema for `api.targets.config.cohere.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--cohere--output_cost_list"></a>
+### Nested Schema for `api.targets.config.cohere.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--cohere--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.cohere.service_tier_factor`
 
@@ -1243,19 +1459,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--input_cost_list))
 - `international` (Boolean) Whether to use the international DashScope endpoint. Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--dashscope--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--dashscope--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.dashscope.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--dashscope--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.dashscope.cache_write_cost_list`
@@ -1276,6 +1510,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--dashscope--input_cost_list"></a>
+### Nested Schema for `api.targets.config.dashscope.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--dashscope--output_cost_list"></a>
+### Nested Schema for `api.targets.config.dashscope.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--dashscope--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.dashscope.service_tier_factor`
 
@@ -1292,19 +1544,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--databricks--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--databricks--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--databricks--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--databricks--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--databricks--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--databricks--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
+
+<a id="nestedatt--api--targets--config--databricks--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.databricks.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--databricks--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.databricks.cache_write_cost_list`
@@ -1325,6 +1595,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--databricks--input_cost_list"></a>
+### Nested Schema for `api.targets.config.databricks.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--databricks--output_cost_list"></a>
+### Nested Schema for `api.targets.config.databricks.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--databricks--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.databricks.service_tier_factor`
 
@@ -1341,18 +1629,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--deepseek--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--deepseek--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.deepseek.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--deepseek--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.deepseek.cache_write_cost_list`
@@ -1373,6 +1679,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--deepseek--input_cost_list"></a>
+### Nested Schema for `api.targets.config.deepseek.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--deepseek--output_cost_list"></a>
+### Nested Schema for `api.targets.config.deepseek.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--deepseek--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.deepseek.service_tier_factor`
 
@@ -1389,19 +1713,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--gemini--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--gemini--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--gemini--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `gcp_environment` (Attributes) Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--api--targets--config--gemini--gcp_environment))
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--gemini--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--gemini--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--gemini--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--gemini--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.gemini.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--gemini--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.gemini.cache_write_cost_list`
@@ -1432,6 +1774,24 @@ Optional:
 - `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
 
 
+<a id="nestedatt--api--targets--config--gemini--input_cost_list"></a>
+### Nested Schema for `api.targets.config.gemini.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--gemini--output_cost_list"></a>
+### Nested Schema for `api.targets.config.gemini.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--gemini--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.gemini.service_tier_factor`
 
@@ -1448,13 +1808,22 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--huggingface--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
@@ -1462,6 +1831,15 @@ Optional:
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
+
+<a id="nestedatt--api--targets--config--huggingface--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.huggingface.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--huggingface--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.huggingface.cache_write_cost_list`
@@ -1482,6 +1860,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--huggingface--input_cost_list"></a>
+### Nested Schema for `api.targets.config.huggingface.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--huggingface--output_cost_list"></a>
+### Nested Schema for `api.targets.config.huggingface.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--huggingface--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.huggingface.service_tier_factor`
 
@@ -1498,21 +1894,39 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--kimi--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--kimi--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--kimi--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--kimi--input_cost_list))
 - `international` (Boolean) When `true`, requests are sent to `api.moonshot.ai` (international).
 When `false`, requests are sent to `api.moonshot.cn` (mainland China).
 Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--kimi--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--kimi--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--kimi--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.kimi.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--kimi--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.kimi.cache_write_cost_list`
@@ -1533,6 +1947,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--kimi--input_cost_list"></a>
+### Nested Schema for `api.targets.config.kimi.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--kimi--output_cost_list"></a>
+### Nested Schema for `api.targets.config.kimi.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--kimi--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.kimi.service_tier_factor`
 
@@ -1549,19 +1981,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--llama2--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--llama2--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--llama2--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Llama2 model. possible known values include one of ["ollama", "openai", "raw"]; Not Null
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--llama2--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--llama2--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--llama2--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--api--targets--config--llama2--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.llama2.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--llama2--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.llama2.cache_write_cost_list`
@@ -1582,6 +2032,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--llama2--input_cost_list"></a>
+### Nested Schema for `api.targets.config.llama2.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--llama2--output_cost_list"></a>
+### Nested Schema for `api.targets.config.llama2.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--llama2--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.llama2.service_tier_factor`
 
@@ -1598,19 +2066,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--mistral--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--mistral--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--mistral--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Mistral model. possible known values include one of ["ollama", "openai"]; Not Null
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--mistral--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--mistral--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--mistral--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--mistral--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.mistral.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--mistral--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.mistral.cache_write_cost_list`
@@ -1631,6 +2117,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--mistral--input_cost_list"></a>
+### Nested Schema for `api.targets.config.mistral.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--mistral--output_cost_list"></a>
+### Nested Schema for `api.targets.config.mistral.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--mistral--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.mistral.service_tier_factor`
 
@@ -1647,18 +2151,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--ollama--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--ollama--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--ollama--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--ollama--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--ollama--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--ollama--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--ollama--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.ollama.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--ollama--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.ollama.cache_write_cost_list`
@@ -1679,6 +2201,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--ollama--input_cost_list"></a>
+### Nested Schema for `api.targets.config.ollama.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--ollama--output_cost_list"></a>
+### Nested Schema for `api.targets.config.ollama.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--ollama--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.ollama.service_tier_factor`
 
@@ -1695,18 +2235,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--openai--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--openai--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--openai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--openai--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--openai--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--openai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--openai--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.openai.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--openai--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.openai.cache_write_cost_list`
@@ -1727,6 +2285,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--openai--input_cost_list"></a>
+### Nested Schema for `api.targets.config.openai.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--openai--output_cost_list"></a>
+### Nested Schema for `api.targets.config.openai.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--openai--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.openai.service_tier_factor`
 
@@ -1744,13 +2320,22 @@ Optional:
 
 - `aws` (Attributes) (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--aws))
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--service_tier_factor))
 - `target` (Attributes) (see [below for nested schema](#nestedatt--api--targets--config--sagemaker--target))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
@@ -1767,6 +2352,15 @@ Optional:
 - `region` (String) Overrides the AWS_REGION environment variable for SageMaker requests.
 - `role_session_name` (String) Session identifier for the assumed role; mutually required with assume_role_arn.
 - `sts_endpoint_url` (String) Overrides the STS endpoint when assuming a role.
+
+
+<a id="nestedatt--api--targets--config--sagemaker--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.sagemaker.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--api--targets--config--sagemaker--cache_write_cost_list"></a>
@@ -1786,6 +2380,24 @@ Optional:
 - `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
 - `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--sagemaker--input_cost_list"></a>
+### Nested Schema for `api.targets.config.sagemaker.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--sagemaker--output_cost_list"></a>
+### Nested Schema for `api.targets.config.sagemaker.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--api--targets--config--sagemaker--service_tier_factor"></a>
@@ -1814,18 +2426,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--vercel--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--vercel--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--vercel--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--vercel--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--vercel--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--vercel--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--vercel--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.vercel.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--vercel--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.vercel.cache_write_cost_list`
@@ -1846,6 +2476,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--vercel--input_cost_list"></a>
+### Nested Schema for `api.targets.config.vercel.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--vercel--output_cost_list"></a>
+### Nested Schema for `api.targets.config.vercel.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--vercel--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.vercel.service_tier_factor`
 
@@ -1862,18 +2510,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--vllm--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--vllm--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--vllm--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--vllm--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--vllm--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--vllm--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--api--targets--config--vllm--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.vllm.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--vllm--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.vllm.cache_write_cost_list`
@@ -1894,6 +2560,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--api--targets--config--vllm--input_cost_list"></a>
+### Nested Schema for `api.targets.config.vllm.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--vllm--output_cost_list"></a>
+### Nested Schema for `api.targets.config.vllm.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--api--targets--config--vllm--service_tier_factor"></a>
 ### Nested Schema for `api.targets.config.vllm.service_tier_factor`
 
@@ -1910,18 +2594,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--xai--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--api--targets--config--xai--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--api--targets--config--xai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--xai--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--api--targets--config--xai--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--api--targets--config--xai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--api--targets--config--xai--cache_read_cost_list"></a>
+### Nested Schema for `api.targets.config.xai.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--api--targets--config--xai--cache_write_cost_list"></a>
 ### Nested Schema for `api.targets.config.xai.cache_write_cost_list`
@@ -1940,6 +2642,24 @@ Optional:
 - `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
 - `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--api--targets--config--xai--input_cost_list"></a>
+### Nested Schema for `api.targets.config.xai.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--api--targets--config--xai--output_cost_list"></a>
+### Nested Schema for `api.targets.config.xai.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--api--targets--config--xai--service_tier_factor"></a>
@@ -2512,7 +3232,7 @@ Optional:
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
 - `path_param` (String) The name of the regex capture group defined in the route path for routing.
-- `values` (List of String) An optional model alias. When omitted, the model name is used.
+- `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 
 
@@ -2570,19 +3290,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--anthropic--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `version` (String) The Anthropic API version to use. Default: "2023-06-01"
+
+<a id="nestedatt--model--targets--config--anthropic--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.anthropic.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--anthropic--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.anthropic.cache_write_cost_list`
@@ -2603,6 +3341,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--anthropic--input_cost_list"></a>
+### Nested Schema for `model.targets.config.anthropic.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--anthropic--output_cost_list"></a>
+### Nested Schema for `model.targets.config.anthropic.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--anthropic--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.anthropic.service_tier_factor`
 
@@ -2620,6 +3376,9 @@ Optional:
 
 - `api_version` (String) The Azure OpenAI API version to use. Default: "2023-05-15"
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--azure--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--azure--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--azure--context_window_factor))
@@ -2632,13 +3391,28 @@ targets the Anthropic surface. Applies when the Azure provider's `service` is
 `azure-foundry`.
 possible known values include one of ["/openai/v1", "/anthropic/v1"]; Default: "/openai/v1"
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--azure--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--azure--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--azure--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--azure--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.azure.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--azure--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.azure.cache_write_cost_list`
@@ -2659,6 +3433,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--azure--input_cost_list"></a>
+### Nested Schema for `model.targets.config.azure.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--azure--output_cost_list"></a>
+### Nested Schema for `model.targets.config.azure.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--azure--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.azure.service_tier_factor`
 
@@ -2676,14 +3468,23 @@ Optional:
 
 - `batch_bucket_prefix` (String) S3 bucket prefix for batch inference jobs.
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `embeddings_normalize` (Boolean) Whether to normalize embedding vectors in the response. Default: false
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--bedrock--output_cost_list))
 - `performance_config_latency` (String) Latency performance configuration for the model invocation.
 - `region` (String) The AWS region for the model.
 Setting this option overrides the AWS_REGION environment variable.
@@ -2693,6 +3494,15 @@ Setting this option overrides the AWS_REGION environment variable.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `video_output_s3_uri` (String) S3 URI for storing video generation outputs.
+
+<a id="nestedatt--model--targets--config--bedrock--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.bedrock.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--bedrock--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.bedrock.cache_write_cost_list`
@@ -2713,6 +3523,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--bedrock--input_cost_list"></a>
+### Nested Schema for `model.targets.config.bedrock.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--bedrock--output_cost_list"></a>
+### Nested Schema for `model.targets.config.bedrock.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--bedrock--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.bedrock.service_tier_factor`
 
@@ -2729,18 +3557,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--cerebras--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--cerebras--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.cerebras.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--cerebras--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.cerebras.cache_write_cost_list`
@@ -2759,6 +3605,24 @@ Optional:
 - `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
 - `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--cerebras--input_cost_list"></a>
+### Nested Schema for `model.targets.config.cerebras.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--cerebras--output_cost_list"></a>
+### Nested Schema for `model.targets.config.cerebras.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--model--targets--config--cerebras--service_tier_factor"></a>
@@ -2780,20 +3644,38 @@ Optional:
 uses `/v2/chat` and supports tool calling.
 possible known values include one of ["v1", "v2"]; Default: "v2"
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--cohere--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--cohere--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--cohere--context_window_factor))
 - `embedding_input_type` (String) The intended downstream use of the embeddings to improve model quality. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--cohere--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--cohere--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--cohere--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `wait_for_model` (Boolean) Whether to wait for the model to be ready before sending the request. Default: false
+
+<a id="nestedatt--model--targets--config--cohere--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.cohere.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--cohere--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.cohere.cache_write_cost_list`
@@ -2814,6 +3696,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--cohere--input_cost_list"></a>
+### Nested Schema for `model.targets.config.cohere.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--cohere--output_cost_list"></a>
+### Nested Schema for `model.targets.config.cohere.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--cohere--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.cohere.service_tier_factor`
 
@@ -2830,19 +3730,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--input_cost_list))
 - `international` (Boolean) Whether to use the international DashScope endpoint. Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--dashscope--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--dashscope--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.dashscope.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--dashscope--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.dashscope.cache_write_cost_list`
@@ -2863,6 +3781,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--dashscope--input_cost_list"></a>
+### Nested Schema for `model.targets.config.dashscope.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--dashscope--output_cost_list"></a>
+### Nested Schema for `model.targets.config.dashscope.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--dashscope--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.dashscope.service_tier_factor`
 
@@ -2879,19 +3815,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--databricks--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--databricks--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--databricks--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--databricks--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--databricks--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--databricks--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `workspace_instance_id` (String) The Databricks workspace instance ID. Not Null
+
+<a id="nestedatt--model--targets--config--databricks--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.databricks.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--databricks--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.databricks.cache_write_cost_list`
@@ -2912,6 +3866,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--databricks--input_cost_list"></a>
+### Nested Schema for `model.targets.config.databricks.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--databricks--output_cost_list"></a>
+### Nested Schema for `model.targets.config.databricks.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--databricks--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.databricks.service_tier_factor`
 
@@ -2928,18 +3900,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--deepseek--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--deepseek--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.deepseek.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--deepseek--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.deepseek.cache_write_cost_list`
@@ -2960,6 +3950,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--deepseek--input_cost_list"></a>
+### Nested Schema for `model.targets.config.deepseek.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--deepseek--output_cost_list"></a>
+### Nested Schema for `model.targets.config.deepseek.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--deepseek--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.deepseek.service_tier_factor`
 
@@ -2976,19 +3984,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--gemini--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--gemini--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--gemini--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `gcp_environment` (Attributes) Configuration for a model hosted on Google Cloud Project. (see [below for nested schema](#nestedatt--model--targets--config--gemini--gcp_environment))
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--gemini--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--gemini--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--gemini--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--gemini--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.gemini.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--gemini--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.gemini.cache_write_cost_list`
@@ -3019,6 +4045,24 @@ Optional:
 - `project_id` (String) The Google Cloud project ID for the model endpoint. Not Null
 
 
+<a id="nestedatt--model--targets--config--gemini--input_cost_list"></a>
+### Nested Schema for `model.targets.config.gemini.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--gemini--output_cost_list"></a>
+### Nested Schema for `model.targets.config.gemini.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--gemini--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.gemini.service_tier_factor`
 
@@ -3035,13 +4079,22 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--huggingface--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
@@ -3049,6 +4102,15 @@ Optional:
 - `upstream_url` (String) The upstream URL for the model endpoint.
 - `use_cache` (Boolean) Whether to use the Hugging Face inference cache. Default: false
 - `wait_for_model` (Boolean) Whether to wait for the model to load if it is not ready. Default: false
+
+<a id="nestedatt--model--targets--config--huggingface--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.huggingface.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--huggingface--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.huggingface.cache_write_cost_list`
@@ -3069,6 +4131,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--huggingface--input_cost_list"></a>
+### Nested Schema for `model.targets.config.huggingface.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--huggingface--output_cost_list"></a>
+### Nested Schema for `model.targets.config.huggingface.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--huggingface--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.huggingface.service_tier_factor`
 
@@ -3085,21 +4165,39 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--kimi--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--kimi--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--kimi--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--kimi--input_cost_list))
 - `international` (Boolean) When `true`, requests are sent to `api.moonshot.ai` (international).
 When `false`, requests are sent to `api.moonshot.cn` (mainland China).
 Default: true
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--kimi--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--kimi--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--kimi--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.kimi.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--kimi--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.kimi.cache_write_cost_list`
@@ -3120,6 +4218,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--kimi--input_cost_list"></a>
+### Nested Schema for `model.targets.config.kimi.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--kimi--output_cost_list"></a>
+### Nested Schema for `model.targets.config.kimi.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--kimi--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.kimi.service_tier_factor`
 
@@ -3136,19 +4252,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--llama2--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--llama2--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--llama2--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Llama2 model. possible known values include one of ["ollama", "openai", "raw"]; Not Null
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--llama2--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--llama2--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--llama2--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--model--targets--config--llama2--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.llama2.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--llama2--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.llama2.cache_write_cost_list`
@@ -3169,6 +4303,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--llama2--input_cost_list"></a>
+### Nested Schema for `model.targets.config.llama2.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--llama2--output_cost_list"></a>
+### Nested Schema for `model.targets.config.llama2.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--llama2--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.llama2.service_tier_factor`
 
@@ -3185,19 +4337,37 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--mistral--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--mistral--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--mistral--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `format` (String) The request format to use when communicating with the Mistral model. possible known values include one of ["ollama", "openai"]; Not Null
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--mistral--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--mistral--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--mistral--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--mistral--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.mistral.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--mistral--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.mistral.cache_write_cost_list`
@@ -3218,6 +4388,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--mistral--input_cost_list"></a>
+### Nested Schema for `model.targets.config.mistral.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--mistral--output_cost_list"></a>
+### Nested Schema for `model.targets.config.mistral.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--mistral--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.mistral.service_tier_factor`
 
@@ -3234,18 +4422,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--ollama--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--ollama--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--ollama--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--ollama--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--ollama--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--ollama--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--ollama--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.ollama.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--ollama--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.ollama.cache_write_cost_list`
@@ -3266,6 +4472,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--ollama--input_cost_list"></a>
+### Nested Schema for `model.targets.config.ollama.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--ollama--output_cost_list"></a>
+### Nested Schema for `model.targets.config.ollama.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--ollama--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.ollama.service_tier_factor`
 
@@ -3282,18 +4506,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--openai--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--openai--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--openai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--openai--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--openai--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--openai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--openai--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.openai.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--openai--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.openai.cache_write_cost_list`
@@ -3314,6 +4556,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--openai--input_cost_list"></a>
+### Nested Schema for `model.targets.config.openai.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--openai--output_cost_list"></a>
+### Nested Schema for `model.targets.config.openai.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--openai--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.openai.service_tier_factor`
 
@@ -3331,13 +4591,22 @@ Optional:
 
 - `aws` (Attributes) (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--aws))
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--service_tier_factor))
 - `target` (Attributes) (see [below for nested schema](#nestedatt--model--targets--config--sagemaker--target))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
@@ -3354,6 +4623,15 @@ Optional:
 - `region` (String) Overrides the AWS_REGION environment variable for SageMaker requests.
 - `role_session_name` (String) Session identifier for the assumed role; mutually required with assume_role_arn.
 - `sts_endpoint_url` (String) Overrides the STS endpoint when assuming a role.
+
+
+<a id="nestedatt--model--targets--config--sagemaker--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.sagemaker.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--model--targets--config--sagemaker--cache_write_cost_list"></a>
@@ -3373,6 +4651,24 @@ Optional:
 - `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
 - `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--sagemaker--input_cost_list"></a>
+### Nested Schema for `model.targets.config.sagemaker.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--sagemaker--output_cost_list"></a>
+### Nested Schema for `model.targets.config.sagemaker.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--model--targets--config--sagemaker--service_tier_factor"></a>
@@ -3401,18 +4697,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--vercel--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--vercel--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--vercel--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--vercel--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--vercel--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--vercel--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--vercel--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.vercel.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--vercel--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.vercel.cache_write_cost_list`
@@ -3433,6 +4747,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--vercel--input_cost_list"></a>
+### Nested Schema for `model.targets.config.vercel.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--vercel--output_cost_list"></a>
+### Nested Schema for `model.targets.config.vercel.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--vercel--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.vercel.service_tier_factor`
 
@@ -3449,18 +4781,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--vllm--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--vllm--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--vllm--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--vllm--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--vllm--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--vllm--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint. Not Null
+
+<a id="nestedatt--model--targets--config--vllm--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.vllm.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--vllm--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.vllm.cache_write_cost_list`
@@ -3481,6 +4831,24 @@ Optional:
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
 
 
+<a id="nestedatt--model--targets--config--vllm--input_cost_list"></a>
+### Nested Schema for `model.targets.config.vllm.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--vllm--output_cost_list"></a>
+### Nested Schema for `model.targets.config.vllm.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
 <a id="nestedatt--model--targets--config--vllm--service_tier_factor"></a>
 ### Nested Schema for `model.targets.config.vllm.service_tier_factor`
 
@@ -3497,18 +4865,36 @@ Optional:
 Optional:
 
 - `cache_read_cost` (Number) Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
+- `cache_read_cost_list` (Attributes List) Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--xai--cache_read_cost_list))
 - `cache_write_cost` (Number) Cost per 1M cache-write prompt tokens for billing and cost tracking.
 - `cache_write_cost_list` (Attributes List) Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs. (see [below for nested schema](#nestedatt--model--targets--config--xai--cache_write_cost_list))
 - `context_window_factor` (Attributes List) Above an input-token threshold, scale input and output pricing by the corresponding factor. (see [below for nested schema](#nestedatt--model--targets--config--xai--context_window_factor))
 - `embeddings_dimensions` (Number) The number of dimensions for embedding outputs.
 - `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `input_cost_list` (Attributes List) Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--xai--input_cost_list))
 - `max_tokens` (Number) The maximum number of tokens to generate in the response.
 - `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `output_cost_list` (Attributes List) Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+
+**Requires a minimum runtime version of `2.1`**. (see [below for nested schema](#nestedatt--model--targets--config--xai--output_cost_list))
 - `service_tier_factor` (Attributes List) Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches. (see [below for nested schema](#nestedatt--model--targets--config--xai--service_tier_factor))
 - `temperature` (Number) Controls randomness in the model output. Higher values produce more varied responses.
 - `top_k` (Number) Limits the number of highest-probability tokens considered during generation.
 - `top_p` (Number) Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
 - `upstream_url` (String) The upstream URL for the model endpoint.
+
+<a id="nestedatt--model--targets--config--xai--cache_read_cost_list"></a>
+### Nested Schema for `model.targets.config.xai.cache_read_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
 
 <a id="nestedatt--model--targets--config--xai--cache_write_cost_list"></a>
 ### Nested Schema for `model.targets.config.xai.cache_write_cost_list`
@@ -3527,6 +4913,24 @@ Optional:
 - `above` (String) Input-token threshold above which the factors apply, e.g. "128k" or "1m". Not Null
 - `input_factor` (Number) Multiplier applied to input pricing above the threshold. Not Null
 - `output_factor` (Number) Multiplier applied to output pricing above the threshold. Not Null
+
+
+<a id="nestedatt--model--targets--config--xai--input_cost_list"></a>
+### Nested Schema for `model.targets.config.xai.input_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
+
+
+<a id="nestedatt--model--targets--config--xai--output_cost_list"></a>
+### Nested Schema for `model.targets.config.xai.output_cost_list`
+
+Optional:
+
+- `cost` (Number) Cost per 1M tokens for this modal type. Not Null
+- `modal` (String) The modal type this price applies to. possible known values include one of ["text", "audio", "image", "video"]; Not Null
 
 
 <a id="nestedatt--model--targets--config--xai--service_tier_factor"></a>

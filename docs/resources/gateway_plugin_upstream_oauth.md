@@ -34,7 +34,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
       }
       redis = {
         cloud_authentication = {
-          auth_provider            = "gcp"
+          auth_provider            = "oauth"
           aws_access_key_id        = "...my_aws_access_key_id..."
           aws_assume_role_arn      = "...my_aws_assume_role_arn..."
           aws_cache_name           = "...my_aws_cache_name..."
@@ -46,6 +46,29 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
           azure_client_secret      = "...my_azure_client_secret..."
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
+          oauth = {
+            auth_method           = "client_secret_post"
+            client_id             = "...my_client_id..."
+            client_secret         = "...my_client_secret..."
+            client_secret_jwt_alg = "HS512"
+            grant_type            = "client_credentials"
+            password              = "...my_password..."
+            redis_username        = "...my_redis_username..."
+            redis_username_claim  = "...my_redis_username_claim..."
+            scopes = [
+              "..."
+            ]
+            ssl_verify     = true
+            timeout        = 10000
+            token_endpoint = "...my_token_endpoint..."
+            token_headers = {
+              key = "value"
+            }
+            token_post_args = {
+              key = "value"
+            }
+            username = "...my_username..."
+          }
         }
         cluster_max_redirections = 5
         cluster_nodes = [
@@ -82,17 +105,23 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
       strategy = "memory"
     }
     client = {
-      auth_method               = "client_secret_post"
-      client_secret_jwt_alg     = "HS512"
-      http_proxy                = "...my_http_proxy..."
-      http_proxy_authorization  = "...my_http_proxy_authorization..."
-      http_version              = 6.12
-      https_proxy               = "...my_https_proxy..."
-      https_proxy_authorization = "...my_https_proxy_authorization..."
-      keep_alive                = true
-      no_proxy                  = "...my_no_proxy..."
-      ssl_verify                = false
-      timeout                   = 10000
+      auth_method                 = "client_secret_post"
+      client_secret_jwt_alg       = "HS512"
+      http_proxy                  = "...my_http_proxy..."
+      http_proxy_authorization    = "...my_http_proxy_authorization..."
+      http_version                = 6.12
+      https_proxy                 = "...my_https_proxy..."
+      https_proxy_authorization   = "...my_https_proxy_authorization..."
+      keep_alive                  = true
+      no_proxy                    = "...my_no_proxy..."
+      private_key_jwt_alg         = "RS256"
+      private_key_jwt_include_kid = true
+      private_key_jwt_key = {
+        key_id  = "...my_key_id..."
+        key_set = "...my_key_set..."
+      }
+      ssl_verify = false
+      timeout    = 10000
     }
     oauth = {
       audience = [
@@ -284,7 +313,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp", "oauth"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -296,6 +325,29 @@ Optional:
 - `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
 - `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
 - `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+- `oauth` (Attributes) OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`. (see [below for nested schema](#nestedatt--config--cache--redis--cloud_authentication--oauth))
+
+<a id="nestedatt--config--cache--redis--cloud_authentication--oauth"></a>
+### Nested Schema for `config.cache.redis.cloud_authentication.oauth`
+
+Optional:
+
+- `auth_method` (String) Client authentication method used against the token endpoint. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post"]; Default: "client_secret_post"
+- `client_id` (String) OAuth 2.0 client ID.
+- `client_secret` (String) OAuth 2.0 client secret.
+- `client_secret_jwt_alg` (String) Signing algorithm used for `client_secret_jwt` client authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
+- `grant_type` (String) OAuth 2.0 grant type used to request access tokens. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
+- `password` (String) Resource owner password, used with the `password` grant type.
+- `redis_username` (String) Static Redis ACL username sent with `AUTH <username> <token>`.
+- `redis_username_claim` (String) JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+- `scopes` (List of String) OAuth 2.0 scopes to request. Default: []
+- `ssl_verify` (Boolean) Whether to verify the TLS certificate of the token endpoint. Default: true
+- `timeout` (Number) Timeout, in milliseconds, for requests to the token endpoint. Default: 10000
+- `token_endpoint` (String) OAuth 2.0 token endpoint URL used to request access tokens.
+- `token_headers` (Map of String) Additional HTTP headers to send with the token request.
+- `token_post_args` (Map of String) Additional POST body arguments to send with the token request.
+- `username` (String) Resource owner username, used with the `password` grant type.
+
 
 
 <a id="nestedatt--config--cache--redis--cluster_nodes"></a>
@@ -323,7 +375,7 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body, `private_key_jwt` to send a JWT signed with a private key, or `none` to send no client authentication. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt"]; Default: "client_secret_post"
 - `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
 - `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
 - `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
@@ -332,8 +384,20 @@ Optional:
 - `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
 - `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
 - `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
+- `private_key_jwt_alg` (String) The algorithm to use when signing the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`. possible known values include one of ["ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Default: "RS256"
+- `private_key_jwt_include_kid` (Boolean) Whether to include the configured Key ID as the `kid` header in the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`. Default: true
+- `private_key_jwt_key` (Attributes) The Kong Keys entity reference used to sign the JWT client assertion for `private_key_jwt` authentication. This field is ignored when `auth_method` is not `private_key_jwt`. (see [below for nested schema](#nestedatt--config--client--private_key_jwt_key))
 - `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
 - `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
+
+<a id="nestedatt--config--client--private_key_jwt_key"></a>
+### Nested Schema for `config.client.private_key_jwt_key`
+
+Optional:
+
+- `key_id` (String) The Key ID. This maps to the `kid` field of the Kong Keys entity and is used as the JWT header `kid`. Not Null
+- `key_set` (String) The optional name of the Kong Key Set used to scope the key lookup.
+
 
 
 

@@ -208,8 +208,12 @@ func (e *MeteringAndBillingPluginConcurrencyLimit) IsExact() bool {
 }
 
 type MeteringAndBillingPluginQueue struct {
+	// Time in seconds the circuit breaker stays open (fast-shedding entries) before it allows a single batch through to probe whether the destination has recovered.
+	BreakerCooldown *float64 `default:"60" json:"breaker_cooldown"`
 	// The number of of queue delivery timers. -1 indicates unlimited.
 	ConcurrencyLimit *MeteringAndBillingPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
+	// Number of consecutive failed batches after which the queue opens its circuit breaker and drops entries instead of retrying. 0 disables the circuit breaker.
+	FailureThreshold *int64 `default:"0" json:"failure_threshold"`
 	// Time in seconds before the initial retry is made for a failing batch.
 	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
@@ -237,11 +241,25 @@ func (m *MeteringAndBillingPluginQueue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (m *MeteringAndBillingPluginQueue) GetBreakerCooldown() *float64 {
+	if m == nil {
+		return nil
+	}
+	return m.BreakerCooldown
+}
+
 func (m *MeteringAndBillingPluginQueue) GetConcurrencyLimit() *MeteringAndBillingPluginConcurrencyLimit {
 	if m == nil {
 		return nil
 	}
 	return m.ConcurrencyLimit
+}
+
+func (m *MeteringAndBillingPluginQueue) GetFailureThreshold() *int64 {
+	if m == nil {
+		return nil
+	}
+	return m.FailureThreshold
 }
 
 func (m *MeteringAndBillingPluginQueue) GetInitialRetryDelay() *float64 {
@@ -293,22 +311,22 @@ func (m *MeteringAndBillingPluginQueue) GetMaxRetryTime() *float64 {
 	return m.MaxRetryTime
 }
 
-// LookUpValueIn - Where to find the customer identifier in the request.
-type LookUpValueIn string
+// MeteringAndBillingPluginLookUpValueIn - Where to find the customer identifier in the request.
+type MeteringAndBillingPluginLookUpValueIn string
 
 const (
-	LookUpValueInApplication LookUpValueIn = "application"
-	LookUpValueInConsumer    LookUpValueIn = "consumer"
-	LookUpValueInHeader      LookUpValueIn = "header"
-	LookUpValueInQuery       LookUpValueIn = "query"
+	MeteringAndBillingPluginLookUpValueInApplication MeteringAndBillingPluginLookUpValueIn = "application"
+	MeteringAndBillingPluginLookUpValueInConsumer    MeteringAndBillingPluginLookUpValueIn = "consumer"
+	MeteringAndBillingPluginLookUpValueInHeader      MeteringAndBillingPluginLookUpValueIn = "header"
+	MeteringAndBillingPluginLookUpValueInQuery       MeteringAndBillingPluginLookUpValueIn = "query"
 )
 
-func (e LookUpValueIn) ToPointer() *LookUpValueIn {
+func (e MeteringAndBillingPluginLookUpValueIn) ToPointer() *MeteringAndBillingPluginLookUpValueIn {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *LookUpValueIn) IsExact() bool {
+func (e *MeteringAndBillingPluginLookUpValueIn) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "application", "consumer", "header", "query":
@@ -323,7 +341,7 @@ type Subject struct {
 	// The header name, query parameter, consumer field, or application field that contains the customer identifier, e.g. 'x-customer-id'
 	Field *string `default:"null" json:"field"`
 	// Where to find the customer identifier in the request.
-	LookUpValueIn *LookUpValueIn `default:"consumer" json:"look_up_value_in"`
+	LookUpValueIn *MeteringAndBillingPluginLookUpValueIn `default:"consumer" json:"look_up_value_in"`
 }
 
 func (s Subject) MarshalJSON() ([]byte, error) {
@@ -344,7 +362,7 @@ func (s *Subject) GetField() *string {
 	return s.Field
 }
 
-func (s *Subject) GetLookUpValueIn() *LookUpValueIn {
+func (s *Subject) GetLookUpValueIn() *MeteringAndBillingPluginLookUpValueIn {
 	if s == nil {
 		return nil
 	}
@@ -352,6 +370,8 @@ func (s *Subject) GetLookUpValueIn() *LookUpValueIn {
 }
 
 type MeteringAndBillingPluginConfig struct {
+	// List of status code ranges that are allowed to be logged in usage events.
+	AllowStatusCodes []string `json:"allow_status_codes"`
 	// Bearer token for authenticating with the ingest endpoint.
 	APIToken string `json:"api_token"`
 	// Capture custom properties to the usage event data payload for pricing dimensions or reporting. Attributes add dimensions like provider, department or project that your billing model needs for tiered or per-dimension pricing.
@@ -382,6 +402,13 @@ func (m *MeteringAndBillingPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (m *MeteringAndBillingPluginConfig) GetAllowStatusCodes() []string {
+	if m == nil {
+		return nil
+	}
+	return m.AllowStatusCodes
 }
 
 func (m *MeteringAndBillingPluginConfig) GetAPIToken() string {

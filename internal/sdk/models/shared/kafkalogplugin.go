@@ -340,6 +340,31 @@ func (k *KafkaLogPluginBootstrapServers) GetPort() int64 {
 	return k.Port
 }
 
+// KafkaLogPluginCompressionType - The compression codec the producer uses to compress message batches before sending them to the Kafka broker. This applies only to the Kong-to-broker hop and is independent of any HTTP-level `Content-Encoding`. Defaults to `none` (compression disabled); `lz4` is the recommended codec when enabling compression.
+type KafkaLogPluginCompressionType string
+
+const (
+	KafkaLogPluginCompressionTypeGzip   KafkaLogPluginCompressionType = "gzip"
+	KafkaLogPluginCompressionTypeLz4    KafkaLogPluginCompressionType = "lz4"
+	KafkaLogPluginCompressionTypeNone   KafkaLogPluginCompressionType = "none"
+	KafkaLogPluginCompressionTypeSnappy KafkaLogPluginCompressionType = "snappy"
+)
+
+func (e KafkaLogPluginCompressionType) ToPointer() *KafkaLogPluginCompressionType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginCompressionType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "gzip", "lz4", "none", "snappy":
+			return true
+		}
+	}
+	return false
+}
+
 // KafkaLogPluginProducerRequestAcks - The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
 type KafkaLogPluginProducerRequestAcks int64
 
@@ -714,6 +739,10 @@ func (k *KafkaLogPluginOauth2Client) GetTimeout() *int64 {
 
 type KafkaLogPluginConfigAuthentication struct {
 	Basic *KafkaLogPluginBasic `json:"basic"`
+	// The Confluent Cloud OAuth identity pool ID, sent as the `Confluent-Identity-Pool-Id` request header. Optional: if omitted, Confluent Cloud automatically maps an identity pool based on the token's claims.
+	IdentityPoolID *string `default:"null" json:"identity_pool_id"`
+	// The Confluent Cloud Schema Registry cluster ID, sent as the `target-sr-cluster` request header. Confluent Cloud requires this when `mode` is 'oauth2'.
+	LogicalClusterID *string `default:"null" json:"logical_cluster_id"`
 	// Authentication mode to use with the schema registry.
 	Mode         *KafkaLogPluginMode         `default:"none" json:"mode"`
 	Oauth2       *KafkaLogPluginOauth2       `json:"oauth2"`
@@ -738,6 +767,20 @@ func (k *KafkaLogPluginConfigAuthentication) GetBasic() *KafkaLogPluginBasic {
 	return k.Basic
 }
 
+func (k *KafkaLogPluginConfigAuthentication) GetIdentityPoolID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.IdentityPoolID
+}
+
+func (k *KafkaLogPluginConfigAuthentication) GetLogicalClusterID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.LogicalClusterID
+}
+
 func (k *KafkaLogPluginConfigAuthentication) GetMode() *KafkaLogPluginMode {
 	if k == nil {
 		return nil
@@ -759,7 +802,32 @@ func (k *KafkaLogPluginConfigAuthentication) GetOauth2Client() *KafkaLogPluginOa
 	return k.Oauth2Client
 }
 
+// KafkaLogPluginPayloadEncoding - How the client encodes union/nullable fields in the request body for Avro schemas. 'avro_json' (default) requires Avro-spec JSON with type-tagged unions (e.g. {"int": 1}, {"null": null}). 'simple_json' lets the gateway accept plain JSON and resolve union branches against the schema.
+type KafkaLogPluginPayloadEncoding string
+
+const (
+	KafkaLogPluginPayloadEncodingAvroJSON   KafkaLogPluginPayloadEncoding = "avro_json"
+	KafkaLogPluginPayloadEncodingSimpleJSON KafkaLogPluginPayloadEncoding = "simple_json"
+)
+
+func (e KafkaLogPluginPayloadEncoding) ToPointer() *KafkaLogPluginPayloadEncoding {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginPayloadEncoding) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "avro_json", "simple_json":
+			return true
+		}
+	}
+	return false
+}
+
 type KafkaLogPluginKeySchema struct {
+	// How the client encodes union/nullable fields in the request body for Avro schemas. 'avro_json' (default) requires Avro-spec JSON with type-tagged unions (e.g. {"int": 1}, {"null": null}). 'simple_json' lets the gateway accept plain JSON and resolve union branches against the schema.
+	PayloadEncoding *KafkaLogPluginPayloadEncoding `default:"avro_json" json:"payload_encoding"`
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
 	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
@@ -777,6 +845,13 @@ func (k *KafkaLogPluginKeySchema) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (k *KafkaLogPluginKeySchema) GetPayloadEncoding() *KafkaLogPluginPayloadEncoding {
+	if k == nil {
+		return nil
+	}
+	return k.PayloadEncoding
+}
+
 func (k *KafkaLogPluginKeySchema) GetSchemaVersion() *string {
 	if k == nil {
 		return nil
@@ -791,7 +866,32 @@ func (k *KafkaLogPluginKeySchema) GetSubjectName() *string {
 	return k.SubjectName
 }
 
+// KafkaLogPluginConfigPayloadEncoding - How the client encodes union/nullable fields in the request body for Avro schemas. 'avro_json' (default) requires Avro-spec JSON with type-tagged unions (e.g. {"int": 1}, {"null": null}). 'simple_json' lets the gateway accept plain JSON and resolve union branches against the schema.
+type KafkaLogPluginConfigPayloadEncoding string
+
+const (
+	KafkaLogPluginConfigPayloadEncodingAvroJSON   KafkaLogPluginConfigPayloadEncoding = "avro_json"
+	KafkaLogPluginConfigPayloadEncodingSimpleJSON KafkaLogPluginConfigPayloadEncoding = "simple_json"
+)
+
+func (e KafkaLogPluginConfigPayloadEncoding) ToPointer() *KafkaLogPluginConfigPayloadEncoding {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginConfigPayloadEncoding) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "avro_json", "simple_json":
+			return true
+		}
+	}
+	return false
+}
+
 type KafkaLogPluginValueSchema struct {
+	// How the client encodes union/nullable fields in the request body for Avro schemas. 'avro_json' (default) requires Avro-spec JSON with type-tagged unions (e.g. {"int": 1}, {"null": null}). 'simple_json' lets the gateway accept plain JSON and resolve union branches against the schema.
+	PayloadEncoding *KafkaLogPluginConfigPayloadEncoding `default:"avro_json" json:"payload_encoding"`
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
 	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
@@ -807,6 +907,13 @@ func (k *KafkaLogPluginValueSchema) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (k *KafkaLogPluginValueSchema) GetPayloadEncoding() *KafkaLogPluginConfigPayloadEncoding {
+	if k == nil {
+		return nil
+	}
+	return k.PayloadEncoding
 }
 
 func (k *KafkaLogPluginValueSchema) GetSchemaVersion() *string {
@@ -958,12 +1065,16 @@ type KafkaLogPluginConfig struct {
 	BootstrapServers []KafkaLogPluginBootstrapServers `json:"bootstrap_servers"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
 	ClusterName *string `default:"null" json:"cluster_name"`
+	// The compression codec the producer uses to compress message batches before sending them to the Kafka broker. This applies only to the Kong-to-broker hop and is independent of any HTTP-level `Content-Encoding`. Defaults to `none` (compression disabled); `lz4` is the recommended codec when enabling compression.
+	CompressionType *KafkaLogPluginCompressionType `default:"none" json:"compression_type"`
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]string `json:"custom_fields_by_lua,omitempty"`
 	Keepalive         *int64            `default:"60000" json:"keepalive"`
 	KeepaliveEnabled  *bool             `default:"false" json:"keepalive_enabled"`
 	// The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
 	KeyQueryArg *string `default:"null" json:"key_query_arg"`
+	// Use the improved asynchronous Kafka producer, which batches messages more efficiently under high load. Only affects asynchronous mode. Messages without a key may be reordered across partitions; set a message key if ordering matters.
+	NewKafkaAsyncProducer *bool `default:"false" json:"new_kafka_async_producer"`
 	// Flag to enable asynchronous mode.
 	ProducerAsync *bool `default:"true" json:"producer_async"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
@@ -1023,6 +1134,13 @@ func (k *KafkaLogPluginConfig) GetClusterName() *string {
 	return k.ClusterName
 }
 
+func (k *KafkaLogPluginConfig) GetCompressionType() *KafkaLogPluginCompressionType {
+	if k == nil {
+		return nil
+	}
+	return k.CompressionType
+}
+
 func (k *KafkaLogPluginConfig) GetCustomFieldsByLua() map[string]string {
 	if k == nil {
 		return nil
@@ -1049,6 +1167,13 @@ func (k *KafkaLogPluginConfig) GetKeyQueryArg() *string {
 		return nil
 	}
 	return k.KeyQueryArg
+}
+
+func (k *KafkaLogPluginConfig) GetNewKafkaAsyncProducer() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.NewKafkaAsyncProducer
 }
 
 func (k *KafkaLogPluginConfig) GetProducerAsync() *bool {

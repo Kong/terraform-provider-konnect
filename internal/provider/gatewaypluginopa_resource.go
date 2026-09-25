@@ -83,7 +83,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
-						Description: `Default: false`,
+						Description: `If set to true, the raw request body is included as input to OPA. Not supported for WebSocket protocols (ws/wss). Default: false`,
 					},
 					"include_consumer_in_opa_input": schema.BoolAttribute{
 						Computed:    true,
@@ -95,7 +95,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
-						Description: `If set to true and the ` + "`" + `Content-Type` + "`" + ` header of the current request is ` + "`" + `application/json` + "`" + `, the request body will be JSON decoded and the decoded struct is included as input to OPA. Default: false`,
+						Description: `If set to true and the ` + "`" + `Content-Type` + "`" + ` header of the current request is ` + "`" + `application/json` + "`" + `, the request body will be JSON decoded and the decoded struct is included as input to OPA. Not supported for WebSocket protocols (ws/wss). Default: false`,
 					},
 					"include_route_in_opa_input": schema.BoolAttribute{
 						Computed:    true,
@@ -264,7 +264,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 					types.StringValue("https"),
 				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
+				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

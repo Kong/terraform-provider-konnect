@@ -237,6 +237,7 @@ const (
 	ResponseRatelimitingPluginAuthProviderAws   ResponseRatelimitingPluginAuthProvider = "aws"
 	ResponseRatelimitingPluginAuthProviderAzure ResponseRatelimitingPluginAuthProvider = "azure"
 	ResponseRatelimitingPluginAuthProviderGcp   ResponseRatelimitingPluginAuthProvider = "gcp"
+	ResponseRatelimitingPluginAuthProviderOauth ResponseRatelimitingPluginAuthProvider = "oauth"
 )
 
 func (e ResponseRatelimitingPluginAuthProvider) ToPointer() *ResponseRatelimitingPluginAuthProvider {
@@ -247,11 +248,231 @@ func (e ResponseRatelimitingPluginAuthProvider) ToPointer() *ResponseRatelimitin
 func (e *ResponseRatelimitingPluginAuthProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "aws", "azure", "gcp":
+		case "aws", "azure", "gcp", "oauth":
 			return true
 		}
 	}
 	return false
+}
+
+// ResponseRatelimitingPluginAuthMethod - Client authentication method used against the token endpoint.
+type ResponseRatelimitingPluginAuthMethod string
+
+const (
+	ResponseRatelimitingPluginAuthMethodClientSecretBasic ResponseRatelimitingPluginAuthMethod = "client_secret_basic"
+	ResponseRatelimitingPluginAuthMethodClientSecretJwt   ResponseRatelimitingPluginAuthMethod = "client_secret_jwt"
+	ResponseRatelimitingPluginAuthMethodClientSecretPost  ResponseRatelimitingPluginAuthMethod = "client_secret_post"
+)
+
+func (e ResponseRatelimitingPluginAuthMethod) ToPointer() *ResponseRatelimitingPluginAuthMethod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseRatelimitingPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post":
+			return true
+		}
+	}
+	return false
+}
+
+// ResponseRatelimitingPluginClientSecretJwtAlg - Signing algorithm used for `client_secret_jwt` client authentication.
+type ResponseRatelimitingPluginClientSecretJwtAlg string
+
+const (
+	ResponseRatelimitingPluginClientSecretJwtAlgHs256 ResponseRatelimitingPluginClientSecretJwtAlg = "HS256"
+	ResponseRatelimitingPluginClientSecretJwtAlgHs512 ResponseRatelimitingPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e ResponseRatelimitingPluginClientSecretJwtAlg) ToPointer() *ResponseRatelimitingPluginClientSecretJwtAlg {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseRatelimitingPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
+	}
+	return false
+}
+
+// ResponseRatelimitingPluginGrantType - OAuth 2.0 grant type used to request access tokens.
+type ResponseRatelimitingPluginGrantType string
+
+const (
+	ResponseRatelimitingPluginGrantTypeClientCredentials ResponseRatelimitingPluginGrantType = "client_credentials"
+	ResponseRatelimitingPluginGrantTypePassword          ResponseRatelimitingPluginGrantType = "password"
+)
+
+func (e ResponseRatelimitingPluginGrantType) ToPointer() *ResponseRatelimitingPluginGrantType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseRatelimitingPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
+	}
+	return false
+}
+
+// ResponseRatelimitingPluginOauth - OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+type ResponseRatelimitingPluginOauth struct {
+	// Client authentication method used against the token endpoint.
+	AuthMethod *ResponseRatelimitingPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// OAuth 2.0 client ID.
+	ClientID *string `default:"null" json:"client_id"`
+	// OAuth 2.0 client secret.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Signing algorithm used for `client_secret_jwt` client authentication.
+	ClientSecretJwtAlg *ResponseRatelimitingPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// OAuth 2.0 grant type used to request access tokens.
+	GrantType *ResponseRatelimitingPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// Resource owner password, used with the `password` grant type.
+	Password *string `default:"null" json:"password"`
+	// Static Redis ACL username sent with `AUTH <username> <token>`.
+	RedisUsername *string `default:"null" json:"redis_username"`
+	// JWT claim in the access token used to derive the Redis ACL username (for example, `oid` for Microsoft Entra ID).
+	RedisUsernameClaim *string `default:"null" json:"redis_username_claim"`
+	// OAuth 2.0 scopes to request.
+	Scopes []string `json:"scopes,omitempty"`
+	// Whether to verify the TLS certificate of the token endpoint.
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+	// Timeout, in milliseconds, for requests to the token endpoint.
+	Timeout *float64 `default:"10000" json:"timeout"`
+	// OAuth 2.0 token endpoint URL used to request access tokens.
+	TokenEndpoint *string `default:"null" json:"token_endpoint"`
+	// Additional HTTP headers to send with the token request.
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
+	// Additional POST body arguments to send with the token request.
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
+	// Resource owner username, used with the `password` grant type.
+	Username *string `default:"null" json:"username"`
+}
+
+func (r ResponseRatelimitingPluginOauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginOauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetAuthMethod() *ResponseRatelimitingPluginAuthMethod {
+	if r == nil {
+		return nil
+	}
+	return r.AuthMethod
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetClientID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ClientID
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetClientSecret() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ClientSecret
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetClientSecretJwtAlg() *ResponseRatelimitingPluginClientSecretJwtAlg {
+	if r == nil {
+		return nil
+	}
+	return r.ClientSecretJwtAlg
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetGrantType() *ResponseRatelimitingPluginGrantType {
+	if r == nil {
+		return nil
+	}
+	return r.GrantType
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetPassword() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Password
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetRedisUsername() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RedisUsername
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetRedisUsernameClaim() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RedisUsernameClaim
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetScopes() []string {
+	if r == nil {
+		return nil
+	}
+	return r.Scopes
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetSslVerify() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.SslVerify
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetTimeout() *float64 {
+	if r == nil {
+		return nil
+	}
+	return r.Timeout
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetTokenEndpoint() *string {
+	if r == nil {
+		return nil
+	}
+	return r.TokenEndpoint
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetTokenHeaders() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.TokenHeaders
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetTokenPostArgs() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.TokenPostArgs
+}
+
+func (r *ResponseRatelimitingPluginOauth) GetUsername() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Username
 }
 
 // ResponseRatelimitingPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -280,6 +501,8 @@ type ResponseRatelimitingPluginCloudAuthentication struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	// OAuth 2.0 client configuration used to authenticate to Redis when `auth_provider` is set to `oauth`.
+	Oauth *ResponseRatelimitingPluginOauth `json:"oauth"`
 }
 
 func (r ResponseRatelimitingPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -375,6 +598,13 @@ func (r *ResponseRatelimitingPluginCloudAuthentication) GetGcpServiceAccountJSON
 		return nil
 	}
 	return r.GcpServiceAccountJSON
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetOauth() *ResponseRatelimitingPluginOauth {
+	if r == nil {
+		return nil
+	}
+	return r.Oauth
 }
 
 // ResponseRatelimitingPluginRedis - Redis configuration

@@ -533,6 +533,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetAnthropicConfig != nil {
 					targets.Config.Anthropic = &tfTypes.AIGatewayTargetAnthropicConfig{}
 					targets.Config.Anthropic.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetAnthropicConfig.CacheReadCostList != nil {
+						targets.Config.Anthropic.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem := range targetsItem.Config.AIGatewayTargetAnthropicConfig.CacheReadCostList {
+							var cacheReadCostList tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList.Cost = types.Float64Value(cacheReadCostListItem.Cost)
+							cacheReadCostList.Modal = types.StringValue(string(cacheReadCostListItem.Modal))
+
+							targets.Config.Anthropic.CacheReadCostList = append(targets.Config.Anthropic.CacheReadCostList, cacheReadCostList)
+						}
+					} else {
+						targets.Config.Anthropic.CacheReadCostList = nil
+					}
 					targets.Config.Anthropic.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.CacheWriteCost)
 					targets.Config.Anthropic.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -557,8 +571,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Anthropic.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.EmbeddingsDimensions)
 					targets.Config.Anthropic.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetAnthropicConfig.InputCostList != nil {
+						targets.Config.Anthropic.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem := range targetsItem.Config.AIGatewayTargetAnthropicConfig.InputCostList {
+							var inputCostList tfTypes.AIGatewayModalCostList
+
+							inputCostList.Cost = types.Float64Value(inputCostListItem.Cost)
+							inputCostList.Modal = types.StringValue(string(inputCostListItem.Modal))
+
+							targets.Config.Anthropic.InputCostList = append(targets.Config.Anthropic.InputCostList, inputCostList)
+						}
+					} else {
+						targets.Config.Anthropic.InputCostList = nil
+					}
 					targets.Config.Anthropic.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.MaxTokens)
 					targets.Config.Anthropic.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAnthropicConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetAnthropicConfig.OutputCostList != nil {
+						targets.Config.Anthropic.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem := range targetsItem.Config.AIGatewayTargetAnthropicConfig.OutputCostList {
+							var outputCostList tfTypes.AIGatewayModalCostList
+
+							outputCostList.Cost = types.Float64Value(outputCostListItem.Cost)
+							outputCostList.Modal = types.StringValue(string(outputCostListItem.Modal))
+
+							targets.Config.Anthropic.OutputCostList = append(targets.Config.Anthropic.OutputCostList, outputCostList)
+						}
+					} else {
+						targets.Config.Anthropic.OutputCostList = nil
+					}
 					targets.Config.Anthropic.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem := range targetsItem.Config.AIGatewayTargetAnthropicConfig.ServiceTierFactor {
@@ -579,6 +621,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Azure = &tfTypes.AIGatewayTargetAzureConfig{}
 					targets.Config.Azure.APIVersion = types.StringPointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.APIVersion)
 					targets.Config.Azure.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetAzureConfig.CacheReadCostList != nil {
+						targets.Config.Azure.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem1 := range targetsItem.Config.AIGatewayTargetAzureConfig.CacheReadCostList {
+							var cacheReadCostList1 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList1.Cost = types.Float64Value(cacheReadCostListItem1.Cost)
+							cacheReadCostList1.Modal = types.StringValue(string(cacheReadCostListItem1.Modal))
+
+							targets.Config.Azure.CacheReadCostList = append(targets.Config.Azure.CacheReadCostList, cacheReadCostList1)
+						}
+					} else {
+						targets.Config.Azure.CacheReadCostList = nil
+					}
 					targets.Config.Azure.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.CacheWriteCost)
 					targets.Config.Azure.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -609,8 +665,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets.Config.Azure.FoundryPathPrefix = types.StringNull()
 					}
 					targets.Config.Azure.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetAzureConfig.InputCostList != nil {
+						targets.Config.Azure.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem1 := range targetsItem.Config.AIGatewayTargetAzureConfig.InputCostList {
+							var inputCostList1 tfTypes.AIGatewayModalCostList
+
+							inputCostList1.Cost = types.Float64Value(inputCostListItem1.Cost)
+							inputCostList1.Modal = types.StringValue(string(inputCostListItem1.Modal))
+
+							targets.Config.Azure.InputCostList = append(targets.Config.Azure.InputCostList, inputCostList1)
+						}
+					} else {
+						targets.Config.Azure.InputCostList = nil
+					}
 					targets.Config.Azure.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.MaxTokens)
 					targets.Config.Azure.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetAzureConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetAzureConfig.OutputCostList != nil {
+						targets.Config.Azure.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem1 := range targetsItem.Config.AIGatewayTargetAzureConfig.OutputCostList {
+							var outputCostList1 tfTypes.AIGatewayModalCostList
+
+							outputCostList1.Cost = types.Float64Value(outputCostListItem1.Cost)
+							outputCostList1.Modal = types.StringValue(string(outputCostListItem1.Modal))
+
+							targets.Config.Azure.OutputCostList = append(targets.Config.Azure.OutputCostList, outputCostList1)
+						}
+					} else {
+						targets.Config.Azure.OutputCostList = nil
+					}
 					targets.Config.Azure.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem1 := range targetsItem.Config.AIGatewayTargetAzureConfig.ServiceTierFactor {
@@ -630,6 +714,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Bedrock = &tfTypes.AIGatewayTargetBedrockConfig{}
 					targets.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.BatchBucketPrefix)
 					targets.Config.Bedrock.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetBedrockConfig.CacheReadCostList != nil {
+						targets.Config.Bedrock.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem2 := range targetsItem.Config.AIGatewayTargetBedrockConfig.CacheReadCostList {
+							var cacheReadCostList2 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList2.Cost = types.Float64Value(cacheReadCostListItem2.Cost)
+							cacheReadCostList2.Modal = types.StringValue(string(cacheReadCostListItem2.Modal))
+
+							targets.Config.Bedrock.CacheReadCostList = append(targets.Config.Bedrock.CacheReadCostList, cacheReadCostList2)
+						}
+					} else {
+						targets.Config.Bedrock.CacheReadCostList = nil
+					}
 					targets.Config.Bedrock.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.CacheWriteCost)
 					targets.Config.Bedrock.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -655,8 +753,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Bedrock.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.EmbeddingsDimensions)
 					targets.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.EmbeddingsNormalize)
 					targets.Config.Bedrock.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetBedrockConfig.InputCostList != nil {
+						targets.Config.Bedrock.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem2 := range targetsItem.Config.AIGatewayTargetBedrockConfig.InputCostList {
+							var inputCostList2 tfTypes.AIGatewayModalCostList
+
+							inputCostList2.Cost = types.Float64Value(inputCostListItem2.Cost)
+							inputCostList2.Modal = types.StringValue(string(inputCostListItem2.Modal))
+
+							targets.Config.Bedrock.InputCostList = append(targets.Config.Bedrock.InputCostList, inputCostList2)
+						}
+					} else {
+						targets.Config.Bedrock.InputCostList = nil
+					}
 					targets.Config.Bedrock.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.MaxTokens)
 					targets.Config.Bedrock.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetBedrockConfig.OutputCostList != nil {
+						targets.Config.Bedrock.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem2 := range targetsItem.Config.AIGatewayTargetBedrockConfig.OutputCostList {
+							var outputCostList2 tfTypes.AIGatewayModalCostList
+
+							outputCostList2.Cost = types.Float64Value(outputCostListItem2.Cost)
+							outputCostList2.Modal = types.StringValue(string(outputCostListItem2.Modal))
+
+							targets.Config.Bedrock.OutputCostList = append(targets.Config.Bedrock.OutputCostList, outputCostList2)
+						}
+					} else {
+						targets.Config.Bedrock.OutputCostList = nil
+					}
 					targets.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.PerformanceConfigLatency)
 					targets.Config.Bedrock.Region = types.StringPointerValue(targetsItem.Config.AIGatewayTargetBedrockConfig.Region)
 					targets.Config.Bedrock.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
@@ -678,6 +804,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetCerebrasConfig != nil {
 					targets.Config.Cerebras = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets.Config.Cerebras.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetCerebrasConfig.CacheReadCostList != nil {
+						targets.Config.Cerebras.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem3 := range targetsItem.Config.AIGatewayTargetCerebrasConfig.CacheReadCostList {
+							var cacheReadCostList3 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList3.Cost = types.Float64Value(cacheReadCostListItem3.Cost)
+							cacheReadCostList3.Modal = types.StringValue(string(cacheReadCostListItem3.Modal))
+
+							targets.Config.Cerebras.CacheReadCostList = append(targets.Config.Cerebras.CacheReadCostList, cacheReadCostList3)
+						}
+					} else {
+						targets.Config.Cerebras.CacheReadCostList = nil
+					}
 					targets.Config.Cerebras.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.CacheWriteCost)
 					targets.Config.Cerebras.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -702,8 +842,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Cerebras.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.EmbeddingsDimensions)
 					targets.Config.Cerebras.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetCerebrasConfig.InputCostList != nil {
+						targets.Config.Cerebras.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem3 := range targetsItem.Config.AIGatewayTargetCerebrasConfig.InputCostList {
+							var inputCostList3 tfTypes.AIGatewayModalCostList
+
+							inputCostList3.Cost = types.Float64Value(inputCostListItem3.Cost)
+							inputCostList3.Modal = types.StringValue(string(inputCostListItem3.Modal))
+
+							targets.Config.Cerebras.InputCostList = append(targets.Config.Cerebras.InputCostList, inputCostList3)
+						}
+					} else {
+						targets.Config.Cerebras.InputCostList = nil
+					}
 					targets.Config.Cerebras.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.MaxTokens)
 					targets.Config.Cerebras.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCerebrasConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetCerebrasConfig.OutputCostList != nil {
+						targets.Config.Cerebras.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem3 := range targetsItem.Config.AIGatewayTargetCerebrasConfig.OutputCostList {
+							var outputCostList3 tfTypes.AIGatewayModalCostList
+
+							outputCostList3.Cost = types.Float64Value(outputCostListItem3.Cost)
+							outputCostList3.Modal = types.StringValue(string(outputCostListItem3.Modal))
+
+							targets.Config.Cerebras.OutputCostList = append(targets.Config.Cerebras.OutputCostList, outputCostList3)
+						}
+					} else {
+						targets.Config.Cerebras.OutputCostList = nil
+					}
 					targets.Config.Cerebras.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem3 := range targetsItem.Config.AIGatewayTargetCerebrasConfig.ServiceTierFactor {
@@ -727,6 +895,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets.Config.Cohere.APIVersion = types.StringNull()
 					}
 					targets.Config.Cohere.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetCohereConfig.CacheReadCostList != nil {
+						targets.Config.Cohere.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem4 := range targetsItem.Config.AIGatewayTargetCohereConfig.CacheReadCostList {
+							var cacheReadCostList4 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList4.Cost = types.Float64Value(cacheReadCostListItem4.Cost)
+							cacheReadCostList4.Modal = types.StringValue(string(cacheReadCostListItem4.Modal))
+
+							targets.Config.Cohere.CacheReadCostList = append(targets.Config.Cohere.CacheReadCostList, cacheReadCostList4)
+						}
+					} else {
+						targets.Config.Cohere.CacheReadCostList = nil
+					}
 					targets.Config.Cohere.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.CacheWriteCost)
 					targets.Config.Cohere.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -756,8 +938,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Cohere.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.EmbeddingsDimensions)
 					targets.Config.Cohere.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetCohereConfig.InputCostList != nil {
+						targets.Config.Cohere.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem4 := range targetsItem.Config.AIGatewayTargetCohereConfig.InputCostList {
+							var inputCostList4 tfTypes.AIGatewayModalCostList
+
+							inputCostList4.Cost = types.Float64Value(inputCostListItem4.Cost)
+							inputCostList4.Modal = types.StringValue(string(inputCostListItem4.Modal))
+
+							targets.Config.Cohere.InputCostList = append(targets.Config.Cohere.InputCostList, inputCostList4)
+						}
+					} else {
+						targets.Config.Cohere.InputCostList = nil
+					}
 					targets.Config.Cohere.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.MaxTokens)
 					targets.Config.Cohere.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetCohereConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetCohereConfig.OutputCostList != nil {
+						targets.Config.Cohere.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem4 := range targetsItem.Config.AIGatewayTargetCohereConfig.OutputCostList {
+							var outputCostList4 tfTypes.AIGatewayModalCostList
+
+							outputCostList4.Cost = types.Float64Value(outputCostListItem4.Cost)
+							outputCostList4.Modal = types.StringValue(string(outputCostListItem4.Modal))
+
+							targets.Config.Cohere.OutputCostList = append(targets.Config.Cohere.OutputCostList, outputCostList4)
+						}
+					} else {
+						targets.Config.Cohere.OutputCostList = nil
+					}
 					targets.Config.Cohere.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem4 := range targetsItem.Config.AIGatewayTargetCohereConfig.ServiceTierFactor {
@@ -777,6 +987,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetDashscopeConfig != nil {
 					targets.Config.Dashscope = &tfTypes.AIGatewayTargetDashscopeConfig{}
 					targets.Config.Dashscope.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetDashscopeConfig.CacheReadCostList != nil {
+						targets.Config.Dashscope.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem5 := range targetsItem.Config.AIGatewayTargetDashscopeConfig.CacheReadCostList {
+							var cacheReadCostList5 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList5.Cost = types.Float64Value(cacheReadCostListItem5.Cost)
+							cacheReadCostList5.Modal = types.StringValue(string(cacheReadCostListItem5.Modal))
+
+							targets.Config.Dashscope.CacheReadCostList = append(targets.Config.Dashscope.CacheReadCostList, cacheReadCostList5)
+						}
+					} else {
+						targets.Config.Dashscope.CacheReadCostList = nil
+					}
 					targets.Config.Dashscope.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.CacheWriteCost)
 					targets.Config.Dashscope.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -801,9 +1025,37 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Dashscope.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.EmbeddingsDimensions)
 					targets.Config.Dashscope.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetDashscopeConfig.InputCostList != nil {
+						targets.Config.Dashscope.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem5 := range targetsItem.Config.AIGatewayTargetDashscopeConfig.InputCostList {
+							var inputCostList5 tfTypes.AIGatewayModalCostList
+
+							inputCostList5.Cost = types.Float64Value(inputCostListItem5.Cost)
+							inputCostList5.Modal = types.StringValue(string(inputCostListItem5.Modal))
+
+							targets.Config.Dashscope.InputCostList = append(targets.Config.Dashscope.InputCostList, inputCostList5)
+						}
+					} else {
+						targets.Config.Dashscope.InputCostList = nil
+					}
 					targets.Config.Dashscope.International = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.International)
 					targets.Config.Dashscope.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.MaxTokens)
 					targets.Config.Dashscope.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDashscopeConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetDashscopeConfig.OutputCostList != nil {
+						targets.Config.Dashscope.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem5 := range targetsItem.Config.AIGatewayTargetDashscopeConfig.OutputCostList {
+							var outputCostList5 tfTypes.AIGatewayModalCostList
+
+							outputCostList5.Cost = types.Float64Value(outputCostListItem5.Cost)
+							outputCostList5.Modal = types.StringValue(string(outputCostListItem5.Modal))
+
+							targets.Config.Dashscope.OutputCostList = append(targets.Config.Dashscope.OutputCostList, outputCostList5)
+						}
+					} else {
+						targets.Config.Dashscope.OutputCostList = nil
+					}
 					targets.Config.Dashscope.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem5 := range targetsItem.Config.AIGatewayTargetDashscopeConfig.ServiceTierFactor {
@@ -822,6 +1074,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetDatabricksConfig != nil {
 					targets.Config.Databricks = &tfTypes.AIGatewayTargetDatabricksConfig{}
 					targets.Config.Databricks.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetDatabricksConfig.CacheReadCostList != nil {
+						targets.Config.Databricks.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem6 := range targetsItem.Config.AIGatewayTargetDatabricksConfig.CacheReadCostList {
+							var cacheReadCostList6 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList6.Cost = types.Float64Value(cacheReadCostListItem6.Cost)
+							cacheReadCostList6.Modal = types.StringValue(string(cacheReadCostListItem6.Modal))
+
+							targets.Config.Databricks.CacheReadCostList = append(targets.Config.Databricks.CacheReadCostList, cacheReadCostList6)
+						}
+					} else {
+						targets.Config.Databricks.CacheReadCostList = nil
+					}
 					targets.Config.Databricks.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.CacheWriteCost)
 					targets.Config.Databricks.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -846,8 +1112,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Databricks.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.EmbeddingsDimensions)
 					targets.Config.Databricks.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetDatabricksConfig.InputCostList != nil {
+						targets.Config.Databricks.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem6 := range targetsItem.Config.AIGatewayTargetDatabricksConfig.InputCostList {
+							var inputCostList6 tfTypes.AIGatewayModalCostList
+
+							inputCostList6.Cost = types.Float64Value(inputCostListItem6.Cost)
+							inputCostList6.Modal = types.StringValue(string(inputCostListItem6.Modal))
+
+							targets.Config.Databricks.InputCostList = append(targets.Config.Databricks.InputCostList, inputCostList6)
+						}
+					} else {
+						targets.Config.Databricks.InputCostList = nil
+					}
 					targets.Config.Databricks.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.MaxTokens)
 					targets.Config.Databricks.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDatabricksConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetDatabricksConfig.OutputCostList != nil {
+						targets.Config.Databricks.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem6 := range targetsItem.Config.AIGatewayTargetDatabricksConfig.OutputCostList {
+							var outputCostList6 tfTypes.AIGatewayModalCostList
+
+							outputCostList6.Cost = types.Float64Value(outputCostListItem6.Cost)
+							outputCostList6.Modal = types.StringValue(string(outputCostListItem6.Modal))
+
+							targets.Config.Databricks.OutputCostList = append(targets.Config.Databricks.OutputCostList, outputCostList6)
+						}
+					} else {
+						targets.Config.Databricks.OutputCostList = nil
+					}
 					targets.Config.Databricks.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem6 := range targetsItem.Config.AIGatewayTargetDatabricksConfig.ServiceTierFactor {
@@ -867,6 +1161,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetDeepseekConfig != nil {
 					targets.Config.Deepseek = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets.Config.Deepseek.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetDeepseekConfig.CacheReadCostList != nil {
+						targets.Config.Deepseek.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem7 := range targetsItem.Config.AIGatewayTargetDeepseekConfig.CacheReadCostList {
+							var cacheReadCostList7 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList7.Cost = types.Float64Value(cacheReadCostListItem7.Cost)
+							cacheReadCostList7.Modal = types.StringValue(string(cacheReadCostListItem7.Modal))
+
+							targets.Config.Deepseek.CacheReadCostList = append(targets.Config.Deepseek.CacheReadCostList, cacheReadCostList7)
+						}
+					} else {
+						targets.Config.Deepseek.CacheReadCostList = nil
+					}
 					targets.Config.Deepseek.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.CacheWriteCost)
 					targets.Config.Deepseek.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -891,8 +1199,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Deepseek.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.EmbeddingsDimensions)
 					targets.Config.Deepseek.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetDeepseekConfig.InputCostList != nil {
+						targets.Config.Deepseek.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem7 := range targetsItem.Config.AIGatewayTargetDeepseekConfig.InputCostList {
+							var inputCostList7 tfTypes.AIGatewayModalCostList
+
+							inputCostList7.Cost = types.Float64Value(inputCostListItem7.Cost)
+							inputCostList7.Modal = types.StringValue(string(inputCostListItem7.Modal))
+
+							targets.Config.Deepseek.InputCostList = append(targets.Config.Deepseek.InputCostList, inputCostList7)
+						}
+					} else {
+						targets.Config.Deepseek.InputCostList = nil
+					}
 					targets.Config.Deepseek.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.MaxTokens)
 					targets.Config.Deepseek.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetDeepseekConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetDeepseekConfig.OutputCostList != nil {
+						targets.Config.Deepseek.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem7 := range targetsItem.Config.AIGatewayTargetDeepseekConfig.OutputCostList {
+							var outputCostList7 tfTypes.AIGatewayModalCostList
+
+							outputCostList7.Cost = types.Float64Value(outputCostListItem7.Cost)
+							outputCostList7.Modal = types.StringValue(string(outputCostListItem7.Modal))
+
+							targets.Config.Deepseek.OutputCostList = append(targets.Config.Deepseek.OutputCostList, outputCostList7)
+						}
+					} else {
+						targets.Config.Deepseek.OutputCostList = nil
+					}
 					targets.Config.Deepseek.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem7 := range targetsItem.Config.AIGatewayTargetDeepseekConfig.ServiceTierFactor {
@@ -911,6 +1247,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetGeminiConfig != nil {
 					targets.Config.Gemini = &tfTypes.AIGatewayTargetGeminiConfig{}
 					targets.Config.Gemini.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetGeminiConfig.CacheReadCostList != nil {
+						targets.Config.Gemini.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem8 := range targetsItem.Config.AIGatewayTargetGeminiConfig.CacheReadCostList {
+							var cacheReadCostList8 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList8.Cost = types.Float64Value(cacheReadCostListItem8.Cost)
+							cacheReadCostList8.Modal = types.StringValue(string(cacheReadCostListItem8.Modal))
+
+							targets.Config.Gemini.CacheReadCostList = append(targets.Config.Gemini.CacheReadCostList, cacheReadCostList8)
+						}
+					} else {
+						targets.Config.Gemini.CacheReadCostList = nil
+					}
 					targets.Config.Gemini.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.CacheWriteCost)
 					targets.Config.Gemini.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -943,8 +1293,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets.Config.Gemini.GcpEnvironment.ProjectID = types.StringValue(targetsItem.Config.AIGatewayTargetGeminiConfig.GcpEnvironment.ProjectID)
 					}
 					targets.Config.Gemini.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetGeminiConfig.InputCostList != nil {
+						targets.Config.Gemini.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem8 := range targetsItem.Config.AIGatewayTargetGeminiConfig.InputCostList {
+							var inputCostList8 tfTypes.AIGatewayModalCostList
+
+							inputCostList8.Cost = types.Float64Value(inputCostListItem8.Cost)
+							inputCostList8.Modal = types.StringValue(string(inputCostListItem8.Modal))
+
+							targets.Config.Gemini.InputCostList = append(targets.Config.Gemini.InputCostList, inputCostList8)
+						}
+					} else {
+						targets.Config.Gemini.InputCostList = nil
+					}
 					targets.Config.Gemini.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.MaxTokens)
 					targets.Config.Gemini.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetGeminiConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetGeminiConfig.OutputCostList != nil {
+						targets.Config.Gemini.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem8 := range targetsItem.Config.AIGatewayTargetGeminiConfig.OutputCostList {
+							var outputCostList8 tfTypes.AIGatewayModalCostList
+
+							outputCostList8.Cost = types.Float64Value(outputCostListItem8.Cost)
+							outputCostList8.Modal = types.StringValue(string(outputCostListItem8.Modal))
+
+							targets.Config.Gemini.OutputCostList = append(targets.Config.Gemini.OutputCostList, outputCostList8)
+						}
+					} else {
+						targets.Config.Gemini.OutputCostList = nil
+					}
 					targets.Config.Gemini.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem8 := range targetsItem.Config.AIGatewayTargetGeminiConfig.ServiceTierFactor {
@@ -963,6 +1341,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetHuggingfaceConfig != nil {
 					targets.Config.Huggingface = &tfTypes.AIGatewayTargetHuggingfaceConfig{}
 					targets.Config.Huggingface.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCostList != nil {
+						targets.Config.Huggingface.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem9 := range targetsItem.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCostList {
+							var cacheReadCostList9 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList9.Cost = types.Float64Value(cacheReadCostListItem9.Cost)
+							cacheReadCostList9.Modal = types.StringValue(string(cacheReadCostListItem9.Modal))
+
+							targets.Config.Huggingface.CacheReadCostList = append(targets.Config.Huggingface.CacheReadCostList, cacheReadCostList9)
+						}
+					} else {
+						targets.Config.Huggingface.CacheReadCostList = nil
+					}
 					targets.Config.Huggingface.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.CacheWriteCost)
 					targets.Config.Huggingface.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -987,8 +1379,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Huggingface.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.EmbeddingsDimensions)
 					targets.Config.Huggingface.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetHuggingfaceConfig.InputCostList != nil {
+						targets.Config.Huggingface.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem9 := range targetsItem.Config.AIGatewayTargetHuggingfaceConfig.InputCostList {
+							var inputCostList9 tfTypes.AIGatewayModalCostList
+
+							inputCostList9.Cost = types.Float64Value(inputCostListItem9.Cost)
+							inputCostList9.Modal = types.StringValue(string(inputCostListItem9.Modal))
+
+							targets.Config.Huggingface.InputCostList = append(targets.Config.Huggingface.InputCostList, inputCostList9)
+						}
+					} else {
+						targets.Config.Huggingface.InputCostList = nil
+					}
 					targets.Config.Huggingface.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.MaxTokens)
 					targets.Config.Huggingface.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetHuggingfaceConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetHuggingfaceConfig.OutputCostList != nil {
+						targets.Config.Huggingface.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem9 := range targetsItem.Config.AIGatewayTargetHuggingfaceConfig.OutputCostList {
+							var outputCostList9 tfTypes.AIGatewayModalCostList
+
+							outputCostList9.Cost = types.Float64Value(outputCostListItem9.Cost)
+							outputCostList9.Modal = types.StringValue(string(outputCostListItem9.Modal))
+
+							targets.Config.Huggingface.OutputCostList = append(targets.Config.Huggingface.OutputCostList, outputCostList9)
+						}
+					} else {
+						targets.Config.Huggingface.OutputCostList = nil
+					}
 					targets.Config.Huggingface.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem9 := range targetsItem.Config.AIGatewayTargetHuggingfaceConfig.ServiceTierFactor {
@@ -1009,6 +1429,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetKimiConfig != nil {
 					targets.Config.Kimi = &tfTypes.AIGatewayTargetDashscopeConfig{}
 					targets.Config.Kimi.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetKimiConfig.CacheReadCostList != nil {
+						targets.Config.Kimi.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem10 := range targetsItem.Config.AIGatewayTargetKimiConfig.CacheReadCostList {
+							var cacheReadCostList10 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList10.Cost = types.Float64Value(cacheReadCostListItem10.Cost)
+							cacheReadCostList10.Modal = types.StringValue(string(cacheReadCostListItem10.Modal))
+
+							targets.Config.Kimi.CacheReadCostList = append(targets.Config.Kimi.CacheReadCostList, cacheReadCostList10)
+						}
+					} else {
+						targets.Config.Kimi.CacheReadCostList = nil
+					}
 					targets.Config.Kimi.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.CacheWriteCost)
 					targets.Config.Kimi.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1033,9 +1467,37 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Kimi.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.EmbeddingsDimensions)
 					targets.Config.Kimi.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetKimiConfig.InputCostList != nil {
+						targets.Config.Kimi.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem10 := range targetsItem.Config.AIGatewayTargetKimiConfig.InputCostList {
+							var inputCostList10 tfTypes.AIGatewayModalCostList
+
+							inputCostList10.Cost = types.Float64Value(inputCostListItem10.Cost)
+							inputCostList10.Modal = types.StringValue(string(inputCostListItem10.Modal))
+
+							targets.Config.Kimi.InputCostList = append(targets.Config.Kimi.InputCostList, inputCostList10)
+						}
+					} else {
+						targets.Config.Kimi.InputCostList = nil
+					}
 					targets.Config.Kimi.International = types.BoolPointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.International)
 					targets.Config.Kimi.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.MaxTokens)
 					targets.Config.Kimi.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetKimiConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetKimiConfig.OutputCostList != nil {
+						targets.Config.Kimi.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem10 := range targetsItem.Config.AIGatewayTargetKimiConfig.OutputCostList {
+							var outputCostList10 tfTypes.AIGatewayModalCostList
+
+							outputCostList10.Cost = types.Float64Value(outputCostListItem10.Cost)
+							outputCostList10.Modal = types.StringValue(string(outputCostListItem10.Modal))
+
+							targets.Config.Kimi.OutputCostList = append(targets.Config.Kimi.OutputCostList, outputCostList10)
+						}
+					} else {
+						targets.Config.Kimi.OutputCostList = nil
+					}
 					targets.Config.Kimi.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem10 := range targetsItem.Config.AIGatewayTargetKimiConfig.ServiceTierFactor {
@@ -1054,6 +1516,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetLlama2Config != nil {
 					targets.Config.Llama2 = &tfTypes.AIGatewayTargetLlama2Config{}
 					targets.Config.Llama2.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetLlama2Config.CacheReadCostList != nil {
+						targets.Config.Llama2.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem11 := range targetsItem.Config.AIGatewayTargetLlama2Config.CacheReadCostList {
+							var cacheReadCostList11 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList11.Cost = types.Float64Value(cacheReadCostListItem11.Cost)
+							cacheReadCostList11.Modal = types.StringValue(string(cacheReadCostListItem11.Modal))
+
+							targets.Config.Llama2.CacheReadCostList = append(targets.Config.Llama2.CacheReadCostList, cacheReadCostList11)
+						}
+					} else {
+						targets.Config.Llama2.CacheReadCostList = nil
+					}
 					targets.Config.Llama2.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.CacheWriteCost)
 					targets.Config.Llama2.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1079,8 +1555,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Llama2.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.EmbeddingsDimensions)
 					targets.Config.Llama2.Format = types.StringValue(string(targetsItem.Config.AIGatewayTargetLlama2Config.Format))
 					targets.Config.Llama2.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.InputCost)
+					if targetsItem.Config.AIGatewayTargetLlama2Config.InputCostList != nil {
+						targets.Config.Llama2.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem11 := range targetsItem.Config.AIGatewayTargetLlama2Config.InputCostList {
+							var inputCostList11 tfTypes.AIGatewayModalCostList
+
+							inputCostList11.Cost = types.Float64Value(inputCostListItem11.Cost)
+							inputCostList11.Modal = types.StringValue(string(inputCostListItem11.Modal))
+
+							targets.Config.Llama2.InputCostList = append(targets.Config.Llama2.InputCostList, inputCostList11)
+						}
+					} else {
+						targets.Config.Llama2.InputCostList = nil
+					}
 					targets.Config.Llama2.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.MaxTokens)
 					targets.Config.Llama2.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetLlama2Config.OutputCost)
+					if targetsItem.Config.AIGatewayTargetLlama2Config.OutputCostList != nil {
+						targets.Config.Llama2.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem11 := range targetsItem.Config.AIGatewayTargetLlama2Config.OutputCostList {
+							var outputCostList11 tfTypes.AIGatewayModalCostList
+
+							outputCostList11.Cost = types.Float64Value(outputCostListItem11.Cost)
+							outputCostList11.Modal = types.StringValue(string(outputCostListItem11.Modal))
+
+							targets.Config.Llama2.OutputCostList = append(targets.Config.Llama2.OutputCostList, outputCostList11)
+						}
+					} else {
+						targets.Config.Llama2.OutputCostList = nil
+					}
 					targets.Config.Llama2.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem11 := range targetsItem.Config.AIGatewayTargetLlama2Config.ServiceTierFactor {
@@ -1099,6 +1603,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetMistralConfig != nil {
 					targets.Config.Mistral = &tfTypes.AIGatewayTargetMistralConfig{}
 					targets.Config.Mistral.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetMistralConfig.CacheReadCostList != nil {
+						targets.Config.Mistral.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem12 := range targetsItem.Config.AIGatewayTargetMistralConfig.CacheReadCostList {
+							var cacheReadCostList12 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList12.Cost = types.Float64Value(cacheReadCostListItem12.Cost)
+							cacheReadCostList12.Modal = types.StringValue(string(cacheReadCostListItem12.Modal))
+
+							targets.Config.Mistral.CacheReadCostList = append(targets.Config.Mistral.CacheReadCostList, cacheReadCostList12)
+						}
+					} else {
+						targets.Config.Mistral.CacheReadCostList = nil
+					}
 					targets.Config.Mistral.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.CacheWriteCost)
 					targets.Config.Mistral.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1124,8 +1642,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets.Config.Mistral.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.EmbeddingsDimensions)
 					targets.Config.Mistral.Format = types.StringValue(string(targetsItem.Config.AIGatewayTargetMistralConfig.Format))
 					targets.Config.Mistral.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetMistralConfig.InputCostList != nil {
+						targets.Config.Mistral.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem12 := range targetsItem.Config.AIGatewayTargetMistralConfig.InputCostList {
+							var inputCostList12 tfTypes.AIGatewayModalCostList
+
+							inputCostList12.Cost = types.Float64Value(inputCostListItem12.Cost)
+							inputCostList12.Modal = types.StringValue(string(inputCostListItem12.Modal))
+
+							targets.Config.Mistral.InputCostList = append(targets.Config.Mistral.InputCostList, inputCostList12)
+						}
+					} else {
+						targets.Config.Mistral.InputCostList = nil
+					}
 					targets.Config.Mistral.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.MaxTokens)
 					targets.Config.Mistral.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetMistralConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetMistralConfig.OutputCostList != nil {
+						targets.Config.Mistral.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem12 := range targetsItem.Config.AIGatewayTargetMistralConfig.OutputCostList {
+							var outputCostList12 tfTypes.AIGatewayModalCostList
+
+							outputCostList12.Cost = types.Float64Value(outputCostListItem12.Cost)
+							outputCostList12.Modal = types.StringValue(string(outputCostListItem12.Modal))
+
+							targets.Config.Mistral.OutputCostList = append(targets.Config.Mistral.OutputCostList, outputCostList12)
+						}
+					} else {
+						targets.Config.Mistral.OutputCostList = nil
+					}
 					targets.Config.Mistral.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem12 := range targetsItem.Config.AIGatewayTargetMistralConfig.ServiceTierFactor {
@@ -1144,6 +1690,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetOllamaConfig != nil {
 					targets.Config.Ollama = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets.Config.Ollama.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetOllamaConfig.CacheReadCostList != nil {
+						targets.Config.Ollama.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem13 := range targetsItem.Config.AIGatewayTargetOllamaConfig.CacheReadCostList {
+							var cacheReadCostList13 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList13.Cost = types.Float64Value(cacheReadCostListItem13.Cost)
+							cacheReadCostList13.Modal = types.StringValue(string(cacheReadCostListItem13.Modal))
+
+							targets.Config.Ollama.CacheReadCostList = append(targets.Config.Ollama.CacheReadCostList, cacheReadCostList13)
+						}
+					} else {
+						targets.Config.Ollama.CacheReadCostList = nil
+					}
 					targets.Config.Ollama.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.CacheWriteCost)
 					targets.Config.Ollama.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1168,8 +1728,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Ollama.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.EmbeddingsDimensions)
 					targets.Config.Ollama.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetOllamaConfig.InputCostList != nil {
+						targets.Config.Ollama.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem13 := range targetsItem.Config.AIGatewayTargetOllamaConfig.InputCostList {
+							var inputCostList13 tfTypes.AIGatewayModalCostList
+
+							inputCostList13.Cost = types.Float64Value(inputCostListItem13.Cost)
+							inputCostList13.Modal = types.StringValue(string(inputCostListItem13.Modal))
+
+							targets.Config.Ollama.InputCostList = append(targets.Config.Ollama.InputCostList, inputCostList13)
+						}
+					} else {
+						targets.Config.Ollama.InputCostList = nil
+					}
 					targets.Config.Ollama.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.MaxTokens)
 					targets.Config.Ollama.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOllamaConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetOllamaConfig.OutputCostList != nil {
+						targets.Config.Ollama.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem13 := range targetsItem.Config.AIGatewayTargetOllamaConfig.OutputCostList {
+							var outputCostList13 tfTypes.AIGatewayModalCostList
+
+							outputCostList13.Cost = types.Float64Value(outputCostListItem13.Cost)
+							outputCostList13.Modal = types.StringValue(string(outputCostListItem13.Modal))
+
+							targets.Config.Ollama.OutputCostList = append(targets.Config.Ollama.OutputCostList, outputCostList13)
+						}
+					} else {
+						targets.Config.Ollama.OutputCostList = nil
+					}
 					targets.Config.Ollama.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem13 := range targetsItem.Config.AIGatewayTargetOllamaConfig.ServiceTierFactor {
@@ -1188,6 +1776,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetOpenaiConfig != nil {
 					targets.Config.Openai = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets.Config.Openai.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetOpenaiConfig.CacheReadCostList != nil {
+						targets.Config.Openai.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem14 := range targetsItem.Config.AIGatewayTargetOpenaiConfig.CacheReadCostList {
+							var cacheReadCostList14 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList14.Cost = types.Float64Value(cacheReadCostListItem14.Cost)
+							cacheReadCostList14.Modal = types.StringValue(string(cacheReadCostListItem14.Modal))
+
+							targets.Config.Openai.CacheReadCostList = append(targets.Config.Openai.CacheReadCostList, cacheReadCostList14)
+						}
+					} else {
+						targets.Config.Openai.CacheReadCostList = nil
+					}
 					targets.Config.Openai.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.CacheWriteCost)
 					targets.Config.Openai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1212,8 +1814,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Openai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.EmbeddingsDimensions)
 					targets.Config.Openai.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetOpenaiConfig.InputCostList != nil {
+						targets.Config.Openai.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem14 := range targetsItem.Config.AIGatewayTargetOpenaiConfig.InputCostList {
+							var inputCostList14 tfTypes.AIGatewayModalCostList
+
+							inputCostList14.Cost = types.Float64Value(inputCostListItem14.Cost)
+							inputCostList14.Modal = types.StringValue(string(inputCostListItem14.Modal))
+
+							targets.Config.Openai.InputCostList = append(targets.Config.Openai.InputCostList, inputCostList14)
+						}
+					} else {
+						targets.Config.Openai.InputCostList = nil
+					}
 					targets.Config.Openai.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.MaxTokens)
 					targets.Config.Openai.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetOpenaiConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetOpenaiConfig.OutputCostList != nil {
+						targets.Config.Openai.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem14 := range targetsItem.Config.AIGatewayTargetOpenaiConfig.OutputCostList {
+							var outputCostList14 tfTypes.AIGatewayModalCostList
+
+							outputCostList14.Cost = types.Float64Value(outputCostListItem14.Cost)
+							outputCostList14.Modal = types.StringValue(string(outputCostListItem14.Modal))
+
+							targets.Config.Openai.OutputCostList = append(targets.Config.Openai.OutputCostList, outputCostList14)
+						}
+					} else {
+						targets.Config.Openai.OutputCostList = nil
+					}
 					targets.Config.Openai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem14 := range targetsItem.Config.AIGatewayTargetOpenaiConfig.ServiceTierFactor {
@@ -1241,6 +1871,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets.Config.Sagemaker.Aws.StsEndpointURL = types.StringPointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.Aws.StsEndpointURL)
 					}
 					targets.Config.Sagemaker.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetSagemakerConfig.CacheReadCostList != nil {
+						targets.Config.Sagemaker.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem15 := range targetsItem.Config.AIGatewayTargetSagemakerConfig.CacheReadCostList {
+							var cacheReadCostList15 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList15.Cost = types.Float64Value(cacheReadCostListItem15.Cost)
+							cacheReadCostList15.Modal = types.StringValue(string(cacheReadCostListItem15.Modal))
+
+							targets.Config.Sagemaker.CacheReadCostList = append(targets.Config.Sagemaker.CacheReadCostList, cacheReadCostList15)
+						}
+					} else {
+						targets.Config.Sagemaker.CacheReadCostList = nil
+					}
 					targets.Config.Sagemaker.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.CacheWriteCost)
 					targets.Config.Sagemaker.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1265,8 +1909,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Sagemaker.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.EmbeddingsDimensions)
 					targets.Config.Sagemaker.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetSagemakerConfig.InputCostList != nil {
+						targets.Config.Sagemaker.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem15 := range targetsItem.Config.AIGatewayTargetSagemakerConfig.InputCostList {
+							var inputCostList15 tfTypes.AIGatewayModalCostList
+
+							inputCostList15.Cost = types.Float64Value(inputCostListItem15.Cost)
+							inputCostList15.Modal = types.StringValue(string(inputCostListItem15.Modal))
+
+							targets.Config.Sagemaker.InputCostList = append(targets.Config.Sagemaker.InputCostList, inputCostList15)
+						}
+					} else {
+						targets.Config.Sagemaker.InputCostList = nil
+					}
 					targets.Config.Sagemaker.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.MaxTokens)
 					targets.Config.Sagemaker.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetSagemakerConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetSagemakerConfig.OutputCostList != nil {
+						targets.Config.Sagemaker.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem15 := range targetsItem.Config.AIGatewayTargetSagemakerConfig.OutputCostList {
+							var outputCostList15 tfTypes.AIGatewayModalCostList
+
+							outputCostList15.Cost = types.Float64Value(outputCostListItem15.Cost)
+							outputCostList15.Modal = types.StringValue(string(outputCostListItem15.Modal))
+
+							targets.Config.Sagemaker.OutputCostList = append(targets.Config.Sagemaker.OutputCostList, outputCostList15)
+						}
+					} else {
+						targets.Config.Sagemaker.OutputCostList = nil
+					}
 					targets.Config.Sagemaker.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem15 := range targetsItem.Config.AIGatewayTargetSagemakerConfig.ServiceTierFactor {
@@ -1293,6 +1965,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetVercelConfig != nil {
 					targets.Config.Vercel = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets.Config.Vercel.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetVercelConfig.CacheReadCostList != nil {
+						targets.Config.Vercel.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem16 := range targetsItem.Config.AIGatewayTargetVercelConfig.CacheReadCostList {
+							var cacheReadCostList16 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList16.Cost = types.Float64Value(cacheReadCostListItem16.Cost)
+							cacheReadCostList16.Modal = types.StringValue(string(cacheReadCostListItem16.Modal))
+
+							targets.Config.Vercel.CacheReadCostList = append(targets.Config.Vercel.CacheReadCostList, cacheReadCostList16)
+						}
+					} else {
+						targets.Config.Vercel.CacheReadCostList = nil
+					}
 					targets.Config.Vercel.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.CacheWriteCost)
 					targets.Config.Vercel.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1317,8 +2003,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Vercel.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.EmbeddingsDimensions)
 					targets.Config.Vercel.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetVercelConfig.InputCostList != nil {
+						targets.Config.Vercel.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem16 := range targetsItem.Config.AIGatewayTargetVercelConfig.InputCostList {
+							var inputCostList16 tfTypes.AIGatewayModalCostList
+
+							inputCostList16.Cost = types.Float64Value(inputCostListItem16.Cost)
+							inputCostList16.Modal = types.StringValue(string(inputCostListItem16.Modal))
+
+							targets.Config.Vercel.InputCostList = append(targets.Config.Vercel.InputCostList, inputCostList16)
+						}
+					} else {
+						targets.Config.Vercel.InputCostList = nil
+					}
 					targets.Config.Vercel.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.MaxTokens)
 					targets.Config.Vercel.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVercelConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetVercelConfig.OutputCostList != nil {
+						targets.Config.Vercel.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem16 := range targetsItem.Config.AIGatewayTargetVercelConfig.OutputCostList {
+							var outputCostList16 tfTypes.AIGatewayModalCostList
+
+							outputCostList16.Cost = types.Float64Value(outputCostListItem16.Cost)
+							outputCostList16.Modal = types.StringValue(string(outputCostListItem16.Modal))
+
+							targets.Config.Vercel.OutputCostList = append(targets.Config.Vercel.OutputCostList, outputCostList16)
+						}
+					} else {
+						targets.Config.Vercel.OutputCostList = nil
+					}
 					targets.Config.Vercel.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem16 := range targetsItem.Config.AIGatewayTargetVercelConfig.ServiceTierFactor {
@@ -1337,6 +2051,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetVllmConfig != nil {
 					targets.Config.Vllm = &tfTypes.AIGatewayTargetVllmConfig{}
 					targets.Config.Vllm.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetVllmConfig.CacheReadCostList != nil {
+						targets.Config.Vllm.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem17 := range targetsItem.Config.AIGatewayTargetVllmConfig.CacheReadCostList {
+							var cacheReadCostList17 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList17.Cost = types.Float64Value(cacheReadCostListItem17.Cost)
+							cacheReadCostList17.Modal = types.StringValue(string(cacheReadCostListItem17.Modal))
+
+							targets.Config.Vllm.CacheReadCostList = append(targets.Config.Vllm.CacheReadCostList, cacheReadCostList17)
+						}
+					} else {
+						targets.Config.Vllm.CacheReadCostList = nil
+					}
 					targets.Config.Vllm.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.CacheWriteCost)
 					targets.Config.Vllm.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1361,8 +2089,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Vllm.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.EmbeddingsDimensions)
 					targets.Config.Vllm.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetVllmConfig.InputCostList != nil {
+						targets.Config.Vllm.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem17 := range targetsItem.Config.AIGatewayTargetVllmConfig.InputCostList {
+							var inputCostList17 tfTypes.AIGatewayModalCostList
+
+							inputCostList17.Cost = types.Float64Value(inputCostListItem17.Cost)
+							inputCostList17.Modal = types.StringValue(string(inputCostListItem17.Modal))
+
+							targets.Config.Vllm.InputCostList = append(targets.Config.Vllm.InputCostList, inputCostList17)
+						}
+					} else {
+						targets.Config.Vllm.InputCostList = nil
+					}
 					targets.Config.Vllm.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.MaxTokens)
 					targets.Config.Vllm.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetVllmConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetVllmConfig.OutputCostList != nil {
+						targets.Config.Vllm.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem17 := range targetsItem.Config.AIGatewayTargetVllmConfig.OutputCostList {
+							var outputCostList17 tfTypes.AIGatewayModalCostList
+
+							outputCostList17.Cost = types.Float64Value(outputCostListItem17.Cost)
+							outputCostList17.Modal = types.StringValue(string(outputCostListItem17.Modal))
+
+							targets.Config.Vllm.OutputCostList = append(targets.Config.Vllm.OutputCostList, outputCostList17)
+						}
+					} else {
+						targets.Config.Vllm.OutputCostList = nil
+					}
 					targets.Config.Vllm.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem17 := range targetsItem.Config.AIGatewayTargetVllmConfig.ServiceTierFactor {
@@ -1381,6 +2137,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem.Config.AIGatewayTargetXaiConfig != nil {
 					targets.Config.Xai = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets.Config.Xai.CacheReadCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.CacheReadCost)
+					if targetsItem.Config.AIGatewayTargetXaiConfig.CacheReadCostList != nil {
+						targets.Config.Xai.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem18 := range targetsItem.Config.AIGatewayTargetXaiConfig.CacheReadCostList {
+							var cacheReadCostList18 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList18.Cost = types.Float64Value(cacheReadCostListItem18.Cost)
+							cacheReadCostList18.Modal = types.StringValue(string(cacheReadCostListItem18.Modal))
+
+							targets.Config.Xai.CacheReadCostList = append(targets.Config.Xai.CacheReadCostList, cacheReadCostList18)
+						}
+					} else {
+						targets.Config.Xai.CacheReadCostList = nil
+					}
 					targets.Config.Xai.CacheWriteCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.CacheWriteCost)
 					targets.Config.Xai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1405,8 +2175,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets.Config.Xai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.EmbeddingsDimensions)
 					targets.Config.Xai.InputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.InputCost)
+					if targetsItem.Config.AIGatewayTargetXaiConfig.InputCostList != nil {
+						targets.Config.Xai.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem18 := range targetsItem.Config.AIGatewayTargetXaiConfig.InputCostList {
+							var inputCostList18 tfTypes.AIGatewayModalCostList
+
+							inputCostList18.Cost = types.Float64Value(inputCostListItem18.Cost)
+							inputCostList18.Modal = types.StringValue(string(inputCostListItem18.Modal))
+
+							targets.Config.Xai.InputCostList = append(targets.Config.Xai.InputCostList, inputCostList18)
+						}
+					} else {
+						targets.Config.Xai.InputCostList = nil
+					}
 					targets.Config.Xai.MaxTokens = types.Int64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.MaxTokens)
 					targets.Config.Xai.OutputCost = types.Float64PointerValue(targetsItem.Config.AIGatewayTargetXaiConfig.OutputCost)
+					if targetsItem.Config.AIGatewayTargetXaiConfig.OutputCostList != nil {
+						targets.Config.Xai.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem18 := range targetsItem.Config.AIGatewayTargetXaiConfig.OutputCostList {
+							var outputCostList18 tfTypes.AIGatewayModalCostList
+
+							outputCostList18.Cost = types.Float64Value(outputCostListItem18.Cost)
+							outputCostList18.Modal = types.StringValue(string(outputCostListItem18.Modal))
+
+							targets.Config.Xai.OutputCostList = append(targets.Config.Xai.OutputCostList, outputCostList18)
+						}
+					} else {
+						targets.Config.Xai.OutputCostList = nil
+					}
 					targets.Config.Xai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem18 := range targetsItem.Config.AIGatewayTargetXaiConfig.ServiceTierFactor {
@@ -1953,6 +2751,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetAnthropicConfig != nil {
 					targets1.Config.Anthropic = &tfTypes.AIGatewayTargetAnthropicConfig{}
 					targets1.Config.Anthropic.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetAnthropicConfig.CacheReadCostList != nil {
+						targets1.Config.Anthropic.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem19 := range targetsItem1.Config.AIGatewayTargetAnthropicConfig.CacheReadCostList {
+							var cacheReadCostList19 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList19.Cost = types.Float64Value(cacheReadCostListItem19.Cost)
+							cacheReadCostList19.Modal = types.StringValue(string(cacheReadCostListItem19.Modal))
+
+							targets1.Config.Anthropic.CacheReadCostList = append(targets1.Config.Anthropic.CacheReadCostList, cacheReadCostList19)
+						}
+					} else {
+						targets1.Config.Anthropic.CacheReadCostList = nil
+					}
 					targets1.Config.Anthropic.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.CacheWriteCost)
 					targets1.Config.Anthropic.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -1977,8 +2789,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Anthropic.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.EmbeddingsDimensions)
 					targets1.Config.Anthropic.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetAnthropicConfig.InputCostList != nil {
+						targets1.Config.Anthropic.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem19 := range targetsItem1.Config.AIGatewayTargetAnthropicConfig.InputCostList {
+							var inputCostList19 tfTypes.AIGatewayModalCostList
+
+							inputCostList19.Cost = types.Float64Value(inputCostListItem19.Cost)
+							inputCostList19.Modal = types.StringValue(string(inputCostListItem19.Modal))
+
+							targets1.Config.Anthropic.InputCostList = append(targets1.Config.Anthropic.InputCostList, inputCostList19)
+						}
+					} else {
+						targets1.Config.Anthropic.InputCostList = nil
+					}
 					targets1.Config.Anthropic.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.MaxTokens)
 					targets1.Config.Anthropic.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAnthropicConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetAnthropicConfig.OutputCostList != nil {
+						targets1.Config.Anthropic.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem19 := range targetsItem1.Config.AIGatewayTargetAnthropicConfig.OutputCostList {
+							var outputCostList19 tfTypes.AIGatewayModalCostList
+
+							outputCostList19.Cost = types.Float64Value(outputCostListItem19.Cost)
+							outputCostList19.Modal = types.StringValue(string(outputCostListItem19.Modal))
+
+							targets1.Config.Anthropic.OutputCostList = append(targets1.Config.Anthropic.OutputCostList, outputCostList19)
+						}
+					} else {
+						targets1.Config.Anthropic.OutputCostList = nil
+					}
 					targets1.Config.Anthropic.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem19 := range targetsItem1.Config.AIGatewayTargetAnthropicConfig.ServiceTierFactor {
@@ -1999,6 +2839,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Azure = &tfTypes.AIGatewayTargetAzureConfig{}
 					targets1.Config.Azure.APIVersion = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.APIVersion)
 					targets1.Config.Azure.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetAzureConfig.CacheReadCostList != nil {
+						targets1.Config.Azure.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem20 := range targetsItem1.Config.AIGatewayTargetAzureConfig.CacheReadCostList {
+							var cacheReadCostList20 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList20.Cost = types.Float64Value(cacheReadCostListItem20.Cost)
+							cacheReadCostList20.Modal = types.StringValue(string(cacheReadCostListItem20.Modal))
+
+							targets1.Config.Azure.CacheReadCostList = append(targets1.Config.Azure.CacheReadCostList, cacheReadCostList20)
+						}
+					} else {
+						targets1.Config.Azure.CacheReadCostList = nil
+					}
 					targets1.Config.Azure.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.CacheWriteCost)
 					targets1.Config.Azure.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2029,8 +2883,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets1.Config.Azure.FoundryPathPrefix = types.StringNull()
 					}
 					targets1.Config.Azure.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetAzureConfig.InputCostList != nil {
+						targets1.Config.Azure.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem20 := range targetsItem1.Config.AIGatewayTargetAzureConfig.InputCostList {
+							var inputCostList20 tfTypes.AIGatewayModalCostList
+
+							inputCostList20.Cost = types.Float64Value(inputCostListItem20.Cost)
+							inputCostList20.Modal = types.StringValue(string(inputCostListItem20.Modal))
+
+							targets1.Config.Azure.InputCostList = append(targets1.Config.Azure.InputCostList, inputCostList20)
+						}
+					} else {
+						targets1.Config.Azure.InputCostList = nil
+					}
 					targets1.Config.Azure.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.MaxTokens)
 					targets1.Config.Azure.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetAzureConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetAzureConfig.OutputCostList != nil {
+						targets1.Config.Azure.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem20 := range targetsItem1.Config.AIGatewayTargetAzureConfig.OutputCostList {
+							var outputCostList20 tfTypes.AIGatewayModalCostList
+
+							outputCostList20.Cost = types.Float64Value(outputCostListItem20.Cost)
+							outputCostList20.Modal = types.StringValue(string(outputCostListItem20.Modal))
+
+							targets1.Config.Azure.OutputCostList = append(targets1.Config.Azure.OutputCostList, outputCostList20)
+						}
+					} else {
+						targets1.Config.Azure.OutputCostList = nil
+					}
 					targets1.Config.Azure.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem20 := range targetsItem1.Config.AIGatewayTargetAzureConfig.ServiceTierFactor {
@@ -2050,6 +2932,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Bedrock = &tfTypes.AIGatewayTargetBedrockConfig{}
 					targets1.Config.Bedrock.BatchBucketPrefix = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.BatchBucketPrefix)
 					targets1.Config.Bedrock.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetBedrockConfig.CacheReadCostList != nil {
+						targets1.Config.Bedrock.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem21 := range targetsItem1.Config.AIGatewayTargetBedrockConfig.CacheReadCostList {
+							var cacheReadCostList21 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList21.Cost = types.Float64Value(cacheReadCostListItem21.Cost)
+							cacheReadCostList21.Modal = types.StringValue(string(cacheReadCostListItem21.Modal))
+
+							targets1.Config.Bedrock.CacheReadCostList = append(targets1.Config.Bedrock.CacheReadCostList, cacheReadCostList21)
+						}
+					} else {
+						targets1.Config.Bedrock.CacheReadCostList = nil
+					}
 					targets1.Config.Bedrock.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.CacheWriteCost)
 					targets1.Config.Bedrock.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2075,8 +2971,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Bedrock.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.EmbeddingsDimensions)
 					targets1.Config.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.EmbeddingsNormalize)
 					targets1.Config.Bedrock.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetBedrockConfig.InputCostList != nil {
+						targets1.Config.Bedrock.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem21 := range targetsItem1.Config.AIGatewayTargetBedrockConfig.InputCostList {
+							var inputCostList21 tfTypes.AIGatewayModalCostList
+
+							inputCostList21.Cost = types.Float64Value(inputCostListItem21.Cost)
+							inputCostList21.Modal = types.StringValue(string(inputCostListItem21.Modal))
+
+							targets1.Config.Bedrock.InputCostList = append(targets1.Config.Bedrock.InputCostList, inputCostList21)
+						}
+					} else {
+						targets1.Config.Bedrock.InputCostList = nil
+					}
 					targets1.Config.Bedrock.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.MaxTokens)
 					targets1.Config.Bedrock.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetBedrockConfig.OutputCostList != nil {
+						targets1.Config.Bedrock.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem21 := range targetsItem1.Config.AIGatewayTargetBedrockConfig.OutputCostList {
+							var outputCostList21 tfTypes.AIGatewayModalCostList
+
+							outputCostList21.Cost = types.Float64Value(outputCostListItem21.Cost)
+							outputCostList21.Modal = types.StringValue(string(outputCostListItem21.Modal))
+
+							targets1.Config.Bedrock.OutputCostList = append(targets1.Config.Bedrock.OutputCostList, outputCostList21)
+						}
+					} else {
+						targets1.Config.Bedrock.OutputCostList = nil
+					}
 					targets1.Config.Bedrock.PerformanceConfigLatency = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.PerformanceConfigLatency)
 					targets1.Config.Bedrock.Region = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetBedrockConfig.Region)
 					targets1.Config.Bedrock.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
@@ -2098,6 +3022,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetCerebrasConfig != nil {
 					targets1.Config.Cerebras = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets1.Config.Cerebras.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetCerebrasConfig.CacheReadCostList != nil {
+						targets1.Config.Cerebras.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem22 := range targetsItem1.Config.AIGatewayTargetCerebrasConfig.CacheReadCostList {
+							var cacheReadCostList22 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList22.Cost = types.Float64Value(cacheReadCostListItem22.Cost)
+							cacheReadCostList22.Modal = types.StringValue(string(cacheReadCostListItem22.Modal))
+
+							targets1.Config.Cerebras.CacheReadCostList = append(targets1.Config.Cerebras.CacheReadCostList, cacheReadCostList22)
+						}
+					} else {
+						targets1.Config.Cerebras.CacheReadCostList = nil
+					}
 					targets1.Config.Cerebras.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.CacheWriteCost)
 					targets1.Config.Cerebras.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2122,8 +3060,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Cerebras.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.EmbeddingsDimensions)
 					targets1.Config.Cerebras.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetCerebrasConfig.InputCostList != nil {
+						targets1.Config.Cerebras.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem22 := range targetsItem1.Config.AIGatewayTargetCerebrasConfig.InputCostList {
+							var inputCostList22 tfTypes.AIGatewayModalCostList
+
+							inputCostList22.Cost = types.Float64Value(inputCostListItem22.Cost)
+							inputCostList22.Modal = types.StringValue(string(inputCostListItem22.Modal))
+
+							targets1.Config.Cerebras.InputCostList = append(targets1.Config.Cerebras.InputCostList, inputCostList22)
+						}
+					} else {
+						targets1.Config.Cerebras.InputCostList = nil
+					}
 					targets1.Config.Cerebras.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.MaxTokens)
 					targets1.Config.Cerebras.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCerebrasConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetCerebrasConfig.OutputCostList != nil {
+						targets1.Config.Cerebras.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem22 := range targetsItem1.Config.AIGatewayTargetCerebrasConfig.OutputCostList {
+							var outputCostList22 tfTypes.AIGatewayModalCostList
+
+							outputCostList22.Cost = types.Float64Value(outputCostListItem22.Cost)
+							outputCostList22.Modal = types.StringValue(string(outputCostListItem22.Modal))
+
+							targets1.Config.Cerebras.OutputCostList = append(targets1.Config.Cerebras.OutputCostList, outputCostList22)
+						}
+					} else {
+						targets1.Config.Cerebras.OutputCostList = nil
+					}
 					targets1.Config.Cerebras.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem22 := range targetsItem1.Config.AIGatewayTargetCerebrasConfig.ServiceTierFactor {
@@ -2147,6 +3113,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets1.Config.Cohere.APIVersion = types.StringNull()
 					}
 					targets1.Config.Cohere.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetCohereConfig.CacheReadCostList != nil {
+						targets1.Config.Cohere.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem23 := range targetsItem1.Config.AIGatewayTargetCohereConfig.CacheReadCostList {
+							var cacheReadCostList23 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList23.Cost = types.Float64Value(cacheReadCostListItem23.Cost)
+							cacheReadCostList23.Modal = types.StringValue(string(cacheReadCostListItem23.Modal))
+
+							targets1.Config.Cohere.CacheReadCostList = append(targets1.Config.Cohere.CacheReadCostList, cacheReadCostList23)
+						}
+					} else {
+						targets1.Config.Cohere.CacheReadCostList = nil
+					}
 					targets1.Config.Cohere.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.CacheWriteCost)
 					targets1.Config.Cohere.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2176,8 +3156,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Cohere.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.EmbeddingsDimensions)
 					targets1.Config.Cohere.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetCohereConfig.InputCostList != nil {
+						targets1.Config.Cohere.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem23 := range targetsItem1.Config.AIGatewayTargetCohereConfig.InputCostList {
+							var inputCostList23 tfTypes.AIGatewayModalCostList
+
+							inputCostList23.Cost = types.Float64Value(inputCostListItem23.Cost)
+							inputCostList23.Modal = types.StringValue(string(inputCostListItem23.Modal))
+
+							targets1.Config.Cohere.InputCostList = append(targets1.Config.Cohere.InputCostList, inputCostList23)
+						}
+					} else {
+						targets1.Config.Cohere.InputCostList = nil
+					}
 					targets1.Config.Cohere.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.MaxTokens)
 					targets1.Config.Cohere.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetCohereConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetCohereConfig.OutputCostList != nil {
+						targets1.Config.Cohere.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem23 := range targetsItem1.Config.AIGatewayTargetCohereConfig.OutputCostList {
+							var outputCostList23 tfTypes.AIGatewayModalCostList
+
+							outputCostList23.Cost = types.Float64Value(outputCostListItem23.Cost)
+							outputCostList23.Modal = types.StringValue(string(outputCostListItem23.Modal))
+
+							targets1.Config.Cohere.OutputCostList = append(targets1.Config.Cohere.OutputCostList, outputCostList23)
+						}
+					} else {
+						targets1.Config.Cohere.OutputCostList = nil
+					}
 					targets1.Config.Cohere.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem23 := range targetsItem1.Config.AIGatewayTargetCohereConfig.ServiceTierFactor {
@@ -2197,6 +3205,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetDashscopeConfig != nil {
 					targets1.Config.Dashscope = &tfTypes.AIGatewayTargetDashscopeConfig{}
 					targets1.Config.Dashscope.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetDashscopeConfig.CacheReadCostList != nil {
+						targets1.Config.Dashscope.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem24 := range targetsItem1.Config.AIGatewayTargetDashscopeConfig.CacheReadCostList {
+							var cacheReadCostList24 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList24.Cost = types.Float64Value(cacheReadCostListItem24.Cost)
+							cacheReadCostList24.Modal = types.StringValue(string(cacheReadCostListItem24.Modal))
+
+							targets1.Config.Dashscope.CacheReadCostList = append(targets1.Config.Dashscope.CacheReadCostList, cacheReadCostList24)
+						}
+					} else {
+						targets1.Config.Dashscope.CacheReadCostList = nil
+					}
 					targets1.Config.Dashscope.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.CacheWriteCost)
 					targets1.Config.Dashscope.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2221,9 +3243,37 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Dashscope.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.EmbeddingsDimensions)
 					targets1.Config.Dashscope.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetDashscopeConfig.InputCostList != nil {
+						targets1.Config.Dashscope.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem24 := range targetsItem1.Config.AIGatewayTargetDashscopeConfig.InputCostList {
+							var inputCostList24 tfTypes.AIGatewayModalCostList
+
+							inputCostList24.Cost = types.Float64Value(inputCostListItem24.Cost)
+							inputCostList24.Modal = types.StringValue(string(inputCostListItem24.Modal))
+
+							targets1.Config.Dashscope.InputCostList = append(targets1.Config.Dashscope.InputCostList, inputCostList24)
+						}
+					} else {
+						targets1.Config.Dashscope.InputCostList = nil
+					}
 					targets1.Config.Dashscope.International = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.International)
 					targets1.Config.Dashscope.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.MaxTokens)
 					targets1.Config.Dashscope.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDashscopeConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetDashscopeConfig.OutputCostList != nil {
+						targets1.Config.Dashscope.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem24 := range targetsItem1.Config.AIGatewayTargetDashscopeConfig.OutputCostList {
+							var outputCostList24 tfTypes.AIGatewayModalCostList
+
+							outputCostList24.Cost = types.Float64Value(outputCostListItem24.Cost)
+							outputCostList24.Modal = types.StringValue(string(outputCostListItem24.Modal))
+
+							targets1.Config.Dashscope.OutputCostList = append(targets1.Config.Dashscope.OutputCostList, outputCostList24)
+						}
+					} else {
+						targets1.Config.Dashscope.OutputCostList = nil
+					}
 					targets1.Config.Dashscope.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem24 := range targetsItem1.Config.AIGatewayTargetDashscopeConfig.ServiceTierFactor {
@@ -2242,6 +3292,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetDatabricksConfig != nil {
 					targets1.Config.Databricks = &tfTypes.AIGatewayTargetDatabricksConfig{}
 					targets1.Config.Databricks.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetDatabricksConfig.CacheReadCostList != nil {
+						targets1.Config.Databricks.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem25 := range targetsItem1.Config.AIGatewayTargetDatabricksConfig.CacheReadCostList {
+							var cacheReadCostList25 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList25.Cost = types.Float64Value(cacheReadCostListItem25.Cost)
+							cacheReadCostList25.Modal = types.StringValue(string(cacheReadCostListItem25.Modal))
+
+							targets1.Config.Databricks.CacheReadCostList = append(targets1.Config.Databricks.CacheReadCostList, cacheReadCostList25)
+						}
+					} else {
+						targets1.Config.Databricks.CacheReadCostList = nil
+					}
 					targets1.Config.Databricks.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.CacheWriteCost)
 					targets1.Config.Databricks.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2266,8 +3330,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Databricks.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.EmbeddingsDimensions)
 					targets1.Config.Databricks.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetDatabricksConfig.InputCostList != nil {
+						targets1.Config.Databricks.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem25 := range targetsItem1.Config.AIGatewayTargetDatabricksConfig.InputCostList {
+							var inputCostList25 tfTypes.AIGatewayModalCostList
+
+							inputCostList25.Cost = types.Float64Value(inputCostListItem25.Cost)
+							inputCostList25.Modal = types.StringValue(string(inputCostListItem25.Modal))
+
+							targets1.Config.Databricks.InputCostList = append(targets1.Config.Databricks.InputCostList, inputCostList25)
+						}
+					} else {
+						targets1.Config.Databricks.InputCostList = nil
+					}
 					targets1.Config.Databricks.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.MaxTokens)
 					targets1.Config.Databricks.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDatabricksConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetDatabricksConfig.OutputCostList != nil {
+						targets1.Config.Databricks.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem25 := range targetsItem1.Config.AIGatewayTargetDatabricksConfig.OutputCostList {
+							var outputCostList25 tfTypes.AIGatewayModalCostList
+
+							outputCostList25.Cost = types.Float64Value(outputCostListItem25.Cost)
+							outputCostList25.Modal = types.StringValue(string(outputCostListItem25.Modal))
+
+							targets1.Config.Databricks.OutputCostList = append(targets1.Config.Databricks.OutputCostList, outputCostList25)
+						}
+					} else {
+						targets1.Config.Databricks.OutputCostList = nil
+					}
 					targets1.Config.Databricks.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem25 := range targetsItem1.Config.AIGatewayTargetDatabricksConfig.ServiceTierFactor {
@@ -2287,6 +3379,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetDeepseekConfig != nil {
 					targets1.Config.Deepseek = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets1.Config.Deepseek.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetDeepseekConfig.CacheReadCostList != nil {
+						targets1.Config.Deepseek.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem26 := range targetsItem1.Config.AIGatewayTargetDeepseekConfig.CacheReadCostList {
+							var cacheReadCostList26 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList26.Cost = types.Float64Value(cacheReadCostListItem26.Cost)
+							cacheReadCostList26.Modal = types.StringValue(string(cacheReadCostListItem26.Modal))
+
+							targets1.Config.Deepseek.CacheReadCostList = append(targets1.Config.Deepseek.CacheReadCostList, cacheReadCostList26)
+						}
+					} else {
+						targets1.Config.Deepseek.CacheReadCostList = nil
+					}
 					targets1.Config.Deepseek.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.CacheWriteCost)
 					targets1.Config.Deepseek.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2311,8 +3417,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Deepseek.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.EmbeddingsDimensions)
 					targets1.Config.Deepseek.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetDeepseekConfig.InputCostList != nil {
+						targets1.Config.Deepseek.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem26 := range targetsItem1.Config.AIGatewayTargetDeepseekConfig.InputCostList {
+							var inputCostList26 tfTypes.AIGatewayModalCostList
+
+							inputCostList26.Cost = types.Float64Value(inputCostListItem26.Cost)
+							inputCostList26.Modal = types.StringValue(string(inputCostListItem26.Modal))
+
+							targets1.Config.Deepseek.InputCostList = append(targets1.Config.Deepseek.InputCostList, inputCostList26)
+						}
+					} else {
+						targets1.Config.Deepseek.InputCostList = nil
+					}
 					targets1.Config.Deepseek.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.MaxTokens)
 					targets1.Config.Deepseek.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetDeepseekConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetDeepseekConfig.OutputCostList != nil {
+						targets1.Config.Deepseek.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem26 := range targetsItem1.Config.AIGatewayTargetDeepseekConfig.OutputCostList {
+							var outputCostList26 tfTypes.AIGatewayModalCostList
+
+							outputCostList26.Cost = types.Float64Value(outputCostListItem26.Cost)
+							outputCostList26.Modal = types.StringValue(string(outputCostListItem26.Modal))
+
+							targets1.Config.Deepseek.OutputCostList = append(targets1.Config.Deepseek.OutputCostList, outputCostList26)
+						}
+					} else {
+						targets1.Config.Deepseek.OutputCostList = nil
+					}
 					targets1.Config.Deepseek.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem26 := range targetsItem1.Config.AIGatewayTargetDeepseekConfig.ServiceTierFactor {
@@ -2331,6 +3465,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetGeminiConfig != nil {
 					targets1.Config.Gemini = &tfTypes.AIGatewayTargetGeminiConfig{}
 					targets1.Config.Gemini.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetGeminiConfig.CacheReadCostList != nil {
+						targets1.Config.Gemini.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem27 := range targetsItem1.Config.AIGatewayTargetGeminiConfig.CacheReadCostList {
+							var cacheReadCostList27 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList27.Cost = types.Float64Value(cacheReadCostListItem27.Cost)
+							cacheReadCostList27.Modal = types.StringValue(string(cacheReadCostListItem27.Modal))
+
+							targets1.Config.Gemini.CacheReadCostList = append(targets1.Config.Gemini.CacheReadCostList, cacheReadCostList27)
+						}
+					} else {
+						targets1.Config.Gemini.CacheReadCostList = nil
+					}
 					targets1.Config.Gemini.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.CacheWriteCost)
 					targets1.Config.Gemini.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2363,8 +3511,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets1.Config.Gemini.GcpEnvironment.ProjectID = types.StringValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.GcpEnvironment.ProjectID)
 					}
 					targets1.Config.Gemini.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetGeminiConfig.InputCostList != nil {
+						targets1.Config.Gemini.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem27 := range targetsItem1.Config.AIGatewayTargetGeminiConfig.InputCostList {
+							var inputCostList27 tfTypes.AIGatewayModalCostList
+
+							inputCostList27.Cost = types.Float64Value(inputCostListItem27.Cost)
+							inputCostList27.Modal = types.StringValue(string(inputCostListItem27.Modal))
+
+							targets1.Config.Gemini.InputCostList = append(targets1.Config.Gemini.InputCostList, inputCostList27)
+						}
+					} else {
+						targets1.Config.Gemini.InputCostList = nil
+					}
 					targets1.Config.Gemini.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.MaxTokens)
 					targets1.Config.Gemini.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetGeminiConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetGeminiConfig.OutputCostList != nil {
+						targets1.Config.Gemini.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem27 := range targetsItem1.Config.AIGatewayTargetGeminiConfig.OutputCostList {
+							var outputCostList27 tfTypes.AIGatewayModalCostList
+
+							outputCostList27.Cost = types.Float64Value(outputCostListItem27.Cost)
+							outputCostList27.Modal = types.StringValue(string(outputCostListItem27.Modal))
+
+							targets1.Config.Gemini.OutputCostList = append(targets1.Config.Gemini.OutputCostList, outputCostList27)
+						}
+					} else {
+						targets1.Config.Gemini.OutputCostList = nil
+					}
 					targets1.Config.Gemini.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem27 := range targetsItem1.Config.AIGatewayTargetGeminiConfig.ServiceTierFactor {
@@ -2383,6 +3559,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetHuggingfaceConfig != nil {
 					targets1.Config.Huggingface = &tfTypes.AIGatewayTargetHuggingfaceConfig{}
 					targets1.Config.Huggingface.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCostList != nil {
+						targets1.Config.Huggingface.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem28 := range targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.CacheReadCostList {
+							var cacheReadCostList28 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList28.Cost = types.Float64Value(cacheReadCostListItem28.Cost)
+							cacheReadCostList28.Modal = types.StringValue(string(cacheReadCostListItem28.Modal))
+
+							targets1.Config.Huggingface.CacheReadCostList = append(targets1.Config.Huggingface.CacheReadCostList, cacheReadCostList28)
+						}
+					} else {
+						targets1.Config.Huggingface.CacheReadCostList = nil
+					}
 					targets1.Config.Huggingface.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.CacheWriteCost)
 					targets1.Config.Huggingface.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2407,8 +3597,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Huggingface.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.EmbeddingsDimensions)
 					targets1.Config.Huggingface.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.InputCostList != nil {
+						targets1.Config.Huggingface.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem28 := range targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.InputCostList {
+							var inputCostList28 tfTypes.AIGatewayModalCostList
+
+							inputCostList28.Cost = types.Float64Value(inputCostListItem28.Cost)
+							inputCostList28.Modal = types.StringValue(string(inputCostListItem28.Modal))
+
+							targets1.Config.Huggingface.InputCostList = append(targets1.Config.Huggingface.InputCostList, inputCostList28)
+						}
+					} else {
+						targets1.Config.Huggingface.InputCostList = nil
+					}
 					targets1.Config.Huggingface.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.MaxTokens)
 					targets1.Config.Huggingface.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.OutputCostList != nil {
+						targets1.Config.Huggingface.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem28 := range targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.OutputCostList {
+							var outputCostList28 tfTypes.AIGatewayModalCostList
+
+							outputCostList28.Cost = types.Float64Value(outputCostListItem28.Cost)
+							outputCostList28.Modal = types.StringValue(string(outputCostListItem28.Modal))
+
+							targets1.Config.Huggingface.OutputCostList = append(targets1.Config.Huggingface.OutputCostList, outputCostList28)
+						}
+					} else {
+						targets1.Config.Huggingface.OutputCostList = nil
+					}
 					targets1.Config.Huggingface.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem28 := range targetsItem1.Config.AIGatewayTargetHuggingfaceConfig.ServiceTierFactor {
@@ -2429,6 +3647,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetKimiConfig != nil {
 					targets1.Config.Kimi = &tfTypes.AIGatewayTargetDashscopeConfig{}
 					targets1.Config.Kimi.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetKimiConfig.CacheReadCostList != nil {
+						targets1.Config.Kimi.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem29 := range targetsItem1.Config.AIGatewayTargetKimiConfig.CacheReadCostList {
+							var cacheReadCostList29 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList29.Cost = types.Float64Value(cacheReadCostListItem29.Cost)
+							cacheReadCostList29.Modal = types.StringValue(string(cacheReadCostListItem29.Modal))
+
+							targets1.Config.Kimi.CacheReadCostList = append(targets1.Config.Kimi.CacheReadCostList, cacheReadCostList29)
+						}
+					} else {
+						targets1.Config.Kimi.CacheReadCostList = nil
+					}
 					targets1.Config.Kimi.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.CacheWriteCost)
 					targets1.Config.Kimi.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2453,9 +3685,37 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Kimi.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.EmbeddingsDimensions)
 					targets1.Config.Kimi.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetKimiConfig.InputCostList != nil {
+						targets1.Config.Kimi.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem29 := range targetsItem1.Config.AIGatewayTargetKimiConfig.InputCostList {
+							var inputCostList29 tfTypes.AIGatewayModalCostList
+
+							inputCostList29.Cost = types.Float64Value(inputCostListItem29.Cost)
+							inputCostList29.Modal = types.StringValue(string(inputCostListItem29.Modal))
+
+							targets1.Config.Kimi.InputCostList = append(targets1.Config.Kimi.InputCostList, inputCostList29)
+						}
+					} else {
+						targets1.Config.Kimi.InputCostList = nil
+					}
 					targets1.Config.Kimi.International = types.BoolPointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.International)
 					targets1.Config.Kimi.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.MaxTokens)
 					targets1.Config.Kimi.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetKimiConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetKimiConfig.OutputCostList != nil {
+						targets1.Config.Kimi.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem29 := range targetsItem1.Config.AIGatewayTargetKimiConfig.OutputCostList {
+							var outputCostList29 tfTypes.AIGatewayModalCostList
+
+							outputCostList29.Cost = types.Float64Value(outputCostListItem29.Cost)
+							outputCostList29.Modal = types.StringValue(string(outputCostListItem29.Modal))
+
+							targets1.Config.Kimi.OutputCostList = append(targets1.Config.Kimi.OutputCostList, outputCostList29)
+						}
+					} else {
+						targets1.Config.Kimi.OutputCostList = nil
+					}
 					targets1.Config.Kimi.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem29 := range targetsItem1.Config.AIGatewayTargetKimiConfig.ServiceTierFactor {
@@ -2474,6 +3734,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetLlama2Config != nil {
 					targets1.Config.Llama2 = &tfTypes.AIGatewayTargetLlama2Config{}
 					targets1.Config.Llama2.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetLlama2Config.CacheReadCostList != nil {
+						targets1.Config.Llama2.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem30 := range targetsItem1.Config.AIGatewayTargetLlama2Config.CacheReadCostList {
+							var cacheReadCostList30 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList30.Cost = types.Float64Value(cacheReadCostListItem30.Cost)
+							cacheReadCostList30.Modal = types.StringValue(string(cacheReadCostListItem30.Modal))
+
+							targets1.Config.Llama2.CacheReadCostList = append(targets1.Config.Llama2.CacheReadCostList, cacheReadCostList30)
+						}
+					} else {
+						targets1.Config.Llama2.CacheReadCostList = nil
+					}
 					targets1.Config.Llama2.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.CacheWriteCost)
 					targets1.Config.Llama2.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2499,8 +3773,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Llama2.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.EmbeddingsDimensions)
 					targets1.Config.Llama2.Format = types.StringValue(string(targetsItem1.Config.AIGatewayTargetLlama2Config.Format))
 					targets1.Config.Llama2.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.InputCost)
+					if targetsItem1.Config.AIGatewayTargetLlama2Config.InputCostList != nil {
+						targets1.Config.Llama2.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem30 := range targetsItem1.Config.AIGatewayTargetLlama2Config.InputCostList {
+							var inputCostList30 tfTypes.AIGatewayModalCostList
+
+							inputCostList30.Cost = types.Float64Value(inputCostListItem30.Cost)
+							inputCostList30.Modal = types.StringValue(string(inputCostListItem30.Modal))
+
+							targets1.Config.Llama2.InputCostList = append(targets1.Config.Llama2.InputCostList, inputCostList30)
+						}
+					} else {
+						targets1.Config.Llama2.InputCostList = nil
+					}
 					targets1.Config.Llama2.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.MaxTokens)
 					targets1.Config.Llama2.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetLlama2Config.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetLlama2Config.OutputCostList != nil {
+						targets1.Config.Llama2.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem30 := range targetsItem1.Config.AIGatewayTargetLlama2Config.OutputCostList {
+							var outputCostList30 tfTypes.AIGatewayModalCostList
+
+							outputCostList30.Cost = types.Float64Value(outputCostListItem30.Cost)
+							outputCostList30.Modal = types.StringValue(string(outputCostListItem30.Modal))
+
+							targets1.Config.Llama2.OutputCostList = append(targets1.Config.Llama2.OutputCostList, outputCostList30)
+						}
+					} else {
+						targets1.Config.Llama2.OutputCostList = nil
+					}
 					targets1.Config.Llama2.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem30 := range targetsItem1.Config.AIGatewayTargetLlama2Config.ServiceTierFactor {
@@ -2519,6 +3821,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetMistralConfig != nil {
 					targets1.Config.Mistral = &tfTypes.AIGatewayTargetMistralConfig{}
 					targets1.Config.Mistral.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetMistralConfig.CacheReadCostList != nil {
+						targets1.Config.Mistral.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem31 := range targetsItem1.Config.AIGatewayTargetMistralConfig.CacheReadCostList {
+							var cacheReadCostList31 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList31.Cost = types.Float64Value(cacheReadCostListItem31.Cost)
+							cacheReadCostList31.Modal = types.StringValue(string(cacheReadCostListItem31.Modal))
+
+							targets1.Config.Mistral.CacheReadCostList = append(targets1.Config.Mistral.CacheReadCostList, cacheReadCostList31)
+						}
+					} else {
+						targets1.Config.Mistral.CacheReadCostList = nil
+					}
 					targets1.Config.Mistral.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.CacheWriteCost)
 					targets1.Config.Mistral.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2544,8 +3860,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					targets1.Config.Mistral.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.EmbeddingsDimensions)
 					targets1.Config.Mistral.Format = types.StringValue(string(targetsItem1.Config.AIGatewayTargetMistralConfig.Format))
 					targets1.Config.Mistral.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetMistralConfig.InputCostList != nil {
+						targets1.Config.Mistral.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem31 := range targetsItem1.Config.AIGatewayTargetMistralConfig.InputCostList {
+							var inputCostList31 tfTypes.AIGatewayModalCostList
+
+							inputCostList31.Cost = types.Float64Value(inputCostListItem31.Cost)
+							inputCostList31.Modal = types.StringValue(string(inputCostListItem31.Modal))
+
+							targets1.Config.Mistral.InputCostList = append(targets1.Config.Mistral.InputCostList, inputCostList31)
+						}
+					} else {
+						targets1.Config.Mistral.InputCostList = nil
+					}
 					targets1.Config.Mistral.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.MaxTokens)
 					targets1.Config.Mistral.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetMistralConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetMistralConfig.OutputCostList != nil {
+						targets1.Config.Mistral.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem31 := range targetsItem1.Config.AIGatewayTargetMistralConfig.OutputCostList {
+							var outputCostList31 tfTypes.AIGatewayModalCostList
+
+							outputCostList31.Cost = types.Float64Value(outputCostListItem31.Cost)
+							outputCostList31.Modal = types.StringValue(string(outputCostListItem31.Modal))
+
+							targets1.Config.Mistral.OutputCostList = append(targets1.Config.Mistral.OutputCostList, outputCostList31)
+						}
+					} else {
+						targets1.Config.Mistral.OutputCostList = nil
+					}
 					targets1.Config.Mistral.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem31 := range targetsItem1.Config.AIGatewayTargetMistralConfig.ServiceTierFactor {
@@ -2564,6 +3908,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetOllamaConfig != nil {
 					targets1.Config.Ollama = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets1.Config.Ollama.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetOllamaConfig.CacheReadCostList != nil {
+						targets1.Config.Ollama.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem32 := range targetsItem1.Config.AIGatewayTargetOllamaConfig.CacheReadCostList {
+							var cacheReadCostList32 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList32.Cost = types.Float64Value(cacheReadCostListItem32.Cost)
+							cacheReadCostList32.Modal = types.StringValue(string(cacheReadCostListItem32.Modal))
+
+							targets1.Config.Ollama.CacheReadCostList = append(targets1.Config.Ollama.CacheReadCostList, cacheReadCostList32)
+						}
+					} else {
+						targets1.Config.Ollama.CacheReadCostList = nil
+					}
 					targets1.Config.Ollama.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.CacheWriteCost)
 					targets1.Config.Ollama.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2588,8 +3946,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Ollama.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.EmbeddingsDimensions)
 					targets1.Config.Ollama.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetOllamaConfig.InputCostList != nil {
+						targets1.Config.Ollama.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem32 := range targetsItem1.Config.AIGatewayTargetOllamaConfig.InputCostList {
+							var inputCostList32 tfTypes.AIGatewayModalCostList
+
+							inputCostList32.Cost = types.Float64Value(inputCostListItem32.Cost)
+							inputCostList32.Modal = types.StringValue(string(inputCostListItem32.Modal))
+
+							targets1.Config.Ollama.InputCostList = append(targets1.Config.Ollama.InputCostList, inputCostList32)
+						}
+					} else {
+						targets1.Config.Ollama.InputCostList = nil
+					}
 					targets1.Config.Ollama.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.MaxTokens)
 					targets1.Config.Ollama.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOllamaConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetOllamaConfig.OutputCostList != nil {
+						targets1.Config.Ollama.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem32 := range targetsItem1.Config.AIGatewayTargetOllamaConfig.OutputCostList {
+							var outputCostList32 tfTypes.AIGatewayModalCostList
+
+							outputCostList32.Cost = types.Float64Value(outputCostListItem32.Cost)
+							outputCostList32.Modal = types.StringValue(string(outputCostListItem32.Modal))
+
+							targets1.Config.Ollama.OutputCostList = append(targets1.Config.Ollama.OutputCostList, outputCostList32)
+						}
+					} else {
+						targets1.Config.Ollama.OutputCostList = nil
+					}
 					targets1.Config.Ollama.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem32 := range targetsItem1.Config.AIGatewayTargetOllamaConfig.ServiceTierFactor {
@@ -2608,6 +3994,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetOpenaiConfig != nil {
 					targets1.Config.Openai = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets1.Config.Openai.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetOpenaiConfig.CacheReadCostList != nil {
+						targets1.Config.Openai.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem33 := range targetsItem1.Config.AIGatewayTargetOpenaiConfig.CacheReadCostList {
+							var cacheReadCostList33 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList33.Cost = types.Float64Value(cacheReadCostListItem33.Cost)
+							cacheReadCostList33.Modal = types.StringValue(string(cacheReadCostListItem33.Modal))
+
+							targets1.Config.Openai.CacheReadCostList = append(targets1.Config.Openai.CacheReadCostList, cacheReadCostList33)
+						}
+					} else {
+						targets1.Config.Openai.CacheReadCostList = nil
+					}
 					targets1.Config.Openai.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.CacheWriteCost)
 					targets1.Config.Openai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2632,8 +4032,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Openai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.EmbeddingsDimensions)
 					targets1.Config.Openai.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetOpenaiConfig.InputCostList != nil {
+						targets1.Config.Openai.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem33 := range targetsItem1.Config.AIGatewayTargetOpenaiConfig.InputCostList {
+							var inputCostList33 tfTypes.AIGatewayModalCostList
+
+							inputCostList33.Cost = types.Float64Value(inputCostListItem33.Cost)
+							inputCostList33.Modal = types.StringValue(string(inputCostListItem33.Modal))
+
+							targets1.Config.Openai.InputCostList = append(targets1.Config.Openai.InputCostList, inputCostList33)
+						}
+					} else {
+						targets1.Config.Openai.InputCostList = nil
+					}
 					targets1.Config.Openai.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.MaxTokens)
 					targets1.Config.Openai.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetOpenaiConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetOpenaiConfig.OutputCostList != nil {
+						targets1.Config.Openai.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem33 := range targetsItem1.Config.AIGatewayTargetOpenaiConfig.OutputCostList {
+							var outputCostList33 tfTypes.AIGatewayModalCostList
+
+							outputCostList33.Cost = types.Float64Value(outputCostListItem33.Cost)
+							outputCostList33.Modal = types.StringValue(string(outputCostListItem33.Modal))
+
+							targets1.Config.Openai.OutputCostList = append(targets1.Config.Openai.OutputCostList, outputCostList33)
+						}
+					} else {
+						targets1.Config.Openai.OutputCostList = nil
+					}
 					targets1.Config.Openai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem33 := range targetsItem1.Config.AIGatewayTargetOpenaiConfig.ServiceTierFactor {
@@ -2661,6 +4089,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 						targets1.Config.Sagemaker.Aws.StsEndpointURL = types.StringPointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.Aws.StsEndpointURL)
 					}
 					targets1.Config.Sagemaker.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetSagemakerConfig.CacheReadCostList != nil {
+						targets1.Config.Sagemaker.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem34 := range targetsItem1.Config.AIGatewayTargetSagemakerConfig.CacheReadCostList {
+							var cacheReadCostList34 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList34.Cost = types.Float64Value(cacheReadCostListItem34.Cost)
+							cacheReadCostList34.Modal = types.StringValue(string(cacheReadCostListItem34.Modal))
+
+							targets1.Config.Sagemaker.CacheReadCostList = append(targets1.Config.Sagemaker.CacheReadCostList, cacheReadCostList34)
+						}
+					} else {
+						targets1.Config.Sagemaker.CacheReadCostList = nil
+					}
 					targets1.Config.Sagemaker.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.CacheWriteCost)
 					targets1.Config.Sagemaker.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2685,8 +4127,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Sagemaker.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.EmbeddingsDimensions)
 					targets1.Config.Sagemaker.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetSagemakerConfig.InputCostList != nil {
+						targets1.Config.Sagemaker.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem34 := range targetsItem1.Config.AIGatewayTargetSagemakerConfig.InputCostList {
+							var inputCostList34 tfTypes.AIGatewayModalCostList
+
+							inputCostList34.Cost = types.Float64Value(inputCostListItem34.Cost)
+							inputCostList34.Modal = types.StringValue(string(inputCostListItem34.Modal))
+
+							targets1.Config.Sagemaker.InputCostList = append(targets1.Config.Sagemaker.InputCostList, inputCostList34)
+						}
+					} else {
+						targets1.Config.Sagemaker.InputCostList = nil
+					}
 					targets1.Config.Sagemaker.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.MaxTokens)
 					targets1.Config.Sagemaker.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetSagemakerConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetSagemakerConfig.OutputCostList != nil {
+						targets1.Config.Sagemaker.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem34 := range targetsItem1.Config.AIGatewayTargetSagemakerConfig.OutputCostList {
+							var outputCostList34 tfTypes.AIGatewayModalCostList
+
+							outputCostList34.Cost = types.Float64Value(outputCostListItem34.Cost)
+							outputCostList34.Modal = types.StringValue(string(outputCostListItem34.Modal))
+
+							targets1.Config.Sagemaker.OutputCostList = append(targets1.Config.Sagemaker.OutputCostList, outputCostList34)
+						}
+					} else {
+						targets1.Config.Sagemaker.OutputCostList = nil
+					}
 					targets1.Config.Sagemaker.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem34 := range targetsItem1.Config.AIGatewayTargetSagemakerConfig.ServiceTierFactor {
@@ -2713,6 +4183,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetVercelConfig != nil {
 					targets1.Config.Vercel = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets1.Config.Vercel.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetVercelConfig.CacheReadCostList != nil {
+						targets1.Config.Vercel.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem35 := range targetsItem1.Config.AIGatewayTargetVercelConfig.CacheReadCostList {
+							var cacheReadCostList35 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList35.Cost = types.Float64Value(cacheReadCostListItem35.Cost)
+							cacheReadCostList35.Modal = types.StringValue(string(cacheReadCostListItem35.Modal))
+
+							targets1.Config.Vercel.CacheReadCostList = append(targets1.Config.Vercel.CacheReadCostList, cacheReadCostList35)
+						}
+					} else {
+						targets1.Config.Vercel.CacheReadCostList = nil
+					}
 					targets1.Config.Vercel.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.CacheWriteCost)
 					targets1.Config.Vercel.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2737,8 +4221,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Vercel.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.EmbeddingsDimensions)
 					targets1.Config.Vercel.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetVercelConfig.InputCostList != nil {
+						targets1.Config.Vercel.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem35 := range targetsItem1.Config.AIGatewayTargetVercelConfig.InputCostList {
+							var inputCostList35 tfTypes.AIGatewayModalCostList
+
+							inputCostList35.Cost = types.Float64Value(inputCostListItem35.Cost)
+							inputCostList35.Modal = types.StringValue(string(inputCostListItem35.Modal))
+
+							targets1.Config.Vercel.InputCostList = append(targets1.Config.Vercel.InputCostList, inputCostList35)
+						}
+					} else {
+						targets1.Config.Vercel.InputCostList = nil
+					}
 					targets1.Config.Vercel.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.MaxTokens)
 					targets1.Config.Vercel.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVercelConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetVercelConfig.OutputCostList != nil {
+						targets1.Config.Vercel.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem35 := range targetsItem1.Config.AIGatewayTargetVercelConfig.OutputCostList {
+							var outputCostList35 tfTypes.AIGatewayModalCostList
+
+							outputCostList35.Cost = types.Float64Value(outputCostListItem35.Cost)
+							outputCostList35.Modal = types.StringValue(string(outputCostListItem35.Modal))
+
+							targets1.Config.Vercel.OutputCostList = append(targets1.Config.Vercel.OutputCostList, outputCostList35)
+						}
+					} else {
+						targets1.Config.Vercel.OutputCostList = nil
+					}
 					targets1.Config.Vercel.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem35 := range targetsItem1.Config.AIGatewayTargetVercelConfig.ServiceTierFactor {
@@ -2757,6 +4269,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetVllmConfig != nil {
 					targets1.Config.Vllm = &tfTypes.AIGatewayTargetVllmConfig{}
 					targets1.Config.Vllm.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetVllmConfig.CacheReadCostList != nil {
+						targets1.Config.Vllm.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem36 := range targetsItem1.Config.AIGatewayTargetVllmConfig.CacheReadCostList {
+							var cacheReadCostList36 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList36.Cost = types.Float64Value(cacheReadCostListItem36.Cost)
+							cacheReadCostList36.Modal = types.StringValue(string(cacheReadCostListItem36.Modal))
+
+							targets1.Config.Vllm.CacheReadCostList = append(targets1.Config.Vllm.CacheReadCostList, cacheReadCostList36)
+						}
+					} else {
+						targets1.Config.Vllm.CacheReadCostList = nil
+					}
 					targets1.Config.Vllm.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.CacheWriteCost)
 					targets1.Config.Vllm.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2781,8 +4307,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Vllm.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.EmbeddingsDimensions)
 					targets1.Config.Vllm.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetVllmConfig.InputCostList != nil {
+						targets1.Config.Vllm.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem36 := range targetsItem1.Config.AIGatewayTargetVllmConfig.InputCostList {
+							var inputCostList36 tfTypes.AIGatewayModalCostList
+
+							inputCostList36.Cost = types.Float64Value(inputCostListItem36.Cost)
+							inputCostList36.Modal = types.StringValue(string(inputCostListItem36.Modal))
+
+							targets1.Config.Vllm.InputCostList = append(targets1.Config.Vllm.InputCostList, inputCostList36)
+						}
+					} else {
+						targets1.Config.Vllm.InputCostList = nil
+					}
 					targets1.Config.Vllm.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.MaxTokens)
 					targets1.Config.Vllm.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetVllmConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetVllmConfig.OutputCostList != nil {
+						targets1.Config.Vllm.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem36 := range targetsItem1.Config.AIGatewayTargetVllmConfig.OutputCostList {
+							var outputCostList36 tfTypes.AIGatewayModalCostList
+
+							outputCostList36.Cost = types.Float64Value(outputCostListItem36.Cost)
+							outputCostList36.Modal = types.StringValue(string(outputCostListItem36.Modal))
+
+							targets1.Config.Vllm.OutputCostList = append(targets1.Config.Vllm.OutputCostList, outputCostList36)
+						}
+					} else {
+						targets1.Config.Vllm.OutputCostList = nil
+					}
 					targets1.Config.Vllm.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem36 := range targetsItem1.Config.AIGatewayTargetVllmConfig.ServiceTierFactor {
@@ -2801,6 +4355,20 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 				if targetsItem1.Config.AIGatewayTargetXaiConfig != nil {
 					targets1.Config.Xai = &tfTypes.AIGatewayTargetCerebrasConfig{}
 					targets1.Config.Xai.CacheReadCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.CacheReadCost)
+					if targetsItem1.Config.AIGatewayTargetXaiConfig.CacheReadCostList != nil {
+						targets1.Config.Xai.CacheReadCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, cacheReadCostListItem37 := range targetsItem1.Config.AIGatewayTargetXaiConfig.CacheReadCostList {
+							var cacheReadCostList37 tfTypes.AIGatewayModalCostList
+
+							cacheReadCostList37.Cost = types.Float64Value(cacheReadCostListItem37.Cost)
+							cacheReadCostList37.Modal = types.StringValue(string(cacheReadCostListItem37.Modal))
+
+							targets1.Config.Xai.CacheReadCostList = append(targets1.Config.Xai.CacheReadCostList, cacheReadCostList37)
+						}
+					} else {
+						targets1.Config.Xai.CacheReadCostList = nil
+					}
 					targets1.Config.Xai.CacheWriteCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.CacheWriteCost)
 					targets1.Config.Xai.CacheWriteCostList = []tfTypes.AIGatewayCacheWriteCost{}
 
@@ -2825,8 +4393,36 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					}
 					targets1.Config.Xai.EmbeddingsDimensions = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.EmbeddingsDimensions)
 					targets1.Config.Xai.InputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.InputCost)
+					if targetsItem1.Config.AIGatewayTargetXaiConfig.InputCostList != nil {
+						targets1.Config.Xai.InputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, inputCostListItem37 := range targetsItem1.Config.AIGatewayTargetXaiConfig.InputCostList {
+							var inputCostList37 tfTypes.AIGatewayModalCostList
+
+							inputCostList37.Cost = types.Float64Value(inputCostListItem37.Cost)
+							inputCostList37.Modal = types.StringValue(string(inputCostListItem37.Modal))
+
+							targets1.Config.Xai.InputCostList = append(targets1.Config.Xai.InputCostList, inputCostList37)
+						}
+					} else {
+						targets1.Config.Xai.InputCostList = nil
+					}
 					targets1.Config.Xai.MaxTokens = types.Int64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.MaxTokens)
 					targets1.Config.Xai.OutputCost = types.Float64PointerValue(targetsItem1.Config.AIGatewayTargetXaiConfig.OutputCost)
+					if targetsItem1.Config.AIGatewayTargetXaiConfig.OutputCostList != nil {
+						targets1.Config.Xai.OutputCostList = []tfTypes.AIGatewayModalCostList{}
+
+						for _, outputCostListItem37 := range targetsItem1.Config.AIGatewayTargetXaiConfig.OutputCostList {
+							var outputCostList37 tfTypes.AIGatewayModalCostList
+
+							outputCostList37.Cost = types.Float64Value(outputCostListItem37.Cost)
+							outputCostList37.Modal = types.StringValue(string(outputCostListItem37.Modal))
+
+							targets1.Config.Xai.OutputCostList = append(targets1.Config.Xai.OutputCostList, outputCostList37)
+						}
+					} else {
+						targets1.Config.Xai.OutputCostList = nil
+					}
 					targets1.Config.Xai.ServiceTierFactor = []tfTypes.AIGatewayServiceTierFactor{}
 
 					for _, serviceTierFactorItem37 := range targetsItem1.Config.AIGatewayTargetXaiConfig.ServiceTierFactor {
@@ -3063,17 +4659,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost = nil
 				}
+				var inputCostList []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Anthropic.InputCostList != nil {
+					inputCostList = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.InputCostList))
+					for inputCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.InputCostList {
+						modal := shared.Modal(r.API.Targets[targetsIndex].Config.Anthropic.InputCostList[inputCostListIndex].Modal.ValueString())
+						var cost float64
+						cost = r.API.Targets[targetsIndex].Config.Anthropic.InputCostList[inputCostListIndex].Cost.ValueFloat64()
+
+						inputCostList = append(inputCostList, shared.AIGatewayModalCostList{
+							Modal: modal,
+							Cost:  cost,
+						})
+					}
+				}
+				var outputCostList []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList != nil {
+					outputCostList = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList))
+					for outputCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList {
+						modal1 := shared.Modal(r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList[outputCostListIndex].Modal.ValueString())
+						var cost1 float64
+						cost1 = r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList[outputCostListIndex].Cost.ValueFloat64()
+
+						outputCostList = append(outputCostList, shared.AIGatewayModalCostList{
+							Modal: modal1,
+							Cost:  cost1,
+						})
+					}
+				}
+				var cacheReadCostList []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList != nil {
+					cacheReadCostList = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList))
+					for cacheReadCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList {
+						modal2 := shared.Modal(r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex].Modal.ValueString())
+						var cost2 float64
+						cost2 = r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex].Cost.ValueFloat64()
+
+						cacheReadCostList = append(cacheReadCostList, shared.AIGatewayModalCostList{
+							Modal: modal2,
+							Cost:  cost2,
+						})
+					}
+				}
 				cacheWriteCostList := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList))
 				for cacheWriteCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList {
 					var ttl string
 					ttl = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].TTL.ValueString()
 
-					var cost float64
-					cost = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
+					var cost3 float64
+					cost3 = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
 
 					cacheWriteCostList = append(cacheWriteCostList, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl,
-						Cost: cost,
+						Cost: cost3,
 					})
 				}
 				contextWindowFactor := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor))
@@ -3143,6 +4781,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost,
 					CacheReadCost:        cacheReadCost,
 					CacheWriteCost:       cacheWriteCost,
+					InputCostList:        inputCostList,
+					OutputCostList:       outputCostList,
+					CacheReadCostList:    cacheReadCostList,
 					CacheWriteCostList:   cacheWriteCostList,
 					ContextWindowFactor:  contextWindowFactor,
 					ServiceTierFactor:    serviceTierFactor,
@@ -3196,17 +4837,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost1 = nil
 				}
+				var inputCostList1 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Azure.InputCostList != nil {
+					inputCostList1 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Azure.InputCostList))
+					for inputCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.InputCostList {
+						modal3 := shared.Modal(r.API.Targets[targetsIndex].Config.Azure.InputCostList[inputCostListIndex1].Modal.ValueString())
+						var cost4 float64
+						cost4 = r.API.Targets[targetsIndex].Config.Azure.InputCostList[inputCostListIndex1].Cost.ValueFloat64()
+
+						inputCostList1 = append(inputCostList1, shared.AIGatewayModalCostList{
+							Modal: modal3,
+							Cost:  cost4,
+						})
+					}
+				}
+				var outputCostList1 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Azure.OutputCostList != nil {
+					outputCostList1 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Azure.OutputCostList))
+					for outputCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.OutputCostList {
+						modal4 := shared.Modal(r.API.Targets[targetsIndex].Config.Azure.OutputCostList[outputCostListIndex1].Modal.ValueString())
+						var cost5 float64
+						cost5 = r.API.Targets[targetsIndex].Config.Azure.OutputCostList[outputCostListIndex1].Cost.ValueFloat64()
+
+						outputCostList1 = append(outputCostList1, shared.AIGatewayModalCostList{
+							Modal: modal4,
+							Cost:  cost5,
+						})
+					}
+				}
+				var cacheReadCostList1 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList != nil {
+					cacheReadCostList1 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList))
+					for cacheReadCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList {
+						modal5 := shared.Modal(r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList[cacheReadCostListIndex1].Modal.ValueString())
+						var cost6 float64
+						cost6 = r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList[cacheReadCostListIndex1].Cost.ValueFloat64()
+
+						cacheReadCostList1 = append(cacheReadCostList1, shared.AIGatewayModalCostList{
+							Modal: modal5,
+							Cost:  cost6,
+						})
+					}
+				}
 				cacheWriteCostList1 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList))
 				for cacheWriteCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList {
 					var ttl1 string
 					ttl1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].TTL.ValueString()
 
-					var cost1 float64
-					cost1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].Cost.ValueFloat64()
+					var cost7 float64
+					cost7 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].Cost.ValueFloat64()
 
 					cacheWriteCostList1 = append(cacheWriteCostList1, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl1,
-						Cost: cost1,
+						Cost: cost7,
 					})
 				}
 				contextWindowFactor1 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor))
@@ -3288,6 +4971,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost1,
 					CacheReadCost:        cacheReadCost1,
 					CacheWriteCost:       cacheWriteCost1,
+					InputCostList:        inputCostList1,
+					OutputCostList:       outputCostList1,
+					CacheReadCostList:    cacheReadCostList1,
 					CacheWriteCostList:   cacheWriteCostList1,
 					ContextWindowFactor:  contextWindowFactor1,
 					ServiceTierFactor:    serviceTierFactor1,
@@ -3343,17 +5029,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost2 = nil
 				}
+				var inputCostList2 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Bedrock.InputCostList != nil {
+					inputCostList2 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.InputCostList))
+					for inputCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.InputCostList {
+						modal6 := shared.Modal(r.API.Targets[targetsIndex].Config.Bedrock.InputCostList[inputCostListIndex2].Modal.ValueString())
+						var cost8 float64
+						cost8 = r.API.Targets[targetsIndex].Config.Bedrock.InputCostList[inputCostListIndex2].Cost.ValueFloat64()
+
+						inputCostList2 = append(inputCostList2, shared.AIGatewayModalCostList{
+							Modal: modal6,
+							Cost:  cost8,
+						})
+					}
+				}
+				var outputCostList2 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList != nil {
+					outputCostList2 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList))
+					for outputCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList {
+						modal7 := shared.Modal(r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList[outputCostListIndex2].Modal.ValueString())
+						var cost9 float64
+						cost9 = r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList[outputCostListIndex2].Cost.ValueFloat64()
+
+						outputCostList2 = append(outputCostList2, shared.AIGatewayModalCostList{
+							Modal: modal7,
+							Cost:  cost9,
+						})
+					}
+				}
+				var cacheReadCostList2 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList != nil {
+					cacheReadCostList2 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList))
+					for cacheReadCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList {
+						modal8 := shared.Modal(r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex2].Modal.ValueString())
+						var cost10 float64
+						cost10 = r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex2].Cost.ValueFloat64()
+
+						cacheReadCostList2 = append(cacheReadCostList2, shared.AIGatewayModalCostList{
+							Modal: modal8,
+							Cost:  cost10,
+						})
+					}
+				}
 				cacheWriteCostList2 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList))
 				for cacheWriteCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList {
 					var ttl2 string
 					ttl2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].TTL.ValueString()
 
-					var cost2 float64
-					cost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].Cost.ValueFloat64()
+					var cost11 float64
+					cost11 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].Cost.ValueFloat64()
 
 					cacheWriteCostList2 = append(cacheWriteCostList2, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl2,
-						Cost: cost2,
+						Cost: cost11,
 					})
 				}
 				contextWindowFactor2 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor))
@@ -3447,6 +5175,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:               outputCost2,
 					CacheReadCost:            cacheReadCost2,
 					CacheWriteCost:           cacheWriteCost2,
+					InputCostList:            inputCostList2,
+					OutputCostList:           outputCostList2,
+					CacheReadCostList:        cacheReadCostList2,
 					CacheWriteCostList:       cacheWriteCostList2,
 					ContextWindowFactor:      contextWindowFactor2,
 					ServiceTierFactor:        serviceTierFactor2,
@@ -3504,17 +5235,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost3 = nil
 				}
+				var inputCostList3 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cerebras.InputCostList != nil {
+					inputCostList3 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.InputCostList))
+					for inputCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.InputCostList {
+						modal9 := shared.Modal(r.API.Targets[targetsIndex].Config.Cerebras.InputCostList[inputCostListIndex3].Modal.ValueString())
+						var cost12 float64
+						cost12 = r.API.Targets[targetsIndex].Config.Cerebras.InputCostList[inputCostListIndex3].Cost.ValueFloat64()
+
+						inputCostList3 = append(inputCostList3, shared.AIGatewayModalCostList{
+							Modal: modal9,
+							Cost:  cost12,
+						})
+					}
+				}
+				var outputCostList3 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList != nil {
+					outputCostList3 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList))
+					for outputCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList {
+						modal10 := shared.Modal(r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList[outputCostListIndex3].Modal.ValueString())
+						var cost13 float64
+						cost13 = r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList[outputCostListIndex3].Cost.ValueFloat64()
+
+						outputCostList3 = append(outputCostList3, shared.AIGatewayModalCostList{
+							Modal: modal10,
+							Cost:  cost13,
+						})
+					}
+				}
+				var cacheReadCostList3 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList != nil {
+					cacheReadCostList3 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList))
+					for cacheReadCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList {
+						modal11 := shared.Modal(r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex3].Modal.ValueString())
+						var cost14 float64
+						cost14 = r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex3].Cost.ValueFloat64()
+
+						cacheReadCostList3 = append(cacheReadCostList3, shared.AIGatewayModalCostList{
+							Modal: modal11,
+							Cost:  cost14,
+						})
+					}
+				}
 				cacheWriteCostList3 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList))
 				for cacheWriteCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList {
 					var ttl3 string
 					ttl3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].TTL.ValueString()
 
-					var cost3 float64
-					cost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].Cost.ValueFloat64()
+					var cost15 float64
+					cost15 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].Cost.ValueFloat64()
 
 					cacheWriteCostList3 = append(cacheWriteCostList3, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl3,
-						Cost: cost3,
+						Cost: cost15,
 					})
 				}
 				contextWindowFactor3 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor))
@@ -3578,6 +5351,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost3,
 					CacheReadCost:        cacheReadCost3,
 					CacheWriteCost:       cacheWriteCost3,
+					InputCostList:        inputCostList3,
+					OutputCostList:       outputCostList3,
+					CacheReadCostList:    cacheReadCostList3,
 					CacheWriteCostList:   cacheWriteCostList3,
 					ContextWindowFactor:  contextWindowFactor3,
 					ServiceTierFactor:    serviceTierFactor3,
@@ -3630,17 +5406,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost4 = nil
 				}
+				var inputCostList4 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cohere.InputCostList != nil {
+					inputCostList4 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cohere.InputCostList))
+					for inputCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.InputCostList {
+						modal12 := shared.Modal(r.API.Targets[targetsIndex].Config.Cohere.InputCostList[inputCostListIndex4].Modal.ValueString())
+						var cost16 float64
+						cost16 = r.API.Targets[targetsIndex].Config.Cohere.InputCostList[inputCostListIndex4].Cost.ValueFloat64()
+
+						inputCostList4 = append(inputCostList4, shared.AIGatewayModalCostList{
+							Modal: modal12,
+							Cost:  cost16,
+						})
+					}
+				}
+				var outputCostList4 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cohere.OutputCostList != nil {
+					outputCostList4 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cohere.OutputCostList))
+					for outputCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.OutputCostList {
+						modal13 := shared.Modal(r.API.Targets[targetsIndex].Config.Cohere.OutputCostList[outputCostListIndex4].Modal.ValueString())
+						var cost17 float64
+						cost17 = r.API.Targets[targetsIndex].Config.Cohere.OutputCostList[outputCostListIndex4].Cost.ValueFloat64()
+
+						outputCostList4 = append(outputCostList4, shared.AIGatewayModalCostList{
+							Modal: modal13,
+							Cost:  cost17,
+						})
+					}
+				}
+				var cacheReadCostList4 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList != nil {
+					cacheReadCostList4 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList))
+					for cacheReadCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList {
+						modal14 := shared.Modal(r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList[cacheReadCostListIndex4].Modal.ValueString())
+						var cost18 float64
+						cost18 = r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList[cacheReadCostListIndex4].Cost.ValueFloat64()
+
+						cacheReadCostList4 = append(cacheReadCostList4, shared.AIGatewayModalCostList{
+							Modal: modal14,
+							Cost:  cost18,
+						})
+					}
+				}
 				cacheWriteCostList4 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList))
 				for cacheWriteCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList {
 					var ttl4 string
 					ttl4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].TTL.ValueString()
 
-					var cost4 float64
-					cost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].Cost.ValueFloat64()
+					var cost19 float64
+					cost19 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].Cost.ValueFloat64()
 
 					cacheWriteCostList4 = append(cacheWriteCostList4, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl4,
-						Cost: cost4,
+						Cost: cost19,
 					})
 				}
 				contextWindowFactor4 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor))
@@ -3722,6 +5540,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost4,
 					CacheReadCost:        cacheReadCost4,
 					CacheWriteCost:       cacheWriteCost4,
+					InputCostList:        inputCostList4,
+					OutputCostList:       outputCostList4,
+					CacheReadCostList:    cacheReadCostList4,
 					CacheWriteCostList:   cacheWriteCostList4,
 					ContextWindowFactor:  contextWindowFactor4,
 					ServiceTierFactor:    serviceTierFactor4,
@@ -3777,17 +5598,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost5 = nil
 				}
+				var inputCostList5 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Dashscope.InputCostList != nil {
+					inputCostList5 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.InputCostList))
+					for inputCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.InputCostList {
+						modal15 := shared.Modal(r.API.Targets[targetsIndex].Config.Dashscope.InputCostList[inputCostListIndex5].Modal.ValueString())
+						var cost20 float64
+						cost20 = r.API.Targets[targetsIndex].Config.Dashscope.InputCostList[inputCostListIndex5].Cost.ValueFloat64()
+
+						inputCostList5 = append(inputCostList5, shared.AIGatewayModalCostList{
+							Modal: modal15,
+							Cost:  cost20,
+						})
+					}
+				}
+				var outputCostList5 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList != nil {
+					outputCostList5 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList))
+					for outputCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList {
+						modal16 := shared.Modal(r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList[outputCostListIndex5].Modal.ValueString())
+						var cost21 float64
+						cost21 = r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList[outputCostListIndex5].Cost.ValueFloat64()
+
+						outputCostList5 = append(outputCostList5, shared.AIGatewayModalCostList{
+							Modal: modal16,
+							Cost:  cost21,
+						})
+					}
+				}
+				var cacheReadCostList5 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList != nil {
+					cacheReadCostList5 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList))
+					for cacheReadCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList {
+						modal17 := shared.Modal(r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex5].Modal.ValueString())
+						var cost22 float64
+						cost22 = r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex5].Cost.ValueFloat64()
+
+						cacheReadCostList5 = append(cacheReadCostList5, shared.AIGatewayModalCostList{
+							Modal: modal17,
+							Cost:  cost22,
+						})
+					}
+				}
 				cacheWriteCostList5 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList))
 				for cacheWriteCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList {
 					var ttl5 string
 					ttl5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].TTL.ValueString()
 
-					var cost5 float64
-					cost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].Cost.ValueFloat64()
+					var cost23 float64
+					cost23 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].Cost.ValueFloat64()
 
 					cacheWriteCostList5 = append(cacheWriteCostList5, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl5,
-						Cost: cost5,
+						Cost: cost23,
 					})
 				}
 				contextWindowFactor5 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor))
@@ -3857,6 +5720,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost5,
 					CacheReadCost:        cacheReadCost5,
 					CacheWriteCost:       cacheWriteCost5,
+					InputCostList:        inputCostList5,
+					OutputCostList:       outputCostList5,
+					CacheReadCostList:    cacheReadCostList5,
 					CacheWriteCostList:   cacheWriteCostList5,
 					ContextWindowFactor:  contextWindowFactor5,
 					ServiceTierFactor:    serviceTierFactor5,
@@ -3910,17 +5776,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost6 = nil
 				}
+				var inputCostList6 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Databricks.InputCostList != nil {
+					inputCostList6 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Databricks.InputCostList))
+					for inputCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.InputCostList {
+						modal18 := shared.Modal(r.API.Targets[targetsIndex].Config.Databricks.InputCostList[inputCostListIndex6].Modal.ValueString())
+						var cost24 float64
+						cost24 = r.API.Targets[targetsIndex].Config.Databricks.InputCostList[inputCostListIndex6].Cost.ValueFloat64()
+
+						inputCostList6 = append(inputCostList6, shared.AIGatewayModalCostList{
+							Modal: modal18,
+							Cost:  cost24,
+						})
+					}
+				}
+				var outputCostList6 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Databricks.OutputCostList != nil {
+					outputCostList6 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Databricks.OutputCostList))
+					for outputCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.OutputCostList {
+						modal19 := shared.Modal(r.API.Targets[targetsIndex].Config.Databricks.OutputCostList[outputCostListIndex6].Modal.ValueString())
+						var cost25 float64
+						cost25 = r.API.Targets[targetsIndex].Config.Databricks.OutputCostList[outputCostListIndex6].Cost.ValueFloat64()
+
+						outputCostList6 = append(outputCostList6, shared.AIGatewayModalCostList{
+							Modal: modal19,
+							Cost:  cost25,
+						})
+					}
+				}
+				var cacheReadCostList6 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList != nil {
+					cacheReadCostList6 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList))
+					for cacheReadCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList {
+						modal20 := shared.Modal(r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList[cacheReadCostListIndex6].Modal.ValueString())
+						var cost26 float64
+						cost26 = r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList[cacheReadCostListIndex6].Cost.ValueFloat64()
+
+						cacheReadCostList6 = append(cacheReadCostList6, shared.AIGatewayModalCostList{
+							Modal: modal20,
+							Cost:  cost26,
+						})
+					}
+				}
 				cacheWriteCostList6 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList))
 				for cacheWriteCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList {
 					var ttl6 string
 					ttl6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].TTL.ValueString()
 
-					var cost6 float64
-					cost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].Cost.ValueFloat64()
+					var cost27 float64
+					cost27 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].Cost.ValueFloat64()
 
 					cacheWriteCostList6 = append(cacheWriteCostList6, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl6,
-						Cost: cost6,
+						Cost: cost27,
 					})
 				}
 				contextWindowFactor6 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor))
@@ -3987,6 +5895,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost6,
 					CacheReadCost:        cacheReadCost6,
 					CacheWriteCost:       cacheWriteCost6,
+					InputCostList:        inputCostList6,
+					OutputCostList:       outputCostList6,
+					CacheReadCostList:    cacheReadCostList6,
 					CacheWriteCostList:   cacheWriteCostList6,
 					ContextWindowFactor:  contextWindowFactor6,
 					ServiceTierFactor:    serviceTierFactor6,
@@ -4040,17 +5951,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost7 = nil
 				}
+				var inputCostList7 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Deepseek.InputCostList != nil {
+					inputCostList7 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.InputCostList))
+					for inputCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.InputCostList {
+						modal21 := shared.Modal(r.API.Targets[targetsIndex].Config.Deepseek.InputCostList[inputCostListIndex7].Modal.ValueString())
+						var cost28 float64
+						cost28 = r.API.Targets[targetsIndex].Config.Deepseek.InputCostList[inputCostListIndex7].Cost.ValueFloat64()
+
+						inputCostList7 = append(inputCostList7, shared.AIGatewayModalCostList{
+							Modal: modal21,
+							Cost:  cost28,
+						})
+					}
+				}
+				var outputCostList7 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList != nil {
+					outputCostList7 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList))
+					for outputCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList {
+						modal22 := shared.Modal(r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList[outputCostListIndex7].Modal.ValueString())
+						var cost29 float64
+						cost29 = r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList[outputCostListIndex7].Cost.ValueFloat64()
+
+						outputCostList7 = append(outputCostList7, shared.AIGatewayModalCostList{
+							Modal: modal22,
+							Cost:  cost29,
+						})
+					}
+				}
+				var cacheReadCostList7 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList != nil {
+					cacheReadCostList7 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList))
+					for cacheReadCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList {
+						modal23 := shared.Modal(r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex7].Modal.ValueString())
+						var cost30 float64
+						cost30 = r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex7].Cost.ValueFloat64()
+
+						cacheReadCostList7 = append(cacheReadCostList7, shared.AIGatewayModalCostList{
+							Modal: modal23,
+							Cost:  cost30,
+						})
+					}
+				}
 				cacheWriteCostList7 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList))
 				for cacheWriteCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList {
 					var ttl7 string
 					ttl7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].TTL.ValueString()
 
-					var cost7 float64
-					cost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].Cost.ValueFloat64()
+					var cost31 float64
+					cost31 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].Cost.ValueFloat64()
 
 					cacheWriteCostList7 = append(cacheWriteCostList7, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl7,
-						Cost: cost7,
+						Cost: cost31,
 					})
 				}
 				contextWindowFactor7 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor))
@@ -4114,6 +6067,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost7,
 					CacheReadCost:        cacheReadCost7,
 					CacheWriteCost:       cacheWriteCost7,
+					InputCostList:        inputCostList7,
+					OutputCostList:       outputCostList7,
+					CacheReadCostList:    cacheReadCostList7,
 					CacheWriteCostList:   cacheWriteCostList7,
 					ContextWindowFactor:  contextWindowFactor7,
 					ServiceTierFactor:    serviceTierFactor7,
@@ -4166,17 +6122,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost8 = nil
 				}
+				var inputCostList8 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Gemini.InputCostList != nil {
+					inputCostList8 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Gemini.InputCostList))
+					for inputCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.InputCostList {
+						modal24 := shared.Modal(r.API.Targets[targetsIndex].Config.Gemini.InputCostList[inputCostListIndex8].Modal.ValueString())
+						var cost32 float64
+						cost32 = r.API.Targets[targetsIndex].Config.Gemini.InputCostList[inputCostListIndex8].Cost.ValueFloat64()
+
+						inputCostList8 = append(inputCostList8, shared.AIGatewayModalCostList{
+							Modal: modal24,
+							Cost:  cost32,
+						})
+					}
+				}
+				var outputCostList8 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Gemini.OutputCostList != nil {
+					outputCostList8 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Gemini.OutputCostList))
+					for outputCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.OutputCostList {
+						modal25 := shared.Modal(r.API.Targets[targetsIndex].Config.Gemini.OutputCostList[outputCostListIndex8].Modal.ValueString())
+						var cost33 float64
+						cost33 = r.API.Targets[targetsIndex].Config.Gemini.OutputCostList[outputCostListIndex8].Cost.ValueFloat64()
+
+						outputCostList8 = append(outputCostList8, shared.AIGatewayModalCostList{
+							Modal: modal25,
+							Cost:  cost33,
+						})
+					}
+				}
+				var cacheReadCostList8 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList != nil {
+					cacheReadCostList8 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList))
+					for cacheReadCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList {
+						modal26 := shared.Modal(r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList[cacheReadCostListIndex8].Modal.ValueString())
+						var cost34 float64
+						cost34 = r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList[cacheReadCostListIndex8].Cost.ValueFloat64()
+
+						cacheReadCostList8 = append(cacheReadCostList8, shared.AIGatewayModalCostList{
+							Modal: modal26,
+							Cost:  cost34,
+						})
+					}
+				}
 				cacheWriteCostList8 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList))
 				for cacheWriteCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList {
 					var ttl8 string
 					ttl8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].TTL.ValueString()
 
-					var cost8 float64
-					cost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].Cost.ValueFloat64()
+					var cost35 float64
+					cost35 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].Cost.ValueFloat64()
 
 					cacheWriteCostList8 = append(cacheWriteCostList8, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl8,
-						Cost: cost8,
+						Cost: cost35,
 					})
 				}
 				contextWindowFactor8 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor))
@@ -4257,6 +6255,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost8,
 					CacheReadCost:        cacheReadCost8,
 					CacheWriteCost:       cacheWriteCost8,
+					InputCostList:        inputCostList8,
+					OutputCostList:       outputCostList8,
+					CacheReadCostList:    cacheReadCostList8,
 					CacheWriteCostList:   cacheWriteCostList8,
 					ContextWindowFactor:  contextWindowFactor8,
 					ServiceTierFactor:    serviceTierFactor8,
@@ -4310,17 +6311,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost9 = nil
 				}
+				var inputCostList9 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Huggingface.InputCostList != nil {
+					inputCostList9 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.InputCostList))
+					for inputCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.InputCostList {
+						modal27 := shared.Modal(r.API.Targets[targetsIndex].Config.Huggingface.InputCostList[inputCostListIndex9].Modal.ValueString())
+						var cost36 float64
+						cost36 = r.API.Targets[targetsIndex].Config.Huggingface.InputCostList[inputCostListIndex9].Cost.ValueFloat64()
+
+						inputCostList9 = append(inputCostList9, shared.AIGatewayModalCostList{
+							Modal: modal27,
+							Cost:  cost36,
+						})
+					}
+				}
+				var outputCostList9 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList != nil {
+					outputCostList9 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList))
+					for outputCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList {
+						modal28 := shared.Modal(r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList[outputCostListIndex9].Modal.ValueString())
+						var cost37 float64
+						cost37 = r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList[outputCostListIndex9].Cost.ValueFloat64()
+
+						outputCostList9 = append(outputCostList9, shared.AIGatewayModalCostList{
+							Modal: modal28,
+							Cost:  cost37,
+						})
+					}
+				}
+				var cacheReadCostList9 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList != nil {
+					cacheReadCostList9 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList))
+					for cacheReadCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList {
+						modal29 := shared.Modal(r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex9].Modal.ValueString())
+						var cost38 float64
+						cost38 = r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex9].Cost.ValueFloat64()
+
+						cacheReadCostList9 = append(cacheReadCostList9, shared.AIGatewayModalCostList{
+							Modal: modal29,
+							Cost:  cost38,
+						})
+					}
+				}
 				cacheWriteCostList9 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList))
 				for cacheWriteCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList {
 					var ttl9 string
 					ttl9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].TTL.ValueString()
 
-					var cost9 float64
-					cost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].Cost.ValueFloat64()
+					var cost39 float64
+					cost39 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].Cost.ValueFloat64()
 
 					cacheWriteCostList9 = append(cacheWriteCostList9, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl9,
-						Cost: cost9,
+						Cost: cost39,
 					})
 				}
 				contextWindowFactor9 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor))
@@ -4396,6 +6439,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost9,
 					CacheReadCost:        cacheReadCost9,
 					CacheWriteCost:       cacheWriteCost9,
+					InputCostList:        inputCostList9,
+					OutputCostList:       outputCostList9,
+					CacheReadCostList:    cacheReadCostList9,
 					CacheWriteCostList:   cacheWriteCostList9,
 					ContextWindowFactor:  contextWindowFactor9,
 					ServiceTierFactor:    serviceTierFactor9,
@@ -4450,17 +6496,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost10 = nil
 				}
+				var inputCostList10 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Kimi.InputCostList != nil {
+					inputCostList10 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Kimi.InputCostList))
+					for inputCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.InputCostList {
+						modal30 := shared.Modal(r.API.Targets[targetsIndex].Config.Kimi.InputCostList[inputCostListIndex10].Modal.ValueString())
+						var cost40 float64
+						cost40 = r.API.Targets[targetsIndex].Config.Kimi.InputCostList[inputCostListIndex10].Cost.ValueFloat64()
+
+						inputCostList10 = append(inputCostList10, shared.AIGatewayModalCostList{
+							Modal: modal30,
+							Cost:  cost40,
+						})
+					}
+				}
+				var outputCostList10 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Kimi.OutputCostList != nil {
+					outputCostList10 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Kimi.OutputCostList))
+					for outputCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.OutputCostList {
+						modal31 := shared.Modal(r.API.Targets[targetsIndex].Config.Kimi.OutputCostList[outputCostListIndex10].Modal.ValueString())
+						var cost41 float64
+						cost41 = r.API.Targets[targetsIndex].Config.Kimi.OutputCostList[outputCostListIndex10].Cost.ValueFloat64()
+
+						outputCostList10 = append(outputCostList10, shared.AIGatewayModalCostList{
+							Modal: modal31,
+							Cost:  cost41,
+						})
+					}
+				}
+				var cacheReadCostList10 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList != nil {
+					cacheReadCostList10 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList))
+					for cacheReadCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList {
+						modal32 := shared.Modal(r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList[cacheReadCostListIndex10].Modal.ValueString())
+						var cost42 float64
+						cost42 = r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList[cacheReadCostListIndex10].Cost.ValueFloat64()
+
+						cacheReadCostList10 = append(cacheReadCostList10, shared.AIGatewayModalCostList{
+							Modal: modal32,
+							Cost:  cost42,
+						})
+					}
+				}
 				cacheWriteCostList10 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList))
 				for cacheWriteCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList {
 					var ttl10 string
 					ttl10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].TTL.ValueString()
 
-					var cost10 float64
-					cost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].Cost.ValueFloat64()
+					var cost43 float64
+					cost43 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].Cost.ValueFloat64()
 
 					cacheWriteCostList10 = append(cacheWriteCostList10, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl10,
-						Cost: cost10,
+						Cost: cost43,
 					})
 				}
 				contextWindowFactor10 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor))
@@ -4530,6 +6618,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost10,
 					CacheReadCost:        cacheReadCost10,
 					CacheWriteCost:       cacheWriteCost10,
+					InputCostList:        inputCostList10,
+					OutputCostList:       outputCostList10,
+					CacheReadCostList:    cacheReadCostList10,
 					CacheWriteCostList:   cacheWriteCostList10,
 					ContextWindowFactor:  contextWindowFactor10,
 					ServiceTierFactor:    serviceTierFactor10,
@@ -4583,17 +6674,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost11 = nil
 				}
+				var inputCostList11 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Llama2.InputCostList != nil {
+					inputCostList11 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Llama2.InputCostList))
+					for inputCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.InputCostList {
+						modal33 := shared.Modal(r.API.Targets[targetsIndex].Config.Llama2.InputCostList[inputCostListIndex11].Modal.ValueString())
+						var cost44 float64
+						cost44 = r.API.Targets[targetsIndex].Config.Llama2.InputCostList[inputCostListIndex11].Cost.ValueFloat64()
+
+						inputCostList11 = append(inputCostList11, shared.AIGatewayModalCostList{
+							Modal: modal33,
+							Cost:  cost44,
+						})
+					}
+				}
+				var outputCostList11 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Llama2.OutputCostList != nil {
+					outputCostList11 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Llama2.OutputCostList))
+					for outputCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.OutputCostList {
+						modal34 := shared.Modal(r.API.Targets[targetsIndex].Config.Llama2.OutputCostList[outputCostListIndex11].Modal.ValueString())
+						var cost45 float64
+						cost45 = r.API.Targets[targetsIndex].Config.Llama2.OutputCostList[outputCostListIndex11].Cost.ValueFloat64()
+
+						outputCostList11 = append(outputCostList11, shared.AIGatewayModalCostList{
+							Modal: modal34,
+							Cost:  cost45,
+						})
+					}
+				}
+				var cacheReadCostList11 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList != nil {
+					cacheReadCostList11 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList))
+					for cacheReadCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList {
+						modal35 := shared.Modal(r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList[cacheReadCostListIndex11].Modal.ValueString())
+						var cost46 float64
+						cost46 = r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList[cacheReadCostListIndex11].Cost.ValueFloat64()
+
+						cacheReadCostList11 = append(cacheReadCostList11, shared.AIGatewayModalCostList{
+							Modal: modal35,
+							Cost:  cost46,
+						})
+					}
+				}
 				cacheWriteCostList11 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList))
 				for cacheWriteCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList {
 					var ttl11 string
 					ttl11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].TTL.ValueString()
 
-					var cost11 float64
-					cost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].Cost.ValueFloat64()
+					var cost47 float64
+					cost47 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].Cost.ValueFloat64()
 
 					cacheWriteCostList11 = append(cacheWriteCostList11, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl11,
-						Cost: cost11,
+						Cost: cost47,
 					})
 				}
 				contextWindowFactor11 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor))
@@ -4655,6 +6788,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost11,
 					CacheReadCost:        cacheReadCost11,
 					CacheWriteCost:       cacheWriteCost11,
+					InputCostList:        inputCostList11,
+					OutputCostList:       outputCostList11,
+					CacheReadCostList:    cacheReadCostList11,
 					CacheWriteCostList:   cacheWriteCostList11,
 					ContextWindowFactor:  contextWindowFactor11,
 					ServiceTierFactor:    serviceTierFactor11,
@@ -4708,17 +6844,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost12 = nil
 				}
+				var inputCostList12 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Mistral.InputCostList != nil {
+					inputCostList12 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Mistral.InputCostList))
+					for inputCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.InputCostList {
+						modal36 := shared.Modal(r.API.Targets[targetsIndex].Config.Mistral.InputCostList[inputCostListIndex12].Modal.ValueString())
+						var cost48 float64
+						cost48 = r.API.Targets[targetsIndex].Config.Mistral.InputCostList[inputCostListIndex12].Cost.ValueFloat64()
+
+						inputCostList12 = append(inputCostList12, shared.AIGatewayModalCostList{
+							Modal: modal36,
+							Cost:  cost48,
+						})
+					}
+				}
+				var outputCostList12 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Mistral.OutputCostList != nil {
+					outputCostList12 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Mistral.OutputCostList))
+					for outputCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.OutputCostList {
+						modal37 := shared.Modal(r.API.Targets[targetsIndex].Config.Mistral.OutputCostList[outputCostListIndex12].Modal.ValueString())
+						var cost49 float64
+						cost49 = r.API.Targets[targetsIndex].Config.Mistral.OutputCostList[outputCostListIndex12].Cost.ValueFloat64()
+
+						outputCostList12 = append(outputCostList12, shared.AIGatewayModalCostList{
+							Modal: modal37,
+							Cost:  cost49,
+						})
+					}
+				}
+				var cacheReadCostList12 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList != nil {
+					cacheReadCostList12 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList))
+					for cacheReadCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList {
+						modal38 := shared.Modal(r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList[cacheReadCostListIndex12].Modal.ValueString())
+						var cost50 float64
+						cost50 = r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList[cacheReadCostListIndex12].Cost.ValueFloat64()
+
+						cacheReadCostList12 = append(cacheReadCostList12, shared.AIGatewayModalCostList{
+							Modal: modal38,
+							Cost:  cost50,
+						})
+					}
+				}
 				cacheWriteCostList12 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList))
 				for cacheWriteCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList {
 					var ttl12 string
 					ttl12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].TTL.ValueString()
 
-					var cost12 float64
-					cost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].Cost.ValueFloat64()
+					var cost51 float64
+					cost51 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].Cost.ValueFloat64()
 
 					cacheWriteCostList12 = append(cacheWriteCostList12, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl12,
-						Cost: cost12,
+						Cost: cost51,
 					})
 				}
 				contextWindowFactor12 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor))
@@ -4783,6 +6961,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost12,
 					CacheReadCost:        cacheReadCost12,
 					CacheWriteCost:       cacheWriteCost12,
+					InputCostList:        inputCostList12,
+					OutputCostList:       outputCostList12,
+					CacheReadCostList:    cacheReadCostList12,
 					CacheWriteCostList:   cacheWriteCostList12,
 					ContextWindowFactor:  contextWindowFactor12,
 					ServiceTierFactor:    serviceTierFactor12,
@@ -4836,17 +7017,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost13 = nil
 				}
+				var inputCostList13 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Ollama.InputCostList != nil {
+					inputCostList13 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Ollama.InputCostList))
+					for inputCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.InputCostList {
+						modal39 := shared.Modal(r.API.Targets[targetsIndex].Config.Ollama.InputCostList[inputCostListIndex13].Modal.ValueString())
+						var cost52 float64
+						cost52 = r.API.Targets[targetsIndex].Config.Ollama.InputCostList[inputCostListIndex13].Cost.ValueFloat64()
+
+						inputCostList13 = append(inputCostList13, shared.AIGatewayModalCostList{
+							Modal: modal39,
+							Cost:  cost52,
+						})
+					}
+				}
+				var outputCostList13 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Ollama.OutputCostList != nil {
+					outputCostList13 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Ollama.OutputCostList))
+					for outputCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.OutputCostList {
+						modal40 := shared.Modal(r.API.Targets[targetsIndex].Config.Ollama.OutputCostList[outputCostListIndex13].Modal.ValueString())
+						var cost53 float64
+						cost53 = r.API.Targets[targetsIndex].Config.Ollama.OutputCostList[outputCostListIndex13].Cost.ValueFloat64()
+
+						outputCostList13 = append(outputCostList13, shared.AIGatewayModalCostList{
+							Modal: modal40,
+							Cost:  cost53,
+						})
+					}
+				}
+				var cacheReadCostList13 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList != nil {
+					cacheReadCostList13 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList))
+					for cacheReadCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList {
+						modal41 := shared.Modal(r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList[cacheReadCostListIndex13].Modal.ValueString())
+						var cost54 float64
+						cost54 = r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList[cacheReadCostListIndex13].Cost.ValueFloat64()
+
+						cacheReadCostList13 = append(cacheReadCostList13, shared.AIGatewayModalCostList{
+							Modal: modal41,
+							Cost:  cost54,
+						})
+					}
+				}
 				cacheWriteCostList13 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList))
 				for cacheWriteCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList {
 					var ttl13 string
 					ttl13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].TTL.ValueString()
 
-					var cost13 float64
-					cost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].Cost.ValueFloat64()
+					var cost55 float64
+					cost55 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].Cost.ValueFloat64()
 
 					cacheWriteCostList13 = append(cacheWriteCostList13, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl13,
-						Cost: cost13,
+						Cost: cost55,
 					})
 				}
 				contextWindowFactor13 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor))
@@ -4910,6 +7133,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost13,
 					CacheReadCost:        cacheReadCost13,
 					CacheWriteCost:       cacheWriteCost13,
+					InputCostList:        inputCostList13,
+					OutputCostList:       outputCostList13,
+					CacheReadCostList:    cacheReadCostList13,
 					CacheWriteCostList:   cacheWriteCostList13,
 					ContextWindowFactor:  contextWindowFactor13,
 					ServiceTierFactor:    serviceTierFactor13,
@@ -4962,17 +7188,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost14 = nil
 				}
+				var inputCostList14 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Openai.InputCostList != nil {
+					inputCostList14 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Openai.InputCostList))
+					for inputCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.InputCostList {
+						modal42 := shared.Modal(r.API.Targets[targetsIndex].Config.Openai.InputCostList[inputCostListIndex14].Modal.ValueString())
+						var cost56 float64
+						cost56 = r.API.Targets[targetsIndex].Config.Openai.InputCostList[inputCostListIndex14].Cost.ValueFloat64()
+
+						inputCostList14 = append(inputCostList14, shared.AIGatewayModalCostList{
+							Modal: modal42,
+							Cost:  cost56,
+						})
+					}
+				}
+				var outputCostList14 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Openai.OutputCostList != nil {
+					outputCostList14 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Openai.OutputCostList))
+					for outputCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.OutputCostList {
+						modal43 := shared.Modal(r.API.Targets[targetsIndex].Config.Openai.OutputCostList[outputCostListIndex14].Modal.ValueString())
+						var cost57 float64
+						cost57 = r.API.Targets[targetsIndex].Config.Openai.OutputCostList[outputCostListIndex14].Cost.ValueFloat64()
+
+						outputCostList14 = append(outputCostList14, shared.AIGatewayModalCostList{
+							Modal: modal43,
+							Cost:  cost57,
+						})
+					}
+				}
+				var cacheReadCostList14 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList != nil {
+					cacheReadCostList14 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList))
+					for cacheReadCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList {
+						modal44 := shared.Modal(r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList[cacheReadCostListIndex14].Modal.ValueString())
+						var cost58 float64
+						cost58 = r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList[cacheReadCostListIndex14].Cost.ValueFloat64()
+
+						cacheReadCostList14 = append(cacheReadCostList14, shared.AIGatewayModalCostList{
+							Modal: modal44,
+							Cost:  cost58,
+						})
+					}
+				}
 				cacheWriteCostList14 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList))
 				for cacheWriteCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList {
 					var ttl14 string
 					ttl14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].TTL.ValueString()
 
-					var cost14 float64
-					cost14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].Cost.ValueFloat64()
+					var cost59 float64
+					cost59 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].Cost.ValueFloat64()
 
 					cacheWriteCostList14 = append(cacheWriteCostList14, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl14,
-						Cost: cost14,
+						Cost: cost59,
 					})
 				}
 				contextWindowFactor14 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor))
@@ -5036,6 +7304,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost14,
 					CacheReadCost:        cacheReadCost14,
 					CacheWriteCost:       cacheWriteCost14,
+					InputCostList:        inputCostList14,
+					OutputCostList:       outputCostList14,
+					CacheReadCostList:    cacheReadCostList14,
 					CacheWriteCostList:   cacheWriteCostList14,
 					ContextWindowFactor:  contextWindowFactor14,
 					ServiceTierFactor:    serviceTierFactor14,
@@ -5088,17 +7359,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost15 = nil
 				}
+				var inputCostList15 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vercel.InputCostList != nil {
+					inputCostList15 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vercel.InputCostList))
+					for inputCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.InputCostList {
+						modal45 := shared.Modal(r.API.Targets[targetsIndex].Config.Vercel.InputCostList[inputCostListIndex15].Modal.ValueString())
+						var cost60 float64
+						cost60 = r.API.Targets[targetsIndex].Config.Vercel.InputCostList[inputCostListIndex15].Cost.ValueFloat64()
+
+						inputCostList15 = append(inputCostList15, shared.AIGatewayModalCostList{
+							Modal: modal45,
+							Cost:  cost60,
+						})
+					}
+				}
+				var outputCostList15 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vercel.OutputCostList != nil {
+					outputCostList15 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vercel.OutputCostList))
+					for outputCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.OutputCostList {
+						modal46 := shared.Modal(r.API.Targets[targetsIndex].Config.Vercel.OutputCostList[outputCostListIndex15].Modal.ValueString())
+						var cost61 float64
+						cost61 = r.API.Targets[targetsIndex].Config.Vercel.OutputCostList[outputCostListIndex15].Cost.ValueFloat64()
+
+						outputCostList15 = append(outputCostList15, shared.AIGatewayModalCostList{
+							Modal: modal46,
+							Cost:  cost61,
+						})
+					}
+				}
+				var cacheReadCostList15 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList != nil {
+					cacheReadCostList15 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList))
+					for cacheReadCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList {
+						modal47 := shared.Modal(r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList[cacheReadCostListIndex15].Modal.ValueString())
+						var cost62 float64
+						cost62 = r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList[cacheReadCostListIndex15].Cost.ValueFloat64()
+
+						cacheReadCostList15 = append(cacheReadCostList15, shared.AIGatewayModalCostList{
+							Modal: modal47,
+							Cost:  cost62,
+						})
+					}
+				}
 				cacheWriteCostList15 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList))
 				for cacheWriteCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList {
 					var ttl15 string
 					ttl15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].TTL.ValueString()
 
-					var cost15 float64
-					cost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].Cost.ValueFloat64()
+					var cost63 float64
+					cost63 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].Cost.ValueFloat64()
 
 					cacheWriteCostList15 = append(cacheWriteCostList15, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl15,
-						Cost: cost15,
+						Cost: cost63,
 					})
 				}
 				contextWindowFactor15 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor))
@@ -5162,6 +7475,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost15,
 					CacheReadCost:        cacheReadCost15,
 					CacheWriteCost:       cacheWriteCost15,
+					InputCostList:        inputCostList15,
+					OutputCostList:       outputCostList15,
+					CacheReadCostList:    cacheReadCostList15,
 					CacheWriteCostList:   cacheWriteCostList15,
 					ContextWindowFactor:  contextWindowFactor15,
 					ServiceTierFactor:    serviceTierFactor15,
@@ -5214,17 +7530,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost16 = nil
 				}
+				var inputCostList16 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vllm.InputCostList != nil {
+					inputCostList16 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vllm.InputCostList))
+					for inputCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.InputCostList {
+						modal48 := shared.Modal(r.API.Targets[targetsIndex].Config.Vllm.InputCostList[inputCostListIndex16].Modal.ValueString())
+						var cost64 float64
+						cost64 = r.API.Targets[targetsIndex].Config.Vllm.InputCostList[inputCostListIndex16].Cost.ValueFloat64()
+
+						inputCostList16 = append(inputCostList16, shared.AIGatewayModalCostList{
+							Modal: modal48,
+							Cost:  cost64,
+						})
+					}
+				}
+				var outputCostList16 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vllm.OutputCostList != nil {
+					outputCostList16 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vllm.OutputCostList))
+					for outputCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.OutputCostList {
+						modal49 := shared.Modal(r.API.Targets[targetsIndex].Config.Vllm.OutputCostList[outputCostListIndex16].Modal.ValueString())
+						var cost65 float64
+						cost65 = r.API.Targets[targetsIndex].Config.Vllm.OutputCostList[outputCostListIndex16].Cost.ValueFloat64()
+
+						outputCostList16 = append(outputCostList16, shared.AIGatewayModalCostList{
+							Modal: modal49,
+							Cost:  cost65,
+						})
+					}
+				}
+				var cacheReadCostList16 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList != nil {
+					cacheReadCostList16 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList))
+					for cacheReadCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList {
+						modal50 := shared.Modal(r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList[cacheReadCostListIndex16].Modal.ValueString())
+						var cost66 float64
+						cost66 = r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList[cacheReadCostListIndex16].Cost.ValueFloat64()
+
+						cacheReadCostList16 = append(cacheReadCostList16, shared.AIGatewayModalCostList{
+							Modal: modal50,
+							Cost:  cost66,
+						})
+					}
+				}
 				cacheWriteCostList16 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList))
 				for cacheWriteCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList {
 					var ttl16 string
 					ttl16 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex16].TTL.ValueString()
 
-					var cost16 float64
-					cost16 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex16].Cost.ValueFloat64()
+					var cost67 float64
+					cost67 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex16].Cost.ValueFloat64()
 
 					cacheWriteCostList16 = append(cacheWriteCostList16, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl16,
-						Cost: cost16,
+						Cost: cost67,
 					})
 				}
 				contextWindowFactor16 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor))
@@ -5285,6 +7643,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost16,
 					CacheReadCost:        cacheReadCost16,
 					CacheWriteCost:       cacheWriteCost16,
+					InputCostList:        inputCostList16,
+					OutputCostList:       outputCostList16,
+					CacheReadCostList:    cacheReadCostList16,
 					CacheWriteCostList:   cacheWriteCostList16,
 					ContextWindowFactor:  contextWindowFactor16,
 					ServiceTierFactor:    serviceTierFactor16,
@@ -5337,17 +7698,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost17 = nil
 				}
+				var inputCostList17 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Xai.InputCostList != nil {
+					inputCostList17 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Xai.InputCostList))
+					for inputCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.InputCostList {
+						modal51 := shared.Modal(r.API.Targets[targetsIndex].Config.Xai.InputCostList[inputCostListIndex17].Modal.ValueString())
+						var cost68 float64
+						cost68 = r.API.Targets[targetsIndex].Config.Xai.InputCostList[inputCostListIndex17].Cost.ValueFloat64()
+
+						inputCostList17 = append(inputCostList17, shared.AIGatewayModalCostList{
+							Modal: modal51,
+							Cost:  cost68,
+						})
+					}
+				}
+				var outputCostList17 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Xai.OutputCostList != nil {
+					outputCostList17 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Xai.OutputCostList))
+					for outputCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.OutputCostList {
+						modal52 := shared.Modal(r.API.Targets[targetsIndex].Config.Xai.OutputCostList[outputCostListIndex17].Modal.ValueString())
+						var cost69 float64
+						cost69 = r.API.Targets[targetsIndex].Config.Xai.OutputCostList[outputCostListIndex17].Cost.ValueFloat64()
+
+						outputCostList17 = append(outputCostList17, shared.AIGatewayModalCostList{
+							Modal: modal52,
+							Cost:  cost69,
+						})
+					}
+				}
+				var cacheReadCostList17 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList != nil {
+					cacheReadCostList17 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList))
+					for cacheReadCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList {
+						modal53 := shared.Modal(r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList[cacheReadCostListIndex17].Modal.ValueString())
+						var cost70 float64
+						cost70 = r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList[cacheReadCostListIndex17].Cost.ValueFloat64()
+
+						cacheReadCostList17 = append(cacheReadCostList17, shared.AIGatewayModalCostList{
+							Modal: modal53,
+							Cost:  cost70,
+						})
+					}
+				}
 				cacheWriteCostList17 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList))
 				for cacheWriteCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList {
 					var ttl17 string
 					ttl17 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex17].TTL.ValueString()
 
-					var cost17 float64
-					cost17 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex17].Cost.ValueFloat64()
+					var cost71 float64
+					cost71 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex17].Cost.ValueFloat64()
 
 					cacheWriteCostList17 = append(cacheWriteCostList17, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl17,
-						Cost: cost17,
+						Cost: cost71,
 					})
 				}
 				contextWindowFactor17 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor))
@@ -5411,6 +7814,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost17,
 					CacheReadCost:        cacheReadCost17,
 					CacheWriteCost:       cacheWriteCost17,
+					InputCostList:        inputCostList17,
+					OutputCostList:       outputCostList17,
+					CacheReadCostList:    cacheReadCostList17,
 					CacheWriteCostList:   cacheWriteCostList17,
 					ContextWindowFactor:  contextWindowFactor17,
 					ServiceTierFactor:    serviceTierFactor17,
@@ -5463,17 +7869,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost18 = nil
 				}
+				var inputCostList18 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList != nil {
+					inputCostList18 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList))
+					for inputCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList {
+						modal54 := shared.Modal(r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList[inputCostListIndex18].Modal.ValueString())
+						var cost72 float64
+						cost72 = r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList[inputCostListIndex18].Cost.ValueFloat64()
+
+						inputCostList18 = append(inputCostList18, shared.AIGatewayModalCostList{
+							Modal: modal54,
+							Cost:  cost72,
+						})
+					}
+				}
+				var outputCostList18 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList != nil {
+					outputCostList18 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList))
+					for outputCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList {
+						modal55 := shared.Modal(r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList[outputCostListIndex18].Modal.ValueString())
+						var cost73 float64
+						cost73 = r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList[outputCostListIndex18].Cost.ValueFloat64()
+
+						outputCostList18 = append(outputCostList18, shared.AIGatewayModalCostList{
+							Modal: modal55,
+							Cost:  cost73,
+						})
+					}
+				}
+				var cacheReadCostList18 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList != nil {
+					cacheReadCostList18 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList))
+					for cacheReadCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList {
+						modal56 := shared.Modal(r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex18].Modal.ValueString())
+						var cost74 float64
+						cost74 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex18].Cost.ValueFloat64()
+
+						cacheReadCostList18 = append(cacheReadCostList18, shared.AIGatewayModalCostList{
+							Modal: modal56,
+							Cost:  cost74,
+						})
+					}
+				}
 				cacheWriteCostList18 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList))
 				for cacheWriteCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList {
 					var ttl18 string
 					ttl18 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex18].TTL.ValueString()
 
-					var cost18 float64
-					cost18 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex18].Cost.ValueFloat64()
+					var cost75 float64
+					cost75 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex18].Cost.ValueFloat64()
 
 					cacheWriteCostList18 = append(cacheWriteCostList18, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl18,
-						Cost: cost18,
+						Cost: cost75,
 					})
 				}
 				contextWindowFactor18 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor))
@@ -5596,6 +8044,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost18,
 					CacheReadCost:        cacheReadCost18,
 					CacheWriteCost:       cacheWriteCost18,
+					InputCostList:        inputCostList18,
+					OutputCostList:       outputCostList18,
+					CacheReadCostList:    cacheReadCostList18,
 					CacheWriteCostList:   cacheWriteCostList18,
 					ContextWindowFactor:  contextWindowFactor18,
 					ServiceTierFactor:    serviceTierFactor18,
@@ -7142,17 +9593,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost19 = nil
 				}
+				var inputCostList19 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList != nil {
+					inputCostList19 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList))
+					for inputCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList {
+						modal57 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList[inputCostListIndex19].Modal.ValueString())
+						var cost76 float64
+						cost76 = r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList[inputCostListIndex19].Cost.ValueFloat64()
+
+						inputCostList19 = append(inputCostList19, shared.AIGatewayModalCostList{
+							Modal: modal57,
+							Cost:  cost76,
+						})
+					}
+				}
+				var outputCostList19 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList != nil {
+					outputCostList19 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList))
+					for outputCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList {
+						modal58 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList[outputCostListIndex19].Modal.ValueString())
+						var cost77 float64
+						cost77 = r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList[outputCostListIndex19].Cost.ValueFloat64()
+
+						outputCostList19 = append(outputCostList19, shared.AIGatewayModalCostList{
+							Modal: modal58,
+							Cost:  cost77,
+						})
+					}
+				}
+				var cacheReadCostList19 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList != nil {
+					cacheReadCostList19 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList))
+					for cacheReadCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList {
+						modal59 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex19].Modal.ValueString())
+						var cost78 float64
+						cost78 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex19].Cost.ValueFloat64()
+
+						cacheReadCostList19 = append(cacheReadCostList19, shared.AIGatewayModalCostList{
+							Modal: modal59,
+							Cost:  cost78,
+						})
+					}
+				}
 				cacheWriteCostList19 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList))
 				for cacheWriteCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList {
 					var ttl19 string
 					ttl19 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex19].TTL.ValueString()
 
-					var cost19 float64
-					cost19 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex19].Cost.ValueFloat64()
+					var cost79 float64
+					cost79 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex19].Cost.ValueFloat64()
 
 					cacheWriteCostList19 = append(cacheWriteCostList19, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl19,
-						Cost: cost19,
+						Cost: cost79,
 					})
 				}
 				contextWindowFactor19 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor))
@@ -7222,6 +9715,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost19,
 					CacheReadCost:        cacheReadCost19,
 					CacheWriteCost:       cacheWriteCost19,
+					InputCostList:        inputCostList19,
+					OutputCostList:       outputCostList19,
+					CacheReadCostList:    cacheReadCostList19,
 					CacheWriteCostList:   cacheWriteCostList19,
 					ContextWindowFactor:  contextWindowFactor19,
 					ServiceTierFactor:    serviceTierFactor19,
@@ -7275,17 +9771,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost20 = nil
 				}
+				var inputCostList20 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Azure.InputCostList != nil {
+					inputCostList20 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.InputCostList))
+					for inputCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.InputCostList {
+						modal60 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Azure.InputCostList[inputCostListIndex20].Modal.ValueString())
+						var cost80 float64
+						cost80 = r.Model.Targets[targetsIndex1].Config.Azure.InputCostList[inputCostListIndex20].Cost.ValueFloat64()
+
+						inputCostList20 = append(inputCostList20, shared.AIGatewayModalCostList{
+							Modal: modal60,
+							Cost:  cost80,
+						})
+					}
+				}
+				var outputCostList20 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList != nil {
+					outputCostList20 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList))
+					for outputCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList {
+						modal61 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList[outputCostListIndex20].Modal.ValueString())
+						var cost81 float64
+						cost81 = r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList[outputCostListIndex20].Cost.ValueFloat64()
+
+						outputCostList20 = append(outputCostList20, shared.AIGatewayModalCostList{
+							Modal: modal61,
+							Cost:  cost81,
+						})
+					}
+				}
+				var cacheReadCostList20 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList != nil {
+					cacheReadCostList20 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList))
+					for cacheReadCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList {
+						modal62 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList[cacheReadCostListIndex20].Modal.ValueString())
+						var cost82 float64
+						cost82 = r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList[cacheReadCostListIndex20].Cost.ValueFloat64()
+
+						cacheReadCostList20 = append(cacheReadCostList20, shared.AIGatewayModalCostList{
+							Modal: modal62,
+							Cost:  cost82,
+						})
+					}
+				}
 				cacheWriteCostList20 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList))
 				for cacheWriteCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList {
 					var ttl20 string
 					ttl20 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex20].TTL.ValueString()
 
-					var cost20 float64
-					cost20 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex20].Cost.ValueFloat64()
+					var cost83 float64
+					cost83 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex20].Cost.ValueFloat64()
 
 					cacheWriteCostList20 = append(cacheWriteCostList20, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl20,
-						Cost: cost20,
+						Cost: cost83,
 					})
 				}
 				contextWindowFactor20 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor))
@@ -7367,6 +9905,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost20,
 					CacheReadCost:        cacheReadCost20,
 					CacheWriteCost:       cacheWriteCost20,
+					InputCostList:        inputCostList20,
+					OutputCostList:       outputCostList20,
+					CacheReadCostList:    cacheReadCostList20,
 					CacheWriteCostList:   cacheWriteCostList20,
 					ContextWindowFactor:  contextWindowFactor20,
 					ServiceTierFactor:    serviceTierFactor20,
@@ -7422,17 +9963,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost21 = nil
 				}
+				var inputCostList21 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList != nil {
+					inputCostList21 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList))
+					for inputCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList {
+						modal63 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList[inputCostListIndex21].Modal.ValueString())
+						var cost84 float64
+						cost84 = r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList[inputCostListIndex21].Cost.ValueFloat64()
+
+						inputCostList21 = append(inputCostList21, shared.AIGatewayModalCostList{
+							Modal: modal63,
+							Cost:  cost84,
+						})
+					}
+				}
+				var outputCostList21 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList != nil {
+					outputCostList21 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList))
+					for outputCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList {
+						modal64 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList[outputCostListIndex21].Modal.ValueString())
+						var cost85 float64
+						cost85 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList[outputCostListIndex21].Cost.ValueFloat64()
+
+						outputCostList21 = append(outputCostList21, shared.AIGatewayModalCostList{
+							Modal: modal64,
+							Cost:  cost85,
+						})
+					}
+				}
+				var cacheReadCostList21 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList != nil {
+					cacheReadCostList21 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList))
+					for cacheReadCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList {
+						modal65 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex21].Modal.ValueString())
+						var cost86 float64
+						cost86 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex21].Cost.ValueFloat64()
+
+						cacheReadCostList21 = append(cacheReadCostList21, shared.AIGatewayModalCostList{
+							Modal: modal65,
+							Cost:  cost86,
+						})
+					}
+				}
 				cacheWriteCostList21 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList))
 				for cacheWriteCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList {
 					var ttl21 string
 					ttl21 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex21].TTL.ValueString()
 
-					var cost21 float64
-					cost21 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex21].Cost.ValueFloat64()
+					var cost87 float64
+					cost87 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex21].Cost.ValueFloat64()
 
 					cacheWriteCostList21 = append(cacheWriteCostList21, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl21,
-						Cost: cost21,
+						Cost: cost87,
 					})
 				}
 				contextWindowFactor21 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor))
@@ -7526,6 +10109,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:               outputCost21,
 					CacheReadCost:            cacheReadCost21,
 					CacheWriteCost:           cacheWriteCost21,
+					InputCostList:            inputCostList21,
+					OutputCostList:           outputCostList21,
+					CacheReadCostList:        cacheReadCostList21,
 					CacheWriteCostList:       cacheWriteCostList21,
 					ContextWindowFactor:      contextWindowFactor21,
 					ServiceTierFactor:        serviceTierFactor21,
@@ -7583,17 +10169,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost22 = nil
 				}
+				var inputCostList22 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList != nil {
+					inputCostList22 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList))
+					for inputCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList {
+						modal66 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList[inputCostListIndex22].Modal.ValueString())
+						var cost88 float64
+						cost88 = r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList[inputCostListIndex22].Cost.ValueFloat64()
+
+						inputCostList22 = append(inputCostList22, shared.AIGatewayModalCostList{
+							Modal: modal66,
+							Cost:  cost88,
+						})
+					}
+				}
+				var outputCostList22 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList != nil {
+					outputCostList22 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList))
+					for outputCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList {
+						modal67 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList[outputCostListIndex22].Modal.ValueString())
+						var cost89 float64
+						cost89 = r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList[outputCostListIndex22].Cost.ValueFloat64()
+
+						outputCostList22 = append(outputCostList22, shared.AIGatewayModalCostList{
+							Modal: modal67,
+							Cost:  cost89,
+						})
+					}
+				}
+				var cacheReadCostList22 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList != nil {
+					cacheReadCostList22 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList))
+					for cacheReadCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList {
+						modal68 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex22].Modal.ValueString())
+						var cost90 float64
+						cost90 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex22].Cost.ValueFloat64()
+
+						cacheReadCostList22 = append(cacheReadCostList22, shared.AIGatewayModalCostList{
+							Modal: modal68,
+							Cost:  cost90,
+						})
+					}
+				}
 				cacheWriteCostList22 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList))
 				for cacheWriteCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList {
 					var ttl22 string
 					ttl22 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex22].TTL.ValueString()
 
-					var cost22 float64
-					cost22 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex22].Cost.ValueFloat64()
+					var cost91 float64
+					cost91 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex22].Cost.ValueFloat64()
 
 					cacheWriteCostList22 = append(cacheWriteCostList22, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl22,
-						Cost: cost22,
+						Cost: cost91,
 					})
 				}
 				contextWindowFactor22 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor))
@@ -7657,6 +10285,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost22,
 					CacheReadCost:        cacheReadCost22,
 					CacheWriteCost:       cacheWriteCost22,
+					InputCostList:        inputCostList22,
+					OutputCostList:       outputCostList22,
+					CacheReadCostList:    cacheReadCostList22,
 					CacheWriteCostList:   cacheWriteCostList22,
 					ContextWindowFactor:  contextWindowFactor22,
 					ServiceTierFactor:    serviceTierFactor22,
@@ -7709,17 +10340,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost23 = nil
 				}
+				var inputCostList23 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList != nil {
+					inputCostList23 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList))
+					for inputCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList {
+						modal69 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList[inputCostListIndex23].Modal.ValueString())
+						var cost92 float64
+						cost92 = r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList[inputCostListIndex23].Cost.ValueFloat64()
+
+						inputCostList23 = append(inputCostList23, shared.AIGatewayModalCostList{
+							Modal: modal69,
+							Cost:  cost92,
+						})
+					}
+				}
+				var outputCostList23 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList != nil {
+					outputCostList23 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList))
+					for outputCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList {
+						modal70 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList[outputCostListIndex23].Modal.ValueString())
+						var cost93 float64
+						cost93 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList[outputCostListIndex23].Cost.ValueFloat64()
+
+						outputCostList23 = append(outputCostList23, shared.AIGatewayModalCostList{
+							Modal: modal70,
+							Cost:  cost93,
+						})
+					}
+				}
+				var cacheReadCostList23 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList != nil {
+					cacheReadCostList23 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList))
+					for cacheReadCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList {
+						modal71 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList[cacheReadCostListIndex23].Modal.ValueString())
+						var cost94 float64
+						cost94 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList[cacheReadCostListIndex23].Cost.ValueFloat64()
+
+						cacheReadCostList23 = append(cacheReadCostList23, shared.AIGatewayModalCostList{
+							Modal: modal71,
+							Cost:  cost94,
+						})
+					}
+				}
 				cacheWriteCostList23 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList))
 				for cacheWriteCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList {
 					var ttl23 string
 					ttl23 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex23].TTL.ValueString()
 
-					var cost23 float64
-					cost23 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex23].Cost.ValueFloat64()
+					var cost95 float64
+					cost95 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex23].Cost.ValueFloat64()
 
 					cacheWriteCostList23 = append(cacheWriteCostList23, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl23,
-						Cost: cost23,
+						Cost: cost95,
 					})
 				}
 				contextWindowFactor23 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor))
@@ -7801,6 +10474,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost23,
 					CacheReadCost:        cacheReadCost23,
 					CacheWriteCost:       cacheWriteCost23,
+					InputCostList:        inputCostList23,
+					OutputCostList:       outputCostList23,
+					CacheReadCostList:    cacheReadCostList23,
 					CacheWriteCostList:   cacheWriteCostList23,
 					ContextWindowFactor:  contextWindowFactor23,
 					ServiceTierFactor:    serviceTierFactor23,
@@ -7856,17 +10532,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost24 = nil
 				}
+				var inputCostList24 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList != nil {
+					inputCostList24 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList))
+					for inputCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList {
+						modal72 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList[inputCostListIndex24].Modal.ValueString())
+						var cost96 float64
+						cost96 = r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList[inputCostListIndex24].Cost.ValueFloat64()
+
+						inputCostList24 = append(inputCostList24, shared.AIGatewayModalCostList{
+							Modal: modal72,
+							Cost:  cost96,
+						})
+					}
+				}
+				var outputCostList24 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList != nil {
+					outputCostList24 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList))
+					for outputCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList {
+						modal73 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList[outputCostListIndex24].Modal.ValueString())
+						var cost97 float64
+						cost97 = r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList[outputCostListIndex24].Cost.ValueFloat64()
+
+						outputCostList24 = append(outputCostList24, shared.AIGatewayModalCostList{
+							Modal: modal73,
+							Cost:  cost97,
+						})
+					}
+				}
+				var cacheReadCostList24 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList != nil {
+					cacheReadCostList24 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList))
+					for cacheReadCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList {
+						modal74 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex24].Modal.ValueString())
+						var cost98 float64
+						cost98 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex24].Cost.ValueFloat64()
+
+						cacheReadCostList24 = append(cacheReadCostList24, shared.AIGatewayModalCostList{
+							Modal: modal74,
+							Cost:  cost98,
+						})
+					}
+				}
 				cacheWriteCostList24 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList))
 				for cacheWriteCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList {
 					var ttl24 string
 					ttl24 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex24].TTL.ValueString()
 
-					var cost24 float64
-					cost24 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex24].Cost.ValueFloat64()
+					var cost99 float64
+					cost99 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex24].Cost.ValueFloat64()
 
 					cacheWriteCostList24 = append(cacheWriteCostList24, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl24,
-						Cost: cost24,
+						Cost: cost99,
 					})
 				}
 				contextWindowFactor24 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor))
@@ -7936,6 +10654,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost24,
 					CacheReadCost:        cacheReadCost24,
 					CacheWriteCost:       cacheWriteCost24,
+					InputCostList:        inputCostList24,
+					OutputCostList:       outputCostList24,
+					CacheReadCostList:    cacheReadCostList24,
 					CacheWriteCostList:   cacheWriteCostList24,
 					ContextWindowFactor:  contextWindowFactor24,
 					ServiceTierFactor:    serviceTierFactor24,
@@ -7989,17 +10710,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost25 = nil
 				}
+				var inputCostList25 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList != nil {
+					inputCostList25 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList))
+					for inputCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList {
+						modal75 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList[inputCostListIndex25].Modal.ValueString())
+						var cost100 float64
+						cost100 = r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList[inputCostListIndex25].Cost.ValueFloat64()
+
+						inputCostList25 = append(inputCostList25, shared.AIGatewayModalCostList{
+							Modal: modal75,
+							Cost:  cost100,
+						})
+					}
+				}
+				var outputCostList25 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList != nil {
+					outputCostList25 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList))
+					for outputCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList {
+						modal76 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList[outputCostListIndex25].Modal.ValueString())
+						var cost101 float64
+						cost101 = r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList[outputCostListIndex25].Cost.ValueFloat64()
+
+						outputCostList25 = append(outputCostList25, shared.AIGatewayModalCostList{
+							Modal: modal76,
+							Cost:  cost101,
+						})
+					}
+				}
+				var cacheReadCostList25 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList != nil {
+					cacheReadCostList25 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList))
+					for cacheReadCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList {
+						modal77 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList[cacheReadCostListIndex25].Modal.ValueString())
+						var cost102 float64
+						cost102 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList[cacheReadCostListIndex25].Cost.ValueFloat64()
+
+						cacheReadCostList25 = append(cacheReadCostList25, shared.AIGatewayModalCostList{
+							Modal: modal77,
+							Cost:  cost102,
+						})
+					}
+				}
 				cacheWriteCostList25 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList))
 				for cacheWriteCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList {
 					var ttl25 string
 					ttl25 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex25].TTL.ValueString()
 
-					var cost25 float64
-					cost25 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex25].Cost.ValueFloat64()
+					var cost103 float64
+					cost103 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex25].Cost.ValueFloat64()
 
 					cacheWriteCostList25 = append(cacheWriteCostList25, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl25,
-						Cost: cost25,
+						Cost: cost103,
 					})
 				}
 				contextWindowFactor25 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor))
@@ -8066,6 +10829,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost25,
 					CacheReadCost:        cacheReadCost25,
 					CacheWriteCost:       cacheWriteCost25,
+					InputCostList:        inputCostList25,
+					OutputCostList:       outputCostList25,
+					CacheReadCostList:    cacheReadCostList25,
 					CacheWriteCostList:   cacheWriteCostList25,
 					ContextWindowFactor:  contextWindowFactor25,
 					ServiceTierFactor:    serviceTierFactor25,
@@ -8119,17 +10885,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost26 = nil
 				}
+				var inputCostList26 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList != nil {
+					inputCostList26 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList))
+					for inputCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList {
+						modal78 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList[inputCostListIndex26].Modal.ValueString())
+						var cost104 float64
+						cost104 = r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList[inputCostListIndex26].Cost.ValueFloat64()
+
+						inputCostList26 = append(inputCostList26, shared.AIGatewayModalCostList{
+							Modal: modal78,
+							Cost:  cost104,
+						})
+					}
+				}
+				var outputCostList26 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList != nil {
+					outputCostList26 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList))
+					for outputCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList {
+						modal79 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList[outputCostListIndex26].Modal.ValueString())
+						var cost105 float64
+						cost105 = r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList[outputCostListIndex26].Cost.ValueFloat64()
+
+						outputCostList26 = append(outputCostList26, shared.AIGatewayModalCostList{
+							Modal: modal79,
+							Cost:  cost105,
+						})
+					}
+				}
+				var cacheReadCostList26 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList != nil {
+					cacheReadCostList26 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList))
+					for cacheReadCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList {
+						modal80 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex26].Modal.ValueString())
+						var cost106 float64
+						cost106 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex26].Cost.ValueFloat64()
+
+						cacheReadCostList26 = append(cacheReadCostList26, shared.AIGatewayModalCostList{
+							Modal: modal80,
+							Cost:  cost106,
+						})
+					}
+				}
 				cacheWriteCostList26 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList))
 				for cacheWriteCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList {
 					var ttl26 string
 					ttl26 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex26].TTL.ValueString()
 
-					var cost26 float64
-					cost26 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex26].Cost.ValueFloat64()
+					var cost107 float64
+					cost107 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex26].Cost.ValueFloat64()
 
 					cacheWriteCostList26 = append(cacheWriteCostList26, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl26,
-						Cost: cost26,
+						Cost: cost107,
 					})
 				}
 				contextWindowFactor26 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor))
@@ -8193,6 +11001,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost26,
 					CacheReadCost:        cacheReadCost26,
 					CacheWriteCost:       cacheWriteCost26,
+					InputCostList:        inputCostList26,
+					OutputCostList:       outputCostList26,
+					CacheReadCostList:    cacheReadCostList26,
 					CacheWriteCostList:   cacheWriteCostList26,
 					ContextWindowFactor:  contextWindowFactor26,
 					ServiceTierFactor:    serviceTierFactor26,
@@ -8245,17 +11056,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost27 = nil
 				}
+				var inputCostList27 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList != nil {
+					inputCostList27 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList))
+					for inputCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList {
+						modal81 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList[inputCostListIndex27].Modal.ValueString())
+						var cost108 float64
+						cost108 = r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList[inputCostListIndex27].Cost.ValueFloat64()
+
+						inputCostList27 = append(inputCostList27, shared.AIGatewayModalCostList{
+							Modal: modal81,
+							Cost:  cost108,
+						})
+					}
+				}
+				var outputCostList27 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList != nil {
+					outputCostList27 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList))
+					for outputCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList {
+						modal82 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList[outputCostListIndex27].Modal.ValueString())
+						var cost109 float64
+						cost109 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList[outputCostListIndex27].Cost.ValueFloat64()
+
+						outputCostList27 = append(outputCostList27, shared.AIGatewayModalCostList{
+							Modal: modal82,
+							Cost:  cost109,
+						})
+					}
+				}
+				var cacheReadCostList27 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList != nil {
+					cacheReadCostList27 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList))
+					for cacheReadCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList {
+						modal83 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList[cacheReadCostListIndex27].Modal.ValueString())
+						var cost110 float64
+						cost110 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList[cacheReadCostListIndex27].Cost.ValueFloat64()
+
+						cacheReadCostList27 = append(cacheReadCostList27, shared.AIGatewayModalCostList{
+							Modal: modal83,
+							Cost:  cost110,
+						})
+					}
+				}
 				cacheWriteCostList27 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList))
 				for cacheWriteCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList {
 					var ttl27 string
 					ttl27 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex27].TTL.ValueString()
 
-					var cost27 float64
-					cost27 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex27].Cost.ValueFloat64()
+					var cost111 float64
+					cost111 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex27].Cost.ValueFloat64()
 
 					cacheWriteCostList27 = append(cacheWriteCostList27, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl27,
-						Cost: cost27,
+						Cost: cost111,
 					})
 				}
 				contextWindowFactor27 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor))
@@ -8336,6 +11189,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost27,
 					CacheReadCost:        cacheReadCost27,
 					CacheWriteCost:       cacheWriteCost27,
+					InputCostList:        inputCostList27,
+					OutputCostList:       outputCostList27,
+					CacheReadCostList:    cacheReadCostList27,
 					CacheWriteCostList:   cacheWriteCostList27,
 					ContextWindowFactor:  contextWindowFactor27,
 					ServiceTierFactor:    serviceTierFactor27,
@@ -8389,17 +11245,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost28 = nil
 				}
+				var inputCostList28 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList != nil {
+					inputCostList28 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList))
+					for inputCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList {
+						modal84 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList[inputCostListIndex28].Modal.ValueString())
+						var cost112 float64
+						cost112 = r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList[inputCostListIndex28].Cost.ValueFloat64()
+
+						inputCostList28 = append(inputCostList28, shared.AIGatewayModalCostList{
+							Modal: modal84,
+							Cost:  cost112,
+						})
+					}
+				}
+				var outputCostList28 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList != nil {
+					outputCostList28 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList))
+					for outputCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList {
+						modal85 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList[outputCostListIndex28].Modal.ValueString())
+						var cost113 float64
+						cost113 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList[outputCostListIndex28].Cost.ValueFloat64()
+
+						outputCostList28 = append(outputCostList28, shared.AIGatewayModalCostList{
+							Modal: modal85,
+							Cost:  cost113,
+						})
+					}
+				}
+				var cacheReadCostList28 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList != nil {
+					cacheReadCostList28 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList))
+					for cacheReadCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList {
+						modal86 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex28].Modal.ValueString())
+						var cost114 float64
+						cost114 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex28].Cost.ValueFloat64()
+
+						cacheReadCostList28 = append(cacheReadCostList28, shared.AIGatewayModalCostList{
+							Modal: modal86,
+							Cost:  cost114,
+						})
+					}
+				}
 				cacheWriteCostList28 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList))
 				for cacheWriteCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList {
 					var ttl28 string
 					ttl28 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex28].TTL.ValueString()
 
-					var cost28 float64
-					cost28 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex28].Cost.ValueFloat64()
+					var cost115 float64
+					cost115 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex28].Cost.ValueFloat64()
 
 					cacheWriteCostList28 = append(cacheWriteCostList28, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl28,
-						Cost: cost28,
+						Cost: cost115,
 					})
 				}
 				contextWindowFactor28 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor))
@@ -8475,6 +11373,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost28,
 					CacheReadCost:        cacheReadCost28,
 					CacheWriteCost:       cacheWriteCost28,
+					InputCostList:        inputCostList28,
+					OutputCostList:       outputCostList28,
+					CacheReadCostList:    cacheReadCostList28,
 					CacheWriteCostList:   cacheWriteCostList28,
 					ContextWindowFactor:  contextWindowFactor28,
 					ServiceTierFactor:    serviceTierFactor28,
@@ -8529,17 +11430,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost29 = nil
 				}
+				var inputCostList29 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList != nil {
+					inputCostList29 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList))
+					for inputCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList {
+						modal87 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList[inputCostListIndex29].Modal.ValueString())
+						var cost116 float64
+						cost116 = r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList[inputCostListIndex29].Cost.ValueFloat64()
+
+						inputCostList29 = append(inputCostList29, shared.AIGatewayModalCostList{
+							Modal: modal87,
+							Cost:  cost116,
+						})
+					}
+				}
+				var outputCostList29 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList != nil {
+					outputCostList29 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList))
+					for outputCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList {
+						modal88 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList[outputCostListIndex29].Modal.ValueString())
+						var cost117 float64
+						cost117 = r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList[outputCostListIndex29].Cost.ValueFloat64()
+
+						outputCostList29 = append(outputCostList29, shared.AIGatewayModalCostList{
+							Modal: modal88,
+							Cost:  cost117,
+						})
+					}
+				}
+				var cacheReadCostList29 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList != nil {
+					cacheReadCostList29 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList))
+					for cacheReadCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList {
+						modal89 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList[cacheReadCostListIndex29].Modal.ValueString())
+						var cost118 float64
+						cost118 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList[cacheReadCostListIndex29].Cost.ValueFloat64()
+
+						cacheReadCostList29 = append(cacheReadCostList29, shared.AIGatewayModalCostList{
+							Modal: modal89,
+							Cost:  cost118,
+						})
+					}
+				}
 				cacheWriteCostList29 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList))
 				for cacheWriteCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList {
 					var ttl29 string
 					ttl29 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex29].TTL.ValueString()
 
-					var cost29 float64
-					cost29 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex29].Cost.ValueFloat64()
+					var cost119 float64
+					cost119 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex29].Cost.ValueFloat64()
 
 					cacheWriteCostList29 = append(cacheWriteCostList29, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl29,
-						Cost: cost29,
+						Cost: cost119,
 					})
 				}
 				contextWindowFactor29 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor))
@@ -8609,6 +11552,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost29,
 					CacheReadCost:        cacheReadCost29,
 					CacheWriteCost:       cacheWriteCost29,
+					InputCostList:        inputCostList29,
+					OutputCostList:       outputCostList29,
+					CacheReadCostList:    cacheReadCostList29,
 					CacheWriteCostList:   cacheWriteCostList29,
 					ContextWindowFactor:  contextWindowFactor29,
 					ServiceTierFactor:    serviceTierFactor29,
@@ -8662,17 +11608,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost30 = nil
 				}
+				var inputCostList30 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList != nil {
+					inputCostList30 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList))
+					for inputCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList {
+						modal90 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList[inputCostListIndex30].Modal.ValueString())
+						var cost120 float64
+						cost120 = r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList[inputCostListIndex30].Cost.ValueFloat64()
+
+						inputCostList30 = append(inputCostList30, shared.AIGatewayModalCostList{
+							Modal: modal90,
+							Cost:  cost120,
+						})
+					}
+				}
+				var outputCostList30 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList != nil {
+					outputCostList30 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList))
+					for outputCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList {
+						modal91 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList[outputCostListIndex30].Modal.ValueString())
+						var cost121 float64
+						cost121 = r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList[outputCostListIndex30].Cost.ValueFloat64()
+
+						outputCostList30 = append(outputCostList30, shared.AIGatewayModalCostList{
+							Modal: modal91,
+							Cost:  cost121,
+						})
+					}
+				}
+				var cacheReadCostList30 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList != nil {
+					cacheReadCostList30 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList))
+					for cacheReadCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList {
+						modal92 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList[cacheReadCostListIndex30].Modal.ValueString())
+						var cost122 float64
+						cost122 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList[cacheReadCostListIndex30].Cost.ValueFloat64()
+
+						cacheReadCostList30 = append(cacheReadCostList30, shared.AIGatewayModalCostList{
+							Modal: modal92,
+							Cost:  cost122,
+						})
+					}
+				}
 				cacheWriteCostList30 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList))
 				for cacheWriteCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList {
 					var ttl30 string
 					ttl30 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex30].TTL.ValueString()
 
-					var cost30 float64
-					cost30 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex30].Cost.ValueFloat64()
+					var cost123 float64
+					cost123 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex30].Cost.ValueFloat64()
 
 					cacheWriteCostList30 = append(cacheWriteCostList30, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl30,
-						Cost: cost30,
+						Cost: cost123,
 					})
 				}
 				contextWindowFactor30 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor))
@@ -8734,6 +11722,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost30,
 					CacheReadCost:        cacheReadCost30,
 					CacheWriteCost:       cacheWriteCost30,
+					InputCostList:        inputCostList30,
+					OutputCostList:       outputCostList30,
+					CacheReadCostList:    cacheReadCostList30,
 					CacheWriteCostList:   cacheWriteCostList30,
 					ContextWindowFactor:  contextWindowFactor30,
 					ServiceTierFactor:    serviceTierFactor30,
@@ -8787,17 +11778,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost31 = nil
 				}
+				var inputCostList31 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList != nil {
+					inputCostList31 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList))
+					for inputCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList {
+						modal93 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList[inputCostListIndex31].Modal.ValueString())
+						var cost124 float64
+						cost124 = r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList[inputCostListIndex31].Cost.ValueFloat64()
+
+						inputCostList31 = append(inputCostList31, shared.AIGatewayModalCostList{
+							Modal: modal93,
+							Cost:  cost124,
+						})
+					}
+				}
+				var outputCostList31 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList != nil {
+					outputCostList31 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList))
+					for outputCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList {
+						modal94 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList[outputCostListIndex31].Modal.ValueString())
+						var cost125 float64
+						cost125 = r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList[outputCostListIndex31].Cost.ValueFloat64()
+
+						outputCostList31 = append(outputCostList31, shared.AIGatewayModalCostList{
+							Modal: modal94,
+							Cost:  cost125,
+						})
+					}
+				}
+				var cacheReadCostList31 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList != nil {
+					cacheReadCostList31 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList))
+					for cacheReadCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList {
+						modal95 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList[cacheReadCostListIndex31].Modal.ValueString())
+						var cost126 float64
+						cost126 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList[cacheReadCostListIndex31].Cost.ValueFloat64()
+
+						cacheReadCostList31 = append(cacheReadCostList31, shared.AIGatewayModalCostList{
+							Modal: modal95,
+							Cost:  cost126,
+						})
+					}
+				}
 				cacheWriteCostList31 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList))
 				for cacheWriteCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList {
 					var ttl31 string
 					ttl31 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex31].TTL.ValueString()
 
-					var cost31 float64
-					cost31 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex31].Cost.ValueFloat64()
+					var cost127 float64
+					cost127 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex31].Cost.ValueFloat64()
 
 					cacheWriteCostList31 = append(cacheWriteCostList31, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl31,
-						Cost: cost31,
+						Cost: cost127,
 					})
 				}
 				contextWindowFactor31 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor))
@@ -8862,6 +11895,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost31,
 					CacheReadCost:        cacheReadCost31,
 					CacheWriteCost:       cacheWriteCost31,
+					InputCostList:        inputCostList31,
+					OutputCostList:       outputCostList31,
+					CacheReadCostList:    cacheReadCostList31,
 					CacheWriteCostList:   cacheWriteCostList31,
 					ContextWindowFactor:  contextWindowFactor31,
 					ServiceTierFactor:    serviceTierFactor31,
@@ -8915,17 +11951,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost32 = nil
 				}
+				var inputCostList32 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList != nil {
+					inputCostList32 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList))
+					for inputCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList {
+						modal96 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList[inputCostListIndex32].Modal.ValueString())
+						var cost128 float64
+						cost128 = r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList[inputCostListIndex32].Cost.ValueFloat64()
+
+						inputCostList32 = append(inputCostList32, shared.AIGatewayModalCostList{
+							Modal: modal96,
+							Cost:  cost128,
+						})
+					}
+				}
+				var outputCostList32 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList != nil {
+					outputCostList32 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList))
+					for outputCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList {
+						modal97 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList[outputCostListIndex32].Modal.ValueString())
+						var cost129 float64
+						cost129 = r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList[outputCostListIndex32].Cost.ValueFloat64()
+
+						outputCostList32 = append(outputCostList32, shared.AIGatewayModalCostList{
+							Modal: modal97,
+							Cost:  cost129,
+						})
+					}
+				}
+				var cacheReadCostList32 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList != nil {
+					cacheReadCostList32 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList))
+					for cacheReadCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList {
+						modal98 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList[cacheReadCostListIndex32].Modal.ValueString())
+						var cost130 float64
+						cost130 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList[cacheReadCostListIndex32].Cost.ValueFloat64()
+
+						cacheReadCostList32 = append(cacheReadCostList32, shared.AIGatewayModalCostList{
+							Modal: modal98,
+							Cost:  cost130,
+						})
+					}
+				}
 				cacheWriteCostList32 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList))
 				for cacheWriteCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList {
 					var ttl32 string
 					ttl32 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex32].TTL.ValueString()
 
-					var cost32 float64
-					cost32 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex32].Cost.ValueFloat64()
+					var cost131 float64
+					cost131 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex32].Cost.ValueFloat64()
 
 					cacheWriteCostList32 = append(cacheWriteCostList32, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl32,
-						Cost: cost32,
+						Cost: cost131,
 					})
 				}
 				contextWindowFactor32 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor))
@@ -8989,6 +12067,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost32,
 					CacheReadCost:        cacheReadCost32,
 					CacheWriteCost:       cacheWriteCost32,
+					InputCostList:        inputCostList32,
+					OutputCostList:       outputCostList32,
+					CacheReadCostList:    cacheReadCostList32,
 					CacheWriteCostList:   cacheWriteCostList32,
 					ContextWindowFactor:  contextWindowFactor32,
 					ServiceTierFactor:    serviceTierFactor32,
@@ -9041,17 +12122,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost33 = nil
 				}
+				var inputCostList33 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Openai.InputCostList != nil {
+					inputCostList33 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.InputCostList))
+					for inputCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.InputCostList {
+						modal99 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Openai.InputCostList[inputCostListIndex33].Modal.ValueString())
+						var cost132 float64
+						cost132 = r.Model.Targets[targetsIndex1].Config.Openai.InputCostList[inputCostListIndex33].Cost.ValueFloat64()
+
+						inputCostList33 = append(inputCostList33, shared.AIGatewayModalCostList{
+							Modal: modal99,
+							Cost:  cost132,
+						})
+					}
+				}
+				var outputCostList33 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList != nil {
+					outputCostList33 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList))
+					for outputCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList {
+						modal100 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList[outputCostListIndex33].Modal.ValueString())
+						var cost133 float64
+						cost133 = r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList[outputCostListIndex33].Cost.ValueFloat64()
+
+						outputCostList33 = append(outputCostList33, shared.AIGatewayModalCostList{
+							Modal: modal100,
+							Cost:  cost133,
+						})
+					}
+				}
+				var cacheReadCostList33 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList != nil {
+					cacheReadCostList33 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList))
+					for cacheReadCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList {
+						modal101 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList[cacheReadCostListIndex33].Modal.ValueString())
+						var cost134 float64
+						cost134 = r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList[cacheReadCostListIndex33].Cost.ValueFloat64()
+
+						cacheReadCostList33 = append(cacheReadCostList33, shared.AIGatewayModalCostList{
+							Modal: modal101,
+							Cost:  cost134,
+						})
+					}
+				}
 				cacheWriteCostList33 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList))
 				for cacheWriteCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList {
 					var ttl33 string
 					ttl33 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex33].TTL.ValueString()
 
-					var cost33 float64
-					cost33 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex33].Cost.ValueFloat64()
+					var cost135 float64
+					cost135 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex33].Cost.ValueFloat64()
 
 					cacheWriteCostList33 = append(cacheWriteCostList33, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl33,
-						Cost: cost33,
+						Cost: cost135,
 					})
 				}
 				contextWindowFactor33 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor))
@@ -9115,6 +12238,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost33,
 					CacheReadCost:        cacheReadCost33,
 					CacheWriteCost:       cacheWriteCost33,
+					InputCostList:        inputCostList33,
+					OutputCostList:       outputCostList33,
+					CacheReadCostList:    cacheReadCostList33,
 					CacheWriteCostList:   cacheWriteCostList33,
 					ContextWindowFactor:  contextWindowFactor33,
 					ServiceTierFactor:    serviceTierFactor33,
@@ -9167,17 +12293,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost34 = nil
 				}
+				var inputCostList34 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList != nil {
+					inputCostList34 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList))
+					for inputCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList {
+						modal102 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList[inputCostListIndex34].Modal.ValueString())
+						var cost136 float64
+						cost136 = r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList[inputCostListIndex34].Cost.ValueFloat64()
+
+						inputCostList34 = append(inputCostList34, shared.AIGatewayModalCostList{
+							Modal: modal102,
+							Cost:  cost136,
+						})
+					}
+				}
+				var outputCostList34 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList != nil {
+					outputCostList34 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList))
+					for outputCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList {
+						modal103 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList[outputCostListIndex34].Modal.ValueString())
+						var cost137 float64
+						cost137 = r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList[outputCostListIndex34].Cost.ValueFloat64()
+
+						outputCostList34 = append(outputCostList34, shared.AIGatewayModalCostList{
+							Modal: modal103,
+							Cost:  cost137,
+						})
+					}
+				}
+				var cacheReadCostList34 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList != nil {
+					cacheReadCostList34 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList))
+					for cacheReadCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList {
+						modal104 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList[cacheReadCostListIndex34].Modal.ValueString())
+						var cost138 float64
+						cost138 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList[cacheReadCostListIndex34].Cost.ValueFloat64()
+
+						cacheReadCostList34 = append(cacheReadCostList34, shared.AIGatewayModalCostList{
+							Modal: modal104,
+							Cost:  cost138,
+						})
+					}
+				}
 				cacheWriteCostList34 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList))
 				for cacheWriteCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList {
 					var ttl34 string
 					ttl34 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex34].TTL.ValueString()
 
-					var cost34 float64
-					cost34 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex34].Cost.ValueFloat64()
+					var cost139 float64
+					cost139 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex34].Cost.ValueFloat64()
 
 					cacheWriteCostList34 = append(cacheWriteCostList34, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl34,
-						Cost: cost34,
+						Cost: cost139,
 					})
 				}
 				contextWindowFactor34 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor))
@@ -9241,6 +12409,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost34,
 					CacheReadCost:        cacheReadCost34,
 					CacheWriteCost:       cacheWriteCost34,
+					InputCostList:        inputCostList34,
+					OutputCostList:       outputCostList34,
+					CacheReadCostList:    cacheReadCostList34,
 					CacheWriteCostList:   cacheWriteCostList34,
 					ContextWindowFactor:  contextWindowFactor34,
 					ServiceTierFactor:    serviceTierFactor34,
@@ -9293,17 +12464,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost35 = nil
 				}
+				var inputCostList35 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList != nil {
+					inputCostList35 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList))
+					for inputCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList {
+						modal105 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList[inputCostListIndex35].Modal.ValueString())
+						var cost140 float64
+						cost140 = r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList[inputCostListIndex35].Cost.ValueFloat64()
+
+						inputCostList35 = append(inputCostList35, shared.AIGatewayModalCostList{
+							Modal: modal105,
+							Cost:  cost140,
+						})
+					}
+				}
+				var outputCostList35 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList != nil {
+					outputCostList35 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList))
+					for outputCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList {
+						modal106 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList[outputCostListIndex35].Modal.ValueString())
+						var cost141 float64
+						cost141 = r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList[outputCostListIndex35].Cost.ValueFloat64()
+
+						outputCostList35 = append(outputCostList35, shared.AIGatewayModalCostList{
+							Modal: modal106,
+							Cost:  cost141,
+						})
+					}
+				}
+				var cacheReadCostList35 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList != nil {
+					cacheReadCostList35 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList))
+					for cacheReadCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList {
+						modal107 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList[cacheReadCostListIndex35].Modal.ValueString())
+						var cost142 float64
+						cost142 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList[cacheReadCostListIndex35].Cost.ValueFloat64()
+
+						cacheReadCostList35 = append(cacheReadCostList35, shared.AIGatewayModalCostList{
+							Modal: modal107,
+							Cost:  cost142,
+						})
+					}
+				}
 				cacheWriteCostList35 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList))
 				for cacheWriteCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList {
 					var ttl35 string
 					ttl35 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex35].TTL.ValueString()
 
-					var cost35 float64
-					cost35 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex35].Cost.ValueFloat64()
+					var cost143 float64
+					cost143 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex35].Cost.ValueFloat64()
 
 					cacheWriteCostList35 = append(cacheWriteCostList35, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl35,
-						Cost: cost35,
+						Cost: cost143,
 					})
 				}
 				contextWindowFactor35 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor))
@@ -9364,6 +12577,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost35,
 					CacheReadCost:        cacheReadCost35,
 					CacheWriteCost:       cacheWriteCost35,
+					InputCostList:        inputCostList35,
+					OutputCostList:       outputCostList35,
+					CacheReadCostList:    cacheReadCostList35,
 					CacheWriteCostList:   cacheWriteCostList35,
 					ContextWindowFactor:  contextWindowFactor35,
 					ServiceTierFactor:    serviceTierFactor35,
@@ -9416,17 +12632,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost36 = nil
 				}
+				var inputCostList36 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Xai.InputCostList != nil {
+					inputCostList36 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.InputCostList))
+					for inputCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.InputCostList {
+						modal108 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Xai.InputCostList[inputCostListIndex36].Modal.ValueString())
+						var cost144 float64
+						cost144 = r.Model.Targets[targetsIndex1].Config.Xai.InputCostList[inputCostListIndex36].Cost.ValueFloat64()
+
+						inputCostList36 = append(inputCostList36, shared.AIGatewayModalCostList{
+							Modal: modal108,
+							Cost:  cost144,
+						})
+					}
+				}
+				var outputCostList36 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList != nil {
+					outputCostList36 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList))
+					for outputCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList {
+						modal109 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList[outputCostListIndex36].Modal.ValueString())
+						var cost145 float64
+						cost145 = r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList[outputCostListIndex36].Cost.ValueFloat64()
+
+						outputCostList36 = append(outputCostList36, shared.AIGatewayModalCostList{
+							Modal: modal109,
+							Cost:  cost145,
+						})
+					}
+				}
+				var cacheReadCostList36 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList != nil {
+					cacheReadCostList36 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList))
+					for cacheReadCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList {
+						modal110 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList[cacheReadCostListIndex36].Modal.ValueString())
+						var cost146 float64
+						cost146 = r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList[cacheReadCostListIndex36].Cost.ValueFloat64()
+
+						cacheReadCostList36 = append(cacheReadCostList36, shared.AIGatewayModalCostList{
+							Modal: modal110,
+							Cost:  cost146,
+						})
+					}
+				}
 				cacheWriteCostList36 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList))
 				for cacheWriteCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList {
 					var ttl36 string
 					ttl36 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex36].TTL.ValueString()
 
-					var cost36 float64
-					cost36 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex36].Cost.ValueFloat64()
+					var cost147 float64
+					cost147 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex36].Cost.ValueFloat64()
 
 					cacheWriteCostList36 = append(cacheWriteCostList36, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl36,
-						Cost: cost36,
+						Cost: cost147,
 					})
 				}
 				contextWindowFactor36 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor))
@@ -9490,6 +12748,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost36,
 					CacheReadCost:        cacheReadCost36,
 					CacheWriteCost:       cacheWriteCost36,
+					InputCostList:        inputCostList36,
+					OutputCostList:       outputCostList36,
+					CacheReadCostList:    cacheReadCostList36,
 					CacheWriteCostList:   cacheWriteCostList36,
 					ContextWindowFactor:  contextWindowFactor36,
 					ServiceTierFactor:    serviceTierFactor36,
@@ -9542,17 +12803,59 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost37 = nil
 				}
+				var inputCostList37 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList != nil {
+					inputCostList37 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList))
+					for inputCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList {
+						modal111 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList[inputCostListIndex37].Modal.ValueString())
+						var cost148 float64
+						cost148 = r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList[inputCostListIndex37].Cost.ValueFloat64()
+
+						inputCostList37 = append(inputCostList37, shared.AIGatewayModalCostList{
+							Modal: modal111,
+							Cost:  cost148,
+						})
+					}
+				}
+				var outputCostList37 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList != nil {
+					outputCostList37 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList))
+					for outputCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList {
+						modal112 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList[outputCostListIndex37].Modal.ValueString())
+						var cost149 float64
+						cost149 = r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList[outputCostListIndex37].Cost.ValueFloat64()
+
+						outputCostList37 = append(outputCostList37, shared.AIGatewayModalCostList{
+							Modal: modal112,
+							Cost:  cost149,
+						})
+					}
+				}
+				var cacheReadCostList37 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList != nil {
+					cacheReadCostList37 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList))
+					for cacheReadCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList {
+						modal113 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex37].Modal.ValueString())
+						var cost150 float64
+						cost150 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex37].Cost.ValueFloat64()
+
+						cacheReadCostList37 = append(cacheReadCostList37, shared.AIGatewayModalCostList{
+							Modal: modal113,
+							Cost:  cost150,
+						})
+					}
+				}
 				cacheWriteCostList37 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList))
 				for cacheWriteCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList {
 					var ttl37 string
 					ttl37 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex37].TTL.ValueString()
 
-					var cost37 float64
-					cost37 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex37].Cost.ValueFloat64()
+					var cost151 float64
+					cost151 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex37].Cost.ValueFloat64()
 
 					cacheWriteCostList37 = append(cacheWriteCostList37, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl37,
-						Cost: cost37,
+						Cost: cost151,
 					})
 				}
 				contextWindowFactor37 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor))
@@ -9675,6 +12978,9 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost37,
 					CacheReadCost:        cacheReadCost37,
 					CacheWriteCost:       cacheWriteCost37,
+					InputCostList:        inputCostList37,
+					OutputCostList:       outputCostList37,
+					CacheReadCostList:    cacheReadCostList37,
 					CacheWriteCostList:   cacheWriteCostList37,
 					ContextWindowFactor:  contextWindowFactor37,
 					ServiceTierFactor:    serviceTierFactor37,
@@ -11242,17 +14548,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost = nil
 				}
+				var inputCostList []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Anthropic.InputCostList != nil {
+					inputCostList = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.InputCostList))
+					for inputCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.InputCostList {
+						modal := shared.Modal(r.API.Targets[targetsIndex].Config.Anthropic.InputCostList[inputCostListIndex].Modal.ValueString())
+						var cost float64
+						cost = r.API.Targets[targetsIndex].Config.Anthropic.InputCostList[inputCostListIndex].Cost.ValueFloat64()
+
+						inputCostList = append(inputCostList, shared.AIGatewayModalCostList{
+							Modal: modal,
+							Cost:  cost,
+						})
+					}
+				}
+				var outputCostList []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList != nil {
+					outputCostList = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList))
+					for outputCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList {
+						modal1 := shared.Modal(r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList[outputCostListIndex].Modal.ValueString())
+						var cost1 float64
+						cost1 = r.API.Targets[targetsIndex].Config.Anthropic.OutputCostList[outputCostListIndex].Cost.ValueFloat64()
+
+						outputCostList = append(outputCostList, shared.AIGatewayModalCostList{
+							Modal: modal1,
+							Cost:  cost1,
+						})
+					}
+				}
+				var cacheReadCostList []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList != nil {
+					cacheReadCostList = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList))
+					for cacheReadCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList {
+						modal2 := shared.Modal(r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex].Modal.ValueString())
+						var cost2 float64
+						cost2 = r.API.Targets[targetsIndex].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex].Cost.ValueFloat64()
+
+						cacheReadCostList = append(cacheReadCostList, shared.AIGatewayModalCostList{
+							Modal: modal2,
+							Cost:  cost2,
+						})
+					}
+				}
 				cacheWriteCostList := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList))
 				for cacheWriteCostListIndex := range r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList {
 					var ttl string
 					ttl = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].TTL.ValueString()
 
-					var cost float64
-					cost = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
+					var cost3 float64
+					cost3 = r.API.Targets[targetsIndex].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex].Cost.ValueFloat64()
 
 					cacheWriteCostList = append(cacheWriteCostList, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl,
-						Cost: cost,
+						Cost: cost3,
 					})
 				}
 				contextWindowFactor := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Anthropic.ContextWindowFactor))
@@ -11322,6 +14670,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost,
 					CacheReadCost:        cacheReadCost,
 					CacheWriteCost:       cacheWriteCost,
+					InputCostList:        inputCostList,
+					OutputCostList:       outputCostList,
+					CacheReadCostList:    cacheReadCostList,
 					CacheWriteCostList:   cacheWriteCostList,
 					ContextWindowFactor:  contextWindowFactor,
 					ServiceTierFactor:    serviceTierFactor,
@@ -11375,17 +14726,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost1 = nil
 				}
+				var inputCostList1 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Azure.InputCostList != nil {
+					inputCostList1 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Azure.InputCostList))
+					for inputCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.InputCostList {
+						modal3 := shared.Modal(r.API.Targets[targetsIndex].Config.Azure.InputCostList[inputCostListIndex1].Modal.ValueString())
+						var cost4 float64
+						cost4 = r.API.Targets[targetsIndex].Config.Azure.InputCostList[inputCostListIndex1].Cost.ValueFloat64()
+
+						inputCostList1 = append(inputCostList1, shared.AIGatewayModalCostList{
+							Modal: modal3,
+							Cost:  cost4,
+						})
+					}
+				}
+				var outputCostList1 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Azure.OutputCostList != nil {
+					outputCostList1 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Azure.OutputCostList))
+					for outputCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.OutputCostList {
+						modal4 := shared.Modal(r.API.Targets[targetsIndex].Config.Azure.OutputCostList[outputCostListIndex1].Modal.ValueString())
+						var cost5 float64
+						cost5 = r.API.Targets[targetsIndex].Config.Azure.OutputCostList[outputCostListIndex1].Cost.ValueFloat64()
+
+						outputCostList1 = append(outputCostList1, shared.AIGatewayModalCostList{
+							Modal: modal4,
+							Cost:  cost5,
+						})
+					}
+				}
+				var cacheReadCostList1 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList != nil {
+					cacheReadCostList1 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList))
+					for cacheReadCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList {
+						modal5 := shared.Modal(r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList[cacheReadCostListIndex1].Modal.ValueString())
+						var cost6 float64
+						cost6 = r.API.Targets[targetsIndex].Config.Azure.CacheReadCostList[cacheReadCostListIndex1].Cost.ValueFloat64()
+
+						cacheReadCostList1 = append(cacheReadCostList1, shared.AIGatewayModalCostList{
+							Modal: modal5,
+							Cost:  cost6,
+						})
+					}
+				}
 				cacheWriteCostList1 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList))
 				for cacheWriteCostListIndex1 := range r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList {
 					var ttl1 string
 					ttl1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].TTL.ValueString()
 
-					var cost1 float64
-					cost1 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].Cost.ValueFloat64()
+					var cost7 float64
+					cost7 = r.API.Targets[targetsIndex].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex1].Cost.ValueFloat64()
 
 					cacheWriteCostList1 = append(cacheWriteCostList1, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl1,
-						Cost: cost1,
+						Cost: cost7,
 					})
 				}
 				contextWindowFactor1 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Azure.ContextWindowFactor))
@@ -11467,6 +14860,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost1,
 					CacheReadCost:        cacheReadCost1,
 					CacheWriteCost:       cacheWriteCost1,
+					InputCostList:        inputCostList1,
+					OutputCostList:       outputCostList1,
+					CacheReadCostList:    cacheReadCostList1,
 					CacheWriteCostList:   cacheWriteCostList1,
 					ContextWindowFactor:  contextWindowFactor1,
 					ServiceTierFactor:    serviceTierFactor1,
@@ -11522,17 +14918,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost2 = nil
 				}
+				var inputCostList2 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Bedrock.InputCostList != nil {
+					inputCostList2 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.InputCostList))
+					for inputCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.InputCostList {
+						modal6 := shared.Modal(r.API.Targets[targetsIndex].Config.Bedrock.InputCostList[inputCostListIndex2].Modal.ValueString())
+						var cost8 float64
+						cost8 = r.API.Targets[targetsIndex].Config.Bedrock.InputCostList[inputCostListIndex2].Cost.ValueFloat64()
+
+						inputCostList2 = append(inputCostList2, shared.AIGatewayModalCostList{
+							Modal: modal6,
+							Cost:  cost8,
+						})
+					}
+				}
+				var outputCostList2 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList != nil {
+					outputCostList2 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList))
+					for outputCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList {
+						modal7 := shared.Modal(r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList[outputCostListIndex2].Modal.ValueString())
+						var cost9 float64
+						cost9 = r.API.Targets[targetsIndex].Config.Bedrock.OutputCostList[outputCostListIndex2].Cost.ValueFloat64()
+
+						outputCostList2 = append(outputCostList2, shared.AIGatewayModalCostList{
+							Modal: modal7,
+							Cost:  cost9,
+						})
+					}
+				}
+				var cacheReadCostList2 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList != nil {
+					cacheReadCostList2 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList))
+					for cacheReadCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList {
+						modal8 := shared.Modal(r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex2].Modal.ValueString())
+						var cost10 float64
+						cost10 = r.API.Targets[targetsIndex].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex2].Cost.ValueFloat64()
+
+						cacheReadCostList2 = append(cacheReadCostList2, shared.AIGatewayModalCostList{
+							Modal: modal8,
+							Cost:  cost10,
+						})
+					}
+				}
 				cacheWriteCostList2 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList))
 				for cacheWriteCostListIndex2 := range r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList {
 					var ttl2 string
 					ttl2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].TTL.ValueString()
 
-					var cost2 float64
-					cost2 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].Cost.ValueFloat64()
+					var cost11 float64
+					cost11 = r.API.Targets[targetsIndex].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex2].Cost.ValueFloat64()
 
 					cacheWriteCostList2 = append(cacheWriteCostList2, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl2,
-						Cost: cost2,
+						Cost: cost11,
 					})
 				}
 				contextWindowFactor2 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Bedrock.ContextWindowFactor))
@@ -11626,6 +15064,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:               outputCost2,
 					CacheReadCost:            cacheReadCost2,
 					CacheWriteCost:           cacheWriteCost2,
+					InputCostList:            inputCostList2,
+					OutputCostList:           outputCostList2,
+					CacheReadCostList:        cacheReadCostList2,
 					CacheWriteCostList:       cacheWriteCostList2,
 					ContextWindowFactor:      contextWindowFactor2,
 					ServiceTierFactor:        serviceTierFactor2,
@@ -11683,17 +15124,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost3 = nil
 				}
+				var inputCostList3 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cerebras.InputCostList != nil {
+					inputCostList3 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.InputCostList))
+					for inputCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.InputCostList {
+						modal9 := shared.Modal(r.API.Targets[targetsIndex].Config.Cerebras.InputCostList[inputCostListIndex3].Modal.ValueString())
+						var cost12 float64
+						cost12 = r.API.Targets[targetsIndex].Config.Cerebras.InputCostList[inputCostListIndex3].Cost.ValueFloat64()
+
+						inputCostList3 = append(inputCostList3, shared.AIGatewayModalCostList{
+							Modal: modal9,
+							Cost:  cost12,
+						})
+					}
+				}
+				var outputCostList3 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList != nil {
+					outputCostList3 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList))
+					for outputCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList {
+						modal10 := shared.Modal(r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList[outputCostListIndex3].Modal.ValueString())
+						var cost13 float64
+						cost13 = r.API.Targets[targetsIndex].Config.Cerebras.OutputCostList[outputCostListIndex3].Cost.ValueFloat64()
+
+						outputCostList3 = append(outputCostList3, shared.AIGatewayModalCostList{
+							Modal: modal10,
+							Cost:  cost13,
+						})
+					}
+				}
+				var cacheReadCostList3 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList != nil {
+					cacheReadCostList3 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList))
+					for cacheReadCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList {
+						modal11 := shared.Modal(r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex3].Modal.ValueString())
+						var cost14 float64
+						cost14 = r.API.Targets[targetsIndex].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex3].Cost.ValueFloat64()
+
+						cacheReadCostList3 = append(cacheReadCostList3, shared.AIGatewayModalCostList{
+							Modal: modal11,
+							Cost:  cost14,
+						})
+					}
+				}
 				cacheWriteCostList3 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList))
 				for cacheWriteCostListIndex3 := range r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList {
 					var ttl3 string
 					ttl3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].TTL.ValueString()
 
-					var cost3 float64
-					cost3 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].Cost.ValueFloat64()
+					var cost15 float64
+					cost15 = r.API.Targets[targetsIndex].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex3].Cost.ValueFloat64()
 
 					cacheWriteCostList3 = append(cacheWriteCostList3, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl3,
-						Cost: cost3,
+						Cost: cost15,
 					})
 				}
 				contextWindowFactor3 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cerebras.ContextWindowFactor))
@@ -11757,6 +15240,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost3,
 					CacheReadCost:        cacheReadCost3,
 					CacheWriteCost:       cacheWriteCost3,
+					InputCostList:        inputCostList3,
+					OutputCostList:       outputCostList3,
+					CacheReadCostList:    cacheReadCostList3,
 					CacheWriteCostList:   cacheWriteCostList3,
 					ContextWindowFactor:  contextWindowFactor3,
 					ServiceTierFactor:    serviceTierFactor3,
@@ -11809,17 +15295,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost4 = nil
 				}
+				var inputCostList4 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cohere.InputCostList != nil {
+					inputCostList4 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cohere.InputCostList))
+					for inputCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.InputCostList {
+						modal12 := shared.Modal(r.API.Targets[targetsIndex].Config.Cohere.InputCostList[inputCostListIndex4].Modal.ValueString())
+						var cost16 float64
+						cost16 = r.API.Targets[targetsIndex].Config.Cohere.InputCostList[inputCostListIndex4].Cost.ValueFloat64()
+
+						inputCostList4 = append(inputCostList4, shared.AIGatewayModalCostList{
+							Modal: modal12,
+							Cost:  cost16,
+						})
+					}
+				}
+				var outputCostList4 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cohere.OutputCostList != nil {
+					outputCostList4 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cohere.OutputCostList))
+					for outputCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.OutputCostList {
+						modal13 := shared.Modal(r.API.Targets[targetsIndex].Config.Cohere.OutputCostList[outputCostListIndex4].Modal.ValueString())
+						var cost17 float64
+						cost17 = r.API.Targets[targetsIndex].Config.Cohere.OutputCostList[outputCostListIndex4].Cost.ValueFloat64()
+
+						outputCostList4 = append(outputCostList4, shared.AIGatewayModalCostList{
+							Modal: modal13,
+							Cost:  cost17,
+						})
+					}
+				}
+				var cacheReadCostList4 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList != nil {
+					cacheReadCostList4 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList))
+					for cacheReadCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList {
+						modal14 := shared.Modal(r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList[cacheReadCostListIndex4].Modal.ValueString())
+						var cost18 float64
+						cost18 = r.API.Targets[targetsIndex].Config.Cohere.CacheReadCostList[cacheReadCostListIndex4].Cost.ValueFloat64()
+
+						cacheReadCostList4 = append(cacheReadCostList4, shared.AIGatewayModalCostList{
+							Modal: modal14,
+							Cost:  cost18,
+						})
+					}
+				}
 				cacheWriteCostList4 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList))
 				for cacheWriteCostListIndex4 := range r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList {
 					var ttl4 string
 					ttl4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].TTL.ValueString()
 
-					var cost4 float64
-					cost4 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].Cost.ValueFloat64()
+					var cost19 float64
+					cost19 = r.API.Targets[targetsIndex].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex4].Cost.ValueFloat64()
 
 					cacheWriteCostList4 = append(cacheWriteCostList4, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl4,
-						Cost: cost4,
+						Cost: cost19,
 					})
 				}
 				contextWindowFactor4 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Cohere.ContextWindowFactor))
@@ -11901,6 +15429,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost4,
 					CacheReadCost:        cacheReadCost4,
 					CacheWriteCost:       cacheWriteCost4,
+					InputCostList:        inputCostList4,
+					OutputCostList:       outputCostList4,
+					CacheReadCostList:    cacheReadCostList4,
 					CacheWriteCostList:   cacheWriteCostList4,
 					ContextWindowFactor:  contextWindowFactor4,
 					ServiceTierFactor:    serviceTierFactor4,
@@ -11956,17 +15487,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost5 = nil
 				}
+				var inputCostList5 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Dashscope.InputCostList != nil {
+					inputCostList5 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.InputCostList))
+					for inputCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.InputCostList {
+						modal15 := shared.Modal(r.API.Targets[targetsIndex].Config.Dashscope.InputCostList[inputCostListIndex5].Modal.ValueString())
+						var cost20 float64
+						cost20 = r.API.Targets[targetsIndex].Config.Dashscope.InputCostList[inputCostListIndex5].Cost.ValueFloat64()
+
+						inputCostList5 = append(inputCostList5, shared.AIGatewayModalCostList{
+							Modal: modal15,
+							Cost:  cost20,
+						})
+					}
+				}
+				var outputCostList5 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList != nil {
+					outputCostList5 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList))
+					for outputCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList {
+						modal16 := shared.Modal(r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList[outputCostListIndex5].Modal.ValueString())
+						var cost21 float64
+						cost21 = r.API.Targets[targetsIndex].Config.Dashscope.OutputCostList[outputCostListIndex5].Cost.ValueFloat64()
+
+						outputCostList5 = append(outputCostList5, shared.AIGatewayModalCostList{
+							Modal: modal16,
+							Cost:  cost21,
+						})
+					}
+				}
+				var cacheReadCostList5 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList != nil {
+					cacheReadCostList5 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList))
+					for cacheReadCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList {
+						modal17 := shared.Modal(r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex5].Modal.ValueString())
+						var cost22 float64
+						cost22 = r.API.Targets[targetsIndex].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex5].Cost.ValueFloat64()
+
+						cacheReadCostList5 = append(cacheReadCostList5, shared.AIGatewayModalCostList{
+							Modal: modal17,
+							Cost:  cost22,
+						})
+					}
+				}
 				cacheWriteCostList5 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList))
 				for cacheWriteCostListIndex5 := range r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList {
 					var ttl5 string
 					ttl5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].TTL.ValueString()
 
-					var cost5 float64
-					cost5 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].Cost.ValueFloat64()
+					var cost23 float64
+					cost23 = r.API.Targets[targetsIndex].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex5].Cost.ValueFloat64()
 
 					cacheWriteCostList5 = append(cacheWriteCostList5, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl5,
-						Cost: cost5,
+						Cost: cost23,
 					})
 				}
 				contextWindowFactor5 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Dashscope.ContextWindowFactor))
@@ -12036,6 +15609,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost5,
 					CacheReadCost:        cacheReadCost5,
 					CacheWriteCost:       cacheWriteCost5,
+					InputCostList:        inputCostList5,
+					OutputCostList:       outputCostList5,
+					CacheReadCostList:    cacheReadCostList5,
 					CacheWriteCostList:   cacheWriteCostList5,
 					ContextWindowFactor:  contextWindowFactor5,
 					ServiceTierFactor:    serviceTierFactor5,
@@ -12089,17 +15665,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost6 = nil
 				}
+				var inputCostList6 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Databricks.InputCostList != nil {
+					inputCostList6 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Databricks.InputCostList))
+					for inputCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.InputCostList {
+						modal18 := shared.Modal(r.API.Targets[targetsIndex].Config.Databricks.InputCostList[inputCostListIndex6].Modal.ValueString())
+						var cost24 float64
+						cost24 = r.API.Targets[targetsIndex].Config.Databricks.InputCostList[inputCostListIndex6].Cost.ValueFloat64()
+
+						inputCostList6 = append(inputCostList6, shared.AIGatewayModalCostList{
+							Modal: modal18,
+							Cost:  cost24,
+						})
+					}
+				}
+				var outputCostList6 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Databricks.OutputCostList != nil {
+					outputCostList6 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Databricks.OutputCostList))
+					for outputCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.OutputCostList {
+						modal19 := shared.Modal(r.API.Targets[targetsIndex].Config.Databricks.OutputCostList[outputCostListIndex6].Modal.ValueString())
+						var cost25 float64
+						cost25 = r.API.Targets[targetsIndex].Config.Databricks.OutputCostList[outputCostListIndex6].Cost.ValueFloat64()
+
+						outputCostList6 = append(outputCostList6, shared.AIGatewayModalCostList{
+							Modal: modal19,
+							Cost:  cost25,
+						})
+					}
+				}
+				var cacheReadCostList6 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList != nil {
+					cacheReadCostList6 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList))
+					for cacheReadCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList {
+						modal20 := shared.Modal(r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList[cacheReadCostListIndex6].Modal.ValueString())
+						var cost26 float64
+						cost26 = r.API.Targets[targetsIndex].Config.Databricks.CacheReadCostList[cacheReadCostListIndex6].Cost.ValueFloat64()
+
+						cacheReadCostList6 = append(cacheReadCostList6, shared.AIGatewayModalCostList{
+							Modal: modal20,
+							Cost:  cost26,
+						})
+					}
+				}
 				cacheWriteCostList6 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList))
 				for cacheWriteCostListIndex6 := range r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList {
 					var ttl6 string
 					ttl6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].TTL.ValueString()
 
-					var cost6 float64
-					cost6 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].Cost.ValueFloat64()
+					var cost27 float64
+					cost27 = r.API.Targets[targetsIndex].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex6].Cost.ValueFloat64()
 
 					cacheWriteCostList6 = append(cacheWriteCostList6, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl6,
-						Cost: cost6,
+						Cost: cost27,
 					})
 				}
 				contextWindowFactor6 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Databricks.ContextWindowFactor))
@@ -12166,6 +15784,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost6,
 					CacheReadCost:        cacheReadCost6,
 					CacheWriteCost:       cacheWriteCost6,
+					InputCostList:        inputCostList6,
+					OutputCostList:       outputCostList6,
+					CacheReadCostList:    cacheReadCostList6,
 					CacheWriteCostList:   cacheWriteCostList6,
 					ContextWindowFactor:  contextWindowFactor6,
 					ServiceTierFactor:    serviceTierFactor6,
@@ -12219,17 +15840,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost7 = nil
 				}
+				var inputCostList7 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Deepseek.InputCostList != nil {
+					inputCostList7 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.InputCostList))
+					for inputCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.InputCostList {
+						modal21 := shared.Modal(r.API.Targets[targetsIndex].Config.Deepseek.InputCostList[inputCostListIndex7].Modal.ValueString())
+						var cost28 float64
+						cost28 = r.API.Targets[targetsIndex].Config.Deepseek.InputCostList[inputCostListIndex7].Cost.ValueFloat64()
+
+						inputCostList7 = append(inputCostList7, shared.AIGatewayModalCostList{
+							Modal: modal21,
+							Cost:  cost28,
+						})
+					}
+				}
+				var outputCostList7 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList != nil {
+					outputCostList7 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList))
+					for outputCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList {
+						modal22 := shared.Modal(r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList[outputCostListIndex7].Modal.ValueString())
+						var cost29 float64
+						cost29 = r.API.Targets[targetsIndex].Config.Deepseek.OutputCostList[outputCostListIndex7].Cost.ValueFloat64()
+
+						outputCostList7 = append(outputCostList7, shared.AIGatewayModalCostList{
+							Modal: modal22,
+							Cost:  cost29,
+						})
+					}
+				}
+				var cacheReadCostList7 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList != nil {
+					cacheReadCostList7 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList))
+					for cacheReadCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList {
+						modal23 := shared.Modal(r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex7].Modal.ValueString())
+						var cost30 float64
+						cost30 = r.API.Targets[targetsIndex].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex7].Cost.ValueFloat64()
+
+						cacheReadCostList7 = append(cacheReadCostList7, shared.AIGatewayModalCostList{
+							Modal: modal23,
+							Cost:  cost30,
+						})
+					}
+				}
 				cacheWriteCostList7 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList))
 				for cacheWriteCostListIndex7 := range r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList {
 					var ttl7 string
 					ttl7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].TTL.ValueString()
 
-					var cost7 float64
-					cost7 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].Cost.ValueFloat64()
+					var cost31 float64
+					cost31 = r.API.Targets[targetsIndex].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex7].Cost.ValueFloat64()
 
 					cacheWriteCostList7 = append(cacheWriteCostList7, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl7,
-						Cost: cost7,
+						Cost: cost31,
 					})
 				}
 				contextWindowFactor7 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Deepseek.ContextWindowFactor))
@@ -12293,6 +15956,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost7,
 					CacheReadCost:        cacheReadCost7,
 					CacheWriteCost:       cacheWriteCost7,
+					InputCostList:        inputCostList7,
+					OutputCostList:       outputCostList7,
+					CacheReadCostList:    cacheReadCostList7,
 					CacheWriteCostList:   cacheWriteCostList7,
 					ContextWindowFactor:  contextWindowFactor7,
 					ServiceTierFactor:    serviceTierFactor7,
@@ -12345,17 +16011,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost8 = nil
 				}
+				var inputCostList8 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Gemini.InputCostList != nil {
+					inputCostList8 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Gemini.InputCostList))
+					for inputCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.InputCostList {
+						modal24 := shared.Modal(r.API.Targets[targetsIndex].Config.Gemini.InputCostList[inputCostListIndex8].Modal.ValueString())
+						var cost32 float64
+						cost32 = r.API.Targets[targetsIndex].Config.Gemini.InputCostList[inputCostListIndex8].Cost.ValueFloat64()
+
+						inputCostList8 = append(inputCostList8, shared.AIGatewayModalCostList{
+							Modal: modal24,
+							Cost:  cost32,
+						})
+					}
+				}
+				var outputCostList8 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Gemini.OutputCostList != nil {
+					outputCostList8 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Gemini.OutputCostList))
+					for outputCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.OutputCostList {
+						modal25 := shared.Modal(r.API.Targets[targetsIndex].Config.Gemini.OutputCostList[outputCostListIndex8].Modal.ValueString())
+						var cost33 float64
+						cost33 = r.API.Targets[targetsIndex].Config.Gemini.OutputCostList[outputCostListIndex8].Cost.ValueFloat64()
+
+						outputCostList8 = append(outputCostList8, shared.AIGatewayModalCostList{
+							Modal: modal25,
+							Cost:  cost33,
+						})
+					}
+				}
+				var cacheReadCostList8 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList != nil {
+					cacheReadCostList8 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList))
+					for cacheReadCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList {
+						modal26 := shared.Modal(r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList[cacheReadCostListIndex8].Modal.ValueString())
+						var cost34 float64
+						cost34 = r.API.Targets[targetsIndex].Config.Gemini.CacheReadCostList[cacheReadCostListIndex8].Cost.ValueFloat64()
+
+						cacheReadCostList8 = append(cacheReadCostList8, shared.AIGatewayModalCostList{
+							Modal: modal26,
+							Cost:  cost34,
+						})
+					}
+				}
 				cacheWriteCostList8 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList))
 				for cacheWriteCostListIndex8 := range r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList {
 					var ttl8 string
 					ttl8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].TTL.ValueString()
 
-					var cost8 float64
-					cost8 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].Cost.ValueFloat64()
+					var cost35 float64
+					cost35 = r.API.Targets[targetsIndex].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex8].Cost.ValueFloat64()
 
 					cacheWriteCostList8 = append(cacheWriteCostList8, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl8,
-						Cost: cost8,
+						Cost: cost35,
 					})
 				}
 				contextWindowFactor8 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Gemini.ContextWindowFactor))
@@ -12436,6 +16144,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost8,
 					CacheReadCost:        cacheReadCost8,
 					CacheWriteCost:       cacheWriteCost8,
+					InputCostList:        inputCostList8,
+					OutputCostList:       outputCostList8,
+					CacheReadCostList:    cacheReadCostList8,
 					CacheWriteCostList:   cacheWriteCostList8,
 					ContextWindowFactor:  contextWindowFactor8,
 					ServiceTierFactor:    serviceTierFactor8,
@@ -12489,17 +16200,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost9 = nil
 				}
+				var inputCostList9 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Huggingface.InputCostList != nil {
+					inputCostList9 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.InputCostList))
+					for inputCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.InputCostList {
+						modal27 := shared.Modal(r.API.Targets[targetsIndex].Config.Huggingface.InputCostList[inputCostListIndex9].Modal.ValueString())
+						var cost36 float64
+						cost36 = r.API.Targets[targetsIndex].Config.Huggingface.InputCostList[inputCostListIndex9].Cost.ValueFloat64()
+
+						inputCostList9 = append(inputCostList9, shared.AIGatewayModalCostList{
+							Modal: modal27,
+							Cost:  cost36,
+						})
+					}
+				}
+				var outputCostList9 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList != nil {
+					outputCostList9 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList))
+					for outputCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList {
+						modal28 := shared.Modal(r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList[outputCostListIndex9].Modal.ValueString())
+						var cost37 float64
+						cost37 = r.API.Targets[targetsIndex].Config.Huggingface.OutputCostList[outputCostListIndex9].Cost.ValueFloat64()
+
+						outputCostList9 = append(outputCostList9, shared.AIGatewayModalCostList{
+							Modal: modal28,
+							Cost:  cost37,
+						})
+					}
+				}
+				var cacheReadCostList9 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList != nil {
+					cacheReadCostList9 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList))
+					for cacheReadCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList {
+						modal29 := shared.Modal(r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex9].Modal.ValueString())
+						var cost38 float64
+						cost38 = r.API.Targets[targetsIndex].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex9].Cost.ValueFloat64()
+
+						cacheReadCostList9 = append(cacheReadCostList9, shared.AIGatewayModalCostList{
+							Modal: modal29,
+							Cost:  cost38,
+						})
+					}
+				}
 				cacheWriteCostList9 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList))
 				for cacheWriteCostListIndex9 := range r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList {
 					var ttl9 string
 					ttl9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].TTL.ValueString()
 
-					var cost9 float64
-					cost9 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].Cost.ValueFloat64()
+					var cost39 float64
+					cost39 = r.API.Targets[targetsIndex].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex9].Cost.ValueFloat64()
 
 					cacheWriteCostList9 = append(cacheWriteCostList9, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl9,
-						Cost: cost9,
+						Cost: cost39,
 					})
 				}
 				contextWindowFactor9 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Huggingface.ContextWindowFactor))
@@ -12575,6 +16328,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost9,
 					CacheReadCost:        cacheReadCost9,
 					CacheWriteCost:       cacheWriteCost9,
+					InputCostList:        inputCostList9,
+					OutputCostList:       outputCostList9,
+					CacheReadCostList:    cacheReadCostList9,
 					CacheWriteCostList:   cacheWriteCostList9,
 					ContextWindowFactor:  contextWindowFactor9,
 					ServiceTierFactor:    serviceTierFactor9,
@@ -12629,17 +16385,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost10 = nil
 				}
+				var inputCostList10 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Kimi.InputCostList != nil {
+					inputCostList10 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Kimi.InputCostList))
+					for inputCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.InputCostList {
+						modal30 := shared.Modal(r.API.Targets[targetsIndex].Config.Kimi.InputCostList[inputCostListIndex10].Modal.ValueString())
+						var cost40 float64
+						cost40 = r.API.Targets[targetsIndex].Config.Kimi.InputCostList[inputCostListIndex10].Cost.ValueFloat64()
+
+						inputCostList10 = append(inputCostList10, shared.AIGatewayModalCostList{
+							Modal: modal30,
+							Cost:  cost40,
+						})
+					}
+				}
+				var outputCostList10 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Kimi.OutputCostList != nil {
+					outputCostList10 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Kimi.OutputCostList))
+					for outputCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.OutputCostList {
+						modal31 := shared.Modal(r.API.Targets[targetsIndex].Config.Kimi.OutputCostList[outputCostListIndex10].Modal.ValueString())
+						var cost41 float64
+						cost41 = r.API.Targets[targetsIndex].Config.Kimi.OutputCostList[outputCostListIndex10].Cost.ValueFloat64()
+
+						outputCostList10 = append(outputCostList10, shared.AIGatewayModalCostList{
+							Modal: modal31,
+							Cost:  cost41,
+						})
+					}
+				}
+				var cacheReadCostList10 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList != nil {
+					cacheReadCostList10 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList))
+					for cacheReadCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList {
+						modal32 := shared.Modal(r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList[cacheReadCostListIndex10].Modal.ValueString())
+						var cost42 float64
+						cost42 = r.API.Targets[targetsIndex].Config.Kimi.CacheReadCostList[cacheReadCostListIndex10].Cost.ValueFloat64()
+
+						cacheReadCostList10 = append(cacheReadCostList10, shared.AIGatewayModalCostList{
+							Modal: modal32,
+							Cost:  cost42,
+						})
+					}
+				}
 				cacheWriteCostList10 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList))
 				for cacheWriteCostListIndex10 := range r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList {
 					var ttl10 string
 					ttl10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].TTL.ValueString()
 
-					var cost10 float64
-					cost10 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].Cost.ValueFloat64()
+					var cost43 float64
+					cost43 = r.API.Targets[targetsIndex].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex10].Cost.ValueFloat64()
 
 					cacheWriteCostList10 = append(cacheWriteCostList10, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl10,
-						Cost: cost10,
+						Cost: cost43,
 					})
 				}
 				contextWindowFactor10 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Kimi.ContextWindowFactor))
@@ -12709,6 +16507,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost10,
 					CacheReadCost:        cacheReadCost10,
 					CacheWriteCost:       cacheWriteCost10,
+					InputCostList:        inputCostList10,
+					OutputCostList:       outputCostList10,
+					CacheReadCostList:    cacheReadCostList10,
 					CacheWriteCostList:   cacheWriteCostList10,
 					ContextWindowFactor:  contextWindowFactor10,
 					ServiceTierFactor:    serviceTierFactor10,
@@ -12762,17 +16563,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost11 = nil
 				}
+				var inputCostList11 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Llama2.InputCostList != nil {
+					inputCostList11 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Llama2.InputCostList))
+					for inputCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.InputCostList {
+						modal33 := shared.Modal(r.API.Targets[targetsIndex].Config.Llama2.InputCostList[inputCostListIndex11].Modal.ValueString())
+						var cost44 float64
+						cost44 = r.API.Targets[targetsIndex].Config.Llama2.InputCostList[inputCostListIndex11].Cost.ValueFloat64()
+
+						inputCostList11 = append(inputCostList11, shared.AIGatewayModalCostList{
+							Modal: modal33,
+							Cost:  cost44,
+						})
+					}
+				}
+				var outputCostList11 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Llama2.OutputCostList != nil {
+					outputCostList11 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Llama2.OutputCostList))
+					for outputCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.OutputCostList {
+						modal34 := shared.Modal(r.API.Targets[targetsIndex].Config.Llama2.OutputCostList[outputCostListIndex11].Modal.ValueString())
+						var cost45 float64
+						cost45 = r.API.Targets[targetsIndex].Config.Llama2.OutputCostList[outputCostListIndex11].Cost.ValueFloat64()
+
+						outputCostList11 = append(outputCostList11, shared.AIGatewayModalCostList{
+							Modal: modal34,
+							Cost:  cost45,
+						})
+					}
+				}
+				var cacheReadCostList11 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList != nil {
+					cacheReadCostList11 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList))
+					for cacheReadCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList {
+						modal35 := shared.Modal(r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList[cacheReadCostListIndex11].Modal.ValueString())
+						var cost46 float64
+						cost46 = r.API.Targets[targetsIndex].Config.Llama2.CacheReadCostList[cacheReadCostListIndex11].Cost.ValueFloat64()
+
+						cacheReadCostList11 = append(cacheReadCostList11, shared.AIGatewayModalCostList{
+							Modal: modal35,
+							Cost:  cost46,
+						})
+					}
+				}
 				cacheWriteCostList11 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList))
 				for cacheWriteCostListIndex11 := range r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList {
 					var ttl11 string
 					ttl11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].TTL.ValueString()
 
-					var cost11 float64
-					cost11 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].Cost.ValueFloat64()
+					var cost47 float64
+					cost47 = r.API.Targets[targetsIndex].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex11].Cost.ValueFloat64()
 
 					cacheWriteCostList11 = append(cacheWriteCostList11, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl11,
-						Cost: cost11,
+						Cost: cost47,
 					})
 				}
 				contextWindowFactor11 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Llama2.ContextWindowFactor))
@@ -12834,6 +16677,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost11,
 					CacheReadCost:        cacheReadCost11,
 					CacheWriteCost:       cacheWriteCost11,
+					InputCostList:        inputCostList11,
+					OutputCostList:       outputCostList11,
+					CacheReadCostList:    cacheReadCostList11,
 					CacheWriteCostList:   cacheWriteCostList11,
 					ContextWindowFactor:  contextWindowFactor11,
 					ServiceTierFactor:    serviceTierFactor11,
@@ -12887,17 +16733,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost12 = nil
 				}
+				var inputCostList12 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Mistral.InputCostList != nil {
+					inputCostList12 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Mistral.InputCostList))
+					for inputCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.InputCostList {
+						modal36 := shared.Modal(r.API.Targets[targetsIndex].Config.Mistral.InputCostList[inputCostListIndex12].Modal.ValueString())
+						var cost48 float64
+						cost48 = r.API.Targets[targetsIndex].Config.Mistral.InputCostList[inputCostListIndex12].Cost.ValueFloat64()
+
+						inputCostList12 = append(inputCostList12, shared.AIGatewayModalCostList{
+							Modal: modal36,
+							Cost:  cost48,
+						})
+					}
+				}
+				var outputCostList12 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Mistral.OutputCostList != nil {
+					outputCostList12 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Mistral.OutputCostList))
+					for outputCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.OutputCostList {
+						modal37 := shared.Modal(r.API.Targets[targetsIndex].Config.Mistral.OutputCostList[outputCostListIndex12].Modal.ValueString())
+						var cost49 float64
+						cost49 = r.API.Targets[targetsIndex].Config.Mistral.OutputCostList[outputCostListIndex12].Cost.ValueFloat64()
+
+						outputCostList12 = append(outputCostList12, shared.AIGatewayModalCostList{
+							Modal: modal37,
+							Cost:  cost49,
+						})
+					}
+				}
+				var cacheReadCostList12 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList != nil {
+					cacheReadCostList12 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList))
+					for cacheReadCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList {
+						modal38 := shared.Modal(r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList[cacheReadCostListIndex12].Modal.ValueString())
+						var cost50 float64
+						cost50 = r.API.Targets[targetsIndex].Config.Mistral.CacheReadCostList[cacheReadCostListIndex12].Cost.ValueFloat64()
+
+						cacheReadCostList12 = append(cacheReadCostList12, shared.AIGatewayModalCostList{
+							Modal: modal38,
+							Cost:  cost50,
+						})
+					}
+				}
 				cacheWriteCostList12 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList))
 				for cacheWriteCostListIndex12 := range r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList {
 					var ttl12 string
 					ttl12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].TTL.ValueString()
 
-					var cost12 float64
-					cost12 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].Cost.ValueFloat64()
+					var cost51 float64
+					cost51 = r.API.Targets[targetsIndex].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex12].Cost.ValueFloat64()
 
 					cacheWriteCostList12 = append(cacheWriteCostList12, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl12,
-						Cost: cost12,
+						Cost: cost51,
 					})
 				}
 				contextWindowFactor12 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Mistral.ContextWindowFactor))
@@ -12962,6 +16850,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost12,
 					CacheReadCost:        cacheReadCost12,
 					CacheWriteCost:       cacheWriteCost12,
+					InputCostList:        inputCostList12,
+					OutputCostList:       outputCostList12,
+					CacheReadCostList:    cacheReadCostList12,
 					CacheWriteCostList:   cacheWriteCostList12,
 					ContextWindowFactor:  contextWindowFactor12,
 					ServiceTierFactor:    serviceTierFactor12,
@@ -13015,17 +16906,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost13 = nil
 				}
+				var inputCostList13 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Ollama.InputCostList != nil {
+					inputCostList13 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Ollama.InputCostList))
+					for inputCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.InputCostList {
+						modal39 := shared.Modal(r.API.Targets[targetsIndex].Config.Ollama.InputCostList[inputCostListIndex13].Modal.ValueString())
+						var cost52 float64
+						cost52 = r.API.Targets[targetsIndex].Config.Ollama.InputCostList[inputCostListIndex13].Cost.ValueFloat64()
+
+						inputCostList13 = append(inputCostList13, shared.AIGatewayModalCostList{
+							Modal: modal39,
+							Cost:  cost52,
+						})
+					}
+				}
+				var outputCostList13 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Ollama.OutputCostList != nil {
+					outputCostList13 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Ollama.OutputCostList))
+					for outputCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.OutputCostList {
+						modal40 := shared.Modal(r.API.Targets[targetsIndex].Config.Ollama.OutputCostList[outputCostListIndex13].Modal.ValueString())
+						var cost53 float64
+						cost53 = r.API.Targets[targetsIndex].Config.Ollama.OutputCostList[outputCostListIndex13].Cost.ValueFloat64()
+
+						outputCostList13 = append(outputCostList13, shared.AIGatewayModalCostList{
+							Modal: modal40,
+							Cost:  cost53,
+						})
+					}
+				}
+				var cacheReadCostList13 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList != nil {
+					cacheReadCostList13 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList))
+					for cacheReadCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList {
+						modal41 := shared.Modal(r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList[cacheReadCostListIndex13].Modal.ValueString())
+						var cost54 float64
+						cost54 = r.API.Targets[targetsIndex].Config.Ollama.CacheReadCostList[cacheReadCostListIndex13].Cost.ValueFloat64()
+
+						cacheReadCostList13 = append(cacheReadCostList13, shared.AIGatewayModalCostList{
+							Modal: modal41,
+							Cost:  cost54,
+						})
+					}
+				}
 				cacheWriteCostList13 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList))
 				for cacheWriteCostListIndex13 := range r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList {
 					var ttl13 string
 					ttl13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].TTL.ValueString()
 
-					var cost13 float64
-					cost13 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].Cost.ValueFloat64()
+					var cost55 float64
+					cost55 = r.API.Targets[targetsIndex].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex13].Cost.ValueFloat64()
 
 					cacheWriteCostList13 = append(cacheWriteCostList13, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl13,
-						Cost: cost13,
+						Cost: cost55,
 					})
 				}
 				contextWindowFactor13 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Ollama.ContextWindowFactor))
@@ -13089,6 +17022,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost13,
 					CacheReadCost:        cacheReadCost13,
 					CacheWriteCost:       cacheWriteCost13,
+					InputCostList:        inputCostList13,
+					OutputCostList:       outputCostList13,
+					CacheReadCostList:    cacheReadCostList13,
 					CacheWriteCostList:   cacheWriteCostList13,
 					ContextWindowFactor:  contextWindowFactor13,
 					ServiceTierFactor:    serviceTierFactor13,
@@ -13141,17 +17077,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost14 = nil
 				}
+				var inputCostList14 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Openai.InputCostList != nil {
+					inputCostList14 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Openai.InputCostList))
+					for inputCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.InputCostList {
+						modal42 := shared.Modal(r.API.Targets[targetsIndex].Config.Openai.InputCostList[inputCostListIndex14].Modal.ValueString())
+						var cost56 float64
+						cost56 = r.API.Targets[targetsIndex].Config.Openai.InputCostList[inputCostListIndex14].Cost.ValueFloat64()
+
+						inputCostList14 = append(inputCostList14, shared.AIGatewayModalCostList{
+							Modal: modal42,
+							Cost:  cost56,
+						})
+					}
+				}
+				var outputCostList14 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Openai.OutputCostList != nil {
+					outputCostList14 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Openai.OutputCostList))
+					for outputCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.OutputCostList {
+						modal43 := shared.Modal(r.API.Targets[targetsIndex].Config.Openai.OutputCostList[outputCostListIndex14].Modal.ValueString())
+						var cost57 float64
+						cost57 = r.API.Targets[targetsIndex].Config.Openai.OutputCostList[outputCostListIndex14].Cost.ValueFloat64()
+
+						outputCostList14 = append(outputCostList14, shared.AIGatewayModalCostList{
+							Modal: modal43,
+							Cost:  cost57,
+						})
+					}
+				}
+				var cacheReadCostList14 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList != nil {
+					cacheReadCostList14 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList))
+					for cacheReadCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList {
+						modal44 := shared.Modal(r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList[cacheReadCostListIndex14].Modal.ValueString())
+						var cost58 float64
+						cost58 = r.API.Targets[targetsIndex].Config.Openai.CacheReadCostList[cacheReadCostListIndex14].Cost.ValueFloat64()
+
+						cacheReadCostList14 = append(cacheReadCostList14, shared.AIGatewayModalCostList{
+							Modal: modal44,
+							Cost:  cost58,
+						})
+					}
+				}
 				cacheWriteCostList14 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList))
 				for cacheWriteCostListIndex14 := range r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList {
 					var ttl14 string
 					ttl14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].TTL.ValueString()
 
-					var cost14 float64
-					cost14 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].Cost.ValueFloat64()
+					var cost59 float64
+					cost59 = r.API.Targets[targetsIndex].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex14].Cost.ValueFloat64()
 
 					cacheWriteCostList14 = append(cacheWriteCostList14, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl14,
-						Cost: cost14,
+						Cost: cost59,
 					})
 				}
 				contextWindowFactor14 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Openai.ContextWindowFactor))
@@ -13215,6 +17193,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost14,
 					CacheReadCost:        cacheReadCost14,
 					CacheWriteCost:       cacheWriteCost14,
+					InputCostList:        inputCostList14,
+					OutputCostList:       outputCostList14,
+					CacheReadCostList:    cacheReadCostList14,
 					CacheWriteCostList:   cacheWriteCostList14,
 					ContextWindowFactor:  contextWindowFactor14,
 					ServiceTierFactor:    serviceTierFactor14,
@@ -13267,17 +17248,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost15 = nil
 				}
+				var inputCostList15 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vercel.InputCostList != nil {
+					inputCostList15 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vercel.InputCostList))
+					for inputCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.InputCostList {
+						modal45 := shared.Modal(r.API.Targets[targetsIndex].Config.Vercel.InputCostList[inputCostListIndex15].Modal.ValueString())
+						var cost60 float64
+						cost60 = r.API.Targets[targetsIndex].Config.Vercel.InputCostList[inputCostListIndex15].Cost.ValueFloat64()
+
+						inputCostList15 = append(inputCostList15, shared.AIGatewayModalCostList{
+							Modal: modal45,
+							Cost:  cost60,
+						})
+					}
+				}
+				var outputCostList15 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vercel.OutputCostList != nil {
+					outputCostList15 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vercel.OutputCostList))
+					for outputCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.OutputCostList {
+						modal46 := shared.Modal(r.API.Targets[targetsIndex].Config.Vercel.OutputCostList[outputCostListIndex15].Modal.ValueString())
+						var cost61 float64
+						cost61 = r.API.Targets[targetsIndex].Config.Vercel.OutputCostList[outputCostListIndex15].Cost.ValueFloat64()
+
+						outputCostList15 = append(outputCostList15, shared.AIGatewayModalCostList{
+							Modal: modal46,
+							Cost:  cost61,
+						})
+					}
+				}
+				var cacheReadCostList15 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList != nil {
+					cacheReadCostList15 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList))
+					for cacheReadCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList {
+						modal47 := shared.Modal(r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList[cacheReadCostListIndex15].Modal.ValueString())
+						var cost62 float64
+						cost62 = r.API.Targets[targetsIndex].Config.Vercel.CacheReadCostList[cacheReadCostListIndex15].Cost.ValueFloat64()
+
+						cacheReadCostList15 = append(cacheReadCostList15, shared.AIGatewayModalCostList{
+							Modal: modal47,
+							Cost:  cost62,
+						})
+					}
+				}
 				cacheWriteCostList15 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList))
 				for cacheWriteCostListIndex15 := range r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList {
 					var ttl15 string
 					ttl15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].TTL.ValueString()
 
-					var cost15 float64
-					cost15 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].Cost.ValueFloat64()
+					var cost63 float64
+					cost63 = r.API.Targets[targetsIndex].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex15].Cost.ValueFloat64()
 
 					cacheWriteCostList15 = append(cacheWriteCostList15, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl15,
-						Cost: cost15,
+						Cost: cost63,
 					})
 				}
 				contextWindowFactor15 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vercel.ContextWindowFactor))
@@ -13341,6 +17364,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost15,
 					CacheReadCost:        cacheReadCost15,
 					CacheWriteCost:       cacheWriteCost15,
+					InputCostList:        inputCostList15,
+					OutputCostList:       outputCostList15,
+					CacheReadCostList:    cacheReadCostList15,
 					CacheWriteCostList:   cacheWriteCostList15,
 					ContextWindowFactor:  contextWindowFactor15,
 					ServiceTierFactor:    serviceTierFactor15,
@@ -13393,17 +17419,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost16 = nil
 				}
+				var inputCostList16 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vllm.InputCostList != nil {
+					inputCostList16 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vllm.InputCostList))
+					for inputCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.InputCostList {
+						modal48 := shared.Modal(r.API.Targets[targetsIndex].Config.Vllm.InputCostList[inputCostListIndex16].Modal.ValueString())
+						var cost64 float64
+						cost64 = r.API.Targets[targetsIndex].Config.Vllm.InputCostList[inputCostListIndex16].Cost.ValueFloat64()
+
+						inputCostList16 = append(inputCostList16, shared.AIGatewayModalCostList{
+							Modal: modal48,
+							Cost:  cost64,
+						})
+					}
+				}
+				var outputCostList16 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vllm.OutputCostList != nil {
+					outputCostList16 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vllm.OutputCostList))
+					for outputCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.OutputCostList {
+						modal49 := shared.Modal(r.API.Targets[targetsIndex].Config.Vllm.OutputCostList[outputCostListIndex16].Modal.ValueString())
+						var cost65 float64
+						cost65 = r.API.Targets[targetsIndex].Config.Vllm.OutputCostList[outputCostListIndex16].Cost.ValueFloat64()
+
+						outputCostList16 = append(outputCostList16, shared.AIGatewayModalCostList{
+							Modal: modal49,
+							Cost:  cost65,
+						})
+					}
+				}
+				var cacheReadCostList16 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList != nil {
+					cacheReadCostList16 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList))
+					for cacheReadCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList {
+						modal50 := shared.Modal(r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList[cacheReadCostListIndex16].Modal.ValueString())
+						var cost66 float64
+						cost66 = r.API.Targets[targetsIndex].Config.Vllm.CacheReadCostList[cacheReadCostListIndex16].Cost.ValueFloat64()
+
+						cacheReadCostList16 = append(cacheReadCostList16, shared.AIGatewayModalCostList{
+							Modal: modal50,
+							Cost:  cost66,
+						})
+					}
+				}
 				cacheWriteCostList16 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList))
 				for cacheWriteCostListIndex16 := range r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList {
 					var ttl16 string
 					ttl16 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex16].TTL.ValueString()
 
-					var cost16 float64
-					cost16 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex16].Cost.ValueFloat64()
+					var cost67 float64
+					cost67 = r.API.Targets[targetsIndex].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex16].Cost.ValueFloat64()
 
 					cacheWriteCostList16 = append(cacheWriteCostList16, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl16,
-						Cost: cost16,
+						Cost: cost67,
 					})
 				}
 				contextWindowFactor16 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Vllm.ContextWindowFactor))
@@ -13464,6 +17532,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost16,
 					CacheReadCost:        cacheReadCost16,
 					CacheWriteCost:       cacheWriteCost16,
+					InputCostList:        inputCostList16,
+					OutputCostList:       outputCostList16,
+					CacheReadCostList:    cacheReadCostList16,
 					CacheWriteCostList:   cacheWriteCostList16,
 					ContextWindowFactor:  contextWindowFactor16,
 					ServiceTierFactor:    serviceTierFactor16,
@@ -13516,17 +17587,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost17 = nil
 				}
+				var inputCostList17 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Xai.InputCostList != nil {
+					inputCostList17 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Xai.InputCostList))
+					for inputCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.InputCostList {
+						modal51 := shared.Modal(r.API.Targets[targetsIndex].Config.Xai.InputCostList[inputCostListIndex17].Modal.ValueString())
+						var cost68 float64
+						cost68 = r.API.Targets[targetsIndex].Config.Xai.InputCostList[inputCostListIndex17].Cost.ValueFloat64()
+
+						inputCostList17 = append(inputCostList17, shared.AIGatewayModalCostList{
+							Modal: modal51,
+							Cost:  cost68,
+						})
+					}
+				}
+				var outputCostList17 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Xai.OutputCostList != nil {
+					outputCostList17 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Xai.OutputCostList))
+					for outputCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.OutputCostList {
+						modal52 := shared.Modal(r.API.Targets[targetsIndex].Config.Xai.OutputCostList[outputCostListIndex17].Modal.ValueString())
+						var cost69 float64
+						cost69 = r.API.Targets[targetsIndex].Config.Xai.OutputCostList[outputCostListIndex17].Cost.ValueFloat64()
+
+						outputCostList17 = append(outputCostList17, shared.AIGatewayModalCostList{
+							Modal: modal52,
+							Cost:  cost69,
+						})
+					}
+				}
+				var cacheReadCostList17 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList != nil {
+					cacheReadCostList17 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList))
+					for cacheReadCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList {
+						modal53 := shared.Modal(r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList[cacheReadCostListIndex17].Modal.ValueString())
+						var cost70 float64
+						cost70 = r.API.Targets[targetsIndex].Config.Xai.CacheReadCostList[cacheReadCostListIndex17].Cost.ValueFloat64()
+
+						cacheReadCostList17 = append(cacheReadCostList17, shared.AIGatewayModalCostList{
+							Modal: modal53,
+							Cost:  cost70,
+						})
+					}
+				}
 				cacheWriteCostList17 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList))
 				for cacheWriteCostListIndex17 := range r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList {
 					var ttl17 string
 					ttl17 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex17].TTL.ValueString()
 
-					var cost17 float64
-					cost17 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex17].Cost.ValueFloat64()
+					var cost71 float64
+					cost71 = r.API.Targets[targetsIndex].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex17].Cost.ValueFloat64()
 
 					cacheWriteCostList17 = append(cacheWriteCostList17, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl17,
-						Cost: cost17,
+						Cost: cost71,
 					})
 				}
 				contextWindowFactor17 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Xai.ContextWindowFactor))
@@ -13590,6 +17703,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost17,
 					CacheReadCost:        cacheReadCost17,
 					CacheWriteCost:       cacheWriteCost17,
+					InputCostList:        inputCostList17,
+					OutputCostList:       outputCostList17,
+					CacheReadCostList:    cacheReadCostList17,
 					CacheWriteCostList:   cacheWriteCostList17,
 					ContextWindowFactor:  contextWindowFactor17,
 					ServiceTierFactor:    serviceTierFactor17,
@@ -13642,17 +17758,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost18 = nil
 				}
+				var inputCostList18 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList != nil {
+					inputCostList18 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList))
+					for inputCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList {
+						modal54 := shared.Modal(r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList[inputCostListIndex18].Modal.ValueString())
+						var cost72 float64
+						cost72 = r.API.Targets[targetsIndex].Config.Sagemaker.InputCostList[inputCostListIndex18].Cost.ValueFloat64()
+
+						inputCostList18 = append(inputCostList18, shared.AIGatewayModalCostList{
+							Modal: modal54,
+							Cost:  cost72,
+						})
+					}
+				}
+				var outputCostList18 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList != nil {
+					outputCostList18 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList))
+					for outputCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList {
+						modal55 := shared.Modal(r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList[outputCostListIndex18].Modal.ValueString())
+						var cost73 float64
+						cost73 = r.API.Targets[targetsIndex].Config.Sagemaker.OutputCostList[outputCostListIndex18].Cost.ValueFloat64()
+
+						outputCostList18 = append(outputCostList18, shared.AIGatewayModalCostList{
+							Modal: modal55,
+							Cost:  cost73,
+						})
+					}
+				}
+				var cacheReadCostList18 []shared.AIGatewayModalCostList
+				if r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList != nil {
+					cacheReadCostList18 = make([]shared.AIGatewayModalCostList, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList))
+					for cacheReadCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList {
+						modal56 := shared.Modal(r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex18].Modal.ValueString())
+						var cost74 float64
+						cost74 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex18].Cost.ValueFloat64()
+
+						cacheReadCostList18 = append(cacheReadCostList18, shared.AIGatewayModalCostList{
+							Modal: modal56,
+							Cost:  cost74,
+						})
+					}
+				}
 				cacheWriteCostList18 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList))
 				for cacheWriteCostListIndex18 := range r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList {
 					var ttl18 string
 					ttl18 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex18].TTL.ValueString()
 
-					var cost18 float64
-					cost18 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex18].Cost.ValueFloat64()
+					var cost75 float64
+					cost75 = r.API.Targets[targetsIndex].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex18].Cost.ValueFloat64()
 
 					cacheWriteCostList18 = append(cacheWriteCostList18, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl18,
-						Cost: cost18,
+						Cost: cost75,
 					})
 				}
 				contextWindowFactor18 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.API.Targets[targetsIndex].Config.Sagemaker.ContextWindowFactor))
@@ -13775,6 +17933,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost18,
 					CacheReadCost:        cacheReadCost18,
 					CacheWriteCost:       cacheWriteCost18,
+					InputCostList:        inputCostList18,
+					OutputCostList:       outputCostList18,
+					CacheReadCostList:    cacheReadCostList18,
 					CacheWriteCostList:   cacheWriteCostList18,
 					ContextWindowFactor:  contextWindowFactor18,
 					ServiceTierFactor:    serviceTierFactor18,
@@ -15321,17 +19482,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost19 = nil
 				}
+				var inputCostList19 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList != nil {
+					inputCostList19 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList))
+					for inputCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList {
+						modal57 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList[inputCostListIndex19].Modal.ValueString())
+						var cost76 float64
+						cost76 = r.Model.Targets[targetsIndex1].Config.Anthropic.InputCostList[inputCostListIndex19].Cost.ValueFloat64()
+
+						inputCostList19 = append(inputCostList19, shared.AIGatewayModalCostList{
+							Modal: modal57,
+							Cost:  cost76,
+						})
+					}
+				}
+				var outputCostList19 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList != nil {
+					outputCostList19 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList))
+					for outputCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList {
+						modal58 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList[outputCostListIndex19].Modal.ValueString())
+						var cost77 float64
+						cost77 = r.Model.Targets[targetsIndex1].Config.Anthropic.OutputCostList[outputCostListIndex19].Cost.ValueFloat64()
+
+						outputCostList19 = append(outputCostList19, shared.AIGatewayModalCostList{
+							Modal: modal58,
+							Cost:  cost77,
+						})
+					}
+				}
+				var cacheReadCostList19 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList != nil {
+					cacheReadCostList19 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList))
+					for cacheReadCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList {
+						modal59 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex19].Modal.ValueString())
+						var cost78 float64
+						cost78 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheReadCostList[cacheReadCostListIndex19].Cost.ValueFloat64()
+
+						cacheReadCostList19 = append(cacheReadCostList19, shared.AIGatewayModalCostList{
+							Modal: modal59,
+							Cost:  cost78,
+						})
+					}
+				}
 				cacheWriteCostList19 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList))
 				for cacheWriteCostListIndex19 := range r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList {
 					var ttl19 string
 					ttl19 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex19].TTL.ValueString()
 
-					var cost19 float64
-					cost19 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex19].Cost.ValueFloat64()
+					var cost79 float64
+					cost79 = r.Model.Targets[targetsIndex1].Config.Anthropic.CacheWriteCostList[cacheWriteCostListIndex19].Cost.ValueFloat64()
 
 					cacheWriteCostList19 = append(cacheWriteCostList19, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl19,
-						Cost: cost19,
+						Cost: cost79,
 					})
 				}
 				contextWindowFactor19 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Anthropic.ContextWindowFactor))
@@ -15401,6 +19604,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost19,
 					CacheReadCost:        cacheReadCost19,
 					CacheWriteCost:       cacheWriteCost19,
+					InputCostList:        inputCostList19,
+					OutputCostList:       outputCostList19,
+					CacheReadCostList:    cacheReadCostList19,
 					CacheWriteCostList:   cacheWriteCostList19,
 					ContextWindowFactor:  contextWindowFactor19,
 					ServiceTierFactor:    serviceTierFactor19,
@@ -15454,17 +19660,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost20 = nil
 				}
+				var inputCostList20 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Azure.InputCostList != nil {
+					inputCostList20 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.InputCostList))
+					for inputCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.InputCostList {
+						modal60 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Azure.InputCostList[inputCostListIndex20].Modal.ValueString())
+						var cost80 float64
+						cost80 = r.Model.Targets[targetsIndex1].Config.Azure.InputCostList[inputCostListIndex20].Cost.ValueFloat64()
+
+						inputCostList20 = append(inputCostList20, shared.AIGatewayModalCostList{
+							Modal: modal60,
+							Cost:  cost80,
+						})
+					}
+				}
+				var outputCostList20 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList != nil {
+					outputCostList20 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList))
+					for outputCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList {
+						modal61 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList[outputCostListIndex20].Modal.ValueString())
+						var cost81 float64
+						cost81 = r.Model.Targets[targetsIndex1].Config.Azure.OutputCostList[outputCostListIndex20].Cost.ValueFloat64()
+
+						outputCostList20 = append(outputCostList20, shared.AIGatewayModalCostList{
+							Modal: modal61,
+							Cost:  cost81,
+						})
+					}
+				}
+				var cacheReadCostList20 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList != nil {
+					cacheReadCostList20 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList))
+					for cacheReadCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList {
+						modal62 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList[cacheReadCostListIndex20].Modal.ValueString())
+						var cost82 float64
+						cost82 = r.Model.Targets[targetsIndex1].Config.Azure.CacheReadCostList[cacheReadCostListIndex20].Cost.ValueFloat64()
+
+						cacheReadCostList20 = append(cacheReadCostList20, shared.AIGatewayModalCostList{
+							Modal: modal62,
+							Cost:  cost82,
+						})
+					}
+				}
 				cacheWriteCostList20 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList))
 				for cacheWriteCostListIndex20 := range r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList {
 					var ttl20 string
 					ttl20 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex20].TTL.ValueString()
 
-					var cost20 float64
-					cost20 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex20].Cost.ValueFloat64()
+					var cost83 float64
+					cost83 = r.Model.Targets[targetsIndex1].Config.Azure.CacheWriteCostList[cacheWriteCostListIndex20].Cost.ValueFloat64()
 
 					cacheWriteCostList20 = append(cacheWriteCostList20, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl20,
-						Cost: cost20,
+						Cost: cost83,
 					})
 				}
 				contextWindowFactor20 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Azure.ContextWindowFactor))
@@ -15546,6 +19794,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost20,
 					CacheReadCost:        cacheReadCost20,
 					CacheWriteCost:       cacheWriteCost20,
+					InputCostList:        inputCostList20,
+					OutputCostList:       outputCostList20,
+					CacheReadCostList:    cacheReadCostList20,
 					CacheWriteCostList:   cacheWriteCostList20,
 					ContextWindowFactor:  contextWindowFactor20,
 					ServiceTierFactor:    serviceTierFactor20,
@@ -15601,17 +19852,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost21 = nil
 				}
+				var inputCostList21 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList != nil {
+					inputCostList21 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList))
+					for inputCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList {
+						modal63 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList[inputCostListIndex21].Modal.ValueString())
+						var cost84 float64
+						cost84 = r.Model.Targets[targetsIndex1].Config.Bedrock.InputCostList[inputCostListIndex21].Cost.ValueFloat64()
+
+						inputCostList21 = append(inputCostList21, shared.AIGatewayModalCostList{
+							Modal: modal63,
+							Cost:  cost84,
+						})
+					}
+				}
+				var outputCostList21 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList != nil {
+					outputCostList21 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList))
+					for outputCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList {
+						modal64 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList[outputCostListIndex21].Modal.ValueString())
+						var cost85 float64
+						cost85 = r.Model.Targets[targetsIndex1].Config.Bedrock.OutputCostList[outputCostListIndex21].Cost.ValueFloat64()
+
+						outputCostList21 = append(outputCostList21, shared.AIGatewayModalCostList{
+							Modal: modal64,
+							Cost:  cost85,
+						})
+					}
+				}
+				var cacheReadCostList21 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList != nil {
+					cacheReadCostList21 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList))
+					for cacheReadCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList {
+						modal65 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex21].Modal.ValueString())
+						var cost86 float64
+						cost86 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheReadCostList[cacheReadCostListIndex21].Cost.ValueFloat64()
+
+						cacheReadCostList21 = append(cacheReadCostList21, shared.AIGatewayModalCostList{
+							Modal: modal65,
+							Cost:  cost86,
+						})
+					}
+				}
 				cacheWriteCostList21 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList))
 				for cacheWriteCostListIndex21 := range r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList {
 					var ttl21 string
 					ttl21 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex21].TTL.ValueString()
 
-					var cost21 float64
-					cost21 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex21].Cost.ValueFloat64()
+					var cost87 float64
+					cost87 = r.Model.Targets[targetsIndex1].Config.Bedrock.CacheWriteCostList[cacheWriteCostListIndex21].Cost.ValueFloat64()
 
 					cacheWriteCostList21 = append(cacheWriteCostList21, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl21,
-						Cost: cost21,
+						Cost: cost87,
 					})
 				}
 				contextWindowFactor21 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Bedrock.ContextWindowFactor))
@@ -15705,6 +19998,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:               outputCost21,
 					CacheReadCost:            cacheReadCost21,
 					CacheWriteCost:           cacheWriteCost21,
+					InputCostList:            inputCostList21,
+					OutputCostList:           outputCostList21,
+					CacheReadCostList:        cacheReadCostList21,
 					CacheWriteCostList:       cacheWriteCostList21,
 					ContextWindowFactor:      contextWindowFactor21,
 					ServiceTierFactor:        serviceTierFactor21,
@@ -15762,17 +20058,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost22 = nil
 				}
+				var inputCostList22 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList != nil {
+					inputCostList22 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList))
+					for inputCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList {
+						modal66 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList[inputCostListIndex22].Modal.ValueString())
+						var cost88 float64
+						cost88 = r.Model.Targets[targetsIndex1].Config.Cerebras.InputCostList[inputCostListIndex22].Cost.ValueFloat64()
+
+						inputCostList22 = append(inputCostList22, shared.AIGatewayModalCostList{
+							Modal: modal66,
+							Cost:  cost88,
+						})
+					}
+				}
+				var outputCostList22 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList != nil {
+					outputCostList22 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList))
+					for outputCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList {
+						modal67 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList[outputCostListIndex22].Modal.ValueString())
+						var cost89 float64
+						cost89 = r.Model.Targets[targetsIndex1].Config.Cerebras.OutputCostList[outputCostListIndex22].Cost.ValueFloat64()
+
+						outputCostList22 = append(outputCostList22, shared.AIGatewayModalCostList{
+							Modal: modal67,
+							Cost:  cost89,
+						})
+					}
+				}
+				var cacheReadCostList22 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList != nil {
+					cacheReadCostList22 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList))
+					for cacheReadCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList {
+						modal68 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex22].Modal.ValueString())
+						var cost90 float64
+						cost90 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheReadCostList[cacheReadCostListIndex22].Cost.ValueFloat64()
+
+						cacheReadCostList22 = append(cacheReadCostList22, shared.AIGatewayModalCostList{
+							Modal: modal68,
+							Cost:  cost90,
+						})
+					}
+				}
 				cacheWriteCostList22 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList))
 				for cacheWriteCostListIndex22 := range r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList {
 					var ttl22 string
 					ttl22 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex22].TTL.ValueString()
 
-					var cost22 float64
-					cost22 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex22].Cost.ValueFloat64()
+					var cost91 float64
+					cost91 = r.Model.Targets[targetsIndex1].Config.Cerebras.CacheWriteCostList[cacheWriteCostListIndex22].Cost.ValueFloat64()
 
 					cacheWriteCostList22 = append(cacheWriteCostList22, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl22,
-						Cost: cost22,
+						Cost: cost91,
 					})
 				}
 				contextWindowFactor22 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cerebras.ContextWindowFactor))
@@ -15836,6 +20174,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost22,
 					CacheReadCost:        cacheReadCost22,
 					CacheWriteCost:       cacheWriteCost22,
+					InputCostList:        inputCostList22,
+					OutputCostList:       outputCostList22,
+					CacheReadCostList:    cacheReadCostList22,
 					CacheWriteCostList:   cacheWriteCostList22,
 					ContextWindowFactor:  contextWindowFactor22,
 					ServiceTierFactor:    serviceTierFactor22,
@@ -15888,17 +20229,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost23 = nil
 				}
+				var inputCostList23 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList != nil {
+					inputCostList23 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList))
+					for inputCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList {
+						modal69 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList[inputCostListIndex23].Modal.ValueString())
+						var cost92 float64
+						cost92 = r.Model.Targets[targetsIndex1].Config.Cohere.InputCostList[inputCostListIndex23].Cost.ValueFloat64()
+
+						inputCostList23 = append(inputCostList23, shared.AIGatewayModalCostList{
+							Modal: modal69,
+							Cost:  cost92,
+						})
+					}
+				}
+				var outputCostList23 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList != nil {
+					outputCostList23 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList))
+					for outputCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList {
+						modal70 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList[outputCostListIndex23].Modal.ValueString())
+						var cost93 float64
+						cost93 = r.Model.Targets[targetsIndex1].Config.Cohere.OutputCostList[outputCostListIndex23].Cost.ValueFloat64()
+
+						outputCostList23 = append(outputCostList23, shared.AIGatewayModalCostList{
+							Modal: modal70,
+							Cost:  cost93,
+						})
+					}
+				}
+				var cacheReadCostList23 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList != nil {
+					cacheReadCostList23 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList))
+					for cacheReadCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList {
+						modal71 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList[cacheReadCostListIndex23].Modal.ValueString())
+						var cost94 float64
+						cost94 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheReadCostList[cacheReadCostListIndex23].Cost.ValueFloat64()
+
+						cacheReadCostList23 = append(cacheReadCostList23, shared.AIGatewayModalCostList{
+							Modal: modal71,
+							Cost:  cost94,
+						})
+					}
+				}
 				cacheWriteCostList23 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList))
 				for cacheWriteCostListIndex23 := range r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList {
 					var ttl23 string
 					ttl23 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex23].TTL.ValueString()
 
-					var cost23 float64
-					cost23 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex23].Cost.ValueFloat64()
+					var cost95 float64
+					cost95 = r.Model.Targets[targetsIndex1].Config.Cohere.CacheWriteCostList[cacheWriteCostListIndex23].Cost.ValueFloat64()
 
 					cacheWriteCostList23 = append(cacheWriteCostList23, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl23,
-						Cost: cost23,
+						Cost: cost95,
 					})
 				}
 				contextWindowFactor23 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Cohere.ContextWindowFactor))
@@ -15980,6 +20363,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost23,
 					CacheReadCost:        cacheReadCost23,
 					CacheWriteCost:       cacheWriteCost23,
+					InputCostList:        inputCostList23,
+					OutputCostList:       outputCostList23,
+					CacheReadCostList:    cacheReadCostList23,
 					CacheWriteCostList:   cacheWriteCostList23,
 					ContextWindowFactor:  contextWindowFactor23,
 					ServiceTierFactor:    serviceTierFactor23,
@@ -16035,17 +20421,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost24 = nil
 				}
+				var inputCostList24 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList != nil {
+					inputCostList24 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList))
+					for inputCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList {
+						modal72 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList[inputCostListIndex24].Modal.ValueString())
+						var cost96 float64
+						cost96 = r.Model.Targets[targetsIndex1].Config.Dashscope.InputCostList[inputCostListIndex24].Cost.ValueFloat64()
+
+						inputCostList24 = append(inputCostList24, shared.AIGatewayModalCostList{
+							Modal: modal72,
+							Cost:  cost96,
+						})
+					}
+				}
+				var outputCostList24 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList != nil {
+					outputCostList24 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList))
+					for outputCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList {
+						modal73 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList[outputCostListIndex24].Modal.ValueString())
+						var cost97 float64
+						cost97 = r.Model.Targets[targetsIndex1].Config.Dashscope.OutputCostList[outputCostListIndex24].Cost.ValueFloat64()
+
+						outputCostList24 = append(outputCostList24, shared.AIGatewayModalCostList{
+							Modal: modal73,
+							Cost:  cost97,
+						})
+					}
+				}
+				var cacheReadCostList24 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList != nil {
+					cacheReadCostList24 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList))
+					for cacheReadCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList {
+						modal74 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex24].Modal.ValueString())
+						var cost98 float64
+						cost98 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheReadCostList[cacheReadCostListIndex24].Cost.ValueFloat64()
+
+						cacheReadCostList24 = append(cacheReadCostList24, shared.AIGatewayModalCostList{
+							Modal: modal74,
+							Cost:  cost98,
+						})
+					}
+				}
 				cacheWriteCostList24 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList))
 				for cacheWriteCostListIndex24 := range r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList {
 					var ttl24 string
 					ttl24 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex24].TTL.ValueString()
 
-					var cost24 float64
-					cost24 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex24].Cost.ValueFloat64()
+					var cost99 float64
+					cost99 = r.Model.Targets[targetsIndex1].Config.Dashscope.CacheWriteCostList[cacheWriteCostListIndex24].Cost.ValueFloat64()
 
 					cacheWriteCostList24 = append(cacheWriteCostList24, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl24,
-						Cost: cost24,
+						Cost: cost99,
 					})
 				}
 				contextWindowFactor24 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Dashscope.ContextWindowFactor))
@@ -16115,6 +20543,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost24,
 					CacheReadCost:        cacheReadCost24,
 					CacheWriteCost:       cacheWriteCost24,
+					InputCostList:        inputCostList24,
+					OutputCostList:       outputCostList24,
+					CacheReadCostList:    cacheReadCostList24,
 					CacheWriteCostList:   cacheWriteCostList24,
 					ContextWindowFactor:  contextWindowFactor24,
 					ServiceTierFactor:    serviceTierFactor24,
@@ -16168,17 +20599,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost25 = nil
 				}
+				var inputCostList25 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList != nil {
+					inputCostList25 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList))
+					for inputCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList {
+						modal75 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList[inputCostListIndex25].Modal.ValueString())
+						var cost100 float64
+						cost100 = r.Model.Targets[targetsIndex1].Config.Databricks.InputCostList[inputCostListIndex25].Cost.ValueFloat64()
+
+						inputCostList25 = append(inputCostList25, shared.AIGatewayModalCostList{
+							Modal: modal75,
+							Cost:  cost100,
+						})
+					}
+				}
+				var outputCostList25 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList != nil {
+					outputCostList25 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList))
+					for outputCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList {
+						modal76 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList[outputCostListIndex25].Modal.ValueString())
+						var cost101 float64
+						cost101 = r.Model.Targets[targetsIndex1].Config.Databricks.OutputCostList[outputCostListIndex25].Cost.ValueFloat64()
+
+						outputCostList25 = append(outputCostList25, shared.AIGatewayModalCostList{
+							Modal: modal76,
+							Cost:  cost101,
+						})
+					}
+				}
+				var cacheReadCostList25 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList != nil {
+					cacheReadCostList25 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList))
+					for cacheReadCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList {
+						modal77 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList[cacheReadCostListIndex25].Modal.ValueString())
+						var cost102 float64
+						cost102 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheReadCostList[cacheReadCostListIndex25].Cost.ValueFloat64()
+
+						cacheReadCostList25 = append(cacheReadCostList25, shared.AIGatewayModalCostList{
+							Modal: modal77,
+							Cost:  cost102,
+						})
+					}
+				}
 				cacheWriteCostList25 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList))
 				for cacheWriteCostListIndex25 := range r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList {
 					var ttl25 string
 					ttl25 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex25].TTL.ValueString()
 
-					var cost25 float64
-					cost25 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex25].Cost.ValueFloat64()
+					var cost103 float64
+					cost103 = r.Model.Targets[targetsIndex1].Config.Databricks.CacheWriteCostList[cacheWriteCostListIndex25].Cost.ValueFloat64()
 
 					cacheWriteCostList25 = append(cacheWriteCostList25, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl25,
-						Cost: cost25,
+						Cost: cost103,
 					})
 				}
 				contextWindowFactor25 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Databricks.ContextWindowFactor))
@@ -16245,6 +20718,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost25,
 					CacheReadCost:        cacheReadCost25,
 					CacheWriteCost:       cacheWriteCost25,
+					InputCostList:        inputCostList25,
+					OutputCostList:       outputCostList25,
+					CacheReadCostList:    cacheReadCostList25,
 					CacheWriteCostList:   cacheWriteCostList25,
 					ContextWindowFactor:  contextWindowFactor25,
 					ServiceTierFactor:    serviceTierFactor25,
@@ -16298,17 +20774,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost26 = nil
 				}
+				var inputCostList26 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList != nil {
+					inputCostList26 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList))
+					for inputCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList {
+						modal78 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList[inputCostListIndex26].Modal.ValueString())
+						var cost104 float64
+						cost104 = r.Model.Targets[targetsIndex1].Config.Deepseek.InputCostList[inputCostListIndex26].Cost.ValueFloat64()
+
+						inputCostList26 = append(inputCostList26, shared.AIGatewayModalCostList{
+							Modal: modal78,
+							Cost:  cost104,
+						})
+					}
+				}
+				var outputCostList26 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList != nil {
+					outputCostList26 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList))
+					for outputCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList {
+						modal79 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList[outputCostListIndex26].Modal.ValueString())
+						var cost105 float64
+						cost105 = r.Model.Targets[targetsIndex1].Config.Deepseek.OutputCostList[outputCostListIndex26].Cost.ValueFloat64()
+
+						outputCostList26 = append(outputCostList26, shared.AIGatewayModalCostList{
+							Modal: modal79,
+							Cost:  cost105,
+						})
+					}
+				}
+				var cacheReadCostList26 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList != nil {
+					cacheReadCostList26 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList))
+					for cacheReadCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList {
+						modal80 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex26].Modal.ValueString())
+						var cost106 float64
+						cost106 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheReadCostList[cacheReadCostListIndex26].Cost.ValueFloat64()
+
+						cacheReadCostList26 = append(cacheReadCostList26, shared.AIGatewayModalCostList{
+							Modal: modal80,
+							Cost:  cost106,
+						})
+					}
+				}
 				cacheWriteCostList26 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList))
 				for cacheWriteCostListIndex26 := range r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList {
 					var ttl26 string
 					ttl26 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex26].TTL.ValueString()
 
-					var cost26 float64
-					cost26 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex26].Cost.ValueFloat64()
+					var cost107 float64
+					cost107 = r.Model.Targets[targetsIndex1].Config.Deepseek.CacheWriteCostList[cacheWriteCostListIndex26].Cost.ValueFloat64()
 
 					cacheWriteCostList26 = append(cacheWriteCostList26, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl26,
-						Cost: cost26,
+						Cost: cost107,
 					})
 				}
 				contextWindowFactor26 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Deepseek.ContextWindowFactor))
@@ -16372,6 +20890,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost26,
 					CacheReadCost:        cacheReadCost26,
 					CacheWriteCost:       cacheWriteCost26,
+					InputCostList:        inputCostList26,
+					OutputCostList:       outputCostList26,
+					CacheReadCostList:    cacheReadCostList26,
 					CacheWriteCostList:   cacheWriteCostList26,
 					ContextWindowFactor:  contextWindowFactor26,
 					ServiceTierFactor:    serviceTierFactor26,
@@ -16424,17 +20945,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost27 = nil
 				}
+				var inputCostList27 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList != nil {
+					inputCostList27 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList))
+					for inputCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList {
+						modal81 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList[inputCostListIndex27].Modal.ValueString())
+						var cost108 float64
+						cost108 = r.Model.Targets[targetsIndex1].Config.Gemini.InputCostList[inputCostListIndex27].Cost.ValueFloat64()
+
+						inputCostList27 = append(inputCostList27, shared.AIGatewayModalCostList{
+							Modal: modal81,
+							Cost:  cost108,
+						})
+					}
+				}
+				var outputCostList27 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList != nil {
+					outputCostList27 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList))
+					for outputCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList {
+						modal82 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList[outputCostListIndex27].Modal.ValueString())
+						var cost109 float64
+						cost109 = r.Model.Targets[targetsIndex1].Config.Gemini.OutputCostList[outputCostListIndex27].Cost.ValueFloat64()
+
+						outputCostList27 = append(outputCostList27, shared.AIGatewayModalCostList{
+							Modal: modal82,
+							Cost:  cost109,
+						})
+					}
+				}
+				var cacheReadCostList27 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList != nil {
+					cacheReadCostList27 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList))
+					for cacheReadCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList {
+						modal83 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList[cacheReadCostListIndex27].Modal.ValueString())
+						var cost110 float64
+						cost110 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheReadCostList[cacheReadCostListIndex27].Cost.ValueFloat64()
+
+						cacheReadCostList27 = append(cacheReadCostList27, shared.AIGatewayModalCostList{
+							Modal: modal83,
+							Cost:  cost110,
+						})
+					}
+				}
 				cacheWriteCostList27 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList))
 				for cacheWriteCostListIndex27 := range r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList {
 					var ttl27 string
 					ttl27 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex27].TTL.ValueString()
 
-					var cost27 float64
-					cost27 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex27].Cost.ValueFloat64()
+					var cost111 float64
+					cost111 = r.Model.Targets[targetsIndex1].Config.Gemini.CacheWriteCostList[cacheWriteCostListIndex27].Cost.ValueFloat64()
 
 					cacheWriteCostList27 = append(cacheWriteCostList27, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl27,
-						Cost: cost27,
+						Cost: cost111,
 					})
 				}
 				contextWindowFactor27 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Gemini.ContextWindowFactor))
@@ -16515,6 +21078,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost27,
 					CacheReadCost:        cacheReadCost27,
 					CacheWriteCost:       cacheWriteCost27,
+					InputCostList:        inputCostList27,
+					OutputCostList:       outputCostList27,
+					CacheReadCostList:    cacheReadCostList27,
 					CacheWriteCostList:   cacheWriteCostList27,
 					ContextWindowFactor:  contextWindowFactor27,
 					ServiceTierFactor:    serviceTierFactor27,
@@ -16568,17 +21134,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost28 = nil
 				}
+				var inputCostList28 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList != nil {
+					inputCostList28 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList))
+					for inputCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList {
+						modal84 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList[inputCostListIndex28].Modal.ValueString())
+						var cost112 float64
+						cost112 = r.Model.Targets[targetsIndex1].Config.Huggingface.InputCostList[inputCostListIndex28].Cost.ValueFloat64()
+
+						inputCostList28 = append(inputCostList28, shared.AIGatewayModalCostList{
+							Modal: modal84,
+							Cost:  cost112,
+						})
+					}
+				}
+				var outputCostList28 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList != nil {
+					outputCostList28 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList))
+					for outputCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList {
+						modal85 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList[outputCostListIndex28].Modal.ValueString())
+						var cost113 float64
+						cost113 = r.Model.Targets[targetsIndex1].Config.Huggingface.OutputCostList[outputCostListIndex28].Cost.ValueFloat64()
+
+						outputCostList28 = append(outputCostList28, shared.AIGatewayModalCostList{
+							Modal: modal85,
+							Cost:  cost113,
+						})
+					}
+				}
+				var cacheReadCostList28 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList != nil {
+					cacheReadCostList28 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList))
+					for cacheReadCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList {
+						modal86 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex28].Modal.ValueString())
+						var cost114 float64
+						cost114 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheReadCostList[cacheReadCostListIndex28].Cost.ValueFloat64()
+
+						cacheReadCostList28 = append(cacheReadCostList28, shared.AIGatewayModalCostList{
+							Modal: modal86,
+							Cost:  cost114,
+						})
+					}
+				}
 				cacheWriteCostList28 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList))
 				for cacheWriteCostListIndex28 := range r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList {
 					var ttl28 string
 					ttl28 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex28].TTL.ValueString()
 
-					var cost28 float64
-					cost28 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex28].Cost.ValueFloat64()
+					var cost115 float64
+					cost115 = r.Model.Targets[targetsIndex1].Config.Huggingface.CacheWriteCostList[cacheWriteCostListIndex28].Cost.ValueFloat64()
 
 					cacheWriteCostList28 = append(cacheWriteCostList28, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl28,
-						Cost: cost28,
+						Cost: cost115,
 					})
 				}
 				contextWindowFactor28 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Huggingface.ContextWindowFactor))
@@ -16654,6 +21262,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost28,
 					CacheReadCost:        cacheReadCost28,
 					CacheWriteCost:       cacheWriteCost28,
+					InputCostList:        inputCostList28,
+					OutputCostList:       outputCostList28,
+					CacheReadCostList:    cacheReadCostList28,
 					CacheWriteCostList:   cacheWriteCostList28,
 					ContextWindowFactor:  contextWindowFactor28,
 					ServiceTierFactor:    serviceTierFactor28,
@@ -16708,17 +21319,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost29 = nil
 				}
+				var inputCostList29 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList != nil {
+					inputCostList29 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList))
+					for inputCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList {
+						modal87 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList[inputCostListIndex29].Modal.ValueString())
+						var cost116 float64
+						cost116 = r.Model.Targets[targetsIndex1].Config.Kimi.InputCostList[inputCostListIndex29].Cost.ValueFloat64()
+
+						inputCostList29 = append(inputCostList29, shared.AIGatewayModalCostList{
+							Modal: modal87,
+							Cost:  cost116,
+						})
+					}
+				}
+				var outputCostList29 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList != nil {
+					outputCostList29 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList))
+					for outputCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList {
+						modal88 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList[outputCostListIndex29].Modal.ValueString())
+						var cost117 float64
+						cost117 = r.Model.Targets[targetsIndex1].Config.Kimi.OutputCostList[outputCostListIndex29].Cost.ValueFloat64()
+
+						outputCostList29 = append(outputCostList29, shared.AIGatewayModalCostList{
+							Modal: modal88,
+							Cost:  cost117,
+						})
+					}
+				}
+				var cacheReadCostList29 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList != nil {
+					cacheReadCostList29 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList))
+					for cacheReadCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList {
+						modal89 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList[cacheReadCostListIndex29].Modal.ValueString())
+						var cost118 float64
+						cost118 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheReadCostList[cacheReadCostListIndex29].Cost.ValueFloat64()
+
+						cacheReadCostList29 = append(cacheReadCostList29, shared.AIGatewayModalCostList{
+							Modal: modal89,
+							Cost:  cost118,
+						})
+					}
+				}
 				cacheWriteCostList29 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList))
 				for cacheWriteCostListIndex29 := range r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList {
 					var ttl29 string
 					ttl29 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex29].TTL.ValueString()
 
-					var cost29 float64
-					cost29 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex29].Cost.ValueFloat64()
+					var cost119 float64
+					cost119 = r.Model.Targets[targetsIndex1].Config.Kimi.CacheWriteCostList[cacheWriteCostListIndex29].Cost.ValueFloat64()
 
 					cacheWriteCostList29 = append(cacheWriteCostList29, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl29,
-						Cost: cost29,
+						Cost: cost119,
 					})
 				}
 				contextWindowFactor29 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Kimi.ContextWindowFactor))
@@ -16788,6 +21441,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost29,
 					CacheReadCost:        cacheReadCost29,
 					CacheWriteCost:       cacheWriteCost29,
+					InputCostList:        inputCostList29,
+					OutputCostList:       outputCostList29,
+					CacheReadCostList:    cacheReadCostList29,
 					CacheWriteCostList:   cacheWriteCostList29,
 					ContextWindowFactor:  contextWindowFactor29,
 					ServiceTierFactor:    serviceTierFactor29,
@@ -16841,17 +21497,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost30 = nil
 				}
+				var inputCostList30 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList != nil {
+					inputCostList30 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList))
+					for inputCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList {
+						modal90 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList[inputCostListIndex30].Modal.ValueString())
+						var cost120 float64
+						cost120 = r.Model.Targets[targetsIndex1].Config.Llama2.InputCostList[inputCostListIndex30].Cost.ValueFloat64()
+
+						inputCostList30 = append(inputCostList30, shared.AIGatewayModalCostList{
+							Modal: modal90,
+							Cost:  cost120,
+						})
+					}
+				}
+				var outputCostList30 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList != nil {
+					outputCostList30 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList))
+					for outputCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList {
+						modal91 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList[outputCostListIndex30].Modal.ValueString())
+						var cost121 float64
+						cost121 = r.Model.Targets[targetsIndex1].Config.Llama2.OutputCostList[outputCostListIndex30].Cost.ValueFloat64()
+
+						outputCostList30 = append(outputCostList30, shared.AIGatewayModalCostList{
+							Modal: modal91,
+							Cost:  cost121,
+						})
+					}
+				}
+				var cacheReadCostList30 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList != nil {
+					cacheReadCostList30 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList))
+					for cacheReadCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList {
+						modal92 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList[cacheReadCostListIndex30].Modal.ValueString())
+						var cost122 float64
+						cost122 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheReadCostList[cacheReadCostListIndex30].Cost.ValueFloat64()
+
+						cacheReadCostList30 = append(cacheReadCostList30, shared.AIGatewayModalCostList{
+							Modal: modal92,
+							Cost:  cost122,
+						})
+					}
+				}
 				cacheWriteCostList30 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList))
 				for cacheWriteCostListIndex30 := range r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList {
 					var ttl30 string
 					ttl30 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex30].TTL.ValueString()
 
-					var cost30 float64
-					cost30 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex30].Cost.ValueFloat64()
+					var cost123 float64
+					cost123 = r.Model.Targets[targetsIndex1].Config.Llama2.CacheWriteCostList[cacheWriteCostListIndex30].Cost.ValueFloat64()
 
 					cacheWriteCostList30 = append(cacheWriteCostList30, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl30,
-						Cost: cost30,
+						Cost: cost123,
 					})
 				}
 				contextWindowFactor30 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Llama2.ContextWindowFactor))
@@ -16913,6 +21611,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost30,
 					CacheReadCost:        cacheReadCost30,
 					CacheWriteCost:       cacheWriteCost30,
+					InputCostList:        inputCostList30,
+					OutputCostList:       outputCostList30,
+					CacheReadCostList:    cacheReadCostList30,
 					CacheWriteCostList:   cacheWriteCostList30,
 					ContextWindowFactor:  contextWindowFactor30,
 					ServiceTierFactor:    serviceTierFactor30,
@@ -16966,17 +21667,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost31 = nil
 				}
+				var inputCostList31 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList != nil {
+					inputCostList31 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList))
+					for inputCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList {
+						modal93 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList[inputCostListIndex31].Modal.ValueString())
+						var cost124 float64
+						cost124 = r.Model.Targets[targetsIndex1].Config.Mistral.InputCostList[inputCostListIndex31].Cost.ValueFloat64()
+
+						inputCostList31 = append(inputCostList31, shared.AIGatewayModalCostList{
+							Modal: modal93,
+							Cost:  cost124,
+						})
+					}
+				}
+				var outputCostList31 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList != nil {
+					outputCostList31 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList))
+					for outputCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList {
+						modal94 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList[outputCostListIndex31].Modal.ValueString())
+						var cost125 float64
+						cost125 = r.Model.Targets[targetsIndex1].Config.Mistral.OutputCostList[outputCostListIndex31].Cost.ValueFloat64()
+
+						outputCostList31 = append(outputCostList31, shared.AIGatewayModalCostList{
+							Modal: modal94,
+							Cost:  cost125,
+						})
+					}
+				}
+				var cacheReadCostList31 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList != nil {
+					cacheReadCostList31 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList))
+					for cacheReadCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList {
+						modal95 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList[cacheReadCostListIndex31].Modal.ValueString())
+						var cost126 float64
+						cost126 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheReadCostList[cacheReadCostListIndex31].Cost.ValueFloat64()
+
+						cacheReadCostList31 = append(cacheReadCostList31, shared.AIGatewayModalCostList{
+							Modal: modal95,
+							Cost:  cost126,
+						})
+					}
+				}
 				cacheWriteCostList31 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList))
 				for cacheWriteCostListIndex31 := range r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList {
 					var ttl31 string
 					ttl31 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex31].TTL.ValueString()
 
-					var cost31 float64
-					cost31 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex31].Cost.ValueFloat64()
+					var cost127 float64
+					cost127 = r.Model.Targets[targetsIndex1].Config.Mistral.CacheWriteCostList[cacheWriteCostListIndex31].Cost.ValueFloat64()
 
 					cacheWriteCostList31 = append(cacheWriteCostList31, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl31,
-						Cost: cost31,
+						Cost: cost127,
 					})
 				}
 				contextWindowFactor31 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Mistral.ContextWindowFactor))
@@ -17041,6 +21784,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost31,
 					CacheReadCost:        cacheReadCost31,
 					CacheWriteCost:       cacheWriteCost31,
+					InputCostList:        inputCostList31,
+					OutputCostList:       outputCostList31,
+					CacheReadCostList:    cacheReadCostList31,
 					CacheWriteCostList:   cacheWriteCostList31,
 					ContextWindowFactor:  contextWindowFactor31,
 					ServiceTierFactor:    serviceTierFactor31,
@@ -17094,17 +21840,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost32 = nil
 				}
+				var inputCostList32 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList != nil {
+					inputCostList32 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList))
+					for inputCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList {
+						modal96 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList[inputCostListIndex32].Modal.ValueString())
+						var cost128 float64
+						cost128 = r.Model.Targets[targetsIndex1].Config.Ollama.InputCostList[inputCostListIndex32].Cost.ValueFloat64()
+
+						inputCostList32 = append(inputCostList32, shared.AIGatewayModalCostList{
+							Modal: modal96,
+							Cost:  cost128,
+						})
+					}
+				}
+				var outputCostList32 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList != nil {
+					outputCostList32 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList))
+					for outputCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList {
+						modal97 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList[outputCostListIndex32].Modal.ValueString())
+						var cost129 float64
+						cost129 = r.Model.Targets[targetsIndex1].Config.Ollama.OutputCostList[outputCostListIndex32].Cost.ValueFloat64()
+
+						outputCostList32 = append(outputCostList32, shared.AIGatewayModalCostList{
+							Modal: modal97,
+							Cost:  cost129,
+						})
+					}
+				}
+				var cacheReadCostList32 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList != nil {
+					cacheReadCostList32 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList))
+					for cacheReadCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList {
+						modal98 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList[cacheReadCostListIndex32].Modal.ValueString())
+						var cost130 float64
+						cost130 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheReadCostList[cacheReadCostListIndex32].Cost.ValueFloat64()
+
+						cacheReadCostList32 = append(cacheReadCostList32, shared.AIGatewayModalCostList{
+							Modal: modal98,
+							Cost:  cost130,
+						})
+					}
+				}
 				cacheWriteCostList32 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList))
 				for cacheWriteCostListIndex32 := range r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList {
 					var ttl32 string
 					ttl32 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex32].TTL.ValueString()
 
-					var cost32 float64
-					cost32 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex32].Cost.ValueFloat64()
+					var cost131 float64
+					cost131 = r.Model.Targets[targetsIndex1].Config.Ollama.CacheWriteCostList[cacheWriteCostListIndex32].Cost.ValueFloat64()
 
 					cacheWriteCostList32 = append(cacheWriteCostList32, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl32,
-						Cost: cost32,
+						Cost: cost131,
 					})
 				}
 				contextWindowFactor32 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Ollama.ContextWindowFactor))
@@ -17168,6 +21956,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost32,
 					CacheReadCost:        cacheReadCost32,
 					CacheWriteCost:       cacheWriteCost32,
+					InputCostList:        inputCostList32,
+					OutputCostList:       outputCostList32,
+					CacheReadCostList:    cacheReadCostList32,
 					CacheWriteCostList:   cacheWriteCostList32,
 					ContextWindowFactor:  contextWindowFactor32,
 					ServiceTierFactor:    serviceTierFactor32,
@@ -17220,17 +22011,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost33 = nil
 				}
+				var inputCostList33 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Openai.InputCostList != nil {
+					inputCostList33 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.InputCostList))
+					for inputCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.InputCostList {
+						modal99 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Openai.InputCostList[inputCostListIndex33].Modal.ValueString())
+						var cost132 float64
+						cost132 = r.Model.Targets[targetsIndex1].Config.Openai.InputCostList[inputCostListIndex33].Cost.ValueFloat64()
+
+						inputCostList33 = append(inputCostList33, shared.AIGatewayModalCostList{
+							Modal: modal99,
+							Cost:  cost132,
+						})
+					}
+				}
+				var outputCostList33 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList != nil {
+					outputCostList33 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList))
+					for outputCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList {
+						modal100 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList[outputCostListIndex33].Modal.ValueString())
+						var cost133 float64
+						cost133 = r.Model.Targets[targetsIndex1].Config.Openai.OutputCostList[outputCostListIndex33].Cost.ValueFloat64()
+
+						outputCostList33 = append(outputCostList33, shared.AIGatewayModalCostList{
+							Modal: modal100,
+							Cost:  cost133,
+						})
+					}
+				}
+				var cacheReadCostList33 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList != nil {
+					cacheReadCostList33 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList))
+					for cacheReadCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList {
+						modal101 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList[cacheReadCostListIndex33].Modal.ValueString())
+						var cost134 float64
+						cost134 = r.Model.Targets[targetsIndex1].Config.Openai.CacheReadCostList[cacheReadCostListIndex33].Cost.ValueFloat64()
+
+						cacheReadCostList33 = append(cacheReadCostList33, shared.AIGatewayModalCostList{
+							Modal: modal101,
+							Cost:  cost134,
+						})
+					}
+				}
 				cacheWriteCostList33 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList))
 				for cacheWriteCostListIndex33 := range r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList {
 					var ttl33 string
 					ttl33 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex33].TTL.ValueString()
 
-					var cost33 float64
-					cost33 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex33].Cost.ValueFloat64()
+					var cost135 float64
+					cost135 = r.Model.Targets[targetsIndex1].Config.Openai.CacheWriteCostList[cacheWriteCostListIndex33].Cost.ValueFloat64()
 
 					cacheWriteCostList33 = append(cacheWriteCostList33, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl33,
-						Cost: cost33,
+						Cost: cost135,
 					})
 				}
 				contextWindowFactor33 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Openai.ContextWindowFactor))
@@ -17294,6 +22127,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost33,
 					CacheReadCost:        cacheReadCost33,
 					CacheWriteCost:       cacheWriteCost33,
+					InputCostList:        inputCostList33,
+					OutputCostList:       outputCostList33,
+					CacheReadCostList:    cacheReadCostList33,
 					CacheWriteCostList:   cacheWriteCostList33,
 					ContextWindowFactor:  contextWindowFactor33,
 					ServiceTierFactor:    serviceTierFactor33,
@@ -17346,17 +22182,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost34 = nil
 				}
+				var inputCostList34 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList != nil {
+					inputCostList34 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList))
+					for inputCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList {
+						modal102 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList[inputCostListIndex34].Modal.ValueString())
+						var cost136 float64
+						cost136 = r.Model.Targets[targetsIndex1].Config.Vercel.InputCostList[inputCostListIndex34].Cost.ValueFloat64()
+
+						inputCostList34 = append(inputCostList34, shared.AIGatewayModalCostList{
+							Modal: modal102,
+							Cost:  cost136,
+						})
+					}
+				}
+				var outputCostList34 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList != nil {
+					outputCostList34 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList))
+					for outputCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList {
+						modal103 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList[outputCostListIndex34].Modal.ValueString())
+						var cost137 float64
+						cost137 = r.Model.Targets[targetsIndex1].Config.Vercel.OutputCostList[outputCostListIndex34].Cost.ValueFloat64()
+
+						outputCostList34 = append(outputCostList34, shared.AIGatewayModalCostList{
+							Modal: modal103,
+							Cost:  cost137,
+						})
+					}
+				}
+				var cacheReadCostList34 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList != nil {
+					cacheReadCostList34 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList))
+					for cacheReadCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList {
+						modal104 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList[cacheReadCostListIndex34].Modal.ValueString())
+						var cost138 float64
+						cost138 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheReadCostList[cacheReadCostListIndex34].Cost.ValueFloat64()
+
+						cacheReadCostList34 = append(cacheReadCostList34, shared.AIGatewayModalCostList{
+							Modal: modal104,
+							Cost:  cost138,
+						})
+					}
+				}
 				cacheWriteCostList34 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList))
 				for cacheWriteCostListIndex34 := range r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList {
 					var ttl34 string
 					ttl34 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex34].TTL.ValueString()
 
-					var cost34 float64
-					cost34 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex34].Cost.ValueFloat64()
+					var cost139 float64
+					cost139 = r.Model.Targets[targetsIndex1].Config.Vercel.CacheWriteCostList[cacheWriteCostListIndex34].Cost.ValueFloat64()
 
 					cacheWriteCostList34 = append(cacheWriteCostList34, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl34,
-						Cost: cost34,
+						Cost: cost139,
 					})
 				}
 				contextWindowFactor34 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vercel.ContextWindowFactor))
@@ -17420,6 +22298,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost34,
 					CacheReadCost:        cacheReadCost34,
 					CacheWriteCost:       cacheWriteCost34,
+					InputCostList:        inputCostList34,
+					OutputCostList:       outputCostList34,
+					CacheReadCostList:    cacheReadCostList34,
 					CacheWriteCostList:   cacheWriteCostList34,
 					ContextWindowFactor:  contextWindowFactor34,
 					ServiceTierFactor:    serviceTierFactor34,
@@ -17472,17 +22353,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost35 = nil
 				}
+				var inputCostList35 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList != nil {
+					inputCostList35 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList))
+					for inputCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList {
+						modal105 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList[inputCostListIndex35].Modal.ValueString())
+						var cost140 float64
+						cost140 = r.Model.Targets[targetsIndex1].Config.Vllm.InputCostList[inputCostListIndex35].Cost.ValueFloat64()
+
+						inputCostList35 = append(inputCostList35, shared.AIGatewayModalCostList{
+							Modal: modal105,
+							Cost:  cost140,
+						})
+					}
+				}
+				var outputCostList35 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList != nil {
+					outputCostList35 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList))
+					for outputCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList {
+						modal106 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList[outputCostListIndex35].Modal.ValueString())
+						var cost141 float64
+						cost141 = r.Model.Targets[targetsIndex1].Config.Vllm.OutputCostList[outputCostListIndex35].Cost.ValueFloat64()
+
+						outputCostList35 = append(outputCostList35, shared.AIGatewayModalCostList{
+							Modal: modal106,
+							Cost:  cost141,
+						})
+					}
+				}
+				var cacheReadCostList35 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList != nil {
+					cacheReadCostList35 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList))
+					for cacheReadCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList {
+						modal107 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList[cacheReadCostListIndex35].Modal.ValueString())
+						var cost142 float64
+						cost142 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheReadCostList[cacheReadCostListIndex35].Cost.ValueFloat64()
+
+						cacheReadCostList35 = append(cacheReadCostList35, shared.AIGatewayModalCostList{
+							Modal: modal107,
+							Cost:  cost142,
+						})
+					}
+				}
 				cacheWriteCostList35 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList))
 				for cacheWriteCostListIndex35 := range r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList {
 					var ttl35 string
 					ttl35 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex35].TTL.ValueString()
 
-					var cost35 float64
-					cost35 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex35].Cost.ValueFloat64()
+					var cost143 float64
+					cost143 = r.Model.Targets[targetsIndex1].Config.Vllm.CacheWriteCostList[cacheWriteCostListIndex35].Cost.ValueFloat64()
 
 					cacheWriteCostList35 = append(cacheWriteCostList35, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl35,
-						Cost: cost35,
+						Cost: cost143,
 					})
 				}
 				contextWindowFactor35 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Vllm.ContextWindowFactor))
@@ -17543,6 +22466,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost35,
 					CacheReadCost:        cacheReadCost35,
 					CacheWriteCost:       cacheWriteCost35,
+					InputCostList:        inputCostList35,
+					OutputCostList:       outputCostList35,
+					CacheReadCostList:    cacheReadCostList35,
 					CacheWriteCostList:   cacheWriteCostList35,
 					ContextWindowFactor:  contextWindowFactor35,
 					ServiceTierFactor:    serviceTierFactor35,
@@ -17595,17 +22521,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost36 = nil
 				}
+				var inputCostList36 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Xai.InputCostList != nil {
+					inputCostList36 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.InputCostList))
+					for inputCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.InputCostList {
+						modal108 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Xai.InputCostList[inputCostListIndex36].Modal.ValueString())
+						var cost144 float64
+						cost144 = r.Model.Targets[targetsIndex1].Config.Xai.InputCostList[inputCostListIndex36].Cost.ValueFloat64()
+
+						inputCostList36 = append(inputCostList36, shared.AIGatewayModalCostList{
+							Modal: modal108,
+							Cost:  cost144,
+						})
+					}
+				}
+				var outputCostList36 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList != nil {
+					outputCostList36 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList))
+					for outputCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList {
+						modal109 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList[outputCostListIndex36].Modal.ValueString())
+						var cost145 float64
+						cost145 = r.Model.Targets[targetsIndex1].Config.Xai.OutputCostList[outputCostListIndex36].Cost.ValueFloat64()
+
+						outputCostList36 = append(outputCostList36, shared.AIGatewayModalCostList{
+							Modal: modal109,
+							Cost:  cost145,
+						})
+					}
+				}
+				var cacheReadCostList36 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList != nil {
+					cacheReadCostList36 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList))
+					for cacheReadCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList {
+						modal110 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList[cacheReadCostListIndex36].Modal.ValueString())
+						var cost146 float64
+						cost146 = r.Model.Targets[targetsIndex1].Config.Xai.CacheReadCostList[cacheReadCostListIndex36].Cost.ValueFloat64()
+
+						cacheReadCostList36 = append(cacheReadCostList36, shared.AIGatewayModalCostList{
+							Modal: modal110,
+							Cost:  cost146,
+						})
+					}
+				}
 				cacheWriteCostList36 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList))
 				for cacheWriteCostListIndex36 := range r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList {
 					var ttl36 string
 					ttl36 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex36].TTL.ValueString()
 
-					var cost36 float64
-					cost36 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex36].Cost.ValueFloat64()
+					var cost147 float64
+					cost147 = r.Model.Targets[targetsIndex1].Config.Xai.CacheWriteCostList[cacheWriteCostListIndex36].Cost.ValueFloat64()
 
 					cacheWriteCostList36 = append(cacheWriteCostList36, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl36,
-						Cost: cost36,
+						Cost: cost147,
 					})
 				}
 				contextWindowFactor36 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Xai.ContextWindowFactor))
@@ -17669,6 +22637,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost36,
 					CacheReadCost:        cacheReadCost36,
 					CacheWriteCost:       cacheWriteCost36,
+					InputCostList:        inputCostList36,
+					OutputCostList:       outputCostList36,
+					CacheReadCostList:    cacheReadCostList36,
 					CacheWriteCostList:   cacheWriteCostList36,
 					ContextWindowFactor:  contextWindowFactor36,
 					ServiceTierFactor:    serviceTierFactor36,
@@ -17721,17 +22692,59 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				} else {
 					cacheWriteCost37 = nil
 				}
+				var inputCostList37 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList != nil {
+					inputCostList37 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList))
+					for inputCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList {
+						modal111 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList[inputCostListIndex37].Modal.ValueString())
+						var cost148 float64
+						cost148 = r.Model.Targets[targetsIndex1].Config.Sagemaker.InputCostList[inputCostListIndex37].Cost.ValueFloat64()
+
+						inputCostList37 = append(inputCostList37, shared.AIGatewayModalCostList{
+							Modal: modal111,
+							Cost:  cost148,
+						})
+					}
+				}
+				var outputCostList37 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList != nil {
+					outputCostList37 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList))
+					for outputCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList {
+						modal112 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList[outputCostListIndex37].Modal.ValueString())
+						var cost149 float64
+						cost149 = r.Model.Targets[targetsIndex1].Config.Sagemaker.OutputCostList[outputCostListIndex37].Cost.ValueFloat64()
+
+						outputCostList37 = append(outputCostList37, shared.AIGatewayModalCostList{
+							Modal: modal112,
+							Cost:  cost149,
+						})
+					}
+				}
+				var cacheReadCostList37 []shared.AIGatewayModalCostList
+				if r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList != nil {
+					cacheReadCostList37 = make([]shared.AIGatewayModalCostList, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList))
+					for cacheReadCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList {
+						modal113 := shared.Modal(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex37].Modal.ValueString())
+						var cost150 float64
+						cost150 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheReadCostList[cacheReadCostListIndex37].Cost.ValueFloat64()
+
+						cacheReadCostList37 = append(cacheReadCostList37, shared.AIGatewayModalCostList{
+							Modal: modal113,
+							Cost:  cost150,
+						})
+					}
+				}
 				cacheWriteCostList37 := make([]shared.AIGatewayCacheWriteCost, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList))
 				for cacheWriteCostListIndex37 := range r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList {
 					var ttl37 string
 					ttl37 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex37].TTL.ValueString()
 
-					var cost37 float64
-					cost37 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex37].Cost.ValueFloat64()
+					var cost151 float64
+					cost151 = r.Model.Targets[targetsIndex1].Config.Sagemaker.CacheWriteCostList[cacheWriteCostListIndex37].Cost.ValueFloat64()
 
 					cacheWriteCostList37 = append(cacheWriteCostList37, shared.AIGatewayCacheWriteCost{
 						TTL:  ttl37,
-						Cost: cost37,
+						Cost: cost151,
 					})
 				}
 				contextWindowFactor37 := make([]shared.AIGatewayContextWindowFactor, 0, len(r.Model.Targets[targetsIndex1].Config.Sagemaker.ContextWindowFactor))
@@ -17854,6 +22867,9 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 					OutputCost:           outputCost37,
 					CacheReadCost:        cacheReadCost37,
 					CacheWriteCost:       cacheWriteCost37,
+					InputCostList:        inputCostList37,
+					OutputCostList:       outputCostList37,
+					CacheReadCostList:    cacheReadCostList37,
 					CacheWriteCostList:   cacheWriteCostList37,
 					ContextWindowFactor:  contextWindowFactor37,
 					ServiceTierFactor:    serviceTierFactor37,

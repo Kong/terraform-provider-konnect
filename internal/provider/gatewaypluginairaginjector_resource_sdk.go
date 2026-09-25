@@ -172,11 +172,11 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			if resp.Config.Vectordb.Redis == nil {
 				r.Config.Vectordb.Redis = nil
 			} else {
-				r.Config.Vectordb.Redis = &tfTypes.ClusterCacheRedis{}
+				r.Config.Vectordb.Redis = &tfTypes.PartialVectordbRedis{}
 				if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
 					r.Config.Vectordb.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialRedisEeCloudAuthentication{}
 					if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -193,6 +193,51 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 					r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret)
 					r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID)
 					r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON)
+					if resp.Config.Vectordb.Redis.CloudAuthentication.Oauth == nil {
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth = nil
+					} else {
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth = &tfTypes.PartialRedisEeOauth{}
+						if resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.AuthMethod != nil {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.AuthMethod))
+						} else {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+						}
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientID)
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecret)
+						if resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+						} else {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+						}
+						if resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.GrantType != nil {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.GrantType))
+						} else {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.GrantType = types.StringNull()
+						}
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.Password)
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsername)
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsernameClaim)
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes))
+						for _, v := range resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes = append(r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+						}
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.SslVerify)
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Timeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.Timeout)
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenEndpoint)
+						if resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders))
+							for key, value := range resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders {
+								r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders[key] = types.StringValue(value)
+							}
+						}
+						if resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+							r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs))
+							for key1, value1 := range resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+								r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs[key1] = types.StringValue(value1)
+							}
+						}
+						r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.Oauth.Username)
+					}
 				}
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
@@ -1054,6 +1099,122 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 				} else {
 					gcpServiceAccountJson1 = nil
 				}
+				var oauth *shared.AiRagInjectorPluginOauth
+				if r.Config.Vectordb.Redis.CloudAuthentication.Oauth != nil {
+					authMethod := new(shared.AiRagInjectorPluginAuthMethod)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+						*authMethod = shared.AiRagInjectorPluginAuthMethod(r.Config.Vectordb.Redis.CloudAuthentication.Oauth.AuthMethod.ValueString())
+					} else {
+						authMethod = nil
+					}
+					clientID := new(string)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientID.IsNull() {
+						*clientID = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientID.ValueString()
+					} else {
+						clientID = nil
+					}
+					clientSecret := new(string)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+						*clientSecret = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecret.ValueString()
+					} else {
+						clientSecret = nil
+					}
+					clientSecretJwtAlg := new(shared.AiRagInjectorPluginClientSecretJwtAlg)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+						*clientSecretJwtAlg = shared.AiRagInjectorPluginClientSecretJwtAlg(r.Config.Vectordb.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+					} else {
+						clientSecretJwtAlg = nil
+					}
+					grantType := new(shared.AiRagInjectorPluginGrantType)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.GrantType.IsNull() {
+						*grantType = shared.AiRagInjectorPluginGrantType(r.Config.Vectordb.Redis.CloudAuthentication.Oauth.GrantType.ValueString())
+					} else {
+						grantType = nil
+					}
+					password1 := new(string)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Password.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Password.IsNull() {
+						*password1 = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Password.ValueString()
+					} else {
+						password1 = nil
+					}
+					redisUsername := new(string)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+						*redisUsername = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsername.ValueString()
+					} else {
+						redisUsername = nil
+					}
+					redisUsernameClaim := new(string)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+						*redisUsernameClaim = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+					} else {
+						redisUsernameClaim = nil
+					}
+					scopes := make([]string, 0, len(r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes))
+					for scopesIndex := range r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes {
+						scopes = append(scopes, r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Scopes[scopesIndex].ValueString())
+					}
+					sslVerify1 := new(bool)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.SslVerify.IsNull() {
+						*sslVerify1 = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.SslVerify.ValueBool()
+					} else {
+						sslVerify1 = nil
+					}
+					timeout1 := new(int64)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Timeout.IsNull() {
+						*timeout1 = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Timeout.ValueInt64()
+					} else {
+						timeout1 = nil
+					}
+					tokenEndpoint := new(string)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+						*tokenEndpoint = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+					} else {
+						tokenEndpoint = nil
+					}
+					var tokenHeaders map[string]string
+					if r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+						tokenHeaders = make(map[string]string)
+						for tokenHeadersKey := range r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders {
+							var tokenHeadersInst string
+							tokenHeadersInst = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey].ValueString()
+
+							tokenHeaders[tokenHeadersKey] = tokenHeadersInst
+						}
+					}
+					var tokenPostArgs map[string]string
+					if r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+						tokenPostArgs = make(map[string]string)
+						for tokenPostArgsKey := range r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+							var tokenPostArgsInst string
+							tokenPostArgsInst = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey].ValueString()
+
+							tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
+						}
+					}
+					username := new(string)
+					if !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Username.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Username.IsNull() {
+						*username = r.Config.Vectordb.Redis.CloudAuthentication.Oauth.Username.ValueString()
+					} else {
+						username = nil
+					}
+					oauth = &shared.AiRagInjectorPluginOauth{
+						AuthMethod:         authMethod,
+						ClientID:           clientID,
+						ClientSecret:       clientSecret,
+						ClientSecretJwtAlg: clientSecretJwtAlg,
+						GrantType:          grantType,
+						Password:           password1,
+						RedisUsername:      redisUsername,
+						RedisUsernameClaim: redisUsernameClaim,
+						Scopes:             scopes,
+						SslVerify:          sslVerify1,
+						Timeout:            timeout1,
+						TokenEndpoint:      tokenEndpoint,
+						TokenHeaders:       tokenHeaders,
+						TokenPostArgs:      tokenPostArgs,
+						Username:           username,
+					}
+				}
 				cloudAuthentication = &shared.AiRagInjectorPluginCloudAuthentication{
 					AuthProvider:          authProvider,
 					AwsAccessKeyID:        awsAccessKeyId1,
@@ -1067,6 +1228,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 					AzureClientSecret:     azureClientSecret1,
 					AzureTenantID:         azureTenantId1,
 					GcpServiceAccountJSON: gcpServiceAccountJson1,
+					Oauth:                 oauth,
 				}
 			}
 			clusterMaxRedirections := new(int64)
@@ -1133,11 +1295,11 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 			} else {
 				keepalivePoolSize = nil
 			}
-			password1 := new(string)
+			password2 := new(string)
 			if !r.Config.Vectordb.Redis.Password.IsUnknown() && !r.Config.Vectordb.Redis.Password.IsNull() {
-				*password1 = r.Config.Vectordb.Redis.Password.ValueString()
+				*password2 = r.Config.Vectordb.Redis.Password.ValueString()
 			} else {
-				password1 = nil
+				password2 = nil
 			}
 			port2 := new(string)
 			if !r.Config.Vectordb.Redis.Port.IsUnknown() && !r.Config.Vectordb.Redis.Port.IsNull() {
@@ -1215,17 +1377,17 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 			} else {
 				ssl1 = nil
 			}
-			sslVerify1 := new(bool)
+			sslVerify2 := new(bool)
 			if !r.Config.Vectordb.Redis.SslVerify.IsUnknown() && !r.Config.Vectordb.Redis.SslVerify.IsNull() {
-				*sslVerify1 = r.Config.Vectordb.Redis.SslVerify.ValueBool()
+				*sslVerify2 = r.Config.Vectordb.Redis.SslVerify.ValueBool()
 			} else {
-				sslVerify1 = nil
+				sslVerify2 = nil
 			}
-			username := new(string)
+			username1 := new(string)
 			if !r.Config.Vectordb.Redis.Username.IsUnknown() && !r.Config.Vectordb.Redis.Username.IsNull() {
-				*username = r.Config.Vectordb.Redis.Username.ValueString()
+				*username1 = r.Config.Vectordb.Redis.Username.ValueString()
 			} else {
-				username = nil
+				username1 = nil
 			}
 			redis = &shared.AiRagInjectorPluginRedis{
 				CloudAuthentication:    cloudAuthentication,
@@ -1237,7 +1399,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 				Host:                   host1,
 				KeepaliveBacklog:       keepaliveBacklog,
 				KeepalivePoolSize:      keepalivePoolSize,
-				Password:               password1,
+				Password:               password2,
 				Port:                   port2,
 				ReadTimeout:            readTimeout,
 				SendTimeout:            sendTimeout,
@@ -1248,8 +1410,8 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 				SentinelUsername:       sentinelUsername,
 				ServerName:             serverName,
 				Ssl:                    ssl1,
-				SslVerify:              sslVerify1,
-				Username:               username,
+				SslVerify:              sslVerify2,
+				Username:               username1,
 			}
 		}
 		strategy := shared.AiRagInjectorPluginStrategy(r.Config.Vectordb.Strategy.ValueString())

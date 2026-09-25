@@ -318,6 +318,74 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"allowed_versions": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong` + "\n" +
+									`implements, which is the default. When set, ` + "`" + `server/discover` + "`" + ` advertises exactly this` + "\n" +
+									`list and a request declaring anything else is rejected. Listing only per-request` + "\n" +
+									`revisions refuses handshake clients.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"discover": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+									"tools_list": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+								},
+								MarkdownDescription: `Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol` + "\n" +
+									`revision that defines them receive them.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -1009,7 +1077,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 						},
-						Description: `Routing, logging, and server configuration for the MCP Server. Not Null`,
+						Description: `Server-side configuration specific to modes where Kong answers as the MCP server. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -2002,6 +2070,74 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"allowed_versions": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong` + "\n" +
+									`implements, which is the default. When set, ` + "`" + `server/discover` + "`" + ` advertises exactly this` + "\n" +
+									`list and a request declaring anything else is rejected. Listing only per-request` + "\n" +
+									`revisions refuses handshake clients.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"discover": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+									"tools_list": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+								},
+								MarkdownDescription: `Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol` + "\n" +
+									`revision that defines them receive them.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -2629,7 +2765,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Description: `Server-side configuration for the MCP Server.`,
 							},
 						},
-						Description: `Routing, logging, and server configuration for the MCP Server. Not Null`,
+						Description: `Server-side configuration specific to modes where Kong answers as the MCP server. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -3765,7 +3901,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 								},
-								Description: `Server-side configuration specific to modes where Kong answers as the MCP server.`,
+								Description: `Server-side configuration for the MCP Server.`,
 							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
@@ -4703,6 +4839,15 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										Description: `Configuration for an Upstream Server's MCP Server Tools' Authentication.`,
+									},
+									"upstream_protocol_version": schema.StringAttribute{
+										Optional: true,
+										MarkdownDescription: `The MCP protocol revision Kong speaks to the upstream MCP server. Leave unset to` + "\n" +
+											`negotiate a handshake revision with an ` + "`" + `initialize` + "`" + ` exchange, which is the default. Set a` + "\n" +
+											`per-request revision to reach an upstream that answers no handshake and mints no session.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.` + "\n" +
+											`possible known values include one of ["2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26"]`,
 									},
 								},
 								Description: `Server-side configuration specific to ` + "`" + `upstream-server` + "`" + ` mode.`,

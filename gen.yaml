@@ -30,7 +30,7 @@ generation:
     skipResponseBodyAssertions: false
   baseServerURL: ""
 terraform:
-  version: 3.23.0
+  version: 3.24.0
   additionalActions: []
   additionalDataSources: []
   additionalDependencies:

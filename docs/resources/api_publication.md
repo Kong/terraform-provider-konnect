@@ -50,8 +50,22 @@ possible known values include one of ["public", "private"]
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `spec_renderer` (Attributes) Customization settings for the API spec renderer in the portal. (see [below for nested schema](#nestedatt--spec_renderer))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 - `warnings` (List of String) Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
+
+<a id="nestedatt--spec_renderer"></a>
+### Nested Schema for `spec_renderer`
+
+Read-Only:
+
+- `try_it_ui_audience` (String) The audience for the Try It UI feature.
+
+`all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+`authenticated` means that the Try It UI will only be available to authenticated users.
+
+`registered` means that the Try It UI will only be available to users who have registered for the API.
 
 ## Import
 

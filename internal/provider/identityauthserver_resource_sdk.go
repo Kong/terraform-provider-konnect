@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -17,6 +18,12 @@ func (r *IdentityAuthServerResourceModel) RefreshFromSharedAuthServer(ctx contex
 	if resp != nil {
 		r.Audience = types.StringValue(resp.Audience)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		if resp.Dcr == nil {
+			r.Dcr = nil
+		} else {
+			r.Dcr = &tfTypes.CreateDcrSettings{}
+			r.Dcr.DefaultAccessTokenDuration = types.Int64PointerValue(resp.Dcr.DefaultAccessTokenDuration)
+		}
 		r.Description = types.StringValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		r.Issuer = types.StringValue(resp.Issuer)
@@ -133,6 +140,18 @@ func (r *IdentityAuthServerResourceModel) ToSharedCreateAuthServer(ctx context.C
 	for trustedOriginsIndex := range r.TrustedOrigins {
 		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
+	var dcr *shared.CreateDcrSettings
+	if r.Dcr != nil {
+		defaultAccessTokenDuration := new(int64)
+		if !r.Dcr.DefaultAccessTokenDuration.IsUnknown() && !r.Dcr.DefaultAccessTokenDuration.IsNull() {
+			*defaultAccessTokenDuration = r.Dcr.DefaultAccessTokenDuration.ValueInt64()
+		} else {
+			defaultAccessTokenDuration = nil
+		}
+		dcr = &shared.CreateDcrSettings{
+			DefaultAccessTokenDuration: defaultAccessTokenDuration,
+		}
+	}
 	out := shared.CreateAuthServer{
 		Name:             name,
 		Description:      description,
@@ -140,6 +159,7 @@ func (r *IdentityAuthServerResourceModel) ToSharedCreateAuthServer(ctx context.C
 		SigningAlgorithm: signingAlgorithm,
 		Labels:           labels,
 		TrustedOrigins:   trustedOrigins,
+		Dcr:              dcr,
 	}
 
 	return &out, diags
@@ -189,6 +209,18 @@ func (r *IdentityAuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.C
 	for trustedOriginsIndex := range r.TrustedOrigins {
 		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
+	var dcr *shared.UpdateDcrSettings
+	if r.Dcr != nil {
+		defaultAccessTokenDuration := new(int64)
+		if !r.Dcr.DefaultAccessTokenDuration.IsUnknown() && !r.Dcr.DefaultAccessTokenDuration.IsNull() {
+			*defaultAccessTokenDuration = r.Dcr.DefaultAccessTokenDuration.ValueInt64()
+		} else {
+			defaultAccessTokenDuration = nil
+		}
+		dcr = &shared.UpdateDcrSettings{
+			DefaultAccessTokenDuration: defaultAccessTokenDuration,
+		}
+	}
 	out := shared.UpdateAuthServer{
 		Name:             name,
 		Description:      description,
@@ -196,6 +228,7 @@ func (r *IdentityAuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.C
 		SigningAlgorithm: signingAlgorithm,
 		Labels:           labels,
 		TrustedOrigins:   trustedOrigins,
+		Dcr:              dcr,
 	}
 
 	return &out, diags

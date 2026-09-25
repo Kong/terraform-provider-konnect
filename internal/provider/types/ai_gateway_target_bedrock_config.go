@@ -9,14 +9,17 @@ import (
 type AIGatewayTargetBedrockConfig struct {
 	BatchBucketPrefix        types.String                   `tfsdk:"batch_bucket_prefix"`
 	CacheReadCost            types.Float64                  `tfsdk:"cache_read_cost"`
+	CacheReadCostList        []AIGatewayModalCostList       `tfsdk:"cache_read_cost_list"`
 	CacheWriteCost           types.Float64                  `tfsdk:"cache_write_cost"`
 	CacheWriteCostList       []AIGatewayCacheWriteCost      `tfsdk:"cache_write_cost_list"`
 	ContextWindowFactor      []AIGatewayContextWindowFactor `tfsdk:"context_window_factor"`
 	EmbeddingsDimensions     types.Int64                    `tfsdk:"embeddings_dimensions"`
 	EmbeddingsNormalize      types.Bool                     `tfsdk:"embeddings_normalize"`
 	InputCost                types.Float64                  `tfsdk:"input_cost"`
+	InputCostList            []AIGatewayModalCostList       `tfsdk:"input_cost_list"`
 	MaxTokens                types.Int64                    `tfsdk:"max_tokens"`
 	OutputCost               types.Float64                  `tfsdk:"output_cost"`
+	OutputCostList           []AIGatewayModalCostList       `tfsdk:"output_cost_list"`
 	PerformanceConfigLatency types.String                   `tfsdk:"performance_config_latency"`
 	Region                   types.String                   `tfsdk:"region"`
 	ServiceTierFactor        []AIGatewayServiceTierFactor   `tfsdk:"service_tier_factor"`

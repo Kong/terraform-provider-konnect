@@ -10,17 +10,17 @@ resource "konnect_system_account" "konnect_sys_account" {
 resource "konnect_system_account_access_token" "my_sys_token_1" {
     name       = "first-token-local-offset"
     account_id = konnect_system_account.konnect_sys_account.id
-    expires_at = "2026-09-22T07:00:00-05:30"
+    expires_at = "2027-09-22T07:00:00-05:30"
 }
 
 resource "konnect_system_account_access_token" "my_sys_token_2" {
     name       = "second-token-with-ms"
     account_id = konnect_system_account.konnect_sys_account.id
-    expires_at = "2026-09-22T07:00:00.112Z"
+    expires_at = "2027-09-22T07:00:00.112Z"
 }
 
 resource "konnect_system_account_access_token" "my_sys_token_3" {
     name       = "third-token"
     account_id = konnect_system_account.konnect_sys_account.id
-    expires_at = "2026-09-22T07:00:00Z"
+    expires_at = "2027-09-22T07:00:00Z"
 }

@@ -38,6 +38,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		} else {
 			r.Config.CounterKey = types.StringNull()
 		}
+		r.Config.CustomKey = types.StringPointerValue(resp.Config.CustomKey)
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
 		r.Config.EnforceConsumerGroups = types.BoolPointerValue(resp.Config.EnforceConsumerGroups)
@@ -64,7 +65,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.AIGWOpenIDConnectGeneratedConfigClusterCacheRedisCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisEeCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -81,6 +82,51 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 				r.Config.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureClientSecret)
 				r.Config.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureTenantID)
 				r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
+				if resp.Config.Redis.CloudAuthentication.Oauth == nil {
+					r.Config.Redis.CloudAuthentication.Oauth = nil
+				} else {
+					r.Config.Redis.CloudAuthentication.Oauth = &tfTypes.PartialRedisEeOauth{}
+					if resp.Config.Redis.CloudAuthentication.Oauth.AuthMethod != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.Oauth.AuthMethod))
+					} else {
+						r.Config.Redis.CloudAuthentication.Oauth.AuthMethod = types.StringNull()
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.ClientID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.ClientID)
+					r.Config.Redis.CloudAuthentication.Oauth.ClientSecret = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.ClientSecret)
+					if resp.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg))
+					} else {
+						r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg = types.StringNull()
+					}
+					if resp.Config.Redis.CloudAuthentication.Oauth.GrantType != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.GrantType = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.Oauth.GrantType))
+					} else {
+						r.Config.Redis.CloudAuthentication.Oauth.GrantType = types.StringNull()
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.Password = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.Password)
+					r.Config.Redis.CloudAuthentication.Oauth.RedisUsername = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.RedisUsername)
+					r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim)
+					r.Config.Redis.CloudAuthentication.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Redis.CloudAuthentication.Oauth.Scopes))
+					for _, v := range resp.Config.Redis.CloudAuthentication.Oauth.Scopes {
+						r.Config.Redis.CloudAuthentication.Oauth.Scopes = append(r.Config.Redis.CloudAuthentication.Oauth.Scopes, types.StringValue(v))
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.SslVerify = types.BoolPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.SslVerify)
+					r.Config.Redis.CloudAuthentication.Oauth.Timeout = types.Int64PointerValue(resp.Config.Redis.CloudAuthentication.Oauth.Timeout)
+					r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint)
+					if resp.Config.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Redis.CloudAuthentication.Oauth.TokenHeaders))
+						for key, value := range resp.Config.Redis.CloudAuthentication.Oauth.TokenHeaders {
+							r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders[key] = types.StringValue(value)
+						}
+					}
+					if resp.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+						r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs))
+						for key1, value1 := range resp.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+							r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs[key1] = types.StringValue(value1)
+						}
+					}
+					r.Config.Redis.CloudAuthentication.Oauth.Username = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.Oauth.Username)
+				}
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
@@ -178,6 +224,20 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		if resp.Expressions == nil {
+			r.Expressions = nil
+		} else {
+			r.Expressions = &tfTypes.RateLimitingAdvancedPluginExpressions{}
+			r.Expressions.CustomKey = types.StringPointerValue(resp.Expressions.CustomKey)
+			if resp.Expressions.Limit != nil {
+				r.Expressions.Limit = make([]types.String, 0, len(resp.Expressions.Limit))
+				for _, v := range resp.Expressions.Limit {
+					r.Expressions.Limit = append(r.Expressions.Limit, types.StringValue(v))
+				}
+			} else {
+				r.Expressions.Limit = nil
+			}
+		}
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
 		if resp.Ordering == nil {
@@ -447,6 +507,12 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 	} else {
 		counterKey = nil
 	}
+	customKey := new(string)
+	if !r.Config.CustomKey.IsUnknown() && !r.Config.CustomKey.IsNull() {
+		*customKey = r.Config.CustomKey.ValueString()
+	} else {
+		customKey = nil
+	}
 	dictionaryName := new(string)
 	if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
 		*dictionaryName = r.Config.DictionaryName.ValueString()
@@ -593,6 +659,122 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 			} else {
 				gcpServiceAccountJSON = nil
 			}
+			var oauth *shared.RateLimitingAdvancedPluginOauth
+			if r.Config.Redis.CloudAuthentication.Oauth != nil {
+				authMethod := new(shared.RateLimitingAdvancedPluginAuthMethod)
+				if !r.Config.Redis.CloudAuthentication.Oauth.AuthMethod.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.AuthMethod.IsNull() {
+					*authMethod = shared.RateLimitingAdvancedPluginAuthMethod(r.Config.Redis.CloudAuthentication.Oauth.AuthMethod.ValueString())
+				} else {
+					authMethod = nil
+				}
+				clientID := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.ClientID.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.ClientID.IsNull() {
+					*clientID = r.Config.Redis.CloudAuthentication.Oauth.ClientID.ValueString()
+				} else {
+					clientID = nil
+				}
+				clientSecret := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.ClientSecret.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.ClientSecret.IsNull() {
+					*clientSecret = r.Config.Redis.CloudAuthentication.Oauth.ClientSecret.ValueString()
+				} else {
+					clientSecret = nil
+				}
+				clientSecretJwtAlg := new(shared.RateLimitingAdvancedPluginClientSecretJwtAlg)
+				if !r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.IsNull() {
+					*clientSecretJwtAlg = shared.RateLimitingAdvancedPluginClientSecretJwtAlg(r.Config.Redis.CloudAuthentication.Oauth.ClientSecretJwtAlg.ValueString())
+				} else {
+					clientSecretJwtAlg = nil
+				}
+				grantType := new(shared.RateLimitingAdvancedPluginGrantType)
+				if !r.Config.Redis.CloudAuthentication.Oauth.GrantType.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.GrantType.IsNull() {
+					*grantType = shared.RateLimitingAdvancedPluginGrantType(r.Config.Redis.CloudAuthentication.Oauth.GrantType.ValueString())
+				} else {
+					grantType = nil
+				}
+				password := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.Password.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.Password.IsNull() {
+					*password = r.Config.Redis.CloudAuthentication.Oauth.Password.ValueString()
+				} else {
+					password = nil
+				}
+				redisUsername := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.RedisUsername.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.RedisUsername.IsNull() {
+					*redisUsername = r.Config.Redis.CloudAuthentication.Oauth.RedisUsername.ValueString()
+				} else {
+					redisUsername = nil
+				}
+				redisUsernameClaim := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.IsNull() {
+					*redisUsernameClaim = r.Config.Redis.CloudAuthentication.Oauth.RedisUsernameClaim.ValueString()
+				} else {
+					redisUsernameClaim = nil
+				}
+				scopes := make([]string, 0, len(r.Config.Redis.CloudAuthentication.Oauth.Scopes))
+				for scopesIndex := range r.Config.Redis.CloudAuthentication.Oauth.Scopes {
+					scopes = append(scopes, r.Config.Redis.CloudAuthentication.Oauth.Scopes[scopesIndex].ValueString())
+				}
+				sslVerify := new(bool)
+				if !r.Config.Redis.CloudAuthentication.Oauth.SslVerify.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.SslVerify.IsNull() {
+					*sslVerify = r.Config.Redis.CloudAuthentication.Oauth.SslVerify.ValueBool()
+				} else {
+					sslVerify = nil
+				}
+				timeout := new(int64)
+				if !r.Config.Redis.CloudAuthentication.Oauth.Timeout.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.Timeout.IsNull() {
+					*timeout = r.Config.Redis.CloudAuthentication.Oauth.Timeout.ValueInt64()
+				} else {
+					timeout = nil
+				}
+				tokenEndpoint := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.IsNull() {
+					*tokenEndpoint = r.Config.Redis.CloudAuthentication.Oauth.TokenEndpoint.ValueString()
+				} else {
+					tokenEndpoint = nil
+				}
+				var tokenHeaders map[string]string
+				if r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders != nil {
+					tokenHeaders = make(map[string]string)
+					for tokenHeadersKey := range r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders {
+						var tokenHeadersInst string
+						tokenHeadersInst = r.Config.Redis.CloudAuthentication.Oauth.TokenHeaders[tokenHeadersKey].ValueString()
+
+						tokenHeaders[tokenHeadersKey] = tokenHeadersInst
+					}
+				}
+				var tokenPostArgs map[string]string
+				if r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs != nil {
+					tokenPostArgs = make(map[string]string)
+					for tokenPostArgsKey := range r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs {
+						var tokenPostArgsInst string
+						tokenPostArgsInst = r.Config.Redis.CloudAuthentication.Oauth.TokenPostArgs[tokenPostArgsKey].ValueString()
+
+						tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
+					}
+				}
+				username := new(string)
+				if !r.Config.Redis.CloudAuthentication.Oauth.Username.IsUnknown() && !r.Config.Redis.CloudAuthentication.Oauth.Username.IsNull() {
+					*username = r.Config.Redis.CloudAuthentication.Oauth.Username.ValueString()
+				} else {
+					username = nil
+				}
+				oauth = &shared.RateLimitingAdvancedPluginOauth{
+					AuthMethod:         authMethod,
+					ClientID:           clientID,
+					ClientSecret:       clientSecret,
+					ClientSecretJwtAlg: clientSecretJwtAlg,
+					GrantType:          grantType,
+					Password:           password,
+					RedisUsername:      redisUsername,
+					RedisUsernameClaim: redisUsernameClaim,
+					Scopes:             scopes,
+					SslVerify:          sslVerify,
+					Timeout:            timeout,
+					TokenEndpoint:      tokenEndpoint,
+					TokenHeaders:       tokenHeaders,
+					TokenPostArgs:      tokenPostArgs,
+					Username:           username,
+				}
+			}
 			cloudAuthentication = &shared.RateLimitingAdvancedPluginCloudAuthentication{
 				AuthProvider:          authProvider,
 				AwsAccessKeyID:        awsAccessKeyID,
@@ -606,6 +788,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 				AzureClientSecret:     azureClientSecret,
 				AzureTenantID:         azureTenantID,
 				GcpServiceAccountJSON: gcpServiceAccountJSON,
+				Oauth:                 oauth,
 			}
 		}
 		clusterMaxRedirections := new(int64)
@@ -672,11 +855,11 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		} else {
 			keepalivePoolSize = nil
 		}
-		password := new(string)
+		password1 := new(string)
 		if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
-			*password = r.Config.Redis.Password.ValueString()
+			*password1 = r.Config.Redis.Password.ValueString()
 		} else {
-			password = nil
+			password1 = nil
 		}
 		port1 := new(string)
 		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
@@ -760,17 +943,17 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		} else {
 			ssl = nil
 		}
-		sslVerify := new(bool)
+		sslVerify1 := new(bool)
 		if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
-			*sslVerify = r.Config.Redis.SslVerify.ValueBool()
+			*sslVerify1 = r.Config.Redis.SslVerify.ValueBool()
 		} else {
-			sslVerify = nil
+			sslVerify1 = nil
 		}
-		username := new(string)
+		username1 := new(string)
 		if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
-			*username = r.Config.Redis.Username.ValueString()
+			*username1 = r.Config.Redis.Username.ValueString()
 		} else {
-			username = nil
+			username1 = nil
 		}
 		redis = &shared.RateLimitingAdvancedPluginRedis{
 			CloudAuthentication:    cloudAuthentication,
@@ -782,7 +965,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 			Host:                   host,
 			KeepaliveBacklog:       keepaliveBacklog,
 			KeepalivePoolSize:      keepalivePoolSize,
-			Password:               password,
+			Password:               password1,
 			Port:                   port1,
 			ReadTimeout:            readTimeout,
 			RedisProxyType:         redisProxyType,
@@ -794,8 +977,8 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 			SentinelUsername:       sentinelUsername,
 			ServerName:             serverName,
 			Ssl:                    ssl,
-			SslVerify:              sslVerify,
-			Username:               username,
+			SslVerify:              sslVerify1,
+			Username:               username1,
 		}
 	}
 	retryAfterJitterMax := new(float64)
@@ -863,6 +1046,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		CompoundIdentifier:    compoundIdentifier,
 		ConsumerGroups:        consumerGroups,
 		CounterKey:            counterKey,
+		CustomKey:             customKey,
 		DictionaryName:        dictionaryName,
 		DisablePenalty:        disablePenalty,
 		EnforceConsumerGroups: enforceConsumerGroups,
@@ -907,6 +1091,26 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 			ID: id3,
 		}
 	}
+	var expressions *shared.RateLimitingAdvancedPluginExpressions
+	if r.Expressions != nil {
+		customKey1 := new(string)
+		if !r.Expressions.CustomKey.IsUnknown() && !r.Expressions.CustomKey.IsNull() {
+			*customKey1 = r.Expressions.CustomKey.ValueString()
+		} else {
+			customKey1 = nil
+		}
+		var limit1 []string
+		if r.Expressions.Limit != nil {
+			limit1 = make([]string, 0, len(r.Expressions.Limit))
+			for limitIndex1 := range r.Expressions.Limit {
+				limit1 = append(limit1, r.Expressions.Limit[limitIndex1].ValueString())
+			}
+		}
+		expressions = &shared.RateLimitingAdvancedPluginExpressions{
+			CustomKey: customKey1,
+			Limit:     limit1,
+		}
+	}
 	protocols := make([]shared.RateLimitingAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RateLimitingAdvancedPluginProtocols(protocolsItem.ValueString()))
@@ -948,6 +1152,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
+		Expressions:   expressions,
 		Protocols:     protocols,
 		Route:         route,
 		Service:       service,

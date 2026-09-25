@@ -23,6 +23,8 @@ type CreateAuthServer struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 	// A list or trusted origins to apply the CORS header on for the auth server
 	TrustedOrigins []string `json:"trusted_origins,omitempty"`
+	// Dynamic Client Registration settings for the auth server. Both fields are optional; an omitted field falls back to its default.
+	Dcr *CreateDcrSettings `json:"dcr,omitempty"`
 }
 
 func (c CreateAuthServer) MarshalJSON() ([]byte, error) {
@@ -76,4 +78,11 @@ func (c *CreateAuthServer) GetTrustedOrigins() []string {
 		return nil
 	}
 	return c.TrustedOrigins
+}
+
+func (c *CreateAuthServer) GetDcr() *CreateDcrSettings {
+	if c == nil {
+		return nil
+	}
+	return c.Dcr
 }

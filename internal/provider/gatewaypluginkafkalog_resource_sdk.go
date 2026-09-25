@@ -73,6 +73,11 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			r.Config.BootstrapServers = nil
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
+		if resp.Config.CompressionType != nil {
+			r.Config.CompressionType = types.StringValue(string(*resp.Config.CompressionType))
+		} else {
+			r.Config.CompressionType = types.StringNull()
+		}
 		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 			for key1, value1 := range resp.Config.CustomFieldsByLua {
@@ -82,6 +87,7 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
 		r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
 		r.Config.KeyQueryArg = types.StringPointerValue(resp.Config.KeyQueryArg)
+		r.Config.NewKafkaAsyncProducer = types.BoolPointerValue(resp.Config.NewKafkaAsyncProducer)
 		r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
 		r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
 		r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
@@ -114,6 +120,8 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
 					}
+					r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID)
+					r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID)
 					if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
 						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
 					} else {
@@ -183,6 +191,11 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 					r.Config.SchemaRegistry.Confluent.KeySchema = nil
 				} else {
 					r.Config.SchemaRegistry.Confluent.KeySchema = &tfTypes.KeySchema{}
+					if resp.Config.SchemaRegistry.Confluent.KeySchema.PayloadEncoding != nil {
+						r.Config.SchemaRegistry.Confluent.KeySchema.PayloadEncoding = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.KeySchema.PayloadEncoding))
+					} else {
+						r.Config.SchemaRegistry.Confluent.KeySchema.PayloadEncoding = types.StringNull()
+					}
 					r.Config.SchemaRegistry.Confluent.KeySchema.SchemaVersion = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.KeySchema.SchemaVersion)
 					r.Config.SchemaRegistry.Confluent.KeySchema.SubjectName = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.KeySchema.SubjectName)
 				}
@@ -193,6 +206,11 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 					r.Config.SchemaRegistry.Confluent.ValueSchema = nil
 				} else {
 					r.Config.SchemaRegistry.Confluent.ValueSchema = &tfTypes.KeySchema{}
+					if resp.Config.SchemaRegistry.Confluent.ValueSchema.PayloadEncoding != nil {
+						r.Config.SchemaRegistry.Confluent.ValueSchema.PayloadEncoding = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.ValueSchema.PayloadEncoding))
+					} else {
+						r.Config.SchemaRegistry.Confluent.ValueSchema.PayloadEncoding = types.StringNull()
+					}
 					r.Config.SchemaRegistry.Confluent.ValueSchema.SchemaVersion = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.ValueSchema.SchemaVersion)
 					r.Config.SchemaRegistry.Confluent.ValueSchema.SubjectName = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.ValueSchema.SubjectName)
 				}
@@ -580,6 +598,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 	} else {
 		clusterName = nil
 	}
+	compressionType := new(shared.KafkaLogPluginCompressionType)
+	if !r.Config.CompressionType.IsUnknown() && !r.Config.CompressionType.IsNull() {
+		*compressionType = shared.KafkaLogPluginCompressionType(r.Config.CompressionType.ValueString())
+	} else {
+		compressionType = nil
+	}
 	var customFieldsByLua map[string]string
 	if r.Config.CustomFieldsByLua != nil {
 		customFieldsByLua = make(map[string]string)
@@ -607,6 +631,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 		*keyQueryArg = r.Config.KeyQueryArg.ValueString()
 	} else {
 		keyQueryArg = nil
+	}
+	newKafkaAsyncProducer := new(bool)
+	if !r.Config.NewKafkaAsyncProducer.IsUnknown() && !r.Config.NewKafkaAsyncProducer.IsNull() {
+		*newKafkaAsyncProducer = r.Config.NewKafkaAsyncProducer.ValueBool()
+	} else {
+		newKafkaAsyncProducer = nil
 	}
 	producerAsync := new(bool)
 	if !r.Config.ProducerAsync.IsUnknown() && !r.Config.ProducerAsync.IsNull() {
@@ -680,6 +710,18 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 						Password: password1,
 						Username: username,
 					}
+				}
+				identityPoolID := new(string)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.IsNull() {
+					*identityPoolID = r.Config.SchemaRegistry.Confluent.Authentication.IdentityPoolID.ValueString()
+				} else {
+					identityPoolID = nil
+				}
+				logicalClusterID := new(string)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.IsNull() {
+					*logicalClusterID = r.Config.SchemaRegistry.Confluent.Authentication.LogicalClusterID.ValueString()
+				} else {
+					logicalClusterID = nil
 				}
 				mode := new(shared.KafkaLogPluginMode)
 				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
@@ -846,14 +888,22 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 					}
 				}
 				authentication1 = &shared.KafkaLogPluginConfigAuthentication{
-					Basic:        basic,
-					Mode:         mode,
-					Oauth2:       oauth2,
-					Oauth2Client: oauth2Client,
+					Basic:            basic,
+					IdentityPoolID:   identityPoolID,
+					LogicalClusterID: logicalClusterID,
+					Mode:             mode,
+					Oauth2:           oauth2,
+					Oauth2Client:     oauth2Client,
 				}
 			}
 			var keySchema *shared.KafkaLogPluginKeySchema
 			if r.Config.SchemaRegistry.Confluent.KeySchema != nil {
+				payloadEncoding := new(shared.KafkaLogPluginPayloadEncoding)
+				if !r.Config.SchemaRegistry.Confluent.KeySchema.PayloadEncoding.IsUnknown() && !r.Config.SchemaRegistry.Confluent.KeySchema.PayloadEncoding.IsNull() {
+					*payloadEncoding = shared.KafkaLogPluginPayloadEncoding(r.Config.SchemaRegistry.Confluent.KeySchema.PayloadEncoding.ValueString())
+				} else {
+					payloadEncoding = nil
+				}
 				schemaVersion := new(string)
 				if !r.Config.SchemaRegistry.Confluent.KeySchema.SchemaVersion.IsUnknown() && !r.Config.SchemaRegistry.Confluent.KeySchema.SchemaVersion.IsNull() {
 					*schemaVersion = r.Config.SchemaRegistry.Confluent.KeySchema.SchemaVersion.ValueString()
@@ -867,8 +917,9 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 					subjectName = nil
 				}
 				keySchema = &shared.KafkaLogPluginKeySchema{
-					SchemaVersion: schemaVersion,
-					SubjectName:   subjectName,
+					PayloadEncoding: payloadEncoding,
+					SchemaVersion:   schemaVersion,
+					SubjectName:     subjectName,
 				}
 			}
 			sslVerify1 := new(bool)
@@ -891,6 +942,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 			}
 			var valueSchema *shared.KafkaLogPluginValueSchema
 			if r.Config.SchemaRegistry.Confluent.ValueSchema != nil {
+				payloadEncoding1 := new(shared.KafkaLogPluginConfigPayloadEncoding)
+				if !r.Config.SchemaRegistry.Confluent.ValueSchema.PayloadEncoding.IsUnknown() && !r.Config.SchemaRegistry.Confluent.ValueSchema.PayloadEncoding.IsNull() {
+					*payloadEncoding1 = shared.KafkaLogPluginConfigPayloadEncoding(r.Config.SchemaRegistry.Confluent.ValueSchema.PayloadEncoding.ValueString())
+				} else {
+					payloadEncoding1 = nil
+				}
 				schemaVersion1 := new(string)
 				if !r.Config.SchemaRegistry.Confluent.ValueSchema.SchemaVersion.IsUnknown() && !r.Config.SchemaRegistry.Confluent.ValueSchema.SchemaVersion.IsNull() {
 					*schemaVersion1 = r.Config.SchemaRegistry.Confluent.ValueSchema.SchemaVersion.ValueString()
@@ -904,8 +961,9 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 					subjectName1 = nil
 				}
 				valueSchema = &shared.KafkaLogPluginValueSchema{
-					SchemaVersion: schemaVersion1,
-					SubjectName:   subjectName1,
+					PayloadEncoding: payloadEncoding1,
+					SchemaVersion:   schemaVersion1,
+					SubjectName:     subjectName1,
 				}
 			}
 			confluent = &shared.KafkaLogPluginConfluent{
@@ -957,14 +1015,16 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 	topic = r.Config.Topic.ValueString()
 
 	config := shared.KafkaLogPluginConfig{
-		Authentication:    authentication,
-		BootstrapServers:  bootstrapServers,
-		ClusterName:       clusterName,
-		CustomFieldsByLua: customFieldsByLua,
-		Keepalive:         keepalive,
-		KeepaliveEnabled:  keepaliveEnabled,
-		KeyQueryArg:       keyQueryArg,
-		ProducerAsync:     producerAsync,
+		Authentication:        authentication,
+		BootstrapServers:      bootstrapServers,
+		ClusterName:           clusterName,
+		CompressionType:       compressionType,
+		CustomFieldsByLua:     customFieldsByLua,
+		Keepalive:             keepalive,
+		KeepaliveEnabled:      keepaliveEnabled,
+		KeyQueryArg:           keyQueryArg,
+		NewKafkaAsyncProducer: newKafkaAsyncProducer,
+		ProducerAsync:         producerAsync,
 		ProducerAsyncBufferingLimitsMessagesInMemory: producerAsyncBufferingLimitsMessagesInMemory,
 		ProducerAsyncFlushTimeout:                    producerAsyncFlushTimeout,
 		ProducerRequestAcks:                          producerRequestAcks,

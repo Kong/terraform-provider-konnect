@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayMCPServerWithUpstreamNoProxyConfigLogging struct {
-	Audits   types.Bool `tfsdk:"audits"`
-	Payloads types.Bool `tfsdk:"payloads"`
+type CustomerNotFound struct {
+	HTTPStatus types.Float64 `tfsdk:"http_status"`
+	Message    types.String  `tfsdk:"message"`
 }

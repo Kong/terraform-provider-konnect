@@ -27,6 +27,11 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 			r.Config.ArrayLengthCompat = types.BoolPointerValue(resp.Config.ArrayLengthCompat)
 			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
 			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
+			if resp.Config.EnforcementMode != nil {
+				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+			} else {
+				r.Config.EnforcementMode = types.StringNull()
+			}
 			if resp.Config.ParameterSchema != nil {
 				r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
 
@@ -337,6 +342,12 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		} else {
 			contentTypeParameterValidation = nil
 		}
+		enforcementMode := new(shared.RequestValidatorPluginEnforcementMode)
+		if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {
+			*enforcementMode = shared.RequestValidatorPluginEnforcementMode(r.Config.EnforcementMode.ValueString())
+		} else {
+			enforcementMode = nil
+		}
 		var parameterSchema []shared.ParameterSchema
 		if r.Config.ParameterSchema != nil {
 			parameterSchema = make([]shared.ParameterSchema, 0, len(r.Config.ParameterSchema))
@@ -393,6 +404,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 			ArrayLengthCompat:              arrayLengthCompat,
 			BodySchema:                     bodySchema,
 			ContentTypeParameterValidation: contentTypeParameterValidation,
+			EnforcementMode:                enforcementMode,
 			ParameterSchema:                parameterSchema,
 			VerboseResponse:                verboseResponse,
 			Version:                        version,
