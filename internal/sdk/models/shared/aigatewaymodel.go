@@ -217,7 +217,7 @@ func (e *AIGatewayModelAPICapabilities) IsExact() bool {
 	return false
 }
 
-// AIGatewayModelAIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs.
+// AIGatewayModelAIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs.
 type AIGatewayModelAIGatewayModelAPI struct {
 	// The display name for this model instance.
 	DisplayName string `json:"display_name"`

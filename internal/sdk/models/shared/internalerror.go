@@ -8,37 +8,37 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// UnauthorizedErrorStatus - The HTTP status code of the error. Useful when passing the response
+// InternalErrorStatus - The HTTP status code of the error. Useful when passing the response
 // body to child properties in a frontend UI. Must be returned as an integer.
-type UnauthorizedErrorStatus int64
+type InternalErrorStatus int64
 
 const (
-	UnauthorizedErrorStatusFourHundredAndOne UnauthorizedErrorStatus = 401
+	InternalErrorStatusFiveHundred InternalErrorStatus = 500
 )
 
-func (e UnauthorizedErrorStatus) ToPointer() *UnauthorizedErrorStatus {
+func (e InternalErrorStatus) ToPointer() *InternalErrorStatus {
 	return &e
 }
-func (e *UnauthorizedErrorStatus) UnmarshalJSON(data []byte) error {
+func (e *InternalErrorStatus) UnmarshalJSON(data []byte) error {
 	var v int64
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case 401:
-		*e = UnauthorizedErrorStatus(v)
+	case 500:
+		*e = InternalErrorStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UnauthorizedErrorStatus: %v", v)
+		return fmt.Errorf("invalid value for InternalErrorStatus: %v", v)
 	}
 }
 
-// UnauthorizedError - standard error
-type UnauthorizedError struct {
+// InternalError - standard error
+type InternalError struct {
 	// The HTTP status code of the error. Useful when passing the response
 	// body to child properties in a frontend UI. Must be returned as an integer.
 	//
-	Status UnauthorizedErrorStatus `json:"status"`
+	Status InternalErrorStatus `json:"status"`
 	// A short, human-readable summary of the problem. It should not
 	// change between occurences of a problem, except for localization.
 	// Should be provided as "Sentence case" for direct use in the UI.
@@ -59,48 +59,48 @@ type UnauthorizedError struct {
 	Detail string `json:"detail"`
 }
 
-func (u UnauthorizedError) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
+func (i InternalError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
 }
 
-func (u *UnauthorizedError) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"status", "title", "instance", "detail"}); err != nil {
+func (i *InternalError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"status", "title", "instance", "detail"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UnauthorizedError) GetStatus() UnauthorizedErrorStatus {
-	if u == nil {
-		return UnauthorizedErrorStatus(0)
+func (i *InternalError) GetStatus() InternalErrorStatus {
+	if i == nil {
+		return InternalErrorStatus(0)
 	}
-	return u.Status
+	return i.Status
 }
 
-func (u *UnauthorizedError) GetTitle() string {
-	if u == nil {
+func (i *InternalError) GetTitle() string {
+	if i == nil {
 		return ""
 	}
-	return u.Title
+	return i.Title
 }
 
-func (u *UnauthorizedError) GetType() *string {
-	if u == nil {
+func (i *InternalError) GetType() *string {
+	if i == nil {
 		return nil
 	}
-	return u.Type
+	return i.Type
 }
 
-func (u *UnauthorizedError) GetInstance() string {
-	if u == nil {
+func (i *InternalError) GetInstance() string {
+	if i == nil {
 		return ""
 	}
-	return u.Instance
+	return i.Instance
 }
 
-func (u *UnauthorizedError) GetDetail() string {
-	if u == nil {
+func (i *InternalError) GetDetail() string {
+	if i == nil {
 		return ""
 	}
-	return u.Detail
+	return i.Detail
 }

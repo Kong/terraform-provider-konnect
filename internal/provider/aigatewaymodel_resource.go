@@ -7205,7 +7205,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				Description: `Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs.`,
+				Description: `Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("model"),
@@ -7297,7 +7297,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 						Description: `List of AI capabilities enabled for this model. Not Null`,
 						Validators: []validator.List{
 							speakeasy_listvalidators.NotNull(),
-							listvalidator.SizeAtLeast(1),
 						},
 					},
 					"config": schema.SingleNestedAttribute{

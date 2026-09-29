@@ -7,19 +7,19 @@ import (
 	"time"
 )
 
-type Status string
+type APIProductDocumentStatus string
 
 const (
-	StatusUnpublished Status = "unpublished"
-	StatusPublished   Status = "published"
+	APIProductDocumentStatusUnpublished APIProductDocumentStatus = "unpublished"
+	APIProductDocumentStatusPublished   APIProductDocumentStatus = "published"
 )
 
-func (e Status) ToPointer() *Status {
+func (e APIProductDocumentStatus) ToPointer() *APIProductDocumentStatus {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Status) IsExact() bool {
+func (e *APIProductDocumentStatus) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "unpublished", "published":
@@ -49,7 +49,7 @@ type APIProductDocument struct {
 	ParentDocumentID *string                    `default:"null" json:"parent_document_id"`
 	Title            string                     `json:"title"`
 	Slug             string                     `json:"slug"`
-	Status           Status                     `json:"status"`
+	Status           APIProductDocumentStatus   `json:"status"`
 	Metadata         APIProductDocumentMetadata `json:"metadata"`
 	// The unencoded markdown string of the api product document.
 	Content string `json:"content"`
@@ -98,9 +98,9 @@ func (a *APIProductDocument) GetSlug() string {
 	return a.Slug
 }
 
-func (a *APIProductDocument) GetStatus() Status {
+func (a *APIProductDocument) GetStatus() APIProductDocumentStatus {
 	if a == nil {
-		return Status("")
+		return APIProductDocumentStatus("")
 	}
 	return a.Status
 }

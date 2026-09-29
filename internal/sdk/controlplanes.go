@@ -353,12 +353,12 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 				return nil, err
 			}
 
-			var out shared.BaseError
+			var out shared.InternalError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.BaseError = &out
+			res.InternalError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1022,12 +1022,12 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 				return nil, err
 			}
 
-			var out shared.BaseError
+			var out shared.InternalError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.BaseError = &out
+			res.InternalError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1980,12 +1980,12 @@ func (s *ControlPlanes) ListControlPlanesSingleResource(ctx context.Context, req
 				return nil, err
 			}
 
-			var out shared.BaseError
+			var out shared.InternalError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.BaseError = &out
+			res.InternalError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

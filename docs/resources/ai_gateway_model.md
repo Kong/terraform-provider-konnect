@@ -401,7 +401,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
 
 ### Optional
 
-- `api` (Attributes) Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs. (see [below for nested schema](#nestedatt--api))
+- `api` (Attributes) Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs. (see [below for nested schema](#nestedatt--api))
 - `model` (Attributes) Configuration for proxying synchronous requests/responses to/from an AI Gateway model using generative APIs. (see [below for nested schema](#nestedatt--model))
 
 ### Read-Only

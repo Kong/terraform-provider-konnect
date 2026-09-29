@@ -91,7 +91,7 @@ func (r *GatewayConfigStoreSecretResource) Schema(ctx context.Context, req resou
 				Required:  true,
 				Sensitive: true,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 5120),
+					stringvalidator.UTF8LengthBetween(1, 8192),
 				},
 			},
 		},

@@ -149,7 +149,9 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 					`` + "\n" +
 					`Data planes older than this version still connect for topology visibility.` + "\n" +
 					`` + "\n" +
-					`When not specified, the latest generally available runtime version is used.`,
+					`When not specified, the latest generally available runtime version is used.` + "\n" +
+					`` + "\n" +
+					`When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.`,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`^\d+\.\d+$`), "must match pattern "+regexp.MustCompile(`^\d+\.\d+$`).String()),
 				},
@@ -202,7 +204,7 @@ func (r *AIGatewayResource) Schema(ctx context.Context, req resource.SchemaReque
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
-				Description: `Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version. Default: true`,
+				Description: `Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases. Default: true`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
