@@ -42213,6 +42213,10 @@ components:
               - audio/translation
               - video
               - rerank
+              - decisions
+            x-enum-min-runtime-version:
+              decisions: '2.2'
+            description: '**`decisions` requires a minimum runtime version of `2.2`**.'
             x-speakeasy-unknown-values: allow
       required:
         - display_name
@@ -42276,6 +42280,10 @@ components:
             enum:
               - batches
               - files
+              - skills
+            x-enum-min-runtime-version:
+              skills: '2.2'
+            description: '**`skills` requires a minimum runtime version of `2.2`**.'
             x-speakeasy-unknown-values: allow
       required:
         - display_name
@@ -43610,7 +43618,12 @@ components:
       type: object
       properties:
         type:
-          description: The format type.
+          description: |-
+            The format type.
+
+            **`passthrough` requires a minimum runtime version of `2.2`**.
+
+            **`typesafe` requires a minimum runtime version of `2.2`**.
           type: string
           example: openai
           enum:
@@ -43620,6 +43633,11 @@ components:
             - gemini
             - huggingface
             - openai
+            - passthrough
+            - typesafe
+          x-enum-min-runtime-version:
+            passthrough: '2.2'
+            typesafe: '2.2'
           x-speakeasy-unknown-values: allow
       additionalProperties: false
     AIGatewayTarget:
@@ -43681,6 +43699,7 @@ components:
           vllm: '#/components/schemas/AIGatewayTargetVllmConfig'
           xai: '#/components/schemas/AIGatewayTargetXaiConfig'
           sagemaker: '#/components/schemas/AIGatewayTargetSagemakerConfig'
+          typesafe: '#/components/schemas/AIGatewayTargetTypesafeConfig'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayTargetAnthropicConfig'
         - $ref: '#/components/schemas/AIGatewayTargetAzureConfig'
@@ -43701,6 +43720,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayTargetVllmConfig'
         - $ref: '#/components/schemas/AIGatewayTargetXaiConfig'
         - $ref: '#/components/schemas/AIGatewayTargetSagemakerConfig'
+        - $ref: '#/components/schemas/AIGatewayTargetTypesafeConfig'
     AIGatewayCacheWriteCost:
       type: object
       properties:
@@ -45991,6 +46011,34 @@ components:
           x-speakeasy-param-computed: false
       required:
         - type
+    AIGatewayTargetTypesafeConfig:
+      description: |-
+        Typesafe-specific configuration for a model.
+
+        **Requires a minimum runtime version of `2.2`**.
+      type: object
+      properties:
+        type:
+          type: string
+          const: typesafe
+        input_cost:
+          description: Cost per 1M input tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        output_cost:
+          description: Cost per 1M output tokens for billing and cost tracking.
+          type: number
+          x-speakeasy-param-computed: false
+        upstream_url:
+          description: The upstream URL for the model endpoint.
+          type: string
+          format: uri
+          x-speakeasy-param-computed: false
+      required:
+        - type
+      title: AIGatewayTargetTypesafeConfig
+      x-min-runtime-version: '2.2'
+      x-speakeasy-param-computed: false
     GCPModelConfig:
       description: Configuration for a model hosted on Google Cloud Project.
       type: object
@@ -51321,6 +51369,45 @@ components:
         - display_name
         - name
         - config
+    AIGatewayModelProviderTypesafe:
+      description: |
+        Configuration for an upstream model provider.
+      type: object
+      properties:
+        type:
+          type: string
+          const: typesafe
+        display_name:
+          description: The display name for this model provider instance.
+          type: string
+          example: Azure AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: 'A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.'
+          example: azure-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        config:
+          description: Configuration for the model provider.
+          type: object
+          additionalProperties: false
+          properties:
+            auth:
+              $ref: '#/components/schemas/AIGatewayModelProviderConfigAuthBasic'
+          required:
+            - auth
+      required:
+        - type
+        - display_name
+        - name
+        - config
+      x-min-runtime-version: '2.2'
+      x-speakeasy-param-computed: false
     AIGatewayModelProviderConfigAuthBasic:
       description: |
         Basic auth config for an upstream model provider.
@@ -52015,6 +52102,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
+          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -52035,6 +52123,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
+        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
     UpdateAIGatewayModelProviderRequest:
       discriminator:
         propertyName: type
@@ -52058,6 +52147,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
+          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -52078,6 +52168,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
+        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
     AIGatewayModelProvider:
       type: object
       properties:
@@ -52109,6 +52200,7 @@ components:
           vllm: '#/components/schemas/AIGatewayModelProviderVllm'
           xai: '#/components/schemas/AIGatewayModelProviderXai'
           sagemaker: '#/components/schemas/AIGatewayModelProviderSagemaker'
+          typesafe: '#/components/schemas/AIGatewayModelProviderTypesafe'
       oneOf:
         - $ref: '#/components/schemas/AIGatewayModelProviderAnthropic'
         - $ref: '#/components/schemas/AIGatewayModelProviderAzure'
@@ -52129,6 +52221,7 @@ components:
         - $ref: '#/components/schemas/AIGatewayModelProviderVllm'
         - $ref: '#/components/schemas/AIGatewayModelProviderXai'
         - $ref: '#/components/schemas/AIGatewayModelProviderSagemaker'
+        - $ref: '#/components/schemas/AIGatewayModelProviderTypesafe'
       required:
         - id
         - created_at
