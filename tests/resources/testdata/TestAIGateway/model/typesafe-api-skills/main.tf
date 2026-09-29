@@ -1,10 +1,10 @@
 resource "konnect_ai_gateway" "my_aigateway" {
-  display_name = "TF Test AIGW - model-typesafe"
-  name         = "tf-test-aigw-model-typesafe"
+  display_name        = "TF Test AIGW - model-typesafe-api-skills"
+  name                = "tf-test-aigw-model-typesafe-api-skills"
   min_runtime_version = "2.2"
 }
 
-resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider_typesafe" {
+resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider_typesafe_api_skills" {
   gateway_id = konnect_ai_gateway.my_aigateway.id
   typesafe = {
     config = {
@@ -19,21 +19,22 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider_typesafe
         ]
       }
     }
-    display_name = "TF Test Typesafe AI Provider"
-    name         = "tf-test-typesafe-provider"
+    display_name = "TF Test Typesafe AI Provider - api skills"
+    name         = "tf-test-typesafe-api-skills-provider"
   }
 }
 
-resource "konnect_ai_gateway_model" "my_aigatewaymodel_model" {
-  model = {
+resource "konnect_ai_gateway_model" "my_aigatewaymodel_typesafe_api_skills" {
+  gateway_id = konnect_ai_gateway.my_aigateway.id
+  api = {
     capabilities = [
-      "generate"
+      "skills"
     ]
     config = {
       route = {
         hosts = []
         paths = [
-          "/my-test-path"
+          "/my-typesafe-api-skills-test-path"
         ]
         https_redirect_status_code = 426
         preserve_host              = false
@@ -43,14 +44,14 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel_model" {
         strip_path                 = true
       }
     }
-    display_name = "My Test Typesafe model Updated"
+    display_name = "Skills Capability Test - Typesafe (api)"
     enabled      = true
     formats = [
       {
-        type = "openai"
+        type = "passthrough"
       }
     ]
-    name = "tf-test-typesafe-model"
+    name = "tf-test-typesafe-api-skills-model"
     targets = [
       {
         config = {
@@ -60,10 +61,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel_model" {
             upstream_url = "https://baggy-trash.biz/"
           }
         }
-        name     = "typesafe-model"
-        provider = konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe.name
+        name     = "typesafe-api-skills-model"
+        provider = konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe_api_skills.name
       }
     ]
   }
-  gateway_id = konnect_ai_gateway.my_aigateway.id
 }
