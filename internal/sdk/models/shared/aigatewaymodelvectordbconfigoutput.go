@@ -42,7 +42,14 @@ func CreateAIGatewayModelVectorDBConfigOutputRedis(redis AIGatewayModelVectorDBC
 	}
 }
 
-func (u *AIGatewayModelVectorDBConfigOutput) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelVectorDBConfigOutput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelVectorDBConfigOutput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

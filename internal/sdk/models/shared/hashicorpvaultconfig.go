@@ -130,7 +130,14 @@ func CreateHashiCorpVaultConfigAzure(azure HashiCorpVaultAzureConfig) HashiCorpV
 	}
 }
 
-func (u *HashiCorpVaultConfig) UnmarshalJSON(data []byte) error {
+func (u *HashiCorpVaultConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = HashiCorpVaultConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		AuthMethod string `json:"auth_method"`

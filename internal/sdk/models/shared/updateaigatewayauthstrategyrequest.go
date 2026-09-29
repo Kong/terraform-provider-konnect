@@ -41,7 +41,14 @@ func CreateUpdateAIGatewayAuthStrategyRequestOpenidConnect(openidConnect AIGatew
 	}
 }
 
-func (u *UpdateAIGatewayAuthStrategyRequest) UnmarshalJSON(data []byte) error {
+func (u *UpdateAIGatewayAuthStrategyRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateAIGatewayAuthStrategyRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

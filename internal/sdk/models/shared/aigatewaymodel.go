@@ -409,7 +409,14 @@ func CreateAIGatewayModelModel(model AIGatewayModelAIGatewayModelModel) AIGatewa
 	}
 }
 
-func (u *AIGatewayModel) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModel) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModel{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

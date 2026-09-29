@@ -42,7 +42,14 @@ func CreateEventGatewayModifyHeaderActionSet(set EventGatewayModifyHeaderSetActi
 	}
 }
 
-func (u *EventGatewayModifyHeaderAction) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayModifyHeaderAction) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayModifyHeaderAction{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Op string `json:"op"`

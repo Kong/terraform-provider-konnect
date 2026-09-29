@@ -171,7 +171,14 @@ func CreateAIGatewayModelProviderSagemakerAuthOutputSagemaker(sagemaker AIGatewa
 	}
 }
 
-func (u *AIGatewayModelProviderSagemakerAuthOutput) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProviderSagemakerAuthOutput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProviderSagemakerAuthOutput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -1520,7 +1527,14 @@ func CreateAIGatewayModelProviderGeminiAuthOutputGcp(gcp AIGatewayModelProviderC
 	}
 }
 
-func (u *AIGatewayModelProviderGeminiAuthOutput) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProviderGeminiAuthOutput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProviderGeminiAuthOutput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -2359,7 +2373,14 @@ func CreateAIGatewayModelProviderBedrockAuthOutputAws(aws AIGatewayModelProvider
 	}
 }
 
-func (u *AIGatewayModelProviderBedrockAuthOutput) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProviderBedrockAuthOutput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProviderBedrockAuthOutput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -2568,7 +2589,14 @@ func CreateAIGatewayModelProviderAzureAuthOutputAzure(azure AIGatewayModelProvid
 	}
 }
 
-func (u *AIGatewayModelProviderAzureAuthOutput) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProviderAzureAuthOutput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProviderAzureAuthOutput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -3192,7 +3220,14 @@ func CreateAIGatewayModelProviderTypesafe(typesafe AIGatewayModelProviderAIGatew
 	}
 }
 
-func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProvider{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

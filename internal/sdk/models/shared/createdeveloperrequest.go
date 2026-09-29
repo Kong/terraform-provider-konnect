@@ -87,7 +87,14 @@ func CreateCreateDeveloperRequestAdditionalDataArrayOfStr(arrayOfStr []string) C
 	}
 }
 
-func (u *CreateDeveloperRequestAdditionalData) UnmarshalJSON(data []byte) error {
+func (u *CreateDeveloperRequestAdditionalData) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CreateDeveloperRequestAdditionalData{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

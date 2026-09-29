@@ -85,7 +85,14 @@ func CreateAdditionalDataArrayOfStr(arrayOfStr []string) AdditionalData {
 	}
 }
 
-func (u *AdditionalData) UnmarshalJSON(data []byte) error {
+func (u *AdditionalData) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AdditionalData{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

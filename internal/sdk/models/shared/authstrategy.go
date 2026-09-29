@@ -60,7 +60,14 @@ func CreateAuthStrategySelfManagedClientCredentials(selfManagedClientCredentials
 	}
 }
 
-func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
+func (u *AuthStrategy) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AuthStrategy{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		CredentialType string `json:"credential_type"`

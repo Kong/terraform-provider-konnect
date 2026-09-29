@@ -1868,7 +1868,14 @@ func CreateDatakitPluginNodesXMLToJSON(xmlToJSON XMLToJSON) DatakitPluginNodes {
 	}
 }
 
-func (u *DatakitPluginNodes) UnmarshalJSON(data []byte) error {
+func (u *DatakitPluginNodes) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = DatakitPluginNodes{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

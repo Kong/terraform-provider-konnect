@@ -63,6 +63,8 @@ terraform:
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
   excludeEmptyObjectSchemas: false
+  fixFlags:
+    encodePathParams: false
   forwardCompatibleEnumsByDefault: false
   imports:
     option: openapi
@@ -79,4 +81,5 @@ terraform:
   providerTypeNameOverride: ""
   respectRequiredFields: true
   respectTitlesForPrimitiveUnionMembers: false
+  serverVariableProviderAttributes: {}
   unionStrategy: populated-fields

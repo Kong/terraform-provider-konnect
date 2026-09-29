@@ -239,7 +239,14 @@ func CreateUpdateAIGatewayModelProviderRequestTypesafe(typesafe AIGatewayModelPr
 	}
 }
 
-func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
+func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateAIGatewayModelProviderRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

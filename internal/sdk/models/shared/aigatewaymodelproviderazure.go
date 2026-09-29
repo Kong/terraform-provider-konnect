@@ -41,7 +41,14 @@ func CreateAIGatewayModelProviderAzureAuthAzure(azure AIGatewayModelProviderConf
 	}
 }
 
-func (u *AIGatewayModelProviderAzureAuth) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProviderAzureAuth) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProviderAzureAuth{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
