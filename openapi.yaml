@@ -25221,53 +25221,6 @@ components:
         maxLength: 63
       maxProperties: 5
       title: ManagedBy
-    BaseError:
-      description: standard error
-      type: object
-      properties:
-        status:
-          description: |
-            The HTTP status code of the error. Useful when passing the response
-            body to child properties in a frontend UI. Must be returned as an integer.
-          type: integer
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-        title:
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          type: string
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-        type:
-          description: The error type.
-          type: string
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-        instance:
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          type: string
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-        detail:
-          description: |
-            A human readable explanation specific to this occurence of the problem.
-            This field may contain request/entity data to help the user understand
-            what went wrong. Enclose variable values in square brackets. Should be
-            provided as "Sentence case" for direct use in the UI.
-          type: string
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      title: Error
     InvalidRules:
       description: invalid parameters rules
       type: string
@@ -25512,6 +25465,8 @@ components:
             The HTTP status code of the error. Useful when passing the response
             body to child properties in a frontend UI. Must be returned as an integer.
           type: integer
+          enum:
+            - 400
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         title:
@@ -25563,6 +25518,8 @@ components:
             body to child properties in a frontend UI. Must be returned as an integer.
           type: integer
           example: 401
+          enum:
+            - 401
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         title:
@@ -25615,6 +25572,8 @@ components:
             body to child properties in a frontend UI. Must be returned as an integer.
           type: integer
           example: 403
+          enum:
+            - 403
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         title:
@@ -25657,6 +25616,56 @@ components:
         - instance
         - detail
       title: Error
+    InternalError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          example: 500
+          enum:
+            - 500
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
     ConflictError:
       description: standard error
       type: object
@@ -25667,6 +25676,8 @@ components:
             body to child properties in a frontend UI. Must be returned as an integer.
           type: integer
           example: 409
+          enum:
+            - 409
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         title:
@@ -25719,6 +25730,8 @@ components:
             body to child properties in a frontend UI. Must be returned as an integer.
           type: integer
           example: 404
+          enum:
+            - 404
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         title:
@@ -25775,6 +25788,56 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
+    NotAvailableError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          example: 503
+          enum:
+            - 503
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
     ControlPlaneId:
       description: ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
       type: string
@@ -41381,6 +41444,8 @@ components:
         Data planes older than this version still connect for topology visibility.
 
         When not specified, the latest generally available runtime version is used.
+
+        When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
       type: string
       example: '2.0'
       pattern: ^\d+\.\d+$
@@ -41391,11 +41456,13 @@ components:
         It may be lowered only when no configuration already stored uses a feature that requires a runtime version above the requested one. Otherwise the request is rejected, naming the entities and fields that stand in the way so that they can be removed or downgraded first.
 
         When not specified, the minimum runtime version is left unchanged.
+
+        When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
       type: string
       example: '2.0'
       pattern: ^\d+\.\d+$
     AIGatewayRuntimeAutoUpgrade:
-      description: Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version.
+      description: Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases.
       type: boolean
       default: true
     CreateAIGatewayRequest:
@@ -42147,7 +42214,6 @@ components:
               - video
               - rerank
             x-speakeasy-unknown-values: allow
-          minItems: 1
       required:
         - display_name
         - name
@@ -42157,7 +42223,7 @@ components:
         - config
         - capabilities
     AIGatewayModelAPI:
-      description: Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs.
+      description: 'Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs.'
       type: object
       properties:
         display_name:
@@ -51889,7 +51955,7 @@ components:
       description: 'The secret value. Once stored, this value cannot be retrieved.'
       type: string
       example: my-secret-value
-      maxLength: 5120
+      maxLength: 8192
       writeOnly: true
       x-speakeasy-param-sensitive: true
       x-speakeasy-terraform-plan-only: true
@@ -52319,7 +52385,7 @@ components:
           x-speakeasy-param-force-new: true
         value:
           type: string
-          maxLength: 5120
+          maxLength: 8192
           minLength: 1
           writeOnly: true
           x-sensitive: true
@@ -52332,7 +52398,7 @@ components:
       properties:
         value:
           type: string
-          maxLength: 5120
+          maxLength: 8192
           minLength: 1
           writeOnly: true
           x-sensitive: true
@@ -100449,7 +100515,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/BaseError'
+            $ref: '#/components/schemas/InternalError'
     BadRequest:
       description: Bad Request
       content:
@@ -100511,7 +100577,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/BaseError'
+            $ref: '#/components/schemas/NotAvailableError'
     RetrieveConfigurationResponse:
       description: Response format for retrieving a configuration by ID.
       content:
