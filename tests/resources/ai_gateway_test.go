@@ -299,6 +299,30 @@ func TestAIGateway(t *testing.T) {
 				},
 			})
 		})
+
+		t.Run("typesafe", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe", "typesafe.name", "tf-test-typesafe-provider"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe", "typesafe.display_name", "TF Test Typesafe AI Provider"),
+						),
+					},
+					{
+						// Update display_name
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe", "typesafe.display_name", "TF Test Typesafe AI Provider Updated"),
+						),
+					},
+				},
+			})
+		})
 	})
 
 	t.Run("model", func(t *testing.T) {
@@ -344,6 +368,30 @@ func TestAIGateway(t *testing.T) {
 						ConfigDirectory: config.TestStepDirectory(),
 						Check: resource.ComposeTestCheckFunc(
 							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_model", "model.display_name", "My Test Azure model Updated"),
+						),
+					},
+				},
+			})
+		})
+
+		t.Run("typesafe", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_model", "model.name", "tf-test-typesafe-model"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_model", "model.display_name", "My Test Typesafe model"),
+						),
+					},
+					{
+						// Update model.display_name
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_model", "model.display_name", "My Test Typesafe model Updated"),
 						),
 					},
 				},
