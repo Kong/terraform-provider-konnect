@@ -1254,6 +1254,113 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
       tags:
         - AI Gateway Consumers
+  '/v1/ai-gateways/{gatewayId}/custom-policies':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCustomPolicy#create
+        terraform-datasource: null
+      operationId: create-ai-gateway-custom-policy
+      summary: Create an AI Gateway Custom Policy
+      description: Registers a new custom policy for the AI Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAIGatewayCustomPolicyRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAIGatewayCustomPolicyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Custom Policies
+  '/v1/ai-gateways/{gatewayId}/custom-policies/{customPolicyIdOrName}':
+    parameters:
+      - $ref: '#/components/parameters/AIGatewayId'
+      - $ref: '#/components/parameters/AIGatewayCustomPolicyIdMatchingParam'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCustomPolicy#read
+        terraform-datasource: null
+      operationId: get-ai-gateway-custom-policy
+      summary: Get an AI Gateway Custom Policy
+      description: Returns the details of a specific AI Gateway custom policy.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAIGatewayCustomPolicyResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Custom Policies
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCustomPolicy#update
+        terraform-datasource: null
+      operationId: update-ai-gateway-custom-policy
+      summary: Update an AI Gateway Custom Policy
+      description: Updates the configuration of an existing AI Gateway custom policy.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAIGatewayCustomPolicyRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAIGatewayCustomPolicyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Custom Policies
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: AIGatewayCustomPolicy#delete
+        terraform-datasource: null
+      operationId: delete-ai-gateway-custom-policy
+      summary: Delete an AI Gateway Custom Policy
+      description: Removes a specific AI Gateway custom policy.
+      responses:
+        '204':
+          description: Custom policy deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - AI Gateway Custom Policies
   '/v1/ai-gateways/{gatewayId}/data-plane-certificates':
     parameters:
       - $ref: '#/components/parameters/AIGatewayId'
@@ -23912,6 +24019,16 @@ components:
       description: The unique ID of the AI Gateway consumer.
       example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
       x-speakeasy-name-override: consumerId
+      x-speakeasy-match: id
+      schema:
+        $ref: '#/components/schemas/UUID'
+    AIGatewayCustomPolicyIdMatchingParam:
+      name: customPolicyIdOrName
+      in: path
+      required: true
+      description: The unique ID of the AI Gateway custom policy.
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-name-override: customPolicyId
       x-speakeasy-match: id
       schema:
         $ref: '#/components/schemas/UUID'
@@ -47927,6 +48044,270 @@ components:
         - id
         - created_at
         - updated_at
+    CreateAIGatewayCustomPolicyInstalledRequest:
+      type: object
+      properties:
+        name:
+          description: 'A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.'
+          example: my-installed-custom-policy
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        type:
+          description: An installed Kong plugin used as a custom policy.
+          type: string
+          enum:
+            - installed
+        display_name:
+          description: The display name for this custom policy.
+          type: string
+          example: Custom Policy - Installed plugin
+          maxLength: 256
+          minLength: 1
+        schema:
+          description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
+          type: string
+          example: <lua_schema>
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - display_name
+        - schema
+    CreateAIGatewayCustomPolicyStreamingRequest:
+      type: object
+      properties:
+        name:
+          description: 'A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.'
+          example: my-streaming-custom-policy
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        type:
+          description: A streaming Kong plugin used as a custom policy.
+          type: string
+          enum:
+            - streaming
+        display_name:
+          description: The display name for this custom policy.
+          type: string
+          example: Custom Policy Streaming Plugin
+          maxLength: 256
+          minLength: 1
+        schema:
+          description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
+          type: string
+          example: <lua_schema>
+        handler:
+          description: 'The Lua handler implementation for the custom policy, equivalent to a Kong plugin''s `handler.lua`.'
+          type: string
+          example: <lua_handler>
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - display_name
+        - schema
+        - handler
+    CreateAIGatewayCustomPolicyRequest:
+      description: Request payload to register a new AI Gateway custom policy.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          installed: '#/components/schemas/CreateAIGatewayCustomPolicyInstalledRequest'
+          streaming: '#/components/schemas/CreateAIGatewayCustomPolicyStreamingRequest'
+      oneOf:
+        - $ref: '#/components/schemas/CreateAIGatewayCustomPolicyInstalledRequest'
+        - $ref: '#/components/schemas/CreateAIGatewayCustomPolicyStreamingRequest'
+    UpdateAIGatewayCustomPolicyInstalledRequest:
+      type: object
+      properties:
+        name:
+          description: 'A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.'
+          example: my-installed-custom-policy
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        type:
+          description: An installed Kong plugin used as a custom policy.
+          type: string
+          enum:
+            - installed
+        display_name:
+          description: The display name for this custom policy.
+          type: string
+          example: Custom Policy - Installed plugin
+          maxLength: 256
+          minLength: 1
+        schema:
+          description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
+          type: string
+          example: <lua_schema>
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - display_name
+        - schema
+    UpdateAIGatewayCustomPolicyStreamingRequest:
+      type: object
+      properties:
+        name:
+          description: 'A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.'
+          example: my-streaming-custom-policy
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        type:
+          description: A streaming Kong plugin used as a custom policy.
+          type: string
+          enum:
+            - streaming
+        display_name:
+          description: The display name for this custom policy.
+          type: string
+          example: Custom Policy Streaming Plugin
+          maxLength: 256
+          minLength: 1
+        schema:
+          description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
+          type: string
+          example: <lua_schema>
+        handler:
+          description: 'The Lua handler implementation for the custom policy, equivalent to a Kong plugin''s `handler.lua`.'
+          type: string
+          example: <lua_handler>
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - display_name
+        - schema
+        - handler
+    UpdateAIGatewayCustomPolicyRequest:
+      description: Request payload to update an existing AI Gateway custom policy.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          installed: '#/components/schemas/UpdateAIGatewayCustomPolicyInstalledRequest'
+          streaming: '#/components/schemas/UpdateAIGatewayCustomPolicyStreamingRequest'
+      oneOf:
+        - $ref: '#/components/schemas/UpdateAIGatewayCustomPolicyInstalledRequest'
+        - $ref: '#/components/schemas/UpdateAIGatewayCustomPolicyStreamingRequest'
+    AIGatewayCustomPolicyInstalled:
+      type: object
+      properties:
+        name:
+          description: 'A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.'
+          example: my-installed-custom-policy
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        type:
+          description: An installed Kong plugin used as a custom policy.
+          type: string
+          enum:
+            - installed
+        display_name:
+          description: The display name for this custom policy.
+          type: string
+          example: Custom Policy - Installed plugin
+          maxLength: 256
+          minLength: 1
+        schema:
+          description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
+          type: string
+          example: <lua_schema>
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - display_name
+        - schema
+        - id
+        - created_at
+        - updated_at
+    AIGatewayCustomPolicyStreaming:
+      type: object
+      properties:
+        name:
+          description: 'A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.'
+          example: my-streaming-custom-policy
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+        type:
+          description: A streaming Kong plugin used as a custom policy.
+          type: string
+          enum:
+            - streaming
+        display_name:
+          description: The display name for this custom policy.
+          type: string
+          example: Custom Policy Streaming Plugin
+          maxLength: 256
+          minLength: 1
+        schema:
+          description: 'The Lua schema definition for the custom policy, equivalent to a Kong plugin''s `schema.lua`.'
+          type: string
+          example: <lua_schema>
+        handler:
+          description: 'The Lua handler implementation for the custom policy, equivalent to a Kong plugin''s `handler.lua`.'
+          type: string
+          example: <lua_handler>
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - name
+        - type
+        - display_name
+        - schema
+        - handler
+        - id
+        - created_at
+        - updated_at
+    AIGatewayCustomPolicy:
+      description: An AI Gateway custom policy.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          installed: '#/components/schemas/AIGatewayCustomPolicyInstalled'
+          streaming: '#/components/schemas/AIGatewayCustomPolicyStreaming'
+      oneOf:
+        - $ref: '#/components/schemas/AIGatewayCustomPolicyInstalled'
+        - $ref: '#/components/schemas/AIGatewayCustomPolicyStreaming'
     CreateAIGatewayAgentRequest:
       type: object
       properties:
@@ -102263,6 +102644,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AIGatewayPolicy'
+    CreateAIGatewayCustomPolicyResponse:
+      description: Custom policy created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCustomPolicy'
+    GetAIGatewayCustomPolicyResponse:
+      description: A successful response returning the AI Gateway Custom Policy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCustomPolicy'
+    UpdateAIGatewayCustomPolicyResponse:
+      description: Custom policy updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AIGatewayCustomPolicy'
     CreateAIGatewayMCPServerResponse:
       description: MCP Server created successfully.
       content:
@@ -102854,6 +103253,8 @@ tags:
     description: 'Models that define routing, capabilities, and backend targets for the AI Gateway.'
   - name: AI Gateway Policies
     description: 'Policies that control security, rate-limiting, and guardrail behavior for the AI Gateway.'
+  - name: AI Gateway Custom Policies
+    description: Custom policies that let you bring your own Lua plugin schema and handler to the AI Gateway.
   - name: AI Gateway MCP Servers
     description: MCP Servers that expose tools for AI Gateway integrations.
   - name: AI Gateway Model Providers
