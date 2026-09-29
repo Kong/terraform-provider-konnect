@@ -82,6 +82,8 @@ type Konnect struct {
 	AIGatewayConsumerGroups *AIGatewayConsumerGroups
 	// Individual consumers with credentials and group memberships for AI Gateway access control.
 	AIGatewayConsumers *AIGatewayConsumers
+	// Custom policies that let you bring your own Lua plugin schema and handler to the AI Gateway.
+	AIGatewayCustomPolicies *AIGatewayCustomPolicies
 	// API related to the management of AI Gateway DataPlane Certificates.
 	AIGatewayDataPlaneCertificates *AIGatewayDataPlaneCertificates
 	// MCP Servers that expose tools for AI Gateway integrations.
@@ -506,6 +508,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumerGroups = newAIGatewayConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCustomPolicies = newAIGatewayCustomPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
