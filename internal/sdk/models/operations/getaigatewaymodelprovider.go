@@ -231,6 +231,13 @@ func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker()
 	return nil
 }
 
+func (g *GetAiGatewayModelProviderResponse) GetAIGatewayModelProviderTypesafe() *shared.AIGatewayModelProviderAIGatewayModelProviderTypesafe {
+	if v := g.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderTypesafe
+	}
+	return nil
+}
+
 func (g *GetAiGatewayModelProviderResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if g == nil {
 		return nil

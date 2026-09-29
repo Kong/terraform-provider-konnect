@@ -10,6 +10,132 @@ import (
 	"time"
 )
 
+// AIGatewayModelProviderTypesafeConfigOutput - Configuration for the model provider.
+type AIGatewayModelProviderTypesafeConfigOutput struct {
+	// Basic auth config for an upstream model provider.
+	//
+	Auth AIGatewayModelProviderConfigAuthBasicOutput `json:"auth"`
+}
+
+func (a AIGatewayModelProviderTypesafeConfigOutput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderTypesafeConfigOutput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"auth"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderTypesafeConfigOutput) GetAuth() AIGatewayModelProviderConfigAuthBasicOutput {
+	if a == nil {
+		return AIGatewayModelProviderConfigAuthBasicOutput{}
+	}
+	return a.Auth
+}
+
+// AIGatewayModelProviderAIGatewayModelProviderTypesafe - Configuration for an upstream model provider.
+type AIGatewayModelProviderAIGatewayModelProviderTypesafe struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"typesafe" json:"type"`
+	// The display name for this model provider instance.
+	DisplayName string `json:"display_name"`
+	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
+	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Configuration for the model provider.
+	Config AIGatewayModelProviderTypesafeConfigOutput `json:"config"`
+	// Contains a unique identifier used for this resource.
+	ID string `json:"id"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (a AIGatewayModelProviderAIGatewayModelProviderTypesafe) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "display_name", "name", "config", "id", "created_at", "updated_at"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetType() string {
+	return "typesafe"
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetConfig() AIGatewayModelProviderTypesafeConfigOutput {
+	if a == nil {
+		return AIGatewayModelProviderTypesafeConfigOutput{}
+	}
+	return a.Config
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetCreatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.CreatedAt
+}
+
+func (a *AIGatewayModelProviderAIGatewayModelProviderTypesafe) GetUpdatedAt() time.Time {
+	if a == nil {
+		return time.Time{}
+	}
+	return a.UpdatedAt
+}
+
 type AIGatewayModelProviderSagemakerAuthOutputType string
 
 const (
@@ -2857,6 +2983,7 @@ const (
 	AIGatewayModelProviderTypeVllm        AIGatewayModelProviderType = "vllm"
 	AIGatewayModelProviderTypeXai         AIGatewayModelProviderType = "xai"
 	AIGatewayModelProviderTypeSagemaker   AIGatewayModelProviderType = "sagemaker"
+	AIGatewayModelProviderTypeTypesafe    AIGatewayModelProviderType = "typesafe"
 )
 
 // AIGatewayModelProvider - Model provider created successfully.
@@ -2880,6 +3007,7 @@ type AIGatewayModelProvider struct {
 	AIGatewayModelProviderAIGatewayModelProviderVllm        *AIGatewayModelProviderAIGatewayModelProviderVllm        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderXai         *AIGatewayModelProviderAIGatewayModelProviderXai         `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAIGatewayModelProviderSagemaker   *AIGatewayModelProviderAIGatewayModelProviderSagemaker   `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderAIGatewayModelProviderTypesafe    *AIGatewayModelProviderAIGatewayModelProviderTypesafe    `queryParam:"inline" union:"member"`
 
 	Type AIGatewayModelProviderType
 }
@@ -3051,6 +3179,15 @@ func CreateAIGatewayModelProviderSagemaker(sagemaker AIGatewayModelProviderAIGat
 
 	return AIGatewayModelProvider{
 		AIGatewayModelProviderAIGatewayModelProviderSagemaker: &sagemaker,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayModelProviderTypesafe(typesafe AIGatewayModelProviderAIGatewayModelProviderTypesafe) AIGatewayModelProvider {
+	typ := AIGatewayModelProviderTypeTypesafe
+
+	return AIGatewayModelProvider{
+		AIGatewayModelProviderAIGatewayModelProviderTypesafe: &typesafe,
 		Type: typ,
 	}
 }
@@ -3238,6 +3375,15 @@ func (u *AIGatewayModelProvider) UnmarshalJSON(data []byte) error {
 		u.AIGatewayModelProviderAIGatewayModelProviderSagemaker = aiGatewayModelProviderAIGatewayModelProviderSagemaker
 		u.Type = AIGatewayModelProviderTypeSagemaker
 		return nil
+	case "typesafe":
+		aiGatewayModelProviderAIGatewayModelProviderTypesafe := new(AIGatewayModelProviderAIGatewayModelProviderTypesafe)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderAIGatewayModelProviderTypesafe, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == typesafe) type AIGatewayModelProviderAIGatewayModelProviderTypesafe within AIGatewayModelProvider: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderAIGatewayModelProviderTypesafe = aiGatewayModelProviderAIGatewayModelProviderTypesafe
+		u.Type = AIGatewayModelProviderTypeTypesafe
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayModelProvider", string(data))
@@ -3318,6 +3464,10 @@ func (u AIGatewayModelProvider) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAIGatewayModelProviderSagemaker != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderSagemaker, "", true)
+	}
+
+	if u.AIGatewayModelProviderAIGatewayModelProviderTypesafe != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderAIGatewayModelProviderTypesafe, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AIGatewayModelProvider: all fields are null")

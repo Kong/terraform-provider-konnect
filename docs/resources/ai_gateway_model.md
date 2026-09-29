@@ -127,54 +127,55 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          xai = {
-            cache_read_cost = 4.42
+          anthropic = {
+            cache_read_cost = 8.86
             cache_read_cost_list = [
               {
-                cost  = 3.96
-                modal = "audio"
+                cost  = 6.84
+                modal = "video"
               }
             ]
-            cache_write_cost = 3.9
+            cache_write_cost = 7.72
             cache_write_cost_list = [
               {
-                cost = 7.32
+                cost = 1.85
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 1.42
-                output_factor = 1.31
+                input_factor  = 7.89
+                output_factor = 6.2
               }
             ]
-            embeddings_dimensions = 1556463673
-            input_cost            = 3.7
+            embeddings_dimensions = 712324909
+            input_cost            = 9.85
             input_cost_list = [
               {
-                cost  = 0.91
-                modal = "audio"
+                cost  = 7.29
+                modal = "text"
               }
             ]
-            max_tokens  = 1227329724
-            output_cost = 6.56
+            max_tokens  = 257642563
+            output_cost = 1.7
             output_cost_list = [
               {
-                cost  = 7.08
+                cost  = 1.71
                 modal = "text"
               }
             ]
             service_tier_factor = [
               {
-                factor = 8.57
+                factor = 7.15
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 3.27
-            top_k        = 483136424
-            top_p        = 2.83
-            upstream_url = "https://baggy-trash.biz/"
+            temperature  = 6.58
+            top_k        = 603506672
+            top_p        = 4.84
+            upstream_url = "https://ajar-summer.biz"
+            version      = "2023-06-01"
           }
         }
         name                 = "gpt-5-model"
@@ -203,7 +204,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       ]
     }
     capabilities = [
-      "audio/speech"
+      "audio/transcription"
     ]
     config = {
       balancer = {
@@ -331,55 +332,55 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          databricks = {
-            cache_read_cost = 8.45
+          mistral = {
+            cache_read_cost = 9.91
             cache_read_cost_list = [
               {
-                cost  = 7.35
+                cost  = 1.6
                 modal = "text"
               }
             ]
-            cache_write_cost = 3.62
+            cache_write_cost = 1.14
             cache_write_cost_list = [
               {
-                cost = 3.12
+                cost = 5.09
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 4.94
-                output_factor = 9.43
+                input_factor  = 1.3
+                output_factor = 9.49
               }
             ]
-            embeddings_dimensions = 1316728274
-            input_cost            = 9.06
+            embeddings_dimensions = 2009004787
+            format                = "ollama"
+            input_cost            = 1.29
             input_cost_list = [
               {
-                cost  = 3.11
-                modal = "image"
+                cost  = 4.51
+                modal = "video"
               }
             ]
-            max_tokens  = 1585442569
-            output_cost = 7.78
+            max_tokens  = 1053851950
+            output_cost = 5.4
             output_cost_list = [
               {
-                cost  = 0.74
-                modal = "audio"
+                cost  = 8.29
+                modal = "video"
               }
             ]
             service_tier_factor = [
               {
-                factor = 6.01
+                factor = 5.81
                 tier   = "...my_tier..."
               }
             ]
-            temperature           = 3.33
-            top_k                 = 896181225
-            top_p                 = 7.55
-            upstream_url          = "https://distant-antelope.com"
-            workspace_instance_id = "...my_workspace_instance_id..."
+            temperature  = 4.9
+            top_k        = 1295170432
+            top_p        = 5.29
+            upstream_url = "https://sad-thigh.net"
           }
         }
         name                 = "gpt-5-model"
@@ -972,7 +973,12 @@ When no selector location is configured, the format default selector is used.
 
 Optional:
 
-- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `type` (String) The format type.
+
+**`passthrough` requires a minimum runtime version of `2.2`**.
+
+**`typesafe` requires a minimum runtime version of `2.2`**.
+possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
 
 
 <a id="nestedatt--api--targets"></a>
@@ -1009,6 +1015,9 @@ Optional:
 - `ollama` (Attributes) Ollama-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--ollama))
 - `openai` (Attributes) Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--openai))
 - `sagemaker` (Attributes) AWS SageMaker-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--sagemaker))
+- `typesafe` (Attributes) Typesafe-specific configuration for a model.
+
+**Requires a minimum runtime version of `2.2`**. (see [below for nested schema](#nestedatt--api--targets--config--typesafe))
 - `vercel` (Attributes) Vercel AI Gateway-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--vercel))
 - `vllm` (Attributes) Vllm-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--vllm))
 - `xai` (Attributes) Xai-specific configuration for a model. (see [below for nested schema](#nestedatt--api--targets--config--xai))
@@ -2420,6 +2429,16 @@ Optional:
 
 
 
+<a id="nestedatt--api--targets--config--typesafe"></a>
+### Nested Schema for `api.targets.config.typesafe`
+
+Optional:
+
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `upstream_url` (String) The upstream URL for the model endpoint.
+
+
 <a id="nestedatt--api--targets--config--vercel"></a>
 ### Nested Schema for `api.targets.config.vercel`
 
@@ -3243,7 +3262,12 @@ When no selector location is configured, the format default selector is used.
 
 Optional:
 
-- `type` (String) The format type. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `type` (String) The format type.
+
+**`passthrough` requires a minimum runtime version of `2.2`**.
+
+**`typesafe` requires a minimum runtime version of `2.2`**.
+possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai", "passthrough", "typesafe"]
 
 
 <a id="nestedatt--model--targets"></a>
@@ -3280,6 +3304,9 @@ Optional:
 - `ollama` (Attributes) Ollama-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--ollama))
 - `openai` (Attributes) Openai-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--openai))
 - `sagemaker` (Attributes) AWS SageMaker-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--sagemaker))
+- `typesafe` (Attributes) Typesafe-specific configuration for a model.
+
+**Requires a minimum runtime version of `2.2`**. (see [below for nested schema](#nestedatt--model--targets--config--typesafe))
 - `vercel` (Attributes) Vercel AI Gateway-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--vercel))
 - `vllm` (Attributes) Vllm-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--vllm))
 - `xai` (Attributes) Xai-specific configuration for a model. (see [below for nested schema](#nestedatt--model--targets--config--xai))
@@ -4689,6 +4716,16 @@ Optional:
 - `model` (String) Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
 - `variant` (String) Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
 
+
+
+<a id="nestedatt--model--targets--config--typesafe"></a>
+### Nested Schema for `model.targets.config.typesafe`
+
+Optional:
+
+- `input_cost` (Number) Cost per 1M input tokens for billing and cost tracking.
+- `output_cost` (Number) Cost per 1M output tokens for billing and cost tracking.
+- `upstream_url` (String) The upstream URL for the model endpoint.
 
 
 <a id="nestedatt--model--targets--config--vercel"></a>
