@@ -53,7 +53,14 @@ func CreateAIGatewayRedisCloudConfigurationCloudAuthenticationGcp(gcp AIGatewayR
 	}
 }
 
-func (u *AIGatewayRedisCloudConfigurationCloudAuthentication) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayRedisCloudConfigurationCloudAuthentication) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayRedisCloudConfigurationCloudAuthentication{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -578,7 +585,14 @@ func CreateCloudAuthenticationGcp(gcp AIGatewayRedisGCPAuthentication) CloudAuth
 	}
 }
 
-func (u *CloudAuthentication) UnmarshalJSON(data []byte) error {
+func (u *CloudAuthentication) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CloudAuthentication{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

@@ -29,7 +29,14 @@ func CreateCreateIntegrationInstanceAuthCredentialMultiKeyAuth(multiKeyAuth Mult
 	}
 }
 
-func (u *CreateIntegrationInstanceAuthCredential) UnmarshalJSON(data []byte) error {
+func (u *CreateIntegrationInstanceAuthCredential) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CreateIntegrationInstanceAuthCredential{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

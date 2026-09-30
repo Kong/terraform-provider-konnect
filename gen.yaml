@@ -30,7 +30,7 @@ generation:
     skipResponseBodyAssertions: false
   baseServerURL: ""
 terraform:
-  version: 3.24.0
+  version: 3.25.0
   additionalActions: []
   additionalDataSources: []
   additionalDependencies:
@@ -63,6 +63,8 @@ terraform:
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
   excludeEmptyObjectSchemas: false
+  fixFlags:
+    encodePathParams: false
   forwardCompatibleEnumsByDefault: false
   imports:
     option: openapi
@@ -79,4 +81,5 @@ terraform:
   providerTypeNameOverride: ""
   respectRequiredFields: true
   respectTitlesForPrimitiveUnionMembers: false
+  serverVariableProviderAttributes: {}
   unionStrategy: populated-fields

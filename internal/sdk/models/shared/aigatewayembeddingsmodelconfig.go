@@ -103,7 +103,14 @@ func CreateAIGatewayEmbeddingsModelConfigOpenai(openai AIGatewayOpenaiEmbeddings
 	}
 }
 
-func (u *AIGatewayEmbeddingsModelConfig) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayEmbeddingsModelConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayEmbeddingsModelConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

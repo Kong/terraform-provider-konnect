@@ -327,7 +327,14 @@ func CreatePositionalArgumentPositionalArgumentValue(positionalArgumentValue Pos
 	}
 }
 
-func (u *PositionalArgument) UnmarshalJSON(data []byte) error {
+func (u *PositionalArgument) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = PositionalArgument{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

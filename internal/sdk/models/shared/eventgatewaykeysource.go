@@ -44,7 +44,14 @@ func CreateEventGatewayKeySourceStatic(static EventGatewayStaticKeySource) Event
 	}
 }
 
-func (u *EventGatewayKeySource) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayKeySource) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayKeySource{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

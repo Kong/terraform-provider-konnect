@@ -41,7 +41,14 @@ func CreateAIGatewayMCPServerListenerAccessOauthAccessToken(oauthAccessToken AIG
 	}
 }
 
-func (u *AIGatewayMCPServerListenerAccess) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayMCPServerListenerAccess) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayMCPServerListenerAccess{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		ACLAttributeType string `json:"acl_attribute_type"`

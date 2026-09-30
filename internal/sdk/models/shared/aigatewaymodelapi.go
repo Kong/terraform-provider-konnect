@@ -6,11 +6,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// Capabilities - **`skills` requires a minimum runtime version of `2.2`**.
 type Capabilities string
 
 const (
 	CapabilitiesBatches Capabilities = "batches"
 	CapabilitiesFiles   Capabilities = "files"
+	CapabilitiesSkills  Capabilities = "skills"
 )
 
 func (e Capabilities) ToPointer() *Capabilities {
@@ -21,14 +23,14 @@ func (e Capabilities) ToPointer() *Capabilities {
 func (e *Capabilities) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "batches", "files":
+		case "batches", "files", "skills":
 			return true
 		}
 	}
 	return false
 }
 
-// AIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files and batches APIs.
+// AIGatewayModelAPI - Configuration for proxying asynchronous requests/responses to/from an AI Gateway model using the files, batches, and skills APIs.
 type AIGatewayModelAPI struct {
 	// The display name for this model instance.
 	DisplayName string `json:"display_name"`

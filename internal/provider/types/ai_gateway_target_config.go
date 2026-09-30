@@ -19,6 +19,7 @@ type AIGatewayTargetConfig struct {
 	Ollama      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"ollama"`
 	Openai      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"openai"`
 	Sagemaker   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" tfsdk:"sagemaker"`
+	Typesafe    *AIGatewayTargetTypesafeConfig    `queryParam:"inline" tfsdk:"typesafe"`
 	Vercel      *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"vercel"`
 	Vllm        *AIGatewayTargetVllmConfig        `queryParam:"inline" tfsdk:"vllm"`
 	Xai         *AIGatewayTargetCerebrasConfig    `queryParam:"inline" tfsdk:"xai"`

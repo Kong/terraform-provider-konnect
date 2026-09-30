@@ -3,15 +3,42 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
+
+// ForbiddenErrorStatus - The HTTP status code of the error. Useful when passing the response
+// body to child properties in a frontend UI. Must be returned as an integer.
+type ForbiddenErrorStatus int64
+
+const (
+	ForbiddenErrorStatusFourHundredAndThree ForbiddenErrorStatus = 403
+)
+
+func (e ForbiddenErrorStatus) ToPointer() *ForbiddenErrorStatus {
+	return &e
+}
+func (e *ForbiddenErrorStatus) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 403:
+		*e = ForbiddenErrorStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ForbiddenErrorStatus: %v", v)
+	}
+}
 
 // ForbiddenError - standard error
 type ForbiddenError struct {
 	// The HTTP status code of the error. Useful when passing the response
 	// body to child properties in a frontend UI. Must be returned as an integer.
 	//
-	Status int64 `json:"status"`
+	Status ForbiddenErrorStatus `json:"status"`
 	// A short, human-readable summary of the problem. It should not
 	// change between occurences of a problem, except for localization.
 	// Should be provided as "Sentence case" for direct use in the UI.
@@ -43,9 +70,9 @@ func (f *ForbiddenError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (f *ForbiddenError) GetStatus() int64 {
+func (f *ForbiddenError) GetStatus() ForbiddenErrorStatus {
 	if f == nil {
-		return 0
+		return ForbiddenErrorStatus(0)
 	}
 	return f.Status
 }

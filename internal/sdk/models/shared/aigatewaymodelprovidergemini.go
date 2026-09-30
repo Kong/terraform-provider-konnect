@@ -41,7 +41,14 @@ func CreateAIGatewayModelProviderGeminiAuthGcp(gcp AIGatewayModelProviderConfigA
 	}
 }
 
-func (u *AIGatewayModelProviderGeminiAuth) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProviderGeminiAuth) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProviderGeminiAuth{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

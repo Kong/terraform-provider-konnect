@@ -13,6 +13,18 @@ type CreateAIGatewayDataPlaneCertificateRequest struct {
 	Title string `json:"title"`
 	// An optional description of the certificate.
 	Description *string `json:"description,omitempty"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 }
 
 func (c CreateAIGatewayDataPlaneCertificateRequest) MarshalJSON() ([]byte, error) {
@@ -45,4 +57,18 @@ func (c *CreateAIGatewayDataPlaneCertificateRequest) GetDescription() *string {
 		return nil
 	}
 	return c.Description
+}
+
+func (c *CreateAIGatewayDataPlaneCertificateRequest) GetLabels() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.Labels
+}
+
+func (c *CreateAIGatewayDataPlaneCertificateRequest) GetManagedBy() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.ManagedBy
 }

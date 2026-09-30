@@ -42,7 +42,14 @@ func CreateEncryptionKeyStatic(static EncryptionKeyStatic) EncryptionKey {
 	}
 }
 
-func (u *EncryptionKey) UnmarshalJSON(data []byte) error {
+func (u *EncryptionKey) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EncryptionKey{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

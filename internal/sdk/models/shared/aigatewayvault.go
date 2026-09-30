@@ -1335,7 +1335,14 @@ func CreateAIGatewayVaultHcv(hcv AIGatewayVaultHashiCorpVault) AIGatewayVault {
 	}
 }
 
-func (u *AIGatewayVault) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayVault) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayVault{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

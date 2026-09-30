@@ -34,7 +34,14 @@ func CreateAuthGCPWorkloadIdentityFederationOutputAwsIam(awsIam AuthGCPWorkloadI
 	}
 }
 
-func (u *AuthGCPWorkloadIdentityFederationOutput) UnmarshalJSON(data []byte) error {
+func (u *AuthGCPWorkloadIdentityFederationOutput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AuthGCPWorkloadIdentityFederationOutput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Source string `json:"source"`

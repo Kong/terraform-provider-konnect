@@ -97,7 +97,14 @@ func CreateCreateAIGatewayVaultRequestHcv(hcv HashiCorpVault) CreateAIGatewayVau
 	}
 }
 
-func (u *CreateAIGatewayVaultRequest) UnmarshalJSON(data []byte) error {
+func (u *CreateAIGatewayVaultRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CreateAIGatewayVaultRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

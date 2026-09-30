@@ -153,3 +153,7 @@ func (a *AIGatewayTarget) GetConfigXai() *AIGatewayTargetXaiConfig {
 func (a *AIGatewayTarget) GetConfigSagemaker() *AIGatewayTargetSagemakerConfig {
 	return a.GetConfig().AIGatewayTargetSagemakerConfig
 }
+
+func (a *AIGatewayTarget) GetConfigTypesafe() *AIGatewayTargetTypesafeConfig {
+	return a.GetConfig().AIGatewayTargetTypesafeConfig
+}

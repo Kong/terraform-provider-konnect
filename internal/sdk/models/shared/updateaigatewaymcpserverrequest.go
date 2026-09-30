@@ -74,7 +74,14 @@ func CreateUpdateAIGatewayMCPServerRequestUpstreamServer(upstreamServer AIGatewa
 	}
 }
 
-func (u *UpdateAIGatewayMCPServerRequest) UnmarshalJSON(data []byte) error {
+func (u *UpdateAIGatewayMCPServerRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateAIGatewayMCPServerRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

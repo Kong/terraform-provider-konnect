@@ -97,7 +97,14 @@ func CreateAIGatewayModelBalancerConfigSemantic(semantic AIGatewayModelBalancerS
 	}
 }
 
-func (u *AIGatewayModelBalancerConfig) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelBalancerConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelBalancerConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Algorithm string `json:"algorithm"`

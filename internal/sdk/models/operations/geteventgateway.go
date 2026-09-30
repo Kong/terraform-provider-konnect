@@ -49,7 +49,9 @@ type GetEventGatewayResponse struct {
 	// Not Found
 	NotFoundError *shared.NotFoundError
 	// Internal
-	BaseError *shared.BaseError
+	InternalError *shared.InternalError
+	// Service not available
+	NotAvailableError *shared.NotAvailableError
 }
 
 func (g GetEventGatewayResponse) MarshalJSON() ([]byte, error) {
@@ -119,9 +121,16 @@ func (g *GetEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
 	return g.NotFoundError
 }
 
-func (g *GetEventGatewayResponse) GetBaseError() *shared.BaseError {
+func (g *GetEventGatewayResponse) GetInternalError() *shared.InternalError {
 	if g == nil {
 		return nil
 	}
-	return g.BaseError
+	return g.InternalError
+}
+
+func (g *GetEventGatewayResponse) GetNotAvailableError() *shared.NotAvailableError {
+	if g == nil {
+		return nil
+	}
+	return g.NotAvailableError
 }
