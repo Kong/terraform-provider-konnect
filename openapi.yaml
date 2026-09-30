@@ -42179,6 +42179,10 @@ components:
           type: string
           maxLength: 1024
           nullable: false
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - cert
@@ -42199,6 +42203,10 @@ components:
           type: string
           maxLength: 1024
           nullable: false
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
