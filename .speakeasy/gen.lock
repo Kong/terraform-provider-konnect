@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 4b5204847e8a33701424bb6d96e63f6a
+  docChecksum: 1f7ae7e755b72fa5c801231a922b413e
   docVersion: 2.0.0
   speakeasyVersion: 1.799.0
   generationVersion: 2.941.0
   releaseVersion: 3.24.0
   configChecksum: dcc61582bf1c5fbbdcba74f16b25a71d
 persistentEdits:
-  generation_id: a22482e4-f34a-4772-9dde-f573962b2a85
-  pristine_commit_hash: 625c79aa837ba5ea5ce37fd990307c5344f090f6
-  pristine_tree_hash: 2cf91da51d564a59044012041de6b43e0025e2e4
+  generation_id: ffd42ff1-272d-4e4c-803b-798baa04716d
+  pristine_commit_hash: a406cb31876fad91ed2f8e1386ee44e41e0146cd
+  pristine_tree_hash: 2d1409d9a94490488b7fcb869c207418005525e2
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -253,8 +253,8 @@ trackedFiles:
     pristine_git_object: 7443b5dd5f0227fe95e17680c6879bf79420ce5a
   examples/resources/konnect_ai_gateway_data_plane_certificate/resource.tf:
     id: 7e4fcf3391a8
-    last_write_checksum: sha1:fbcf4e41a8a18b4c3a55055f3a4fb141e04f1b8c
-    pristine_git_object: 6f812ed33f0613b7a983626e938515aab4e2bcb5
+    last_write_checksum: sha1:dc37325f56d98ce40f60524379c4680b1d90fbbe
+    pristine_git_object: 59979604c516b1db08f2c01a696d6b9cbafcb6a3
   examples/resources/konnect_ai_gateway_mcp_server/import-by-string-id.tf:
     id: 0fdea6a78889
     last_write_checksum: sha1:77229b05504550f438e5df4cc81596a0a6b09190
@@ -3337,12 +3337,12 @@ trackedFiles:
     pristine_git_object: 9dd36392028b6503439823e7da26515c0d15e262
   internal/provider/aigatewaydataplanecertificate_resource.go:
     id: 3cd384c0864c
-    last_write_checksum: sha1:005e7d483de56fe2569c275bda4c8d74362d85b4
-    pristine_git_object: 9353b03e6840ab0443249233efef352a75f77fc4
+    last_write_checksum: sha1:a691e95e6a9377ac75aa4e181345f30e55d6288a
+    pristine_git_object: c1123348f817704a8967f553176e4d2e5680aa74
   internal/provider/aigatewaydataplanecertificate_resource_sdk.go:
     id: b31c6f29d81e
-    last_write_checksum: sha1:fb799c369ed1af71dae7e2818080a12e8a0c6fa3
-    pristine_git_object: 11f350ec6206e572d952eb30f886f0d902fdbfe2
+    last_write_checksum: sha1:95468e94a264bf4f357b4fb541eef901d8d8dfa6
+    pristine_git_object: ce0ae18ddf68436eaab6d0e573be0d9f86166224
   internal/provider/aigatewaymcpserver_resource.go:
     id: dad702e127aa
     last_write_checksum: sha1:16ed73ff7ffcc26384406c799be50b18919a070e
@@ -12897,8 +12897,8 @@ trackedFiles:
     pristine_git_object: a527b67d9ac06c95851cc97d9976ce02fd868fda
   internal/sdk/models/shared/aigatewaydataplaneclientcertificate.go:
     id: "365804178888"
-    last_write_checksum: sha1:c9c4bf104d248b3810e4ecfbc3f78320a378b617
-    pristine_git_object: 869160435e0a8f26e2d37c70c077d0321d48d632
+    last_write_checksum: sha1:876ed38d61a37e9327e673ecae970fab6bdd1f72
+    pristine_git_object: 9b6f49a3e85343ef277957009615ac2ae779be14
   internal/sdk/models/shared/aigatewayembeddingsmodelconfig.go:
     id: e3d1a80ae090
     last_write_checksum: sha1:ad19fc6b0732c23641e933620f2ecd8b7700c67b
@@ -14265,8 +14265,8 @@ trackedFiles:
     pristine_git_object: d6b8727fb10b8b81bc281ac73423d14e63b31508
   internal/sdk/models/shared/createaigatewaydataplanecertificaterequest.go:
     id: 47c987c38db0
-    last_write_checksum: sha1:a35ec407c00d9494c245b78c8a7f478540b84fbe
-    pristine_git_object: e3cfd3ef075e4ae30fb66ad160d839b69f0bcc2a
+    last_write_checksum: sha1:fbd5bb5727937077a64f23a506c7fdf7ba04172f
+    pristine_git_object: 497f5c80a11d5dd34149b0a680f9f98a9abb9fbb
   internal/sdk/models/shared/createaigatewaymcpserverrequest.go:
     id: 5013acc9d03a
     last_write_checksum: sha1:8d3b976d0f057bd889952509cf25e1e95f3c5495
@@ -33197,9 +33197,11 @@ examples:
       parameters:
         path:
           gatewayId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      requestBody:
+        application/json: {"cert": "<value>", "title": "<value>", "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}}
       responses:
         "201":
-          application/json: {"cert": "<value>", "title": "<value>", "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"cert": "<value>", "title": "<value>", "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -33218,7 +33220,7 @@ examples:
           certificateId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       responses:
         "200":
-          application/json: {"cert": "<value>", "title": "<value>", "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"cert": "<value>", "title": "<value>", "labels": {"category": "finance"}, "managed_by": {"owner": "terraform"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
