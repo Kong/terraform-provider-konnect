@@ -15,6 +15,5 @@ resource "konnect_ai_gateway_custom_policy" "my_aigatewaycustompolicy_streaming"
     handler      = "return {\n  VERSION = \"1.0\",\n  PRIORITY = 1004,\n}\n"
     name         = "tf-test-streaming-custom-policy"
     schema       = "return {\n  name = \"tf-test-streaming-custom-policy\",\n  fields = {\n    { protocols = require(\"kong.db.schema.typedefs\").protocols_http },\n    {\n      config = {\n        type = \"record\",\n        fields = {\n          { name = { description = \"The name of the header to set.\", type = \"string\", required = true } },\n          { value = { description = \"The value for the header.\", type = \"string\", required = true } }\n        }\n      }\n    }\n  }\n}"
-    type         = "streaming"
   }
 }
