@@ -3,15 +3,42 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
+
+// UnauthorizedErrorStatus - The HTTP status code of the error. Useful when passing the response
+// body to child properties in a frontend UI. Must be returned as an integer.
+type UnauthorizedErrorStatus int64
+
+const (
+	UnauthorizedErrorStatusFourHundredAndOne UnauthorizedErrorStatus = 401
+)
+
+func (e UnauthorizedErrorStatus) ToPointer() *UnauthorizedErrorStatus {
+	return &e
+}
+func (e *UnauthorizedErrorStatus) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 401:
+		*e = UnauthorizedErrorStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UnauthorizedErrorStatus: %v", v)
+	}
+}
 
 // UnauthorizedError - standard error
 type UnauthorizedError struct {
 	// The HTTP status code of the error. Useful when passing the response
 	// body to child properties in a frontend UI. Must be returned as an integer.
 	//
-	Status int64 `json:"status"`
+	Status UnauthorizedErrorStatus `json:"status"`
 	// A short, human-readable summary of the problem. It should not
 	// change between occurences of a problem, except for localization.
 	// Should be provided as "Sentence case" for direct use in the UI.
@@ -43,9 +70,9 @@ func (u *UnauthorizedError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (u *UnauthorizedError) GetStatus() int64 {
+func (u *UnauthorizedError) GetStatus() UnauthorizedErrorStatus {
 	if u == nil {
-		return 0
+		return UnauthorizedErrorStatus(0)
 	}
 	return u.Status
 }

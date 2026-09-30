@@ -3,15 +3,42 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
+
+// ConflictErrorStatus - The HTTP status code of the error. Useful when passing the response
+// body to child properties in a frontend UI. Must be returned as an integer.
+type ConflictErrorStatus int64
+
+const (
+	ConflictErrorStatusFourHundredAndNine ConflictErrorStatus = 409
+)
+
+func (e ConflictErrorStatus) ToPointer() *ConflictErrorStatus {
+	return &e
+}
+func (e *ConflictErrorStatus) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 409:
+		*e = ConflictErrorStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConflictErrorStatus: %v", v)
+	}
+}
 
 // ConflictError - standard error
 type ConflictError struct {
 	// The HTTP status code of the error. Useful when passing the response
 	// body to child properties in a frontend UI. Must be returned as an integer.
 	//
-	Status int64 `json:"status"`
+	Status ConflictErrorStatus `json:"status"`
 	// A short, human-readable summary of the problem. It should not
 	// change between occurences of a problem, except for localization.
 	// Should be provided as "Sentence case" for direct use in the UI.
@@ -43,9 +70,9 @@ func (c *ConflictError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *ConflictError) GetStatus() int64 {
+func (c *ConflictError) GetStatus() ConflictErrorStatus {
 	if c == nil {
-		return 0
+		return ConflictErrorStatus(0)
 	}
 	return c.Status
 }

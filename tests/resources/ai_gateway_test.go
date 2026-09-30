@@ -299,6 +299,30 @@ func TestAIGateway(t *testing.T) {
 				},
 			})
 		})
+
+		t.Run("typesafe", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe", "typesafe.name", "tf-test-typesafe-provider"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe", "typesafe.display_name", "TF Test Typesafe AI Provider"),
+						),
+					},
+					{
+						// Update display_name
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_typesafe", "typesafe.display_name", "TF Test Typesafe AI Provider Updated"),
+						),
+					},
+				},
+			})
+		})
 	})
 
 	t.Run("model", func(t *testing.T) {
@@ -344,6 +368,32 @@ func TestAIGateway(t *testing.T) {
 						ConfigDirectory: config.TestStepDirectory(),
 						Check: resource.ComposeTestCheckFunc(
 							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_model", "model.display_name", "My Test Azure model Updated"),
+						),
+					},
+				},
+			})
+		})
+
+		t.Run("typesafe-api-skills", func(t *testing.T) {
+			resource.Test(t, resource.TestCase{
+				ProtoV6ProviderFactories: providerFactory,
+				Steps: []resource.TestStep{
+					{
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestNameDirectory(),
+						Check: resource.ComposeAggregateTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_typesafe_api_skills", "api.name", "tf-test-typesafe-api-skills-model"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_typesafe_api_skills", "api.display_name", "Skills Capability Test - Typesafe (api)"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_typesafe_api_skills", "api.capabilities.0", "skills"),
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_typesafe_api_skills", "api.formats.0.type", "passthrough"),
+						),
+					},
+					{
+						// Update api.display_name
+						Config:          providerConfigUs,
+						ConfigDirectory: config.TestStepDirectory(),
+						Check: resource.ComposeTestCheckFunc(
+							resource.TestCheckResourceAttr("konnect_ai_gateway_model.my_aigatewaymodel_typesafe_api_skills", "api.display_name", "Skills Capability Test - Typesafe (api) Updated"),
 						),
 					},
 				},
@@ -540,6 +590,31 @@ func TestAIGateway(t *testing.T) {
 					ConfigDirectory:          config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_ai_gateway_sni.my_aigatewaysni", "display_name", "TF Test SNI Updated"),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("custom-policy", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			Steps: []resource.TestStep{
+				{
+					ProtoV6ProviderFactories: providerFactory,
+					Config:                   providerConfigUs,
+					ConfigDirectory:          config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_ai_gateway_custom_policy.my_aigatewaycustompolicy", "installed.name", "tf-test-installed-custom-policy"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_custom_policy.my_aigatewaycustompolicy", "installed.display_name", "TF Test Custom Policy - Installed"),
+					),
+				},
+				{
+					// Update display_name
+					ProtoV6ProviderFactories: providerFactory,
+					Config:                   providerConfigUs,
+					ConfigDirectory:          config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_ai_gateway_custom_policy.my_aigatewaycustompolicy", "installed.display_name", "TF Test Custom Policy - Installed Updated"),
 					),
 				},
 			},

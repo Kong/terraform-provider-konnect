@@ -56,7 +56,7 @@ type PostControlPlanesIDGroupMembershipsRemoveResponse struct {
 	// Not Found
 	NotFoundError *shared.NotFoundError
 	// Internal
-	BaseError *shared.BaseError
+	InternalError *shared.InternalError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
 }
@@ -121,11 +121,11 @@ func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetNotFoundError() *
 	return p.NotFoundError
 }
 
-func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetBaseError() *shared.BaseError {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetInternalError() *shared.InternalError {
 	if p == nil {
 		return nil
 	}
-	return p.BaseError
+	return p.InternalError
 }
 
 func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetServiceUnavailable() *shared.ServiceUnavailable {

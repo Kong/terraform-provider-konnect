@@ -20,6 +20,18 @@ func (r *AIGatewayDataPlaneCertificateResourceModel) RefreshFromSharedAIGatewayD
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
+			}
+		}
+		if len(resp.ManagedBy) > 0 {
+			r.ManagedBy = make(map[string]types.String, len(resp.ManagedBy))
+			for key1, value1 := range resp.ManagedBy {
+				r.ManagedBy[key1] = types.StringValue(value1)
+			}
+		}
 		if resp.Metadata == nil {
 			r.Metadata = nil
 		} else {
@@ -134,10 +146,26 @@ func (r *AIGatewayDataPlaneCertificateResourceModel) ToSharedCreateAIGatewayData
 	} else {
 		description = nil
 	}
+	labels := make(map[string]string)
+	for labelsKey := range r.Labels {
+		var labelsInst string
+		labelsInst = r.Labels[labelsKey].ValueString()
+
+		labels[labelsKey] = labelsInst
+	}
+	managedBy := make(map[string]string)
+	for managedByKey := range r.ManagedBy {
+		var managedByInst string
+		managedByInst = r.ManagedBy[managedByKey].ValueString()
+
+		managedBy[managedByKey] = managedByInst
+	}
 	out := shared.CreateAIGatewayDataPlaneCertificateRequest{
 		Cert:        cert,
 		Title:       title,
 		Description: description,
+		Labels:      labels,
+		ManagedBy:   managedBy,
 	}
 
 	return &out, diags

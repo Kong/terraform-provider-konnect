@@ -124,6 +124,10 @@ func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderReq
 	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderSagemaker
 }
 
+func (u *UpdateAiGatewayModelProviderRequest) GetUpdateAIGatewayModelProviderRequestTypesafe() *shared.AIGatewayModelProviderTypesafe {
+	return u.GetUpdateAIGatewayModelProviderRequest().AIGatewayModelProviderTypesafe
+}
+
 type UpdateAiGatewayModelProviderResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -313,6 +317,13 @@ func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *s
 func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker() *shared.AIGatewayModelProviderAIGatewayModelProviderSagemaker {
 	if v := u.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderSagemaker
+	}
+	return nil
+}
+
+func (u *UpdateAiGatewayModelProviderResponse) GetAIGatewayModelProviderTypesafe() *shared.AIGatewayModelProviderAIGatewayModelProviderTypesafe {
+	if v := u.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderTypesafe
 	}
 	return nil
 }

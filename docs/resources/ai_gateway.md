@@ -55,8 +55,10 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Data planes older than this version still connect for topology visibility.
 
 When not specified, the latest generally available runtime version is used.
+
+When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
 - `proxy_urls` (Attributes Set) Array of proxy URLs associated with reaching the data-planes connected to a control-plane. (see [below for nested schema](#nestedatt--proxy_urls))
-- `runtime_auto_upgrade` (Boolean) Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version. Default: true
+- `runtime_auto_upgrade` (Boolean) Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases. Default: true
 
 ### Read-Only
 

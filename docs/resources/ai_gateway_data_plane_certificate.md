@@ -17,7 +17,13 @@ resource "konnect_ai_gateway_data_plane_certificate" "my_aigatewaydataplanecerti
   cert        = "...my_cert..."
   description = "...my_description..."
   gateway_id  = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-  title       = "...my_title..."
+  labels = {
+    key = "value"
+  }
+  managed_by = {
+    key = "value"
+  }
+  title = "...my_title..."
 }
 ```
 
@@ -33,6 +39,16 @@ resource "konnect_ai_gateway_data_plane_certificate" "my_aigatewaydataplanecerti
 ### Optional
 
 - `description` (String) An optional description of the certificate. Requires replacement if changed.
+- `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
+
+Public labels are intended to store **PUBLIC** metadata. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+Requires replacement if changed.
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long and start with an alphanumeric character.
+Requires replacement if changed.
 
 ### Read-Only
 

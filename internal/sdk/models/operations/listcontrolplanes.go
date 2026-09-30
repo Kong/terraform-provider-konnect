@@ -83,7 +83,7 @@ type ListControlPlanesResponse struct {
 	// Permission denied
 	ForbiddenError *shared.ForbiddenError
 	// Internal
-	BaseError *shared.BaseError
+	InternalError *shared.InternalError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
 
@@ -150,11 +150,11 @@ func (l *ListControlPlanesResponse) GetForbiddenError() *shared.ForbiddenError {
 	return l.ForbiddenError
 }
 
-func (l *ListControlPlanesResponse) GetBaseError() *shared.BaseError {
+func (l *ListControlPlanesResponse) GetInternalError() *shared.InternalError {
 	if l == nil {
 		return nil
 	}
-	return l.BaseError
+	return l.InternalError
 }
 
 func (l *ListControlPlanesResponse) GetServiceUnavailable() *shared.ServiceUnavailable {

@@ -41,7 +41,14 @@ func CreateAPIImplementationControlPlaneReference(controlPlaneReference ControlP
 	}
 }
 
-func (u *APIImplementation) UnmarshalJSON(data []byte) error {
+func (u *APIImplementation) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = APIImplementation{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

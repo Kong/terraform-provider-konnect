@@ -93,7 +93,7 @@ func (r *AIGatewayConfigStoreSecretResource) Schema(ctx context.Context, req res
 				},
 				Description: `The secret value. Once stored, this value cannot be retrieved.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(5120),
+					stringvalidator.UTF8LengthAtMost(8192),
 				},
 			},
 		},

@@ -44,7 +44,14 @@ func CreateAIGatewayModelProviderSagemakerAuthSagemaker(sagemaker AIGatewayModel
 	}
 }
 
-func (u *AIGatewayModelProviderSagemakerAuth) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayModelProviderSagemakerAuth) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayModelProviderSagemakerAuth{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

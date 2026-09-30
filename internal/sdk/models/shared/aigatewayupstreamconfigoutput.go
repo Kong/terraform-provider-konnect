@@ -31,7 +31,14 @@ func CreateAIGatewayUpstreamConfigAuthAws(aws AIGatewayUpstreamAuthAWSOutput) AI
 	}
 }
 
-func (u *AIGatewayUpstreamConfigAuth) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayUpstreamConfigAuth) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayUpstreamConfigAuth{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

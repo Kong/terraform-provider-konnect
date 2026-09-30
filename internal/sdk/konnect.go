@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.932.9
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.941.0
 
 import (
 	"bytes"
@@ -82,6 +82,8 @@ type Konnect struct {
 	AIGatewayConsumerGroups *AIGatewayConsumerGroups
 	// Individual consumers with credentials and group memberships for AI Gateway access control.
 	AIGatewayConsumers *AIGatewayConsumers
+	// Custom policies that let you bring your own Lua plugin schema and handler to the AI Gateway.
+	AIGatewayCustomPolicies *AIGatewayCustomPolicies
 	// API related to the management of AI Gateway DataPlane Certificates.
 	AIGatewayDataPlaneCertificates *AIGatewayDataPlaneCertificates
 	// MCP Servers that expose tools for AI Gateway integrations.
@@ -471,8 +473,11 @@ func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
 		SDKVersion: "3.24.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.24.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
-			ServerList: ServerList,
+			UserAgent:         "speakeasy-sdk/terraform 3.24.0 2.941.0 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			SDKVersion:        "3.24.0",
+			GenVersion:        "2.941.0",
+			OpenAPIDocVersion: "2.0.0",
+			ServerList:        ServerList,
 		},
 		hooks: hooks.New(),
 	}
@@ -503,6 +508,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumerGroups = newAIGatewayConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCustomPolicies = newAIGatewayCustomPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)

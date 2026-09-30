@@ -30,7 +30,14 @@ func CreateCatalogMCPImplementationAIGatewayMCPCatalog1(aiGatewayMCPCatalog1 AIG
 	}
 }
 
-func (u *CatalogMCPImplementation) UnmarshalJSON(data []byte) error {
+func (u *CatalogMCPImplementation) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CatalogMCPImplementation{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

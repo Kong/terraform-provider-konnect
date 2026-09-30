@@ -89,8 +89,10 @@ type AIGateway struct {
 	//
 	// When not specified, the latest generally available runtime version is used.
 	//
+	// When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
+	//
 	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
-	// Whether the control plane should automatically raise min_runtime_version as connected data planes report a newer AI Gateway runtime version.
+	// Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases.
 	RuntimeAutoUpgrade *bool `default:"true" json:"runtime_auto_upgrade"`
 	// How this AI Gateway's control plane is deployed.
 	DeploymentType *AIGatewayDeploymentType `default:"hybrid" json:"deployment_type"`
