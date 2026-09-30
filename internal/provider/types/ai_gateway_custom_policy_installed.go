@@ -14,6 +14,5 @@ type AIGatewayCustomPolicyInstalled struct {
 	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
 	Name        types.String            `tfsdk:"name"`
 	Schema      types.String            `tfsdk:"schema"`
-	Type        types.String            `tfsdk:"type"`
 	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }

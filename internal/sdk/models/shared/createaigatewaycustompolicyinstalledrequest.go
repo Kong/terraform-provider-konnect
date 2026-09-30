@@ -3,40 +3,15 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
-
-// CreateAIGatewayCustomPolicyInstalledRequestType - An installed Kong plugin used as a custom policy.
-type CreateAIGatewayCustomPolicyInstalledRequestType string
-
-const (
-	CreateAIGatewayCustomPolicyInstalledRequestTypeInstalled CreateAIGatewayCustomPolicyInstalledRequestType = "installed"
-)
-
-func (e CreateAIGatewayCustomPolicyInstalledRequestType) ToPointer() *CreateAIGatewayCustomPolicyInstalledRequestType {
-	return &e
-}
-func (e *CreateAIGatewayCustomPolicyInstalledRequestType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "installed":
-		*e = CreateAIGatewayCustomPolicyInstalledRequestType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAIGatewayCustomPolicyInstalledRequestType: %v", v)
-	}
-}
 
 type CreateAIGatewayCustomPolicyInstalledRequest struct {
 	// A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// An installed Kong plugin used as a custom policy.
-	Type CreateAIGatewayCustomPolicyInstalledRequestType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"installed" json:"type"`
 	// The display name for this custom policy.
 	DisplayName string `json:"display_name"`
 	// The Lua schema definition for the custom policy, equivalent to a Kong plugin's `schema.lua`.
@@ -73,11 +48,8 @@ func (c *CreateAIGatewayCustomPolicyInstalledRequest) GetName() string {
 	return c.Name
 }
 
-func (c *CreateAIGatewayCustomPolicyInstalledRequest) GetType() CreateAIGatewayCustomPolicyInstalledRequestType {
-	if c == nil {
-		return CreateAIGatewayCustomPolicyInstalledRequestType("")
-	}
-	return c.Type
+func (c *CreateAIGatewayCustomPolicyInstalledRequest) GetType() string {
+	return "installed"
 }
 
 func (c *CreateAIGatewayCustomPolicyInstalledRequest) GetDisplayName() string {

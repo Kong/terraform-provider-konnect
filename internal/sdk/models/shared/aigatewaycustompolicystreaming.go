@@ -3,41 +3,16 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
-
-// AIGatewayCustomPolicyStreamingType - A streaming Kong plugin used as a custom policy.
-type AIGatewayCustomPolicyStreamingType string
-
-const (
-	AIGatewayCustomPolicyStreamingTypeStreaming AIGatewayCustomPolicyStreamingType = "streaming"
-)
-
-func (e AIGatewayCustomPolicyStreamingType) ToPointer() *AIGatewayCustomPolicyStreamingType {
-	return &e
-}
-func (e *AIGatewayCustomPolicyStreamingType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "streaming":
-		*e = AIGatewayCustomPolicyStreamingType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayCustomPolicyStreamingType: %v", v)
-	}
-}
 
 type AIGatewayCustomPolicyStreaming struct {
 	// A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// A streaming Kong plugin used as a custom policy.
-	Type AIGatewayCustomPolicyStreamingType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"streaming" json:"type"`
 	// The display name for this custom policy.
 	DisplayName string `json:"display_name"`
 	// The Lua schema definition for the custom policy, equivalent to a Kong plugin's `schema.lua`.
@@ -82,11 +57,8 @@ func (a *AIGatewayCustomPolicyStreaming) GetName() string {
 	return a.Name
 }
 
-func (a *AIGatewayCustomPolicyStreaming) GetType() AIGatewayCustomPolicyStreamingType {
-	if a == nil {
-		return AIGatewayCustomPolicyStreamingType("")
-	}
-	return a.Type
+func (a *AIGatewayCustomPolicyStreaming) GetType() string {
+	return "streaming"
 }
 
 func (a *AIGatewayCustomPolicyStreaming) GetDisplayName() string {

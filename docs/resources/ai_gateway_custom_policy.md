@@ -25,7 +25,6 @@ resource "konnect_ai_gateway_custom_policy" "my_aigatewaycustompolicy" {
     }
     name   = "my-installed-custom-policy"
     schema = "<lua_schema>"
-    type   = "installed"
   }
   streaming = {
     display_name = "Custom Policy Streaming Plugin"
@@ -38,7 +37,6 @@ resource "konnect_ai_gateway_custom_policy" "my_aigatewaycustompolicy" {
     }
     name   = "my-streaming-custom-policy"
     schema = "<lua_schema>"
-    type   = "streaming"
   }
 }
 ```
@@ -62,7 +60,6 @@ resource "konnect_ai_gateway_custom_policy" "my_aigatewaycustompolicy" {
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String) A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.
 - `schema` (String) The Lua schema definition for the custom policy, equivalent to a Kong plugin's `schema.lua`.
-- `type` (String) An installed Kong plugin used as a custom policy.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--installed"></a>
@@ -81,7 +78,6 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Keys must be 1–63 characters long and start with an alphanumeric character.
 - `name` (String) A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `schema` (String) The Lua schema definition for the custom policy, equivalent to a Kong plugin's `schema.lua`. Not Null
-- `type` (String) An installed Kong plugin used as a custom policy. Not Null; must be "installed"
 
 Read-Only:
 
@@ -107,7 +103,6 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Keys must be 1–63 characters long and start with an alphanumeric character.
 - `name` (String) A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation. Not Null
 - `schema` (String) The Lua schema definition for the custom policy, equivalent to a Kong plugin's `schema.lua`. Not Null
-- `type` (String) A streaming Kong plugin used as a custom policy. Not Null; must be "streaming"
 
 Read-Only:
 

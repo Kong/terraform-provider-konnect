@@ -48,7 +48,6 @@ type AIGatewayCustomPolicyResourceModel struct {
 	Name        types.String                            `tfsdk:"name"`
 	Schema      types.String                            `tfsdk:"schema"`
 	Streaming   *tfTypes.AIGatewayCustomPolicyStreaming `queryParam:"inline" tfsdk:"streaming"`
-	Type        types.String                            `tfsdk:"type"`
 	UpdatedAt   types.String                            `tfsdk:"updated_at"`
 }
 
@@ -145,17 +144,6 @@ func (r *AIGatewayCustomPolicyResource) Schema(ctx context.Context, req resource
 						Description: `The Lua schema definition for the custom policy, equivalent to a Kong plugin's ` + "`" + `schema.lua` + "`" + `. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
-						},
-					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `An installed Kong plugin used as a custom policy. Not Null; must be "installed"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"installed",
-							),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -256,17 +244,6 @@ func (r *AIGatewayCustomPolicyResource) Schema(ctx context.Context, req resource
 							speakeasy_stringvalidators.NotNull(),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `A streaming Kong plugin used as a custom policy. Not Null; must be "streaming"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"streaming",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -280,13 +257,6 @@ func (r *AIGatewayCustomPolicyResource) Schema(ctx context.Context, req resource
 						path.MatchRelative().AtParent().AtName("installed"),
 					}...),
 				},
-			},
-			"type": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("installed"), FieldPath: path.Root("installed").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("streaming"), FieldPath: path.Root("streaming").AtName("type")}}),
-				},
-				Description: `An installed Kong plugin used as a custom policy.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

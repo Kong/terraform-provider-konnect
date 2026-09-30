@@ -27,9 +27,6 @@ type UpdateAIGatewayCustomPolicyRequest struct {
 func CreateUpdateAIGatewayCustomPolicyRequestInstalled(installed UpdateAIGatewayCustomPolicyInstalledRequest) UpdateAIGatewayCustomPolicyRequest {
 	typ := UpdateAIGatewayCustomPolicyRequestTypeInstalled
 
-	typStr := UpdateAIGatewayCustomPolicyInstalledRequestType(typ)
-	installed.Type = typStr
-
 	return UpdateAIGatewayCustomPolicyRequest{
 		UpdateAIGatewayCustomPolicyInstalledRequest: &installed,
 		Type: typ,
@@ -38,9 +35,6 @@ func CreateUpdateAIGatewayCustomPolicyRequestInstalled(installed UpdateAIGateway
 
 func CreateUpdateAIGatewayCustomPolicyRequestStreaming(streaming UpdateAIGatewayCustomPolicyStreamingRequest) UpdateAIGatewayCustomPolicyRequest {
 	typ := UpdateAIGatewayCustomPolicyRequestTypeStreaming
-
-	typStr := UpdateAIGatewayCustomPolicyStreamingRequestType(typ)
-	streaming.Type = typStr
 
 	return UpdateAIGatewayCustomPolicyRequest{
 		UpdateAIGatewayCustomPolicyStreamingRequest: &streaming,

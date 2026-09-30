@@ -3,41 +3,16 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
-
-// AIGatewayCustomPolicyInstalledType - An installed Kong plugin used as a custom policy.
-type AIGatewayCustomPolicyInstalledType string
-
-const (
-	AIGatewayCustomPolicyInstalledTypeInstalled AIGatewayCustomPolicyInstalledType = "installed"
-)
-
-func (e AIGatewayCustomPolicyInstalledType) ToPointer() *AIGatewayCustomPolicyInstalledType {
-	return &e
-}
-func (e *AIGatewayCustomPolicyInstalledType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "installed":
-		*e = AIGatewayCustomPolicyInstalledType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayCustomPolicyInstalledType: %v", v)
-	}
-}
 
 type AIGatewayCustomPolicyInstalled struct {
 	// A user-defined unique identifier for this custom policy, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// An installed Kong plugin used as a custom policy.
-	Type AIGatewayCustomPolicyInstalledType `json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"installed" json:"type"`
 	// The display name for this custom policy.
 	DisplayName string `json:"display_name"`
 	// The Lua schema definition for the custom policy, equivalent to a Kong plugin's `schema.lua`.
@@ -80,11 +55,8 @@ func (a *AIGatewayCustomPolicyInstalled) GetName() string {
 	return a.Name
 }
 
-func (a *AIGatewayCustomPolicyInstalled) GetType() AIGatewayCustomPolicyInstalledType {
-	if a == nil {
-		return AIGatewayCustomPolicyInstalledType("")
-	}
-	return a.Type
+func (a *AIGatewayCustomPolicyInstalled) GetType() string {
+	return "installed"
 }
 
 func (a *AIGatewayCustomPolicyInstalled) GetDisplayName() string {

@@ -40,8 +40,6 @@ func (r *AIGatewayCustomPolicyResourceModel) RefreshFromSharedAIGatewayCustomPol
 			r.Name = r.Installed.Name
 			r.Installed.Schema = types.StringValue(resp.AIGatewayCustomPolicyInstalled.Schema)
 			r.Schema = r.Installed.Schema
-			r.Installed.Type = types.StringValue(string(resp.AIGatewayCustomPolicyInstalled.Type))
-			r.Type = r.Installed.Type
 			r.Installed.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayCustomPolicyInstalled.UpdatedAt))
 			r.UpdatedAt = r.Installed.UpdatedAt
 		}
@@ -70,8 +68,6 @@ func (r *AIGatewayCustomPolicyResourceModel) RefreshFromSharedAIGatewayCustomPol
 			r.Name = r.Streaming.Name
 			r.Streaming.Schema = types.StringValue(resp.AIGatewayCustomPolicyStreaming.Schema)
 			r.Schema = r.Streaming.Schema
-			r.Streaming.Type = types.StringValue(string(resp.AIGatewayCustomPolicyStreaming.Type))
-			r.Type = r.Streaming.Type
 			r.Streaming.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayCustomPolicyStreaming.UpdatedAt))
 			r.UpdatedAt = r.Streaming.UpdatedAt
 		}
@@ -169,7 +165,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedCreateAIGatewayCustomPolicy
 		var name string
 		name = r.Installed.Name.ValueString()
 
-		typeVar := shared.CreateAIGatewayCustomPolicyInstalledRequestType(r.Installed.Type.ValueString())
 		var displayName string
 		displayName = r.Installed.DisplayName.ValueString()
 
@@ -192,7 +187,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedCreateAIGatewayCustomPolicy
 		}
 		createAIGatewayCustomPolicyInstalledRequest = &shared.CreateAIGatewayCustomPolicyInstalledRequest{
 			Name:        name,
-			Type:        typeVar,
 			DisplayName: displayName,
 			Schema:      schema,
 			Labels:      labels,
@@ -209,7 +203,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedCreateAIGatewayCustomPolicy
 		var name1 string
 		name1 = r.Streaming.Name.ValueString()
 
-		typeVar1 := shared.CreateAIGatewayCustomPolicyStreamingRequestType(r.Streaming.Type.ValueString())
 		var displayName1 string
 		displayName1 = r.Streaming.DisplayName.ValueString()
 
@@ -235,7 +228,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedCreateAIGatewayCustomPolicy
 		}
 		createAIGatewayCustomPolicyStreamingRequest = &shared.CreateAIGatewayCustomPolicyStreamingRequest{
 			Name:        name1,
-			Type:        typeVar1,
 			DisplayName: displayName1,
 			Schema:      schema1,
 			Handler:     handler,
@@ -261,7 +253,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedUpdateAIGatewayCustomPolicy
 		var name string
 		name = r.Installed.Name.ValueString()
 
-		typeVar := shared.UpdateAIGatewayCustomPolicyInstalledRequestType(r.Installed.Type.ValueString())
 		var displayName string
 		displayName = r.Installed.DisplayName.ValueString()
 
@@ -284,7 +275,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedUpdateAIGatewayCustomPolicy
 		}
 		updateAIGatewayCustomPolicyInstalledRequest = &shared.UpdateAIGatewayCustomPolicyInstalledRequest{
 			Name:        name,
-			Type:        typeVar,
 			DisplayName: displayName,
 			Schema:      schema,
 			Labels:      labels,
@@ -301,7 +291,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedUpdateAIGatewayCustomPolicy
 		var name1 string
 		name1 = r.Streaming.Name.ValueString()
 
-		typeVar1 := shared.UpdateAIGatewayCustomPolicyStreamingRequestType(r.Streaming.Type.ValueString())
 		var displayName1 string
 		displayName1 = r.Streaming.DisplayName.ValueString()
 
@@ -327,7 +316,6 @@ func (r *AIGatewayCustomPolicyResourceModel) ToSharedUpdateAIGatewayCustomPolicy
 		}
 		updateAIGatewayCustomPolicyStreamingRequest = &shared.UpdateAIGatewayCustomPolicyStreamingRequest{
 			Name:        name1,
-			Type:        typeVar1,
 			DisplayName: displayName1,
 			Schema:      schema1,
 			Handler:     handler,
