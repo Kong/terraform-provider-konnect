@@ -48055,8 +48055,7 @@ components:
         type:
           description: An installed Kong plugin used as a custom policy.
           type: string
-          enum:
-            - installed
+          const: installed
         display_name:
           description: The display name for this custom policy.
           type: string
@@ -48088,8 +48087,7 @@ components:
         type:
           description: A streaming Kong plugin used as a custom policy.
           type: string
-          enum:
-            - streaming
+          const: streaming
         display_name:
           description: The display name for this custom policy.
           type: string
@@ -48137,8 +48135,7 @@ components:
         type:
           description: An installed Kong plugin used as a custom policy.
           type: string
-          enum:
-            - installed
+          const: installed
         display_name:
           description: The display name for this custom policy.
           type: string
@@ -48170,8 +48167,7 @@ components:
         type:
           description: A streaming Kong plugin used as a custom policy.
           type: string
-          enum:
-            - streaming
+          const: streaming
         display_name:
           description: The display name for this custom policy.
           type: string
@@ -48219,8 +48215,7 @@ components:
         type:
           description: An installed Kong plugin used as a custom policy.
           type: string
-          enum:
-            - installed
+          const: installed
         display_name:
           description: The display name for this custom policy.
           type: string
@@ -48261,8 +48256,7 @@ components:
         type:
           description: A streaming Kong plugin used as a custom policy.
           type: string
-          enum:
-            - streaming
+          const: streaming
         display_name:
           description: The display name for this custom policy.
           type: string
