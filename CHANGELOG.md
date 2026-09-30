@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.25.0
+> Released 2026/09/??
+
+# Features
+* Add support for AI Gateway v2.2
+  * Add support for new resource `konnect_ai_gateway_custom_policy`, which allows users to define custom policies for AI Gateway.
+  * Add support for TypeSafe model in `konnect_ai_gateway_model_provider` and `konnect_ai_gateway_model` resources, which allow users to define a TypeSafe model provider, hosted on TypeSafe or a custom third-party upstream, for AI Gateway.
+
 ## 3.24.0
 > Released 2026/09/24
 
