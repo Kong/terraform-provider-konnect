@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.25.0
-> Released 2026/09/??
+> Released 2026/09/30
 
 # Features
 * Add support for AI Gateway v2.2
