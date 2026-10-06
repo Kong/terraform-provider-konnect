@@ -203,6 +203,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -1238,6 +1239,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
 									},
 								},
 								"parameters": schema.ListNestedAttribute{
@@ -1695,6 +1698,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
 									},
 								},
 								"parameters": schema.ListNestedAttribute{
@@ -1955,6 +1960,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -2997,6 +3003,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -5074,6 +5081,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
 									},
 								},
 								"output_schema": schema.StringAttribute{

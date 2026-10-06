@@ -18,6 +18,7 @@ resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
   control_plane_id  = "0949471e-b759-45ba-87ab-ee63fb781388"
   domain            = "example.com"
   kind              = "dedicated.v0"
+  type              = "api"
 }
 ```
 
@@ -44,6 +45,10 @@ This feature is currently in beta and is subject to change.
 
 Kind of the custom domain based on Cloud Gateway deployment.
 possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"; Requires replacement if changed.
+- `type` (String) Type of gateway the dedicated custom domain belongs to: `api` for an API Gateway or
+`ai` for an AI Gateway. Applies only to dedicated custom domains. Defaults to `api`
+when omitted.
+possible known values include one of ["api", "ai"]; Default: "api"; Requires replacement if changed.
 
 ### Read-Only
 

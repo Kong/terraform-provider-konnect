@@ -30,6 +30,7 @@ type ConfigurationManifest struct {
 	// Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
 	// should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
 	Kind *ConfigurationKind `default:"dedicated.v0" json:"kind"`
+	Type *ConfigurationType `default:"api" json:"type"`
 	// Positive, monotonically increasing version integer, to serialize configuration changes.
 	//
 	EntityVersion float64 `json:"entity_version"`
@@ -101,6 +102,13 @@ func (c *ConfigurationManifest) GetKind() *ConfigurationKind {
 		return nil
 	}
 	return c.Kind
+}
+
+func (c *ConfigurationManifest) GetType() *ConfigurationType {
+	if c == nil {
+		return nil
+	}
+	return c.Type
 }
 
 func (c *ConfigurationManifest) GetEntityVersion() float64 {

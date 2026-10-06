@@ -38,6 +38,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
     }
   ]
   kind    = "dedicated.v0"
+  type    = "api"
   version = "3.10"
 }
 ```
@@ -71,6 +72,7 @@ This feature is currently in beta and is subject to change.
 Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
 should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
 possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"
+- `type` (String) possible known values include one of ["api", "ai"]; Default: "api"
 - `version` (String) Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.
 
 ### Read-Only

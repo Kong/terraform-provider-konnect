@@ -71,6 +71,11 @@ func (r *CloudGatewayAddonResourceModel) RefreshFromSharedAddOnResponse(ctx cont
 			r.Owner.ControlPlane = &tfTypes.ControlPlane{}
 			r.Owner.ControlPlane.ControlPlaneGeo = types.StringValue(string(resp.Owner.ControlPlane.ControlPlaneGeo))
 			r.Owner.ControlPlane.ControlPlaneID = types.StringValue(resp.Owner.ControlPlane.ControlPlaneID)
+			if resp.Owner.ControlPlane.Type != nil {
+				r.Owner.ControlPlane.Type = types.StringValue(string(*resp.Owner.ControlPlane.Type))
+			} else {
+				r.Owner.ControlPlane.Type = types.StringNull()
+			}
 		}
 		if resp.Owner.ControlPlaneGroup != nil {
 			r.Owner.ControlPlaneGroup = &tfTypes.ControlPlaneGroup{}
@@ -140,11 +145,18 @@ func (r *CloudGatewayAddonResourceModel) ToSharedCreateAddOnRequest(ctx context.
 	var owner shared.AddOnOwner
 	var controlPlane *shared.ControlPlane
 	if r.Owner.ControlPlane != nil {
+		typeVar := new(shared.ControlPlaneAddOnOwnerType)
+		if !r.Owner.ControlPlane.Type.IsUnknown() && !r.Owner.ControlPlane.Type.IsNull() {
+			*typeVar = shared.ControlPlaneAddOnOwnerType(r.Owner.ControlPlane.Type.ValueString())
+		} else {
+			typeVar = nil
+		}
 		var controlPlaneID string
 		controlPlaneID = r.Owner.ControlPlane.ControlPlaneID.ValueString()
 
 		controlPlaneGeo := shared.ControlPlaneGeo(r.Owner.ControlPlane.ControlPlaneGeo.ValueString())
 		controlPlane = &shared.ControlPlane{
+			Type:            typeVar,
 			ControlPlaneID:  controlPlaneID,
 			ControlPlaneGeo: controlPlaneGeo,
 		}

@@ -1701,9 +1701,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											},
 											"path_param": schema.StringAttribute{
 												Optional:    true,
-												Description: `The name of the regex capture group defined in the route path for routing.`,
+												Description: `The name of the regex capture group beginning with "~", which is defined in the route path for routing.`,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtLeast(1),
+													stringvalidator.RegexMatches(regexp.MustCompile(`^~.+$`), "must match pattern "+regexp.MustCompile(`^~.+$`).String()),
 												},
 											},
 											"values": schema.ListAttribute{
@@ -1902,6 +1903,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -1936,6 +1940,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -2016,6 +2023,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2057,6 +2067,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2121,17 +2134,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -2181,6 +2200,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2215,6 +2237,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -2310,6 +2335,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2351,6 +2379,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2415,17 +2446,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -2467,6 +2504,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2501,6 +2541,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -2587,6 +2630,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2628,6 +2674,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2701,17 +2750,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -2753,6 +2808,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2787,6 +2845,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -2867,6 +2928,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2908,6 +2972,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -2972,17 +3039,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -3028,6 +3101,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3062,6 +3138,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -3148,6 +3227,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3189,6 +3271,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3253,17 +3338,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -3307,6 +3398,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3341,6 +3435,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -3421,6 +3518,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3468,6 +3568,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3532,17 +3635,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -3580,6 +3689,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3614,6 +3726,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -3694,6 +3809,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3735,6 +3853,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3799,17 +3920,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -3855,6 +3982,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -3889,6 +4019,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -3969,6 +4102,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4010,6 +4146,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4074,17 +4213,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -4122,6 +4267,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4156,6 +4304,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -4267,6 +4418,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4308,6 +4462,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4372,17 +4529,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -4420,6 +4583,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4454,6 +4620,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -4534,6 +4703,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4575,6 +4747,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4639,17 +4814,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -4699,6 +4880,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4733,6 +4917,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -4813,6 +5000,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4862,6 +5052,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -4926,17 +5119,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -4974,6 +5173,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5008,6 +5210,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5096,6 +5301,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5137,6 +5345,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5201,17 +5412,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -5252,6 +5469,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5286,6 +5506,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5374,6 +5597,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5415,6 +5641,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5479,17 +5708,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -5527,6 +5762,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5561,6 +5799,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5641,6 +5882,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5682,6 +5926,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5746,17 +5993,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -5794,6 +6047,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5828,6 +6084,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -5908,6 +6167,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -5949,6 +6211,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6013,17 +6278,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -6089,6 +6360,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6123,6 +6397,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -6203,6 +6480,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6244,6 +6524,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6331,17 +6614,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -6379,10 +6668,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -6422,6 +6717,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6456,6 +6754,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -6536,6 +6837,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6577,6 +6881,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6641,17 +6948,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -6689,6 +7002,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6723,6 +7039,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -6803,6 +7122,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6844,6 +7166,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6908,17 +7233,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -6959,6 +7290,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -6993,6 +7327,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -7073,6 +7410,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -7114,6 +7454,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -7178,17 +7521,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -8947,9 +9296,10 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											},
 											"path_param": schema.StringAttribute{
 												Optional:    true,
-												Description: `The name of the regex capture group defined in the route path for routing.`,
+												Description: `The name of the regex capture group beginning with "~", which is defined in the route path for routing.`,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtLeast(1),
+													stringvalidator.RegexMatches(regexp.MustCompile(`^~.+$`), "must match pattern "+regexp.MustCompile(`^~.+$`).String()),
 												},
 											},
 											"values": schema.ListAttribute{
@@ -9148,6 +9498,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9182,6 +9535,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -9262,6 +9618,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9303,6 +9662,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9367,17 +9729,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -9427,6 +9795,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9461,6 +9832,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -9556,6 +9930,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9597,6 +9974,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9661,17 +10041,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -9713,6 +10099,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9747,6 +10136,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -9833,6 +10225,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9874,6 +10269,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -9947,17 +10345,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -9999,6 +10403,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10033,6 +10440,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -10113,6 +10523,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10154,6 +10567,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10218,17 +10634,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -10274,6 +10696,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10308,6 +10733,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -10394,6 +10822,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10435,6 +10866,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10499,17 +10933,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -10553,6 +10993,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10587,6 +11030,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -10667,6 +11113,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10714,6 +11163,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10778,17 +11230,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -10826,6 +11284,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10860,6 +11321,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -10940,6 +11404,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -10981,6 +11448,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11045,17 +11515,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -11101,6 +11577,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11135,6 +11614,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -11215,6 +11697,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11256,6 +11741,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11320,17 +11808,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -11368,6 +11862,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11402,6 +11899,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -11513,6 +12013,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11554,6 +12057,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11618,17 +12124,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -11666,6 +12178,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11700,6 +12215,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -11780,6 +12298,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11821,6 +12342,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11885,17 +12409,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -11945,6 +12475,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -11979,6 +12512,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -12059,6 +12595,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12108,6 +12647,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12172,17 +12714,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -12220,6 +12768,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12254,6 +12805,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -12342,6 +12896,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12383,6 +12940,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12447,17 +13007,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -12498,6 +13064,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12532,6 +13101,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -12620,6 +13192,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12661,6 +13236,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12725,17 +13303,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -12773,6 +13357,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12807,6 +13394,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -12887,6 +13477,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12928,6 +13521,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -12992,17 +13588,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -13040,6 +13642,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13074,6 +13679,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -13154,6 +13762,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13195,6 +13806,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13259,17 +13873,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -13335,6 +13955,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13369,6 +13992,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -13449,6 +14075,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13490,6 +14119,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13577,17 +14209,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -13625,10 +14263,16 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -13668,6 +14312,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13702,6 +14349,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -13782,6 +14432,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13823,6 +14476,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13887,17 +14543,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -13935,6 +14597,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -13969,6 +14634,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -14049,6 +14717,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -14090,6 +14761,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -14154,17 +14828,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,
@@ -14205,6 +14885,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_read_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_read_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -14239,6 +14922,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"cache_write_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M cache-write prompt tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"cache_write_cost_list": schema.ListNestedAttribute{
 													Computed: true,
@@ -14319,6 +15005,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"input_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M input tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"input_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -14360,6 +15049,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Cost per 1M output tokens for billing and cost tracking.`,
+													Validators: []validator.Float64{
+														float64validator.AtLeast(0),
+													},
 												},
 												"output_cost_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -14424,17 +15116,23 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 												"temperature": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Controls randomness in the model output. Higher values produce more varied responses.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 5),
+													},
 												},
 												"top_k": schema.Int64Attribute{
 													Optional:    true,
 													Description: `Limits the number of highest-probability tokens considered during generation.`,
 													Validators: []validator.Int64{
-														int64validator.Between(0, 2147483646),
+														int64validator.Between(0, 500),
 													},
 												},
 												"top_p": schema.Float64Attribute{
 													Optional:    true,
 													Description: `Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.`,
+													Validators: []validator.Float64{
+														float64validator.Between(0, 1),
+													},
 												},
 												"upstream_url": schema.StringAttribute{
 													Optional:    true,

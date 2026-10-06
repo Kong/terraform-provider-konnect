@@ -32,6 +32,7 @@ type CreateConfigurationRequest struct {
 	// Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
 	// should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
 	Kind *ConfigurationKind `default:"dedicated.v0" json:"kind"`
+	Type *ConfigurationType `default:"api" json:"type"`
 	// Controls how data planes in a configuration are exposed. Supported values:
 	// - `private` — data planes are accessible only within the VPC network; no public internet exposure
 	// - `public` — data planes are accessible from the public internet
@@ -84,6 +85,13 @@ func (c *CreateConfigurationRequest) GetKind() *ConfigurationKind {
 		return nil
 	}
 	return c.Kind
+}
+
+func (c *CreateConfigurationRequest) GetType() *ConfigurationType {
+	if c == nil {
+		return nil
+	}
+	return c.Type
 }
 
 func (c *CreateConfigurationRequest) GetAPIAccess() *APIAccess {

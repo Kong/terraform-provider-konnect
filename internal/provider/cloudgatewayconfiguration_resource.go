@@ -50,6 +50,7 @@ type CloudGatewayConfigurationResourceModel struct {
 	EntityVersion   types.Float64                         `tfsdk:"entity_version"`
 	ID              types.String                          `tfsdk:"id"`
 	Kind            types.String                          `tfsdk:"kind"`
+	Type            types.String                          `tfsdk:"type"`
 	UpdatedAt       types.String                          `tfsdk:"updated_at"`
 	Version         types.String                          `tfsdk:"version"`
 }
@@ -300,6 +301,12 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 					`Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields` + "\n" +
 					`should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.` + "\n" +
 					`possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"`,
+			},
+			"type": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`api`),
+				Description: `possible known values include one of ["api", "ai"]; Default: "api"`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

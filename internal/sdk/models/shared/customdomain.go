@@ -90,6 +90,11 @@ type CustomDomain struct {
 	//
 	// Kind of the custom domain based on Cloud Gateway deployment.
 	Kind *CustomDomainKind `default:"dedicated.v0" json:"kind"`
+	// Type of gateway the dedicated custom domain belongs to: `api` for an API Gateway or
+	// `ai` for an AI Gateway. Applies only to dedicated custom domains. Defaults to `api`
+	// when omitted.
+	//
+	Type *CustomDomainType `default:"api" json:"type"`
 }
 
 func (c CustomDomain) MarshalJSON() ([]byte, error) {
@@ -185,4 +190,11 @@ func (c *CustomDomain) GetKind() *CustomDomainKind {
 		return nil
 	}
 	return c.Kind
+}
+
+func (c *CustomDomain) GetType() *CustomDomainType {
+	if c == nil {
+		return nil
+	}
+	return c.Type
 }

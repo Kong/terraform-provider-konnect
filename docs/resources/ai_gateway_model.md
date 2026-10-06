@@ -85,7 +85,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         model = {
           body_param   = "model"
           header_param = "x-model"
-          path_param   = "model_name"
+          path_param   = "~model_name"
           values = [
             "..."
           ]
@@ -171,9 +171,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 6.58
-            top_k        = 603506672
-            top_p        = 4.84
+            temperature  = 3.29
+            top_k        = 140
+            top_p        = 0.48
             upstream_url = "https://ajar-summer.biz"
             version      = "2023-06-01"
           }
@@ -290,7 +290,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         model = {
           body_param   = "model"
           header_param = "x-model"
-          path_param   = "model_name"
+          path_param   = "~model_name"
           values = [
             "..."
           ]
@@ -377,9 +377,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 4.9
-            top_k        = 1295170432
-            top_p        = 5.29
+            temperature  = 2.45
+            top_k        = 302
+            top_p        = 0.53
             upstream_url = "https://sad-thigh.net"
           }
         }
@@ -961,7 +961,7 @@ Optional:
 
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
-- `path_param` (String) The name of the regex capture group defined in the route path for routing.
+- `path_param` (String) The name of the regex capture group beginning with "~", which is defined in the route path for routing.
 - `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 
@@ -3250,7 +3250,7 @@ Optional:
 
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
-- `path_param` (String) The name of the regex capture group defined in the route path for routing.
+- `path_param` (String) The name of the regex capture group beginning with "~", which is defined in the route path for routing.
 - `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 

@@ -14,7 +14,7 @@ type AIGatewayModelSelectorConfig struct {
 	BodyParam *string `json:"body_param,omitempty"`
 	// The header property name to match for routing.
 	HeaderParam *string `json:"header_param,omitempty"`
-	// The name of the regex capture group defined in the route path for routing.
+	// The name of the regex capture group beginning with "~", which is defined in the route path for routing.
 	//
 	PathParam *string `json:"path_param,omitempty"`
 	// Optional model aliases. When omitted, the model name is used.
