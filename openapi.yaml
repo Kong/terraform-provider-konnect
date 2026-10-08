@@ -6976,9 +6976,11 @@ paths:
         groups to match. Any network referenced in the request that is currently `offline` automatically transitions
         to `initializing`.
 
-        Use `kind: dedicated.v0` (default) for dedicated Cloud Gateways — `version`, `cloud_gateway_network_id`, and
-        `autoscale` are required. Use `kind: serverless.v1` for serverless Cloud Gateways — those three fields must
-        be omitted.
+        For a `Dedicated API gateway`, use kind: dedicated.v0 and type: api (both defaults); version,
+        cloud_gateway_network_id, and autoscale are required. For a `Dedicated AI gateway`, use
+        kind: dedicated.v0 and type: ai; cloud_gateway_network_id is required, while version, autoscale,
+        and environment must be omitted. For a `Serverless gateway`, use kind: serverless.v1; version,
+        cloud_gateway_network_id, and autoscale must be omitted.
       requestBody:
         required: true
         content:
@@ -26019,7 +26021,9 @@ components:
       title: Control-Plane Geo
       x-speakeasy-unknown-values: allow
     GatewayVersion:
-      description: 'Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
+      description: |
+        Supported gateway version. For `serverless.v1` cloud gateways and dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
       type: string
       example: '3.10'
       title: Gateway Version
@@ -26036,7 +26040,11 @@ components:
         Controls how data planes in a configuration are exposed. Supported values:
         - `private` — data planes are accessible only within the VPC network; no public internet exposure
         - `public` — data planes are accessible from the public internet
-        - `private+public` — equivalent to `public`; data planes are accessible from the public internet (default)
+        - `private+public` — equivalent to `public`; data planes are accessible from the public internet
+
+        Dedicated AI gateways (`kind: dedicated.v0` and `type: ai`) support only private or
+        public; the default is `public`. The private+public value is not supported for dedicated
+        AI gateways. For other gateway types, the default is `private+public`.
       type: string
       example: private+public
       enum:
@@ -26061,11 +26069,14 @@ components:
       title: Provider Name
       x-speakeasy-unknown-values: allow
     ConfigurationDataPlaneGroupAutoscale:
+      description: |
+        Autoscaling configuration for a data-plane group. For dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`) and serverless.v1 kind gateways, this field should be omitted.
       oneOf:
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleStatic'
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleAutopilot'
     ConfigurationDataPlaneGroupAutoscaleStatic:
-      description: 'Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
+      description: Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.
       type: object
       properties:
         kind:
@@ -26086,7 +26097,7 @@ components:
         - requested_instances
       title: Configuration Autoscale Static
     ConfigurationDataPlaneGroupAutoscaleAutopilot:
-      description: 'Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.'
+      description: Object that describes the autopilot autoscaling strategy.
       type: object
       properties:
         kind:
@@ -26112,13 +26123,17 @@ components:
         - base_rps
       title: Configuration Autoscale Autopilot
     ConfigurationDataPlaneGroupEnvironment:
-      description: Array of environment variables to set for a data-plane group.
+      description: |
+        Array of environment variables to set for a data-plane group. For dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
       type: array
       items:
         $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironmentField'
       title: Configuration Data-Plane Group Environment
     ConfigurationDataPlaneGroupEnvironmentField:
-      description: Environment variable name and value to set for a data-plane group.
+      description: |
+        Environment variable name and value to set for a data-plane group. For dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
       type: object
       properties:
         name:
@@ -26278,6 +26293,12 @@ components:
       title: ConfigurationKind
       x-speakeasy-unknown-values: allow
     ConfigurationType:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Type of Cloud Gateway: `api` for an API Gateway or `ai` for an AI Gateway.
+        Applies only to dedicated Cloud Gateways. Defaults to `api` when omitted.
       type: string
       default: api
       enum:
@@ -26286,8 +26307,11 @@ components:
       title: ConfigurationType
       x-speakeasy-unknown-values: allow
     CustomDomainType:
-      description: |
-        Type of gateway the dedicated custom domain belongs to: `api` for an API Gateway or
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Type of gateway the custom domain belongs to: `api` for an API Gateway or
         `ai` for an AI Gateway. Applies only to dedicated custom domains. Defaults to `api`
         when omitted.
       type: string
@@ -28169,8 +28193,9 @@ components:
       description: |
         Describes the desired state of a control plane's Cloud Gateway deployment. Submitting
         this request replaces the current configuration; Kong reconciles running data plane groups
-        to match. Use `kind: dedicated.v0` for Dedicated Cloud Gateways or `kind: serverless.v1`
-        for Serverless — the required fields differ by kind.
+        to match. `Dedicated API gateways` require version, cloud_gateway_network_id, and autoscale.
+        `Dedicated AI gateways` require cloud_gateway_network_id; version, autoscale, and environment
+        must be omitted. `Serverless gateways` omit version, cloud_gateway_network_id, and autoscale.
       type: object
       properties:
         control_plane_id:
@@ -28456,7 +28481,10 @@ components:
         - $ref: '#/components/schemas/ControlPlaneGroupAddOnOwner'
       title: AddOnOwner
     ControlPlaneAddOnOwnerType:
-      description: |
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
         Type of gateway that owns the add-on: `api` for an API Gateway or `ai` for an
         AI Gateway. Defaults to `api` when omitted.
       type: string
@@ -34723,21 +34751,6 @@ components:
         - entity_type_name
         - entity_region
       title: PortalAssignedRoleResponse
-    TryItUIAudience:
-      description: |
-        The audience for the Try It UI feature.
-
-        `all` means that the Try It UI will be available to all users, including unauthenticated users.
-
-        `authenticated` means that the Try It UI will only be available to authenticated users.
-
-        `registered` means that the Try It UI will only be available to users who have registered for the API.
-      type: string
-      enum:
-        - all
-        - authenticated
-        - registered
-      x-speakeasy-unknown-values: allow
     SnippetName:
       description: The unique name of a snippet in a portal.
       type: string
@@ -34749,12 +34762,15 @@ components:
       type: object
       properties:
         theme:
+          description: The theme settings for this portal.
           type: object
           additionalProperties: false
           nullable: false
           properties:
             name:
+              description: 'The theme name to apply to this portal. Supported names are ''ocean'' and ''glacier''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
               type: string
+              default: ocean
               nullable: false
             mode:
               type: string
@@ -34769,6 +34785,7 @@ components:
               nullable: false
               properties:
                 primary:
+                  description: The primary accent color used in the portal's theme. Must be a valid hex color value.
                   type: string
                   example: '#000000'
                   nullable: false
@@ -34777,7 +34794,9 @@ components:
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         layout:
+          description: This property is deprecated and is not used by the portal.
           type: string
+          deprecated: true
           nullable: false
           x-speakeasy-param-computed: false
         css:
@@ -42667,11 +42686,10 @@ components:
           x-speakeasy-param-computed: false
         path_param:
           description: |
-            The name of the regex capture group beginning with "~", which is defined in the route path for routing.
+            The name of the regex capture group defined in the route path for routing.
           type: string
-          example: ~model_name
+          example: model_name
           minLength: 1
-          pattern: ^~.+$
           x-speakeasy-param-computed: false
         values:
           description: |
@@ -96313,6 +96331,12 @@ components:
           type: string
           nullable: true
           x-speakeasy-param-computed: false
+        bearer_token_header_name:
+          description: 'The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong''s special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.'
+          type: string
+          default: 'authorization:bearer'
+          x-min-runtime-version: '2.1'
+          x-speakeasy-param-computed: false
         bearer_token_param_type:
           description: 'Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL''s query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.'
           type: array
@@ -96347,8 +96371,6 @@ components:
         cache_tokens_salt:
           description: Salt used for generating the cache key that is used for caching the token endpoint requests.
           type: string
-          nullable: true
-          x-speakeasy-param-computed: false
         cache_ttl:
           description: The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
           type: number
@@ -97088,6 +97110,7 @@ components:
           description: The HTTP proxy authorization.
           type: string
           nullable: true
+          writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         http_version:
@@ -97103,6 +97126,7 @@ components:
           description: The HTTPS proxy authorization.
           type: string
           nullable: true
+          writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         id_token_param_name:
@@ -98452,11 +98476,12 @@ components:
           type: boolean
           default: false
         verify_signature:
-          description: Verify signature of tokens.
+          description: 'Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.'
           type: boolean
           default: true
       required:
         - issuer
+        - cache_tokens_salt
       x-terraform-no-default-null: true
     CreatePortalCustomDomainSSL:
       type: object
@@ -102641,9 +102666,30 @@ components:
                 additionalProperties: false
                 nullable: true
                 properties:
+                  try_it_ui:
+                    description: Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.
+                    type: boolean
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
                   try_it_ui_audience:
-                    $ref: '#/components/schemas/TryItUIAudience'
+                    description: |
+                      The audience for the Try It UI feature.
+
+                      `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+                      `authenticated` means that the Try It UI will only be available to authenticated users.
+
+                      `registered` means that the Try It UI will only be available to users who have registered for the API.
+                    type: string
+                    enum:
+                      - all
+                      - authenticated
+                      - registered
+                    nullable: true
+                    x-speakeasy-unknown-values: allow
                 required:
+                  - try_it_ui
                   - try_it_ui_audience
                 title: ApiPublicationSpecRenderer
                 x-speakeasy-param-computed: false
