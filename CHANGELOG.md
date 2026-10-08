@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.26.0
+> Released 2026/10/??
+
+# Features
+* Add support for provisioning AI Cloud Gateway using `type` in `konnect_cloud_gateway_configuration`, `konnect_cloud_gateway_custom_domain`, and `konnect_cloud_gateway_addon` resources
+
 ## 3.25.0
 > Released 2026/09/30
 
