@@ -1701,10 +1701,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											},
 											"path_param": schema.StringAttribute{
 												Optional:    true,
-												Description: `The name of the regex capture group beginning with "~", which is defined in the route path for routing.`,
+												Description: `The name of the regex capture group defined in the route path for routing.`,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtLeast(1),
-													stringvalidator.RegexMatches(regexp.MustCompile(`^~.+$`), "must match pattern "+regexp.MustCompile(`^~.+$`).String()),
 												},
 											},
 											"values": schema.ListAttribute{
@@ -9296,10 +9295,9 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											},
 											"path_param": schema.StringAttribute{
 												Optional:    true,
-												Description: `The name of the regex capture group beginning with "~", which is defined in the route path for routing.`,
+												Description: `The name of the regex capture group defined in the route path for routing.`,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtLeast(1),
-													stringvalidator.RegexMatches(regexp.MustCompile(`^~.+$`), "must match pattern "+regexp.MustCompile(`^~.+$`).String()),
 												},
 											},
 											"values": schema.ListAttribute{

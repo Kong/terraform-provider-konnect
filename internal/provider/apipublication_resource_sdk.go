@@ -31,7 +31,12 @@ func (r *APIPublicationResourceModel) RefreshFromSharedAPIPublicationResponse(ct
 			r.SpecRenderer = nil
 		} else {
 			r.SpecRenderer = &tfTypes.APIPublicationSpecRenderer{}
-			r.SpecRenderer.TryItUIAudience = types.StringValue(string(resp.SpecRenderer.TryItUIAudience))
+			r.SpecRenderer.TryItUI = types.BoolPointerValue(resp.SpecRenderer.TryItUI)
+			if resp.SpecRenderer.TryItUIAudience != nil {
+				r.SpecRenderer.TryItUIAudience = types.StringValue(string(*resp.SpecRenderer.TryItUIAudience))
+			} else {
+				r.SpecRenderer.TryItUIAudience = types.StringNull()
+			}
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		r.Visibility = types.StringValue(string(resp.Visibility))

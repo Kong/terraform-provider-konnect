@@ -25,6 +25,7 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	AuthorizationQueryArgsValues                 []types.String                              `tfsdk:"authorization_query_args_values"`
 	AuthorizationRollingTimeout                  types.Float64                               `tfsdk:"authorization_rolling_timeout"`
 	BearerTokenCookieName                        types.String                                `tfsdk:"bearer_token_cookie_name"`
+	BearerTokenHeaderName                        types.String                                `tfsdk:"bearer_token_header_name"`
 	BearerTokenParamType                         []types.String                              `tfsdk:"bearer_token_param_type"`
 	ByUsernameIgnoreCase                         types.Bool                                  `tfsdk:"by_username_ignore_case"`
 	CacheIntrospection                           types.Bool                                  `tfsdk:"cache_introspection"`

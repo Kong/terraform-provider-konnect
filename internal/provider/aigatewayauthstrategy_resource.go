@@ -380,6 +380,12 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Optional:    true,
 								Description: `The name of the cookie in which the bearer token is passed.`,
 							},
+							"bearer_token_header_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`authorization:bearer`),
+								Description: `The name of the HTTP header from which the bearer token is retrieved. The default value is ` + "`" + `authorization:bearer` + "`" + `, which reads the token from the ` + "`" + `Authorization: Bearer <token>` + "`" + ` header. Accepts plain header names such as ` + "`" + `x-my-token` + "`" + ` as well as Kong's special ` + "`" + `authorization:bearer` + "`" + ` notation. The ` + "`" + `access-token` + "`" + ` and ` + "`" + `x-access-token` + "`" + ` headers are also checked as a fallback for backward compatibility regardless of this setting. Default: "authorization:bearer"`,
+							},
 							"bearer_token_param_type": schema.ListAttribute{
 								Computed: true,
 								Optional: true,
@@ -416,8 +422,12 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Description: `Cache the token endpoint requests. Default: true`,
 							},
 							"cache_tokens_salt": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
-								Description: `Salt used for generating the cache key that is used for caching the token endpoint requests.`,
+								Description: `Salt used for generating the cache key that is used for caching the token endpoint requests. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
 							},
 							"cache_ttl": schema.Float64Attribute{
 								Computed:    true,
@@ -2243,7 +2253,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 								Computed:    true,
 								Optional:    true,
 								Default:     booldefault.StaticBool(true),
-								Description: `Verify signature of tokens. Default: true`,
+								Description: `Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use ` + "`" + `ignore_signature` + "`" + ` instead, which never affects bearer tokens. Default: true`,
 							},
 						},
 					},

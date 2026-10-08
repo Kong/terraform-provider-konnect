@@ -99,9 +99,14 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 			"spec_renderer": schema.SingleNestedAttribute{
 				Computed: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"try_it_ui":          types.BoolType,
 					"try_it_ui_audience": types.StringType,
 				})),
 				Attributes: map[string]schema.Attribute{
+					"try_it_ui": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.`,
+					},
 					"try_it_ui_audience": schema.StringAttribute{
 						Computed: true,
 						MarkdownDescription: `The audience for the Try It UI feature.` + "\n" +

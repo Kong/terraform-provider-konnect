@@ -179,7 +179,10 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				MarkdownDescription: `Type of gateway the dedicated custom domain belongs to: ` + "`" + `api` + "`" + ` for an API Gateway or` + "\n" +
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Type of gateway the custom domain belongs to: ` + "`" + `api` + "`" + ` for an API Gateway or` + "\n" +
 					`` + "`" + `ai` + "`" + ` for an AI Gateway. Applies only to dedicated custom domains. Defaults to ` + "`" + `api` + "`" + `` + "\n" +
 					`when omitted.` + "\n" +
 					`possible known values include one of ["api", "ai"]; Default: "api"; Requires replacement if changed.`,

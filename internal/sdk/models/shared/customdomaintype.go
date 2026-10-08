@@ -2,7 +2,10 @@
 
 package shared
 
-// CustomDomainType - Type of gateway the dedicated custom domain belongs to: `api` for an API Gateway or
+// CustomDomainType - **Pre-release Feature**
+// This feature is currently in beta and is subject to change.
+//
+// Type of gateway the custom domain belongs to: `api` for an API Gateway or
 // `ai` for an AI Gateway. Applies only to dedicated custom domains. Defaults to `api`
 // when omitted.
 type CustomDomainType string

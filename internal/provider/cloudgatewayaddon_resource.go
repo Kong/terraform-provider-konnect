@@ -375,7 +375,10 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								MarkdownDescription: `Type of gateway that owns the add-on: ` + "`" + `api` + "`" + ` for an API Gateway or ` + "`" + `ai` + "`" + ` for an` + "\n" +
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Type of gateway that owns the add-on: ` + "`" + `api` + "`" + ` for an API Gateway or ` + "`" + `ai` + "`" + ` for an` + "\n" +
 									`AI Gateway. Defaults to ` + "`" + `api` + "`" + ` when omitted.` + "\n" +
 									`possible known values include one of ["api", "ai"]; Default: "api"; Requires replacement if changed.`,
 							},

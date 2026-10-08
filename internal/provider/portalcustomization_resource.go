@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -59,7 +60,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Optional: true,
 			},
 			"layout": schema.StringAttribute{
-				Optional: true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `This property is deprecated and is not used by the portal.`,
 			},
 			"menu": schema.SingleNestedAttribute{
 				Optional: true,
@@ -281,8 +284,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"primary": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Description: `The primary accent color used in the portal's theme. Must be a valid hex color value.`,
 								Validators: []validator.String{
 									stringvalidator.RegexMatches(regexp.MustCompile(`^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$`), "must match pattern "+regexp.MustCompile(`^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$`).String()),
 								},
@@ -295,10 +299,13 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Description: `possible known values include one of ["light", "dark", "system"]`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`ocean`),
+						Description: `The theme name to apply to this portal. Supported names are 'ocean' and 'glacier'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"`,
 					},
 				},
+				Description: `The theme settings for this portal.`,
 			},
 		},
 	}

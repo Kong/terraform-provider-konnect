@@ -5,7 +5,11 @@ package shared
 // APIAccess - Controls how data planes in a configuration are exposed. Supported values:
 // - `private` — data planes are accessible only within the VPC network; no public internet exposure
 // - `public` — data planes are accessible from the public internet
-// - `private+public` — equivalent to `public`; data planes are accessible from the public internet (default)
+// - `private+public` — equivalent to `public`; data planes are accessible from the public internet
+//
+// Dedicated AI gateways (`kind: dedicated.v0` and `type: ai`) support only private or
+// public; the default is `public`. The private+public value is not supported for dedicated
+// AI gateways. For other gateway types, the default is `private+public`.
 type APIAccess string
 
 const (

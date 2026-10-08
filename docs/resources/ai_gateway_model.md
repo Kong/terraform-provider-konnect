@@ -85,7 +85,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         model = {
           body_param   = "model"
           header_param = "x-model"
-          path_param   = "~model_name"
+          path_param   = "model_name"
           values = [
             "..."
           ]
@@ -290,7 +290,7 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         model = {
           body_param   = "model"
           header_param = "x-model"
-          path_param   = "~model_name"
+          path_param   = "model_name"
           values = [
             "..."
           ]
@@ -961,7 +961,7 @@ Optional:
 
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
-- `path_param` (String) The name of the regex capture group beginning with "~", which is defined in the route path for routing.
+- `path_param` (String) The name of the regex capture group defined in the route path for routing.
 - `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 
@@ -3250,7 +3250,7 @@ Optional:
 
 - `body_param` (String) The body property name to match for routing.
 - `header_param` (String) The header property name to match for routing.
-- `path_param` (String) The name of the regex capture group beginning with "~", which is defined in the route path for routing.
+- `path_param` (String) The name of the regex capture group defined in the route path for routing.
 - `values` (List of String) Optional model aliases. When omitted, the model name is used.
 When no selector location is configured, the format default selector is used.
 

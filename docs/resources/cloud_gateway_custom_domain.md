@@ -45,7 +45,10 @@ This feature is currently in beta and is subject to change.
 
 Kind of the custom domain based on Cloud Gateway deployment.
 possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"; Requires replacement if changed.
-- `type` (String) Type of gateway the dedicated custom domain belongs to: `api` for an API Gateway or
+- `type` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Type of gateway the custom domain belongs to: `api` for an API Gateway or
 `ai` for an AI Gateway. Applies only to dedicated custom domains. Defaults to `api`
 when omitted.
 possible known values include one of ["api", "ai"]; Default: "api"; Requires replacement if changed.

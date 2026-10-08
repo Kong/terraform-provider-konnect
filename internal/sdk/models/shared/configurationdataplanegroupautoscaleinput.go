@@ -15,6 +15,8 @@ const (
 	ConfigurationDataPlaneGroupAutoscaleInputTypeConfigurationDataPlaneGroupAutoscaleAutopilotInput ConfigurationDataPlaneGroupAutoscaleInputType = "ConfigurationDataPlaneGroupAutoscaleAutopilot_input"
 )
 
+// ConfigurationDataPlaneGroupAutoscaleInput - Autoscaling configuration for a data-plane group. For dedicated AI gateways
+// (`kind: dedicated.v0` and `type: ai`) and serverless.v1 kind gateways, this field should be omitted.
 type ConfigurationDataPlaneGroupAutoscaleInput struct {
 	ConfigurationDataPlaneGroupAutoscaleStatic         *ConfigurationDataPlaneGroupAutoscaleStatic         `queryParam:"inline" union:"member"`
 	ConfigurationDataPlaneGroupAutoscaleAutopilotInput *ConfigurationDataPlaneGroupAutoscaleAutopilotInput `queryParam:"inline" union:"member"`
