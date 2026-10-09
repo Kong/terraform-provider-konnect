@@ -67,6 +67,9 @@ func TestCloudGatewayAddOn(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_cloud_gateway_addon.my_addon", "name", "tf-test-add-on"),
+
+						//validating if type is defaults to API.
+						resource.TestCheckResourceAttr("konnect_cloud_gateway_addon.my_addon", "owner.control_plane.type", "api"),
 					),
 				},
 				{
@@ -97,6 +100,75 @@ func TestCloudGatewayAddOn(t *testing.T) {
 				},
 				{
 					Config: updatedConfig,
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+			},
+		})
+	})
+
+	t.Run("Cloud Gateways AddOns owned by AI Gateway", func(t *testing.T) {
+		builder := hclbuilder.New()
+		aiGateway, err := hclbuilder.FromString(`
+          resource "konnect_ai_gateway" "test_ai_gateway" {
+             name         = "tf-test-ai-gateway-addon"
+             display_name = "TF Test AI Gateway AddOn"
+			 deployment_type = "managed"
+          }
+       `)
+		require.NoError(t, err)
+		addon, err := hclbuilder.FromString(`
+         resource "konnect_cloud_gateway_addon" "my_ai_addon" {
+          name     = "tf-test-ai-add-on"
+
+          config = {
+            managed_cache = {
+             capacity_config = {
+               tiered = {
+                tier = "micro"
+               }
+             }
+            }
+          }
+          owner = {
+            control_plane = {
+             control_plane_geo = "us"
+             control_plane_id  = konnect_ai_gateway.test_ai_gateway.id
+             type              = "ai"
+            }
+          }
+         }
+       `)
+		require.NoError(t, err)
+
+		fullConfig := builder.
+			Upsert(aiGateway).
+			Upsert(addon).
+			Build()
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: fullConfig,
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_cloud_gateway_addon.my_ai_addon",
+								plancheck.ResourceActionCreate,
+							),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_cloud_gateway_addon.my_ai_addon", "name", "tf-test-ai-add-on"),
+						resource.TestCheckResourceAttr("konnect_cloud_gateway_addon.my_ai_addon", "owner.control_plane.type", "ai"),
+					),
+				},
+				{
+					Config: fullConfig,
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectEmptyPlan(),

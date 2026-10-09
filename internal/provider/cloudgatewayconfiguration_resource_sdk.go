@@ -95,6 +95,11 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 		} else {
 			r.Kind = types.StringNull()
 		}
+		if resp.Type != nil {
+			r.Type = types.StringValue(string(*resp.Type))
+		} else {
+			r.Type = types.StringNull()
+		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		r.Version = types.StringPointerValue(resp.Version)
 	}
@@ -204,6 +209,12 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 	} else {
 		kind2 = nil
 	}
+	typeVar := new(shared.ConfigurationType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.ConfigurationType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
 	apiAccess := new(shared.APIAccess)
 	if !r.APIAccess.IsUnknown() && !r.APIAccess.IsNull() {
 		*apiAccess = shared.APIAccess(r.APIAccess.ValueString())
@@ -216,6 +227,7 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 		Version:         version,
 		DataplaneGroups: dataplaneGroups,
 		Kind:            kind2,
+		Type:            typeVar,
 		APIAccess:       apiAccess,
 	}
 

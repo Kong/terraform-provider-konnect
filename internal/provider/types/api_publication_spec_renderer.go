@@ -7,5 +7,6 @@ import (
 )
 
 type APIPublicationSpecRenderer struct {
+	TryItUI         types.Bool   `tfsdk:"try_it_ui"`
 	TryItUIAudience types.String `tfsdk:"try_it_ui_audience"`
 }

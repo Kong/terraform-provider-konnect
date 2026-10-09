@@ -2384,6 +2384,8 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
+	// The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.
+	BearerTokenHeaderName *string `default:"authorization:bearer" json:"bearer_token_header_name"`
 	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
@@ -2395,7 +2397,7 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	// Cache the token endpoint requests.
 	CacheTokens *bool `default:"true" json:"cache_tokens"`
 	// Salt used for generating the cache key that is used for caching the token endpoint requests.
-	CacheTokensSalt *string `json:"cache_tokens_salt,omitempty"`
+	CacheTokensSalt string `json:"cache_tokens_salt"`
 	// The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
 	CacheTTL *float64 `default:"3600" json:"cache_ttl"`
 	// The maximum cache ttl in seconds (enforced).
@@ -2499,14 +2501,10 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	HideCredentials *bool `default:"true" json:"hide_credentials"`
 	// The HTTP proxy.
 	HTTPProxy *string `json:"http_proxy,omitempty"`
-	// The HTTP proxy authorization.
-	HTTPProxyAuthorization *string `json:"http_proxy_authorization,omitempty"`
 	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
 	HTTPVersion *float64 `json:"http_version,omitempty"`
 	// The HTTPS proxy.
 	HTTPSProxy *string `json:"https_proxy,omitempty"`
-	// The HTTPS proxy authorization.
-	HTTPSProxyAuthorization *string `json:"https_proxy_authorization,omitempty"`
 	// The name of the parameter used to pass the id token.
 	IDTokenParamName *string `json:"id_token_param_name,omitempty"`
 	// Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
@@ -2806,7 +2804,7 @@ type AIGWOpenIDConnectGeneratedConfigOutput struct {
 	VerifyNonce *bool `default:"true" json:"verify_nonce"`
 	// Verify plugin configuration against discovery.
 	VerifyParameters *bool `default:"false" json:"verify_parameters"`
-	// Verify signature of tokens.
+	// Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
 }
 
@@ -2815,7 +2813,7 @@ func (a AIGWOpenIDConnectGeneratedConfigOutput) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfigOutput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"issuer"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"cache_tokens_salt", "issuer"}); err != nil {
 		return err
 	}
 	return nil
@@ -2947,6 +2945,13 @@ func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetBearerTokenCookieName() *str
 	return a.BearerTokenCookieName
 }
 
+func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetBearerTokenHeaderName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BearerTokenHeaderName
+}
+
 func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetBearerTokenParamType() []BearerTokenParamType {
 	if a == nil {
 		return nil
@@ -2982,9 +2987,9 @@ func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetCacheTokens() *bool {
 	return a.CacheTokens
 }
 
-func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetCacheTokensSalt() *string {
+func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetCacheTokensSalt() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.CacheTokensSalt
 }
@@ -3353,13 +3358,6 @@ func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetHTTPProxy() *string {
 	return a.HTTPProxy
 }
 
-func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetHTTPProxyAuthorization() *string {
-	if a == nil {
-		return nil
-	}
-	return a.HTTPProxyAuthorization
-}
-
 func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetHTTPVersion() *float64 {
 	if a == nil {
 		return nil
@@ -3372,13 +3370,6 @@ func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetHTTPSProxy() *string {
 		return nil
 	}
 	return a.HTTPSProxy
-}
-
-func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetHTTPSProxyAuthorization() *string {
-	if a == nil {
-		return nil
-	}
-	return a.HTTPSProxyAuthorization
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfigOutput) GetIDTokenParamName() *string {
@@ -4468,6 +4459,8 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
+	// The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.
+	BearerTokenHeaderName *string `default:"authorization:bearer" json:"bearer_token_header_name"`
 	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
@@ -4479,7 +4472,7 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	// Cache the token endpoint requests.
 	CacheTokens *bool `default:"true" json:"cache_tokens"`
 	// Salt used for generating the cache key that is used for caching the token endpoint requests.
-	CacheTokensSalt *string `json:"cache_tokens_salt,omitempty"`
+	CacheTokensSalt string `json:"cache_tokens_salt"`
 	// The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
 	CacheTTL *float64 `default:"3600" json:"cache_ttl"`
 	// The maximum cache ttl in seconds (enforced).
@@ -4892,7 +4885,7 @@ type AIGWOpenIDConnectGeneratedConfig struct {
 	VerifyNonce *bool `default:"true" json:"verify_nonce"`
 	// Verify plugin configuration against discovery.
 	VerifyParameters *bool `default:"false" json:"verify_parameters"`
-	// Verify signature of tokens.
+	// Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
 }
 
@@ -4901,7 +4894,7 @@ func (a AIGWOpenIDConnectGeneratedConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AIGWOpenIDConnectGeneratedConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"issuer"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"cache_tokens_salt", "issuer"}); err != nil {
 		return err
 	}
 	return nil
@@ -5033,6 +5026,13 @@ func (a *AIGWOpenIDConnectGeneratedConfig) GetBearerTokenCookieName() *string {
 	return a.BearerTokenCookieName
 }
 
+func (a *AIGWOpenIDConnectGeneratedConfig) GetBearerTokenHeaderName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BearerTokenHeaderName
+}
+
 func (a *AIGWOpenIDConnectGeneratedConfig) GetBearerTokenParamType() []BearerTokenParamType {
 	if a == nil {
 		return nil
@@ -5068,9 +5068,9 @@ func (a *AIGWOpenIDConnectGeneratedConfig) GetCacheTokens() *bool {
 	return a.CacheTokens
 }
 
-func (a *AIGWOpenIDConnectGeneratedConfig) GetCacheTokensSalt() *string {
+func (a *AIGWOpenIDConnectGeneratedConfig) GetCacheTokensSalt() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.CacheTokensSalt
 }

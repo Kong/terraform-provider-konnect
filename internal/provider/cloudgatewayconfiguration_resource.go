@@ -50,6 +50,7 @@ type CloudGatewayConfigurationResourceModel struct {
 	EntityVersion   types.Float64                         `tfsdk:"entity_version"`
 	ID              types.String                          `tfsdk:"id"`
 	Kind            types.String                          `tfsdk:"kind"`
+	Type            types.String                          `tfsdk:"type"`
 	UpdatedAt       types.String                          `tfsdk:"updated_at"`
 	Version         types.String                          `tfsdk:"version"`
 }
@@ -68,7 +69,11 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				MarkdownDescription: `Controls how data planes in a configuration are exposed. Supported values:` + "\n" +
 					`- ` + "`" + `private` + "`" + ` — data planes are accessible only within the VPC network; no public internet exposure` + "\n" +
 					`- ` + "`" + `public` + "`" + ` — data planes are accessible from the public internet` + "\n" +
-					`- ` + "`" + `private+public` + "`" + ` — equivalent to ` + "`" + `public` + "`" + `; data planes are accessible from the public internet (default)` + "\n" +
+					`- ` + "`" + `private+public` + "`" + ` — equivalent to ` + "`" + `public` + "`" + `; data planes are accessible from the public internet` + "\n" +
+					`` + "\n" +
+					`Dedicated AI gateways (` + "`" + `kind: dedicated.v0` + "`" + ` and ` + "`" + `type: ai` + "`" + `) support only private or` + "\n" +
+					`public; the default is ` + "`" + `public` + "`" + `. The private+public value is not supported for dedicated` + "\n" +
+					`AI gateways. For other gateway types, the default is ` + "`" + `private+public` + "`" + `.` + "\n" +
 					`possible known values include one of ["private", "public", "private+public"]`,
 			},
 			"control_plane_geo": schema.StringAttribute{
@@ -136,7 +141,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 											Description:        `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.`,
 										},
 									},
-									Description: `Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
+									Description: `Object that describes the autopilot autoscaling strategy.`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
 											path.MatchRelative().AtParent().AtName("configuration_data_plane_group_autoscale_static"),
@@ -173,7 +178,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 										},
 									},
 									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-									Description:        `Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
+									Description:        `Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
 											path.MatchRelative().AtParent().AtName("configuration_data_plane_group_autoscale_autopilot"),
@@ -181,6 +186,8 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 									},
 								},
 							},
+							MarkdownDescription: `Autoscaling configuration for a data-plane group. For dedicated AI gateways` + "\n" +
+								`(` + "`" + `kind: dedicated.v0` + "`" + ` and ` + "`" + `type: ai` + "`" + `) and serverless.v1 kind gateways, this field should be omitted.`,
 						},
 						"cloud_gateway_network_id": schema.StringAttribute{
 							Computed: true,
@@ -230,7 +237,8 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 									},
 								},
 							},
-							Description: `Array of environment variables to set for a data-plane group.`,
+							MarkdownDescription: `Array of environment variables to set for a data-plane group. For dedicated AI gateways` + "\n" +
+								`(` + "`" + `kind: dedicated.v0` + "`" + ` and ` + "`" + `type: ai` + "`" + `), this field should be omitted.`,
 						},
 						"hostnames": schema.ListAttribute{
 							Computed:    true,
@@ -301,6 +309,17 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 					`should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.` + "\n" +
 					`possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"`,
 			},
+			"type": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`api`),
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Type of Cloud Gateway: ` + "`" + `api` + "`" + ` for an API Gateway or ` + "`" + `ai` + "`" + ` for an AI Gateway.` + "\n" +
+					`Applies only to dedicated Cloud Gateways. Defaults to ` + "`" + `api` + "`" + ` when omitted.` + "\n" +
+					`possible known values include one of ["api", "ai"]; Default: "api"`,
+			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -309,9 +328,10 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Description: `An RFC-3339 timestamp representation of configuration update date.`,
 			},
 			"version": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `Supported gateway version. For ` + "`" + `serverless.v1` + "`" + ` cloud gateways and dedicated AI gateways` + "\n" +
+					`(` + "`" + `kind: dedicated.v0` + "`" + ` and ` + "`" + `type: ai` + "`" + `), this field should be omitted.`,
 			},
 		},
 	}

@@ -9,4 +9,5 @@ import (
 type ControlPlane struct {
 	ControlPlaneGeo types.String `tfsdk:"control_plane_geo"`
 	ControlPlaneID  types.String `tfsdk:"control_plane_id"`
+	Type            types.String `tfsdk:"type"`
 }

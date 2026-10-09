@@ -6,7 +6,8 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// ConfigurationDataPlaneGroupEnvironmentField - Environment variable name and value to set for a data-plane group.
+// ConfigurationDataPlaneGroupEnvironmentField - Environment variable name and value to set for a data-plane group. For dedicated AI gateways
+// (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
 type ConfigurationDataPlaneGroupEnvironmentField struct {
 	// Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_ or OTEL_.
 	//

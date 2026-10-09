@@ -33,6 +33,11 @@ func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(ct
 		r.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
 		r.StateMetadata.Reason = types.StringPointerValue(resp.StateMetadata.Reason)
 		r.StateMetadata.ReportedStatus = types.StringPointerValue(resp.StateMetadata.ReportedStatus)
+		if resp.Type != nil {
+			r.Type = types.StringValue(string(*resp.Type))
+		} else {
+			r.Type = types.StringNull()
+		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
@@ -81,11 +86,18 @@ func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainReques
 	} else {
 		kind = nil
 	}
+	typeVar := new(shared.CustomDomainType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.CustomDomainType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
 	out := shared.CreateCustomDomainRequest{
 		ControlPlaneID:  controlPlaneID,
 		ControlPlaneGeo: controlPlaneGeo,
 		Domain:          domain,
 		Kind:            kind,
+		Type:            typeVar,
 	}
 
 	return &out, diags
