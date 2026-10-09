@@ -59,6 +59,7 @@ possible known values include one of ["public", "private"]
 
 Read-Only:
 
+- `try_it_ui` (Boolean) Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.
 - `try_it_ui_audience` (String) The audience for the Try It UI feature.
 
 `all` means that the Try It UI will be available to all users, including unauthenticated users.

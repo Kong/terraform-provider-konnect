@@ -13,9 +13,14 @@ type CreateConfigurationDataPlaneGroup struct {
 	// Region ID for cloud provider region.
 	Region string `json:"region"`
 	// The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
-	CloudGatewayNetworkID *string                                    `json:"cloud_gateway_network_id,omitempty"`
-	Autoscale             *ConfigurationDataPlaneGroupAutoscaleInput `json:"autoscale,omitempty"`
-	// Array of environment variables to set for a data-plane group.
+	CloudGatewayNetworkID *string `json:"cloud_gateway_network_id,omitempty"`
+	// Autoscaling configuration for a data-plane group. For dedicated AI gateways
+	// (`kind: dedicated.v0` and `type: ai`) and serverless.v1 kind gateways, this field should be omitted.
+	//
+	Autoscale *ConfigurationDataPlaneGroupAutoscaleInput `json:"autoscale,omitempty"`
+	// Array of environment variables to set for a data-plane group. For dedicated AI gateways
+	// (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
+	//
 	Environment []ConfigurationDataPlaneGroupEnvironmentField `json:"environment,omitempty"`
 }
 

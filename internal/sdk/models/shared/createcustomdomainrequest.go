@@ -26,6 +26,13 @@ type CreateCustomDomainRequest struct {
 	//
 	// Kind of the custom domain based on Cloud Gateway deployment.
 	Kind *CustomDomainKind `default:"dedicated.v0" json:"kind"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Type of gateway the custom domain belongs to: `api` for an API Gateway or
+	// `ai` for an AI Gateway. Applies only to dedicated custom domains. Defaults to `api`
+	// when omitted.
+	Type *CustomDomainType `default:"api" json:"type"`
 }
 
 func (c CreateCustomDomainRequest) MarshalJSON() ([]byte, error) {
@@ -65,4 +72,11 @@ func (c *CreateCustomDomainRequest) GetKind() *CustomDomainKind {
 		return nil
 	}
 	return c.Kind
+}
+
+func (c *CreateCustomDomainRequest) GetType() *CustomDomainType {
+	if c == nil {
+		return nil
+	}
+	return c.Type
 }

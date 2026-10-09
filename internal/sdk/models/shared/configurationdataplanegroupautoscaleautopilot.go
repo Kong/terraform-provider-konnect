@@ -31,7 +31,7 @@ func (e *ConfigurationDataPlaneGroupAutoscaleAutopilotKind) UnmarshalJSON(data [
 	}
 }
 
-// ConfigurationDataPlaneGroupAutoscaleAutopilot - Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.
+// ConfigurationDataPlaneGroupAutoscaleAutopilot - Object that describes the autopilot autoscaling strategy.
 type ConfigurationDataPlaneGroupAutoscaleAutopilot struct {
 	Kind ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
 	// Base number of requests per second that the deployment target should support.
@@ -74,7 +74,7 @@ func (c *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetMaxRps() *int64 {
 	return c.MaxRps
 }
 
-// ConfigurationDataPlaneGroupAutoscaleAutopilotInput - Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.
+// ConfigurationDataPlaneGroupAutoscaleAutopilotInput - Object that describes the autopilot autoscaling strategy.
 type ConfigurationDataPlaneGroupAutoscaleAutopilotInput struct {
 	Kind ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
 	// Base number of requests per second that the deployment target should support.

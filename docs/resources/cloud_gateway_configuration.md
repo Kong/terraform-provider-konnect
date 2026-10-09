@@ -38,6 +38,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
     }
   ]
   kind    = "dedicated.v0"
+  type    = "api"
   version = "3.10"
 }
 ```
@@ -63,7 +64,11 @@ possible known values include one of ["us", "eu", "au", "me", "in", "sg"]
 - `api_access` (String) Controls how data planes in a configuration are exposed. Supported values:
 - `private` — data planes are accessible only within the VPC network; no public internet exposure
 - `public` — data planes are accessible from the public internet
-- `private+public` — equivalent to `public`; data planes are accessible from the public internet (default)
+- `private+public` — equivalent to `public`; data planes are accessible from the public internet
+
+Dedicated AI gateways (`kind: dedicated.v0` and `type: ai`) support only private or
+public; the default is `public`. The private+public value is not supported for dedicated
+AI gateways. For other gateway types, the default is `private+public`.
 possible known values include one of ["private", "public", "private+public"]
 - `kind` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
@@ -71,7 +76,14 @@ This feature is currently in beta and is subject to change.
 Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
 should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
 possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"
-- `version` (String) Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.
+- `type` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Type of Cloud Gateway: `api` for an API Gateway or `ai` for an AI Gateway.
+Applies only to dedicated Cloud Gateways. Defaults to `api` when omitted.
+possible known values include one of ["api", "ai"]; Default: "api"
+- `version` (String) Supported gateway version. For `serverless.v1` cloud gateways and dedicated AI gateways
+(`kind: dedicated.v0` and `type: ai`), this field should be omitted.
 
 ### Read-Only
 
@@ -85,9 +97,11 @@ possible known values include one of ["dedicated.v0", "serverless.v1"]; Default:
 
 Optional:
 
-- `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
+- `autoscale` (Attributes) Autoscaling configuration for a data-plane group. For dedicated AI gateways
+(`kind: dedicated.v0` and `type: ai`) and serverless.v1 kind gateways, this field should be omitted. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
 - `cloud_gateway_network_id` (String) The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
-- `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_groups--environment))
+- `environment` (Attributes List) Array of environment variables to set for a data-plane group. For dedicated AI gateways
+(`kind: dedicated.v0` and `type: ai`), this field should be omitted. (see [below for nested schema](#nestedatt--dataplane_groups--environment))
 - `provider` (String) Name of cloud provider. possible known values include one of ["aws", "azure", "gcp"]; Not Null
 - `region` (String) Region ID for cloud provider region. Not Null
 
@@ -106,8 +120,8 @@ Read-Only:
 
 Optional:
 
-- `configuration_data_plane_group_autoscale_autopilot` (Attributes) Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_autopilot))
-- `configuration_data_plane_group_autoscale_static` (Attributes, Deprecated) Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_static))
+- `configuration_data_plane_group_autoscale_autopilot` (Attributes) Object that describes the autopilot autoscaling strategy. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_autopilot))
+- `configuration_data_plane_group_autoscale_static` (Attributes, Deprecated) Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_static))
 
 <a id="nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_autopilot"></a>
 ### Nested Schema for `dataplane_groups.autoscale.configuration_data_plane_group_autoscale_autopilot`

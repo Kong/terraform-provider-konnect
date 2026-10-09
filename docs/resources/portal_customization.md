@@ -63,7 +63,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
       primary = "#000000"
     }
     mode = "system"
-    name = "...my_name..."
+    name = "ocean"
   }
 }
 ```
@@ -78,11 +78,11 @@ resource "konnect_portal_customization" "my_portalcustomization" {
 ### Optional
 
 - `css` (String)
-- `layout` (String)
+- `layout` (String, Deprecated) This property is deprecated and is not used by the portal.
 - `menu` (Attributes) (see [below for nested schema](#nestedatt--menu))
 - `robots` (String)
 - `spec_renderer` (Attributes) The spec renderer settings of this portal (see [below for nested schema](#nestedatt--spec_renderer))
-- `theme` (Attributes) (see [below for nested schema](#nestedatt--theme))
+- `theme` (Attributes) The theme settings for this portal. (see [below for nested schema](#nestedatt--theme))
 
 <a id="nestedatt--menu"></a>
 ### Nested Schema for `menu`
@@ -157,14 +157,14 @@ Optional:
 
 - `colors` (Attributes) (see [below for nested schema](#nestedatt--theme--colors))
 - `mode` (String) possible known values include one of ["light", "dark", "system"]
-- `name` (String)
+- `name` (String) The theme name to apply to this portal. Supported names are 'ocean' and 'glacier'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"
 
 <a id="nestedatt--theme--colors"></a>
 ### Nested Schema for `theme.colors`
 
 Optional:
 
-- `primary` (String)
+- `primary` (String) The primary accent color used in the portal's theme. Must be a valid hex color value.
 
 ## Import
 

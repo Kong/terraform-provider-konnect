@@ -171,9 +171,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 6.58
-            top_k        = 603506672
-            top_p        = 4.84
+            temperature  = 3.29
+            top_k        = 140
+            top_p        = 0.48
             upstream_url = "https://ajar-summer.biz"
             version      = "2023-06-01"
           }
@@ -377,9 +377,9 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 4.9
-            top_k        = 1295170432
-            top_p        = 5.29
+            temperature  = 2.45
+            top_k        = 302
+            top_p        = 0.53
             upstream_url = "https://sad-thigh.net"
           }
         }

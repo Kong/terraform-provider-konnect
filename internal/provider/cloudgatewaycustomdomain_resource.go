@@ -47,6 +47,7 @@ type CloudGatewayCustomDomainResourceModel struct {
 	SniID           types.String                       `tfsdk:"sni_id"`
 	State           types.String                       `tfsdk:"state"`
 	StateMetadata   *tfTypes.CustomDomainStateMetadata `tfsdk:"state_metadata"`
+	Type            types.String                       `tfsdk:"type"`
 	UpdatedAt       types.String                       `tfsdk:"updated_at"`
 }
 
@@ -169,6 +170,22 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					},
 				},
 				Description: `Metadata describing the backing state of the custom domain and why it may be in an erroneous state.`,
+			},
+			"type": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`api`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Type of gateway the custom domain belongs to: ` + "`" + `api` + "`" + ` for an API Gateway or` + "\n" +
+					`` + "`" + `ai` + "`" + ` for an AI Gateway. Applies only to dedicated custom domains. Defaults to ` + "`" + `api` + "`" + `` + "\n" +
+					`when omitted.` + "\n" +
+					`possible known values include one of ["api", "ai"]; Default: "api"; Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

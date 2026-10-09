@@ -85,6 +85,7 @@ resource "konnect_ai_gateway_auth_strategy" "my_aigatewayauthstrategy" {
       ]
       authorization_rolling_timeout = 600
       bearer_token_cookie_name      = "...my_bearer_token_cookie_name..."
+      bearer_token_header_name      = "authorization:bearer"
       bearer_token_param_type = [
         "cookie"
       ]
@@ -756,12 +757,13 @@ Optional:
 - `authorization_query_args_values` (List of String) Extra query argument values passed to the authorization endpoint.
 - `authorization_rolling_timeout` (Number) Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling. Default: 600
 - `bearer_token_cookie_name` (String) The name of the cookie in which the bearer token is passed.
+- `bearer_token_header_name` (String) The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong's special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting. Default: "authorization:bearer"
 - `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`. Default: ["body","header","query"]
 - `by_username_ignore_case` (Boolean) If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively. Default: false
 - `cache_introspection` (Boolean) Cache the introspection endpoint requests. Default: true
 - `cache_token_exchange` (Boolean) Cache the legacy token exchange endpoint requests. Default: true
 - `cache_tokens` (Boolean) Cache the token endpoint requests. Default: true
-- `cache_tokens_salt` (String) Salt used for generating the cache key that is used for caching the token endpoint requests.
+- `cache_tokens_salt` (String) Salt used for generating the cache key that is used for caching the token endpoint requests. Not Null
 - `cache_ttl` (Number) The default cache ttl in seconds that is used in case the cached object does not specify the expiry. Default: 3600
 - `cache_ttl_max` (Number) The maximum cache ttl in seconds (enforced).
 - `cache_ttl_min` (Number) The minimum cache ttl in seconds (enforced).
@@ -971,7 +973,7 @@ Default: false
 - `verify_claims` (Boolean) Verify tokens for standard claims. Default: true
 - `verify_nonce` (Boolean) Verify nonce on authorization code flow. Default: true
 - `verify_parameters` (Boolean) Verify plugin configuration against discovery. Default: false
-- `verify_signature` (Boolean) Verify signature of tokens. Default: true
+- `verify_signature` (Boolean) Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens. Default: true
 
 <a id="nestedatt--openid_connect--config--client_jwk"></a>
 ### Nested Schema for `openid_connect.config.client_jwk`

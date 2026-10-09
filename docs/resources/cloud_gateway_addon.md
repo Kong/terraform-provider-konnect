@@ -204,6 +204,12 @@ Optional:
 - `sg` — Singapore
 possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
 - `control_plane_id` (String) ID of the control-plane that owns this add-on. Not Null; Requires replacement if changed.
+- `type` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Type of gateway that owns the add-on: `api` for an API Gateway or `ai` for an
+AI Gateway. Defaults to `api` when omitted.
+possible known values include one of ["api", "ai"]; Default: "api"; Requires replacement if changed.
 
 
 <a id="nestedatt--owner--control_plane_group"></a>

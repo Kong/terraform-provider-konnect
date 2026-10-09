@@ -161,6 +161,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				}
 				r.OpenidConnect.Config.AuthorizationRollingTimeout = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.AuthorizationRollingTimeout)
 				r.OpenidConnect.Config.BearerTokenCookieName = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenCookieName)
+				r.OpenidConnect.Config.BearerTokenHeaderName = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenHeaderName)
 				r.OpenidConnect.Config.BearerTokenParamType = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenParamType))
 				for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.BearerTokenParamType {
 					r.OpenidConnect.Config.BearerTokenParamType = append(r.OpenidConnect.Config.BearerTokenParamType, types.StringValue(string(v)))
@@ -169,7 +170,7 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				r.OpenidConnect.Config.CacheIntrospection = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheIntrospection)
 				r.OpenidConnect.Config.CacheTokenExchange = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokenExchange)
 				r.OpenidConnect.Config.CacheTokens = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokens)
-				r.OpenidConnect.Config.CacheTokensSalt = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokensSalt)
+				r.OpenidConnect.Config.CacheTokensSalt = types.StringValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTokensSalt)
 				r.OpenidConnect.Config.CacheTTL = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTTL)
 				r.OpenidConnect.Config.CacheTTLMax = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTTLMax)
 				r.OpenidConnect.Config.CacheTTLMin = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.CacheTTLMin)
@@ -490,10 +491,8 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				}
 				r.OpenidConnect.Config.HideCredentials = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HideCredentials)
 				r.OpenidConnect.Config.HTTPProxy = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPProxy)
-				r.OpenidConnect.Config.HTTPProxyAuthorization = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPProxyAuthorization)
 				r.OpenidConnect.Config.HTTPVersion = types.Float64PointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPVersion)
 				r.OpenidConnect.Config.HTTPSProxy = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPSProxy)
-				r.OpenidConnect.Config.HTTPSProxyAuthorization = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.HTTPSProxyAuthorization)
 				r.OpenidConnect.Config.IDTokenParamName = types.StringPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IDTokenParamName)
 				r.OpenidConnect.Config.IDTokenParamType = make([]types.String, 0, len(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IDTokenParamType))
 				for _, v := range resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.IDTokenParamType {
@@ -1161,6 +1160,8 @@ func (r *AIGatewayAuthStrategyResourceModel) RefreshFromSharedAIGatewayAuthStrat
 				r.OpenidConnect.Config.VerifySignature = types.BoolPointerValue(resp.AIGatewayAuthStrategyOpenIDConnectResponse.Config.VerifySignature)
 				if configPriorData != nil {
 					r.OpenidConnect.Config.ClientSecret = configPriorData.ClientSecret
+					r.OpenidConnect.Config.HTTPProxyAuthorization = configPriorData.HTTPProxyAuthorization
+					r.OpenidConnect.Config.HTTPSProxyAuthorization = configPriorData.HTTPSProxyAuthorization
 				}
 			}
 			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayAuthStrategyOpenIDConnectResponse.CreatedAt))
@@ -1557,6 +1558,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				bearerTokenCookieName = nil
 			}
+			bearerTokenHeaderName := new(string)
+			if !r.OpenidConnect.Config.BearerTokenHeaderName.IsUnknown() && !r.OpenidConnect.Config.BearerTokenHeaderName.IsNull() {
+				*bearerTokenHeaderName = r.OpenidConnect.Config.BearerTokenHeaderName.ValueString()
+			} else {
+				bearerTokenHeaderName = nil
+			}
 			bearerTokenParamType := make([]shared.BearerTokenParamType, 0, len(r.OpenidConnect.Config.BearerTokenParamType))
 			for _, bearerTokenParamTypeItem := range r.OpenidConnect.Config.BearerTokenParamType {
 				bearerTokenParamType = append(bearerTokenParamType, shared.BearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
@@ -1585,12 +1592,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 			} else {
 				cacheTokens = nil
 			}
-			cacheTokensSalt := new(string)
-			if !r.OpenidConnect.Config.CacheTokensSalt.IsUnknown() && !r.OpenidConnect.Config.CacheTokensSalt.IsNull() {
-				*cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
-			} else {
-				cacheTokensSalt = nil
-			}
+			var cacheTokensSalt string
+			cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
+
 			cacheTTL := new(float64)
 			if !r.OpenidConnect.Config.CacheTTL.IsUnknown() && !r.OpenidConnect.Config.CacheTTL.IsNull() {
 				*cacheTTL = r.OpenidConnect.Config.CacheTTL.ValueFloat64()
@@ -3776,6 +3780,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedCreateAIGatewayAuthStrategy
 				AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
 				AuthorizationRollingTimeout:            authorizationRollingTimeout,
 				BearerTokenCookieName:                  bearerTokenCookieName,
+				BearerTokenHeaderName:                  bearerTokenHeaderName,
 				BearerTokenParamType:                   bearerTokenParamType,
 				ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
 				CacheIntrospection:                     cacheIntrospection,
@@ -4294,6 +4299,12 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				bearerTokenCookieName = nil
 			}
+			bearerTokenHeaderName := new(string)
+			if !r.OpenidConnect.Config.BearerTokenHeaderName.IsUnknown() && !r.OpenidConnect.Config.BearerTokenHeaderName.IsNull() {
+				*bearerTokenHeaderName = r.OpenidConnect.Config.BearerTokenHeaderName.ValueString()
+			} else {
+				bearerTokenHeaderName = nil
+			}
 			bearerTokenParamType := make([]shared.BearerTokenParamType, 0, len(r.OpenidConnect.Config.BearerTokenParamType))
 			for _, bearerTokenParamTypeItem := range r.OpenidConnect.Config.BearerTokenParamType {
 				bearerTokenParamType = append(bearerTokenParamType, shared.BearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
@@ -4322,12 +4333,9 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 			} else {
 				cacheTokens = nil
 			}
-			cacheTokensSalt := new(string)
-			if !r.OpenidConnect.Config.CacheTokensSalt.IsUnknown() && !r.OpenidConnect.Config.CacheTokensSalt.IsNull() {
-				*cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
-			} else {
-				cacheTokensSalt = nil
-			}
+			var cacheTokensSalt string
+			cacheTokensSalt = r.OpenidConnect.Config.CacheTokensSalt.ValueString()
+
 			cacheTTL := new(float64)
 			if !r.OpenidConnect.Config.CacheTTL.IsUnknown() && !r.OpenidConnect.Config.CacheTTL.IsNull() {
 				*cacheTTL = r.OpenidConnect.Config.CacheTTL.ValueFloat64()
@@ -6513,6 +6521,7 @@ func (r *AIGatewayAuthStrategyResourceModel) ToSharedUpdateAIGatewayAuthStrategy
 				AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
 				AuthorizationRollingTimeout:            authorizationRollingTimeout,
 				BearerTokenCookieName:                  bearerTokenCookieName,
+				BearerTokenHeaderName:                  bearerTokenHeaderName,
 				BearerTokenParamType:                   bearerTokenParamType,
 				ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
 				CacheIntrospection:                     cacheIntrospection,

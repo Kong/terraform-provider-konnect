@@ -6976,9 +6976,11 @@ paths:
         groups to match. Any network referenced in the request that is currently `offline` automatically transitions
         to `initializing`.
 
-        Use `kind: dedicated.v0` (default) for dedicated Cloud Gateways — `version`, `cloud_gateway_network_id`, and
-        `autoscale` are required. Use `kind: serverless.v1` for serverless Cloud Gateways — those three fields must
-        be omitted.
+        For a `Dedicated API gateway`, use kind: dedicated.v0 and type: api (both defaults); version,
+        cloud_gateway_network_id, and autoscale are required. For a `Dedicated AI gateway`, use
+        kind: dedicated.v0 and type: ai; cloud_gateway_network_id is required, while version, autoscale,
+        and environment must be omitted. For a `Serverless gateway`, use kind: serverless.v1; version,
+        cloud_gateway_network_id, and autoscale must be omitted.
       requestBody:
         required: true
         content:
@@ -26019,7 +26021,9 @@ components:
       title: Control-Plane Geo
       x-speakeasy-unknown-values: allow
     GatewayVersion:
-      description: 'Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
+      description: |
+        Supported gateway version. For `serverless.v1` cloud gateways and dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
       type: string
       example: '3.10'
       title: Gateway Version
@@ -26036,7 +26040,11 @@ components:
         Controls how data planes in a configuration are exposed. Supported values:
         - `private` — data planes are accessible only within the VPC network; no public internet exposure
         - `public` — data planes are accessible from the public internet
-        - `private+public` — equivalent to `public`; data planes are accessible from the public internet (default)
+        - `private+public` — equivalent to `public`; data planes are accessible from the public internet
+
+        Dedicated AI gateways (`kind: dedicated.v0` and `type: ai`) support only private or
+        public; the default is `public`. The private+public value is not supported for dedicated
+        AI gateways. For other gateway types, the default is `private+public`.
       type: string
       example: private+public
       enum:
@@ -26061,11 +26069,14 @@ components:
       title: Provider Name
       x-speakeasy-unknown-values: allow
     ConfigurationDataPlaneGroupAutoscale:
+      description: |
+        Autoscaling configuration for a data-plane group. For dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`) and serverless.v1 kind gateways, this field should be omitted.
       oneOf:
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleStatic'
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleAutopilot'
     ConfigurationDataPlaneGroupAutoscaleStatic:
-      description: 'Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
+      description: Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.
       type: object
       properties:
         kind:
@@ -26086,7 +26097,7 @@ components:
         - requested_instances
       title: Configuration Autoscale Static
     ConfigurationDataPlaneGroupAutoscaleAutopilot:
-      description: 'Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.'
+      description: Object that describes the autopilot autoscaling strategy.
       type: object
       properties:
         kind:
@@ -26112,13 +26123,17 @@ components:
         - base_rps
       title: Configuration Autoscale Autopilot
     ConfigurationDataPlaneGroupEnvironment:
-      description: Array of environment variables to set for a data-plane group.
+      description: |
+        Array of environment variables to set for a data-plane group. For dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
       type: array
       items:
         $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironmentField'
       title: Configuration Data-Plane Group Environment
     ConfigurationDataPlaneGroupEnvironmentField:
-      description: Environment variable name and value to set for a data-plane group.
+      description: |
+        Environment variable name and value to set for a data-plane group. For dedicated AI gateways
+        (`kind: dedicated.v0` and `type: ai`), this field should be omitted.
       type: object
       properties:
         name:
@@ -26277,6 +26292,35 @@ components:
         - serverless.v1
       title: ConfigurationKind
       x-speakeasy-unknown-values: allow
+    ConfigurationType:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Type of Cloud Gateway: `api` for an API Gateway or `ai` for an AI Gateway.
+        Applies only to dedicated Cloud Gateways. Defaults to `api` when omitted.
+      type: string
+      default: api
+      enum:
+        - api
+        - ai
+      title: ConfigurationType
+      x-speakeasy-unknown-values: allow
+    CustomDomainType:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Type of gateway the custom domain belongs to: `api` for an API Gateway or
+        `ai` for an AI Gateway. Applies only to dedicated custom domains. Defaults to `api`
+        when omitted.
+      type: string
+      default: api
+      enum:
+        - api
+        - ai
+      title: CustomDomainType
+      x-speakeasy-unknown-values: allow
     CustomDomainKind:
       description: |-
         **Pre-release Feature**
@@ -26318,6 +26362,8 @@ components:
           format: set
         kind:
           $ref: '#/components/schemas/ConfigurationKind'
+        type:
+          $ref: '#/components/schemas/ConfigurationType'
         entity_version:
           description: |
             Positive, monotonically increasing version integer, to serialize configuration changes.
@@ -28130,6 +28176,8 @@ components:
           x-speakeasy-param-suppress-computed-diff: true
         kind:
           $ref: '#/components/schemas/CustomDomainKind'
+        type:
+          $ref: '#/components/schemas/CustomDomainType'
       required:
         - id
         - control_plane_id
@@ -28145,8 +28193,9 @@ components:
       description: |
         Describes the desired state of a control plane's Cloud Gateway deployment. Submitting
         this request replaces the current configuration; Kong reconciles running data plane groups
-        to match. Use `kind: dedicated.v0` for Dedicated Cloud Gateways or `kind: serverless.v1`
-        for Serverless — the required fields differ by kind.
+        to match. `Dedicated API gateways` require version, cloud_gateway_network_id, and autoscale.
+        `Dedicated AI gateways` require cloud_gateway_network_id; version, autoscale, and environment
+        must be omitted. `Serverless gateways` omit version, cloud_gateway_network_id, and autoscale.
       type: object
       properties:
         control_plane_id:
@@ -28163,6 +28212,8 @@ components:
           format: set
         kind:
           $ref: '#/components/schemas/ConfigurationKind'
+        type:
+          $ref: '#/components/schemas/ConfigurationType'
         api_access:
           $ref: '#/components/schemas/ApiAccess'
       additionalProperties: false
@@ -28183,6 +28234,8 @@ components:
           $ref: '#/components/schemas/CustomDomainName'
         kind:
           $ref: '#/components/schemas/CustomDomainKind'
+        type:
+          $ref: '#/components/schemas/CustomDomainType'
       additionalProperties: false
       required:
         - control_plane_id
@@ -28427,6 +28480,20 @@ components:
         - $ref: '#/components/schemas/ControlPlaneAddOnOwner'
         - $ref: '#/components/schemas/ControlPlaneGroupAddOnOwner'
       title: AddOnOwner
+    ControlPlaneAddOnOwnerType:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Type of gateway that owns the add-on: `api` for an API Gateway or `ai` for an
+        AI Gateway. Defaults to `api` when omitted.
+      type: string
+      default: api
+      enum:
+        - api
+        - ai
+      title: ControlPlaneAddOnOwnerType
+      x-speakeasy-unknown-values: allow
     ControlPlaneAddOnOwner:
       description: Control Plane is the owner for the add-on.
       type: object
@@ -28435,6 +28502,8 @@ components:
           description: Type of owner for the add-on.
           type: string
           const: control-plane
+        type:
+          $ref: '#/components/schemas/ControlPlaneAddOnOwnerType'
         control_plane_id:
           description: ID of the control-plane that owns this add-on.
           type: string
@@ -34682,21 +34751,6 @@ components:
         - entity_type_name
         - entity_region
       title: PortalAssignedRoleResponse
-    TryItUIAudience:
-      description: |
-        The audience for the Try It UI feature.
-
-        `all` means that the Try It UI will be available to all users, including unauthenticated users.
-
-        `authenticated` means that the Try It UI will only be available to authenticated users.
-
-        `registered` means that the Try It UI will only be available to users who have registered for the API.
-      type: string
-      enum:
-        - all
-        - authenticated
-        - registered
-      x-speakeasy-unknown-values: allow
     SnippetName:
       description: The unique name of a snippet in a portal.
       type: string
@@ -34708,12 +34762,15 @@ components:
       type: object
       properties:
         theme:
+          description: The theme settings for this portal.
           type: object
           additionalProperties: false
           nullable: false
           properties:
             name:
+              description: 'The theme name to apply to this portal. Supported names are ''ocean'' and ''glacier''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
               type: string
+              default: ocean
               nullable: false
             mode:
               type: string
@@ -34728,6 +34785,7 @@ components:
               nullable: false
               properties:
                 primary:
+                  description: The primary accent color used in the portal's theme. Must be a valid hex color value.
                   type: string
                   example: '#000000'
                   nullable: false
@@ -34736,7 +34794,9 @@ components:
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         layout:
+          description: This property is deprecated and is not used by the portal.
           type: string
+          deprecated: true
           nullable: false
           x-speakeasy-param-computed: false
         css:
@@ -43930,6 +43990,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -43942,18 +44003,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44009,16 +44075,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44041,6 +44111,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44053,18 +44124,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44120,16 +44196,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44170,6 +44250,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44182,18 +44263,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44249,16 +44335,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44307,6 +44397,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44319,18 +44410,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44386,16 +44482,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44414,6 +44514,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44426,18 +44527,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44493,16 +44599,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44546,6 +44656,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44558,18 +44669,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44625,16 +44741,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44657,6 +44777,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44669,18 +44790,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44736,16 +44862,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44768,6 +44898,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44780,18 +44911,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44847,16 +44983,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44875,6 +45015,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44887,18 +45028,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -44954,16 +45100,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -44984,6 +45134,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -44996,18 +45147,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45063,16 +45219,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45099,6 +45259,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45111,18 +45272,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45178,16 +45344,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45212,6 +45382,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45224,18 +45395,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45291,16 +45467,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45329,6 +45509,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45341,18 +45522,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45408,16 +45594,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45444,6 +45634,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45456,18 +45647,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45523,16 +45719,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45551,6 +45751,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45563,18 +45764,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45630,16 +45836,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45658,6 +45868,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45670,18 +45881,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45737,16 +45953,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45765,6 +45985,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45777,18 +45998,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45844,16 +46070,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45873,6 +46103,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45885,18 +46116,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -45952,16 +46188,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -45980,6 +46220,7 @@ components:
         embeddings_dimensions:
           description: The number of dimensions for embedding outputs.
           type: integer
+          exclusiveMinimum: true
           maximum: 2147483646
           minimum: 0
           x-speakeasy-param-computed: false
@@ -45992,18 +46233,23 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_read_cost:
           description: Cost per 1M cache-read (cached) prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         cache_write_cost:
           description: Cost per 1M cache-write prompt tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         input_cost_list:
           description: |-
@@ -46059,16 +46305,20 @@ components:
         temperature:
           description: Controls randomness in the model output. Higher values produce more varied responses.
           type: number
+          maximum: 5
+          minimum: 0
           x-speakeasy-param-computed: false
         top_k:
           description: Limits the number of highest-probability tokens considered during generation.
           type: integer
-          maximum: 2147483646
+          maximum: 500
           minimum: 0
           x-speakeasy-param-computed: false
         top_p:
           description: Nucleus sampling probability mass. Tokens with cumulative probability up to top_p are considered.
           type: number
+          maximum: 1
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -46149,10 +46399,13 @@ components:
         input_cost:
           description: Cost per 1M input tokens for billing and cost tracking.
           type: number
+          exclusiveMinimum: true
+          minimum: 0
           x-speakeasy-param-computed: false
         output_cost:
           description: Cost per 1M output tokens for billing and cost tracking.
           type: number
+          minimum: 0
           x-speakeasy-param-computed: false
         upstream_url:
           description: The upstream URL for the model endpoint.
@@ -48378,6 +48631,7 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
+                  exclusiveMinimum: true
                   maximum: 2147483646
                   minimum: 0
               x-speakeasy-param-computed: true
@@ -48461,6 +48715,7 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
+                  exclusiveMinimum: true
                   maximum: 2147483646
                   minimum: 0
               x-speakeasy-param-computed: true
@@ -48544,6 +48799,7 @@ components:
                   type: integer
                   example: 524288
                   default: 1048576
+                  exclusiveMinimum: true
                   maximum: 2147483646
                   minimum: 0
               x-speakeasy-param-computed: true
@@ -49312,6 +49568,9 @@ components:
         name:
           description: 'The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides.'
           type: string
+          maxLength: 128
+          minLength: 1
+          pattern: '^[A-Za-z0-9._-]+$'
         headers:
           $ref: '#/components/schemas/AIGatewayMCPToolHeaders'
         host:
@@ -49444,6 +49703,7 @@ components:
             The claim in the OAuth2 access token to use as the subject for ACL evaluation when `acl_attribute_type` is set to `oauth_access_token`.
             Nested claim can be fetched by using a jq filter starts with dot, e.g., “.user.email”: https://jqlang.org/manual/#object-identifier-index
           type: string
+          minLength: 1
         acls:
           description: |
             Server-level access control rules for allowing or denying callers, evaluated against the
@@ -51018,6 +51278,9 @@ components:
         name:
           description: 'The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides.'
           type: string
+          maxLength: 128
+          minLength: 1
+          pattern: '^[A-Za-z0-9._-]+$'
         input_schema:
           description: |
             The entire `inputSchema` section for the tool. Overrides the upstream server's `inputSchema`
@@ -96068,6 +96331,12 @@ components:
           type: string
           nullable: true
           x-speakeasy-param-computed: false
+        bearer_token_header_name:
+          description: 'The name of the HTTP header from which the bearer token is retrieved. The default value is `authorization:bearer`, which reads the token from the `Authorization: Bearer <token>` header. Accepts plain header names such as `x-my-token` as well as Kong''s special `authorization:bearer` notation. The `access-token` and `x-access-token` headers are also checked as a fallback for backward compatibility regardless of this setting.'
+          type: string
+          default: 'authorization:bearer'
+          x-min-runtime-version: '2.1'
+          x-speakeasy-param-computed: false
         bearer_token_param_type:
           description: 'Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL''s query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.'
           type: array
@@ -96102,8 +96371,6 @@ components:
         cache_tokens_salt:
           description: Salt used for generating the cache key that is used for caching the token endpoint requests.
           type: string
-          nullable: true
-          x-speakeasy-param-computed: false
         cache_ttl:
           description: The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
           type: number
@@ -96843,6 +97110,7 @@ components:
           description: The HTTP proxy authorization.
           type: string
           nullable: true
+          writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         http_version:
@@ -96858,6 +97126,7 @@ components:
           description: The HTTPS proxy authorization.
           type: string
           nullable: true
+          writeOnly: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         id_token_param_name:
@@ -98207,11 +98476,12 @@ components:
           type: boolean
           default: false
         verify_signature:
-          description: Verify signature of tokens.
+          description: 'Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use `ignore_signature` instead, which never affects bearer tokens.'
           type: boolean
           default: true
       required:
         - issuer
+        - cache_tokens_salt
       x-terraform-no-default-null: true
     CreatePortalCustomDomainSSL:
       type: object
@@ -102396,9 +102666,30 @@ components:
                 additionalProperties: false
                 nullable: true
                 properties:
+                  try_it_ui:
+                    description: Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.
+                    type: boolean
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
                   try_it_ui_audience:
-                    $ref: '#/components/schemas/TryItUIAudience'
+                    description: |
+                      The audience for the Try It UI feature.
+
+                      `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+                      `authenticated` means that the Try It UI will only be available to authenticated users.
+
+                      `registered` means that the Try It UI will only be available to users who have registered for the API.
+                    type: string
+                    enum:
+                      - all
+                      - authenticated
+                      - registered
+                    nullable: true
+                    x-speakeasy-unknown-values: allow
                 required:
+                  - try_it_ui
                   - try_it_ui_audience
                 title: ApiPublicationSpecRenderer
                 x-speakeasy-param-computed: false
