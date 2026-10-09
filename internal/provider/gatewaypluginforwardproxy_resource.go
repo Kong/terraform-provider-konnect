@@ -366,6 +366,8 @@ func (r *GatewayPluginForwardProxyResource) Create(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -374,7 +376,7 @@ func (r *GatewayPluginForwardProxyResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.CreateForwardproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -426,6 +428,8 @@ func (r *GatewayPluginForwardProxyResource) Read(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -434,7 +438,7 @@ func (r *GatewayPluginForwardProxyResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.GetForwardproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -480,6 +484,8 @@ func (r *GatewayPluginForwardProxyResource) Update(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -488,7 +494,7 @@ func (r *GatewayPluginForwardProxyResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.UpdateForwardproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -540,6 +546,8 @@ func (r *GatewayPluginForwardProxyResource) Delete(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteForwardproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -548,7 +556,7 @@ func (r *GatewayPluginForwardProxyResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.DeleteForwardproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

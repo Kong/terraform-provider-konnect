@@ -970,6 +970,8 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Create(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -978,7 +980,7 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.CreateAillmasjudgePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1030,6 +1032,8 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Read(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1038,7 +1042,7 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.GetAillmasjudgePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1084,6 +1088,8 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Update(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1092,7 +1098,7 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.UpdateAillmasjudgePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1144,6 +1150,8 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Delete(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAillmasjudgePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1152,7 +1160,7 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.DeleteAillmasjudgePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

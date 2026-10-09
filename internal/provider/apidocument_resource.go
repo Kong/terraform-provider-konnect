@@ -154,6 +154,8 @@ func (r *APIDocumentResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAPIDocumentRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -162,7 +164,7 @@ func (r *APIDocumentResource) Create(ctx context.Context, req resource.CreateReq
 	}
 	res, err := r.client.APIDocumentation.CreateAPIDocument(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -221,6 +223,8 @@ func (r *APIDocumentResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsFetchAPIDocumentRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -229,7 +233,7 @@ func (r *APIDocumentResource) Read(ctx context.Context, req resource.ReadRequest
 	}
 	res, err := r.client.APIDocumentation.FetchAPIDocument(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -275,6 +279,8 @@ func (r *APIDocumentResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAPIDocumentRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -283,7 +289,7 @@ func (r *APIDocumentResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 	res, err := r.client.APIDocumentation.UpdateAPIDocument(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -335,6 +341,8 @@ func (r *APIDocumentResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAPIDocumentRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -343,7 +351,7 @@ func (r *APIDocumentResource) Delete(ctx context.Context, req resource.DeleteReq
 	}
 	res, err := r.client.APIDocumentation.DeleteAPIDocument(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

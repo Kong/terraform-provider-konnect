@@ -519,6 +519,8 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -527,7 +529,7 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 	}
 	res, err := r.client.Upstreams.CreateUpstream(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -579,6 +581,8 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -587,7 +591,7 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 	}
 	res, err := r.client.Upstreams.GetUpstream(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -633,6 +637,8 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpsertUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -641,7 +647,7 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 	}
 	res, err := r.client.Upstreams.UpsertUpstream(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -693,6 +699,8 @@ func (r *GatewayUpstreamResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteUpstreamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -701,7 +709,7 @@ func (r *GatewayUpstreamResource) Delete(ctx context.Context, req resource.Delet
 	}
 	res, err := r.client.Upstreams.DeleteUpstream(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

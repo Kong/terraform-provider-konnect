@@ -839,6 +839,8 @@ func (r *CloudGatewayPrivateDNSResource) Create(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreatePrivateDNSRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -847,7 +849,7 @@ func (r *CloudGatewayPrivateDNSResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.CloudGateways.CreatePrivateDNS(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -906,6 +908,8 @@ func (r *CloudGatewayPrivateDNSResource) Read(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetPrivateDNSRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -914,7 +918,7 @@ func (r *CloudGatewayPrivateDNSResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.CloudGateways.GetPrivateDNS(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -984,6 +988,8 @@ func (r *CloudGatewayPrivateDNSResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeletePrivateDNSRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -992,7 +998,7 @@ func (r *CloudGatewayPrivateDNSResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.CloudGateways.DeletePrivateDNS(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

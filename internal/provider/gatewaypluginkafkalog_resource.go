@@ -1011,6 +1011,8 @@ func (r *GatewayPluginKafkaLogResource) Create(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1019,7 +1021,7 @@ func (r *GatewayPluginKafkaLogResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.CreateKafkalogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1071,6 +1073,8 @@ func (r *GatewayPluginKafkaLogResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1079,7 +1083,7 @@ func (r *GatewayPluginKafkaLogResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.Plugins.GetKafkalogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1125,6 +1129,8 @@ func (r *GatewayPluginKafkaLogResource) Update(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1133,7 +1139,7 @@ func (r *GatewayPluginKafkaLogResource) Update(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.UpdateKafkalogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1185,6 +1191,8 @@ func (r *GatewayPluginKafkaLogResource) Delete(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteKafkalogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1193,7 +1201,7 @@ func (r *GatewayPluginKafkaLogResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.DeleteKafkalogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

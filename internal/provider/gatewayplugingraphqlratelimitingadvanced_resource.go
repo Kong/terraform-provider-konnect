@@ -823,6 +823,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Create(ctx context.Co
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -831,7 +833,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Create(ctx context.Co
 	}
 	res, err := r.client.Plugins.CreateGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -883,6 +885,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Read(ctx context.Cont
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -891,7 +895,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Read(ctx context.Cont
 	}
 	res, err := r.client.Plugins.GetGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -937,6 +941,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Update(ctx context.Co
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -945,7 +951,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Update(ctx context.Co
 	}
 	res, err := r.client.Plugins.UpdateGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -997,6 +1003,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Delete(ctx context.Co
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteGraphqlratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1005,7 +1013,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Delete(ctx context.Co
 	}
 	res, err := r.client.Plugins.DeleteGraphqlratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

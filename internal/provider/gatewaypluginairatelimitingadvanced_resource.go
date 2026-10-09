@@ -1140,6 +1140,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Create(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1148,7 +1150,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Create(ctx context.Context
 	}
 	res, err := r.client.Plugins.CreateAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1200,6 +1202,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Read(ctx context.Context, 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1208,7 +1212,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Read(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.GetAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1254,6 +1258,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Update(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAiratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1262,7 +1268,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Update(ctx context.Context
 	}
 	res, err := r.client.Plugins.UpdateAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1314,6 +1320,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Delete(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiratelimitingadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1322,7 +1330,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Delete(ctx context.Context
 	}
 	res, err := r.client.Plugins.DeleteAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -313,6 +313,8 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Create(ctx context.Conte
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateRoutetransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -321,7 +323,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Create(ctx context.Conte
 	}
 	res, err := r.client.Plugins.CreateRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -373,6 +375,8 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Read(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetRoutetransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -381,7 +385,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Read(ctx context.Context
 	}
 	res, err := r.client.Plugins.GetRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -427,6 +431,8 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Update(ctx context.Conte
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateRoutetransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -435,7 +441,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Update(ctx context.Conte
 	}
 	res, err := r.client.Plugins.UpdateRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -487,6 +493,8 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Delete(ctx context.Conte
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteRoutetransformeradvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -495,7 +503,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Delete(ctx context.Conte
 	}
 	res, err := r.client.Plugins.DeleteRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

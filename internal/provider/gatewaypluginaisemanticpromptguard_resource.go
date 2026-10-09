@@ -1257,6 +1257,8 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Create(ctx context.Context,
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1265,7 +1267,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Create(ctx context.Context,
 	}
 	res, err := r.client.Plugins.CreateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1317,6 +1319,8 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Read(ctx context.Context, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1325,7 +1329,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Read(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.GetAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1371,6 +1375,8 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Update(ctx context.Context,
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1379,7 +1385,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Update(ctx context.Context,
 	}
 	res, err := r.client.Plugins.UpdateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1431,6 +1437,8 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Delete(ctx context.Context,
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAisemanticpromptguardPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1439,7 +1447,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Delete(ctx context.Context,
 	}
 	res, err := r.client.Plugins.DeleteAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

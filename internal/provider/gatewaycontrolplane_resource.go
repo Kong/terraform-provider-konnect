@@ -259,6 +259,8 @@ func (r *GatewayControlPlaneResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToSharedCreateControlPlaneRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -267,7 +269,7 @@ func (r *GatewayControlPlaneResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.ControlPlanes.CreateControlPlane(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -326,6 +328,8 @@ func (r *GatewayControlPlaneResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetControlPlaneRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -334,7 +338,7 @@ func (r *GatewayControlPlaneResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.ControlPlanes.GetControlPlane(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -380,6 +384,8 @@ func (r *GatewayControlPlaneResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateControlPlaneRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -388,7 +394,7 @@ func (r *GatewayControlPlaneResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.ControlPlanes.UpdateControlPlane(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -440,6 +446,8 @@ func (r *GatewayControlPlaneResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteControlPlaneRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -448,7 +456,7 @@ func (r *GatewayControlPlaneResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.ControlPlanes.DeleteControlPlane(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

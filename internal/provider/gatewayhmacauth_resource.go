@@ -153,6 +153,8 @@ func (r *GatewayHMACAuthResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateHmacAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -161,7 +163,7 @@ func (r *GatewayHMACAuthResource) Create(ctx context.Context, req resource.Creat
 	}
 	res, err := r.client.HMACAuthCredentials.CreateHmacAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -213,6 +215,8 @@ func (r *GatewayHMACAuthResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetHmacAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -221,7 +225,7 @@ func (r *GatewayHMACAuthResource) Read(ctx context.Context, req resource.ReadReq
 	}
 	res, err := r.client.HMACAuthCredentials.GetHmacAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -291,6 +295,8 @@ func (r *GatewayHMACAuthResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteHmacAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -299,7 +305,7 @@ func (r *GatewayHMACAuthResource) Delete(ctx context.Context, req resource.Delet
 	}
 	res, err := r.client.HMACAuthCredentials.DeleteHmacAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

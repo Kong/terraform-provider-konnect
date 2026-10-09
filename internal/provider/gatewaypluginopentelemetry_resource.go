@@ -565,6 +565,8 @@ func (r *GatewayPluginOpentelemetryResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -573,7 +575,7 @@ func (r *GatewayPluginOpentelemetryResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.CreateOpentelemetryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -625,6 +627,8 @@ func (r *GatewayPluginOpentelemetryResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -633,7 +637,7 @@ func (r *GatewayPluginOpentelemetryResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.GetOpentelemetryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -679,6 +683,8 @@ func (r *GatewayPluginOpentelemetryResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -687,7 +693,7 @@ func (r *GatewayPluginOpentelemetryResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.UpdateOpentelemetryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -739,6 +745,8 @@ func (r *GatewayPluginOpentelemetryResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteOpentelemetryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -747,7 +755,7 @@ func (r *GatewayPluginOpentelemetryResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.DeleteOpentelemetryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

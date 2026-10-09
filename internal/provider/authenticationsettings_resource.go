@@ -105,6 +105,8 @@ func (r *AuthenticationSettingsResource) Create(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToSharedUpdateAuthenticationSettings(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -113,7 +115,7 @@ func (r *AuthenticationSettingsResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.AuthSettings.UpdateAuthenticationSettings(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -165,9 +167,11 @@ func (r *AuthenticationSettingsResource) Read(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	res, err := r.client.AuthSettings.GetAuthenticationSettings(ctx)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -213,6 +217,8 @@ func (r *AuthenticationSettingsResource) Update(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToSharedUpdateAuthenticationSettings(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -221,7 +227,7 @@ func (r *AuthenticationSettingsResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.AuthSettings.UpdateAuthenticationSettings(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -273,6 +279,8 @@ func (r *AuthenticationSettingsResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsResetAuthenticationSettingsRequestBody(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -281,7 +289,7 @@ func (r *AuthenticationSettingsResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.ResetAuthenticationSettings(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

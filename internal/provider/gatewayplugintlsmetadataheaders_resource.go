@@ -320,6 +320,8 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Create(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -328,7 +330,7 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Create(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.CreateTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -380,6 +382,8 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Read(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -388,7 +392,7 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Read(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.GetTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -434,6 +438,8 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Update(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -442,7 +448,7 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Update(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.UpdateTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -494,6 +500,8 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Delete(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteTlsmetadataheadersPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -502,7 +510,7 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Delete(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.DeleteTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

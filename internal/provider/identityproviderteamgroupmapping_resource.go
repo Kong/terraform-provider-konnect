@@ -136,6 +136,8 @@ func (r *IdentityProviderTeamGroupMappingResource) Create(ctx context.Context, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -144,7 +146,7 @@ func (r *IdentityProviderTeamGroupMappingResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.AuthSettings.CreateIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -203,6 +205,8 @@ func (r *IdentityProviderTeamGroupMappingResource) Read(ctx context.Context, req
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -211,7 +215,7 @@ func (r *IdentityProviderTeamGroupMappingResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.AuthSettings.GetIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -281,6 +285,8 @@ func (r *IdentityProviderTeamGroupMappingResource) Delete(ctx context.Context, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -289,7 +295,7 @@ func (r *IdentityProviderTeamGroupMappingResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.AuthSettings.DeleteIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

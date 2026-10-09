@@ -185,6 +185,8 @@ func (r *EventGatewayDataPlaneCertificateResource) Create(ctx context.Context, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayDataPlaneCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -193,7 +195,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.CreateEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -245,6 +247,8 @@ func (r *EventGatewayDataPlaneCertificateResource) Read(ctx context.Context, req
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayDataPlaneCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -253,7 +257,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.GetEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -299,6 +303,8 @@ func (r *EventGatewayDataPlaneCertificateResource) Update(ctx context.Context, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewayDataPlaneCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -307,7 +313,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Update(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.UpdateEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -359,6 +365,8 @@ func (r *EventGatewayDataPlaneCertificateResource) Delete(ctx context.Context, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayDataPlaneCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -367,7 +375,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.DeleteEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

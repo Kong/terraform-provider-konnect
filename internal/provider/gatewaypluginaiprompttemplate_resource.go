@@ -352,6 +352,8 @@ func (r *GatewayPluginAiPromptTemplateResource) Create(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -360,7 +362,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.CreateAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -412,6 +414,8 @@ func (r *GatewayPluginAiPromptTemplateResource) Read(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -420,7 +424,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.GetAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -466,6 +470,8 @@ func (r *GatewayPluginAiPromptTemplateResource) Update(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -474,7 +480,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Update(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.UpdateAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -526,6 +532,8 @@ func (r *GatewayPluginAiPromptTemplateResource) Delete(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiprompttemplatePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -534,7 +542,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.DeleteAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -475,6 +475,8 @@ func (r *GatewayPluginMeteringAndBillingResource) Create(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -483,7 +485,7 @@ func (r *GatewayPluginMeteringAndBillingResource) Create(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.CreateMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -535,6 +537,8 @@ func (r *GatewayPluginMeteringAndBillingResource) Read(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -543,7 +547,7 @@ func (r *GatewayPluginMeteringAndBillingResource) Read(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.GetMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -589,6 +593,8 @@ func (r *GatewayPluginMeteringAndBillingResource) Update(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -597,7 +603,7 @@ func (r *GatewayPluginMeteringAndBillingResource) Update(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.UpdateMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -649,6 +655,8 @@ func (r *GatewayPluginMeteringAndBillingResource) Delete(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteMeteringandbillingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -657,7 +665,7 @@ func (r *GatewayPluginMeteringAndBillingResource) Delete(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.DeleteMeteringandbillingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

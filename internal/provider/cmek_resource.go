@@ -132,6 +132,8 @@ func (r *CmekResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsPutCmekRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -140,7 +142,7 @@ func (r *CmekResource) Create(ctx context.Context, req resource.CreateRequest, r
 	}
 	res, err := r.client.Cmek.PutCmek(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -192,6 +194,8 @@ func (r *CmekResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetCmekRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -200,7 +204,7 @@ func (r *CmekResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 	res, err := r.client.Cmek.GetCmek(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -246,6 +250,8 @@ func (r *CmekResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsPutCmekRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -254,7 +260,7 @@ func (r *CmekResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	}
 	res, err := r.client.Cmek.PutCmek(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -306,6 +312,8 @@ func (r *CmekResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteCmekRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -314,7 +322,7 @@ func (r *CmekResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	}
 	res, err := r.client.Cmek.DeleteCmek(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

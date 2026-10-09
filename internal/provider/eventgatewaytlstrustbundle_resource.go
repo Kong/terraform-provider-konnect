@@ -159,6 +159,8 @@ func (r *EventGatewayTLSTrustBundleResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -167,7 +169,7 @@ func (r *EventGatewayTLSTrustBundleResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayTLSTrustBundles.CreateEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -219,6 +221,8 @@ func (r *EventGatewayTLSTrustBundleResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -227,7 +231,7 @@ func (r *EventGatewayTLSTrustBundleResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.EventGatewayTLSTrustBundles.GetEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -273,6 +277,8 @@ func (r *EventGatewayTLSTrustBundleResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -281,7 +287,7 @@ func (r *EventGatewayTLSTrustBundleResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayTLSTrustBundles.UpdateEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -333,6 +339,8 @@ func (r *EventGatewayTLSTrustBundleResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -341,7 +349,7 @@ func (r *EventGatewayTLSTrustBundleResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayTLSTrustBundles.DeleteEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

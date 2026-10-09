@@ -138,6 +138,8 @@ func (r *AuditLogDestinationResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToSharedCreateAuditLogDestination(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -146,7 +148,7 @@ func (r *AuditLogDestinationResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.AuditLogs.CreateAuditLogDestination(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -198,6 +200,8 @@ func (r *AuditLogDestinationResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAuditLogDestinationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -206,7 +210,7 @@ func (r *AuditLogDestinationResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.AuditLogs.GetAuditLogDestination(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -252,6 +256,8 @@ func (r *AuditLogDestinationResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAuditLogDestinationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -260,7 +266,7 @@ func (r *AuditLogDestinationResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.AuditLogs.UpdateAuditLogDestination(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -312,6 +318,8 @@ func (r *AuditLogDestinationResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAuditLogDestinationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -320,7 +328,7 @@ func (r *AuditLogDestinationResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.AuditLogs.DeleteAuditLogDestination(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -296,6 +296,8 @@ func (r *GatewayPluginAppDynamicsResource) Create(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -304,7 +306,7 @@ func (r *GatewayPluginAppDynamicsResource) Create(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.CreateAppdynamicsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -356,6 +358,8 @@ func (r *GatewayPluginAppDynamicsResource) Read(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -364,7 +368,7 @@ func (r *GatewayPluginAppDynamicsResource) Read(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.GetAppdynamicsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -410,6 +414,8 @@ func (r *GatewayPluginAppDynamicsResource) Update(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -418,7 +424,7 @@ func (r *GatewayPluginAppDynamicsResource) Update(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.UpdateAppdynamicsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -470,6 +476,8 @@ func (r *GatewayPluginAppDynamicsResource) Delete(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -478,7 +486,7 @@ func (r *GatewayPluginAppDynamicsResource) Delete(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.DeleteAppdynamicsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

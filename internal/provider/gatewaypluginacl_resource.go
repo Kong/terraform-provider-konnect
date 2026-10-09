@@ -332,6 +332,8 @@ func (r *GatewayPluginACLResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -340,7 +342,7 @@ func (r *GatewayPluginACLResource) Create(ctx context.Context, req resource.Crea
 	}
 	res, err := r.client.Plugins.CreateACLPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -392,6 +394,8 @@ func (r *GatewayPluginACLResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -400,7 +404,7 @@ func (r *GatewayPluginACLResource) Read(ctx context.Context, req resource.ReadRe
 	}
 	res, err := r.client.Plugins.GetACLPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -446,6 +450,8 @@ func (r *GatewayPluginACLResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -454,7 +460,7 @@ func (r *GatewayPluginACLResource) Update(ctx context.Context, req resource.Upda
 	}
 	res, err := r.client.Plugins.UpdateACLPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -506,6 +512,8 @@ func (r *GatewayPluginACLResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteACLPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -514,7 +522,7 @@ func (r *GatewayPluginACLResource) Delete(ctx context.Context, req resource.Dele
 	}
 	res, err := r.client.Plugins.DeleteACLPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

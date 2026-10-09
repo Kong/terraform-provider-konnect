@@ -184,6 +184,8 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Create(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -192,7 +194,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Create(ctx context.Context
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.CreateEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -244,6 +246,8 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Read(ctx context.Context, 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayVirtualClusterConsumePolicySkipRecordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -252,7 +256,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Read(ctx context.Context, 
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.GetEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -298,6 +302,8 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Update(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewayVirtualClusterConsumePolicySkipRecordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -306,7 +312,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Update(ctx context.Context
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.UpdateEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -358,6 +364,8 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Delete(ctx context.Context
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -366,7 +374,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Delete(ctx context.Context
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.DeleteEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
