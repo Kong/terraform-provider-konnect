@@ -260,8 +260,6 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsUpdatePortalAuthenticationSettingsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -270,7 +268,7 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	res, err := r.client.PortalAuthSettings.UpdatePortalAuthenticationSettings(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -322,8 +320,6 @@ func (r *PortalAuthResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetPortalAuthenticationSettingsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -332,7 +328,7 @@ func (r *PortalAuthResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 	res, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -378,8 +374,6 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdatePortalAuthenticationSettingsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -388,7 +382,7 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 	res, err := r.client.PortalAuthSettings.UpdatePortalAuthenticationSettings(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

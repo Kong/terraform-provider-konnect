@@ -1880,8 +1880,6 @@ func (r *CatalogMCPVersionResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateMcpVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1890,7 +1888,7 @@ func (r *CatalogMCPVersionResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.CatalogMCPVersions.CreateMcpVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1949,8 +1947,6 @@ func (r *CatalogMCPVersionResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetLatestMcpVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1959,7 +1955,7 @@ func (r *CatalogMCPVersionResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.CatalogMCPVersions.GetLatestMcpVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2005,8 +2001,6 @@ func (r *CatalogMCPVersionResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpsertLatestMcpVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2015,7 +2009,7 @@ func (r *CatalogMCPVersionResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.CatalogMCPVersions.UpsertLatestMcpVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2067,8 +2061,6 @@ func (r *CatalogMCPVersionResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteLatestMcpVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2077,7 +2069,7 @@ func (r *CatalogMCPVersionResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.CatalogMCPVersions.DeleteLatestMcpVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

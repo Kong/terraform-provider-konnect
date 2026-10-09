@@ -149,8 +149,6 @@ func (r *IdentityAuthServerScopeResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAuthServerScopeRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -159,7 +157,7 @@ func (r *IdentityAuthServerScopeResource) Create(ctx context.Context, req resour
 	}
 	res, err := r.client.AuthServerScopes.CreateAuthServerScope(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -218,8 +216,6 @@ func (r *IdentityAuthServerScopeResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAuthServerScopeRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -228,7 +224,7 @@ func (r *IdentityAuthServerScopeResource) Read(ctx context.Context, req resource
 	}
 	res, err := r.client.AuthServerScopes.GetAuthServerScope(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -274,8 +270,6 @@ func (r *IdentityAuthServerScopeResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAuthServerScopeRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -284,7 +278,7 @@ func (r *IdentityAuthServerScopeResource) Update(ctx context.Context, req resour
 	}
 	res, err := r.client.AuthServerScopes.UpdateAuthServerScope(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -336,8 +330,6 @@ func (r *IdentityAuthServerScopeResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAuthServerScopeRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -346,7 +338,7 @@ func (r *IdentityAuthServerScopeResource) Delete(ctx context.Context, req resour
 	}
 	res, err := r.client.AuthServerScopes.DeleteAuthServerScope(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

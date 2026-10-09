@@ -307,8 +307,6 @@ func (r *GatewayPluginExitTransformerResource) Create(ctx context.Context, req r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -317,7 +315,7 @@ func (r *GatewayPluginExitTransformerResource) Create(ctx context.Context, req r
 	}
 	res, err := r.client.Plugins.CreateExittransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -369,8 +367,6 @@ func (r *GatewayPluginExitTransformerResource) Read(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -379,7 +375,7 @@ func (r *GatewayPluginExitTransformerResource) Read(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.GetExittransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -425,8 +421,6 @@ func (r *GatewayPluginExitTransformerResource) Update(ctx context.Context, req r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -435,7 +429,7 @@ func (r *GatewayPluginExitTransformerResource) Update(ctx context.Context, req r
 	}
 	res, err := r.client.Plugins.UpdateExittransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -487,8 +481,6 @@ func (r *GatewayPluginExitTransformerResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteExittransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -497,7 +489,7 @@ func (r *GatewayPluginExitTransformerResource) Delete(ctx context.Context, req r
 	}
 	res, err := r.client.Plugins.DeleteExittransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

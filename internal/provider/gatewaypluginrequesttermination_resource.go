@@ -348,8 +348,6 @@ func (r *GatewayPluginRequestTerminationResource) Create(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -358,7 +356,7 @@ func (r *GatewayPluginRequestTerminationResource) Create(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.CreateRequestterminationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -410,8 +408,6 @@ func (r *GatewayPluginRequestTerminationResource) Read(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -420,7 +416,7 @@ func (r *GatewayPluginRequestTerminationResource) Read(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.GetRequestterminationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -466,8 +462,6 @@ func (r *GatewayPluginRequestTerminationResource) Update(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -476,7 +470,7 @@ func (r *GatewayPluginRequestTerminationResource) Update(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.UpdateRequestterminationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -528,8 +522,6 @@ func (r *GatewayPluginRequestTerminationResource) Delete(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteRequestterminationPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -538,7 +530,7 @@ func (r *GatewayPluginRequestTerminationResource) Delete(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.DeleteRequestterminationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

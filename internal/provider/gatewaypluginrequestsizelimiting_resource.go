@@ -317,8 +317,6 @@ func (r *GatewayPluginRequestSizeLimitingResource) Create(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -327,7 +325,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.CreateRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -379,8 +377,6 @@ func (r *GatewayPluginRequestSizeLimitingResource) Read(ctx context.Context, req
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -389,7 +385,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.Plugins.GetRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -435,8 +431,6 @@ func (r *GatewayPluginRequestSizeLimitingResource) Update(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -445,7 +439,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Update(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.UpdateRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -497,8 +491,6 @@ func (r *GatewayPluginRequestSizeLimitingResource) Delete(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteRequestsizelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -507,7 +499,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.DeleteRequestsizelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

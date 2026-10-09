@@ -174,8 +174,6 @@ func (r *ServerlessCloudGatewayResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToSharedCreateServerlessCloudGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -184,7 +182,7 @@ func (r *ServerlessCloudGatewayResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.ServerlessCloudGateways.CreateServerlessCloudGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -236,8 +234,6 @@ func (r *ServerlessCloudGatewayResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetServerlessCloudGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -246,7 +242,7 @@ func (r *ServerlessCloudGatewayResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -316,8 +312,6 @@ func (r *ServerlessCloudGatewayResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteServerlessCloudGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -326,7 +320,7 @@ func (r *ServerlessCloudGatewayResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.ServerlessCloudGateways.DeleteServerlessCloudGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

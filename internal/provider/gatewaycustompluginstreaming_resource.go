@@ -132,8 +132,6 @@ func (r *GatewayCustomPluginStreamingResource) Create(ctx context.Context, req r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateCustomPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -142,7 +140,7 @@ func (r *GatewayCustomPluginStreamingResource) Create(ctx context.Context, req r
 	}
 	res, err := r.client.CustomPlugins.CreateCustomPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -194,8 +192,6 @@ func (r *GatewayCustomPluginStreamingResource) Read(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetCustomPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -204,7 +200,7 @@ func (r *GatewayCustomPluginStreamingResource) Read(ctx context.Context, req res
 	}
 	res, err := r.client.CustomPlugins.GetCustomPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -250,8 +246,6 @@ func (r *GatewayCustomPluginStreamingResource) Update(ctx context.Context, req r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpsertCustomPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -260,7 +254,7 @@ func (r *GatewayCustomPluginStreamingResource) Update(ctx context.Context, req r
 	}
 	res, err := r.client.CustomPlugins.UpsertCustomPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -312,8 +306,6 @@ func (r *GatewayCustomPluginStreamingResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteCustomPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -322,7 +314,7 @@ func (r *GatewayCustomPluginStreamingResource) Delete(ctx context.Context, req r
 	}
 	res, err := r.client.CustomPlugins.DeleteCustomPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

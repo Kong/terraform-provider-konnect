@@ -149,8 +149,6 @@ func (r *CatalogAiModelResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToSharedAiModelCreate(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -159,7 +157,7 @@ func (r *CatalogAiModelResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.CatalogAIModels.CreateAiModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -218,8 +216,6 @@ func (r *CatalogAiModelResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAiModelRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -228,7 +224,7 @@ func (r *CatalogAiModelResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.CatalogAIModels.GetAiModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -274,8 +270,6 @@ func (r *CatalogAiModelResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpsertAiModelRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -284,7 +278,7 @@ func (r *CatalogAiModelResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.CatalogAIModels.UpsertAiModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -336,8 +330,6 @@ func (r *CatalogAiModelResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAiModelRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -346,7 +338,7 @@ func (r *CatalogAiModelResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.CatalogAIModels.DeleteAiModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

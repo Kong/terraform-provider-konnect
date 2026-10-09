@@ -147,8 +147,6 @@ func (r *EventGatewayResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToSharedCreateGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -157,7 +155,7 @@ func (r *EventGatewayResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res, err := r.client.EventGateways.CreateEventGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -216,8 +214,6 @@ func (r *EventGatewayResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetEventGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -226,7 +222,7 @@ func (r *EventGatewayResource) Read(ctx context.Context, req resource.ReadReques
 	}
 	res, err := r.client.EventGateways.GetEventGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -272,8 +268,6 @@ func (r *EventGatewayResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateEventGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -282,7 +276,7 @@ func (r *EventGatewayResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res, err := r.client.EventGateways.UpdateEventGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -334,8 +328,6 @@ func (r *EventGatewayResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteEventGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -344,7 +336,7 @@ func (r *EventGatewayResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 	res, err := r.client.EventGateways.DeleteEventGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

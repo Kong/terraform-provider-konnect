@@ -772,8 +772,6 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateRatelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -782,7 +780,7 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.CreateRatelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -834,8 +832,6 @@ func (r *GatewayPluginRateLimitingResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetRatelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -844,7 +840,7 @@ func (r *GatewayPluginRateLimitingResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.GetRatelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -890,8 +886,6 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateRatelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -900,7 +894,7 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.UpdateRatelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -952,8 +946,6 @@ func (r *GatewayPluginRateLimitingResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteRatelimitingPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -962,7 +954,7 @@ func (r *GatewayPluginRateLimitingResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.DeleteRatelimitingPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

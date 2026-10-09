@@ -970,8 +970,6 @@ func (r *GatewayPluginEntitlementEnforcementResource) Create(ctx context.Context
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateEntitlementenforcementPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -980,7 +978,7 @@ func (r *GatewayPluginEntitlementEnforcementResource) Create(ctx context.Context
 	}
 	res, err := r.client.Plugins.CreateEntitlementenforcementPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1032,8 +1030,6 @@ func (r *GatewayPluginEntitlementEnforcementResource) Read(ctx context.Context, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetEntitlementenforcementPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1042,7 +1038,7 @@ func (r *GatewayPluginEntitlementEnforcementResource) Read(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.GetEntitlementenforcementPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1088,8 +1084,6 @@ func (r *GatewayPluginEntitlementEnforcementResource) Update(ctx context.Context
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateEntitlementenforcementPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1098,7 +1092,7 @@ func (r *GatewayPluginEntitlementEnforcementResource) Update(ctx context.Context
 	}
 	res, err := r.client.Plugins.UpdateEntitlementenforcementPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1150,8 +1144,6 @@ func (r *GatewayPluginEntitlementEnforcementResource) Delete(ctx context.Context
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteEntitlementenforcementPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1160,7 +1152,7 @@ func (r *GatewayPluginEntitlementEnforcementResource) Delete(ctx context.Context
 	}
 	res, err := r.client.Plugins.DeleteEntitlementenforcementPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

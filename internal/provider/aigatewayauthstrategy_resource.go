@@ -2372,8 +2372,6 @@ func (r *AIGatewayAuthStrategyResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAiGatewayAuthStrategyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2382,7 +2380,7 @@ func (r *AIGatewayAuthStrategyResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.AIGatewayAuthStrategies.CreateAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2441,8 +2439,6 @@ func (r *AIGatewayAuthStrategyResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAiGatewayAuthStrategyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2451,7 +2447,7 @@ func (r *AIGatewayAuthStrategyResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.AIGatewayAuthStrategies.GetAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2497,8 +2493,6 @@ func (r *AIGatewayAuthStrategyResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAiGatewayAuthStrategyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2507,7 +2501,7 @@ func (r *AIGatewayAuthStrategyResource) Update(ctx context.Context, req resource
 	}
 	res, err := r.client.AIGatewayAuthStrategies.UpdateAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2559,8 +2553,6 @@ func (r *AIGatewayAuthStrategyResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAiGatewayAuthStrategyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2569,7 +2561,7 @@ func (r *AIGatewayAuthStrategyResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.AIGatewayAuthStrategies.DeleteAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

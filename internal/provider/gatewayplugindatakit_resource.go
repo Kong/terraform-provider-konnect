@@ -2135,8 +2135,6 @@ func (r *GatewayPluginDatakitResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2145,7 +2143,7 @@ func (r *GatewayPluginDatakitResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.CreateDatakitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2197,8 +2195,6 @@ func (r *GatewayPluginDatakitResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2207,7 +2203,7 @@ func (r *GatewayPluginDatakitResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.Plugins.GetDatakitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2253,8 +2249,6 @@ func (r *GatewayPluginDatakitResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2263,7 +2257,7 @@ func (r *GatewayPluginDatakitResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.UpdateDatakitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2315,8 +2309,6 @@ func (r *GatewayPluginDatakitResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteDatakitPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2325,7 +2317,7 @@ func (r *GatewayPluginDatakitResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.DeleteDatakitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

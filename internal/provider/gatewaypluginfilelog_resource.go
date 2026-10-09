@@ -307,8 +307,6 @@ func (r *GatewayPluginFileLogResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -317,7 +315,7 @@ func (r *GatewayPluginFileLogResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.CreateFilelogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -369,8 +367,6 @@ func (r *GatewayPluginFileLogResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -379,7 +375,7 @@ func (r *GatewayPluginFileLogResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.Plugins.GetFilelogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -425,8 +421,6 @@ func (r *GatewayPluginFileLogResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -435,7 +429,7 @@ func (r *GatewayPluginFileLogResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.UpdateFilelogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -487,8 +481,6 @@ func (r *GatewayPluginFileLogResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteFilelogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -497,7 +489,7 @@ func (r *GatewayPluginFileLogResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.DeleteFilelogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

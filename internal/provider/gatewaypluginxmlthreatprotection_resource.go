@@ -472,8 +472,6 @@ func (r *GatewayPluginXMLThreatProtectionResource) Create(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -482,7 +480,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.CreateXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -534,8 +532,6 @@ func (r *GatewayPluginXMLThreatProtectionResource) Read(ctx context.Context, req
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -544,7 +540,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.Plugins.GetXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -590,8 +586,6 @@ func (r *GatewayPluginXMLThreatProtectionResource) Update(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -600,7 +594,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Update(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.UpdateXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -652,8 +646,6 @@ func (r *GatewayPluginXMLThreatProtectionResource) Delete(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteXmlthreatprotectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -662,7 +654,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.DeleteXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

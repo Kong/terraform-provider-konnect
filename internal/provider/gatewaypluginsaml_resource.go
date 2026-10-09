@@ -962,8 +962,6 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -972,7 +970,7 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.Plugins.CreateSamlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1024,8 +1022,6 @@ func (r *GatewayPluginSamlResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1034,7 +1030,7 @@ func (r *GatewayPluginSamlResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.Plugins.GetSamlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1080,8 +1076,6 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1090,7 +1084,7 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.Plugins.UpdateSamlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1142,8 +1136,6 @@ func (r *GatewayPluginSamlResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteSamlPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1152,7 +1144,7 @@ func (r *GatewayPluginSamlResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.Plugins.DeleteSamlPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

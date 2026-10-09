@@ -889,8 +889,6 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Create(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -899,7 +897,7 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Create(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.CreateProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -951,8 +949,6 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Read(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -961,7 +957,7 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Read(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.GetProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1007,8 +1003,6 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Update(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1017,7 +1011,7 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Update(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.UpdateProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1069,8 +1063,6 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Delete(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteProxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1079,7 +1071,7 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Delete(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.DeleteProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

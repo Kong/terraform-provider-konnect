@@ -149,8 +149,6 @@ func (r *CatalogMCPResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToSharedCreateCatalogMCP(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -159,7 +157,7 @@ func (r *CatalogMCPResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	res, err := r.client.CatalogMCPs.CreateMcp(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -218,8 +216,6 @@ func (r *CatalogMCPResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetMcpRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -228,7 +224,7 @@ func (r *CatalogMCPResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 	res, err := r.client.CatalogMCPs.GetMcp(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -274,8 +270,6 @@ func (r *CatalogMCPResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpsertMcpRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -284,7 +278,7 @@ func (r *CatalogMCPResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 	res, err := r.client.CatalogMCPs.UpsertMcp(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -336,8 +330,6 @@ func (r *CatalogMCPResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteMcpRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -346,7 +338,7 @@ func (r *CatalogMCPResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 	res, err := r.client.CatalogMCPs.DeleteMcp(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

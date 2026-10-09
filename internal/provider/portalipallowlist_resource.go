@@ -106,8 +106,6 @@ func (r *PortalIPAllowListResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreatePortalIPAllowListRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -116,7 +114,7 @@ func (r *PortalIPAllowListResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.PortalsIPAllowList.CreatePortalIPAllowList(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -168,8 +166,6 @@ func (r *PortalIPAllowListResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetPortalIPAllowListRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -178,7 +174,7 @@ func (r *PortalIPAllowListResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.PortalsIPAllowList.GetPortalIPAllowList(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -224,8 +220,6 @@ func (r *PortalIPAllowListResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsPutPortalIPAllowListRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -234,7 +228,7 @@ func (r *PortalIPAllowListResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.PortalsIPAllowList.PutPortalIPAllowList(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -286,8 +280,6 @@ func (r *PortalIPAllowListResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeletePortalIPAllowListRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -296,7 +288,7 @@ func (r *PortalIPAllowListResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.PortalsIPAllowList.DeletePortalIPAllowList(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

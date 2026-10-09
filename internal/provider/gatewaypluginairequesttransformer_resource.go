@@ -926,8 +926,6 @@ func (r *GatewayPluginAiRequestTransformerResource) Create(ctx context.Context, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAirequesttransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -936,7 +934,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Create(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.CreateAirequesttransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -988,8 +986,6 @@ func (r *GatewayPluginAiRequestTransformerResource) Read(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAirequesttransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -998,7 +994,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Read(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.GetAirequesttransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1044,8 +1040,6 @@ func (r *GatewayPluginAiRequestTransformerResource) Update(ctx context.Context, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAirequesttransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1054,7 +1048,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Update(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.UpdateAirequesttransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1106,8 +1100,6 @@ func (r *GatewayPluginAiRequestTransformerResource) Delete(ctx context.Context, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAirequesttransformerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1116,7 +1108,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Delete(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.DeleteAirequesttransformerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

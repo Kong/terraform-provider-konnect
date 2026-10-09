@@ -882,8 +882,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Create(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -892,7 +890,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Create(ctx context.Cont
 	}
 	res, err := r.client.Plugins.CreateGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -944,8 +942,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Read(ctx context.Contex
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -954,7 +950,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Read(ctx context.Contex
 	}
 	res, err := r.client.Plugins.GetGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1000,8 +996,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Update(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1010,7 +1004,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Update(ctx context.Cont
 	}
 	res, err := r.client.Plugins.UpdateGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1062,8 +1056,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Delete(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteGraphqlproxycacheadvancedPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1072,7 +1064,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Delete(ctx context.Cont
 	}
 	res, err := r.client.Plugins.DeleteGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

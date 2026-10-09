@@ -312,8 +312,6 @@ func (r *GatewayPluginGrpcWebResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateGrpcwebPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -322,7 +320,7 @@ func (r *GatewayPluginGrpcWebResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.CreateGrpcwebPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -374,8 +372,6 @@ func (r *GatewayPluginGrpcWebResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetGrpcwebPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -384,7 +380,7 @@ func (r *GatewayPluginGrpcWebResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.Plugins.GetGrpcwebPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -430,8 +426,6 @@ func (r *GatewayPluginGrpcWebResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateGrpcwebPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -440,7 +434,7 @@ func (r *GatewayPluginGrpcWebResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.UpdateGrpcwebPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -492,8 +486,6 @@ func (r *GatewayPluginGrpcWebResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteGrpcwebPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -502,7 +494,7 @@ func (r *GatewayPluginGrpcWebResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.DeleteGrpcwebPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

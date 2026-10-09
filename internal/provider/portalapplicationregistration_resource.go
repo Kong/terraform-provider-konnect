@@ -216,8 +216,6 @@ func (r *PortalApplicationRegistrationResource) Create(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateApplicationRegistrationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -226,7 +224,7 @@ func (r *PortalApplicationRegistrationResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.ApplicationRegistrations.CreateApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -285,8 +283,6 @@ func (r *PortalApplicationRegistrationResource) Read(ctx context.Context, req re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetApplicationRegistrationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -295,7 +291,7 @@ func (r *PortalApplicationRegistrationResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.ApplicationRegistrations.GetApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -341,8 +337,6 @@ func (r *PortalApplicationRegistrationResource) Update(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateApplicationRegistrationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -351,7 +345,7 @@ func (r *PortalApplicationRegistrationResource) Update(ctx context.Context, req 
 	}
 	res, err := r.client.ApplicationRegistrations.UpdateApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -403,8 +397,6 @@ func (r *PortalApplicationRegistrationResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteApplicationRegistrationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -413,7 +405,7 @@ func (r *PortalApplicationRegistrationResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.ApplicationRegistrations.DeleteApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

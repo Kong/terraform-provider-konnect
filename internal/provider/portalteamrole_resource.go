@@ -139,8 +139,6 @@ func (r *PortalTeamRoleResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsAssignRoleToPortalTeamsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -149,7 +147,7 @@ func (r *PortalTeamRoleResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.PortalTeamRoles.AssignRoleToPortalTeams(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -252,8 +250,6 @@ func (r *PortalTeamRoleResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsRemoveRoleFromPortalTeamRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -262,7 +258,7 @@ func (r *PortalTeamRoleResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.PortalTeamRoles.RemoveRoleFromPortalTeam(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -233,8 +233,6 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Create(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -243,7 +241,7 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Create(ctx context.Cont
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.CreateEventGatewayVirtualClusterProducePolicyModifyHeaders(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -295,8 +293,6 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Read(ctx context.Contex
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetEventGatewayVirtualClusterProducePolicyModifyHeadersRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -305,7 +301,7 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Read(ctx context.Contex
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.GetEventGatewayVirtualClusterProducePolicyModifyHeaders(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -351,8 +347,6 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Update(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -361,7 +355,7 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Update(ctx context.Cont
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.UpdateEventGatewayVirtualClusterProducePolicyModifyHeaders(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -413,8 +407,6 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Delete(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteEventGatewayVirtualClusterProducePolicyModifyHeadersRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -423,7 +415,7 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Delete(ctx context.Cont
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.DeleteEventGatewayVirtualClusterProducePolicyModifyHeaders(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

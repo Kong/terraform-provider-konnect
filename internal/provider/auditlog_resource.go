@@ -126,8 +126,6 @@ func (r *AuditLogResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToSharedUpdateAuditLogWebhook(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -136,7 +134,7 @@ func (r *AuditLogResource) Create(ctx context.Context, req resource.CreateReques
 	}
 	res, err := r.client.AuditLogs.UpdateAuditLogWebhook(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -188,11 +186,9 @@ func (r *AuditLogResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	res, err := r.client.AuditLogs.GetAuditLogWebhook(ctx)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -238,8 +234,6 @@ func (r *AuditLogResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToSharedUpdateAuditLogWebhook(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -248,7 +242,7 @@ func (r *AuditLogResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 	res, err := r.client.AuditLogs.UpdateAuditLogWebhook(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -300,8 +294,6 @@ func (r *AuditLogResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAuditLogWebhookRequestBody(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -310,7 +302,7 @@ func (r *AuditLogResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 	res, err := r.client.AuditLogs.DeleteAuditLogWebhook(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

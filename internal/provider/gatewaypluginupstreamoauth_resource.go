@@ -936,8 +936,6 @@ func (r *GatewayPluginUpstreamOauthResource) Create(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -946,7 +944,7 @@ func (r *GatewayPluginUpstreamOauthResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.CreateUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -998,8 +996,6 @@ func (r *GatewayPluginUpstreamOauthResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1008,7 +1004,7 @@ func (r *GatewayPluginUpstreamOauthResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.GetUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1054,8 +1050,6 @@ func (r *GatewayPluginUpstreamOauthResource) Update(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1064,7 +1058,7 @@ func (r *GatewayPluginUpstreamOauthResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.UpdateUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1116,8 +1110,6 @@ func (r *GatewayPluginUpstreamOauthResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteUpstreamoauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1126,7 +1118,7 @@ func (r *GatewayPluginUpstreamOauthResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.DeleteUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

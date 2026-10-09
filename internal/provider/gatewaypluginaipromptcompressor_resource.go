@@ -389,8 +389,6 @@ func (r *GatewayPluginAiPromptCompressorResource) Create(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -399,7 +397,7 @@ func (r *GatewayPluginAiPromptCompressorResource) Create(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.CreateAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -451,8 +449,6 @@ func (r *GatewayPluginAiPromptCompressorResource) Read(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -461,7 +457,7 @@ func (r *GatewayPluginAiPromptCompressorResource) Read(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.GetAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -507,8 +503,6 @@ func (r *GatewayPluginAiPromptCompressorResource) Update(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -517,7 +511,7 @@ func (r *GatewayPluginAiPromptCompressorResource) Update(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.UpdateAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -569,8 +563,6 @@ func (r *GatewayPluginAiPromptCompressorResource) Delete(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAipromptcompressorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -579,7 +571,7 @@ func (r *GatewayPluginAiPromptCompressorResource) Delete(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.DeleteAipromptcompressorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -115,8 +115,6 @@ func (r *GatewayControlPlaneMembershipResource) Create(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsPostControlPlanesIDGroupMembershipsAddRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -125,7 +123,7 @@ func (r *GatewayControlPlaneMembershipResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.ControlPlaneGroups.PostControlPlanesIDGroupMembershipsAdd(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -212,8 +210,6 @@ func (r *GatewayControlPlaneMembershipResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsPostControlPlanesIDGroupMembershipsRemoveRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -222,7 +218,7 @@ func (r *GatewayControlPlaneMembershipResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.ControlPlaneGroups.PostControlPlanesIDGroupMembershipsRemove(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

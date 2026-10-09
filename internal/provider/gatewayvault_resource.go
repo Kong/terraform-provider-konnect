@@ -140,8 +140,6 @@ func (r *GatewayVaultResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -150,7 +148,7 @@ func (r *GatewayVaultResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res, err := r.client.Vaults.CreateVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -202,8 +200,6 @@ func (r *GatewayVaultResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -212,7 +208,7 @@ func (r *GatewayVaultResource) Read(ctx context.Context, req resource.ReadReques
 	}
 	res, err := r.client.Vaults.GetVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -258,8 +254,6 @@ func (r *GatewayVaultResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpsertVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -268,7 +262,7 @@ func (r *GatewayVaultResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res, err := r.client.Vaults.UpsertVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -320,8 +314,6 @@ func (r *GatewayVaultResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteVaultRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -330,7 +322,7 @@ func (r *GatewayVaultResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 	res, err := r.client.Vaults.DeleteVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
