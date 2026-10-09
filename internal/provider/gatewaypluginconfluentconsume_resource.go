@@ -1301,6 +1301,8 @@ func (r *GatewayPluginConfluentConsumeResource) Create(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1309,7 +1311,7 @@ func (r *GatewayPluginConfluentConsumeResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.CreateConfluentconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1361,6 +1363,8 @@ func (r *GatewayPluginConfluentConsumeResource) Read(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1369,7 +1373,7 @@ func (r *GatewayPluginConfluentConsumeResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.GetConfluentconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1415,6 +1419,8 @@ func (r *GatewayPluginConfluentConsumeResource) Update(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1423,7 +1429,7 @@ func (r *GatewayPluginConfluentConsumeResource) Update(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.UpdateConfluentconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1475,6 +1481,8 @@ func (r *GatewayPluginConfluentConsumeResource) Delete(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteConfluentconsumePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1483,7 +1491,7 @@ func (r *GatewayPluginConfluentConsumeResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.DeleteConfluentconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -286,6 +286,8 @@ func (r *AIGatewayDataPlaneCertificateResource) Create(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiGatewayDataPlaneCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -294,7 +296,7 @@ func (r *AIGatewayDataPlaneCertificateResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.AIGatewayDataPlaneCertificates.CreateAiGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -346,6 +348,8 @@ func (r *AIGatewayDataPlaneCertificateResource) Read(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiGatewayDataPlaneCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -354,7 +358,7 @@ func (r *AIGatewayDataPlaneCertificateResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.AIGatewayDataPlaneCertificates.GetAiGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -424,6 +428,8 @@ func (r *AIGatewayDataPlaneCertificateResource) Delete(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiGatewayDataPlaneCertificateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -432,7 +438,7 @@ func (r *AIGatewayDataPlaneCertificateResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.AIGatewayDataPlaneCertificates.DeleteAiGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -421,6 +421,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Create(ctx context.Context, req
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -429,7 +431,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Create(ctx context.Context, req
 	}
 	res, err := r.client.Plugins.CreateAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -481,6 +483,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Read(ctx context.Context, req r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -489,7 +493,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Read(ctx context.Context, req r
 	}
 	res, err := r.client.Plugins.GetAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -535,6 +539,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Update(ctx context.Context, req
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -543,7 +549,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Update(ctx context.Context, req
 	}
 	res, err := r.client.Plugins.UpdateAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -595,6 +601,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Delete(ctx context.Context, req
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAipromptdecoratorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -603,7 +611,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Delete(ctx context.Context, req
 	}
 	res, err := r.client.Plugins.DeleteAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

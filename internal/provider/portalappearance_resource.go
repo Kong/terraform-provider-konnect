@@ -682,6 +682,8 @@ func (r *PortalAppearanceResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsUpdatePortalAppearanceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -690,7 +692,7 @@ func (r *PortalAppearanceResource) Create(ctx context.Context, req resource.Crea
 	}
 	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -742,6 +744,8 @@ func (r *PortalAppearanceResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetPortalAppearanceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -750,7 +754,7 @@ func (r *PortalAppearanceResource) Read(ctx context.Context, req resource.ReadRe
 	}
 	res, err := r.client.PortalAppearance.GetPortalAppearance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -796,6 +800,8 @@ func (r *PortalAppearanceResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdatePortalAppearanceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -804,7 +810,7 @@ func (r *PortalAppearanceResource) Update(ctx context.Context, req resource.Upda
 	}
 	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

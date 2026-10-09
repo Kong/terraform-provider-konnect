@@ -302,6 +302,8 @@ func (r *GatewayPluginStandardWebhooksResource) Create(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -310,7 +312,7 @@ func (r *GatewayPluginStandardWebhooksResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.CreateStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -362,6 +364,8 @@ func (r *GatewayPluginStandardWebhooksResource) Read(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -370,7 +374,7 @@ func (r *GatewayPluginStandardWebhooksResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.GetStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -416,6 +420,8 @@ func (r *GatewayPluginStandardWebhooksResource) Update(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -424,7 +430,7 @@ func (r *GatewayPluginStandardWebhooksResource) Update(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.UpdateStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -476,6 +482,8 @@ func (r *GatewayPluginStandardWebhooksResource) Delete(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteStandardwebhooksPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -484,7 +492,7 @@ func (r *GatewayPluginStandardWebhooksResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.DeleteStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -340,6 +340,8 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreatePrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -348,7 +350,7 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.CreatePrometheusPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -400,6 +402,8 @@ func (r *GatewayPluginPrometheusResource) Read(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetPrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -408,7 +412,7 @@ func (r *GatewayPluginPrometheusResource) Read(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.GetPrometheusPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -454,6 +458,8 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdatePrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -462,7 +468,7 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.UpdatePrometheusPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -514,6 +520,8 @@ func (r *GatewayPluginPrometheusResource) Delete(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeletePrometheusPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -522,7 +530,7 @@ func (r *GatewayPluginPrometheusResource) Delete(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.DeletePrometheusPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

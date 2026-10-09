@@ -374,6 +374,8 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -382,7 +384,7 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.Plugins.CreateCanaryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -434,6 +436,8 @@ func (r *GatewayPluginCanaryResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -442,7 +446,7 @@ func (r *GatewayPluginCanaryResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.Plugins.GetCanaryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -488,6 +492,8 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -496,7 +502,7 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.Plugins.UpdateCanaryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -548,6 +554,8 @@ func (r *GatewayPluginCanaryResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteCanaryPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -556,7 +564,7 @@ func (r *GatewayPluginCanaryResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.Plugins.DeleteCanaryPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

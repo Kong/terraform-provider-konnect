@@ -277,6 +277,8 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Create(ctx context.Cont
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayVirtualClusterProducePolicyEncryptFieldsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -285,7 +287,7 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Create(ctx context.Cont
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.CreateEventGatewayVirtualClusterProducePolicyEncryptFields(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -337,6 +339,8 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Read(ctx context.Contex
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayVirtualClusterProducePolicyEncryptFieldsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -345,7 +349,7 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Read(ctx context.Contex
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.GetEventGatewayVirtualClusterProducePolicyEncryptFields(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -391,6 +395,8 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Update(ctx context.Cont
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewayVirtualClusterProducePolicyEncryptFieldsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -399,7 +405,7 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Update(ctx context.Cont
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.UpdateEventGatewayVirtualClusterProducePolicyEncryptFields(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -451,6 +457,8 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Delete(ctx context.Cont
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayVirtualClusterProducePolicyEncryptFieldsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -459,7 +467,7 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Delete(ctx context.Cont
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.DeleteEventGatewayVirtualClusterProducePolicyEncryptFields(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

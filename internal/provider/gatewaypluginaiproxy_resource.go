@@ -893,6 +893,8 @@ func (r *GatewayPluginAiProxyResource) Create(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -901,7 +903,7 @@ func (r *GatewayPluginAiProxyResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.CreateAiproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -953,6 +955,8 @@ func (r *GatewayPluginAiProxyResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -961,7 +965,7 @@ func (r *GatewayPluginAiProxyResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.Plugins.GetAiproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1007,6 +1011,8 @@ func (r *GatewayPluginAiProxyResource) Update(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAiproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1015,7 +1021,7 @@ func (r *GatewayPluginAiProxyResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.UpdateAiproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1067,6 +1073,8 @@ func (r *GatewayPluginAiProxyResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiproxyPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1075,7 +1083,7 @@ func (r *GatewayPluginAiProxyResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.DeleteAiproxyPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

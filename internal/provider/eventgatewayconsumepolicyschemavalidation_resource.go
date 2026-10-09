@@ -315,6 +315,8 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Create(ctx context.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayVirtualClusterConsumePolicySchemaValidationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -323,7 +325,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Create(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.CreateEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -375,6 +377,8 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Read(ctx context.Con
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayVirtualClusterConsumePolicySchemaValidationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -383,7 +387,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Read(ctx context.Con
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.GetEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -429,6 +433,8 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Update(ctx context.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewayVirtualClusterConsumePolicySchemaValidationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -437,7 +443,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Update(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.UpdateEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -489,6 +495,8 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Delete(ctx context.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayVirtualClusterConsumePolicySchemaValidationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -497,7 +505,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Delete(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.DeleteEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

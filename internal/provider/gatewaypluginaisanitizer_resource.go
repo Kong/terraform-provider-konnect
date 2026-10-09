@@ -450,6 +450,8 @@ func (r *GatewayPluginAiSanitizerResource) Create(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -458,7 +460,7 @@ func (r *GatewayPluginAiSanitizerResource) Create(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.CreateAisanitizerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -510,6 +512,8 @@ func (r *GatewayPluginAiSanitizerResource) Read(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -518,7 +522,7 @@ func (r *GatewayPluginAiSanitizerResource) Read(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.GetAisanitizerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -564,6 +568,8 @@ func (r *GatewayPluginAiSanitizerResource) Update(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -572,7 +578,7 @@ func (r *GatewayPluginAiSanitizerResource) Update(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.UpdateAisanitizerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -624,6 +630,8 @@ func (r *GatewayPluginAiSanitizerResource) Delete(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAisanitizerPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -632,7 +640,7 @@ func (r *GatewayPluginAiSanitizerResource) Delete(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.DeleteAisanitizerPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

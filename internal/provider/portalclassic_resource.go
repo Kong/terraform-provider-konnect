@@ -222,6 +222,8 @@ func (r *PortalClassicResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToSharedV2CreatePortalRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -230,7 +232,7 @@ func (r *PortalClassicResource) Create(ctx context.Context, req resource.CreateR
 	}
 	res, err := r.client.Portals.CreatePortalClassic(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -282,6 +284,8 @@ func (r *PortalClassicResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetPortalClassicRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -290,7 +294,7 @@ func (r *PortalClassicResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	res, err := r.client.Portals.GetPortalClassic(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -336,6 +340,8 @@ func (r *PortalClassicResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdatePortalClassicRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -344,7 +350,7 @@ func (r *PortalClassicResource) Update(ctx context.Context, req resource.UpdateR
 	}
 	res, err := r.client.Portals.UpdatePortalClassic(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -396,6 +402,8 @@ func (r *PortalClassicResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeletePortalClassicRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -404,7 +412,7 @@ func (r *PortalClassicResource) Delete(ctx context.Context, req resource.DeleteR
 	}
 	res, err := r.client.Portals.DeletePortalClassic(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

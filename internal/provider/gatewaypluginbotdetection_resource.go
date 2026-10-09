@@ -300,6 +300,8 @@ func (r *GatewayPluginBotDetectionResource) Create(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -308,7 +310,7 @@ func (r *GatewayPluginBotDetectionResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.CreateBotdetectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -360,6 +362,8 @@ func (r *GatewayPluginBotDetectionResource) Read(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -368,7 +372,7 @@ func (r *GatewayPluginBotDetectionResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.GetBotdetectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -414,6 +418,8 @@ func (r *GatewayPluginBotDetectionResource) Update(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -422,7 +428,7 @@ func (r *GatewayPluginBotDetectionResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.UpdateBotdetectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -474,6 +480,8 @@ func (r *GatewayPluginBotDetectionResource) Delete(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteBotdetectionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -482,7 +490,7 @@ func (r *GatewayPluginBotDetectionResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.DeleteBotdetectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

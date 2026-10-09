@@ -1294,6 +1294,8 @@ func (r *GatewayPluginAiRagInjectorResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1302,7 +1304,7 @@ func (r *GatewayPluginAiRagInjectorResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.CreateAiraginjectorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1354,6 +1356,8 @@ func (r *GatewayPluginAiRagInjectorResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1362,7 +1366,7 @@ func (r *GatewayPluginAiRagInjectorResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.GetAiraginjectorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1408,6 +1412,8 @@ func (r *GatewayPluginAiRagInjectorResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1416,7 +1422,7 @@ func (r *GatewayPluginAiRagInjectorResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.UpdateAiraginjectorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1468,6 +1474,8 @@ func (r *GatewayPluginAiRagInjectorResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiraginjectorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1476,7 +1484,7 @@ func (r *GatewayPluginAiRagInjectorResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.DeleteAiraginjectorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

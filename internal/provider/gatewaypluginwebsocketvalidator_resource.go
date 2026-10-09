@@ -448,6 +448,8 @@ func (r *GatewayPluginWebsocketValidatorResource) Create(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -456,7 +458,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Create(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.CreateWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -508,6 +510,8 @@ func (r *GatewayPluginWebsocketValidatorResource) Read(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -516,7 +520,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Read(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.GetWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -562,6 +566,8 @@ func (r *GatewayPluginWebsocketValidatorResource) Update(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -570,7 +576,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Update(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.UpdateWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -622,6 +628,8 @@ func (r *GatewayPluginWebsocketValidatorResource) Delete(ctx context.Context, re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteWebsocketvalidatorPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -630,7 +638,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Delete(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.DeleteWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

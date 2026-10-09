@@ -219,6 +219,8 @@ func (r *AIGatewayConsumerCredentialResource) Create(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiGatewayConsumerCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -227,7 +229,7 @@ func (r *AIGatewayConsumerCredentialResource) Create(ctx context.Context, req re
 	}
 	res, err := r.client.AIGatewayConsumers.CreateAiGatewayConsumerCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -286,6 +288,8 @@ func (r *AIGatewayConsumerCredentialResource) Read(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiGatewayConsumerCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -294,7 +298,7 @@ func (r *AIGatewayConsumerCredentialResource) Read(ctx context.Context, req reso
 	}
 	res, err := r.client.AIGatewayConsumers.GetAiGatewayConsumerCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -364,6 +368,8 @@ func (r *AIGatewayConsumerCredentialResource) Delete(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiGatewayConsumerCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -372,7 +378,7 @@ func (r *AIGatewayConsumerCredentialResource) Delete(ctx context.Context, req re
 	}
 	res, err := r.client.AIGatewayConsumers.DeleteAiGatewayConsumerCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

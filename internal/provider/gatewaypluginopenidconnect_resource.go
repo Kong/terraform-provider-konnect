@@ -2917,6 +2917,8 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2925,7 +2927,7 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.CreateOpenidconnectPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2977,6 +2979,8 @@ func (r *GatewayPluginOpenidConnectResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -2985,7 +2989,7 @@ func (r *GatewayPluginOpenidConnectResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.GetOpenidconnectPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -3031,6 +3035,8 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -3039,7 +3045,7 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.UpdateOpenidconnectPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -3091,6 +3097,8 @@ func (r *GatewayPluginOpenidConnectResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteOpenidconnectPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -3099,7 +3107,7 @@ func (r *GatewayPluginOpenidConnectResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.DeleteOpenidconnectPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

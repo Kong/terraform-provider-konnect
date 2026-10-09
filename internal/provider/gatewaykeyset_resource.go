@@ -122,6 +122,8 @@ func (r *GatewayKeySetResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateKeySetRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -130,7 +132,7 @@ func (r *GatewayKeySetResource) Create(ctx context.Context, req resource.CreateR
 	}
 	res, err := r.client.KeySets.CreateKeySet(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -182,6 +184,8 @@ func (r *GatewayKeySetResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetKeySetRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -190,7 +194,7 @@ func (r *GatewayKeySetResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	res, err := r.client.KeySets.GetKeySet(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -236,6 +240,8 @@ func (r *GatewayKeySetResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpsertKeySetRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -244,7 +250,7 @@ func (r *GatewayKeySetResource) Update(ctx context.Context, req resource.UpdateR
 	}
 	res, err := r.client.KeySets.UpsertKeySet(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -296,6 +302,8 @@ func (r *GatewayKeySetResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteKeySetRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -304,7 +312,7 @@ func (r *GatewayKeySetResource) Delete(ctx context.Context, req resource.DeleteR
 	}
 	res, err := r.client.KeySets.DeleteKeySet(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

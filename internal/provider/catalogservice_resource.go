@@ -152,6 +152,8 @@ func (r *CatalogServiceResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToSharedCreateCatalogService(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -160,7 +162,7 @@ func (r *CatalogServiceResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.CatalogServices.CreateCatalogService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -212,6 +214,8 @@ func (r *CatalogServiceResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsFetchCatalogServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -220,7 +224,7 @@ func (r *CatalogServiceResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.CatalogServices.FetchCatalogService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -266,6 +270,8 @@ func (r *CatalogServiceResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateCatalogServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -274,7 +280,7 @@ func (r *CatalogServiceResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.CatalogServices.UpdateCatalogService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -326,6 +332,8 @@ func (r *CatalogServiceResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteCatalogServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -334,7 +342,7 @@ func (r *CatalogServiceResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.CatalogServices.DeleteCatalogService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

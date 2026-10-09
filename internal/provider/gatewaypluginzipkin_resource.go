@@ -594,6 +594,8 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -602,7 +604,7 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.Plugins.CreateZipkinPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -654,6 +656,8 @@ func (r *GatewayPluginZipkinResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -662,7 +666,7 @@ func (r *GatewayPluginZipkinResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.Plugins.GetZipkinPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -708,6 +712,8 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -716,7 +722,7 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.Plugins.UpdateZipkinPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -768,6 +774,8 @@ func (r *GatewayPluginZipkinResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteZipkinPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -776,7 +784,7 @@ func (r *GatewayPluginZipkinResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.Plugins.DeleteZipkinPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

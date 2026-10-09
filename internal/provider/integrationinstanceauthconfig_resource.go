@@ -161,6 +161,8 @@ func (r *IntegrationInstanceAuthConfigResource) Create(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsUpsertIntegrationInstanceAuthConfigRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -169,7 +171,7 @@ func (r *IntegrationInstanceAuthConfigResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.IntegrationInstanceAuthConfig.UpsertIntegrationInstanceAuthConfig(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -221,6 +223,8 @@ func (r *IntegrationInstanceAuthConfigResource) Read(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetIntegrationInstanceAuthConfigRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -229,7 +233,7 @@ func (r *IntegrationInstanceAuthConfigResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.IntegrationInstanceAuthConfig.GetIntegrationInstanceAuthConfig(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -275,6 +279,8 @@ func (r *IntegrationInstanceAuthConfigResource) Update(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpsertIntegrationInstanceAuthConfigRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -283,7 +289,7 @@ func (r *IntegrationInstanceAuthConfigResource) Update(ctx context.Context, req 
 	}
 	res, err := r.client.IntegrationInstanceAuthConfig.UpsertIntegrationInstanceAuthConfig(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -335,6 +341,8 @@ func (r *IntegrationInstanceAuthConfigResource) Delete(ctx context.Context, req 
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteIntegrationInstanceAuthConfigRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -343,7 +351,7 @@ func (r *IntegrationInstanceAuthConfigResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.IntegrationInstanceAuthConfig.DeleteIntegrationInstanceAuthConfig(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -337,6 +337,8 @@ func (r *GatewayPluginIPRestrictionResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -345,7 +347,7 @@ func (r *GatewayPluginIPRestrictionResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.CreateIprestrictionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -397,6 +399,8 @@ func (r *GatewayPluginIPRestrictionResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -405,7 +409,7 @@ func (r *GatewayPluginIPRestrictionResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.GetIprestrictionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -451,6 +455,8 @@ func (r *GatewayPluginIPRestrictionResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -459,7 +465,7 @@ func (r *GatewayPluginIPRestrictionResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.UpdateIprestrictionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -511,6 +517,8 @@ func (r *GatewayPluginIPRestrictionResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteIprestrictionPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -519,7 +527,7 @@ func (r *GatewayPluginIPRestrictionResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.DeleteIprestrictionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

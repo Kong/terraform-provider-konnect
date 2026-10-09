@@ -148,6 +148,8 @@ func (r *AIGatewayConfigStoreResource) Create(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiGatewayConfigStoreRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -156,7 +158,7 @@ func (r *AIGatewayConfigStoreResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayConfigStores.CreateAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -215,6 +217,8 @@ func (r *AIGatewayConfigStoreResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiGatewayConfigStoreRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -223,7 +227,7 @@ func (r *AIGatewayConfigStoreResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.AIGatewayConfigStores.GetAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -269,6 +273,8 @@ func (r *AIGatewayConfigStoreResource) Update(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAiGatewayConfigStoreRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -277,7 +283,7 @@ func (r *AIGatewayConfigStoreResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayConfigStores.UpdateAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -329,6 +335,8 @@ func (r *AIGatewayConfigStoreResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiGatewayConfigStoreRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -337,7 +345,7 @@ func (r *AIGatewayConfigStoreResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayConfigStores.DeleteAiGatewayConfigStore(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

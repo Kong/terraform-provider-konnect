@@ -654,6 +654,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Create(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -662,7 +664,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Create(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.CreateSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -714,6 +716,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Read(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -722,7 +726,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Read(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.GetSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -768,6 +772,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Update(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -776,7 +782,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Update(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.UpdateSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -828,6 +834,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Delete(ctx context.Context, req re
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteSolaceupstreamPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -836,7 +844,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Delete(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.DeleteSolaceupstreamPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

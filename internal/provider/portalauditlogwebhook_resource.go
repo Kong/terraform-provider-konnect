@@ -99,6 +99,8 @@ func (r *PortalAuditLogWebhookResource) Create(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsUpdatePortalAuditLogWebhookRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -107,7 +109,7 @@ func (r *PortalAuditLogWebhookResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.PortalAuditLogs.UpdatePortalAuditLogWebhook(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -159,6 +161,8 @@ func (r *PortalAuditLogWebhookResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetPortalAuditLogWebhookRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -167,7 +171,7 @@ func (r *PortalAuditLogWebhookResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.PortalAuditLogs.GetPortalAuditLogWebhook(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -213,6 +217,8 @@ func (r *PortalAuditLogWebhookResource) Update(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdatePortalAuditLogWebhookRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -221,7 +227,7 @@ func (r *PortalAuditLogWebhookResource) Update(ctx context.Context, req resource
 	}
 	res, err := r.client.PortalAuditLogs.UpdatePortalAuditLogWebhook(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -273,6 +279,8 @@ func (r *PortalAuditLogWebhookResource) Delete(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeletePortalAuditLogWebhookRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -281,7 +289,7 @@ func (r *PortalAuditLogWebhookResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.PortalAuditLogs.DeletePortalAuditLogWebhook(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

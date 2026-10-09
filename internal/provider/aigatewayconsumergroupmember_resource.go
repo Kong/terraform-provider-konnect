@@ -170,6 +170,8 @@ func (r *AIGatewayConsumerGroupMemberResource) Create(ctx context.Context, req r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsAddAiGatewayConsumerToConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -178,7 +180,7 @@ func (r *AIGatewayConsumerGroupMemberResource) Create(ctx context.Context, req r
 	}
 	res, err := r.client.AIGatewayConsumerGroups.AddAiGatewayConsumerToConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -274,6 +276,8 @@ func (r *AIGatewayConsumerGroupMemberResource) Delete(ctx context.Context, req r
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsRemoveAiGatewayConsumerFromConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -282,7 +286,7 @@ func (r *AIGatewayConsumerGroupMemberResource) Delete(ctx context.Context, req r
 	}
 	res, err := r.client.AIGatewayConsumerGroups.RemoveAiGatewayConsumerFromConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

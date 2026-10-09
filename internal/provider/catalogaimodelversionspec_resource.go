@@ -122,6 +122,8 @@ func (r *CatalogAiModelVersionSpecResource) Create(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsUpsertAiModelVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -130,7 +132,7 @@ func (r *CatalogAiModelVersionSpecResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.CatalogAIModelSpecs.UpsertAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -185,6 +187,8 @@ func (r *CatalogAiModelVersionSpecResource) Read(ctx context.Context, req resour
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiModelVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -193,7 +197,7 @@ func (r *CatalogAiModelVersionSpecResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.CatalogAIModelSpecs.GetAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -239,6 +243,8 @@ func (r *CatalogAiModelVersionSpecResource) Update(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpsertAiModelVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -247,7 +253,7 @@ func (r *CatalogAiModelVersionSpecResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.CatalogAIModelSpecs.UpsertAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -302,6 +308,8 @@ func (r *CatalogAiModelVersionSpecResource) Delete(ctx context.Context, req reso
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiModelVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -310,7 +318,7 @@ func (r *CatalogAiModelVersionSpecResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.CatalogAIModelSpecs.DeleteAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

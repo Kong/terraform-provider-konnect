@@ -339,6 +339,8 @@ func (r *GatewayPluginHmacAuthResource) Create(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -347,7 +349,7 @@ func (r *GatewayPluginHmacAuthResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.CreateHmacauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -399,6 +401,8 @@ func (r *GatewayPluginHmacAuthResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -407,7 +411,7 @@ func (r *GatewayPluginHmacAuthResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.Plugins.GetHmacauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -453,6 +457,8 @@ func (r *GatewayPluginHmacAuthResource) Update(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -461,7 +467,7 @@ func (r *GatewayPluginHmacAuthResource) Update(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.UpdateHmacauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -513,6 +519,8 @@ func (r *GatewayPluginHmacAuthResource) Delete(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteHmacauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -521,7 +529,7 @@ func (r *GatewayPluginHmacAuthResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.Plugins.DeleteHmacauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

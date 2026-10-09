@@ -338,6 +338,8 @@ func (r *GatewayPluginSyslogResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -346,7 +348,7 @@ func (r *GatewayPluginSyslogResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.Plugins.CreateSyslogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -398,6 +400,8 @@ func (r *GatewayPluginSyslogResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -406,7 +410,7 @@ func (r *GatewayPluginSyslogResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.Plugins.GetSyslogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -452,6 +456,8 @@ func (r *GatewayPluginSyslogResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -460,7 +466,7 @@ func (r *GatewayPluginSyslogResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.Plugins.UpdateSyslogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -512,6 +518,8 @@ func (r *GatewayPluginSyslogResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteSyslogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -520,7 +528,7 @@ func (r *GatewayPluginSyslogResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.Plugins.DeleteSyslogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

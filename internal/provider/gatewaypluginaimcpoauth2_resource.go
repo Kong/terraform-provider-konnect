@@ -700,6 +700,8 @@ func (r *GatewayPluginAiMcpOauth2Resource) Create(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -708,7 +710,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Create(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.CreateAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -760,6 +762,8 @@ func (r *GatewayPluginAiMcpOauth2Resource) Read(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -768,7 +772,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Read(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.GetAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -814,6 +818,8 @@ func (r *GatewayPluginAiMcpOauth2Resource) Update(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -822,7 +828,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Update(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.UpdateAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -874,6 +880,8 @@ func (r *GatewayPluginAiMcpOauth2Resource) Delete(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAimcpoauth2PluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -882,7 +890,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Delete(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.DeleteAimcpoauth2Plugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
