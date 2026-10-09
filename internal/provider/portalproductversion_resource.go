@@ -243,8 +243,6 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsReplacePortalProductVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -253,7 +251,7 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -305,8 +303,6 @@ func (r *PortalProductVersionResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetPortalProductVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -315,7 +311,7 @@ func (r *PortalProductVersionResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -361,8 +357,6 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsReplacePortalProductVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -371,7 +365,7 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -423,8 +417,6 @@ func (r *PortalProductVersionResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeletePortalProductVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -433,7 +425,7 @@ func (r *PortalProductVersionResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.PortalProductVersions.DeletePortalProductVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -264,8 +264,6 @@ func (r *PortalIdentityProviderResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreatePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -274,7 +272,7 @@ func (r *PortalIdentityProviderResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.PortalAuthSettings.CreatePortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -333,8 +331,6 @@ func (r *PortalIdentityProviderResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetPortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -343,7 +339,7 @@ func (r *PortalIdentityProviderResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.PortalAuthSettings.GetPortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -389,8 +385,6 @@ func (r *PortalIdentityProviderResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdatePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -399,7 +393,7 @@ func (r *PortalIdentityProviderResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.PortalAuthSettings.UpdatePortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -451,8 +445,6 @@ func (r *PortalIdentityProviderResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeletePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -461,7 +453,7 @@ func (r *PortalIdentityProviderResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.PortalAuthSettings.DeletePortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

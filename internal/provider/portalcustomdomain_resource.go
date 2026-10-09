@@ -186,8 +186,6 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreatePortalCustomDomainRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -196,7 +194,7 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 	}
 	res, err := r.client.PortalCustomDomains.CreatePortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -248,8 +246,6 @@ func (r *PortalCustomDomainResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetPortalCustomDomainRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -258,7 +254,7 @@ func (r *PortalCustomDomainResource) Read(ctx context.Context, req resource.Read
 	}
 	res, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -304,8 +300,6 @@ func (r *PortalCustomDomainResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdatePortalCustomDomainRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -314,7 +308,7 @@ func (r *PortalCustomDomainResource) Update(ctx context.Context, req resource.Up
 	}
 	res, err := r.client.PortalCustomDomains.UpdatePortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -366,8 +360,6 @@ func (r *PortalCustomDomainResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeletePortalCustomDomainRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -376,7 +368,7 @@ func (r *PortalCustomDomainResource) Delete(ctx context.Context, req resource.De
 	}
 	res, err := r.client.PortalCustomDomains.DeletePortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

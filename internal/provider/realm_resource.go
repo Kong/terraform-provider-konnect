@@ -188,8 +188,6 @@ func (r *RealmResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToSharedConsumerRealmCreateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -198,7 +196,7 @@ func (r *RealmResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 	res, err := r.client.Realms.CreateRealm(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -250,8 +248,6 @@ func (r *RealmResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetRealmRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -260,7 +256,7 @@ func (r *RealmResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 	res, err := r.client.Realms.GetRealm(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -306,8 +302,6 @@ func (r *RealmResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateRealmRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -316,7 +310,7 @@ func (r *RealmResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	}
 	res, err := r.client.Realms.UpdateRealm(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -368,8 +362,6 @@ func (r *RealmResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteRealmRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -378,7 +370,7 @@ func (r *RealmResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	}
 	res, err := r.client.Realms.DeleteRealm(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

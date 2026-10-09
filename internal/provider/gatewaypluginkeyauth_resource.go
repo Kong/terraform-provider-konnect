@@ -404,8 +404,6 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -414,7 +412,7 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.CreateKeyauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -466,8 +464,6 @@ func (r *GatewayPluginKeyAuthResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -476,7 +472,7 @@ func (r *GatewayPluginKeyAuthResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.Plugins.GetKeyauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -522,8 +518,6 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -532,7 +526,7 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.UpdateKeyauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -584,8 +578,6 @@ func (r *GatewayPluginKeyAuthResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteKeyauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -594,7 +586,7 @@ func (r *GatewayPluginKeyAuthResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.DeleteKeyauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

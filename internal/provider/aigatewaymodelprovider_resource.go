@@ -3909,8 +3909,6 @@ func (r *AIGatewayModelProviderResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAiGatewayModelProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -3919,7 +3917,7 @@ func (r *AIGatewayModelProviderResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.AIGatewayModelProviders.CreateAiGatewayModelProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -3978,8 +3976,6 @@ func (r *AIGatewayModelProviderResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAiGatewayModelProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -3988,7 +3984,7 @@ func (r *AIGatewayModelProviderResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayModelProviders.GetAiGatewayModelProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -4034,8 +4030,6 @@ func (r *AIGatewayModelProviderResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAiGatewayModelProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -4044,7 +4038,7 @@ func (r *AIGatewayModelProviderResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.AIGatewayModelProviders.UpdateAiGatewayModelProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -4096,8 +4090,6 @@ func (r *AIGatewayModelProviderResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAiGatewayModelProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -4106,7 +4098,7 @@ func (r *AIGatewayModelProviderResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.AIGatewayModelProviders.DeleteAiGatewayModelProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

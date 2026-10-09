@@ -154,8 +154,6 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateKeyAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -164,7 +162,7 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.APIKeys.CreateKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -216,8 +214,6 @@ func (r *GatewayKeyAuthResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetKeyAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -226,7 +222,7 @@ func (r *GatewayKeyAuthResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.APIKeys.GetKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -296,8 +292,6 @@ func (r *GatewayKeyAuthResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteKeyAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -306,7 +300,7 @@ func (r *GatewayKeyAuthResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

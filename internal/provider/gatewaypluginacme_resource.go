@@ -932,8 +932,6 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -942,7 +940,7 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.Plugins.CreateAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -994,8 +992,6 @@ func (r *GatewayPluginAcmeResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1004,7 +1000,7 @@ func (r *GatewayPluginAcmeResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.Plugins.GetAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1050,8 +1046,6 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1060,7 +1054,7 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.Plugins.UpdateAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1112,8 +1106,6 @@ func (r *GatewayPluginAcmeResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAcmePluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1122,7 +1114,7 @@ func (r *GatewayPluginAcmeResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.Plugins.DeleteAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

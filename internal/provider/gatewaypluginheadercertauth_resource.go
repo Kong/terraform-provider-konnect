@@ -387,8 +387,6 @@ func (r *GatewayPluginHeaderCertAuthResource) Create(ctx context.Context, req re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -397,7 +395,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Create(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.CreateHeadercertauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -449,8 +447,6 @@ func (r *GatewayPluginHeaderCertAuthResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -459,7 +455,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Read(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.GetHeadercertauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -505,8 +501,6 @@ func (r *GatewayPluginHeaderCertAuthResource) Update(ctx context.Context, req re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -515,7 +509,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Update(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.UpdateHeadercertauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -567,8 +561,6 @@ func (r *GatewayPluginHeaderCertAuthResource) Delete(ctx context.Context, req re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteHeadercertauthPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -577,7 +569,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Delete(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.DeleteHeadercertauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

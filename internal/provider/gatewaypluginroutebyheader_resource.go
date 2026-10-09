@@ -328,8 +328,6 @@ func (r *GatewayPluginRouteByHeaderResource) Create(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -338,7 +336,7 @@ func (r *GatewayPluginRouteByHeaderResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.CreateRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -390,8 +388,6 @@ func (r *GatewayPluginRouteByHeaderResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -400,7 +396,7 @@ func (r *GatewayPluginRouteByHeaderResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.GetRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -446,8 +442,6 @@ func (r *GatewayPluginRouteByHeaderResource) Update(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -456,7 +450,7 @@ func (r *GatewayPluginRouteByHeaderResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.UpdateRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -508,8 +502,6 @@ func (r *GatewayPluginRouteByHeaderResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteRoutebyheaderPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -518,7 +510,7 @@ func (r *GatewayPluginRouteByHeaderResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.DeleteRoutebyheaderPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

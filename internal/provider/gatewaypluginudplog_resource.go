@@ -315,8 +315,6 @@ func (r *GatewayPluginUDPLogResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -325,7 +323,7 @@ func (r *GatewayPluginUDPLogResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.Plugins.CreateUdplogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -377,8 +375,6 @@ func (r *GatewayPluginUDPLogResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -387,7 +383,7 @@ func (r *GatewayPluginUDPLogResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.Plugins.GetUdplogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -433,8 +429,6 @@ func (r *GatewayPluginUDPLogResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -443,7 +437,7 @@ func (r *GatewayPluginUDPLogResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.Plugins.UpdateUdplogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -495,8 +489,6 @@ func (r *GatewayPluginUDPLogResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteUdplogPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -505,7 +497,7 @@ func (r *GatewayPluginUDPLogResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.Plugins.DeleteUdplogPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

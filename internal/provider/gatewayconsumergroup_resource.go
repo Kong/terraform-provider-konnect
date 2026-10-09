@@ -122,8 +122,6 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -132,7 +130,7 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.ConsumerGroups.CreateConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -169,7 +167,7 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 	}
 	res1, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -221,8 +219,6 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -231,7 +227,7 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -277,8 +273,6 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpsertConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -287,7 +281,7 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.ConsumerGroups.UpsertConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -324,7 +318,7 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 	}
 	res1, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -376,8 +370,6 @@ func (r *GatewayConsumerGroupResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteConsumerGroupRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -386,7 +378,7 @@ func (r *GatewayConsumerGroupResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.ConsumerGroups.DeleteConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

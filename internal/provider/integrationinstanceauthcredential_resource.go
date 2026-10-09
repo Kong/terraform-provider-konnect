@@ -325,8 +325,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Create(ctx context.Context, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateIntegrationInstanceAuthCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -335,7 +333,7 @@ func (r *IntegrationInstanceAuthCredentialResource) Create(ctx context.Context, 
 	}
 	res, err := r.client.IntegrationInstanceAuthCredentials.CreateIntegrationInstanceAuthCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -394,8 +392,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Read(ctx context.Context, re
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetIntegrationInstanceAuthCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -404,7 +400,7 @@ func (r *IntegrationInstanceAuthCredentialResource) Read(ctx context.Context, re
 	}
 	res, err := r.client.IntegrationInstanceAuthCredentials.GetIntegrationInstanceAuthCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -474,8 +470,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Delete(ctx context.Context, 
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteIntegrationInstanceAuthCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -484,7 +478,7 @@ func (r *IntegrationInstanceAuthCredentialResource) Delete(ctx context.Context, 
 	}
 	res, err := r.client.IntegrationInstanceAuthCredentials.DeleteIntegrationInstanceAuthCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -141,8 +141,6 @@ func (r *APIProductSpecificationResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAPIProductVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -151,7 +149,7 @@ func (r *APIProductSpecificationResource) Create(ctx context.Context, req resour
 	}
 	res, err := r.client.APIProductVersionSpecification.CreateAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -210,8 +208,6 @@ func (r *APIProductSpecificationResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetAPIProductVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -220,7 +216,7 @@ func (r *APIProductSpecificationResource) Read(ctx context.Context, req resource
 	}
 	res, err := r.client.APIProductVersionSpecification.GetAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -266,8 +262,6 @@ func (r *APIProductSpecificationResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAPIProductVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -276,7 +270,7 @@ func (r *APIProductSpecificationResource) Update(ctx context.Context, req resour
 	}
 	res, err := r.client.APIProductVersionSpecification.UpdateAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -328,8 +322,6 @@ func (r *APIProductSpecificationResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAPIProductVersionSpecRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -338,7 +330,7 @@ func (r *APIProductSpecificationResource) Delete(ctx context.Context, req resour
 	}
 	res, err := r.client.APIProductVersionSpecification.DeleteAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

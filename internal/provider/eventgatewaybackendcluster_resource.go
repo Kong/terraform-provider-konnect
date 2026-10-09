@@ -335,8 +335,6 @@ func (r *EventGatewayBackendClusterResource) Create(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -345,7 +343,7 @@ func (r *EventGatewayBackendClusterResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayBackendClusters.CreateEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -397,8 +395,6 @@ func (r *EventGatewayBackendClusterResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -407,7 +403,7 @@ func (r *EventGatewayBackendClusterResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.EventGatewayBackendClusters.GetEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -453,8 +449,6 @@ func (r *EventGatewayBackendClusterResource) Update(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -463,7 +457,7 @@ func (r *EventGatewayBackendClusterResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayBackendClusters.UpdateEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -515,8 +509,6 @@ func (r *EventGatewayBackendClusterResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -525,7 +517,7 @@ func (r *EventGatewayBackendClusterResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayBackendClusters.DeleteEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

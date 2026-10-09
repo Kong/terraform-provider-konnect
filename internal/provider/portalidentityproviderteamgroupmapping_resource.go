@@ -144,8 +144,6 @@ func (r *PortalIdentityProviderTeamGroupMappingResource) Create(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreatePortalIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -154,7 +152,7 @@ func (r *PortalIdentityProviderTeamGroupMappingResource) Create(ctx context.Cont
 	}
 	res, err := r.client.PortalAuthSettings.CreatePortalIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -213,8 +211,6 @@ func (r *PortalIdentityProviderTeamGroupMappingResource) Read(ctx context.Contex
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetPortalIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -223,7 +219,7 @@ func (r *PortalIdentityProviderTeamGroupMappingResource) Read(ctx context.Contex
 	}
 	res, err := r.client.PortalAuthSettings.GetPortalIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -293,8 +289,6 @@ func (r *PortalIdentityProviderTeamGroupMappingResource) Delete(ctx context.Cont
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeletePortalIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -303,7 +297,7 @@ func (r *PortalIdentityProviderTeamGroupMappingResource) Delete(ctx context.Cont
 	}
 	res, err := r.client.PortalAuthSettings.DeletePortalIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

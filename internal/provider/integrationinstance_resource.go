@@ -189,8 +189,6 @@ func (r *IntegrationInstanceResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToSharedCreateIntegrationInstance(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -199,7 +197,7 @@ func (r *IntegrationInstanceResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.IntegrationInstances.CreateIntegrationInstance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -251,8 +249,6 @@ func (r *IntegrationInstanceResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsFetchIntegrationInstanceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -261,7 +257,7 @@ func (r *IntegrationInstanceResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.IntegrationInstances.FetchIntegrationInstance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -307,8 +303,6 @@ func (r *IntegrationInstanceResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateIntegrationInstanceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -317,7 +311,7 @@ func (r *IntegrationInstanceResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.IntegrationInstances.UpdateIntegrationInstance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -369,8 +363,6 @@ func (r *IntegrationInstanceResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteIntegrationInstanceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -379,7 +371,7 @@ func (r *IntegrationInstanceResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.IntegrationInstances.DeleteIntegrationInstance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

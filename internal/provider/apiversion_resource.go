@@ -159,8 +159,6 @@ func (r *APIVersionResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateAPIVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -169,7 +167,7 @@ func (r *APIVersionResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	res, err := r.client.APIVersion.CreateAPIVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -228,8 +226,6 @@ func (r *APIVersionResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsFetchAPIVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -238,7 +234,7 @@ func (r *APIVersionResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 	res, err := r.client.APIVersion.FetchAPIVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -284,8 +280,6 @@ func (r *APIVersionResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateAPIVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -294,7 +288,7 @@ func (r *APIVersionResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 	res, err := r.client.APIVersion.UpdateAPIVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -346,8 +340,6 @@ func (r *APIVersionResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteAPIVersionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -356,7 +348,7 @@ func (r *APIVersionResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 	res, err := r.client.APIVersion.DeleteAPIVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

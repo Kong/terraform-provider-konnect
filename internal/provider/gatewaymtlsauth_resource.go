@@ -167,8 +167,6 @@ func (r *GatewayMTLSAuthResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateMtlsAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -177,7 +175,7 @@ func (r *GatewayMTLSAuthResource) Create(ctx context.Context, req resource.Creat
 	}
 	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -229,8 +227,6 @@ func (r *GatewayMTLSAuthResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetMtlsAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -239,7 +235,7 @@ func (r *GatewayMTLSAuthResource) Read(ctx context.Context, req resource.ReadReq
 	}
 	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -309,8 +305,6 @@ func (r *GatewayMTLSAuthResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -319,7 +313,7 @@ func (r *GatewayMTLSAuthResource) Delete(ctx context.Context, req resource.Delet
 	}
 	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

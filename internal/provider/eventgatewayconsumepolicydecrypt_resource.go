@@ -227,8 +227,6 @@ func (r *EventGatewayConsumePolicyDecryptResource) Create(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
-
 	request, requestDiags := data.ToOperationsCreateEventGatewayVirtualClusterConsumePolicyDecryptRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -237,7 +235,7 @@ func (r *EventGatewayConsumePolicyDecryptResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.CreateEventGatewayVirtualClusterConsumePolicyDecrypt(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -289,8 +287,6 @@ func (r *EventGatewayConsumePolicyDecryptResource) Read(ctx context.Context, req
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsGetEventGatewayVirtualClusterConsumePolicyDecryptRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -299,7 +295,7 @@ func (r *EventGatewayConsumePolicyDecryptResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.GetEventGatewayVirtualClusterConsumePolicyDecrypt(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -345,8 +341,6 @@ func (r *EventGatewayConsumePolicyDecryptResource) Update(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
-
 	request, requestDiags := data.ToOperationsUpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -355,7 +349,7 @@ func (r *EventGatewayConsumePolicyDecryptResource) Update(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.UpdateEventGatewayVirtualClusterConsumePolicyDecrypt(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -407,8 +401,6 @@ func (r *EventGatewayConsumePolicyDecryptResource) Delete(ctx context.Context, r
 		return
 	}
 
-	ctx = withSensitiveValues(ctx, req.State)
-
 	request, requestDiags := data.ToOperationsDeleteEventGatewayVirtualClusterConsumePolicyDecryptRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -417,7 +409,7 @@ func (r *EventGatewayConsumePolicyDecryptResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.DeleteEventGatewayVirtualClusterConsumePolicyDecrypt(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
