@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 08a228bb84347fb8bc834022dce91969
+  docChecksum: 7937a135efd76bd36ca558ae0591ee75
   docVersion: 2.0.0
   speakeasyVersion: 1.799.0
   generationVersion: 2.941.0
   releaseVersion: 3.26.0
   configChecksum: 1c744f0afd800f08d89944ddf1724967
 persistentEdits:
-  generation_id: ad4c21d6-4184-436c-b3c0-e5b80caaa541
-  pristine_commit_hash: 6fb62f10c23c70fca008eaedcd27cf1a8f702a2f
-  pristine_tree_hash: 2f46a027bdd743f9ee4335bb897a7178179ca5ce
+  generation_id: ff395673-b97d-4479-a37b-5ae7afde7a9e
+  pristine_commit_hash: b34073531c6587314e235cc662e5bbe4216bb0c7
+  pristine_tree_hash: 8adb83b30e9aa64778ac61ea47d548e691b331f4
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3593,12 +3593,12 @@ trackedFiles:
     pristine_git_object: 6ecce5749a05d2287f18a55515d5f1cb5c7562ca
   internal/provider/cloudgatewayconfiguration_resource.go:
     id: "516621245951"
-    last_write_checksum: sha1:0edf5321b2814a9c27b2cee1ff9f5e555d554dd8
-    pristine_git_object: cee92db0035566eb816d63456e4fc9228da0501d
+    last_write_checksum: sha1:fa27fae766e86cfc79294bae2900b6a8464e87aa
+    pristine_git_object: 614c728e8dd6c3b8cfe5bf43de31a3d761cd6ea8
   internal/provider/cloudgatewayconfiguration_resource_sdk.go:
     id: aa10bef81602
-    last_write_checksum: sha1:24610053ddbc4b39dcf823784e3009396d2ab794
-    pristine_git_object: e180c2189fad7a5419d44d072d0eb974568257a6
+    last_write_checksum: sha1:4919c7ae1252d0885d0c6f3a48548b961146ba01
+    pristine_git_object: 186eaf327d61a9bc4303cfba8ec6c338d501715b
   internal/provider/cloudgatewaycustomdomain_resource.go:
     id: ef9f8767c584
     last_write_checksum: sha1:9522dd40e7a99a620596d96f93bd196c73b81b7c
@@ -8597,8 +8597,8 @@ trackedFiles:
     pristine_git_object: 5e68131de10f9c075eaa248b8647e92f7d5ea007
   internal/sdk/cloudgateways.go:
     id: 40b5a9f732b4
-    last_write_checksum: sha1:18828d6ca29dac7e13c87dc173bf62c7539147cb
-    pristine_git_object: 6d2af11b730885133de4d02fd36e8983598065a3
+    last_write_checksum: sha1:ffe587d7df5c2a3626caa98fb670761b6dc35416
+    pristine_git_object: b689a30c9dc0c99d0404e09bd5aadfe65c8b0b64
   internal/sdk/cmek.go:
     id: d7f476626130
     last_write_checksum: sha1:0daf9f02f6982811e4d236cefed0e1d851178973
@@ -10075,6 +10075,10 @@ trackedFiles:
     id: 3e6685a84e61
     last_write_checksum: sha1:29bd50ec6c20c496b7bb75701a796005c36edb31
     pristine_git_object: 72834bc7f494ce48272ac3ac01135393c0d77321
+  internal/sdk/models/operations/deleteconfiguration.go:
+    id: e87d8f611157
+    last_write_checksum: sha1:d6629774d1ce13124da3b133ea3900d1a6183c3e
+    pristine_git_object: 44da8f42a8caadb42f01a3ef1a04ffb074ed1aae
   internal/sdk/models/operations/deleteconfluentconsumeplugin.go:
     id: b6a6f6709c3f
     last_write_checksum: sha1:390ea717865d6aa1ba6671628b3238f856de6f2d
@@ -33876,6 +33880,21 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "429":
           application/problem+json: {"status": 429, "title": "Too Many Requests", "type": "https://httpstatuses.com/429", "instance": "kong:trace:1234567890", "detail": "Too Many Requests"}
+  delete-configuration:
+    speakeasy-default-delete-configuration:
+      requestBody:
+        application/json: {"control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "us", "dataplane_groups": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "static", "instance_type": "medium", "requested_instances": 3}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "info"}]}]}
+      responses:
+        "200":
+          application/json: {"id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "version": "3.10", "api_access": "private+public", "dataplane_group_config": [], "dataplane_groups": [], "kind": "dedicated.v0", "type": "api", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "us"}
+        "400":
+          application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}
 generatedFiles:

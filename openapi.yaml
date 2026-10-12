@@ -23815,6 +23815,52 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
+  /v2/cloud-gateways/configurations#delete:
+    put:
+      x-speakeasy-entity-operation: CloudGatewayConfiguration#delete
+      operationId: delete-configuration
+      summary: Delete Configuration
+      description: |
+        Deletes a control plane's Cloud Gateway configuration by replacing it with an empty
+        data-plane group set, which tears down all deployed data planes for that control plane.
+      requestBody:
+        description: Replaces the configuration's data-plane groups with an empty set.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                control_plane_id:
+                  $ref: '#/components/schemas/ControlPlaneId'
+                control_plane_geo:
+                  $ref: '#/components/schemas/ControlPlaneGeo'
+                dataplane_groups:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'
+                  format: set
+                  const: []
+                  x-speakeasy-param-computed: false
+              additionalProperties: false
+              required:
+                - control_plane_id
+                - control_plane_geo
+                - dataplane_groups
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateConfigurationResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/CloudGatewaysForbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Data-Plane Group Configurations
+      x-speakeasy-group: CloudGateways
   /v2/audit-log-webhook#delete:
     patch:
       x-speakeasy-entity-operation:
