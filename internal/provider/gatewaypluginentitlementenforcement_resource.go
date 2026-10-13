@@ -35,7 +35,6 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginEntitlementEnforcementResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginEntitlementEnforcementResource{}
 var _ resource.ResourceWithUpgradeState = &GatewayPluginEntitlementEnforcementResource{}
 
 func NewGatewayPluginEntitlementEnforcementResource() resource.Resource {

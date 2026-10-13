@@ -72725,6 +72725,7 @@ components:
         - name: redis-ee
           paths:
             - config.redis
+      x-speakeasy-entity-version: 1
     ExitTransformerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -93053,11 +93054,6 @@ components:
               minimum: 1
               nullable: true
           type: object
-        - anyOf:
-            - required:
-                - host
-            - required:
-                - url
     SessionPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'

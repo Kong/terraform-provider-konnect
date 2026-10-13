@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type ServiceRequest1TLSSans struct {
+type TLSSans struct {
 	Dnsnames []types.String `tfsdk:"dnsnames"`
 	Uris     []types.String `tfsdk:"uris"`
 }
