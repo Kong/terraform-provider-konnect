@@ -1,3 +1,7 @@
+# Hand-maintained provider HTTP transport: it strips config paths that a plugin
+# payload links a partial to, which Konnect rejects as "overriding is forbidden".
+internal/provider/utils.go
+
 # Blocks Speakeasy from regenerating no-op internal/stateupgraders/<entity>_v0.go
 # stubs; the real logic lives in internal/stateupgraders/workspace_upgraders.go.
 # List files explicitly (no globs) - a glob would also stop Speakeasy from ever

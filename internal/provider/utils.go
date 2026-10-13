@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -158,6 +159,9 @@ func (t *providerHttpTransport) RoundTrip(req *http.Request) (*http.Response, er
 	// Set globally defined HTTP headers in the request
 	t.setRequestHeaders(req)
 
+	// Drop config paths that the payload links a partial to before sending.
+	stripPartialCoveredFields(req)
+
 	// Decompose the request bytes in a message (HTTP body) and fields (HTTP headers), then log it
 	fields, err := decomposeRequestForLogging(req)
 	if err != nil {
@@ -203,6 +207,104 @@ func (t *providerHttpTransport) setRequestHeaders(req *http.Request) {
 	for name, value := range t.setHeaders {
 		req.Header.Set(name, value)
 	}
+}
+
+// stripPartialCoveredFields removes config paths a plugin payload links a
+// partial to.
+//
+// Konnect rejects a plugin that both links a partial to a path and sends a
+// value for that path ("a partial is linked to that field - overriding is
+// forbidden"). The generated SDK always serialises absent nested objects as
+// explicit nulls, and Terraform populates nested defaults for an empty object
+// literal, so the provider must drop the covered key entirely rather than
+// rely on it being null.
+func stripPartialCoveredFields(req *http.Request) {
+	if req.Body == nil || !strings.Contains(req.URL.Path, "/plugins") {
+		return
+	}
+	switch req.Method {
+	case http.MethodPost, http.MethodPut, http.MethodPatch:
+	default:
+		return
+	}
+
+	body, err := io.ReadAll(req.Body)
+	_ = req.Body.Close()
+	req.Body = io.NopCloser(bytes.NewReader(body))
+	if err != nil {
+		return
+	}
+
+	var payload map[string]any
+	if err := json.Unmarshal(body, &payload); err != nil {
+		// Not a JSON object: leave the request untouched.
+		return
+	}
+
+	partials, ok := payload["partials"].([]any)
+	if !ok || len(partials) == 0 {
+		return
+	}
+
+	config, ok := payload["config"].(map[string]any)
+	if !ok {
+		return
+	}
+
+	removed := false
+	for _, rawPartial := range partials {
+		partial, ok := rawPartial.(map[string]any)
+		if !ok {
+			continue
+		}
+
+		path, _ := partial["path"].(string)
+		segments := strings.Split(path, ".")
+		if len(segments) < 2 || segments[0] != "config" {
+			continue
+		}
+
+		if deleteNestedKey(config, segments[1:]) {
+			removed = true
+		}
+	}
+
+	if !removed {
+		return
+	}
+
+	stripped, err := json.Marshal(payload)
+	if err != nil {
+		return
+	}
+
+	req.Body = io.NopCloser(bytes.NewReader(stripped))
+	req.ContentLength = int64(len(stripped))
+}
+
+// deleteNestedKey deletes the key addressed by segments from node and reports
+// whether anything was removed.
+func deleteNestedKey(node map[string]any, segments []string) bool {
+	for i, segment := range segments {
+		if i == len(segments)-1 {
+			if _, ok := node[segment]; !ok {
+				return false
+			}
+
+			delete(node, segment)
+
+			return true
+		}
+
+		child, ok := node[segment].(map[string]any)
+		if !ok {
+			return false
+		}
+
+		node = child
+	}
+
+	return false
 }
 
 func decomposeRequestForLogging(req *http.Request) (map[string]interface{}, error) {

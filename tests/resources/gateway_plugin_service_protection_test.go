@@ -14,9 +14,8 @@ func TestGatewayPluginServiceProtection(t *testing.T) {
 			Steps: []resource.TestStep{
 				{
 					// Create: redis_ee partial + service protection plugin referencing it
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestNameDirectory(),
-					ExpectNonEmptyPlan: true,
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_gateway_partial.redis_ee_partial", "id"),
 						resource.TestCheckResourceAttr("konnect_gateway_partial.redis_ee_partial", "redis_ee.name", "my_tf_svcprotect_redis_ee_partial"),
@@ -30,9 +29,8 @@ func TestGatewayPluginServiceProtection(t *testing.T) {
 				},
 				{
 					// Update: change error_message (not covered by the partial)
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestStepDirectory(),
-					ExpectNonEmptyPlan: true,
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_service_protection.my_service_protection", "config.error_message", "Rate limit exceeded"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_service_protection.my_service_protection", "partials.0.id"),
