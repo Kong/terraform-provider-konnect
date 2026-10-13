@@ -178,6 +178,12 @@ func (t *providerHttpTransport) RoundTrip(req *http.Request) (*http.Response, er
 		return res, err
 	}
 
+	// Konnect echoes the config a plugin's linked partials supply back from a
+	// create/update, but omits those paths from a read. Drop them here as well,
+	// so the state written by an apply matches what the next read returns;
+	// otherwise every plan after an apply shows a diff for the covered paths.
+	stripPartialCoveredResponseFields(req, res)
+
 	// Decompose the response bytes in a message (HTTP body) and fields (HTTP headers), then log it
 	fields, err = decomposeResponseForLogging(res)
 	if err != nil {
@@ -280,6 +286,79 @@ func stripPartialCoveredFields(req *http.Request) {
 
 	req.Body = io.NopCloser(bytes.NewReader(stripped))
 	req.ContentLength = int64(len(stripped))
+}
+
+// stripPartialCoveredResponseFields removes from a plugin response the config
+// paths its linked partials cover.
+//
+// A read only reports the config the caller set itself, while a create/update
+// reports the partial's values merged in. Rewriting the create/update response
+// to match the read keeps an apply and the plan that follows it in agreement.
+func stripPartialCoveredResponseFields(req *http.Request, res *http.Response) {
+	if req == nil || res == nil || res.Body == nil {
+		return
+	}
+	if !strings.Contains(req.URL.Path, "/plugins") {
+		return
+	}
+	switch req.Method {
+	case http.MethodPost, http.MethodPut, http.MethodPatch:
+	default:
+		return
+	}
+
+	body, err := io.ReadAll(res.Body)
+	_ = res.Body.Close()
+	res.Body = io.NopCloser(bytes.NewReader(body))
+	if err != nil {
+		return
+	}
+
+	var payload map[string]any
+	if err := json.Unmarshal(body, &payload); err != nil {
+		return
+	}
+
+	partials, ok := payload["partials"].([]any)
+	if !ok || len(partials) == 0 {
+		return
+	}
+
+	config, ok := payload["config"].(map[string]any)
+	if !ok {
+		return
+	}
+
+	removed := false
+	for _, rawPartial := range partials {
+		partial, ok := rawPartial.(map[string]any)
+		if !ok {
+			continue
+		}
+
+		path, _ := partial["path"].(string)
+		segments := strings.Split(path, ".")
+		if len(segments) < 2 || segments[0] != "config" {
+			continue
+		}
+
+		if deleteNestedKey(config, segments[1:]) {
+			removed = true
+		}
+	}
+
+	if !removed {
+		return
+	}
+
+	stripped, err := json.Marshal(payload)
+	if err != nil {
+		return
+	}
+
+	res.Body = io.NopCloser(bytes.NewReader(stripped))
+	res.ContentLength = int64(len(stripped))
+	res.Header.Set("Content-Length", fmt.Sprintf("%d", len(stripped)))
 }
 
 // deleteNestedKey deletes the key addressed by segments from node and reports

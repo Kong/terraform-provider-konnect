@@ -45,10 +45,8 @@ func TestGatewayPluginAiSemanticCache(t *testing.T) {
 			Steps: []resource.TestStep{
 				{
 					// Create: vectordb (pgvector) partial + plugin referencing it
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestNameDirectory(),
-					ExpectNonEmptyPlan: true, // Terraform plugin testing throws error on non-refresh plan being non-empty.
-					// There is no option to skip that step - so we set our config to pass non-refresh plan empty check.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_gateway_partial.pgvector_partial", "id"),
 						resource.TestCheckResourceAttr("konnect_gateway_partial.pgvector_partial", "vectordb.name", "my_tf_pgvector_partial"),
@@ -61,9 +59,8 @@ func TestGatewayPluginAiSemanticCache(t *testing.T) {
 				},
 				{
 					// Update: add a tag (not covered by the partial)
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestStepDirectory(),
-					ExpectNonEmptyPlan: true,
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_semantic_cache.my_ai_semantic_cache", "tags.0", "updated"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_ai_semantic_cache.my_ai_semantic_cache", "partials.0.id"),
