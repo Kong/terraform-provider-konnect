@@ -29,7 +29,14 @@ func CreateUpsertIntegrationInstanceAuthConfigOauthConfig(oauthConfig OauthConfi
 	}
 }
 
-func (u *UpsertIntegrationInstanceAuthConfig) UnmarshalJSON(data []byte) error {
+func (u *UpsertIntegrationInstanceAuthConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpsertIntegrationInstanceAuthConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

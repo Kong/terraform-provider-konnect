@@ -1197,7 +1197,7 @@ func (r *GatewayPluginKafkaConsumeResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.CreateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1257,7 +1257,7 @@ func (r *GatewayPluginKafkaConsumeResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.Plugins.GetKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1311,7 +1311,7 @@ func (r *GatewayPluginKafkaConsumeResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.UpdateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1371,7 +1371,7 @@ func (r *GatewayPluginKafkaConsumeResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.DeleteKafkaconsumePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1395,9 +1395,9 @@ func (r *GatewayPluginKafkaConsumeResource) ImportState(ctx context.Context, req
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ControlPlaneID string `json:"control_plane_id"`
-		Workspace      string `json:"workspace"`
+		ID             string  `json:"id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -1415,9 +1415,9 @@ func (r *GatewayPluginKafkaConsumeResource) ImportState(ctx context.Context, req
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-	if len(data.Workspace) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
-		return
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

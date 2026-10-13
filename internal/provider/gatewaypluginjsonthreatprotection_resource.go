@@ -400,7 +400,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Create(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.CreateJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -460,7 +460,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Read(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.GetJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -514,7 +514,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Update(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.UpdateJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -574,7 +574,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Delete(ctx context.Context, 
 	}
 	res, err := r.client.Plugins.DeleteJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -598,9 +598,9 @@ func (r *GatewayPluginJSONThreatProtectionResource) ImportState(ctx context.Cont
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ControlPlaneID string `json:"control_plane_id"`
-		Workspace      string `json:"workspace"`
+		ID             string  `json:"id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -618,9 +618,9 @@ func (r *GatewayPluginJSONThreatProtectionResource) ImportState(ctx context.Cont
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-	if len(data.Workspace) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
-		return
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

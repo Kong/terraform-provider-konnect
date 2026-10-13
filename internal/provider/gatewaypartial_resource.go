@@ -2054,7 +2054,7 @@ func (r *GatewayPartialResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.Partials.CreatePartial(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2114,7 +2114,7 @@ func (r *GatewayPartialResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.Partials.GetPartial(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2168,7 +2168,7 @@ func (r *GatewayPartialResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.Partials.UpsertPartial(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2228,7 +2228,7 @@ func (r *GatewayPartialResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.Partials.DeletePartial(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2252,9 +2252,9 @@ func (r *GatewayPartialResource) ImportState(ctx context.Context, req resource.I
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ControlPlaneID string `json:"control_plane_id"`
-		Workspace      string `json:"workspace"`
+		ID             string  `json:"id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -2272,9 +2272,9 @@ func (r *GatewayPartialResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-	if len(data.Workspace) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field workspace is required but was not found in the json encoded ID. It's expected to be a value alike '"team-payments"'`)
-		return
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
 }

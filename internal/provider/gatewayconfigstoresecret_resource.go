@@ -136,6 +136,8 @@ func (r *GatewayConfigStoreSecretResource) Create(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -144,7 +146,7 @@ func (r *GatewayConfigStoreSecretResource) Create(ctx context.Context, req resou
 	}
 	res, err := r.client.ConfigStoreSecrets.CreateConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -196,6 +198,8 @@ func (r *GatewayConfigStoreSecretResource) Read(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -204,7 +208,7 @@ func (r *GatewayConfigStoreSecretResource) Read(ctx context.Context, req resourc
 	}
 	res, err := r.client.ConfigStoreSecrets.GetConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -250,6 +254,8 @@ func (r *GatewayConfigStoreSecretResource) Update(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -258,7 +264,7 @@ func (r *GatewayConfigStoreSecretResource) Update(ctx context.Context, req resou
 	}
 	res, err := r.client.ConfigStoreSecrets.UpdateConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -313,6 +319,8 @@ func (r *GatewayConfigStoreSecretResource) Delete(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -321,7 +329,7 @@ func (r *GatewayConfigStoreSecretResource) Delete(ctx context.Context, req resou
 	}
 	res, err := r.client.ConfigStoreSecrets.DeleteConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

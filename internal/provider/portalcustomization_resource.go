@@ -349,7 +349,7 @@ func (r *PortalCustomizationResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.PortalCustomization.ReplacePortalCustomization(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -409,7 +409,7 @@ func (r *PortalCustomizationResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.PortalCustomization.GetPortalCustomization(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -463,7 +463,7 @@ func (r *PortalCustomizationResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.PortalCustomization.ReplacePortalCustomization(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

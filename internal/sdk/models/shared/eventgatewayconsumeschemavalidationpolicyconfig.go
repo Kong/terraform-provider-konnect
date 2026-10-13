@@ -42,7 +42,14 @@ func CreateEventGatewayConsumeSchemaValidationPolicyConfigJSON(json EventGateway
 	}
 }
 
-func (u *EventGatewayConsumeSchemaValidationPolicyConfig) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayConsumeSchemaValidationPolicyConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayConsumeSchemaValidationPolicyConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

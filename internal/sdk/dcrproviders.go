@@ -86,6 +86,7 @@ func (s *DCRProviders) CreateDcrProvider(ctx context.Context, request shared.Cre
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-dcr-provider")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -629,6 +630,7 @@ func (s *DCRProviders) UpdateDcrProvider(ctx context.Context, request operations
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "update-dcr-provider")
 	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

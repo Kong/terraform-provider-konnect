@@ -42,7 +42,14 @@ func CreateForwardToVirtualClusterPolicyConfigSni(sni ForwardToClusterBySNIConfi
 	}
 }
 
-func (u *ForwardToVirtualClusterPolicyConfig) UnmarshalJSON(data []byte) error {
+func (u *ForwardToVirtualClusterPolicyConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = ForwardToVirtualClusterPolicyConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

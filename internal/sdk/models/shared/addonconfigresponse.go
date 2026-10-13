@@ -30,7 +30,14 @@ func CreateAddOnConfigResponseManagedCacheAddOnConfigResponse(managedCacheAddOnC
 	}
 }
 
-func (u *AddOnConfigResponse) UnmarshalJSON(data []byte) error {
+func (u *AddOnConfigResponse) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AddOnConfigResponse{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

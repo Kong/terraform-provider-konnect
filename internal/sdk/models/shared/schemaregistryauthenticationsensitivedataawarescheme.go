@@ -31,7 +31,14 @@ func CreateSchemaRegistryAuthenticationSensitiveDataAwareSchemeBasic(basic Schem
 	}
 }
 
-func (u *SchemaRegistryAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(data []byte) error {
+func (u *SchemaRegistryAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = SchemaRegistryAuthenticationSensitiveDataAwareScheme{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

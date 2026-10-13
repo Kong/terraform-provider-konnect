@@ -1556,7 +1556,7 @@ func (r *CloudGatewayTransitGatewayResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.CloudGateways.CreateTransitGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1623,7 +1623,7 @@ func (r *CloudGatewayTransitGatewayResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.CloudGateways.GetTransitGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1677,7 +1677,7 @@ func (r *CloudGatewayTransitGatewayResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.CloudGateways.UpdateTransitGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1737,7 +1737,7 @@ func (r *CloudGatewayTransitGatewayResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.CloudGateways.DeleteTransitGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

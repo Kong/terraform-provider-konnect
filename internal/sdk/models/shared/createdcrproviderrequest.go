@@ -86,7 +86,14 @@ func CreateCreateDcrProviderRequestKongIdentity(kongIdentity CreateDcrProviderRe
 	}
 }
 
-func (u *CreateDcrProviderRequest) UnmarshalJSON(data []byte) error {
+func (u *CreateDcrProviderRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = CreateDcrProviderRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		ProviderType string `json:"provider_type"`

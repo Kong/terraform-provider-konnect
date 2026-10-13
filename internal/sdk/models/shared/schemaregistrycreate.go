@@ -31,7 +31,14 @@ func CreateSchemaRegistryCreateConfluent(confluent SchemaRegistryConfluent) Sche
 	}
 }
 
-func (u *SchemaRegistryCreate) UnmarshalJSON(data []byte) error {
+func (u *SchemaRegistryCreate) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = SchemaRegistryCreate{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

@@ -85,7 +85,14 @@ func CreateTransitGatewayResponseAwsResourceEndpointGatewayResponse(awsResourceE
 	}
 }
 
-func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
+func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = TransitGatewayResponse{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

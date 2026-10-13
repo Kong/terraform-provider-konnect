@@ -40,7 +40,14 @@ func CreateUpdateIdentityProviderConfigSAMLIdentityProviderConfigInput(samlIdent
 	}
 }
 
-func (u *UpdateIdentityProviderConfig) UnmarshalJSON(data []byte) error {
+func (u *UpdateIdentityProviderConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateIdentityProviderConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
