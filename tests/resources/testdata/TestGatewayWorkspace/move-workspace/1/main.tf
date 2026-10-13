@@ -1,19 +1,17 @@
 resource "konnect_gateway_control_plane" "tfdemo" {
-  name         = "Terraform Control Plane For Gateway Workspace"
+  name         = "Terraform Control Plane For Workspace Move"
   description  = "This is a sample description"
   cluster_type = "CLUSTER_TYPE_CONTROL_PLANE"
 }
 
-# Only the description and comment change: the workspace is updated in place,
-# keeping its ID.
-resource "konnect_gateway_workspace" "my_gatewayworkspace" {
-  name        = "tf-acceptance-workspace"
-  description = "A test workspace for team 2"
-  comment     = "A test workspace for team 2"
+resource "konnect_gateway_workspace" "target" {
+  name        = "tf-acceptance-workspace-move-target"
+  description = "Destination workspace for the move test"
 
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
 
+# Step 1: no `workspace` in config, so this lands in "default".
 resource "konnect_gateway_service" "httpbin" {
   name     = "HTTPBin"
   protocol = "https"
@@ -21,6 +19,5 @@ resource "konnect_gateway_service" "httpbin" {
   port     = 443
   path     = "/"
 
-  workspace        = konnect_gateway_workspace.my_gatewayworkspace.name
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
