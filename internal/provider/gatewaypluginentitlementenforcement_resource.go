@@ -28,6 +28,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -35,6 +36,7 @@ import (
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPluginEntitlementEnforcementResource{}
 var _ resource.ResourceWithImportState = &GatewayPluginEntitlementEnforcementResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPluginEntitlementEnforcementResource{}
 
 func NewGatewayPluginEntitlementEnforcementResource() resource.Resource {
 	return &GatewayPluginEntitlementEnforcementResource{}
@@ -73,6 +75,7 @@ func (r *GatewayPluginEntitlementEnforcementResource) Metadata(ctx context.Conte
 func (r *GatewayPluginEntitlementEnforcementResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginEntitlementEnforcement Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
 				Optional:    true,
@@ -1211,4 +1214,10 @@ func (r *GatewayPluginEntitlementEnforcementResource) ImportState(ctx context.Co
 		data.Workspace = &workspaceDefault
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPluginEntitlementEnforcementResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypluginentitlementenforcementStateUpgraderV0},
+	}
 }
