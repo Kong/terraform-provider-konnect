@@ -13,17 +13,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayBasicAuthResource{}
-var _ resource.ResourceWithImportState = &GatewayBasicAuthResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayBasicAuthResource{}
 
 func NewGatewayBasicAuthResource() resource.Resource {
 	return &GatewayBasicAuthResource{}
@@ -44,6 +46,7 @@ type GatewayBasicAuthResourceModel struct {
 	Password       types.String   `tfsdk:"password"`
 	Tags           []types.String `tfsdk:"tags"`
 	Username       types.String   `tfsdk:"username"`
+	Workspace      types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayBasicAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,6 +56,7 @@ func (r *GatewayBasicAuthResource) Metadata(ctx context.Context, req resource.Me
 func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayBasicAuth Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"consumer_id": schema.StringAttribute{
 				Required: true,
@@ -110,6 +114,15 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 				},
 				Description: `Requires replacement if changed.`,
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -152,6 +165,8 @@ func (r *GatewayBasicAuthResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateBasicAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -160,7 +175,7 @@ func (r *GatewayBasicAuthResource) Create(ctx context.Context, req resource.Crea
 	}
 	res, err := r.client.BasicAuthCredentials.CreateBasicAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -212,6 +227,8 @@ func (r *GatewayBasicAuthResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetBasicAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -220,7 +237,7 @@ func (r *GatewayBasicAuthResource) Read(ctx context.Context, req resource.ReadRe
 	}
 	res, err := r.client.BasicAuthCredentials.GetBasicAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -290,6 +307,8 @@ func (r *GatewayBasicAuthResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteBasicAuthWithConsumerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -298,7 +317,7 @@ func (r *GatewayBasicAuthResource) Delete(ctx context.Context, req resource.Dele
 	}
 	res, err := r.client.BasicAuthCredentials.DeleteBasicAuthWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -322,13 +341,14 @@ func (r *GatewayBasicAuthResource) ImportState(ctx context.Context, req resource
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ConsumerID     string `json:"consumer_id"`
-		ControlPlaneID string `json:"control_plane_id"`
+		ID             string  `json:"id"`
+		ConsumerID     string  `json:"consumer_id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "80db1b58-ca7c-4d21-b92a-64eb07725872"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "80db1b58-ca7c-4d21-b92a-64eb07725872", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -347,4 +367,15 @@ func (r *GatewayBasicAuthResource) ImportState(ctx context.Context, req resource
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayBasicAuthResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaybasicauthStateUpgraderV0},
+	}
 }

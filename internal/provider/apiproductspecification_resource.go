@@ -149,7 +149,7 @@ func (r *APIProductSpecificationResource) Create(ctx context.Context, req resour
 	}
 	res, err := r.client.APIProductVersionSpecification.CreateAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -216,7 +216,7 @@ func (r *APIProductSpecificationResource) Read(ctx context.Context, req resource
 	}
 	res, err := r.client.APIProductVersionSpecification.GetAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -270,7 +270,7 @@ func (r *APIProductSpecificationResource) Update(ctx context.Context, req resour
 	}
 	res, err := r.client.APIProductVersionSpecification.UpdateAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -330,7 +330,7 @@ func (r *APIProductSpecificationResource) Delete(ctx context.Context, req resour
 	}
 	res, err := r.client.APIProductVersionSpecification.DeleteAPIProductVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

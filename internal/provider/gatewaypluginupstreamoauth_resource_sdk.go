@@ -333,6 +333,9 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoaut
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
 	diags.Append(upstreamOauthPluginDiags...)
 
@@ -342,6 +345,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoaut
 
 	out := operations.CreateUpstreamoauthPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		UpstreamOauthPlugin: *upstreamOauthPlugin,
 	}
 
@@ -357,9 +361,13 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoaut
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteUpstreamoauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -374,9 +382,13 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetUpstreamoauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -391,6 +403,9 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoaut
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
 	diags.Append(upstreamOauthPluginDiags...)
 
@@ -401,6 +416,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoaut
 	out := operations.UpdateUpstreamoauthPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		UpstreamOauthPlugin: *upstreamOauthPlugin,
 	}
 

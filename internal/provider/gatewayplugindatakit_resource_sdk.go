@@ -528,6 +528,9 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsCreateDatakitPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	datakitPlugin, datakitPluginDiags := r.ToSharedDatakitPlugin(ctx)
 	diags.Append(datakitPluginDiags...)
 
@@ -537,6 +540,7 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsCreateDatakitPluginReque
 
 	out := operations.CreateDatakitPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatakitPlugin:  *datakitPlugin,
 	}
 
@@ -552,9 +556,13 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsDeleteDatakitPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteDatakitPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -569,9 +577,13 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsGetDatakitPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetDatakitPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -586,6 +598,9 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsUpdateDatakitPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	datakitPlugin, datakitPluginDiags := r.ToSharedDatakitPlugin(ctx)
 	diags.Append(datakitPluginDiags...)
 
@@ -596,6 +611,7 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsUpdateDatakitPluginReque
 	out := operations.UpdateDatakitPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		DatakitPlugin:  *datakitPlugin,
 	}
 

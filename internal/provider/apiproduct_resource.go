@@ -183,7 +183,7 @@ func (r *APIProductResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	res, err := r.client.APIProducts.CreateAPIProduct(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -243,7 +243,7 @@ func (r *APIProductResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 	res, err := r.client.APIProducts.GetAPIProduct(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -297,7 +297,7 @@ func (r *APIProductResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 	res, err := r.client.APIProducts.UpdateAPIProduct(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -357,7 +357,7 @@ func (r *APIProductResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 	res, err := r.client.APIProducts.DeleteAPIProduct(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

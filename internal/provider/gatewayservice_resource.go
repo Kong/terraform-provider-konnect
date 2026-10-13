@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -24,11 +25,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayServiceResource{}
-var _ resource.ResourceWithImportState = &GatewayServiceResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayServiceResource{}
 
 func NewGatewayServiceResource() resource.Resource {
 	return &GatewayServiceResource{}
@@ -42,26 +44,29 @@ type GatewayServiceResource struct {
 
 // GatewayServiceResourceModel describes the resource data model.
 type GatewayServiceResourceModel struct {
-	CaCertificates    []types.String   `tfsdk:"ca_certificates"`
-	ClientCertificate *tfTypes.Set     `tfsdk:"client_certificate"`
-	ConnectTimeout    types.Int64      `tfsdk:"connect_timeout"`
-	ControlPlaneID    types.String     `tfsdk:"control_plane_id"`
-	CreatedAt         types.Int64      `tfsdk:"created_at"`
-	Enabled           types.Bool       `tfsdk:"enabled"`
-	Host              types.String     `tfsdk:"host"`
-	ID                types.String     `tfsdk:"id"`
-	Name              types.String     `tfsdk:"name"`
-	Path              types.String     `tfsdk:"path"`
-	Port              types.Int64      `tfsdk:"port"`
-	Protocol          types.String     `tfsdk:"protocol"`
-	ReadTimeout       types.Int64      `tfsdk:"read_timeout"`
-	Retries           types.Int64      `tfsdk:"retries"`
-	Tags              []types.String   `tfsdk:"tags"`
-	TLSSans           *tfTypes.TLSSans `tfsdk:"tls_sans"`
-	TLSVerify         types.Bool       `tfsdk:"tls_verify"`
-	TLSVerifyDepth    types.Int64      `tfsdk:"tls_verify_depth"`
-	UpdatedAt         types.Int64      `tfsdk:"updated_at"`
-	WriteTimeout      types.Int64      `tfsdk:"write_timeout"`
+	CaCertificates    []types.String                  `tfsdk:"ca_certificates"`
+	ClientCertificate *tfTypes.Set                    `tfsdk:"client_certificate"`
+	ConnectTimeout    types.Int64                     `tfsdk:"connect_timeout"`
+	ControlPlaneID    types.String                    `tfsdk:"control_plane_id"`
+	CreatedAt         types.Int64                     `tfsdk:"created_at"`
+	Enabled           types.Bool                      `tfsdk:"enabled"`
+	Host              types.String                    `tfsdk:"host"`
+	ID                types.String                    `tfsdk:"id"`
+	Name              types.String                    `tfsdk:"name"`
+	One               *tfTypes.One                    `queryParam:"inline" tfsdk:"one"`
+	Path              types.String                    `tfsdk:"path"`
+	Port              types.Int64                     `tfsdk:"port"`
+	Protocol          types.String                    `tfsdk:"protocol"`
+	ReadTimeout       types.Int64                     `tfsdk:"read_timeout"`
+	Retries           types.Int64                     `tfsdk:"retries"`
+	Tags              []types.String                  `tfsdk:"tags"`
+	TLSSans           *tfTypes.ServiceRequest1TLSSans `tfsdk:"tls_sans"`
+	TLSVerify         types.Bool                      `tfsdk:"tls_verify"`
+	TLSVerifyDepth    types.Int64                     `tfsdk:"tls_verify_depth"`
+	Two               *tfTypes.One                    `queryParam:"inline" tfsdk:"two"`
+	UpdatedAt         types.Int64                     `tfsdk:"updated_at"`
+	Workspace         types.String                    `tfsdk:"workspace"`
+	WriteTimeout      types.Int64                     `tfsdk:"write_timeout"`
 }
 
 func (r *GatewayServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -71,34 +76,29 @@ func (r *GatewayServiceResource) Metadata(ctx context.Context, req resource.Meta
 func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayService Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"ca_certificates": schema.ListAttribute{
-				Optional:    true,
+				Computed:    true,
 				ElementType: types.StringType,
 				Description: `Array of ` + "`" + `CA Certificate` + "`" + ` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + ` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).`,
 			},
 			"client_certificate": schema.SingleNestedAttribute{
 				Computed: true,
-				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 					"id": types.StringType,
 				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
-						Optional: true,
 					},
 				},
 				Description: `Certificate to be used as client certificate while TLS handshaking to the upstream server.`,
 			},
 			"connect_timeout": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Default:     int64default.StaticInt64(60000),
 				Description: `The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000`,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2147483646),
-				},
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -109,76 +109,224 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
-				Optional:    true,
 				Default:     booldefault.StaticBool(true),
 				Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `. Default: true`,
 			},
 			"host": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
 				Description: `The host of the upstream server. Note that the host value is case sensitive.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtLeast(1),
-				},
 			},
 			"name": schema.StringAttribute{
-				Optional:    true,
+				Computed:    true,
 				Description: `The Service name.`,
 			},
+			"one": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"ca_certificates": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Array of ` + "`" + `CA Certificate` + "`" + ` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + ` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).`,
+					},
+					"client_certificate": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"id": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Optional: true,
+							},
+						},
+						Description: `Certificate to be used as client certificate while TLS handshaking to the upstream server.`,
+					},
+					"connect_timeout": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(60000),
+						Description: `The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000`,
+						Validators: []validator.Int64{
+							int64validator.Between(1, 2147483646),
+						},
+					},
+					"created_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was created.`,
+					},
+					"description": schema.StringAttribute{
+						Optional:    true,
+						Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
+					},
+					"enabled": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `. Default: true`,
+					},
+					"host": schema.StringAttribute{
+						Optional:    true,
+						Description: `The host of the upstream server. Note that the host value is case sensitive.`,
+					},
+					"id": schema.StringAttribute{
+						Optional:    true,
+						Description: `A string representing a UUID (universally unique identifier).`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthAtLeast(1),
+						},
+					},
+					"managed_by": schema.MapAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+							`` + "\n" +
+							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					},
+					"name": schema.StringAttribute{
+						Optional:    true,
+						Description: `The Service name.`,
+					},
+					"path": schema.StringAttribute{
+						Optional:    true,
+						Description: `The path to be used in requests to the upstream server.`,
+					},
+					"port": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(80),
+						Description: `The upstream server port. Default: 80`,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 65535),
+						},
+					},
+					"protocol": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`http`),
+						Description: `The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"`,
+					},
+					"read_timeout": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(60000),
+						Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000`,
+						Validators: []validator.Int64{
+							int64validator.Between(1, 2147483646),
+						},
+					},
+					"retries": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(5),
+						Description: `The number of retries to execute upon failure to proxy. Default: 5`,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 32767),
+						},
+					},
+					"tags": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `An optional set of strings associated with the Service for grouping and filtering.`,
+					},
+					"tls_sans": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"dnsnames": types.ListType{
+								ElemType: types.StringType,
+							},
+							"uris": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
+						Attributes: map[string]schema.Attribute{
+							"dnsnames": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `A dnsName for TLS verification.`,
+							},
+							"uris": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `An URI for TLS verification.`,
+							},
+						},
+						Description: `Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to ` + "`" + `host` + "`" + `).`,
+					},
+					"tls_verify": schema.BoolAttribute{
+						Optional:    true,
+						Description: `Whether to enable verification of upstream server TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
+					},
+					"tls_verify_depth": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 64),
+						},
+					},
+					"updated_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was last updated.`,
+					},
+					"url": schema.StringAttribute{
+						Optional:    true,
+						Description: `Helper field to set ` + "`" + `protocol` + "`" + `, ` + "`" + `host` + "`" + `, ` + "`" + `port` + "`" + ` and ` + "`" + `path` + "`" + ` using a URL. This field is write-only and is not returned in responses.`,
+					},
+					"write_timeout": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(60000),
+						Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000`,
+						Validators: []validator.Int64{
+							int64validator.Between(1, 2147483646),
+						},
+					},
+				},
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("two"),
+					}...),
+				},
+			},
 			"path": schema.StringAttribute{
-				Optional:    true,
+				Computed:    true,
 				Description: `The path to be used in requests to the upstream server.`,
 			},
 			"port": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Default:     int64default.StaticInt64(80),
 				Description: `The upstream server port. Default: 80`,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
-				},
 			},
 			"protocol": schema.StringAttribute{
 				Computed:    true,
-				Optional:    true,
 				Default:     stringdefault.StaticString(`http`),
-				Description: `The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"`,
+				Description: `The protocol used to communicate with the upstream. Default: "http"`,
 			},
 			"read_timeout": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Default:     int64default.StaticInt64(60000),
 				Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000`,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2147483646),
-				},
 			},
 			"retries": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Default:     int64default.StaticInt64(5),
 				Description: `The number of retries to execute upon failure to proxy. Default: 5`,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 32767),
-				},
 			},
 			"tags": schema.ListAttribute{
-				Optional:    true,
+				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Service for grouping and filtering.`,
 			},
 			"tls_sans": schema.SingleNestedAttribute{
 				Computed: true,
-				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 					"dnsnames": types.ListType{
 						ElemType: types.StringType,
@@ -189,12 +337,12 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				})),
 				Attributes: map[string]schema.Attribute{
 					"dnsnames": schema.ListAttribute{
-						Optional:    true,
+						Computed:    true,
 						ElementType: types.StringType,
 						Description: `A dnsName for TLS verification.`,
 					},
 					"uris": schema.ListAttribute{
-						Optional:    true,
+						Computed:    true,
 						ElementType: types.StringType,
 						Description: `An URI for TLS verification.`,
 					},
@@ -202,29 +350,198 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to ` + "`" + `host` + "`" + `).`,
 			},
 			"tls_verify": schema.BoolAttribute{
-				Optional:    true,
+				Computed:    true,
 				Description: `Whether to enable verification of upstream server TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
 			},
 			"tls_verify_depth": schema.Int64Attribute{
-				Optional:    true,
+				Computed:    true,
 				Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 64),
+			},
+			"two": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"ca_certificates": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Array of ` + "`" + `CA Certificate` + "`" + ` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + ` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).`,
+					},
+					"client_certificate": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"id": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Optional: true,
+							},
+						},
+						Description: `Certificate to be used as client certificate while TLS handshaking to the upstream server.`,
+					},
+					"connect_timeout": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(60000),
+						Description: `The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000`,
+						Validators: []validator.Int64{
+							int64validator.Between(1, 2147483646),
+						},
+					},
+					"created_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was created.`,
+					},
+					"description": schema.StringAttribute{
+						Optional:    true,
+						Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
+					},
+					"enabled": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `. Default: true`,
+					},
+					"host": schema.StringAttribute{
+						Optional:    true,
+						Description: `The host of the upstream server. Note that the host value is case sensitive.`,
+					},
+					"id": schema.StringAttribute{
+						Optional:    true,
+						Description: `A string representing a UUID (universally unique identifier).`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthAtLeast(1),
+						},
+					},
+					"managed_by": schema.MapAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
+							`` + "\n" +
+							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					},
+					"name": schema.StringAttribute{
+						Optional:    true,
+						Description: `The Service name.`,
+					},
+					"path": schema.StringAttribute{
+						Optional:    true,
+						Description: `The path to be used in requests to the upstream server.`,
+					},
+					"port": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(80),
+						Description: `The upstream server port. Default: 80`,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 65535),
+						},
+					},
+					"protocol": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`http`),
+						Description: `The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"`,
+					},
+					"read_timeout": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(60000),
+						Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000`,
+						Validators: []validator.Int64{
+							int64validator.Between(1, 2147483646),
+						},
+					},
+					"retries": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(5),
+						Description: `The number of retries to execute upon failure to proxy. Default: 5`,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 32767),
+						},
+					},
+					"tags": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `An optional set of strings associated with the Service for grouping and filtering.`,
+					},
+					"tls_sans": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"dnsnames": types.ListType{
+								ElemType: types.StringType,
+							},
+							"uris": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
+						Attributes: map[string]schema.Attribute{
+							"dnsnames": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `A dnsName for TLS verification.`,
+							},
+							"uris": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `An URI for TLS verification.`,
+							},
+						},
+						Description: `Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to ` + "`" + `host` + "`" + `).`,
+					},
+					"tls_verify": schema.BoolAttribute{
+						Optional:    true,
+						Description: `Whether to enable verification of upstream server TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
+					},
+					"tls_verify_depth": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 64),
+						},
+					},
+					"updated_at": schema.Int64Attribute{
+						Optional:    true,
+						Description: `Unix epoch when the resource was last updated.`,
+					},
+					"url": schema.StringAttribute{
+						Optional:    true,
+						Description: `Helper field to set ` + "`" + `protocol` + "`" + `, ` + "`" + `host` + "`" + `, ` + "`" + `port` + "`" + ` and ` + "`" + `path` + "`" + ` using a URL. This field is write-only and is not returned in responses.`,
+					},
+					"write_timeout": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(60000),
+						Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000`,
+						Validators: []validator.Int64{
+							int64validator.Between(1, 2147483646),
+						},
+					},
+				},
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("one"),
+					}...),
 				},
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 			"write_timeout": schema.Int64Attribute{
 				Computed:    true,
-				Optional:    true,
 				Default:     int64default.StaticInt64(60000),
 				Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000`,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2147483646),
-				},
 			},
 		},
 	}
@@ -276,7 +593,7 @@ func (r *GatewayServiceResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.Services.CreateService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -336,7 +653,7 @@ func (r *GatewayServiceResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.Services.GetService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -390,7 +707,7 @@ func (r *GatewayServiceResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.Services.UpsertService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -450,7 +767,7 @@ func (r *GatewayServiceResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.Services.DeleteService(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -474,12 +791,13 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ControlPlaneID string `json:"control_plane_id"`
+		ID             string  `json:"id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -493,4 +811,15 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayServiceResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayserviceStateUpgraderV0},
+	}
 }

@@ -1062,6 +1062,7 @@ func (s *AuthServerClients) CreateClientSecret(ctx context.Context, request oper
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "createClientSecret")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

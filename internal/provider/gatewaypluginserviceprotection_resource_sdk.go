@@ -238,6 +238,9 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsCreateServicep
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	serviceProtectionPlugin, serviceProtectionPluginDiags := r.ToSharedServiceProtectionPlugin(ctx)
 	diags.Append(serviceProtectionPluginDiags...)
 
@@ -247,6 +250,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsCreateServicep
 
 	out := operations.CreateServiceprotectionPluginRequest{
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		ServiceProtectionPlugin: *serviceProtectionPlugin,
 	}
 
@@ -262,9 +266,13 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsDeleteServicep
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteServiceprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -279,9 +287,13 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsGetServiceprot
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetServiceprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -296,6 +308,9 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsUpdateServicep
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	serviceProtectionPlugin, serviceProtectionPluginDiags := r.ToSharedServiceProtectionPlugin(ctx)
 	diags.Append(serviceProtectionPluginDiags...)
 
@@ -306,6 +321,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsUpdateServicep
 	out := operations.UpdateServiceprotectionPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		ServiceProtectionPlugin: *serviceProtectionPlugin,
 	}
 

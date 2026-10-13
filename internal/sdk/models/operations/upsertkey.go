@@ -13,6 +13,8 @@ type UpsertKeyRequest struct {
 	KeyID string `pathParam:"style=simple,explode=false,name=KeyId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the Key
 	Key shared.Key `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (u UpsertKeyRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertKeyRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"KeyId", "controlPlaneId", "Key"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"KeyId", "controlPlaneId", "workspace", "Key"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (u *UpsertKeyRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpsertKeyRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpsertKeyRequest) GetKey() shared.Key {

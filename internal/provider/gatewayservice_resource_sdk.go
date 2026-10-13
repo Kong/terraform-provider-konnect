@@ -55,7 +55,7 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Conte
 		if resp.TLSSans == nil {
 			r.TLSSans = nil
 		} else {
-			r.TLSSans = &tfTypes.TLSSans{}
+			r.TLSSans = &tfTypes.ServiceRequest1TLSSans{}
 			if resp.TLSSans.Dnsnames != nil {
 				r.TLSSans.Dnsnames = make([]types.String, 0, len(resp.TLSSans.Dnsnames))
 				for _, v := range resp.TLSSans.Dnsnames {
@@ -88,8 +88,11 @@ func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	service, serviceDiags := r.ToSharedService(ctx)
-	diags.Append(serviceDiags...)
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	serviceRequest, serviceRequestDiags := r.ToSharedServiceRequest(ctx)
+	diags.Append(serviceRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -97,7 +100,8 @@ func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx conte
 
 	out := operations.CreateServiceRequest{
 		ControlPlaneID: controlPlaneID,
-		Service:        *service,
+		Workspace:      workspace,
+		ServiceRequest: *serviceRequest,
 	}
 
 	return &out, diags
@@ -112,9 +116,13 @@ func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceRequest(ctx conte
 	var serviceID string
 	serviceID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteServiceRequest{
 		ControlPlaneID: controlPlaneID,
 		ServiceID:      serviceID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -129,9 +137,13 @@ func (r *GatewayServiceResourceModel) ToOperationsGetServiceRequest(ctx context.
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetServiceRequest{
 		ServiceID:      serviceID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -146,8 +158,11 @@ func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	service, serviceDiags := r.ToSharedService(ctx)
-	diags.Append(serviceDiags...)
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	serviceRequest, serviceRequestDiags := r.ToSharedServiceRequest(ctx)
+	diags.Append(serviceRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -156,169 +171,398 @@ func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx conte
 	out := operations.UpsertServiceRequest{
 		ServiceID:      serviceID,
 		ControlPlaneID: controlPlaneID,
-		Service:        *service,
+		Workspace:      workspace,
+		ServiceRequest: *serviceRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*shared.Service, diag.Diagnostics) {
+func (r *GatewayServiceResourceModel) ToSharedServiceRequest(ctx context.Context) (*shared.ServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var caCertificates []string
-	if r.CaCertificates != nil {
-		caCertificates = make([]string, 0, len(r.CaCertificates))
-		for caCertificatesIndex := range r.CaCertificates {
-			caCertificates = append(caCertificates, r.CaCertificates[caCertificatesIndex].ValueString())
+	var out shared.ServiceRequest
+	var one *shared.One
+	if r.One != nil {
+		var caCertificates []string
+		if r.One.CaCertificates != nil {
+			caCertificates = make([]string, 0, len(r.One.CaCertificates))
+			for caCertificatesIndex := range r.One.CaCertificates {
+				caCertificates = append(caCertificates, r.One.CaCertificates[caCertificatesIndex].ValueString())
+			}
 		}
-	}
-	var clientCertificate *shared.ClientCertificate
-	if r.ClientCertificate != nil {
-		id := new(string)
-		if !r.ClientCertificate.ID.IsUnknown() && !r.ClientCertificate.ID.IsNull() {
-			*id = r.ClientCertificate.ID.ValueString()
+		var clientCertificate *shared.ServiceRequestClientCertificate
+		if r.One.ClientCertificate != nil {
+			id := new(string)
+			if !r.One.ClientCertificate.ID.IsUnknown() && !r.One.ClientCertificate.ID.IsNull() {
+				*id = r.One.ClientCertificate.ID.ValueString()
+			} else {
+				id = nil
+			}
+			clientCertificate = &shared.ServiceRequestClientCertificate{
+				ID: id,
+			}
+		}
+		connectTimeout := new(int64)
+		if !r.One.ConnectTimeout.IsUnknown() && !r.One.ConnectTimeout.IsNull() {
+			*connectTimeout = r.One.ConnectTimeout.ValueInt64()
 		} else {
-			id = nil
+			connectTimeout = nil
 		}
-		clientCertificate = &shared.ClientCertificate{
-			ID: id,
+		createdAt := new(int64)
+		if !r.One.CreatedAt.IsUnknown() && !r.One.CreatedAt.IsNull() {
+			*createdAt = r.One.CreatedAt.ValueInt64()
+		} else {
+			createdAt = nil
 		}
-	}
-	connectTimeout := new(int64)
-	if !r.ConnectTimeout.IsUnknown() && !r.ConnectTimeout.IsNull() {
-		*connectTimeout = r.ConnectTimeout.ValueInt64()
-	} else {
-		connectTimeout = nil
-	}
-	createdAt := new(int64)
-	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
-		*createdAt = r.CreatedAt.ValueInt64()
-	} else {
-		createdAt = nil
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	var host string
-	host = r.Host.ValueString()
+		description := new(string)
+		if !r.One.Description.IsUnknown() && !r.One.Description.IsNull() {
+			*description = r.One.Description.ValueString()
+		} else {
+			description = nil
+		}
+		enabled := new(bool)
+		if !r.One.Enabled.IsUnknown() && !r.One.Enabled.IsNull() {
+			*enabled = r.One.Enabled.ValueBool()
+		} else {
+			enabled = nil
+		}
+		host := new(string)
+		if !r.One.Host.IsUnknown() && !r.One.Host.IsNull() {
+			*host = r.One.Host.ValueString()
+		} else {
+			host = nil
+		}
+		id1 := new(string)
+		if !r.One.ID.IsUnknown() && !r.One.ID.IsNull() {
+			*id1 = r.One.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		var managedBy map[string]string
+		if r.One.ManagedBy != nil {
+			managedBy = make(map[string]string)
+			for managedByKey := range r.One.ManagedBy {
+				var managedByInst string
+				managedByInst = r.One.ManagedBy[managedByKey].ValueString()
 
-	id1 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id1 = r.ID.ValueString()
-	} else {
-		id1 = nil
-	}
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	path := new(string)
-	if !r.Path.IsUnknown() && !r.Path.IsNull() {
-		*path = r.Path.ValueString()
-	} else {
-		path = nil
-	}
-	port := new(int64)
-	if !r.Port.IsUnknown() && !r.Port.IsNull() {
-		*port = r.Port.ValueInt64()
-	} else {
-		port = nil
-	}
-	protocol := new(shared.ServiceProtocol)
-	if !r.Protocol.IsUnknown() && !r.Protocol.IsNull() {
-		*protocol = shared.ServiceProtocol(r.Protocol.ValueString())
-	} else {
-		protocol = nil
-	}
-	readTimeout := new(int64)
-	if !r.ReadTimeout.IsUnknown() && !r.ReadTimeout.IsNull() {
-		*readTimeout = r.ReadTimeout.ValueInt64()
-	} else {
-		readTimeout = nil
-	}
-	retries := new(int64)
-	if !r.Retries.IsUnknown() && !r.Retries.IsNull() {
-		*retries = r.Retries.ValueInt64()
-	} else {
-		retries = nil
-	}
-	var tags []string
-	if r.Tags != nil {
-		tags = make([]string, 0, len(r.Tags))
-		for tagsIndex := range r.Tags {
-			tags = append(tags, r.Tags[tagsIndex].ValueString())
-		}
-	}
-	var tlsSans *shared.TLSSans
-	if r.TLSSans != nil {
-		var dnsnames []string
-		if r.TLSSans.Dnsnames != nil {
-			dnsnames = make([]string, 0, len(r.TLSSans.Dnsnames))
-			for dnsnamesIndex := range r.TLSSans.Dnsnames {
-				dnsnames = append(dnsnames, r.TLSSans.Dnsnames[dnsnamesIndex].ValueString())
+				managedBy[managedByKey] = managedByInst
 			}
 		}
-		var uris []string
-		if r.TLSSans.Uris != nil {
-			uris = make([]string, 0, len(r.TLSSans.Uris))
-			for urisIndex := range r.TLSSans.Uris {
-				uris = append(uris, r.TLSSans.Uris[urisIndex].ValueString())
+		name := new(string)
+		if !r.One.Name.IsUnknown() && !r.One.Name.IsNull() {
+			*name = r.One.Name.ValueString()
+		} else {
+			name = nil
+		}
+		path := new(string)
+		if !r.One.Path.IsUnknown() && !r.One.Path.IsNull() {
+			*path = r.One.Path.ValueString()
+		} else {
+			path = nil
+		}
+		port := new(int64)
+		if !r.One.Port.IsUnknown() && !r.One.Port.IsNull() {
+			*port = r.One.Port.ValueInt64()
+		} else {
+			port = nil
+		}
+		protocol := new(shared.ServiceRequestProtocol)
+		if !r.One.Protocol.IsUnknown() && !r.One.Protocol.IsNull() {
+			*protocol = shared.ServiceRequestProtocol(r.One.Protocol.ValueString())
+		} else {
+			protocol = nil
+		}
+		readTimeout := new(int64)
+		if !r.One.ReadTimeout.IsUnknown() && !r.One.ReadTimeout.IsNull() {
+			*readTimeout = r.One.ReadTimeout.ValueInt64()
+		} else {
+			readTimeout = nil
+		}
+		retries := new(int64)
+		if !r.One.Retries.IsUnknown() && !r.One.Retries.IsNull() {
+			*retries = r.One.Retries.ValueInt64()
+		} else {
+			retries = nil
+		}
+		var tags []string
+		if r.One.Tags != nil {
+			tags = make([]string, 0, len(r.One.Tags))
+			for tagsIndex := range r.One.Tags {
+				tags = append(tags, r.One.Tags[tagsIndex].ValueString())
 			}
 		}
-		tlsSans = &shared.TLSSans{
-			Dnsnames: dnsnames,
-			Uris:     uris,
+		var tlsSans *shared.ServiceRequest1TLSSans
+		if r.One.TLSSans != nil {
+			var dnsnames []string
+			if r.One.TLSSans.Dnsnames != nil {
+				dnsnames = make([]string, 0, len(r.One.TLSSans.Dnsnames))
+				for dnsnamesIndex := range r.One.TLSSans.Dnsnames {
+					dnsnames = append(dnsnames, r.One.TLSSans.Dnsnames[dnsnamesIndex].ValueString())
+				}
+			}
+			var uris []string
+			if r.One.TLSSans.Uris != nil {
+				uris = make([]string, 0, len(r.One.TLSSans.Uris))
+				for urisIndex := range r.One.TLSSans.Uris {
+					uris = append(uris, r.One.TLSSans.Uris[urisIndex].ValueString())
+				}
+			}
+			tlsSans = &shared.ServiceRequest1TLSSans{
+				Dnsnames: dnsnames,
+				Uris:     uris,
+			}
+		}
+		tlsVerify := new(bool)
+		if !r.One.TLSVerify.IsUnknown() && !r.One.TLSVerify.IsNull() {
+			*tlsVerify = r.One.TLSVerify.ValueBool()
+		} else {
+			tlsVerify = nil
+		}
+		tlsVerifyDepth := new(int64)
+		if !r.One.TLSVerifyDepth.IsUnknown() && !r.One.TLSVerifyDepth.IsNull() {
+			*tlsVerifyDepth = r.One.TLSVerifyDepth.ValueInt64()
+		} else {
+			tlsVerifyDepth = nil
+		}
+		updatedAt := new(int64)
+		if !r.One.UpdatedAt.IsUnknown() && !r.One.UpdatedAt.IsNull() {
+			*updatedAt = r.One.UpdatedAt.ValueInt64()
+		} else {
+			updatedAt = nil
+		}
+		url := new(string)
+		if !r.One.URL.IsUnknown() && !r.One.URL.IsNull() {
+			*url = r.One.URL.ValueString()
+		} else {
+			url = nil
+		}
+		writeTimeout := new(int64)
+		if !r.One.WriteTimeout.IsUnknown() && !r.One.WriteTimeout.IsNull() {
+			*writeTimeout = r.One.WriteTimeout.ValueInt64()
+		} else {
+			writeTimeout = nil
+		}
+		one = &shared.One{
+			CaCertificates:    caCertificates,
+			ClientCertificate: clientCertificate,
+			ConnectTimeout:    connectTimeout,
+			CreatedAt:         createdAt,
+			Description:       description,
+			Enabled:           enabled,
+			Host:              host,
+			ID:                id1,
+			ManagedBy:         managedBy,
+			Name:              name,
+			Path:              path,
+			Port:              port,
+			Protocol:          protocol,
+			ReadTimeout:       readTimeout,
+			Retries:           retries,
+			Tags:              tags,
+			TLSSans:           tlsSans,
+			TLSVerify:         tlsVerify,
+			TLSVerifyDepth:    tlsVerifyDepth,
+			UpdatedAt:         updatedAt,
+			URL:               url,
+			WriteTimeout:      writeTimeout,
 		}
 	}
-	tlsVerify := new(bool)
-	if !r.TLSVerify.IsUnknown() && !r.TLSVerify.IsNull() {
-		*tlsVerify = r.TLSVerify.ValueBool()
-	} else {
-		tlsVerify = nil
+	if one != nil {
+		out = shared.ServiceRequest{
+			One: one,
+		}
 	}
-	tlsVerifyDepth := new(int64)
-	if !r.TLSVerifyDepth.IsUnknown() && !r.TLSVerifyDepth.IsNull() {
-		*tlsVerifyDepth = r.TLSVerifyDepth.ValueInt64()
-	} else {
-		tlsVerifyDepth = nil
+	var two *shared.Two
+	if r.Two != nil {
+		var caCertificates1 []string
+		if r.Two.CaCertificates != nil {
+			caCertificates1 = make([]string, 0, len(r.Two.CaCertificates))
+			for caCertificatesIndex1 := range r.Two.CaCertificates {
+				caCertificates1 = append(caCertificates1, r.Two.CaCertificates[caCertificatesIndex1].ValueString())
+			}
+		}
+		var clientCertificate1 *shared.ServiceRequest2ClientCertificate
+		if r.Two.ClientCertificate != nil {
+			id2 := new(string)
+			if !r.Two.ClientCertificate.ID.IsUnknown() && !r.Two.ClientCertificate.ID.IsNull() {
+				*id2 = r.Two.ClientCertificate.ID.ValueString()
+			} else {
+				id2 = nil
+			}
+			clientCertificate1 = &shared.ServiceRequest2ClientCertificate{
+				ID: id2,
+			}
+		}
+		connectTimeout1 := new(int64)
+		if !r.Two.ConnectTimeout.IsUnknown() && !r.Two.ConnectTimeout.IsNull() {
+			*connectTimeout1 = r.Two.ConnectTimeout.ValueInt64()
+		} else {
+			connectTimeout1 = nil
+		}
+		createdAt1 := new(int64)
+		if !r.Two.CreatedAt.IsUnknown() && !r.Two.CreatedAt.IsNull() {
+			*createdAt1 = r.Two.CreatedAt.ValueInt64()
+		} else {
+			createdAt1 = nil
+		}
+		description1 := new(string)
+		if !r.Two.Description.IsUnknown() && !r.Two.Description.IsNull() {
+			*description1 = r.Two.Description.ValueString()
+		} else {
+			description1 = nil
+		}
+		enabled1 := new(bool)
+		if !r.Two.Enabled.IsUnknown() && !r.Two.Enabled.IsNull() {
+			*enabled1 = r.Two.Enabled.ValueBool()
+		} else {
+			enabled1 = nil
+		}
+		host1 := new(string)
+		if !r.Two.Host.IsUnknown() && !r.Two.Host.IsNull() {
+			*host1 = r.Two.Host.ValueString()
+		} else {
+			host1 = nil
+		}
+		id3 := new(string)
+		if !r.Two.ID.IsUnknown() && !r.Two.ID.IsNull() {
+			*id3 = r.Two.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		var managedBy1 map[string]string
+		if r.Two.ManagedBy != nil {
+			managedBy1 = make(map[string]string)
+			for managedByKey1 := range r.Two.ManagedBy {
+				var managedByInst1 string
+				managedByInst1 = r.Two.ManagedBy[managedByKey1].ValueString()
+
+				managedBy1[managedByKey1] = managedByInst1
+			}
+		}
+		name1 := new(string)
+		if !r.Two.Name.IsUnknown() && !r.Two.Name.IsNull() {
+			*name1 = r.Two.Name.ValueString()
+		} else {
+			name1 = nil
+		}
+		path1 := new(string)
+		if !r.Two.Path.IsUnknown() && !r.Two.Path.IsNull() {
+			*path1 = r.Two.Path.ValueString()
+		} else {
+			path1 = nil
+		}
+		port1 := new(int64)
+		if !r.Two.Port.IsUnknown() && !r.Two.Port.IsNull() {
+			*port1 = r.Two.Port.ValueInt64()
+		} else {
+			port1 = nil
+		}
+		protocol1 := new(shared.ServiceRequest2Protocol)
+		if !r.Two.Protocol.IsUnknown() && !r.Two.Protocol.IsNull() {
+			*protocol1 = shared.ServiceRequest2Protocol(r.Two.Protocol.ValueString())
+		} else {
+			protocol1 = nil
+		}
+		readTimeout1 := new(int64)
+		if !r.Two.ReadTimeout.IsUnknown() && !r.Two.ReadTimeout.IsNull() {
+			*readTimeout1 = r.Two.ReadTimeout.ValueInt64()
+		} else {
+			readTimeout1 = nil
+		}
+		retries1 := new(int64)
+		if !r.Two.Retries.IsUnknown() && !r.Two.Retries.IsNull() {
+			*retries1 = r.Two.Retries.ValueInt64()
+		} else {
+			retries1 = nil
+		}
+		var tags1 []string
+		if r.Two.Tags != nil {
+			tags1 = make([]string, 0, len(r.Two.Tags))
+			for tagsIndex1 := range r.Two.Tags {
+				tags1 = append(tags1, r.Two.Tags[tagsIndex1].ValueString())
+			}
+		}
+		var tlsSans1 *shared.ServiceRequestTLSSans
+		if r.Two.TLSSans != nil {
+			var dnsnames1 []string
+			if r.Two.TLSSans.Dnsnames != nil {
+				dnsnames1 = make([]string, 0, len(r.Two.TLSSans.Dnsnames))
+				for dnsnamesIndex1 := range r.Two.TLSSans.Dnsnames {
+					dnsnames1 = append(dnsnames1, r.Two.TLSSans.Dnsnames[dnsnamesIndex1].ValueString())
+				}
+			}
+			var uris1 []string
+			if r.Two.TLSSans.Uris != nil {
+				uris1 = make([]string, 0, len(r.Two.TLSSans.Uris))
+				for urisIndex1 := range r.Two.TLSSans.Uris {
+					uris1 = append(uris1, r.Two.TLSSans.Uris[urisIndex1].ValueString())
+				}
+			}
+			tlsSans1 = &shared.ServiceRequestTLSSans{
+				Dnsnames: dnsnames1,
+				Uris:     uris1,
+			}
+		}
+		tlsVerify1 := new(bool)
+		if !r.Two.TLSVerify.IsUnknown() && !r.Two.TLSVerify.IsNull() {
+			*tlsVerify1 = r.Two.TLSVerify.ValueBool()
+		} else {
+			tlsVerify1 = nil
+		}
+		tlsVerifyDepth1 := new(int64)
+		if !r.Two.TLSVerifyDepth.IsUnknown() && !r.Two.TLSVerifyDepth.IsNull() {
+			*tlsVerifyDepth1 = r.Two.TLSVerifyDepth.ValueInt64()
+		} else {
+			tlsVerifyDepth1 = nil
+		}
+		updatedAt1 := new(int64)
+		if !r.Two.UpdatedAt.IsUnknown() && !r.Two.UpdatedAt.IsNull() {
+			*updatedAt1 = r.Two.UpdatedAt.ValueInt64()
+		} else {
+			updatedAt1 = nil
+		}
+		url1 := new(string)
+		if !r.Two.URL.IsUnknown() && !r.Two.URL.IsNull() {
+			*url1 = r.Two.URL.ValueString()
+		} else {
+			url1 = nil
+		}
+		writeTimeout1 := new(int64)
+		if !r.Two.WriteTimeout.IsUnknown() && !r.Two.WriteTimeout.IsNull() {
+			*writeTimeout1 = r.Two.WriteTimeout.ValueInt64()
+		} else {
+			writeTimeout1 = nil
+		}
+		two = &shared.Two{
+			CaCertificates:    caCertificates1,
+			ClientCertificate: clientCertificate1,
+			ConnectTimeout:    connectTimeout1,
+			CreatedAt:         createdAt1,
+			Description:       description1,
+			Enabled:           enabled1,
+			Host:              host1,
+			ID:                id3,
+			ManagedBy:         managedBy1,
+			Name:              name1,
+			Path:              path1,
+			Port:              port1,
+			Protocol:          protocol1,
+			ReadTimeout:       readTimeout1,
+			Retries:           retries1,
+			Tags:              tags1,
+			TLSSans:           tlsSans1,
+			TLSVerify:         tlsVerify1,
+			TLSVerifyDepth:    tlsVerifyDepth1,
+			UpdatedAt:         updatedAt1,
+			URL:               url1,
+			WriteTimeout:      writeTimeout1,
+		}
 	}
-	updatedAt := new(int64)
-	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
-		*updatedAt = r.UpdatedAt.ValueInt64()
-	} else {
-		updatedAt = nil
-	}
-	writeTimeout := new(int64)
-	if !r.WriteTimeout.IsUnknown() && !r.WriteTimeout.IsNull() {
-		*writeTimeout = r.WriteTimeout.ValueInt64()
-	} else {
-		writeTimeout = nil
-	}
-	out := shared.Service{
-		CaCertificates:    caCertificates,
-		ClientCertificate: clientCertificate,
-		ConnectTimeout:    connectTimeout,
-		CreatedAt:         createdAt,
-		Enabled:           enabled,
-		Host:              host,
-		ID:                id1,
-		Name:              name,
-		Path:              path,
-		Port:              port,
-		Protocol:          protocol,
-		ReadTimeout:       readTimeout,
-		Retries:           retries,
-		Tags:              tags,
-		TLSSans:           tlsSans,
-		TLSVerify:         tlsVerify,
-		TLSVerifyDepth:    tlsVerifyDepth,
-		UpdatedAt:         updatedAt,
-		WriteTimeout:      writeTimeout,
+	if two != nil {
+		out = shared.ServiceRequest{
+			Two: two,
+		}
 	}
 
 	return &out, diags

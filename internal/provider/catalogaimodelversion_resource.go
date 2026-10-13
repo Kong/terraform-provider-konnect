@@ -165,7 +165,7 @@ func (r *CatalogAiModelVersionResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.CatalogAIModelVersions.CreateAiModelVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -232,7 +232,7 @@ func (r *CatalogAiModelVersionResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.CatalogAIModelVersions.GetLatestAiModelVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -286,7 +286,7 @@ func (r *CatalogAiModelVersionResource) Update(ctx context.Context, req resource
 	}
 	res, err := r.client.CatalogAIModelVersions.UpsertLatestAiModelVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -346,7 +346,7 @@ func (r *CatalogAiModelVersionResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.CatalogAIModelVersions.DeleteLatestAiModelVersion(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

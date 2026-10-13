@@ -14,39 +14,86 @@ GatewayService Resource
 
 ```terraform
 resource "konnect_gateway_service" "my_gatewayservice" {
-  ca_certificates = [
-    "..."
-  ]
-  client_certificate = {
-    id = "...my_id..."
-  }
-  connect_timeout  = 60000
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  created_at       = 10
-  enabled          = true
-  host             = "...my_host..."
-  id               = "...my_id..."
-  name             = "...my_name..."
-  path             = "...my_path..."
-  port             = 80
-  protocol         = "http"
-  read_timeout     = 60000
-  retries          = 5
-  tags = [
-    "..."
-  ]
-  tls_sans = {
-    dnsnames = [
+  one = {
+    ca_certificates = [
       "..."
     ]
-    uris = [
+    client_certificate = {
+      id = "...my_id..."
+    }
+    connect_timeout = 60000
+    created_at      = 7
+    description     = "...my_description..."
+    enabled         = true
+    host            = "...my_host..."
+    id              = "...my_id..."
+    managed_by = {
+      key = "value"
+    }
+    name         = "...my_name..."
+    path         = "...my_path..."
+    port         = 80
+    protocol     = "http"
+    read_timeout = 60000
+    retries      = 5
+    tags = [
       "..."
     ]
+    tls_sans = {
+      dnsnames = [
+        "..."
+      ]
+      uris = [
+        "..."
+      ]
+    }
+    tls_verify       = true
+    tls_verify_depth = 54
+    updated_at       = 10
+    url              = "...my_url..."
+    write_timeout    = 60000
   }
-  tls_verify       = true
-  tls_verify_depth = 49
-  updated_at       = 8
-  write_timeout    = 60000
+  two = {
+    ca_certificates = [
+      "..."
+    ]
+    client_certificate = {
+      id = "...my_id..."
+    }
+    connect_timeout = 60000
+    created_at      = 3
+    description     = "...my_description..."
+    enabled         = true
+    host            = "...my_host..."
+    id              = "...my_id..."
+    managed_by = {
+      key = "value"
+    }
+    name         = "...my_name..."
+    path         = "...my_path..."
+    port         = 80
+    protocol     = "http"
+    read_timeout = 60000
+    retries      = 5
+    tags = [
+      "..."
+    ]
+    tls_sans = {
+      dnsnames = [
+        "..."
+      ]
+      uris = [
+        "..."
+      ]
+    }
+    tls_verify       = true
+    tls_verify_depth = 7
+    updated_at       = 10
+    url              = "...my_url..."
+    write_timeout    = 60000
+  }
+  workspace = "team-payments"
 }
 ```
 
@@ -56,20 +103,26 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
-- `host` (String) The host of the upstream server. Note that the host value is case sensitive.
 
 ### Optional
+
+- `one` (Attributes) (see [below for nested schema](#nestedatt--one))
+- `two` (Attributes) (see [below for nested schema](#nestedatt--two))
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
+
+### Read-Only
 
 - `ca_certificates` (List of String) Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
 - `client_certificate` (Attributes) Certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--client_certificate))
 - `connect_timeout` (Number) The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`. Default: true
+- `host` (String) The host of the upstream server. Note that the host value is case sensitive.
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `name` (String) The Service name.
 - `path` (String) The path to be used in requests to the upstream server.
 - `port` (Number) The upstream server port. Default: 80
-- `protocol` (String) The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"
+- `protocol` (String) The protocol used to communicate with the upstream. Default: "http"
 - `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
 - `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.
@@ -79,10 +132,106 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000
 
+<a id="nestedatt--one"></a>
+### Nested Schema for `one`
+
+Optional:
+
+- `ca_certificates` (List of String) Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
+- `client_certificate` (Attributes) Certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--one--client_certificate))
+- `connect_timeout` (Number) The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000
+- `created_at` (Number) Unix epoch when the resource was created.
+- `description` (String) User-defined entity description. Konnect only field, not synced to the Gateway.
+- `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`. Default: true
+- `host` (String) The host of the upstream server. Note that the host value is case sensitive.
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long and start with an alphanumeric character.
+- `name` (String) The Service name.
+- `path` (String) The path to be used in requests to the upstream server.
+- `port` (Number) The upstream server port. Default: 80
+- `protocol` (String) The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"
+- `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000
+- `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.
+- `tls_sans` (Attributes) Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`). (see [below for nested schema](#nestedatt--one--tls_sans))
+- `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
+- `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
+- `url` (String) Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.
+- `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000
+
+<a id="nestedatt--one--client_certificate"></a>
+### Nested Schema for `one.client_certificate`
+
+Optional:
+
+- `id` (String)
+
+
+<a id="nestedatt--one--tls_sans"></a>
+### Nested Schema for `one.tls_sans`
+
+Optional:
+
+- `dnsnames` (List of String) A dnsName for TLS verification.
+- `uris` (List of String) An URI for TLS verification.
+
+
+
+<a id="nestedatt--two"></a>
+### Nested Schema for `two`
+
+Optional:
+
+- `ca_certificates` (List of String) Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
+- `client_certificate` (Attributes) Certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--two--client_certificate))
+- `connect_timeout` (Number) The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000
+- `created_at` (Number) Unix epoch when the resource was created.
+- `description` (String) User-defined entity description. Konnect only field, not synced to the Gateway.
+- `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`. Default: true
+- `host` (String) The host of the upstream server. Note that the host value is case sensitive.
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long and start with an alphanumeric character.
+- `name` (String) The Service name.
+- `path` (String) The path to be used in requests to the upstream server.
+- `port` (Number) The upstream server port. Default: 80
+- `protocol` (String) The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"
+- `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000
+- `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
+- `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.
+- `tls_sans` (Attributes) Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`). (see [below for nested schema](#nestedatt--two--tls_sans))
+- `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
+- `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
+- `url` (String) Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.
+- `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000
+
+<a id="nestedatt--two--client_certificate"></a>
+### Nested Schema for `two.client_certificate`
+
+Optional:
+
+- `id` (String)
+
+
+<a id="nestedatt--two--tls_sans"></a>
+### Nested Schema for `two.tls_sans`
+
+Optional:
+
+- `dnsnames` (List of String) A dnsName for TLS verification.
+- `uris` (List of String) An URI for TLS verification.
+
+
+
 <a id="nestedatt--client_certificate"></a>
 ### Nested Schema for `client_certificate`
 
-Optional:
+Read-Only:
 
 - `id` (String)
 
@@ -90,7 +239,7 @@ Optional:
 <a id="nestedatt--tls_sans"></a>
 ### Nested Schema for `tls_sans`
 
-Optional:
+Read-Only:
 
 - `dnsnames` (List of String) A dnsName for TLS verification.
 - `uris` (List of String) An URI for TLS verification.
@@ -107,6 +256,7 @@ import {
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "7fca84d6-7d37-4a74-a7b0-93e576089a41"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -114,5 +264,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_service.my_konnect_gateway_service '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}'
+terraform import konnect_gateway_service.my_konnect_gateway_service '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41", "workspace": "team-payments"}'
 ```

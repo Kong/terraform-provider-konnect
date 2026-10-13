@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.941.0
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.948.4
 
 import (
 	"bytes"
@@ -239,17 +239,13 @@ type Konnect struct {
 	ConfigStores *ConfigStores
 	// Config Store Secrets
 	ConfigStoreSecrets *ConfigStoreSecrets
-	// A CA certificate object represents a trusted certificate authority.
-	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
-	CACertificates *CACertificates
 	// A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong Gateway to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service.
 	// <br><br>
 	// Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames.
 	// <br><br>
 	// If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string.
 	//
-	Certificates  *Certificates
-	ClonedPlugins *ClonedPlugins
+	Certificates *Certificates
 	// Consumer groups enable the organization and categorization of consumers (users or applications) within an API ecosystem.
 	// By grouping consumers together, you eliminate the need to manage them individually, providing a scalable, efficient approach to managing configurations.
 	ConsumerGroups *ConsumerGroups
@@ -263,7 +259,6 @@ type Konnect struct {
 	JWTs                   *JWTs
 	APIKeys                *APIKeys
 	MTLSAuthCredentials    *MTLSAuthCredentials
-	CustomPlugins          *CustomPlugins
 	GraphQLCostDecorations *GraphQLCostDecorations
 	// A JSON Web key set. Key sets are the preferred way to expose keys to plugins because they tell the plugin where to look for keys or have a scoping mechanism to restrict plugins to specific keys.
 	//
@@ -273,8 +268,6 @@ type Konnect struct {
 	Keys *Keys
 	// Some entities in Kong Gateway share common configuration settings that often need to be repeated. For example, multiple plugins that connect to Redis may require the same connection settings. Without Partials, you would need to replicate this configuration across all plugins. If the settings change, you would need to update each plugin individually.
 	Partials *Partials
-	// Custom Plugin Schemas
-	CustomPluginSchemas *CustomPluginSchemas
 	// A plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. Plugins let you add functionality to services that run behind a Kong Gateway instance, like authentication or rate limiting.
 	// You can find more information about available plugins and which values each plugin accepts at the [Plugin Hub](https://developer.konghq.com/plugins/).
 	// <br><br>
@@ -335,6 +328,14 @@ type Konnect struct {
 	// Secrets rotation can be managed using [TTLs](https://developer.konghq.com/gateway/entities/vault/).
 	//
 	Vaults *Vaults
+	// A CA certificate object represents a trusted certificate authority.
+	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
+	CACertificates *CACertificates
+	ClonedPlugins  *ClonedPlugins
+	CustomPlugins  *CustomPlugins
+	// Custom Plugin Schemas
+	CustomPluginSchemas *CustomPluginSchemas
+	Workspaces          *Workspaces
 	// DP Certificates
 	DPCertificates     *DPCertificates
 	ControlPlaneGroups *ControlPlaneGroups
@@ -473,9 +474,9 @@ func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
 		SDKVersion: "3.26.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:         "speakeasy-sdk/terraform 3.26.0 2.941.0 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:         "speakeasy-sdk/terraform 3.26.0 2.948.4 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			SDKVersion:        "3.26.0",
-			GenVersion:        "2.941.0",
+			GenVersion:        "2.948.4",
 			OpenAPIDocVersion: "2.0.0",
 			ServerList:        ServerList,
 		},
@@ -558,9 +559,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ControlPlanes = newControlPlanes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConfigStores = newConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConfigStoreSecrets = newConfigStoreSecrets(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Certificates = newCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.ClonedPlugins = newClonedPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConsumerGroups = newConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Consumers = newConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ACLs = newACLs(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -569,12 +568,10 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.JWTs = newJWTs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIKeys = newAPIKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MTLSAuthCredentials = newMTLSAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.CustomPlugins = newCustomPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.GraphQLCostDecorations = newGraphQLCostDecorations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.KeySets = newKeySets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Keys = newKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Partials = newPartials(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Plugins = newPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Routes = newRoutes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Services = newServices(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -582,6 +579,11 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Upstreams = newUpstreams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Targets = newTargets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Vaults = newVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ClonedPlugins = newClonedPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CustomPlugins = newCustomPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Workspaces = newWorkspaces(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DPCertificates = newDPCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DCRProviders = newDCRProviders(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -112,6 +112,9 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	prometheusPlugin, prometheusPluginDiags := r.ToSharedPrometheusPlugin(ctx)
 	diags.Append(prometheusPluginDiags...)
 
@@ -121,6 +124,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPlugi
 
 	out := operations.CreatePrometheusPluginRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		PrometheusPlugin: *prometheusPlugin,
 	}
 
@@ -136,9 +140,13 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeletePrometheusPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -153,9 +161,13 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetPrometheusPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -170,6 +182,9 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	prometheusPlugin, prometheusPluginDiags := r.ToSharedPrometheusPlugin(ctx)
 	diags.Append(prometheusPluginDiags...)
 
@@ -180,6 +195,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPlugi
 	out := operations.UpdatePrometheusPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		PrometheusPlugin: *prometheusPlugin,
 	}
 

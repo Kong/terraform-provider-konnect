@@ -224,7 +224,7 @@ func (r *PortalApplicationRegistrationResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.ApplicationRegistrations.CreateApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -291,7 +291,7 @@ func (r *PortalApplicationRegistrationResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.ApplicationRegistrations.GetApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -345,7 +345,7 @@ func (r *PortalApplicationRegistrationResource) Update(ctx context.Context, req 
 	}
 	res, err := r.client.ApplicationRegistrations.UpdateApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -405,7 +405,7 @@ func (r *PortalApplicationRegistrationResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.ApplicationRegistrations.DeleteApplicationRegistration(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

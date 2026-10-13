@@ -12,8 +12,10 @@ type UpdateTcplogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	TCPLogPlugin   shared.TCPLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace    string              `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	TCPLogPlugin shared.TCPLogPlugin `request:"mediaType=application/json"`
 }
 
 func (u UpdateTcplogPluginRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (u UpdateTcplogPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateTcplogPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "TcpLogPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "TcpLogPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateTcplogPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateTcplogPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateTcplogPluginRequest) GetTCPLogPlugin() shared.TCPLogPlugin {

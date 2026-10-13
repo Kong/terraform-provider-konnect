@@ -314,6 +314,9 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsCreateRatel
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	rateLimitingAdvancedPlugin, rateLimitingAdvancedPluginDiags := r.ToSharedRateLimitingAdvancedPlugin(ctx)
 	diags.Append(rateLimitingAdvancedPluginDiags...)
 
@@ -323,6 +326,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsCreateRatel
 
 	out := operations.CreateRatelimitingadvancedPluginRequest{
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		RateLimitingAdvancedPlugin: *rateLimitingAdvancedPlugin,
 	}
 
@@ -338,9 +342,13 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsDeleteRatel
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRatelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -355,9 +363,13 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsGetRatelimi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRatelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -372,6 +384,9 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsUpdateRatel
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	rateLimitingAdvancedPlugin, rateLimitingAdvancedPluginDiags := r.ToSharedRateLimitingAdvancedPlugin(ctx)
 	diags.Append(rateLimitingAdvancedPluginDiags...)
 
@@ -382,6 +397,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToOperationsUpdateRatel
 	out := operations.UpdateRatelimitingadvancedPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		RateLimitingAdvancedPlugin: *rateLimitingAdvancedPlugin,
 	}
 

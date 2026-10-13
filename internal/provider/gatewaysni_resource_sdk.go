@@ -40,6 +40,9 @@ func (r *GatewaySNIResourceModel) ToOperationsCreateSniRequest(ctx context.Conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	sni, sniDiags := r.ToSharedSni(ctx)
 	diags.Append(sniDiags...)
 
@@ -49,6 +52,7 @@ func (r *GatewaySNIResourceModel) ToOperationsCreateSniRequest(ctx context.Conte
 
 	out := operations.CreateSniRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Sni:            *sni,
 	}
 
@@ -64,9 +68,13 @@ func (r *GatewaySNIResourceModel) ToOperationsDeleteSniRequest(ctx context.Conte
 	var sniID string
 	sniID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteSniRequest{
 		ControlPlaneID: controlPlaneID,
 		SNIID:          sniID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -81,9 +89,13 @@ func (r *GatewaySNIResourceModel) ToOperationsGetSniRequest(ctx context.Context)
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetSniRequest{
 		SNIID:          sniID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -98,6 +110,9 @@ func (r *GatewaySNIResourceModel) ToOperationsUpsertSniRequest(ctx context.Conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	sni, sniDiags := r.ToSharedSni(ctx)
 	diags.Append(sniDiags...)
 
@@ -108,6 +123,7 @@ func (r *GatewaySNIResourceModel) ToOperationsUpsertSniRequest(ctx context.Conte
 	out := operations.UpsertSniRequest{
 		SNIID:          sniID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Sni:            *sni,
 	}
 

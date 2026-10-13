@@ -181,7 +181,7 @@ func (r *PortalPageResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	res, err := r.client.PortalPages.CreatePortalPage(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -241,7 +241,7 @@ func (r *PortalPageResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 	res, err := r.client.PortalPages.GetPortalPage(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -295,7 +295,7 @@ func (r *PortalPageResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 	res, err := r.client.PortalPages.UpdatePortalPage(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -355,7 +355,7 @@ func (r *PortalPageResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 	res, err := r.client.PortalPages.DeletePortalPage(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

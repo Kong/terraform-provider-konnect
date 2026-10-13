@@ -10,7 +10,9 @@ import (
 
 type CreateAppdynamicsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID    string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace         string                   `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	AppDynamicsPlugin shared.AppDynamicsPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateAppdynamicsPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAppdynamicsPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AppDynamicsPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "AppDynamicsPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateAppdynamicsPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateAppdynamicsPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateAppdynamicsPluginRequest) GetAppDynamicsPlugin() shared.AppDynamicsPlugin {

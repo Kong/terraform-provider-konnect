@@ -12,7 +12,9 @@ type UpdateAisemanticpromptguardPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID              string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                   string                             `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	AiSemanticPromptGuardPlugin shared.AiSemanticPromptGuardPlugin `request:"mediaType=application/json"`
 }
 
@@ -21,7 +23,7 @@ func (u UpdateAisemanticpromptguardPluginRequest) MarshalJSON() ([]byte, error) 
 }
 
 func (u *UpdateAisemanticpromptguardPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiSemanticPromptGuardPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "AiSemanticPromptGuardPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateAisemanticpromptguardPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateAisemanticpromptguardPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateAisemanticpromptguardPluginRequest) GetAiSemanticPromptGuardPlugin() shared.AiSemanticPromptGuardPlugin {

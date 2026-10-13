@@ -33,8 +33,8 @@ func newSNIs(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.H
 	}
 }
 
-// CreateSni - Create a new SNI
-// Create a new SNI
+// CreateSni - Create a new SNI in a workspace
+// Create a new SNI in a workspace
 func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniRequest, opts ...operations.Option) (*operations.CreateSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -54,7 +54,7 @@ func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/snis", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/snis", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -260,8 +260,8 @@ func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniReques
 
 }
 
-// DeleteSni - Delete an SNI
-// Delete an SNI
+// DeleteSni - Delete an SNI in a workspace
+// Delete an SNI in a workspace
 func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniRequest, opts ...operations.Option) (*operations.DeleteSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -281,7 +281,7 @@ func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/snis/{SNIId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -463,8 +463,8 @@ func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniReques
 
 }
 
-// GetSni - Get an SNI
-// Get an SNI using ID or name.
+// GetSni - Get an SNI in a workspace
+// Get an SNI using ID or name in a workspace.
 func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opts ...operations.Option) (*operations.GetSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -484,7 +484,7 @@ func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opt
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/snis/{SNIId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -685,8 +685,8 @@ func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opt
 
 }
 
-// UpsertSni - Upsert a SNI
-// Create or Update SNI using ID or name.
+// UpsertSni - Upsert a SNI in a workspace
+// Create or Update SNI using ID or name in a workspace.
 func (s *SNIs) UpsertSni(ctx context.Context, request operations.UpsertSniRequest, opts ...operations.Option) (*operations.UpsertSniResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -706,7 +706,7 @@ func (s *SNIs) UpsertSni(ctx context.Context, request operations.UpsertSniReques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/snis/{SNIId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
