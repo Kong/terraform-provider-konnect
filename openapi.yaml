@@ -72721,11 +72721,11 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-speakeasy-entity-version: 1
       x-supported-partials:
         - name: redis-ee
           paths:
             - config.redis
-      x-speakeasy-entity-version: 1
     ExitTransformerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -92860,200 +92860,191 @@ components:
           paths:
             - config.redis
     ServiceRequest:
-      description: 'Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.'
-      example:
-        host: example.internal
-        id: 49fd316e-c457-481c-9fc7-8079153e4f3c
-        name: example-service
-        path: /
-        port: 80
-        protocol: http
-      allOf:
-        - additionalProperties: false
-          properties:
-            ca_certificates:
-              description: 'Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server''s TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).'
-              type: array
-              items:
-                type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            client_certificate:
-              description: Certificate to be used as client certificate while TLS handshaking to the upstream server.
-              type: object
-              default: null
-              nullable: true
-              properties:
-                id:
-                  type: string
-              x-foreign: true
-              x-speakeasy-param-computed: false
-            connect_timeout:
-              description: The timeout in milliseconds for establishing a connection to the upstream server.
-              type: integer
-              default: 60000
-              maximum: 2147483646
-              minimum: 1
-              nullable: true
-            created_at:
-              description: Unix epoch when the resource was created.
-              type: integer
-              nullable: true
-            description:
-              description: 'User-defined entity description. Konnect only field, not synced to the Gateway.'
-              type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            enabled:
-              description: 'Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.'
-              type: boolean
-              default: true
-              nullable: true
-            host:
-              description: The host of the upstream server. Note that the host value is case sensitive.
-              type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            id:
-              description: A string representing a UUID (universally unique identifier).
-              type: string
-              minLength: 1
-              nullable: true
-            managed_by:
-              description: |-
-                Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-                Keys must be 1–63 characters long and start with an alphanumeric character.
-              type: object
-              default: null
-              additionalProperties:
-                maxLength: 63
-                minLength: 1
-                pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
-                type: string
-              maxProperties: 5
-              nullable: true
-              x-speakeasy-param-computed: false
-            name:
-              description: The Service name.
-              type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            path:
-              description: The path to be used in requests to the upstream server.
-              type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            port:
-              description: The upstream server port.
-              type: integer
-              default: 80
-              maximum: 65535
-              minimum: 0
-              nullable: true
-            protocol:
-              description: The protocol used to communicate with the upstream.
-              type: string
-              default: http
-              enum:
-                - grpc
-                - grpcs
-                - http
-                - https
-                - tcp
-                - tls
-                - tls_passthrough
-                - udp
-                - ws
-                - wss
-              nullable: true
-              x-speakeasy-unknown-values: allow
-            read_timeout:
-              description: The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
-              type: integer
-              default: 60000
-              maximum: 2147483646
-              minimum: 1
-              nullable: true
-            retries:
-              description: The number of retries to execute upon failure to proxy.
-              type: integer
-              default: 5
-              maximum: 32767
-              minimum: 0
-              nullable: true
-            tags:
-              description: An optional set of strings associated with the Service for grouping and filtering.
-              type: array
-              items:
-                description: A string representing a tag.
-                type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            tls_sans:
-              description: Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
-              type: object
-              default: null
-              nullable: true
-              properties:
-                dnsnames:
-                  description: A dnsName for TLS verification.
-                  type: array
-                  items:
-                    description: A string representing an SNI (server name indication) value for TLS.
-                    type: string
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
-                uris:
-                  description: An URI for TLS verification.
-                  type: array
-                  items:
-                    description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
-                    type: string
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
-            tls_verify:
-              description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
-              type: boolean
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            tls_verify_depth:
-              description: 'Maximum depth of chain while verifying Upstream server''s TLS certificate. If set to `null`, then the Nginx default is respected.'
-              type: integer
-              default: null
-              maximum: 64
-              minimum: 0
-              nullable: true
-              x-speakeasy-param-computed: false
-            updated_at:
-              description: Unix epoch when the resource was last updated.
-              type: integer
-              nullable: true
-            url:
-              description: 'Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.'
-              type: string
-              default: null
-              nullable: true
-              writeOnly: true
-              x-speakeasy-param-computed: false
-            write_timeout:
-              description: The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
-              type: integer
-              default: 60000
-              maximum: 2147483646
-              minimum: 1
-              nullable: true
+      type: object
+      properties:
+        ca_certificates:
+          description: 'Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server''s TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).'
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        client_certificate:
+          description: Certificate to be used as client certificate while TLS handshaking to the upstream server.
           type: object
+          default: null
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-param-computed: false
+        connect_timeout:
+          description: The timeout in milliseconds for establishing a connection to the upstream server.
+          type: integer
+          default: 60000
+          maximum: 2147483646
+          minimum: 1
+          nullable: true
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          nullable: true
+        description:
+          description: 'User-defined entity description. Konnect only field, not synced to the Gateway.'
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        enabled:
+          description: 'Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.'
+          type: boolean
+          default: true
+          nullable: true
+        host:
+          description: The host of the upstream server. Note that the host value is case sensitive.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        id:
+          description: A string representing a UUID (universally unique identifier).
+          type: string
+          minLength: 1
+          nullable: true
+        managed_by:
+          description: |-
+            Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+            Keys must be 1–63 characters long and start with an alphanumeric character.
+          type: object
+          default: null
+          additionalProperties:
+            maxLength: 63
+            minLength: 1
+            pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+            type: string
+          maxProperties: 5
+          nullable: true
+          x-speakeasy-param-computed: false
+        name:
+          description: The Service name.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        path:
+          description: The path to be used in requests to the upstream server.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        port:
+          description: The upstream server port.
+          type: integer
+          default: 80
+          maximum: 65535
+          minimum: 0
+          nullable: true
+        protocol:
+          description: The protocol used to communicate with the upstream.
+          type: string
+          default: http
+          enum:
+            - grpc
+            - grpcs
+            - http
+            - https
+            - tcp
+            - tls
+            - tls_passthrough
+            - udp
+            - ws
+            - wss
+          nullable: true
+          x-speakeasy-unknown-values: allow
+        read_timeout:
+          description: The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
+          type: integer
+          default: 60000
+          maximum: 2147483646
+          minimum: 1
+          nullable: true
+        retries:
+          description: The number of retries to execute upon failure to proxy.
+          type: integer
+          default: 5
+          maximum: 32767
+          minimum: 0
+          nullable: true
+        tags:
+          description: An optional set of strings associated with the Service for grouping and filtering.
+          type: array
+          items:
+            description: A string representing a tag.
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        tls_sans:
+          description: Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
+          type: object
+          default: null
+          nullable: true
+          properties:
+            dnsnames:
+              description: A dnsName for TLS verification.
+              type: array
+              items:
+                description: A string representing an SNI (server name indication) value for TLS.
+                type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            uris:
+              description: An URI for TLS verification.
+              type: array
+              items:
+                description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+        tls_verify:
+          description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        tls_verify_depth:
+          description: 'Maximum depth of chain while verifying Upstream server''s TLS certificate. If set to `null`, then the Nginx default is respected.'
+          type: integer
+          default: null
+          maximum: 64
+          minimum: 0
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          type: integer
+          nullable: true
+        url:
+          description: 'Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.'
+          type: string
+          default: null
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+        write_timeout:
+          description: The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
+          type: integer
+          default: 60000
+          maximum: 2147483646
+          minimum: 1
+          nullable: true
+      additionalProperties: false
     SessionPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'

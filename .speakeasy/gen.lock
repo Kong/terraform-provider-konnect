@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: eec170ac8170d4d6662c60ae3689489d
+  docChecksum: 7ec79c7de2ce346c2adb7ba9e99b7010
   docVersion: 2.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
   releaseVersion: 3.26.0
   configChecksum: 1c744f0afd800f08d89944ddf1724967
 persistentEdits:
-  generation_id: 1683bdc0-6a64-46ea-8341-9d6b283a641b
-  pristine_commit_hash: 82fc4c43a226f0da62ffa8c0ed9a78e7990c191e
-  pristine_tree_hash: 6069cc7b57d0a8ac887ce271dcceeadec4a76878
+  generation_id: dbab63e8-a63d-48c4-a9c0-88b7fd07791e
+  pristine_commit_hash: 6edeb74a4d5f15e6dcf5fdf68c375e7219472491
+  pristine_tree_hash: 92709f57c105e3cf57e31e75b9fbede074525d2f
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -8411,10 +8411,6 @@ trackedFiles:
     id: f35c9d87b02f
     last_write_checksum: sha1:ba28695bf5de0b2e7bcb00f15ed6b12bdf21d818
     pristine_git_object: 329daa4b2594af741dde2c9911d10bb265155618
-  internal/provider/utils.go:
-    id: 312d50f148af
-    last_write_checksum: sha1:40c197c19363bee01046dba857ba89b5dac85a58
-    pristine_git_object: c52a1c4a0913c61ba83e53733ff6a04a48c0b41a
   internal/sdk/.gitattributes:
     id: 1ea4c4e0a39d
     last_write_checksum: sha1:84b0115789fc3ea52e31df701d8a27f76077e29f
@@ -15981,8 +15977,8 @@ trackedFiles:
     pristine_git_object: a9756c0b02677b636a0196cd1bcaabe411686af7
   internal/sdk/models/shared/servicerequest.go:
     id: 1f5de38e8245
-    last_write_checksum: sha1:942d3f0cc08be52c32bd5cc6ff857dc0bef61dd9
-    pristine_git_object: f61ede8abd978b81800dc7d1350b3940330b1dfa
+    last_write_checksum: sha1:529a4aff29924adb7371fdf37a644bf00a4241ed
+    pristine_git_object: 3bb2511e35195e7cd5ca91aac907db72337c32fd
   internal/sdk/models/shared/serviceunavailable.go:
     id: 5bb56eb229f2
     last_write_checksum: sha1:ff633b22e49118a760e3b5ffeae407883e2326e0
@@ -26849,7 +26845,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           workspace: "team-payments"
       requestBody:
-        application/json: {"ca_certificates": null, "client_certificate": null, "connect_timeout": 60000, "description": null, "enabled": true, "host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http", "read_timeout": 60000, "retries": 5, "tags": null, "tls_sans": null, "tls_verify": null, "tls_verify_depth": null, "url": null, "write_timeout": 60000}
+        application/json: {"ca_certificates": null, "client_certificate": null, "connect_timeout": 60000, "description": null, "enabled": true, "host": null, "name": null, "path": null, "port": 80, "protocol": "http", "read_timeout": 60000, "retries": 5, "tags": null, "tls_sans": null, "tls_verify": null, "tls_verify_depth": null, "url": null, "write_timeout": 60000}
       responses:
         "201":
           application/json: {"ca_certificates": null, "client_certificate": null, "connect_timeout": 60000, "enabled": true, "host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http", "read_timeout": 60000, "retries": 5, "tags": null, "tls_sans": null, "tls_verify": null, "tls_verify_depth": null, "write_timeout": 60000}
@@ -26915,7 +26911,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           workspace: "team-payments"
       requestBody:
-        application/json: {"ca_certificates": null, "client_certificate": null, "connect_timeout": 60000, "description": null, "enabled": true, "host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http", "read_timeout": 60000, "retries": 5, "tags": null, "tls_sans": null, "tls_verify": null, "tls_verify_depth": null, "url": null, "write_timeout": 60000}
+        application/json: {"ca_certificates": null, "client_certificate": null, "connect_timeout": 60000, "description": null, "enabled": true, "host": null, "name": null, "path": null, "port": 80, "protocol": "http", "read_timeout": 60000, "retries": 5, "tags": null, "tls_sans": null, "tls_verify": null, "tls_verify_depth": null, "url": null, "write_timeout": 60000}
       responses:
         "200":
           application/json: {"ca_certificates": null, "client_certificate": null, "connect_timeout": 60000, "enabled": true, "host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http", "read_timeout": 60000, "retries": 5, "tags": null, "tls_sans": null, "tls_verify": null, "tls_verify_depth": null, "write_timeout": 60000}
