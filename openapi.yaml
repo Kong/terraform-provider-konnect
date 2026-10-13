@@ -97823,7 +97823,6 @@ components:
         anonymous:
           description: 'An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.'
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         hide_credentials:
@@ -97840,7 +97839,6 @@ components:
                 type: string
               region:
                 type: string
-                default: null
                 nullable: true
                 x-speakeasy-param-computed: false
               scope:
@@ -97851,7 +97849,6 @@ components:
                   - realm
                 x-speakeasy-unknown-values: allow
             type: object
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         key_in_body:
@@ -97893,13 +97890,13 @@ components:
         realm:
           description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         run_on_preflight:
           description: 'A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.'
           type: boolean
           default: true
+      x-terraform-no-default-null: true
     AIGWOpenIDConnectGeneratedConfig:
       type: object
       properties:
