@@ -79,7 +79,7 @@ func TestGatewayWorkspaceSmoke(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_gateway_config_store.smoke", "id"),
-						resource.TestCheckResourceAttrSet("konnect_gateway_config_store_secret.smoke", "id"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_config_store_secret.smoke", "created_at"),
 					),
 				},
 			},
