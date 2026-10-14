@@ -268,7 +268,7 @@ If not specified, the default AWS STS endpoint will be used.
 
 Optional:
 
-- `acls` (Attributes) Access control rules. Configure exactly one of `allow` or `deny`. (see [below for nested schema](#nestedatt--access--acls))
+- `acls` (Attributes) Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`. (see [below for nested schema](#nestedatt--access--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the agent.
 At most 1 auth strategy of each auth strategy type can be referenced.
 - `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the agent.

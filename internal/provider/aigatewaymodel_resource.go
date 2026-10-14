@@ -101,7 +101,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
 								},
-								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
+								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
 							},
 							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
@@ -7683,7 +7683,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
 								},
-								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
+								Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
 							},
 							"auth_strategies": schema.ListAttribute{
 								Computed:    true,
@@ -15285,7 +15285,7 @@ func (r *AIGatewayModelResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.AIGatewayModels.CreateAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -15352,7 +15352,7 @@ func (r *AIGatewayModelResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.AIGatewayModels.GetAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -15406,7 +15406,7 @@ func (r *AIGatewayModelResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.AIGatewayModels.UpdateAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -15466,7 +15466,7 @@ func (r *AIGatewayModelResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.AIGatewayModels.DeleteAiGatewayModel(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

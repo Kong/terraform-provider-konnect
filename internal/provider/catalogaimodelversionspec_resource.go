@@ -130,7 +130,7 @@ func (r *CatalogAiModelVersionSpecResource) Create(ctx context.Context, req reso
 	}
 	res, err := r.client.CatalogAIModelSpecs.UpsertAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -193,7 +193,7 @@ func (r *CatalogAiModelVersionSpecResource) Read(ctx context.Context, req resour
 	}
 	res, err := r.client.CatalogAIModelSpecs.GetAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -247,7 +247,7 @@ func (r *CatalogAiModelVersionSpecResource) Update(ctx context.Context, req reso
 	}
 	res, err := r.client.CatalogAIModelSpecs.UpsertAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -310,7 +310,7 @@ func (r *CatalogAiModelVersionSpecResource) Delete(ctx context.Context, req reso
 	}
 	res, err := r.client.CatalogAIModelSpecs.DeleteAiModelVersionSpec(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

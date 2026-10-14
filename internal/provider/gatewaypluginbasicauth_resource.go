@@ -673,7 +673,7 @@ func (r *GatewayPluginBasicAuthResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.CreateBasicauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -733,7 +733,7 @@ func (r *GatewayPluginBasicAuthResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.Plugins.GetBasicauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -787,7 +787,7 @@ func (r *GatewayPluginBasicAuthResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.UpdateBasicauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -847,7 +847,7 @@ func (r *GatewayPluginBasicAuthResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.Plugins.DeleteBasicauthPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

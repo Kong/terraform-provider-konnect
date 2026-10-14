@@ -81,6 +81,7 @@ func (s *BasicAuthCredentials) CreateBasicAuthWithConsumer(ctx context.Context, 
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-basic-auth-with-consumer")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

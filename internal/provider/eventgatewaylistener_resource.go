@@ -183,7 +183,7 @@ func (r *EventGatewayListenerResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.EventGatewayListeners.CreateEventGatewayListener(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -243,7 +243,7 @@ func (r *EventGatewayListenerResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.EventGatewayListeners.GetEventGatewayListener(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -297,7 +297,7 @@ func (r *EventGatewayListenerResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.EventGatewayListeners.UpdateEventGatewayListener(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -357,7 +357,7 @@ func (r *EventGatewayListenerResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.EventGatewayListeners.DeleteEventGatewayListener(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

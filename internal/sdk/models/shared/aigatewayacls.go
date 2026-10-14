@@ -6,7 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// AIGatewayACLS - Access control rules. Configure exactly one of `allow` or `deny`.
+// AIGatewayACLS - Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`.
 type AIGatewayACLS struct {
 	// List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.
 	Allow []string `json:"allow,omitempty"`

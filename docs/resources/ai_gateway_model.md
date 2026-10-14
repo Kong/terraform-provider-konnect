@@ -448,7 +448,7 @@ Read-Only:
 
 Optional:
 
-- `acls` (Attributes) Access control rules. Configure exactly one of `allow` or `deny`. (see [below for nested schema](#nestedatt--api--access--acls))
+- `acls` (Attributes) Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`. (see [below for nested schema](#nestedatt--api--access--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the model.
 At most 1 auth strategy of each auth strategy type can be referenced.
 - `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the model.
@@ -2728,7 +2728,7 @@ Read-Only:
 
 Optional:
 
-- `acls` (Attributes) Access control rules. Configure exactly one of `allow` or `deny`. (see [below for nested schema](#nestedatt--model--access--acls))
+- `acls` (Attributes) Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`. (see [below for nested schema](#nestedatt--model--access--acls))
 - `auth_strategies` (List of String) List of auth strategies for granting access to the model.
 At most 1 auth strategy of each auth strategy type can be referenced.
 - `identity_providers` (List of String, Deprecated) List of identity providers for granting access to the model.

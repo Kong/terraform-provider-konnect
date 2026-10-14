@@ -7,11 +7,12 @@ import (
 )
 
 type PortalCustomizationSpecRenderer struct {
-	AllowCustomServerUrls types.Bool `tfsdk:"allow_custom_server_urls"`
-	HideDeprecated        types.Bool `tfsdk:"hide_deprecated"`
-	HideInternal          types.Bool `tfsdk:"hide_internal"`
-	InfiniteScroll        types.Bool `tfsdk:"infinite_scroll"`
-	ShowSchemas           types.Bool `tfsdk:"show_schemas"`
-	TryItInsomnia         types.Bool `tfsdk:"try_it_insomnia"`
-	TryItUI               types.Bool `tfsdk:"try_it_ui"`
+	AllowCustomServerUrls types.Bool   `tfsdk:"allow_custom_server_urls"`
+	HideDeprecated        types.Bool   `tfsdk:"hide_deprecated"`
+	HideInternal          types.Bool   `tfsdk:"hide_internal"`
+	InfiniteScroll        types.Bool   `tfsdk:"infinite_scroll"`
+	ShowSchemas           types.Bool   `tfsdk:"show_schemas"`
+	TryItInsomnia         types.Bool   `tfsdk:"try_it_insomnia"`
+	TryItUI               types.Bool   `tfsdk:"try_it_ui"`
+	TryItUIAudience       types.String `tfsdk:"try_it_ui_audience"`
 }

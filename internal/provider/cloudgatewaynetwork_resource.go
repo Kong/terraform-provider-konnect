@@ -220,7 +220,7 @@ func (r *CloudGatewayNetworkResource) Create(ctx context.Context, req resource.C
 	}
 	res, err := r.client.CloudGateways.CreateNetwork(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -287,7 +287,7 @@ func (r *CloudGatewayNetworkResource) Read(ctx context.Context, req resource.Rea
 	}
 	res, err := r.client.CloudGateways.GetNetwork(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -341,7 +341,7 @@ func (r *CloudGatewayNetworkResource) Update(ctx context.Context, req resource.U
 	}
 	res, err := r.client.CloudGateways.UpdateNetwork(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -401,7 +401,7 @@ func (r *CloudGatewayNetworkResource) Delete(ctx context.Context, req resource.D
 	}
 	res, err := r.client.CloudGateways.DeleteNetwork(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

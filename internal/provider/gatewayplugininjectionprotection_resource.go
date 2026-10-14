@@ -370,7 +370,7 @@ func (r *GatewayPluginInjectionProtectionResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.CreateInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -430,7 +430,7 @@ func (r *GatewayPluginInjectionProtectionResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.Plugins.GetInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -484,7 +484,7 @@ func (r *GatewayPluginInjectionProtectionResource) Update(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.UpdateInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -544,7 +544,7 @@ func (r *GatewayPluginInjectionProtectionResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.DeleteInjectionprotectionPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

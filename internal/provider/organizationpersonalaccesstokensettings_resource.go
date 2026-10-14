@@ -108,7 +108,7 @@ func (r *OrganizationPersonalAccessTokenSettingsResource) Create(ctx context.Con
 	}
 	res, err := r.client.PersonalAccessTokens.UpdatePersonalAccessTokenSettings(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -168,7 +168,7 @@ func (r *OrganizationPersonalAccessTokenSettingsResource) Read(ctx context.Conte
 	}
 	res, err := r.client.PersonalAccessTokens.GetOrganizationsPersonalAccessTokenSettings(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -222,7 +222,7 @@ func (r *OrganizationPersonalAccessTokenSettingsResource) Update(ctx context.Con
 	}
 	res, err := r.client.PersonalAccessTokens.UpdatePersonalAccessTokenSettings(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

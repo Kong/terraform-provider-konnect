@@ -141,7 +141,7 @@ func (r *TeamRoleResource) Create(ctx context.Context, req resource.CreateReques
 	}
 	res, err := r.client.Roles.TeamsAssignRole(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -208,7 +208,7 @@ func (r *TeamRoleResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 	res, err := r.client.Roles.GetTeamRole(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -286,7 +286,7 @@ func (r *TeamRoleResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 	res, err := r.client.Roles.TeamsRemoveRole(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

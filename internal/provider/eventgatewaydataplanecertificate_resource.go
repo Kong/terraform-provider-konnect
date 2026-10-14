@@ -193,7 +193,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Create(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.CreateEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -253,7 +253,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Read(ctx context.Context, req
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.GetEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -307,7 +307,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Update(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.UpdateEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -367,7 +367,7 @@ func (r *EventGatewayDataPlaneCertificateResource) Delete(ctx context.Context, r
 	}
 	res, err := r.client.EventGatewayDataPlaneCertificates.DeleteEventGatewayDataPlaneCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
