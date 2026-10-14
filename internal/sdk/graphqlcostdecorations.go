@@ -30,8 +30,8 @@ func newGraphQLCostDecorations(rootSDK *Konnect, sdkConfig config.SDKConfigurati
 	}
 }
 
-// GetGraphqlRateLimitingAdvancedCost - Get a GraphQL Cost Decoration
-// Get a GraphQL Cost Decoration using ID.
+// GetGraphqlRateLimitingAdvancedCost - Get a GraphQL Cost Decoration in a workspace
+// Get a GraphQL Cost Decoration using ID in a workspace.
 func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCost(ctx context.Context, request operations.GetGraphqlRateLimitingAdvancedCostRequest, opts ...operations.Option) (*operations.GetGraphqlRateLimitingAdvancedCostResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -51,7 +51,7 @@ func (s *GraphQLCostDecorations) GetGraphqlRateLimitingAdvancedCost(ctx context.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/graphql-rate-limiting-advanced/costs/{GraphQLCostDecorationId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/graphql-rate-limiting-advanced/costs/{GraphQLCostDecorationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

@@ -13,6 +13,8 @@ type UpsertPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the Plugin
 	Plugin shared.Plugin `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (u UpsertPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "Plugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "Plugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (u *UpsertPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpsertPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpsertPluginRequest) GetPlugin() shared.Plugin {

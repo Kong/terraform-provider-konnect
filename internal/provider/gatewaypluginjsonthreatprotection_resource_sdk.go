@@ -114,6 +114,9 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsCreateJsont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jsonThreatProtectionPlugin, jsonThreatProtectionPluginDiags := r.ToSharedJSONThreatProtectionPlugin(ctx)
 	diags.Append(jsonThreatProtectionPluginDiags...)
 
@@ -123,6 +126,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsCreateJsont
 
 	out := operations.CreateJsonthreatprotectionPluginRequest{
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		JSONThreatProtectionPlugin: *jsonThreatProtectionPlugin,
 	}
 
@@ -138,9 +142,13 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsDeleteJsont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteJsonthreatprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -155,9 +163,13 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsGetJsonthre
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetJsonthreatprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -172,6 +184,9 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsUpdateJsont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jsonThreatProtectionPlugin, jsonThreatProtectionPluginDiags := r.ToSharedJSONThreatProtectionPlugin(ctx)
 	diags.Append(jsonThreatProtectionPluginDiags...)
 
@@ -182,6 +197,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToOperationsUpdateJsont
 	out := operations.UpdateJsonthreatprotectionPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		JSONThreatProtectionPlugin: *jsonThreatProtectionPlugin,
 	}
 

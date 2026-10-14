@@ -10,7 +10,9 @@ import (
 
 type CreateAiazurecontentsafetyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID             string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                  string                            `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	AiAzureContentSafetyPlugin shared.AiAzureContentSafetyPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateAiazurecontentsafetyPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAiazurecontentsafetyPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiAzureContentSafetyPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "AiAzureContentSafetyPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateAiazurecontentsafetyPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateAiazurecontentsafetyPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateAiazurecontentsafetyPluginRequest) GetAiAzureContentSafetyPlugin() shared.AiAzureContentSafetyPlugin {

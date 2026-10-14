@@ -10,8 +10,10 @@ import (
 
 type CreateAcePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AcePlugin      shared.AcePlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string           `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	AcePlugin shared.AcePlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateAcePluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateAcePluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAcePluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AcePlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "AcePlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateAcePluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateAcePluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateAcePluginRequest) GetAcePlugin() shared.AcePlugin {

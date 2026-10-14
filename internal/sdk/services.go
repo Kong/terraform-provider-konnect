@@ -37,8 +37,8 @@ func newServices(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hoo
 	}
 }
 
-// CreateService - Create a new Service
-// Create a new Service
+// CreateService - Create a new Service in a workspace
+// Create a new Service in a workspace
 func (s *Services) CreateService(ctx context.Context, request operations.CreateServiceRequest, opts ...operations.Option) (*operations.CreateServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -58,7 +58,7 @@ func (s *Services) CreateService(ctx context.Context, request operations.CreateS
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/services", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/services", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -72,7 +72,7 @@ func (s *Services) CreateService(ctx context.Context, request operations.CreateS
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Service", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ServiceRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -264,8 +264,8 @@ func (s *Services) CreateService(ctx context.Context, request operations.CreateS
 
 }
 
-// DeleteService - Delete a Service
-// Delete a Service
+// DeleteService - Delete a Service in a workspace
+// Delete a Service in a workspace
 func (s *Services) DeleteService(ctx context.Context, request operations.DeleteServiceRequest, opts ...operations.Option) (*operations.DeleteServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -285,7 +285,7 @@ func (s *Services) DeleteService(ctx context.Context, request operations.DeleteS
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/services/{ServiceId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -467,8 +467,8 @@ func (s *Services) DeleteService(ctx context.Context, request operations.DeleteS
 
 }
 
-// GetService - Get a Service
-// Get a Service using ID or name.
+// GetService - Get a Service in a workspace
+// Get a Service using ID or name in a workspace.
 func (s *Services) GetService(ctx context.Context, request operations.GetServiceRequest, opts ...operations.Option) (*operations.GetServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -488,7 +488,7 @@ func (s *Services) GetService(ctx context.Context, request operations.GetService
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/services/{ServiceId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -689,8 +689,8 @@ func (s *Services) GetService(ctx context.Context, request operations.GetService
 
 }
 
-// UpsertService - Upsert a Service
-// Create or Update Service using ID or name.
+// UpsertService - Upsert a Service in a workspace
+// Create or Update Service using ID or name in a workspace.
 func (s *Services) UpsertService(ctx context.Context, request operations.UpsertServiceRequest, opts ...operations.Option) (*operations.UpsertServiceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -710,7 +710,7 @@ func (s *Services) UpsertService(ctx context.Context, request operations.UpsertS
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/services/{ServiceId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -724,7 +724,7 @@ func (s *Services) UpsertService(ctx context.Context, request operations.UpsertS
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Service", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ServiceRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

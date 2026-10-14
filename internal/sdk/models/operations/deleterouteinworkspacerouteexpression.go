@@ -8,39 +8,48 @@ import (
 	"net/http"
 )
 
-type DeleteRouteRouteExpressionRequest struct {
+type DeleteRouteInWorkspaceRouteExpressionRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the Route to lookup
 	RouteID string `pathParam:"style=simple,explode=false,name=RouteId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
-func (d DeleteRouteRouteExpressionRequest) MarshalJSON() ([]byte, error) {
+func (d DeleteRouteInWorkspaceRouteExpressionRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(d, "", false)
 }
 
-func (d *DeleteRouteRouteExpressionRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "RouteId"}); err != nil {
+func (d *DeleteRouteInWorkspaceRouteExpressionRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "RouteId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DeleteRouteRouteExpressionRequest) GetControlPlaneID() string {
+func (d *DeleteRouteInWorkspaceRouteExpressionRequest) GetControlPlaneID() string {
 	if d == nil {
 		return ""
 	}
 	return d.ControlPlaneID
 }
 
-func (d *DeleteRouteRouteExpressionRequest) GetRouteID() string {
+func (d *DeleteRouteInWorkspaceRouteExpressionRequest) GetRouteID() string {
 	if d == nil {
 		return ""
 	}
 	return d.RouteID
 }
 
-type DeleteRouteRouteExpressionResponse struct {
+func (d *DeleteRouteInWorkspaceRouteExpressionRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
+}
+
+type DeleteRouteInWorkspaceRouteExpressionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -51,39 +60,39 @@ type DeleteRouteRouteExpressionResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (d DeleteRouteRouteExpressionResponse) MarshalJSON() ([]byte, error) {
+func (d DeleteRouteInWorkspaceRouteExpressionResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(d, "", false)
 }
 
-func (d *DeleteRouteRouteExpressionResponse) UnmarshalJSON(data []byte) error {
+func (d *DeleteRouteInWorkspaceRouteExpressionResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DeleteRouteRouteExpressionResponse) GetContentType() string {
+func (d *DeleteRouteInWorkspaceRouteExpressionResponse) GetContentType() string {
 	if d == nil {
 		return ""
 	}
 	return d.ContentType
 }
 
-func (d *DeleteRouteRouteExpressionResponse) GetStatusCode() int {
+func (d *DeleteRouteInWorkspaceRouteExpressionResponse) GetStatusCode() int {
 	if d == nil {
 		return 0
 	}
 	return d.StatusCode
 }
 
-func (d *DeleteRouteRouteExpressionResponse) GetRawResponse() *http.Response {
+func (d *DeleteRouteInWorkspaceRouteExpressionResponse) GetRawResponse() *http.Response {
 	if d == nil {
 		return nil
 	}
 	return d.RawResponse
 }
 
-func (d *DeleteRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+func (d *DeleteRouteInWorkspaceRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if d == nil {
 		return nil
 	}

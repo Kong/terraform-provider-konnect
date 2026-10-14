@@ -122,6 +122,9 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsCreateMockingPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	mockingPlugin, mockingPluginDiags := r.ToSharedMockingPlugin(ctx)
 	diags.Append(mockingPluginDiags...)
 
@@ -131,6 +134,7 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsCreateMockingPluginReque
 
 	out := operations.CreateMockingPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		MockingPlugin:  *mockingPlugin,
 	}
 
@@ -146,9 +150,13 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsDeleteMockingPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteMockingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -163,9 +171,13 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsGetMockingPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetMockingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -180,6 +192,9 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	mockingPlugin, mockingPluginDiags := r.ToSharedMockingPlugin(ctx)
 	diags.Append(mockingPluginDiags...)
 
@@ -190,6 +205,7 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginReque
 	out := operations.UpdateMockingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		MockingPlugin:  *mockingPlugin,
 	}
 

@@ -376,6 +376,9 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsCreateAise
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticPromptGuardPlugin, aiSemanticPromptGuardPluginDiags := r.ToSharedAiSemanticPromptGuardPlugin(ctx)
 	diags.Append(aiSemanticPromptGuardPluginDiags...)
 
@@ -385,6 +388,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsCreateAise
 
 	out := operations.CreateAisemanticpromptguardPluginRequest{
 		ControlPlaneID:              controlPlaneID,
+		Workspace:                   workspace,
 		AiSemanticPromptGuardPlugin: *aiSemanticPromptGuardPlugin,
 	}
 
@@ -400,9 +404,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsDeleteAise
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAisemanticpromptguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -417,9 +425,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsGetAiseman
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAisemanticpromptguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -434,6 +446,9 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsUpdateAise
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticPromptGuardPlugin, aiSemanticPromptGuardPluginDiags := r.ToSharedAiSemanticPromptGuardPlugin(ctx)
 	diags.Append(aiSemanticPromptGuardPluginDiags...)
 
@@ -444,6 +459,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsUpdateAise
 	out := operations.UpdateAisemanticpromptguardPluginRequest{
 		PluginID:                    pluginID,
 		ControlPlaneID:              controlPlaneID,
+		Workspace:                   workspace,
 		AiSemanticPromptGuardPlugin: *aiSemanticPromptGuardPlugin,
 	}
 

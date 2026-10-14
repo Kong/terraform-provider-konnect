@@ -413,6 +413,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsCreateRequestcall
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestCalloutPlugin, requestCalloutPluginDiags := r.ToSharedRequestCalloutPlugin(ctx)
 	diags.Append(requestCalloutPluginDiags...)
 
@@ -422,6 +425,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsCreateRequestcall
 
 	out := operations.CreateRequestcalloutPluginRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		RequestCalloutPlugin: *requestCalloutPlugin,
 	}
 
@@ -437,9 +441,13 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsDeleteRequestcall
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRequestcalloutPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -454,9 +462,13 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsGetRequestcallout
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRequestcalloutPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -471,6 +483,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcall
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestCalloutPlugin, requestCalloutPluginDiags := r.ToSharedRequestCalloutPlugin(ctx)
 	diags.Append(requestCalloutPluginDiags...)
 
@@ -481,6 +496,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcall
 	out := operations.UpdateRequestcalloutPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		RequestCalloutPlugin: *requestCalloutPlugin,
 	}
 

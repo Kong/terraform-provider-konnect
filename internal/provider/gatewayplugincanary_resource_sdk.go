@@ -122,6 +122,9 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsCreateCanaryPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	canaryPlugin, canaryPluginDiags := r.ToSharedCanaryPlugin(ctx)
 	diags.Append(canaryPluginDiags...)
 
@@ -131,6 +134,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsCreateCanaryPluginRequest
 
 	out := operations.CreateCanaryPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		CanaryPlugin:   *canaryPlugin,
 	}
 
@@ -146,9 +150,13 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsDeleteCanaryPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -163,9 +171,13 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsGetCanaryPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -180,6 +192,9 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsUpdateCanaryPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	canaryPlugin, canaryPluginDiags := r.ToSharedCanaryPlugin(ctx)
 	diags.Append(canaryPluginDiags...)
 
@@ -190,6 +205,7 @@ func (r *GatewayPluginCanaryResourceModel) ToOperationsUpdateCanaryPluginRequest
 	out := operations.UpdateCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		CanaryPlugin:   *canaryPlugin,
 	}
 

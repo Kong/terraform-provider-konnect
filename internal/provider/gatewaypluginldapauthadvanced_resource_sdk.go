@@ -128,6 +128,9 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsCreateLdapautha
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	ldapAuthAdvancedPlugin, ldapAuthAdvancedPluginDiags := r.ToSharedLdapAuthAdvancedPlugin(ctx)
 	diags.Append(ldapAuthAdvancedPluginDiags...)
 
@@ -137,6 +140,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsCreateLdapautha
 
 	out := operations.CreateLdapauthadvancedPluginRequest{
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		LdapAuthAdvancedPlugin: *ldapAuthAdvancedPlugin,
 	}
 
@@ -152,9 +156,13 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsDeleteLdapautha
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteLdapauthadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -169,9 +177,13 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsGetLdapauthadva
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetLdapauthadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -186,6 +198,9 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsUpdateLdapautha
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	ldapAuthAdvancedPlugin, ldapAuthAdvancedPluginDiags := r.ToSharedLdapAuthAdvancedPlugin(ctx)
 	diags.Append(ldapAuthAdvancedPluginDiags...)
 
@@ -196,6 +211,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsUpdateLdapautha
 	out := operations.UpdateLdapauthadvancedPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		LdapAuthAdvancedPlugin: *ldapAuthAdvancedPlugin,
 	}
 

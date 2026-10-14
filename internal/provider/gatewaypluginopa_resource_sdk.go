@@ -110,6 +110,9 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsCreateOpaPluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	opaPlugin, opaPluginDiags := r.ToSharedOpaPlugin(ctx)
 	diags.Append(opaPluginDiags...)
 
@@ -119,6 +122,7 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsCreateOpaPluginRequest(ctx c
 
 	out := operations.CreateOpaPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		OpaPlugin:      *opaPlugin,
 	}
 
@@ -134,9 +138,13 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsDeleteOpaPluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteOpaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -151,9 +159,13 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsGetOpaPluginRequest(ctx cont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetOpaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -168,6 +180,9 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsUpdateOpaPluginRequest(ctx c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	opaPlugin, opaPluginDiags := r.ToSharedOpaPlugin(ctx)
 	diags.Append(opaPluginDiags...)
 
@@ -178,6 +193,7 @@ func (r *GatewayPluginOpaResourceModel) ToOperationsUpdateOpaPluginRequest(ctx c
 	out := operations.UpdateOpaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		OpaPlugin:      *opaPlugin,
 	}
 

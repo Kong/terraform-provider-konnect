@@ -278,6 +278,9 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxyca
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	proxyCacheAdvancedPlugin, proxyCacheAdvancedPluginDiags := r.ToSharedProxyCacheAdvancedPlugin(ctx)
 	diags.Append(proxyCacheAdvancedPluginDiags...)
 
@@ -287,6 +290,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxyca
 
 	out := operations.CreateProxycacheadvancedPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		ProxyCacheAdvancedPlugin: *proxyCacheAdvancedPlugin,
 	}
 
@@ -302,9 +306,13 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsDeleteProxyca
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteProxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -319,9 +327,13 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsGetProxycache
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetProxycacheadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -336,6 +348,9 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxyca
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	proxyCacheAdvancedPlugin, proxyCacheAdvancedPluginDiags := r.ToSharedProxyCacheAdvancedPlugin(ctx)
 	diags.Append(proxyCacheAdvancedPluginDiags...)
 
@@ -346,6 +361,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxyca
 	out := operations.UpdateProxycacheadvancedPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		ProxyCacheAdvancedPlugin: *proxyCacheAdvancedPlugin,
 	}
 

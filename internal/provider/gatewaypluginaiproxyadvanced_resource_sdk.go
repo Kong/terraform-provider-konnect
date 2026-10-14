@@ -614,6 +614,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadv
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiProxyAdvancedPlugin, aiProxyAdvancedPluginDiags := r.ToSharedAiProxyAdvancedPlugin(ctx)
 	diags.Append(aiProxyAdvancedPluginDiags...)
 
@@ -623,6 +626,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadv
 
 	out := operations.CreateAiproxyadvancedPluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiProxyAdvancedPlugin: *aiProxyAdvancedPlugin,
 	}
 
@@ -638,9 +642,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsDeleteAiproxyadv
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiproxyadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -655,9 +663,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsGetAiproxyadvanc
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiproxyadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -672,6 +684,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadv
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiProxyAdvancedPlugin, aiProxyAdvancedPluginDiags := r.ToSharedAiProxyAdvancedPlugin(ctx)
 	diags.Append(aiProxyAdvancedPluginDiags...)
 
@@ -682,6 +697,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadv
 	out := operations.UpdateAiproxyadvancedPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiProxyAdvancedPlugin: *aiProxyAdvancedPlugin,
 	}
 

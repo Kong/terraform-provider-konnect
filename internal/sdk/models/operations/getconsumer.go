@@ -13,6 +13,8 @@ type GetConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (g GetConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ConsumerId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ConsumerId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (g *GetConsumerRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return g.ControlPlaneID
+}
+
+func (g *GetConsumerRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetConsumerResponse struct {

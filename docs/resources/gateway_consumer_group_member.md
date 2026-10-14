@@ -17,6 +17,7 @@ resource "konnect_gateway_consumer_group_member" "my_gatewayconsumergroupmember"
   consumer_group_id = "cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b"
   consumer_id       = "cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b"
   control_plane_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  workspace         = "team-payments"
 }
 ```
 
@@ -31,3 +32,33 @@ resource "konnect_gateway_consumer_group_member" "my_gatewayconsumergroupmember"
 ### Optional
 
 - `consumer_id` (String) Requires replacement if changed.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
+
+### Read-Only
+
+- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
+- `consumers` (Attributes List) (see [below for nested schema](#nestedatt--consumers))
+
+<a id="nestedatt--consumer_group"></a>
+### Nested Schema for `consumer_group`
+
+Read-Only:
+
+- `created_at` (Number) Unix epoch when the resource was created.
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) The name of the consumer group.
+- `tags` (List of String) A set of strings representing tags.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
+
+
+<a id="nestedatt--consumers"></a>
+### Nested Schema for `consumers`
+
+Read-Only:
+
+- `created_at` (Number) Unix epoch when the resource was created.
+- `custom_id` (String) Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `tags` (List of String) An optional set of strings associated with the Consumer for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
+- `username` (String) The unique username of the Consumer. You must send either this field or `custom_id` with the request.

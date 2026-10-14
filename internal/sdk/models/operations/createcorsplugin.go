@@ -10,8 +10,10 @@ import (
 
 type CreateCorsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CorsPlugin     shared.CorsPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace  string            `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	CorsPlugin shared.CorsPlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateCorsPluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateCorsPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateCorsPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "CorsPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "CorsPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateCorsPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateCorsPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateCorsPluginRequest) GetCorsPlugin() shared.CorsPlugin {
