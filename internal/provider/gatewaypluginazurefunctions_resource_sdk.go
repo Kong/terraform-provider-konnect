@@ -111,6 +111,9 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsCreateAzurefuncti
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	azureFunctionsPlugin, azureFunctionsPluginDiags := r.ToSharedAzureFunctionsPlugin(ctx)
 	diags.Append(azureFunctionsPluginDiags...)
 
@@ -120,6 +123,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsCreateAzurefuncti
 
 	out := operations.CreateAzurefunctionsPluginRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		AzureFunctionsPlugin: *azureFunctionsPlugin,
 	}
 
@@ -135,9 +139,13 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsDeleteAzurefuncti
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAzurefunctionsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -152,9 +160,13 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsGetAzurefunctions
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAzurefunctionsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -169,6 +181,9 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefuncti
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	azureFunctionsPlugin, azureFunctionsPluginDiags := r.ToSharedAzureFunctionsPlugin(ctx)
 	diags.Append(azureFunctionsPluginDiags...)
 
@@ -179,6 +194,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefuncti
 	out := operations.UpdateAzurefunctionsPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		AzureFunctionsPlugin: *azureFunctionsPlugin,
 	}
 

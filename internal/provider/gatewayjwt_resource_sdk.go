@@ -46,6 +46,9 @@ func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerRequest(ctx c
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jwtWithoutParents, jwtWithoutParentsDiags := r.ToSharedJWTWithoutParents(ctx)
 	diags.Append(jwtWithoutParentsDiags...)
 
@@ -56,6 +59,7 @@ func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerRequest(ctx c
 	out := operations.CreateJwtWithConsumerRequest{
 		ControlPlaneID:    controlPlaneID,
 		ConsumerID:        consumerID,
+		Workspace:         workspace,
 		JWTWithoutParents: jwtWithoutParents,
 	}
 
@@ -74,10 +78,14 @@ func (r *GatewayJWTResourceModel) ToOperationsDeleteJwtWithConsumerRequest(ctx c
 	var jwtID string
 	jwtID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteJwtWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		JWTID:          jwtID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -95,10 +103,14 @@ func (r *GatewayJWTResourceModel) ToOperationsGetJwtWithConsumerRequest(ctx cont
 	var jwtID string
 	jwtID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetJwtWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		JWTID:          jwtID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

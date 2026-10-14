@@ -32,6 +32,7 @@ import (
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 	speakeasy_float64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/float64validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
@@ -40,7 +41,7 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayPartialResource{}
-var _ resource.ResourceWithImportState = &GatewayPartialResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayPartialResource{}
 
 func NewGatewayPartialResource() resource.Resource {
 	return &GatewayPartialResource{}
@@ -64,6 +65,7 @@ type GatewayPartialResourceModel struct {
 	RedisEe        *tfTypes.PartialRedisEe    `queryParam:"inline" tfsdk:"redis_ee"`
 	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 	Vectordb       *tfTypes.PartialVectordb   `queryParam:"inline" tfsdk:"vectordb"`
+	Workspace      types.String               `tfsdk:"workspace"`
 }
 
 func (r *GatewayPartialResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,6 +75,7 @@ func (r *GatewayPartialResource) Metadata(ctx context.Context, req resource.Meta
 func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPartial Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -2414,6 +2417,15 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 					}...),
 				},
 			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
+			},
 		},
 	}
 }
@@ -2662,12 +2674,13 @@ func (r *GatewayPartialResource) ImportState(ctx context.Context, req resource.I
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ControlPlaneID string `json:"control_plane_id"`
+		ID             string  `json:"id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -2681,4 +2694,15 @@ func (r *GatewayPartialResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayPartialResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewaypartialStateUpgraderV0},
+	}
 }

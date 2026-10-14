@@ -394,6 +394,9 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsCreateKafkaconsumeP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaConsumePlugin, kafkaConsumePluginDiags := r.ToSharedKafkaConsumePlugin(ctx)
 	diags.Append(kafkaConsumePluginDiags...)
 
@@ -403,6 +406,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsCreateKafkaconsumeP
 
 	out := operations.CreateKafkaconsumePluginRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		KafkaConsumePlugin: *kafkaConsumePlugin,
 	}
 
@@ -418,9 +422,13 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsDeleteKafkaconsumeP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteKafkaconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -435,9 +443,13 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsGetKafkaconsumePlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetKafkaconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -452,6 +464,9 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsUpdateKafkaconsumeP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaConsumePlugin, kafkaConsumePluginDiags := r.ToSharedKafkaConsumePlugin(ctx)
 	diags.Append(kafkaConsumePluginDiags...)
 
@@ -462,6 +477,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsUpdateKafkaconsumeP
 	out := operations.UpdateKafkaconsumePluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		KafkaConsumePlugin: *kafkaConsumePlugin,
 	}
 

@@ -293,6 +293,9 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToOperationsCreateEnt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	entitlementEnforcementPlugin, entitlementEnforcementPluginDiags := r.ToSharedEntitlementEnforcementPlugin(ctx)
 	diags.Append(entitlementEnforcementPluginDiags...)
 
@@ -302,6 +305,7 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToOperationsCreateEnt
 
 	out := operations.CreateEntitlementenforcementPluginRequest{
 		ControlPlaneID:               controlPlaneID,
+		Workspace:                    workspace,
 		EntitlementEnforcementPlugin: *entitlementEnforcementPlugin,
 	}
 
@@ -317,9 +321,13 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToOperationsDeleteEnt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteEntitlementenforcementPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -334,9 +342,13 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToOperationsGetEntitl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetEntitlementenforcementPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -351,6 +363,9 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToOperationsUpdateEnt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	entitlementEnforcementPlugin, entitlementEnforcementPluginDiags := r.ToSharedEntitlementEnforcementPlugin(ctx)
 	diags.Append(entitlementEnforcementPluginDiags...)
 
@@ -361,6 +376,7 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToOperationsUpdateEnt
 	out := operations.UpdateEntitlementenforcementPluginRequest{
 		PluginID:                     pluginID,
 		ControlPlaneID:               controlPlaneID,
+		Workspace:                    workspace,
 		EntitlementEnforcementPlugin: *entitlementEnforcementPlugin,
 	}
 

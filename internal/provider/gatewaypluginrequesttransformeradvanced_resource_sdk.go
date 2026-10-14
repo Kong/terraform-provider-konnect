@@ -225,6 +225,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreat
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestTransformerAdvancedPlugin, requestTransformerAdvancedPluginDiags := r.ToSharedRequestTransformerAdvancedPlugin(ctx)
 	diags.Append(requestTransformerAdvancedPluginDiags...)
 
@@ -234,6 +237,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreat
 
 	out := operations.CreateRequesttransformeradvancedPluginRequest{
 		ControlPlaneID:                   controlPlaneID,
+		Workspace:                        workspace,
 		RequestTransformerAdvancedPlugin: *requestTransformerAdvancedPlugin,
 	}
 
@@ -249,9 +253,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDelet
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRequesttransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -266,9 +274,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRequesttransformeradvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -283,6 +295,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdat
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestTransformerAdvancedPlugin, requestTransformerAdvancedPluginDiags := r.ToSharedRequestTransformerAdvancedPlugin(ctx)
 	diags.Append(requestTransformerAdvancedPluginDiags...)
 
@@ -293,6 +308,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdat
 	out := operations.UpdateRequesttransformeradvancedPluginRequest{
 		PluginID:                         pluginID,
 		ControlPlaneID:                   controlPlaneID,
+		Workspace:                        workspace,
 		RequestTransformerAdvancedPlugin: *requestTransformerAdvancedPlugin,
 	}
 

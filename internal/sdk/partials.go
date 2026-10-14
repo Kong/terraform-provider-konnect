@@ -31,8 +31,8 @@ func newPartials(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hoo
 	}
 }
 
-// CreatePartial - Create a new Partial
-// Create a new Partial
+// CreatePartial - Create a new Partial in a workspace
+// Create a new Partial in a workspace
 func (s *Partials) CreatePartial(ctx context.Context, request operations.CreatePartialRequest, opts ...operations.Option) (*operations.CreatePartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -52,7 +52,7 @@ func (s *Partials) CreatePartial(ctx context.Context, request operations.CreateP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -258,8 +258,8 @@ func (s *Partials) CreatePartial(ctx context.Context, request operations.CreateP
 
 }
 
-// DeletePartial - Delete a Partial
-// Delete a Partial
+// DeletePartial - Delete a Partial in a workspace
+// Delete a Partial in a workspace
 func (s *Partials) DeletePartial(ctx context.Context, request operations.DeletePartialRequest, opts ...operations.Option) (*operations.DeletePartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -279,7 +279,7 @@ func (s *Partials) DeletePartial(ctx context.Context, request operations.DeleteP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials/{PartialId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -461,8 +461,8 @@ func (s *Partials) DeletePartial(ctx context.Context, request operations.DeleteP
 
 }
 
-// GetPartial - Get a Partial
-// Get a Partial using ID.
+// GetPartial - Get a Partial in a workspace
+// Get a Partial using ID in a workspace.
 func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartialRequest, opts ...operations.Option) (*operations.GetPartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -482,7 +482,7 @@ func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartial
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials/{PartialId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -683,8 +683,8 @@ func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartial
 
 }
 
-// UpsertPartial - Upsert a Partial
-// Create or Update Partial using ID.
+// UpsertPartial - Upsert a Partial in a workspace
+// Create or Update Partial using ID in a workspace.
 func (s *Partials) UpsertPartial(ctx context.Context, request operations.UpsertPartialRequest, opts ...operations.Option) (*operations.UpsertPartialResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -704,7 +704,7 @@ func (s *Partials) UpsertPartial(ctx context.Context, request operations.UpsertP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/partials/{PartialId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

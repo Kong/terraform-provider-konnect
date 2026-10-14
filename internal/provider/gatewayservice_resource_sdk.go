@@ -88,8 +88,11 @@ func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	service, serviceDiags := r.ToSharedService(ctx)
-	diags.Append(serviceDiags...)
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	serviceRequest, serviceRequestDiags := r.ToSharedServiceRequest(ctx)
+	diags.Append(serviceRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -97,7 +100,8 @@ func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx conte
 
 	out := operations.CreateServiceRequest{
 		ControlPlaneID: controlPlaneID,
-		Service:        *service,
+		Workspace:      workspace,
+		ServiceRequest: *serviceRequest,
 	}
 
 	return &out, diags
@@ -112,9 +116,13 @@ func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceRequest(ctx conte
 	var serviceID string
 	serviceID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteServiceRequest{
 		ControlPlaneID: controlPlaneID,
 		ServiceID:      serviceID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -129,9 +137,13 @@ func (r *GatewayServiceResourceModel) ToOperationsGetServiceRequest(ctx context.
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetServiceRequest{
 		ServiceID:      serviceID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -146,8 +158,11 @@ func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	service, serviceDiags := r.ToSharedService(ctx)
-	diags.Append(serviceDiags...)
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
+	serviceRequest, serviceRequestDiags := r.ToSharedServiceRequest(ctx)
+	diags.Append(serviceRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -156,13 +171,14 @@ func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx conte
 	out := operations.UpsertServiceRequest{
 		ServiceID:      serviceID,
 		ControlPlaneID: controlPlaneID,
-		Service:        *service,
+		Workspace:      workspace,
+		ServiceRequest: *serviceRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*shared.Service, diag.Diagnostics) {
+func (r *GatewayServiceResourceModel) ToSharedServiceRequest(ctx context.Context) (*shared.ServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var caCertificates []string
@@ -196,20 +212,39 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 	} else {
 		createdAt = nil
 	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
 	}
-	var host string
-	host = r.Host.ValueString()
-
+	host := new(string)
+	if !r.Host.IsUnknown() && !r.Host.IsNull() {
+		*host = r.Host.ValueString()
+	} else {
+		host = nil
+	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id1 = r.ID.ValueString()
 	} else {
 		id1 = nil
+	}
+	var managedBy map[string]string
+	if r.ManagedBy != nil {
+		managedBy = make(map[string]string)
+		for managedByKey := range r.ManagedBy {
+			var managedByInst string
+			managedByInst = r.ManagedBy[managedByKey].ValueString()
+
+			managedBy[managedByKey] = managedByInst
+		}
 	}
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
@@ -229,9 +264,9 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 	} else {
 		port = nil
 	}
-	protocol := new(shared.ServiceProtocol)
+	protocol := new(shared.ServiceRequestProtocol)
 	if !r.Protocol.IsUnknown() && !r.Protocol.IsNull() {
-		*protocol = shared.ServiceProtocol(r.Protocol.ValueString())
+		*protocol = shared.ServiceRequestProtocol(r.Protocol.ValueString())
 	} else {
 		protocol = nil
 	}
@@ -293,20 +328,28 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 	} else {
 		updatedAt = nil
 	}
+	url := new(string)
+	if !r.URL.IsUnknown() && !r.URL.IsNull() {
+		*url = r.URL.ValueString()
+	} else {
+		url = nil
+	}
 	writeTimeout := new(int64)
 	if !r.WriteTimeout.IsUnknown() && !r.WriteTimeout.IsNull() {
 		*writeTimeout = r.WriteTimeout.ValueInt64()
 	} else {
 		writeTimeout = nil
 	}
-	out := shared.Service{
+	out := shared.ServiceRequest{
 		CaCertificates:    caCertificates,
 		ClientCertificate: clientCertificate,
 		ConnectTimeout:    connectTimeout,
 		CreatedAt:         createdAt,
+		Description:       description,
 		Enabled:           enabled,
 		Host:              host,
 		ID:                id1,
+		ManagedBy:         managedBy,
 		Name:              name,
 		Path:              path,
 		Port:              port,
@@ -318,6 +361,7 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 		TLSVerify:         tlsVerify,
 		TLSVerifyDepth:    tlsVerifyDepth,
 		UpdatedAt:         updatedAt,
+		URL:               url,
 		WriteTimeout:      writeTimeout,
 	}
 

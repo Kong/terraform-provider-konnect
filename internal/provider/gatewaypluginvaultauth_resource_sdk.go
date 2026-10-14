@@ -111,6 +111,9 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	vaultAuthPlugin, vaultAuthPluginDiags := r.ToSharedVaultAuthPlugin(ctx)
 	diags.Append(vaultAuthPluginDiags...)
 
@@ -120,6 +123,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginR
 
 	out := operations.CreateVaultauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		VaultAuthPlugin: *vaultAuthPlugin,
 	}
 
@@ -135,9 +139,13 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteVaultauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -152,9 +160,13 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetVaultauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -169,6 +181,9 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	vaultAuthPlugin, vaultAuthPluginDiags := r.ToSharedVaultAuthPlugin(ctx)
 	diags.Append(vaultAuthPluginDiags...)
 
@@ -179,6 +194,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginR
 	out := operations.UpdateVaultauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		VaultAuthPlugin: *vaultAuthPlugin,
 	}
 

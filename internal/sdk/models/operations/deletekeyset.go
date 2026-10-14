@@ -13,6 +13,8 @@ type DeleteKeySetRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the KeySet to lookup
 	KeySetID string `pathParam:"style=simple,explode=false,name=KeySetId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteKeySetRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (d DeleteKeySetRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteKeySetRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "KeySetId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "KeySetId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (d *DeleteKeySetRequest) GetKeySetID() string {
 		return ""
 	}
 	return d.KeySetID
+}
+
+func (d *DeleteKeySetRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteKeySetResponse struct {

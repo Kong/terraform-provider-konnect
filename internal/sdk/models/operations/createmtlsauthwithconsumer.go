@@ -13,6 +13,8 @@ type CreateMtlsAuthWithConsumerRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Consumer ID for nested entities
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of new MTLS-auth credential for creation
 	MTLSAuthWithoutParents shared.MTLSAuthWithoutParents `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (c CreateMtlsAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateMtlsAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "MTLSAuthWithoutParents"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "workspace", "MTLSAuthWithoutParents"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (c *CreateMtlsAuthWithConsumerRequest) GetConsumerID() string {
 		return ""
 	}
 	return c.ConsumerID
+}
+
+func (c *CreateMtlsAuthWithConsumerRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateMtlsAuthWithConsumerRequest) GetMTLSAuthWithoutParents() shared.MTLSAuthWithoutParents {

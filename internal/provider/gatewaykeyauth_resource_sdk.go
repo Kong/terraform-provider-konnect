@@ -40,6 +40,9 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerReque
 	var consumerID string
 	consumerID = r.ConsumerID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	keyAuthWithoutParents, keyAuthWithoutParentsDiags := r.ToSharedKeyAuthWithoutParents(ctx)
 	diags.Append(keyAuthWithoutParentsDiags...)
 
@@ -50,6 +53,7 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerReque
 	out := operations.CreateKeyAuthWithConsumerRequest{
 		ControlPlaneID:        controlPlaneID,
 		ConsumerID:            consumerID,
+		Workspace:             workspace,
 		KeyAuthWithoutParents: keyAuthWithoutParents,
 	}
 
@@ -68,10 +72,14 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsDeleteKeyAuthWithConsumerReque
 	var keyAuthID string
 	keyAuthID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteKeyAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		KeyAuthID:      keyAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -89,10 +97,14 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsGetKeyAuthWithConsumerRequest(
 	var keyAuthID string
 	keyAuthID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetKeyAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
 		KeyAuthID:      keyAuthID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

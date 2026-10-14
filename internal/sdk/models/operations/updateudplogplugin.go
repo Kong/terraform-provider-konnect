@@ -12,8 +12,10 @@ type UpdateUdplogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	UDPLogPlugin   shared.UDPLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace    string              `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	UDPLogPlugin shared.UDPLogPlugin `request:"mediaType=application/json"`
 }
 
 func (u UpdateUdplogPluginRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (u UpdateUdplogPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateUdplogPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "UdpLogPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "UdpLogPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateUdplogPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateUdplogPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateUdplogPluginRequest) GetUDPLogPlugin() shared.UDPLogPlugin {

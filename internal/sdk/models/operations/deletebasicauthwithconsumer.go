@@ -14,6 +14,8 @@ type DeleteBasicAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the Basic-auth credential to lookup
 	BasicAuthID string `pathParam:"style=simple,explode=false,name=BasicAuthId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteBasicAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (d DeleteBasicAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteBasicAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "BasicAuthId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "BasicAuthId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -46,6 +48,13 @@ func (d *DeleteBasicAuthWithConsumerRequest) GetBasicAuthID() string {
 		return ""
 	}
 	return d.BasicAuthID
+}
+
+func (d *DeleteBasicAuthWithConsumerRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteBasicAuthWithConsumerResponse struct {

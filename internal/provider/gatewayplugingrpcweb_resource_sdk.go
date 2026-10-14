@@ -108,6 +108,9 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsCreateGrpcwebPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	grpcWebPlugin, grpcWebPluginDiags := r.ToSharedGrpcWebPlugin(ctx)
 	diags.Append(grpcWebPluginDiags...)
 
@@ -117,6 +120,7 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsCreateGrpcwebPluginReque
 
 	out := operations.CreateGrpcwebPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		GrpcWebPlugin:  *grpcWebPlugin,
 	}
 
@@ -132,9 +136,13 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsDeleteGrpcwebPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteGrpcwebPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -149,9 +157,13 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsGetGrpcwebPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetGrpcwebPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -166,6 +178,9 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsUpdateGrpcwebPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	grpcWebPlugin, grpcWebPluginDiags := r.ToSharedGrpcWebPlugin(ctx)
 	diags.Append(grpcWebPluginDiags...)
 
@@ -176,6 +191,7 @@ func (r *GatewayPluginGrpcWebResourceModel) ToOperationsUpdateGrpcwebPluginReque
 	out := operations.UpdateGrpcwebPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		GrpcWebPlugin:  *grpcWebPlugin,
 	}
 

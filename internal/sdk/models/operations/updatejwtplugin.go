@@ -12,8 +12,10 @@ type UpdateJwtPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	JwtPlugin      shared.JwtPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string           `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	JwtPlugin shared.JwtPlugin `request:"mediaType=application/json"`
 }
 
 func (u UpdateJwtPluginRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +23,7 @@ func (u UpdateJwtPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateJwtPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "JwtPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "JwtPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateJwtPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateJwtPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateJwtPluginRequest) GetJwtPlugin() shared.JwtPlugin {
