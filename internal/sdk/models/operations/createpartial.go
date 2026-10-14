@@ -11,6 +11,8 @@ import (
 type CreatePartialRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the new Partial for creation
 	Partial shared.Partial `request:"mediaType=application/json"`
 }
@@ -20,7 +22,7 @@ func (c CreatePartialRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatePartialRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "Partial"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "Partial"}); err != nil {
 		return err
 	}
 	return nil
@@ -31,6 +33,13 @@ func (c *CreatePartialRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreatePartialRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreatePartialRequest) GetPartial() shared.Partial {

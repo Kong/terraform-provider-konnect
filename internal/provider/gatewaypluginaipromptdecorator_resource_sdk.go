@@ -158,6 +158,9 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsCreateAiprompt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptDecoratorPlugin, aiPromptDecoratorPluginDiags := r.ToSharedAiPromptDecoratorPlugin(ctx)
 	diags.Append(aiPromptDecoratorPluginDiags...)
 
@@ -167,6 +170,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsCreateAiprompt
 
 	out := operations.CreateAipromptdecoratorPluginRequest{
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		AiPromptDecoratorPlugin: *aiPromptDecoratorPlugin,
 	}
 
@@ -182,9 +186,13 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsDeleteAiprompt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAipromptdecoratorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -199,9 +207,13 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsGetAipromptdec
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAipromptdecoratorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -216,6 +228,9 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsUpdateAiprompt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptDecoratorPlugin, aiPromptDecoratorPluginDiags := r.ToSharedAiPromptDecoratorPlugin(ctx)
 	diags.Append(aiPromptDecoratorPluginDiags...)
 
@@ -226,6 +241,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsUpdateAiprompt
 	out := operations.UpdateAipromptdecoratorPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,
+		Workspace:               workspace,
 		AiPromptDecoratorPlugin: *aiPromptDecoratorPlugin,
 	}
 

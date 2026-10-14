@@ -353,6 +353,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAir
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRateLimitingAdvancedPlugin, aiRateLimitingAdvancedPluginDiags := r.ToSharedAiRateLimitingAdvancedPlugin(ctx)
 	diags.Append(aiRateLimitingAdvancedPluginDiags...)
 
@@ -362,6 +365,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAir
 
 	out := operations.CreateAiratelimitingadvancedPluginRequest{
 		ControlPlaneID:               controlPlaneID,
+		Workspace:                    workspace,
 		AiRateLimitingAdvancedPlugin: *aiRateLimitingAdvancedPlugin,
 	}
 
@@ -377,9 +381,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsDeleteAir
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -394,9 +402,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsGetAirate
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiratelimitingadvancedPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -411,6 +423,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAir
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRateLimitingAdvancedPlugin, aiRateLimitingAdvancedPluginDiags := r.ToSharedAiRateLimitingAdvancedPlugin(ctx)
 	diags.Append(aiRateLimitingAdvancedPluginDiags...)
 
@@ -421,6 +436,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAir
 	out := operations.UpdateAiratelimitingadvancedPluginRequest{
 		PluginID:                     pluginID,
 		ControlPlaneID:               controlPlaneID,
+		Workspace:                    workspace,
 		AiRateLimitingAdvancedPlugin: *aiRateLimitingAdvancedPlugin,
 	}
 

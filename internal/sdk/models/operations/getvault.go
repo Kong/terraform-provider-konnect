@@ -13,6 +13,8 @@ type GetVaultRequest struct {
 	VaultID string `pathParam:"style=simple,explode=false,name=VaultId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetVaultRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (g GetVaultRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetVaultRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"VaultId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"VaultId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (g *GetVaultRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return g.ControlPlaneID
+}
+
+func (g *GetVaultRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetVaultResponse struct {

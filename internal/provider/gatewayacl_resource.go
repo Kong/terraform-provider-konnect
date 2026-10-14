@@ -13,17 +13,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	stateupgraders "github.com/kong/terraform-provider-konnect/v3/internal/stateupgraders"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &GatewayACLResource{}
-var _ resource.ResourceWithImportState = &GatewayACLResource{}
+var _ resource.ResourceWithUpgradeState = &GatewayACLResource{}
 
 func NewGatewayACLResource() resource.Resource {
 	return &GatewayACLResource{}
@@ -43,6 +45,7 @@ type GatewayACLResourceModel struct {
 	Group          types.String   `tfsdk:"group"`
 	ID             types.String   `tfsdk:"id"`
 	Tags           []types.String `tfsdk:"tags"`
+	Workspace      types.String   `tfsdk:"workspace"`
 }
 
 func (r *GatewayACLResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -52,6 +55,7 @@ func (r *GatewayACLResource) Metadata(ctx context.Context, req resource.Metadata
 func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayACL Resource",
+		Version:             1,
 		Attributes: map[string]schema.Attribute{
 			"consumer_id": schema.StringAttribute{
 				Required: true,
@@ -100,6 +104,15 @@ func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags. Requires replacement if changed.`,
+			},
+			"workspace": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`default`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The name of the workspace. Default: "default"; Requires replacement if changed.`,
 			},
 		},
 	}
@@ -313,13 +326,14 @@ func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.Impor
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
-		ConsumerID     string `json:"consumer_id"`
-		ControlPlaneID string `json:"control_plane_id"`
+		ID             string  `json:"id"`
+		ConsumerID     string  `json:"consumer_id"`
+		ControlPlaneID string  `json:"control_plane_id"`
+		Workspace      *string `json:"workspace"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21", "workspace": "team-payments"}': `+err.Error())
 		return
 	}
 
@@ -338,4 +352,15 @@ func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if data.Workspace == nil {
+		var workspaceDefault string = `default`
+		data.Workspace = &workspaceDefault
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("workspace"), data.Workspace)...)
+}
+
+func (r *GatewayACLResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: {StateUpgrader: stateupgraders.GatewayaclStateUpgraderV0},
+	}
 }

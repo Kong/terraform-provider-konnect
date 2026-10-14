@@ -385,6 +385,9 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsCreateAiraginjecto
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRagInjectorPlugin, aiRagInjectorPluginDiags := r.ToSharedAiRagInjectorPlugin(ctx)
 	diags.Append(aiRagInjectorPluginDiags...)
 
@@ -394,6 +397,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsCreateAiraginjecto
 
 	out := operations.CreateAiraginjectorPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiRagInjectorPlugin: *aiRagInjectorPlugin,
 	}
 
@@ -409,9 +413,13 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsDeleteAiraginjecto
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiraginjectorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -426,9 +434,13 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsGetAiraginjectorPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiraginjectorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -443,6 +455,9 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsUpdateAiraginjecto
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiRagInjectorPlugin, aiRagInjectorPluginDiags := r.ToSharedAiRagInjectorPlugin(ctx)
 	diags.Append(aiRagInjectorPluginDiags...)
 
@@ -453,6 +468,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsUpdateAiraginjecto
 	out := operations.UpdateAiraginjectorPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		AiRagInjectorPlugin: *aiRagInjectorPlugin,
 	}
 

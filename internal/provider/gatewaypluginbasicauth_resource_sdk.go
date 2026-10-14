@@ -200,6 +200,9 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsCreateBasicauthPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	basicAuthPlugin, basicAuthPluginDiags := r.ToSharedBasicAuthPlugin(ctx)
 	diags.Append(basicAuthPluginDiags...)
 
@@ -209,6 +212,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsCreateBasicauthPluginR
 
 	out := operations.CreateBasicauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		BasicAuthPlugin: *basicAuthPlugin,
 	}
 
@@ -224,9 +228,13 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsDeleteBasicauthPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteBasicauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -241,9 +249,13 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsGetBasicauthPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetBasicauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -258,6 +270,9 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsUpdateBasicauthPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	basicAuthPlugin, basicAuthPluginDiags := r.ToSharedBasicAuthPlugin(ctx)
 	diags.Append(basicAuthPluginDiags...)
 
@@ -268,6 +283,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToOperationsUpdateBasicauthPluginR
 	out := operations.UpdateBasicauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		BasicAuthPlugin: *basicAuthPlugin,
 	}
 

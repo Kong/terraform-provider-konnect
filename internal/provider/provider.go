@@ -373,6 +373,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayTargetResource,
 		NewGatewayUpstreamResource,
 		NewGatewayVaultResource,
+		NewGatewayWorkspaceResource,
 		NewIdentityAuthServerResource,
 		NewIdentityAuthServerClaimResource,
 		NewIdentityAuthServerClientResource,

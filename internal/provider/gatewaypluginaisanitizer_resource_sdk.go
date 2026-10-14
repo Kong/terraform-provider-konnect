@@ -150,6 +150,9 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsCreateAisanitizerPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSanitizerPlugin, aiSanitizerPluginDiags := r.ToSharedAiSanitizerPlugin(ctx)
 	diags.Append(aiSanitizerPluginDiags...)
 
@@ -159,6 +162,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsCreateAisanitizerPlu
 
 	out := operations.CreateAisanitizerPluginRequest{
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AiSanitizerPlugin: *aiSanitizerPlugin,
 	}
 
@@ -174,9 +178,13 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsDeleteAisanitizerPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAisanitizerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -191,9 +199,13 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsGetAisanitizerPlugin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAisanitizerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -208,6 +220,9 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsUpdateAisanitizerPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSanitizerPlugin, aiSanitizerPluginDiags := r.ToSharedAiSanitizerPlugin(ctx)
 	diags.Append(aiSanitizerPluginDiags...)
 
@@ -218,6 +233,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsUpdateAisanitizerPlu
 	out := operations.UpdateAisanitizerPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		AiSanitizerPlugin: *aiSanitizerPlugin,
 	}
 

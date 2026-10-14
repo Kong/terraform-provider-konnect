@@ -391,6 +391,9 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsCreateConfluent
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	confluentConsumePlugin, confluentConsumePluginDiags := r.ToSharedConfluentConsumePlugin(ctx)
 	diags.Append(confluentConsumePluginDiags...)
 
@@ -400,6 +403,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsCreateConfluent
 
 	out := operations.CreateConfluentconsumePluginRequest{
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		ConfluentConsumePlugin: *confluentConsumePlugin,
 	}
 
@@ -415,9 +419,13 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsDeleteConfluent
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteConfluentconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -432,9 +440,13 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsGetConfluentcon
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetConfluentconsumePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -449,6 +461,9 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsUpdateConfluent
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	confluentConsumePlugin, confluentConsumePluginDiags := r.ToSharedConfluentConsumePlugin(ctx)
 	diags.Append(confluentConsumePluginDiags...)
 
@@ -459,6 +474,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsUpdateConfluent
 	out := operations.UpdateConfluentconsumePluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		ConfluentConsumePlugin: *confluentConsumePlugin,
 	}
 

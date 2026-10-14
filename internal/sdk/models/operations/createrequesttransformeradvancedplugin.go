@@ -10,7 +10,9 @@ import (
 
 type CreateRequesttransformeradvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                   string                                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                        string                                  `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	RequestTransformerAdvancedPlugin shared.RequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateRequesttransformeradvancedPluginRequest) MarshalJSON() ([]byte, er
 }
 
 func (c *CreateRequesttransformeradvancedPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "RequestTransformerAdvancedPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "RequestTransformerAdvancedPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateRequesttransformeradvancedPluginRequest) GetControlPlaneID() stri
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateRequesttransformeradvancedPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateRequesttransformeradvancedPluginRequest) GetRequestTransformerAdvancedPlugin() shared.RequestTransformerAdvancedPlugin {

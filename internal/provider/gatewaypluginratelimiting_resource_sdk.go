@@ -227,6 +227,9 @@ func (r *GatewayPluginRateLimitingResourceModel) ToOperationsCreateRatelimitingP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	rateLimitingPlugin, rateLimitingPluginDiags := r.ToSharedRateLimitingPlugin(ctx)
 	diags.Append(rateLimitingPluginDiags...)
 
@@ -236,6 +239,7 @@ func (r *GatewayPluginRateLimitingResourceModel) ToOperationsCreateRatelimitingP
 
 	out := operations.CreateRatelimitingPluginRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		RateLimitingPlugin: *rateLimitingPlugin,
 	}
 
@@ -251,9 +255,13 @@ func (r *GatewayPluginRateLimitingResourceModel) ToOperationsDeleteRatelimitingP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRatelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -268,9 +276,13 @@ func (r *GatewayPluginRateLimitingResourceModel) ToOperationsGetRatelimitingPlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRatelimitingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -285,6 +297,9 @@ func (r *GatewayPluginRateLimitingResourceModel) ToOperationsUpdateRatelimitingP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	rateLimitingPlugin, rateLimitingPluginDiags := r.ToSharedRateLimitingPlugin(ctx)
 	diags.Append(rateLimitingPluginDiags...)
 
@@ -295,6 +310,7 @@ func (r *GatewayPluginRateLimitingResourceModel) ToOperationsUpdateRatelimitingP
 	out := operations.UpdateRatelimitingPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		RateLimitingPlugin: *rateLimitingPlugin,
 	}
 

@@ -10,8 +10,10 @@ import (
 
 type CreateSessionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	SessionPlugin  shared.SessionPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace     string               `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	SessionPlugin shared.SessionPlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateSessionPluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateSessionPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateSessionPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "SessionPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "SessionPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateSessionPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateSessionPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateSessionPluginRequest) GetSessionPlugin() shared.SessionPlugin {

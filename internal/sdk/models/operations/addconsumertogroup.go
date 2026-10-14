@@ -4,6 +4,7 @@ package operations
 
 import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -33,8 +34,10 @@ type AddConsumerToGroupRequest struct {
 	// The UUID or name of the consumer group
 	ConsumerGroupID string `pathParam:"style=simple,explode=false,name=ConsumerGroupId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RequestBody    *AddConsumerToGroupRequestBody `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace   string                         `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	RequestBody *AddConsumerToGroupRequestBody `request:"mediaType=application/json"`
 }
 
 func (a AddConsumerToGroupRequest) MarshalJSON() ([]byte, error) {
@@ -42,7 +45,7 @@ func (a AddConsumerToGroupRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddConsumerToGroupRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ConsumerGroupId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ConsumerGroupId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -62,11 +65,49 @@ func (a *AddConsumerToGroupRequest) GetControlPlaneID() string {
 	return a.ControlPlaneID
 }
 
+func (a *AddConsumerToGroupRequest) GetWorkspace() string {
+	if a == nil {
+		return ""
+	}
+	return a.Workspace
+}
+
 func (a *AddConsumerToGroupRequest) GetRequestBody() *AddConsumerToGroupRequestBody {
 	if a == nil {
 		return nil
 	}
 	return a.RequestBody
+}
+
+// AddConsumerToGroupResponseBody - Consumer added to group
+type AddConsumerToGroupResponseBody struct {
+	ConsumerGroup *shared.ConsumerGroup `json:"consumer_group,omitempty"`
+	Consumers     []shared.Consumer     `json:"consumers"`
+}
+
+func (a AddConsumerToGroupResponseBody) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddConsumerToGroupResponseBody) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AddConsumerToGroupResponseBody) GetConsumerGroup() *shared.ConsumerGroup {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerGroup
+}
+
+func (a *AddConsumerToGroupResponseBody) GetConsumers() []shared.Consumer {
+	if a == nil {
+		return nil
+	}
+	return a.Consumers
 }
 
 type AddConsumerToGroupResponse struct {
@@ -76,6 +117,8 @@ type AddConsumerToGroupResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Consumer added to group
+	Object *AddConsumerToGroupResponseBody
 }
 
 func (a AddConsumerToGroupResponse) MarshalJSON() ([]byte, error) {
@@ -108,4 +151,11 @@ func (a *AddConsumerToGroupResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return a.RawResponse
+}
+
+func (a *AddConsumerToGroupResponse) GetObject() *AddConsumerToGroupResponseBody {
+	if a == nil {
+		return nil
+	}
+	return a.Object
 }

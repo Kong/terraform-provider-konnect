@@ -139,6 +139,9 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	postFunctionPlugin, postFunctionPluginDiags := r.ToSharedPostFunctionPlugin(ctx)
 	diags.Append(postFunctionPluginDiags...)
 
@@ -148,6 +151,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsCreatePostfunctionP
 
 	out := operations.CreatePostfunctionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		PostFunctionPlugin: *postFunctionPlugin,
 	}
 
@@ -163,9 +167,13 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsDeletePostfunctionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeletePostfunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -180,9 +188,13 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsGetPostfunctionPlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetPostfunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -197,6 +209,9 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	postFunctionPlugin, postFunctionPluginDiags := r.ToSharedPostFunctionPlugin(ctx)
 	diags.Append(postFunctionPluginDiags...)
 
@@ -207,6 +222,7 @@ func (r *GatewayPluginPostFunctionResourceModel) ToOperationsUpdatePostfunctionP
 	out := operations.UpdatePostfunctionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		PostFunctionPlugin: *postFunctionPlugin,
 	}
 

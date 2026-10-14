@@ -709,6 +709,9 @@ func (r *GatewayPartialResourceModel) ToOperationsCreatePartialRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	partial, partialDiags := r.ToSharedPartial(ctx)
 	diags.Append(partialDiags...)
 
@@ -718,6 +721,7 @@ func (r *GatewayPartialResourceModel) ToOperationsCreatePartialRequest(ctx conte
 
 	out := operations.CreatePartialRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Partial:        *partial,
 	}
 
@@ -733,9 +737,13 @@ func (r *GatewayPartialResourceModel) ToOperationsDeletePartialRequest(ctx conte
 	var partialID string
 	partialID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeletePartialRequest{
 		ControlPlaneID: controlPlaneID,
 		PartialID:      partialID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -750,9 +758,13 @@ func (r *GatewayPartialResourceModel) ToOperationsGetPartialRequest(ctx context.
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetPartialRequest{
 		PartialID:      partialID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -767,6 +779,9 @@ func (r *GatewayPartialResourceModel) ToOperationsUpsertPartialRequest(ctx conte
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	partial, partialDiags := r.ToSharedPartial(ctx)
 	diags.Append(partialDiags...)
 
@@ -777,6 +792,7 @@ func (r *GatewayPartialResourceModel) ToOperationsUpsertPartialRequest(ctx conte
 	out := operations.UpsertPartialRequest{
 		PartialID:      partialID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Partial:        *partial,
 	}
 

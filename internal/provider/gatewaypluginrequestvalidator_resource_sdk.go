@@ -145,6 +145,9 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestva
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
 	diags.Append(requestValidatorPluginDiags...)
 
@@ -154,6 +157,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestva
 
 	out := operations.CreateRequestvalidatorPluginRequest{
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		RequestValidatorPlugin: *requestValidatorPlugin,
 	}
 
@@ -169,9 +173,13 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestva
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRequestvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -186,9 +194,13 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalid
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRequestvalidatorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -203,6 +215,9 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestva
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
 	diags.Append(requestValidatorPluginDiags...)
 
@@ -213,6 +228,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestva
 	out := operations.UpdateRequestvalidatorPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		RequestValidatorPlugin: *requestValidatorPlugin,
 	}
 

@@ -34,8 +34,8 @@ func newPlugins(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// CreatePlugin - Create a new Plugin
-// Create a new Plugin
+// CreatePlugin - Create a new Plugin in a workspace
+// Create a new Plugin in a workspace
 func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePluginRequest, opts ...operations.Option) (*operations.CreatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -55,7 +55,7 @@ func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePlu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -261,8 +261,8 @@ func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePlu
 
 }
 
-// DeletePlugin - Delete a Plugin
-// Delete a Plugin
+// DeletePlugin - Delete a Plugin in a workspace
+// Delete a Plugin in a workspace
 func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePluginRequest, opts ...operations.Option) (*operations.DeletePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -282,7 +282,7 @@ func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePlu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -462,8 +462,8 @@ func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePlu
 
 }
 
-// GetPlugin - Get a Plugin
-// Get a Plugin using ID.
+// GetPlugin - Get a Plugin in a workspace
+// Get a Plugin using ID in a workspace.
 func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginRequest, opts ...operations.Option) (*operations.GetPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -483,7 +483,7 @@ func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginReq
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -515,10 +515,6 @@ func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginReq
 	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
-	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
@@ -688,8 +684,8 @@ func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginReq
 
 }
 
-// UpsertPlugin - Upsert a Plugin
-// Create or Update Plugin using ID.
+// UpsertPlugin - Upsert a Plugin in a workspace
+// Create or Update Plugin using ID in a workspace.
 func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPluginRequest, opts ...operations.Option) (*operations.UpsertPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -709,7 +705,7 @@ func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPlu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -915,8 +911,8 @@ func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPlu
 
 }
 
-// DeleteAcePlugin - Delete a Ace plugin
-// Delete a Ace plugin
+// DeleteAcePlugin - Delete a Ace plugin in a workspace
+// Delete a Ace plugin in a workspace
 func (s *Plugins) DeleteAcePlugin(ctx context.Context, request operations.DeleteAcePluginRequest, opts ...operations.Option) (*operations.DeleteAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -936,7 +932,7 @@ func (s *Plugins) DeleteAcePlugin(ctx context.Context, request operations.Delete
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1118,8 +1114,8 @@ func (s *Plugins) DeleteAcePlugin(ctx context.Context, request operations.Delete
 
 }
 
-// GetAcePlugin - Get a Ace plugin
-// Get a Ace plugin
+// GetAcePlugin - Get a Ace plugin in a workspace
+// Get a Ace plugin in a workspace
 func (s *Plugins) GetAcePlugin(ctx context.Context, request operations.GetAcePluginRequest, opts ...operations.Option) (*operations.GetAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1139,7 +1135,7 @@ func (s *Plugins) GetAcePlugin(ctx context.Context, request operations.GetAcePlu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1340,8 +1336,8 @@ func (s *Plugins) GetAcePlugin(ctx context.Context, request operations.GetAcePlu
 
 }
 
-// UpdateAcePlugin - Update a Ace plugin
-// Update a Ace plugin
+// UpdateAcePlugin - Update a Ace plugin in a workspace
+// Update a Ace plugin in a workspace
 func (s *Plugins) UpdateAcePlugin(ctx context.Context, request operations.UpdateAcePluginRequest, opts ...operations.Option) (*operations.UpdateAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1361,7 +1357,7 @@ func (s *Plugins) UpdateAcePlugin(ctx context.Context, request operations.Update
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1567,8 +1563,8 @@ func (s *Plugins) UpdateAcePlugin(ctx context.Context, request operations.Update
 
 }
 
-// DeleteACLPlugin - Delete a ACL plugin
-// Delete a ACL plugin
+// DeleteACLPlugin - Delete a ACL plugin in a workspace
+// Delete a ACL plugin in a workspace
 func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.DeleteACLPluginRequest, opts ...operations.Option) (*operations.DeleteACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1588,7 +1584,7 @@ func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.Delete
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1770,8 +1766,8 @@ func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.Delete
 
 }
 
-// GetACLPlugin - Get a ACL plugin
-// Get a ACL plugin
+// GetACLPlugin - Get a ACL plugin in a workspace
+// Get a ACL plugin in a workspace
 func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPluginRequest, opts ...operations.Option) (*operations.GetACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1791,7 +1787,7 @@ func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPlu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1992,8 +1988,8 @@ func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPlu
 
 }
 
-// UpdateACLPlugin - Update a ACL plugin
-// Update a ACL plugin
+// UpdateACLPlugin - Update a ACL plugin in a workspace
+// Update a ACL plugin in a workspace
 func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.UpdateACLPluginRequest, opts ...operations.Option) (*operations.UpdateACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2013,7 +2009,7 @@ func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.Update
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -2219,8 +2215,8 @@ func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.Update
 
 }
 
-// DeleteAcmePlugin - Delete a Acme plugin
-// Delete a Acme plugin
+// DeleteAcmePlugin - Delete a Acme plugin in a workspace
+// Delete a Acme plugin in a workspace
 func (s *Plugins) DeleteAcmePlugin(ctx context.Context, request operations.DeleteAcmePluginRequest, opts ...operations.Option) (*operations.DeleteAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2240,7 +2236,7 @@ func (s *Plugins) DeleteAcmePlugin(ctx context.Context, request operations.Delet
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -2422,8 +2418,8 @@ func (s *Plugins) DeleteAcmePlugin(ctx context.Context, request operations.Delet
 
 }
 
-// GetAcmePlugin - Get a Acme plugin
-// Get a Acme plugin
+// GetAcmePlugin - Get a Acme plugin in a workspace
+// Get a Acme plugin in a workspace
 func (s *Plugins) GetAcmePlugin(ctx context.Context, request operations.GetAcmePluginRequest, opts ...operations.Option) (*operations.GetAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2443,7 +2439,7 @@ func (s *Plugins) GetAcmePlugin(ctx context.Context, request operations.GetAcmeP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -2644,8 +2640,8 @@ func (s *Plugins) GetAcmePlugin(ctx context.Context, request operations.GetAcmeP
 
 }
 
-// UpdateAcmePlugin - Update a Acme plugin
-// Update a Acme plugin
+// UpdateAcmePlugin - Update a Acme plugin in a workspace
+// Update a Acme plugin in a workspace
 func (s *Plugins) UpdateAcmePlugin(ctx context.Context, request operations.UpdateAcmePluginRequest, opts ...operations.Option) (*operations.UpdateAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2665,7 +2661,7 @@ func (s *Plugins) UpdateAcmePlugin(ctx context.Context, request operations.Updat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -2871,8 +2867,8 @@ func (s *Plugins) UpdateAcmePlugin(ctx context.Context, request operations.Updat
 
 }
 
-// DeleteAia2aproxyPlugin - Delete a AiA2aProxy plugin
-// Delete a AiA2aProxy plugin
+// DeleteAia2aproxyPlugin - Delete a AiA2aProxy plugin in a workspace
+// Delete a AiA2aProxy plugin in a workspace
 func (s *Plugins) DeleteAia2aproxyPlugin(ctx context.Context, request operations.DeleteAia2aproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2892,7 +2888,7 @@ func (s *Plugins) DeleteAia2aproxyPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -3074,8 +3070,8 @@ func (s *Plugins) DeleteAia2aproxyPlugin(ctx context.Context, request operations
 
 }
 
-// GetAia2aproxyPlugin - Get a AiA2aProxy plugin
-// Get a AiA2aProxy plugin
+// GetAia2aproxyPlugin - Get a AiA2aProxy plugin in a workspace
+// Get a AiA2aProxy plugin in a workspace
 func (s *Plugins) GetAia2aproxyPlugin(ctx context.Context, request operations.GetAia2aproxyPluginRequest, opts ...operations.Option) (*operations.GetAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3095,7 +3091,7 @@ func (s *Plugins) GetAia2aproxyPlugin(ctx context.Context, request operations.Ge
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -3296,8 +3292,8 @@ func (s *Plugins) GetAia2aproxyPlugin(ctx context.Context, request operations.Ge
 
 }
 
-// UpdateAia2aproxyPlugin - Update a AiA2aProxy plugin
-// Update a AiA2aProxy plugin
+// UpdateAia2aproxyPlugin - Update a AiA2aProxy plugin in a workspace
+// Update a AiA2aProxy plugin in a workspace
 func (s *Plugins) UpdateAia2aproxyPlugin(ctx context.Context, request operations.UpdateAia2aproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3317,7 +3313,7 @@ func (s *Plugins) UpdateAia2aproxyPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -3523,8 +3519,8 @@ func (s *Plugins) UpdateAia2aproxyPlugin(ctx context.Context, request operations
 
 }
 
-// DeleteAiawsguardrailsPlugin - Delete a AiAwsGuardrails plugin
-// Delete a AiAwsGuardrails plugin
+// DeleteAiawsguardrailsPlugin - Delete a AiAwsGuardrails plugin in a workspace
+// Delete a AiAwsGuardrails plugin in a workspace
 func (s *Plugins) DeleteAiawsguardrailsPlugin(ctx context.Context, request operations.DeleteAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.DeleteAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3544,7 +3540,7 @@ func (s *Plugins) DeleteAiawsguardrailsPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -3726,8 +3722,8 @@ func (s *Plugins) DeleteAiawsguardrailsPlugin(ctx context.Context, request opera
 
 }
 
-// GetAiawsguardrailsPlugin - Get a AiAwsGuardrails plugin
-// Get a AiAwsGuardrails plugin
+// GetAiawsguardrailsPlugin - Get a AiAwsGuardrails plugin in a workspace
+// Get a AiAwsGuardrails plugin in a workspace
 func (s *Plugins) GetAiawsguardrailsPlugin(ctx context.Context, request operations.GetAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.GetAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3747,7 +3743,7 @@ func (s *Plugins) GetAiawsguardrailsPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -3948,8 +3944,8 @@ func (s *Plugins) GetAiawsguardrailsPlugin(ctx context.Context, request operatio
 
 }
 
-// UpdateAiawsguardrailsPlugin - Update a AiAwsGuardrails plugin
-// Update a AiAwsGuardrails plugin
+// UpdateAiawsguardrailsPlugin - Update a AiAwsGuardrails plugin in a workspace
+// Update a AiAwsGuardrails plugin in a workspace
 func (s *Plugins) UpdateAiawsguardrailsPlugin(ctx context.Context, request operations.UpdateAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.UpdateAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3969,7 +3965,7 @@ func (s *Plugins) UpdateAiawsguardrailsPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -4175,8 +4171,8 @@ func (s *Plugins) UpdateAiawsguardrailsPlugin(ctx context.Context, request opera
 
 }
 
-// DeleteAiazurecontentsafetyPlugin - Delete a AiAzureContentSafety plugin
-// Delete a AiAzureContentSafety plugin
+// DeleteAiazurecontentsafetyPlugin - Delete a AiAzureContentSafety plugin in a workspace
+// Delete a AiAzureContentSafety plugin in a workspace
 func (s *Plugins) DeleteAiazurecontentsafetyPlugin(ctx context.Context, request operations.DeleteAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.DeleteAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -4196,7 +4192,7 @@ func (s *Plugins) DeleteAiazurecontentsafetyPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -4378,8 +4374,8 @@ func (s *Plugins) DeleteAiazurecontentsafetyPlugin(ctx context.Context, request 
 
 }
 
-// GetAiazurecontentsafetyPlugin - Get a AiAzureContentSafety plugin
-// Get a AiAzureContentSafety plugin
+// GetAiazurecontentsafetyPlugin - Get a AiAzureContentSafety plugin in a workspace
+// Get a AiAzureContentSafety plugin in a workspace
 func (s *Plugins) GetAiazurecontentsafetyPlugin(ctx context.Context, request operations.GetAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.GetAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -4399,7 +4395,7 @@ func (s *Plugins) GetAiazurecontentsafetyPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -4600,8 +4596,8 @@ func (s *Plugins) GetAiazurecontentsafetyPlugin(ctx context.Context, request ope
 
 }
 
-// UpdateAiazurecontentsafetyPlugin - Update a AiAzureContentSafety plugin
-// Update a AiAzureContentSafety plugin
+// UpdateAiazurecontentsafetyPlugin - Update a AiAzureContentSafety plugin in a workspace
+// Update a AiAzureContentSafety plugin in a workspace
 func (s *Plugins) UpdateAiazurecontentsafetyPlugin(ctx context.Context, request operations.UpdateAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.UpdateAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -4621,7 +4617,7 @@ func (s *Plugins) UpdateAiazurecontentsafetyPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -4827,8 +4823,8 @@ func (s *Plugins) UpdateAiazurecontentsafetyPlugin(ctx context.Context, request 
 
 }
 
-// DeleteAicustomguardrailPlugin - Delete a AiCustomGuardrail plugin
-// Delete a AiCustomGuardrail plugin
+// DeleteAicustomguardrailPlugin - Delete a AiCustomGuardrail plugin in a workspace
+// Delete a AiCustomGuardrail plugin in a workspace
 func (s *Plugins) DeleteAicustomguardrailPlugin(ctx context.Context, request operations.DeleteAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.DeleteAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -4848,7 +4844,7 @@ func (s *Plugins) DeleteAicustomguardrailPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -5030,8 +5026,8 @@ func (s *Plugins) DeleteAicustomguardrailPlugin(ctx context.Context, request ope
 
 }
 
-// GetAicustomguardrailPlugin - Get a AiCustomGuardrail plugin
-// Get a AiCustomGuardrail plugin
+// GetAicustomguardrailPlugin - Get a AiCustomGuardrail plugin in a workspace
+// Get a AiCustomGuardrail plugin in a workspace
 func (s *Plugins) GetAicustomguardrailPlugin(ctx context.Context, request operations.GetAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.GetAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -5051,7 +5047,7 @@ func (s *Plugins) GetAicustomguardrailPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -5252,8 +5248,8 @@ func (s *Plugins) GetAicustomguardrailPlugin(ctx context.Context, request operat
 
 }
 
-// UpdateAicustomguardrailPlugin - Update a AiCustomGuardrail plugin
-// Update a AiCustomGuardrail plugin
+// UpdateAicustomguardrailPlugin - Update a AiCustomGuardrail plugin in a workspace
+// Update a AiCustomGuardrail plugin in a workspace
 func (s *Plugins) UpdateAicustomguardrailPlugin(ctx context.Context, request operations.UpdateAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.UpdateAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -5273,7 +5269,7 @@ func (s *Plugins) UpdateAicustomguardrailPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -5479,8 +5475,8 @@ func (s *Plugins) UpdateAicustomguardrailPlugin(ctx context.Context, request ope
 
 }
 
-// DeleteAigcpmodelarmorPlugin - Delete a AiGcpModelArmor plugin
-// Delete a AiGcpModelArmor plugin
+// DeleteAigcpmodelarmorPlugin - Delete a AiGcpModelArmor plugin in a workspace
+// Delete a AiGcpModelArmor plugin in a workspace
 func (s *Plugins) DeleteAigcpmodelarmorPlugin(ctx context.Context, request operations.DeleteAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.DeleteAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -5500,7 +5496,7 @@ func (s *Plugins) DeleteAigcpmodelarmorPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -5682,8 +5678,8 @@ func (s *Plugins) DeleteAigcpmodelarmorPlugin(ctx context.Context, request opera
 
 }
 
-// GetAigcpmodelarmorPlugin - Get a AiGcpModelArmor plugin
-// Get a AiGcpModelArmor plugin
+// GetAigcpmodelarmorPlugin - Get a AiGcpModelArmor plugin in a workspace
+// Get a AiGcpModelArmor plugin in a workspace
 func (s *Plugins) GetAigcpmodelarmorPlugin(ctx context.Context, request operations.GetAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.GetAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -5703,7 +5699,7 @@ func (s *Plugins) GetAigcpmodelarmorPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -5904,8 +5900,8 @@ func (s *Plugins) GetAigcpmodelarmorPlugin(ctx context.Context, request operatio
 
 }
 
-// UpdateAigcpmodelarmorPlugin - Update a AiGcpModelArmor plugin
-// Update a AiGcpModelArmor plugin
+// UpdateAigcpmodelarmorPlugin - Update a AiGcpModelArmor plugin in a workspace
+// Update a AiGcpModelArmor plugin in a workspace
 func (s *Plugins) UpdateAigcpmodelarmorPlugin(ctx context.Context, request operations.UpdateAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.UpdateAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -5925,7 +5921,7 @@ func (s *Plugins) UpdateAigcpmodelarmorPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -6131,8 +6127,8 @@ func (s *Plugins) UpdateAigcpmodelarmorPlugin(ctx context.Context, request opera
 
 }
 
-// DeleteAilakeraguardPlugin - Delete a AiLakeraGuard plugin
-// Delete a AiLakeraGuard plugin
+// DeleteAilakeraguardPlugin - Delete a AiLakeraGuard plugin in a workspace
+// Delete a AiLakeraGuard plugin in a workspace
 func (s *Plugins) DeleteAilakeraguardPlugin(ctx context.Context, request operations.DeleteAilakeraguardPluginRequest, opts ...operations.Option) (*operations.DeleteAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -6152,7 +6148,7 @@ func (s *Plugins) DeleteAilakeraguardPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -6334,8 +6330,8 @@ func (s *Plugins) DeleteAilakeraguardPlugin(ctx context.Context, request operati
 
 }
 
-// GetAilakeraguardPlugin - Get a AiLakeraGuard plugin
-// Get a AiLakeraGuard plugin
+// GetAilakeraguardPlugin - Get a AiLakeraGuard plugin in a workspace
+// Get a AiLakeraGuard plugin in a workspace
 func (s *Plugins) GetAilakeraguardPlugin(ctx context.Context, request operations.GetAilakeraguardPluginRequest, opts ...operations.Option) (*operations.GetAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -6355,7 +6351,7 @@ func (s *Plugins) GetAilakeraguardPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -6556,8 +6552,8 @@ func (s *Plugins) GetAilakeraguardPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateAilakeraguardPlugin - Update a AiLakeraGuard plugin
-// Update a AiLakeraGuard plugin
+// UpdateAilakeraguardPlugin - Update a AiLakeraGuard plugin in a workspace
+// Update a AiLakeraGuard plugin in a workspace
 func (s *Plugins) UpdateAilakeraguardPlugin(ctx context.Context, request operations.UpdateAilakeraguardPluginRequest, opts ...operations.Option) (*operations.UpdateAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -6577,7 +6573,7 @@ func (s *Plugins) UpdateAilakeraguardPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -6783,8 +6779,8 @@ func (s *Plugins) UpdateAilakeraguardPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteAillmasjudgePlugin - Delete a AiLlmAsJudge plugin
-// Delete a AiLlmAsJudge plugin
+// DeleteAillmasjudgePlugin - Delete a AiLlmAsJudge plugin in a workspace
+// Delete a AiLlmAsJudge plugin in a workspace
 func (s *Plugins) DeleteAillmasjudgePlugin(ctx context.Context, request operations.DeleteAillmasjudgePluginRequest, opts ...operations.Option) (*operations.DeleteAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -6804,7 +6800,7 @@ func (s *Plugins) DeleteAillmasjudgePlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -6986,8 +6982,8 @@ func (s *Plugins) DeleteAillmasjudgePlugin(ctx context.Context, request operatio
 
 }
 
-// GetAillmasjudgePlugin - Get a AiLlmAsJudge plugin
-// Get a AiLlmAsJudge plugin
+// GetAillmasjudgePlugin - Get a AiLlmAsJudge plugin in a workspace
+// Get a AiLlmAsJudge plugin in a workspace
 func (s *Plugins) GetAillmasjudgePlugin(ctx context.Context, request operations.GetAillmasjudgePluginRequest, opts ...operations.Option) (*operations.GetAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -7007,7 +7003,7 @@ func (s *Plugins) GetAillmasjudgePlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -7208,8 +7204,8 @@ func (s *Plugins) GetAillmasjudgePlugin(ctx context.Context, request operations.
 
 }
 
-// UpdateAillmasjudgePlugin - Update a AiLlmAsJudge plugin
-// Update a AiLlmAsJudge plugin
+// UpdateAillmasjudgePlugin - Update a AiLlmAsJudge plugin in a workspace
+// Update a AiLlmAsJudge plugin in a workspace
 func (s *Plugins) UpdateAillmasjudgePlugin(ctx context.Context, request operations.UpdateAillmasjudgePluginRequest, opts ...operations.Option) (*operations.UpdateAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -7229,7 +7225,7 @@ func (s *Plugins) UpdateAillmasjudgePlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -7435,8 +7431,8 @@ func (s *Plugins) UpdateAillmasjudgePlugin(ctx context.Context, request operatio
 
 }
 
-// DeleteAimcpoauth2Plugin - Delete a AiMcpOauth2 plugin
-// Delete a AiMcpOauth2 plugin
+// DeleteAimcpoauth2Plugin - Delete a AiMcpOauth2 plugin in a workspace
+// Delete a AiMcpOauth2 plugin in a workspace
 func (s *Plugins) DeleteAimcpoauth2Plugin(ctx context.Context, request operations.DeleteAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.DeleteAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -7456,7 +7452,7 @@ func (s *Plugins) DeleteAimcpoauth2Plugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -7638,8 +7634,8 @@ func (s *Plugins) DeleteAimcpoauth2Plugin(ctx context.Context, request operation
 
 }
 
-// GetAimcpoauth2Plugin - Get a AiMcpOauth2 plugin
-// Get a AiMcpOauth2 plugin
+// GetAimcpoauth2Plugin - Get a AiMcpOauth2 plugin in a workspace
+// Get a AiMcpOauth2 plugin in a workspace
 func (s *Plugins) GetAimcpoauth2Plugin(ctx context.Context, request operations.GetAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.GetAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -7659,7 +7655,7 @@ func (s *Plugins) GetAimcpoauth2Plugin(ctx context.Context, request operations.G
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -7860,8 +7856,8 @@ func (s *Plugins) GetAimcpoauth2Plugin(ctx context.Context, request operations.G
 
 }
 
-// UpdateAimcpoauth2Plugin - Update a AiMcpOauth2 plugin
-// Update a AiMcpOauth2 plugin
+// UpdateAimcpoauth2Plugin - Update a AiMcpOauth2 plugin in a workspace
+// Update a AiMcpOauth2 plugin in a workspace
 func (s *Plugins) UpdateAimcpoauth2Plugin(ctx context.Context, request operations.UpdateAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.UpdateAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -7881,7 +7877,7 @@ func (s *Plugins) UpdateAimcpoauth2Plugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -8087,8 +8083,8 @@ func (s *Plugins) UpdateAimcpoauth2Plugin(ctx context.Context, request operation
 
 }
 
-// DeleteAimcpproxyPlugin - Delete a AiMcpProxy plugin
-// Delete a AiMcpProxy plugin
+// DeleteAimcpproxyPlugin - Delete a AiMcpProxy plugin in a workspace
+// Delete a AiMcpProxy plugin in a workspace
 func (s *Plugins) DeleteAimcpproxyPlugin(ctx context.Context, request operations.DeleteAimcpproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -8108,7 +8104,7 @@ func (s *Plugins) DeleteAimcpproxyPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -8290,8 +8286,8 @@ func (s *Plugins) DeleteAimcpproxyPlugin(ctx context.Context, request operations
 
 }
 
-// GetAimcpproxyPlugin - Get a AiMcpProxy plugin
-// Get a AiMcpProxy plugin
+// GetAimcpproxyPlugin - Get a AiMcpProxy plugin in a workspace
+// Get a AiMcpProxy plugin in a workspace
 func (s *Plugins) GetAimcpproxyPlugin(ctx context.Context, request operations.GetAimcpproxyPluginRequest, opts ...operations.Option) (*operations.GetAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -8311,7 +8307,7 @@ func (s *Plugins) GetAimcpproxyPlugin(ctx context.Context, request operations.Ge
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -8512,8 +8508,8 @@ func (s *Plugins) GetAimcpproxyPlugin(ctx context.Context, request operations.Ge
 
 }
 
-// UpdateAimcpproxyPlugin - Update a AiMcpProxy plugin
-// Update a AiMcpProxy plugin
+// UpdateAimcpproxyPlugin - Update a AiMcpProxy plugin in a workspace
+// Update a AiMcpProxy plugin in a workspace
 func (s *Plugins) UpdateAimcpproxyPlugin(ctx context.Context, request operations.UpdateAimcpproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -8533,7 +8529,7 @@ func (s *Plugins) UpdateAimcpproxyPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -8739,8 +8735,8 @@ func (s *Plugins) UpdateAimcpproxyPlugin(ctx context.Context, request operations
 
 }
 
-// DeleteAipromptcompressorPlugin - Delete a AiPromptCompressor plugin
-// Delete a AiPromptCompressor plugin
+// DeleteAipromptcompressorPlugin - Delete a AiPromptCompressor plugin in a workspace
+// Delete a AiPromptCompressor plugin in a workspace
 func (s *Plugins) DeleteAipromptcompressorPlugin(ctx context.Context, request operations.DeleteAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -8760,7 +8756,7 @@ func (s *Plugins) DeleteAipromptcompressorPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -8942,8 +8938,8 @@ func (s *Plugins) DeleteAipromptcompressorPlugin(ctx context.Context, request op
 
 }
 
-// GetAipromptcompressorPlugin - Get a AiPromptCompressor plugin
-// Get a AiPromptCompressor plugin
+// GetAipromptcompressorPlugin - Get a AiPromptCompressor plugin in a workspace
+// Get a AiPromptCompressor plugin in a workspace
 func (s *Plugins) GetAipromptcompressorPlugin(ctx context.Context, request operations.GetAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.GetAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -8963,7 +8959,7 @@ func (s *Plugins) GetAipromptcompressorPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -9164,8 +9160,8 @@ func (s *Plugins) GetAipromptcompressorPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateAipromptcompressorPlugin - Update a AiPromptCompressor plugin
-// Update a AiPromptCompressor plugin
+// UpdateAipromptcompressorPlugin - Update a AiPromptCompressor plugin in a workspace
+// Update a AiPromptCompressor plugin in a workspace
 func (s *Plugins) UpdateAipromptcompressorPlugin(ctx context.Context, request operations.UpdateAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -9185,7 +9181,7 @@ func (s *Plugins) UpdateAipromptcompressorPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -9391,8 +9387,8 @@ func (s *Plugins) UpdateAipromptcompressorPlugin(ctx context.Context, request op
 
 }
 
-// DeleteAipromptdecoratorPlugin - Delete a AiPromptDecorator plugin
-// Delete a AiPromptDecorator plugin
+// DeleteAipromptdecoratorPlugin - Delete a AiPromptDecorator plugin in a workspace
+// Delete a AiPromptDecorator plugin in a workspace
 func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request operations.DeleteAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -9412,7 +9408,7 @@ func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -9594,8 +9590,8 @@ func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request ope
 
 }
 
-// GetAipromptdecoratorPlugin - Get a AiPromptDecorator plugin
-// Get a AiPromptDecorator plugin
+// GetAipromptdecoratorPlugin - Get a AiPromptDecorator plugin in a workspace
+// Get a AiPromptDecorator plugin in a workspace
 func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operations.GetAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.GetAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -9615,7 +9611,7 @@ func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -9816,8 +9812,8 @@ func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operat
 
 }
 
-// UpdateAipromptdecoratorPlugin - Update a AiPromptDecorator plugin
-// Update a AiPromptDecorator plugin
+// UpdateAipromptdecoratorPlugin - Update a AiPromptDecorator plugin in a workspace
+// Update a AiPromptDecorator plugin in a workspace
 func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request operations.UpdateAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -9837,7 +9833,7 @@ func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -10043,8 +10039,8 @@ func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request ope
 
 }
 
-// DeleteAipromptguardPlugin - Delete a AiPromptGuard plugin
-// Delete a AiPromptGuard plugin
+// DeleteAipromptguardPlugin - Delete a AiPromptGuard plugin in a workspace
+// Delete a AiPromptGuard plugin in a workspace
 func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operations.DeleteAipromptguardPluginRequest, opts ...operations.Option) (*operations.DeleteAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -10064,7 +10060,7 @@ func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -10246,8 +10242,8 @@ func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operati
 
 }
 
-// GetAipromptguardPlugin - Get a AiPromptGuard plugin
-// Get a AiPromptGuard plugin
+// GetAipromptguardPlugin - Get a AiPromptGuard plugin in a workspace
+// Get a AiPromptGuard plugin in a workspace
 func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations.GetAipromptguardPluginRequest, opts ...operations.Option) (*operations.GetAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -10267,7 +10263,7 @@ func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -10468,8 +10464,8 @@ func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateAipromptguardPlugin - Update a AiPromptGuard plugin
-// Update a AiPromptGuard plugin
+// UpdateAipromptguardPlugin - Update a AiPromptGuard plugin in a workspace
+// Update a AiPromptGuard plugin in a workspace
 func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operations.UpdateAipromptguardPluginRequest, opts ...operations.Option) (*operations.UpdateAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -10489,7 +10485,7 @@ func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -10695,8 +10691,8 @@ func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteAiprompttemplatePlugin - Delete a AiPromptTemplate plugin
-// Delete a AiPromptTemplate plugin
+// DeleteAiprompttemplatePlugin - Delete a AiPromptTemplate plugin in a workspace
+// Delete a AiPromptTemplate plugin in a workspace
 func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request operations.DeleteAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.DeleteAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -10716,7 +10712,7 @@ func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -10898,8 +10894,8 @@ func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request oper
 
 }
 
-// GetAiprompttemplatePlugin - Get a AiPromptTemplate plugin
-// Get a AiPromptTemplate plugin
+// GetAiprompttemplatePlugin - Get a AiPromptTemplate plugin in a workspace
+// Get a AiPromptTemplate plugin in a workspace
 func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operations.GetAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.GetAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -10919,7 +10915,7 @@ func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -11120,8 +11116,8 @@ func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operati
 
 }
 
-// UpdateAiprompttemplatePlugin - Update a AiPromptTemplate plugin
-// Update a AiPromptTemplate plugin
+// UpdateAiprompttemplatePlugin - Update a AiPromptTemplate plugin in a workspace
+// Update a AiPromptTemplate plugin in a workspace
 func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request operations.UpdateAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.UpdateAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -11141,7 +11137,7 @@ func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -11347,8 +11343,8 @@ func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request oper
 
 }
 
-// DeleteAiproxyPlugin - Delete a AiProxy plugin
-// Delete a AiProxy plugin
+// DeleteAiproxyPlugin - Delete a AiProxy plugin in a workspace
+// Delete a AiProxy plugin in a workspace
 func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.DeleteAiproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -11368,7 +11364,7 @@ func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -11550,8 +11546,8 @@ func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetAiproxyPlugin - Get a AiProxy plugin
-// Get a AiProxy plugin
+// GetAiproxyPlugin - Get a AiProxy plugin in a workspace
+// Get a AiProxy plugin in a workspace
 func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAiproxyPluginRequest, opts ...operations.Option) (*operations.GetAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -11571,7 +11567,7 @@ func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAi
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -11772,8 +11768,8 @@ func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAi
 
 }
 
-// UpdateAiproxyPlugin - Update a AiProxy plugin
-// Update a AiProxy plugin
+// UpdateAiproxyPlugin - Update a AiProxy plugin in a workspace
+// Update a AiProxy plugin in a workspace
 func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.UpdateAiproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -11793,7 +11789,7 @@ func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -11999,8 +11995,8 @@ func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteAiproxyadvancedPlugin - Delete a AiProxyAdvanced plugin
-// Delete a AiProxyAdvanced plugin
+// DeleteAiproxyadvancedPlugin - Delete a AiProxyAdvanced plugin in a workspace
+// Delete a AiProxyAdvanced plugin in a workspace
 func (s *Plugins) DeleteAiproxyadvancedPlugin(ctx context.Context, request operations.DeleteAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -12020,7 +12016,7 @@ func (s *Plugins) DeleteAiproxyadvancedPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -12202,8 +12198,8 @@ func (s *Plugins) DeleteAiproxyadvancedPlugin(ctx context.Context, request opera
 
 }
 
-// GetAiproxyadvancedPlugin - Get a AiProxyAdvanced plugin
-// Get a AiProxyAdvanced plugin
+// GetAiproxyadvancedPlugin - Get a AiProxyAdvanced plugin in a workspace
+// Get a AiProxyAdvanced plugin in a workspace
 func (s *Plugins) GetAiproxyadvancedPlugin(ctx context.Context, request operations.GetAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.GetAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -12223,7 +12219,7 @@ func (s *Plugins) GetAiproxyadvancedPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -12424,8 +12420,8 @@ func (s *Plugins) GetAiproxyadvancedPlugin(ctx context.Context, request operatio
 
 }
 
-// UpdateAiproxyadvancedPlugin - Update a AiProxyAdvanced plugin
-// Update a AiProxyAdvanced plugin
+// UpdateAiproxyadvancedPlugin - Update a AiProxyAdvanced plugin in a workspace
+// Update a AiProxyAdvanced plugin in a workspace
 func (s *Plugins) UpdateAiproxyadvancedPlugin(ctx context.Context, request operations.UpdateAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -12445,7 +12441,7 @@ func (s *Plugins) UpdateAiproxyadvancedPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -12651,8 +12647,8 @@ func (s *Plugins) UpdateAiproxyadvancedPlugin(ctx context.Context, request opera
 
 }
 
-// DeleteAiraginjectorPlugin - Delete a AiRagInjector plugin
-// Delete a AiRagInjector plugin
+// DeleteAiraginjectorPlugin - Delete a AiRagInjector plugin in a workspace
+// Delete a AiRagInjector plugin in a workspace
 func (s *Plugins) DeleteAiraginjectorPlugin(ctx context.Context, request operations.DeleteAiraginjectorPluginRequest, opts ...operations.Option) (*operations.DeleteAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -12672,7 +12668,7 @@ func (s *Plugins) DeleteAiraginjectorPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -12854,8 +12850,8 @@ func (s *Plugins) DeleteAiraginjectorPlugin(ctx context.Context, request operati
 
 }
 
-// GetAiraginjectorPlugin - Get a AiRagInjector plugin
-// Get a AiRagInjector plugin
+// GetAiraginjectorPlugin - Get a AiRagInjector plugin in a workspace
+// Get a AiRagInjector plugin in a workspace
 func (s *Plugins) GetAiraginjectorPlugin(ctx context.Context, request operations.GetAiraginjectorPluginRequest, opts ...operations.Option) (*operations.GetAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -12875,7 +12871,7 @@ func (s *Plugins) GetAiraginjectorPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -13076,8 +13072,8 @@ func (s *Plugins) GetAiraginjectorPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateAiraginjectorPlugin - Update a AiRagInjector plugin
-// Update a AiRagInjector plugin
+// UpdateAiraginjectorPlugin - Update a AiRagInjector plugin in a workspace
+// Update a AiRagInjector plugin in a workspace
 func (s *Plugins) UpdateAiraginjectorPlugin(ctx context.Context, request operations.UpdateAiraginjectorPluginRequest, opts ...operations.Option) (*operations.UpdateAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -13097,7 +13093,7 @@ func (s *Plugins) UpdateAiraginjectorPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -13303,8 +13299,8 @@ func (s *Plugins) UpdateAiraginjectorPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteAiratelimitingadvancedPlugin - Delete a AiRateLimitingAdvanced plugin
-// Delete a AiRateLimitingAdvanced plugin
+// DeleteAiratelimitingadvancedPlugin - Delete a AiRateLimitingAdvanced plugin in a workspace
+// Delete a AiRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) DeleteAiratelimitingadvancedPlugin(ctx context.Context, request operations.DeleteAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -13324,7 +13320,7 @@ func (s *Plugins) DeleteAiratelimitingadvancedPlugin(ctx context.Context, reques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -13506,8 +13502,8 @@ func (s *Plugins) DeleteAiratelimitingadvancedPlugin(ctx context.Context, reques
 
 }
 
-// GetAiratelimitingadvancedPlugin - Get a AiRateLimitingAdvanced plugin
-// Get a AiRateLimitingAdvanced plugin
+// GetAiratelimitingadvancedPlugin - Get a AiRateLimitingAdvanced plugin in a workspace
+// Get a AiRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) GetAiratelimitingadvancedPlugin(ctx context.Context, request operations.GetAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.GetAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -13527,7 +13523,7 @@ func (s *Plugins) GetAiratelimitingadvancedPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -13728,8 +13724,8 @@ func (s *Plugins) GetAiratelimitingadvancedPlugin(ctx context.Context, request o
 
 }
 
-// UpdateAiratelimitingadvancedPlugin - Update a AiRateLimitingAdvanced plugin
-// Update a AiRateLimitingAdvanced plugin
+// UpdateAiratelimitingadvancedPlugin - Update a AiRateLimitingAdvanced plugin in a workspace
+// Update a AiRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) UpdateAiratelimitingadvancedPlugin(ctx context.Context, request operations.UpdateAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -13749,7 +13745,7 @@ func (s *Plugins) UpdateAiratelimitingadvancedPlugin(ctx context.Context, reques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -13955,8 +13951,8 @@ func (s *Plugins) UpdateAiratelimitingadvancedPlugin(ctx context.Context, reques
 
 }
 
-// DeleteAirequesttransformerPlugin - Delete a AiRequestTransformer plugin
-// Delete a AiRequestTransformer plugin
+// DeleteAirequesttransformerPlugin - Delete a AiRequestTransformer plugin in a workspace
+// Delete a AiRequestTransformer plugin in a workspace
 func (s *Plugins) DeleteAirequesttransformerPlugin(ctx context.Context, request operations.DeleteAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.DeleteAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -13976,7 +13972,7 @@ func (s *Plugins) DeleteAirequesttransformerPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -14158,8 +14154,8 @@ func (s *Plugins) DeleteAirequesttransformerPlugin(ctx context.Context, request 
 
 }
 
-// GetAirequesttransformerPlugin - Get a AiRequestTransformer plugin
-// Get a AiRequestTransformer plugin
+// GetAirequesttransformerPlugin - Get a AiRequestTransformer plugin in a workspace
+// Get a AiRequestTransformer plugin in a workspace
 func (s *Plugins) GetAirequesttransformerPlugin(ctx context.Context, request operations.GetAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.GetAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -14179,7 +14175,7 @@ func (s *Plugins) GetAirequesttransformerPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -14380,8 +14376,8 @@ func (s *Plugins) GetAirequesttransformerPlugin(ctx context.Context, request ope
 
 }
 
-// UpdateAirequesttransformerPlugin - Update a AiRequestTransformer plugin
-// Update a AiRequestTransformer plugin
+// UpdateAirequesttransformerPlugin - Update a AiRequestTransformer plugin in a workspace
+// Update a AiRequestTransformer plugin in a workspace
 func (s *Plugins) UpdateAirequesttransformerPlugin(ctx context.Context, request operations.UpdateAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.UpdateAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -14401,7 +14397,7 @@ func (s *Plugins) UpdateAirequesttransformerPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -14607,8 +14603,8 @@ func (s *Plugins) UpdateAirequesttransformerPlugin(ctx context.Context, request 
 
 }
 
-// DeleteAiresponsetransformerPlugin - Delete a AiResponseTransformer plugin
-// Delete a AiResponseTransformer plugin
+// DeleteAiresponsetransformerPlugin - Delete a AiResponseTransformer plugin in a workspace
+// Delete a AiResponseTransformer plugin in a workspace
 func (s *Plugins) DeleteAiresponsetransformerPlugin(ctx context.Context, request operations.DeleteAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.DeleteAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -14628,7 +14624,7 @@ func (s *Plugins) DeleteAiresponsetransformerPlugin(ctx context.Context, request
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -14810,8 +14806,8 @@ func (s *Plugins) DeleteAiresponsetransformerPlugin(ctx context.Context, request
 
 }
 
-// GetAiresponsetransformerPlugin - Get a AiResponseTransformer plugin
-// Get a AiResponseTransformer plugin
+// GetAiresponsetransformerPlugin - Get a AiResponseTransformer plugin in a workspace
+// Get a AiResponseTransformer plugin in a workspace
 func (s *Plugins) GetAiresponsetransformerPlugin(ctx context.Context, request operations.GetAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.GetAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -14831,7 +14827,7 @@ func (s *Plugins) GetAiresponsetransformerPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -15032,8 +15028,8 @@ func (s *Plugins) GetAiresponsetransformerPlugin(ctx context.Context, request op
 
 }
 
-// UpdateAiresponsetransformerPlugin - Update a AiResponseTransformer plugin
-// Update a AiResponseTransformer plugin
+// UpdateAiresponsetransformerPlugin - Update a AiResponseTransformer plugin in a workspace
+// Update a AiResponseTransformer plugin in a workspace
 func (s *Plugins) UpdateAiresponsetransformerPlugin(ctx context.Context, request operations.UpdateAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.UpdateAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -15053,7 +15049,7 @@ func (s *Plugins) UpdateAiresponsetransformerPlugin(ctx context.Context, request
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -15259,8 +15255,8 @@ func (s *Plugins) UpdateAiresponsetransformerPlugin(ctx context.Context, request
 
 }
 
-// DeleteAisanitizerPlugin - Delete a AiSanitizer plugin
-// Delete a AiSanitizer plugin
+// DeleteAisanitizerPlugin - Delete a AiSanitizer plugin in a workspace
+// Delete a AiSanitizer plugin in a workspace
 func (s *Plugins) DeleteAisanitizerPlugin(ctx context.Context, request operations.DeleteAisanitizerPluginRequest, opts ...operations.Option) (*operations.DeleteAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -15280,7 +15276,7 @@ func (s *Plugins) DeleteAisanitizerPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -15462,8 +15458,8 @@ func (s *Plugins) DeleteAisanitizerPlugin(ctx context.Context, request operation
 
 }
 
-// GetAisanitizerPlugin - Get a AiSanitizer plugin
-// Get a AiSanitizer plugin
+// GetAisanitizerPlugin - Get a AiSanitizer plugin in a workspace
+// Get a AiSanitizer plugin in a workspace
 func (s *Plugins) GetAisanitizerPlugin(ctx context.Context, request operations.GetAisanitizerPluginRequest, opts ...operations.Option) (*operations.GetAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -15483,7 +15479,7 @@ func (s *Plugins) GetAisanitizerPlugin(ctx context.Context, request operations.G
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -15684,8 +15680,8 @@ func (s *Plugins) GetAisanitizerPlugin(ctx context.Context, request operations.G
 
 }
 
-// UpdateAisanitizerPlugin - Update a AiSanitizer plugin
-// Update a AiSanitizer plugin
+// UpdateAisanitizerPlugin - Update a AiSanitizer plugin in a workspace
+// Update a AiSanitizer plugin in a workspace
 func (s *Plugins) UpdateAisanitizerPlugin(ctx context.Context, request operations.UpdateAisanitizerPluginRequest, opts ...operations.Option) (*operations.UpdateAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -15705,7 +15701,7 @@ func (s *Plugins) UpdateAisanitizerPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -15911,8 +15907,8 @@ func (s *Plugins) UpdateAisanitizerPlugin(ctx context.Context, request operation
 
 }
 
-// DeleteAisemanticcachePlugin - Delete a AiSemanticCache plugin
-// Delete a AiSemanticCache plugin
+// DeleteAisemanticcachePlugin - Delete a AiSemanticCache plugin in a workspace
+// Delete a AiSemanticCache plugin in a workspace
 func (s *Plugins) DeleteAisemanticcachePlugin(ctx context.Context, request operations.DeleteAisemanticcachePluginRequest, opts ...operations.Option) (*operations.DeleteAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -15932,7 +15928,7 @@ func (s *Plugins) DeleteAisemanticcachePlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -16114,8 +16110,8 @@ func (s *Plugins) DeleteAisemanticcachePlugin(ctx context.Context, request opera
 
 }
 
-// GetAisemanticcachePlugin - Get a AiSemanticCache plugin
-// Get a AiSemanticCache plugin
+// GetAisemanticcachePlugin - Get a AiSemanticCache plugin in a workspace
+// Get a AiSemanticCache plugin in a workspace
 func (s *Plugins) GetAisemanticcachePlugin(ctx context.Context, request operations.GetAisemanticcachePluginRequest, opts ...operations.Option) (*operations.GetAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -16135,7 +16131,7 @@ func (s *Plugins) GetAisemanticcachePlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -16336,8 +16332,8 @@ func (s *Plugins) GetAisemanticcachePlugin(ctx context.Context, request operatio
 
 }
 
-// UpdateAisemanticcachePlugin - Update a AiSemanticCache plugin
-// Update a AiSemanticCache plugin
+// UpdateAisemanticcachePlugin - Update a AiSemanticCache plugin in a workspace
+// Update a AiSemanticCache plugin in a workspace
 func (s *Plugins) UpdateAisemanticcachePlugin(ctx context.Context, request operations.UpdateAisemanticcachePluginRequest, opts ...operations.Option) (*operations.UpdateAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -16357,7 +16353,7 @@ func (s *Plugins) UpdateAisemanticcachePlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -16563,8 +16559,8 @@ func (s *Plugins) UpdateAisemanticcachePlugin(ctx context.Context, request opera
 
 }
 
-// DeleteAisemanticpromptguardPlugin - Delete a AiSemanticPromptGuard plugin
-// Delete a AiSemanticPromptGuard plugin
+// DeleteAisemanticpromptguardPlugin - Delete a AiSemanticPromptGuard plugin in a workspace
+// Delete a AiSemanticPromptGuard plugin in a workspace
 func (s *Plugins) DeleteAisemanticpromptguardPlugin(ctx context.Context, request operations.DeleteAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.DeleteAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -16584,7 +16580,7 @@ func (s *Plugins) DeleteAisemanticpromptguardPlugin(ctx context.Context, request
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -16766,8 +16762,8 @@ func (s *Plugins) DeleteAisemanticpromptguardPlugin(ctx context.Context, request
 
 }
 
-// GetAisemanticpromptguardPlugin - Get a AiSemanticPromptGuard plugin
-// Get a AiSemanticPromptGuard plugin
+// GetAisemanticpromptguardPlugin - Get a AiSemanticPromptGuard plugin in a workspace
+// Get a AiSemanticPromptGuard plugin in a workspace
 func (s *Plugins) GetAisemanticpromptguardPlugin(ctx context.Context, request operations.GetAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.GetAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -16787,7 +16783,7 @@ func (s *Plugins) GetAisemanticpromptguardPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -16988,8 +16984,8 @@ func (s *Plugins) GetAisemanticpromptguardPlugin(ctx context.Context, request op
 
 }
 
-// UpdateAisemanticpromptguardPlugin - Update a AiSemanticPromptGuard plugin
-// Update a AiSemanticPromptGuard plugin
+// UpdateAisemanticpromptguardPlugin - Update a AiSemanticPromptGuard plugin in a workspace
+// Update a AiSemanticPromptGuard plugin in a workspace
 func (s *Plugins) UpdateAisemanticpromptguardPlugin(ctx context.Context, request operations.UpdateAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.UpdateAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -17009,7 +17005,7 @@ func (s *Plugins) UpdateAisemanticpromptguardPlugin(ctx context.Context, request
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -17215,8 +17211,8 @@ func (s *Plugins) UpdateAisemanticpromptguardPlugin(ctx context.Context, request
 
 }
 
-// DeleteAisemanticresponseguardPlugin - Delete a AiSemanticResponseGuard plugin
-// Delete a AiSemanticResponseGuard plugin
+// DeleteAisemanticresponseguardPlugin - Delete a AiSemanticResponseGuard plugin in a workspace
+// Delete a AiSemanticResponseGuard plugin in a workspace
 func (s *Plugins) DeleteAisemanticresponseguardPlugin(ctx context.Context, request operations.DeleteAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.DeleteAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -17236,7 +17232,7 @@ func (s *Plugins) DeleteAisemanticresponseguardPlugin(ctx context.Context, reque
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -17418,8 +17414,8 @@ func (s *Plugins) DeleteAisemanticresponseguardPlugin(ctx context.Context, reque
 
 }
 
-// GetAisemanticresponseguardPlugin - Get a AiSemanticResponseGuard plugin
-// Get a AiSemanticResponseGuard plugin
+// GetAisemanticresponseguardPlugin - Get a AiSemanticResponseGuard plugin in a workspace
+// Get a AiSemanticResponseGuard plugin in a workspace
 func (s *Plugins) GetAisemanticresponseguardPlugin(ctx context.Context, request operations.GetAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.GetAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -17439,7 +17435,7 @@ func (s *Plugins) GetAisemanticresponseguardPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -17640,8 +17636,8 @@ func (s *Plugins) GetAisemanticresponseguardPlugin(ctx context.Context, request 
 
 }
 
-// UpdateAisemanticresponseguardPlugin - Update a AiSemanticResponseGuard plugin
-// Update a AiSemanticResponseGuard plugin
+// UpdateAisemanticresponseguardPlugin - Update a AiSemanticResponseGuard plugin in a workspace
+// Update a AiSemanticResponseGuard plugin in a workspace
 func (s *Plugins) UpdateAisemanticresponseguardPlugin(ctx context.Context, request operations.UpdateAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.UpdateAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -17661,7 +17657,7 @@ func (s *Plugins) UpdateAisemanticresponseguardPlugin(ctx context.Context, reque
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -17867,8 +17863,8 @@ func (s *Plugins) UpdateAisemanticresponseguardPlugin(ctx context.Context, reque
 
 }
 
-// DeleteAppdynamicsPlugin - Delete a AppDynamics plugin
-// Delete a AppDynamics plugin
+// DeleteAppdynamicsPlugin - Delete a AppDynamics plugin in a workspace
+// Delete a AppDynamics plugin in a workspace
 func (s *Plugins) DeleteAppdynamicsPlugin(ctx context.Context, request operations.DeleteAppdynamicsPluginRequest, opts ...operations.Option) (*operations.DeleteAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -17888,7 +17884,7 @@ func (s *Plugins) DeleteAppdynamicsPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -18070,8 +18066,8 @@ func (s *Plugins) DeleteAppdynamicsPlugin(ctx context.Context, request operation
 
 }
 
-// GetAppdynamicsPlugin - Get a AppDynamics plugin
-// Get a AppDynamics plugin
+// GetAppdynamicsPlugin - Get a AppDynamics plugin in a workspace
+// Get a AppDynamics plugin in a workspace
 func (s *Plugins) GetAppdynamicsPlugin(ctx context.Context, request operations.GetAppdynamicsPluginRequest, opts ...operations.Option) (*operations.GetAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -18091,7 +18087,7 @@ func (s *Plugins) GetAppdynamicsPlugin(ctx context.Context, request operations.G
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -18292,8 +18288,8 @@ func (s *Plugins) GetAppdynamicsPlugin(ctx context.Context, request operations.G
 
 }
 
-// UpdateAppdynamicsPlugin - Update a AppDynamics plugin
-// Update a AppDynamics plugin
+// UpdateAppdynamicsPlugin - Update a AppDynamics plugin in a workspace
+// Update a AppDynamics plugin in a workspace
 func (s *Plugins) UpdateAppdynamicsPlugin(ctx context.Context, request operations.UpdateAppdynamicsPluginRequest, opts ...operations.Option) (*operations.UpdateAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -18313,7 +18309,7 @@ func (s *Plugins) UpdateAppdynamicsPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -18519,8 +18515,8 @@ func (s *Plugins) UpdateAppdynamicsPlugin(ctx context.Context, request operation
 
 }
 
-// DeleteAwslambdaPlugin - Delete a AwsLambda plugin
-// Delete a AwsLambda plugin
+// DeleteAwslambdaPlugin - Delete a AwsLambda plugin in a workspace
+// Delete a AwsLambda plugin in a workspace
 func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.DeleteAwslambdaPluginRequest, opts ...operations.Option) (*operations.DeleteAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -18540,7 +18536,7 @@ func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -18722,8 +18718,8 @@ func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.
 
 }
 
-// GetAwslambdaPlugin - Get a AwsLambda plugin
-// Get a AwsLambda plugin
+// GetAwslambdaPlugin - Get a AwsLambda plugin in a workspace
+// Get a AwsLambda plugin in a workspace
 func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.GetAwslambdaPluginRequest, opts ...operations.Option) (*operations.GetAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -18743,7 +18739,7 @@ func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.Get
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -18944,8 +18940,8 @@ func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.Get
 
 }
 
-// UpdateAwslambdaPlugin - Update a AwsLambda plugin
-// Update a AwsLambda plugin
+// UpdateAwslambdaPlugin - Update a AwsLambda plugin in a workspace
+// Update a AwsLambda plugin in a workspace
 func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.UpdateAwslambdaPluginRequest, opts ...operations.Option) (*operations.UpdateAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -18965,7 +18961,7 @@ func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -19171,8 +19167,8 @@ func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteAzurefunctionsPlugin - Delete a AzureFunctions plugin
-// Delete a AzureFunctions plugin
+// DeleteAzurefunctionsPlugin - Delete a AzureFunctions plugin in a workspace
+// Delete a AzureFunctions plugin in a workspace
 func (s *Plugins) DeleteAzurefunctionsPlugin(ctx context.Context, request operations.DeleteAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.DeleteAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -19192,7 +19188,7 @@ func (s *Plugins) DeleteAzurefunctionsPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -19374,8 +19370,8 @@ func (s *Plugins) DeleteAzurefunctionsPlugin(ctx context.Context, request operat
 
 }
 
-// GetAzurefunctionsPlugin - Get a AzureFunctions plugin
-// Get a AzureFunctions plugin
+// GetAzurefunctionsPlugin - Get a AzureFunctions plugin in a workspace
+// Get a AzureFunctions plugin in a workspace
 func (s *Plugins) GetAzurefunctionsPlugin(ctx context.Context, request operations.GetAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.GetAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -19395,7 +19391,7 @@ func (s *Plugins) GetAzurefunctionsPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -19596,8 +19592,8 @@ func (s *Plugins) GetAzurefunctionsPlugin(ctx context.Context, request operation
 
 }
 
-// UpdateAzurefunctionsPlugin - Update a AzureFunctions plugin
-// Update a AzureFunctions plugin
+// UpdateAzurefunctionsPlugin - Update a AzureFunctions plugin in a workspace
+// Update a AzureFunctions plugin in a workspace
 func (s *Plugins) UpdateAzurefunctionsPlugin(ctx context.Context, request operations.UpdateAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.UpdateAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -19617,7 +19613,7 @@ func (s *Plugins) UpdateAzurefunctionsPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -19823,8 +19819,8 @@ func (s *Plugins) UpdateAzurefunctionsPlugin(ctx context.Context, request operat
 
 }
 
-// DeleteBasicauthPlugin - Delete a BasicAuth plugin
-// Delete a BasicAuth plugin
+// DeleteBasicauthPlugin - Delete a BasicAuth plugin in a workspace
+// Delete a BasicAuth plugin in a workspace
 func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.DeleteBasicauthPluginRequest, opts ...operations.Option) (*operations.DeleteBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -19844,7 +19840,7 @@ func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -20026,8 +20022,8 @@ func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.
 
 }
 
-// GetBasicauthPlugin - Get a BasicAuth plugin
-// Get a BasicAuth plugin
+// GetBasicauthPlugin - Get a BasicAuth plugin in a workspace
+// Get a BasicAuth plugin in a workspace
 func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.GetBasicauthPluginRequest, opts ...operations.Option) (*operations.GetBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -20047,7 +20043,7 @@ func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.Get
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -20248,8 +20244,8 @@ func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.Get
 
 }
 
-// UpdateBasicauthPlugin - Update a BasicAuth plugin
-// Update a BasicAuth plugin
+// UpdateBasicauthPlugin - Update a BasicAuth plugin in a workspace
+// Update a BasicAuth plugin in a workspace
 func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.UpdateBasicauthPluginRequest, opts ...operations.Option) (*operations.UpdateBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -20269,7 +20265,7 @@ func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -20475,8 +20471,8 @@ func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteBotdetectionPlugin - Delete a BotDetection plugin
-// Delete a BotDetection plugin
+// DeleteBotdetectionPlugin - Delete a BotDetection plugin in a workspace
+// Delete a BotDetection plugin in a workspace
 func (s *Plugins) DeleteBotdetectionPlugin(ctx context.Context, request operations.DeleteBotdetectionPluginRequest, opts ...operations.Option) (*operations.DeleteBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -20496,7 +20492,7 @@ func (s *Plugins) DeleteBotdetectionPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -20678,8 +20674,8 @@ func (s *Plugins) DeleteBotdetectionPlugin(ctx context.Context, request operatio
 
 }
 
-// GetBotdetectionPlugin - Get a BotDetection plugin
-// Get a BotDetection plugin
+// GetBotdetectionPlugin - Get a BotDetection plugin in a workspace
+// Get a BotDetection plugin in a workspace
 func (s *Plugins) GetBotdetectionPlugin(ctx context.Context, request operations.GetBotdetectionPluginRequest, opts ...operations.Option) (*operations.GetBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -20699,7 +20695,7 @@ func (s *Plugins) GetBotdetectionPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -20900,8 +20896,8 @@ func (s *Plugins) GetBotdetectionPlugin(ctx context.Context, request operations.
 
 }
 
-// UpdateBotdetectionPlugin - Update a BotDetection plugin
-// Update a BotDetection plugin
+// UpdateBotdetectionPlugin - Update a BotDetection plugin in a workspace
+// Update a BotDetection plugin in a workspace
 func (s *Plugins) UpdateBotdetectionPlugin(ctx context.Context, request operations.UpdateBotdetectionPluginRequest, opts ...operations.Option) (*operations.UpdateBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -20921,7 +20917,7 @@ func (s *Plugins) UpdateBotdetectionPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -21127,8 +21123,8 @@ func (s *Plugins) UpdateBotdetectionPlugin(ctx context.Context, request operatio
 
 }
 
-// DeleteCanaryPlugin - Delete a Canary plugin
-// Delete a Canary plugin
+// DeleteCanaryPlugin - Delete a Canary plugin in a workspace
+// Delete a Canary plugin in a workspace
 func (s *Plugins) DeleteCanaryPlugin(ctx context.Context, request operations.DeleteCanaryPluginRequest, opts ...operations.Option) (*operations.DeleteCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -21148,7 +21144,7 @@ func (s *Plugins) DeleteCanaryPlugin(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -21330,8 +21326,8 @@ func (s *Plugins) DeleteCanaryPlugin(ctx context.Context, request operations.Del
 
 }
 
-// GetCanaryPlugin - Get a Canary plugin
-// Get a Canary plugin
+// GetCanaryPlugin - Get a Canary plugin in a workspace
+// Get a Canary plugin in a workspace
 func (s *Plugins) GetCanaryPlugin(ctx context.Context, request operations.GetCanaryPluginRequest, opts ...operations.Option) (*operations.GetCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -21351,7 +21347,7 @@ func (s *Plugins) GetCanaryPlugin(ctx context.Context, request operations.GetCan
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -21552,8 +21548,8 @@ func (s *Plugins) GetCanaryPlugin(ctx context.Context, request operations.GetCan
 
 }
 
-// UpdateCanaryPlugin - Update a Canary plugin
-// Update a Canary plugin
+// UpdateCanaryPlugin - Update a Canary plugin in a workspace
+// Update a Canary plugin in a workspace
 func (s *Plugins) UpdateCanaryPlugin(ctx context.Context, request operations.UpdateCanaryPluginRequest, opts ...operations.Option) (*operations.UpdateCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -21573,7 +21569,7 @@ func (s *Plugins) UpdateCanaryPlugin(ctx context.Context, request operations.Upd
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -21779,8 +21775,8 @@ func (s *Plugins) UpdateCanaryPlugin(ctx context.Context, request operations.Upd
 
 }
 
-// DeleteConfluentPlugin - Delete a Confluent plugin
-// Delete a Confluent plugin
+// DeleteConfluentPlugin - Delete a Confluent plugin in a workspace
+// Delete a Confluent plugin in a workspace
 func (s *Plugins) DeleteConfluentPlugin(ctx context.Context, request operations.DeleteConfluentPluginRequest, opts ...operations.Option) (*operations.DeleteConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -21800,7 +21796,7 @@ func (s *Plugins) DeleteConfluentPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -21982,8 +21978,8 @@ func (s *Plugins) DeleteConfluentPlugin(ctx context.Context, request operations.
 
 }
 
-// GetConfluentPlugin - Get a Confluent plugin
-// Get a Confluent plugin
+// GetConfluentPlugin - Get a Confluent plugin in a workspace
+// Get a Confluent plugin in a workspace
 func (s *Plugins) GetConfluentPlugin(ctx context.Context, request operations.GetConfluentPluginRequest, opts ...operations.Option) (*operations.GetConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -22003,7 +21999,7 @@ func (s *Plugins) GetConfluentPlugin(ctx context.Context, request operations.Get
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -22204,8 +22200,8 @@ func (s *Plugins) GetConfluentPlugin(ctx context.Context, request operations.Get
 
 }
 
-// UpdateConfluentPlugin - Update a Confluent plugin
-// Update a Confluent plugin
+// UpdateConfluentPlugin - Update a Confluent plugin in a workspace
+// Update a Confluent plugin in a workspace
 func (s *Plugins) UpdateConfluentPlugin(ctx context.Context, request operations.UpdateConfluentPluginRequest, opts ...operations.Option) (*operations.UpdateConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -22225,7 +22221,7 @@ func (s *Plugins) UpdateConfluentPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -22431,8 +22427,8 @@ func (s *Plugins) UpdateConfluentPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteConfluentconsumePlugin - Delete a ConfluentConsume plugin
-// Delete a ConfluentConsume plugin
+// DeleteConfluentconsumePlugin - Delete a ConfluentConsume plugin in a workspace
+// Delete a ConfluentConsume plugin in a workspace
 func (s *Plugins) DeleteConfluentconsumePlugin(ctx context.Context, request operations.DeleteConfluentconsumePluginRequest, opts ...operations.Option) (*operations.DeleteConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -22452,7 +22448,7 @@ func (s *Plugins) DeleteConfluentconsumePlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -22634,8 +22630,8 @@ func (s *Plugins) DeleteConfluentconsumePlugin(ctx context.Context, request oper
 
 }
 
-// GetConfluentconsumePlugin - Get a ConfluentConsume plugin
-// Get a ConfluentConsume plugin
+// GetConfluentconsumePlugin - Get a ConfluentConsume plugin in a workspace
+// Get a ConfluentConsume plugin in a workspace
 func (s *Plugins) GetConfluentconsumePlugin(ctx context.Context, request operations.GetConfluentconsumePluginRequest, opts ...operations.Option) (*operations.GetConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -22655,7 +22651,7 @@ func (s *Plugins) GetConfluentconsumePlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -22856,8 +22852,8 @@ func (s *Plugins) GetConfluentconsumePlugin(ctx context.Context, request operati
 
 }
 
-// UpdateConfluentconsumePlugin - Update a ConfluentConsume plugin
-// Update a ConfluentConsume plugin
+// UpdateConfluentconsumePlugin - Update a ConfluentConsume plugin in a workspace
+// Update a ConfluentConsume plugin in a workspace
 func (s *Plugins) UpdateConfluentconsumePlugin(ctx context.Context, request operations.UpdateConfluentconsumePluginRequest, opts ...operations.Option) (*operations.UpdateConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -22877,7 +22873,7 @@ func (s *Plugins) UpdateConfluentconsumePlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -23083,8 +23079,8 @@ func (s *Plugins) UpdateConfluentconsumePlugin(ctx context.Context, request oper
 
 }
 
-// DeleteCorrelationidPlugin - Delete a CorrelationId plugin
-// Delete a CorrelationId plugin
+// DeleteCorrelationidPlugin - Delete a CorrelationId plugin in a workspace
+// Delete a CorrelationId plugin in a workspace
 func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operations.DeleteCorrelationidPluginRequest, opts ...operations.Option) (*operations.DeleteCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -23104,7 +23100,7 @@ func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -23286,8 +23282,8 @@ func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operati
 
 }
 
-// GetCorrelationidPlugin - Get a CorrelationId plugin
-// Get a CorrelationId plugin
+// GetCorrelationidPlugin - Get a CorrelationId plugin in a workspace
+// Get a CorrelationId plugin in a workspace
 func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations.GetCorrelationidPluginRequest, opts ...operations.Option) (*operations.GetCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -23307,7 +23303,7 @@ func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -23508,8 +23504,8 @@ func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateCorrelationidPlugin - Update a CorrelationId plugin
-// Update a CorrelationId plugin
+// UpdateCorrelationidPlugin - Update a CorrelationId plugin in a workspace
+// Update a CorrelationId plugin in a workspace
 func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operations.UpdateCorrelationidPluginRequest, opts ...operations.Option) (*operations.UpdateCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -23529,7 +23525,7 @@ func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -23735,8 +23731,8 @@ func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteCorsPlugin - Delete a Cors plugin
-// Delete a Cors plugin
+// DeleteCorsPlugin - Delete a Cors plugin in a workspace
+// Delete a Cors plugin in a workspace
 func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.DeleteCorsPluginRequest, opts ...operations.Option) (*operations.DeleteCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -23756,7 +23752,7 @@ func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.Delet
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -23938,8 +23934,8 @@ func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.Delet
 
 }
 
-// GetCorsPlugin - Get a Cors plugin
-// Get a Cors plugin
+// GetCorsPlugin - Get a Cors plugin in a workspace
+// Get a Cors plugin in a workspace
 func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsPluginRequest, opts ...operations.Option) (*operations.GetCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -23959,7 +23955,7 @@ func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -24160,8 +24156,8 @@ func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsP
 
 }
 
-// UpdateCorsPlugin - Update a Cors plugin
-// Update a Cors plugin
+// UpdateCorsPlugin - Update a Cors plugin in a workspace
+// Update a Cors plugin in a workspace
 func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.UpdateCorsPluginRequest, opts ...operations.Option) (*operations.UpdateCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -24181,7 +24177,7 @@ func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.Updat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -24387,8 +24383,8 @@ func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.Updat
 
 }
 
-// DeleteDatadogPlugin - Delete a Datadog plugin
-// Delete a Datadog plugin
+// DeleteDatadogPlugin - Delete a Datadog plugin in a workspace
+// Delete a Datadog plugin in a workspace
 func (s *Plugins) DeleteDatadogPlugin(ctx context.Context, request operations.DeleteDatadogPluginRequest, opts ...operations.Option) (*operations.DeleteDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -24408,7 +24404,7 @@ func (s *Plugins) DeleteDatadogPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -24590,8 +24586,8 @@ func (s *Plugins) DeleteDatadogPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetDatadogPlugin - Get a Datadog plugin
-// Get a Datadog plugin
+// GetDatadogPlugin - Get a Datadog plugin in a workspace
+// Get a Datadog plugin in a workspace
 func (s *Plugins) GetDatadogPlugin(ctx context.Context, request operations.GetDatadogPluginRequest, opts ...operations.Option) (*operations.GetDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -24611,7 +24607,7 @@ func (s *Plugins) GetDatadogPlugin(ctx context.Context, request operations.GetDa
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -24812,8 +24808,8 @@ func (s *Plugins) GetDatadogPlugin(ctx context.Context, request operations.GetDa
 
 }
 
-// UpdateDatadogPlugin - Update a Datadog plugin
-// Update a Datadog plugin
+// UpdateDatadogPlugin - Update a Datadog plugin in a workspace
+// Update a Datadog plugin in a workspace
 func (s *Plugins) UpdateDatadogPlugin(ctx context.Context, request operations.UpdateDatadogPluginRequest, opts ...operations.Option) (*operations.UpdateDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -24833,7 +24829,7 @@ func (s *Plugins) UpdateDatadogPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -25039,8 +25035,8 @@ func (s *Plugins) UpdateDatadogPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteDatakitPlugin - Delete a Datakit plugin
-// Delete a Datakit plugin
+// DeleteDatakitPlugin - Delete a Datakit plugin in a workspace
+// Delete a Datakit plugin in a workspace
 func (s *Plugins) DeleteDatakitPlugin(ctx context.Context, request operations.DeleteDatakitPluginRequest, opts ...operations.Option) (*operations.DeleteDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -25060,7 +25056,7 @@ func (s *Plugins) DeleteDatakitPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -25242,8 +25238,8 @@ func (s *Plugins) DeleteDatakitPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetDatakitPlugin - Get a Datakit plugin
-// Get a Datakit plugin
+// GetDatakitPlugin - Get a Datakit plugin in a workspace
+// Get a Datakit plugin in a workspace
 func (s *Plugins) GetDatakitPlugin(ctx context.Context, request operations.GetDatakitPluginRequest, opts ...operations.Option) (*operations.GetDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -25263,7 +25259,7 @@ func (s *Plugins) GetDatakitPlugin(ctx context.Context, request operations.GetDa
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -25464,8 +25460,8 @@ func (s *Plugins) GetDatakitPlugin(ctx context.Context, request operations.GetDa
 
 }
 
-// UpdateDatakitPlugin - Update a Datakit plugin
-// Update a Datakit plugin
+// UpdateDatakitPlugin - Update a Datakit plugin in a workspace
+// Update a Datakit plugin in a workspace
 func (s *Plugins) UpdateDatakitPlugin(ctx context.Context, request operations.UpdateDatakitPluginRequest, opts ...operations.Option) (*operations.UpdateDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -25485,7 +25481,7 @@ func (s *Plugins) UpdateDatakitPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -25691,8 +25687,8 @@ func (s *Plugins) UpdateDatakitPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteDegraphqlPlugin - Delete a Degraphql plugin
-// Delete a Degraphql plugin
+// DeleteDegraphqlPlugin - Delete a Degraphql plugin in a workspace
+// Delete a Degraphql plugin in a workspace
 func (s *Plugins) DeleteDegraphqlPlugin(ctx context.Context, request operations.DeleteDegraphqlPluginRequest, opts ...operations.Option) (*operations.DeleteDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -25712,7 +25708,7 @@ func (s *Plugins) DeleteDegraphqlPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -25894,8 +25890,8 @@ func (s *Plugins) DeleteDegraphqlPlugin(ctx context.Context, request operations.
 
 }
 
-// GetDegraphqlPlugin - Get a Degraphql plugin
-// Get a Degraphql plugin
+// GetDegraphqlPlugin - Get a Degraphql plugin in a workspace
+// Get a Degraphql plugin in a workspace
 func (s *Plugins) GetDegraphqlPlugin(ctx context.Context, request operations.GetDegraphqlPluginRequest, opts ...operations.Option) (*operations.GetDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -25915,7 +25911,7 @@ func (s *Plugins) GetDegraphqlPlugin(ctx context.Context, request operations.Get
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -26116,8 +26112,8 @@ func (s *Plugins) GetDegraphqlPlugin(ctx context.Context, request operations.Get
 
 }
 
-// UpdateDegraphqlPlugin - Update a Degraphql plugin
-// Update a Degraphql plugin
+// UpdateDegraphqlPlugin - Update a Degraphql plugin in a workspace
+// Update a Degraphql plugin in a workspace
 func (s *Plugins) UpdateDegraphqlPlugin(ctx context.Context, request operations.UpdateDegraphqlPluginRequest, opts ...operations.Option) (*operations.UpdateDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -26137,7 +26133,7 @@ func (s *Plugins) UpdateDegraphqlPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -26343,8 +26339,8 @@ func (s *Plugins) UpdateDegraphqlPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteEntitlementenforcementPlugin - Delete a EntitlementEnforcement plugin
-// Delete a EntitlementEnforcement plugin
+// DeleteEntitlementenforcementPlugin - Delete a EntitlementEnforcement plugin in a workspace
+// Delete a EntitlementEnforcement plugin in a workspace
 func (s *Plugins) DeleteEntitlementenforcementPlugin(ctx context.Context, request operations.DeleteEntitlementenforcementPluginRequest, opts ...operations.Option) (*operations.DeleteEntitlementenforcementPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -26364,7 +26360,7 @@ func (s *Plugins) DeleteEntitlementenforcementPlugin(ctx context.Context, reques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -26546,8 +26542,8 @@ func (s *Plugins) DeleteEntitlementenforcementPlugin(ctx context.Context, reques
 
 }
 
-// GetEntitlementenforcementPlugin - Get a EntitlementEnforcement plugin
-// Get a EntitlementEnforcement plugin
+// GetEntitlementenforcementPlugin - Get a EntitlementEnforcement plugin in a workspace
+// Get a EntitlementEnforcement plugin in a workspace
 func (s *Plugins) GetEntitlementenforcementPlugin(ctx context.Context, request operations.GetEntitlementenforcementPluginRequest, opts ...operations.Option) (*operations.GetEntitlementenforcementPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -26567,7 +26563,7 @@ func (s *Plugins) GetEntitlementenforcementPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -26768,8 +26764,8 @@ func (s *Plugins) GetEntitlementenforcementPlugin(ctx context.Context, request o
 
 }
 
-// UpdateEntitlementenforcementPlugin - Update a EntitlementEnforcement plugin
-// Update a EntitlementEnforcement plugin
+// UpdateEntitlementenforcementPlugin - Update a EntitlementEnforcement plugin in a workspace
+// Update a EntitlementEnforcement plugin in a workspace
 func (s *Plugins) UpdateEntitlementenforcementPlugin(ctx context.Context, request operations.UpdateEntitlementenforcementPluginRequest, opts ...operations.Option) (*operations.UpdateEntitlementenforcementPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -26789,7 +26785,7 @@ func (s *Plugins) UpdateEntitlementenforcementPlugin(ctx context.Context, reques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -26995,8 +26991,8 @@ func (s *Plugins) UpdateEntitlementenforcementPlugin(ctx context.Context, reques
 
 }
 
-// DeleteExittransformerPlugin - Delete a ExitTransformer plugin
-// Delete a ExitTransformer plugin
+// DeleteExittransformerPlugin - Delete a ExitTransformer plugin in a workspace
+// Delete a ExitTransformer plugin in a workspace
 func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request operations.DeleteExittransformerPluginRequest, opts ...operations.Option) (*operations.DeleteExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -27016,7 +27012,7 @@ func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -27198,8 +27194,8 @@ func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request opera
 
 }
 
-// GetExittransformerPlugin - Get a ExitTransformer plugin
-// Get a ExitTransformer plugin
+// GetExittransformerPlugin - Get a ExitTransformer plugin in a workspace
+// Get a ExitTransformer plugin in a workspace
 func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operations.GetExittransformerPluginRequest, opts ...operations.Option) (*operations.GetExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -27219,7 +27215,7 @@ func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -27420,8 +27416,8 @@ func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operatio
 
 }
 
-// UpdateExittransformerPlugin - Update a ExitTransformer plugin
-// Update a ExitTransformer plugin
+// UpdateExittransformerPlugin - Update a ExitTransformer plugin in a workspace
+// Update a ExitTransformer plugin in a workspace
 func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request operations.UpdateExittransformerPluginRequest, opts ...operations.Option) (*operations.UpdateExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -27441,7 +27437,7 @@ func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -27647,8 +27643,8 @@ func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request opera
 
 }
 
-// DeleteFilelogPlugin - Delete a FileLog plugin
-// Delete a FileLog plugin
+// DeleteFilelogPlugin - Delete a FileLog plugin in a workspace
+// Delete a FileLog plugin in a workspace
 func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.DeleteFilelogPluginRequest, opts ...operations.Option) (*operations.DeleteFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -27668,7 +27664,7 @@ func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -27850,8 +27846,8 @@ func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetFilelogPlugin - Get a FileLog plugin
-// Get a FileLog plugin
+// GetFilelogPlugin - Get a FileLog plugin in a workspace
+// Get a FileLog plugin in a workspace
 func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFilelogPluginRequest, opts ...operations.Option) (*operations.GetFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -27871,7 +27867,7 @@ func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFi
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -28072,8 +28068,8 @@ func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFi
 
 }
 
-// UpdateFilelogPlugin - Update a FileLog plugin
-// Update a FileLog plugin
+// UpdateFilelogPlugin - Update a FileLog plugin in a workspace
+// Update a FileLog plugin in a workspace
 func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.UpdateFilelogPluginRequest, opts ...operations.Option) (*operations.UpdateFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -28093,7 +28089,7 @@ func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -28299,8 +28295,8 @@ func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteForwardproxyPlugin - Delete a ForwardProxy plugin
-// Delete a ForwardProxy plugin
+// DeleteForwardproxyPlugin - Delete a ForwardProxy plugin in a workspace
+// Delete a ForwardProxy plugin in a workspace
 func (s *Plugins) DeleteForwardproxyPlugin(ctx context.Context, request operations.DeleteForwardproxyPluginRequest, opts ...operations.Option) (*operations.DeleteForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -28320,7 +28316,7 @@ func (s *Plugins) DeleteForwardproxyPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -28502,8 +28498,8 @@ func (s *Plugins) DeleteForwardproxyPlugin(ctx context.Context, request operatio
 
 }
 
-// GetForwardproxyPlugin - Get a ForwardProxy plugin
-// Get a ForwardProxy plugin
+// GetForwardproxyPlugin - Get a ForwardProxy plugin in a workspace
+// Get a ForwardProxy plugin in a workspace
 func (s *Plugins) GetForwardproxyPlugin(ctx context.Context, request operations.GetForwardproxyPluginRequest, opts ...operations.Option) (*operations.GetForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -28523,7 +28519,7 @@ func (s *Plugins) GetForwardproxyPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -28724,8 +28720,8 @@ func (s *Plugins) GetForwardproxyPlugin(ctx context.Context, request operations.
 
 }
 
-// UpdateForwardproxyPlugin - Update a ForwardProxy plugin
-// Update a ForwardProxy plugin
+// UpdateForwardproxyPlugin - Update a ForwardProxy plugin in a workspace
+// Update a ForwardProxy plugin in a workspace
 func (s *Plugins) UpdateForwardproxyPlugin(ctx context.Context, request operations.UpdateForwardproxyPluginRequest, opts ...operations.Option) (*operations.UpdateForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -28745,7 +28741,7 @@ func (s *Plugins) UpdateForwardproxyPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -28951,8 +28947,8 @@ func (s *Plugins) UpdateForwardproxyPlugin(ctx context.Context, request operatio
 
 }
 
-// DeleteGraphqlproxycacheadvancedPlugin - Delete a GraphqlProxyCacheAdvanced plugin
-// Delete a GraphqlProxyCacheAdvanced plugin
+// DeleteGraphqlproxycacheadvancedPlugin - Delete a GraphqlProxyCacheAdvanced plugin in a workspace
+// Delete a GraphqlProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) DeleteGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.DeleteGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -28972,7 +28968,7 @@ func (s *Plugins) DeleteGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -29154,8 +29150,8 @@ func (s *Plugins) DeleteGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 
 }
 
-// GetGraphqlproxycacheadvancedPlugin - Get a GraphqlProxyCacheAdvanced plugin
-// Get a GraphqlProxyCacheAdvanced plugin
+// GetGraphqlproxycacheadvancedPlugin - Get a GraphqlProxyCacheAdvanced plugin in a workspace
+// Get a GraphqlProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) GetGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.GetGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.GetGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -29175,7 +29171,7 @@ func (s *Plugins) GetGraphqlproxycacheadvancedPlugin(ctx context.Context, reques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -29376,8 +29372,8 @@ func (s *Plugins) GetGraphqlproxycacheadvancedPlugin(ctx context.Context, reques
 
 }
 
-// UpdateGraphqlproxycacheadvancedPlugin - Update a GraphqlProxyCacheAdvanced plugin
-// Update a GraphqlProxyCacheAdvanced plugin
+// UpdateGraphqlproxycacheadvancedPlugin - Update a GraphqlProxyCacheAdvanced plugin in a workspace
+// Update a GraphqlProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) UpdateGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.UpdateGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -29397,7 +29393,7 @@ func (s *Plugins) UpdateGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -29603,8 +29599,8 @@ func (s *Plugins) UpdateGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 
 }
 
-// DeleteGraphqlratelimitingadvancedPlugin - Delete a GraphqlRateLimitingAdvanced plugin
-// Delete a GraphqlRateLimitingAdvanced plugin
+// DeleteGraphqlratelimitingadvancedPlugin - Delete a GraphqlRateLimitingAdvanced plugin in a workspace
+// Delete a GraphqlRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) DeleteGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.DeleteGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -29624,7 +29620,7 @@ func (s *Plugins) DeleteGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -29806,8 +29802,8 @@ func (s *Plugins) DeleteGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 
 }
 
-// GetGraphqlratelimitingadvancedPlugin - Get a GraphqlRateLimitingAdvanced plugin
-// Get a GraphqlRateLimitingAdvanced plugin
+// GetGraphqlratelimitingadvancedPlugin - Get a GraphqlRateLimitingAdvanced plugin in a workspace
+// Get a GraphqlRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) GetGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.GetGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.GetGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -29827,7 +29823,7 @@ func (s *Plugins) GetGraphqlratelimitingadvancedPlugin(ctx context.Context, requ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -30028,8 +30024,8 @@ func (s *Plugins) GetGraphqlratelimitingadvancedPlugin(ctx context.Context, requ
 
 }
 
-// UpdateGraphqlratelimitingadvancedPlugin - Update a GraphqlRateLimitingAdvanced plugin
-// Update a GraphqlRateLimitingAdvanced plugin
+// UpdateGraphqlratelimitingadvancedPlugin - Update a GraphqlRateLimitingAdvanced plugin in a workspace
+// Update a GraphqlRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) UpdateGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.UpdateGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -30049,7 +30045,7 @@ func (s *Plugins) UpdateGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -30255,8 +30251,8 @@ func (s *Plugins) UpdateGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 
 }
 
-// DeleteGrpcgatewayPlugin - Delete a GrpcGateway plugin
-// Delete a GrpcGateway plugin
+// DeleteGrpcgatewayPlugin - Delete a GrpcGateway plugin in a workspace
+// Delete a GrpcGateway plugin in a workspace
 func (s *Plugins) DeleteGrpcgatewayPlugin(ctx context.Context, request operations.DeleteGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.DeleteGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -30276,7 +30272,7 @@ func (s *Plugins) DeleteGrpcgatewayPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -30458,8 +30454,8 @@ func (s *Plugins) DeleteGrpcgatewayPlugin(ctx context.Context, request operation
 
 }
 
-// GetGrpcgatewayPlugin - Get a GrpcGateway plugin
-// Get a GrpcGateway plugin
+// GetGrpcgatewayPlugin - Get a GrpcGateway plugin in a workspace
+// Get a GrpcGateway plugin in a workspace
 func (s *Plugins) GetGrpcgatewayPlugin(ctx context.Context, request operations.GetGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.GetGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -30479,7 +30475,7 @@ func (s *Plugins) GetGrpcgatewayPlugin(ctx context.Context, request operations.G
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -30680,8 +30676,8 @@ func (s *Plugins) GetGrpcgatewayPlugin(ctx context.Context, request operations.G
 
 }
 
-// UpdateGrpcgatewayPlugin - Update a GrpcGateway plugin
-// Update a GrpcGateway plugin
+// UpdateGrpcgatewayPlugin - Update a GrpcGateway plugin in a workspace
+// Update a GrpcGateway plugin in a workspace
 func (s *Plugins) UpdateGrpcgatewayPlugin(ctx context.Context, request operations.UpdateGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.UpdateGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -30701,7 +30697,7 @@ func (s *Plugins) UpdateGrpcgatewayPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -30907,8 +30903,8 @@ func (s *Plugins) UpdateGrpcgatewayPlugin(ctx context.Context, request operation
 
 }
 
-// DeleteGrpcwebPlugin - Delete a GrpcWeb plugin
-// Delete a GrpcWeb plugin
+// DeleteGrpcwebPlugin - Delete a GrpcWeb plugin in a workspace
+// Delete a GrpcWeb plugin in a workspace
 func (s *Plugins) DeleteGrpcwebPlugin(ctx context.Context, request operations.DeleteGrpcwebPluginRequest, opts ...operations.Option) (*operations.DeleteGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -30928,7 +30924,7 @@ func (s *Plugins) DeleteGrpcwebPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -31110,8 +31106,8 @@ func (s *Plugins) DeleteGrpcwebPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetGrpcwebPlugin - Get a GrpcWeb plugin
-// Get a GrpcWeb plugin
+// GetGrpcwebPlugin - Get a GrpcWeb plugin in a workspace
+// Get a GrpcWeb plugin in a workspace
 func (s *Plugins) GetGrpcwebPlugin(ctx context.Context, request operations.GetGrpcwebPluginRequest, opts ...operations.Option) (*operations.GetGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -31131,7 +31127,7 @@ func (s *Plugins) GetGrpcwebPlugin(ctx context.Context, request operations.GetGr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -31332,8 +31328,8 @@ func (s *Plugins) GetGrpcwebPlugin(ctx context.Context, request operations.GetGr
 
 }
 
-// UpdateGrpcwebPlugin - Update a GrpcWeb plugin
-// Update a GrpcWeb plugin
+// UpdateGrpcwebPlugin - Update a GrpcWeb plugin in a workspace
+// Update a GrpcWeb plugin in a workspace
 func (s *Plugins) UpdateGrpcwebPlugin(ctx context.Context, request operations.UpdateGrpcwebPluginRequest, opts ...operations.Option) (*operations.UpdateGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -31353,7 +31349,7 @@ func (s *Plugins) UpdateGrpcwebPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -31559,8 +31555,8 @@ func (s *Plugins) UpdateGrpcwebPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteHeadercertauthPlugin - Delete a HeaderCertAuth plugin
-// Delete a HeaderCertAuth plugin
+// DeleteHeadercertauthPlugin - Delete a HeaderCertAuth plugin in a workspace
+// Delete a HeaderCertAuth plugin in a workspace
 func (s *Plugins) DeleteHeadercertauthPlugin(ctx context.Context, request operations.DeleteHeadercertauthPluginRequest, opts ...operations.Option) (*operations.DeleteHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -31580,7 +31576,7 @@ func (s *Plugins) DeleteHeadercertauthPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -31762,8 +31758,8 @@ func (s *Plugins) DeleteHeadercertauthPlugin(ctx context.Context, request operat
 
 }
 
-// GetHeadercertauthPlugin - Get a HeaderCertAuth plugin
-// Get a HeaderCertAuth plugin
+// GetHeadercertauthPlugin - Get a HeaderCertAuth plugin in a workspace
+// Get a HeaderCertAuth plugin in a workspace
 func (s *Plugins) GetHeadercertauthPlugin(ctx context.Context, request operations.GetHeadercertauthPluginRequest, opts ...operations.Option) (*operations.GetHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -31783,7 +31779,7 @@ func (s *Plugins) GetHeadercertauthPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -31984,8 +31980,8 @@ func (s *Plugins) GetHeadercertauthPlugin(ctx context.Context, request operation
 
 }
 
-// UpdateHeadercertauthPlugin - Update a HeaderCertAuth plugin
-// Update a HeaderCertAuth plugin
+// UpdateHeadercertauthPlugin - Update a HeaderCertAuth plugin in a workspace
+// Update a HeaderCertAuth plugin in a workspace
 func (s *Plugins) UpdateHeadercertauthPlugin(ctx context.Context, request operations.UpdateHeadercertauthPluginRequest, opts ...operations.Option) (*operations.UpdateHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -32005,7 +32001,7 @@ func (s *Plugins) UpdateHeadercertauthPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -32211,8 +32207,8 @@ func (s *Plugins) UpdateHeadercertauthPlugin(ctx context.Context, request operat
 
 }
 
-// DeleteHmacauthPlugin - Delete a HmacAuth plugin
-// Delete a HmacAuth plugin
+// DeleteHmacauthPlugin - Delete a HmacAuth plugin in a workspace
+// Delete a HmacAuth plugin in a workspace
 func (s *Plugins) DeleteHmacauthPlugin(ctx context.Context, request operations.DeleteHmacauthPluginRequest, opts ...operations.Option) (*operations.DeleteHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -32232,7 +32228,7 @@ func (s *Plugins) DeleteHmacauthPlugin(ctx context.Context, request operations.D
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -32414,8 +32410,8 @@ func (s *Plugins) DeleteHmacauthPlugin(ctx context.Context, request operations.D
 
 }
 
-// GetHmacauthPlugin - Get a HmacAuth plugin
-// Get a HmacAuth plugin
+// GetHmacauthPlugin - Get a HmacAuth plugin in a workspace
+// Get a HmacAuth plugin in a workspace
 func (s *Plugins) GetHmacauthPlugin(ctx context.Context, request operations.GetHmacauthPluginRequest, opts ...operations.Option) (*operations.GetHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -32435,7 +32431,7 @@ func (s *Plugins) GetHmacauthPlugin(ctx context.Context, request operations.GetH
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -32636,8 +32632,8 @@ func (s *Plugins) GetHmacauthPlugin(ctx context.Context, request operations.GetH
 
 }
 
-// UpdateHmacauthPlugin - Update a HmacAuth plugin
-// Update a HmacAuth plugin
+// UpdateHmacauthPlugin - Update a HmacAuth plugin in a workspace
+// Update a HmacAuth plugin in a workspace
 func (s *Plugins) UpdateHmacauthPlugin(ctx context.Context, request operations.UpdateHmacauthPluginRequest, opts ...operations.Option) (*operations.UpdateHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -32657,7 +32653,7 @@ func (s *Plugins) UpdateHmacauthPlugin(ctx context.Context, request operations.U
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -32863,8 +32859,8 @@ func (s *Plugins) UpdateHmacauthPlugin(ctx context.Context, request operations.U
 
 }
 
-// DeleteHttplogPlugin - Delete a HttpLog plugin
-// Delete a HttpLog plugin
+// DeleteHttplogPlugin - Delete a HttpLog plugin in a workspace
+// Delete a HttpLog plugin in a workspace
 func (s *Plugins) DeleteHttplogPlugin(ctx context.Context, request operations.DeleteHttplogPluginRequest, opts ...operations.Option) (*operations.DeleteHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -32884,7 +32880,7 @@ func (s *Plugins) DeleteHttplogPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -33066,8 +33062,8 @@ func (s *Plugins) DeleteHttplogPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetHttplogPlugin - Get a HttpLog plugin
-// Get a HttpLog plugin
+// GetHttplogPlugin - Get a HttpLog plugin in a workspace
+// Get a HttpLog plugin in a workspace
 func (s *Plugins) GetHttplogPlugin(ctx context.Context, request operations.GetHttplogPluginRequest, opts ...operations.Option) (*operations.GetHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -33087,7 +33083,7 @@ func (s *Plugins) GetHttplogPlugin(ctx context.Context, request operations.GetHt
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -33288,8 +33284,8 @@ func (s *Plugins) GetHttplogPlugin(ctx context.Context, request operations.GetHt
 
 }
 
-// UpdateHttplogPlugin - Update a HttpLog plugin
-// Update a HttpLog plugin
+// UpdateHttplogPlugin - Update a HttpLog plugin in a workspace
+// Update a HttpLog plugin in a workspace
 func (s *Plugins) UpdateHttplogPlugin(ctx context.Context, request operations.UpdateHttplogPluginRequest, opts ...operations.Option) (*operations.UpdateHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -33309,7 +33305,7 @@ func (s *Plugins) UpdateHttplogPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -33515,8 +33511,8 @@ func (s *Plugins) UpdateHttplogPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteInjectionprotectionPlugin - Delete a InjectionProtection plugin
-// Delete a InjectionProtection plugin
+// DeleteInjectionprotectionPlugin - Delete a InjectionProtection plugin in a workspace
+// Delete a InjectionProtection plugin in a workspace
 func (s *Plugins) DeleteInjectionprotectionPlugin(ctx context.Context, request operations.DeleteInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -33536,7 +33532,7 @@ func (s *Plugins) DeleteInjectionprotectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -33718,8 +33714,8 @@ func (s *Plugins) DeleteInjectionprotectionPlugin(ctx context.Context, request o
 
 }
 
-// GetInjectionprotectionPlugin - Get a InjectionProtection plugin
-// Get a InjectionProtection plugin
+// GetInjectionprotectionPlugin - Get a InjectionProtection plugin in a workspace
+// Get a InjectionProtection plugin in a workspace
 func (s *Plugins) GetInjectionprotectionPlugin(ctx context.Context, request operations.GetInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.GetInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -33739,7 +33735,7 @@ func (s *Plugins) GetInjectionprotectionPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -33940,8 +33936,8 @@ func (s *Plugins) GetInjectionprotectionPlugin(ctx context.Context, request oper
 
 }
 
-// UpdateInjectionprotectionPlugin - Update a InjectionProtection plugin
-// Update a InjectionProtection plugin
+// UpdateInjectionprotectionPlugin - Update a InjectionProtection plugin in a workspace
+// Update a InjectionProtection plugin in a workspace
 func (s *Plugins) UpdateInjectionprotectionPlugin(ctx context.Context, request operations.UpdateInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -33961,7 +33957,7 @@ func (s *Plugins) UpdateInjectionprotectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -34167,8 +34163,8 @@ func (s *Plugins) UpdateInjectionprotectionPlugin(ctx context.Context, request o
 
 }
 
-// DeleteIprestrictionPlugin - Delete a IpRestriction plugin
-// Delete a IpRestriction plugin
+// DeleteIprestrictionPlugin - Delete a IpRestriction plugin in a workspace
+// Delete a IpRestriction plugin in a workspace
 func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operations.DeleteIprestrictionPluginRequest, opts ...operations.Option) (*operations.DeleteIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -34188,7 +34184,7 @@ func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -34370,8 +34366,8 @@ func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operati
 
 }
 
-// GetIprestrictionPlugin - Get a IpRestriction plugin
-// Get a IpRestriction plugin
+// GetIprestrictionPlugin - Get a IpRestriction plugin in a workspace
+// Get a IpRestriction plugin in a workspace
 func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations.GetIprestrictionPluginRequest, opts ...operations.Option) (*operations.GetIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -34391,7 +34387,7 @@ func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -34592,8 +34588,8 @@ func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateIprestrictionPlugin - Update a IpRestriction plugin
-// Update a IpRestriction plugin
+// UpdateIprestrictionPlugin - Update a IpRestriction plugin in a workspace
+// Update a IpRestriction plugin in a workspace
 func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operations.UpdateIprestrictionPluginRequest, opts ...operations.Option) (*operations.UpdateIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -34613,7 +34609,7 @@ func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -34819,8 +34815,8 @@ func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteJqPlugin - Delete a Jq plugin
-// Delete a Jq plugin
+// DeleteJqPlugin - Delete a Jq plugin in a workspace
+// Delete a Jq plugin in a workspace
 func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJqPluginRequest, opts ...operations.Option) (*operations.DeleteJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -34840,7 +34836,7 @@ func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -35022,8 +35018,8 @@ func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJ
 
 }
 
-// GetJqPlugin - Get a Jq plugin
-// Get a Jq plugin
+// GetJqPlugin - Get a Jq plugin in a workspace
+// Get a Jq plugin in a workspace
 func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPluginRequest, opts ...operations.Option) (*operations.GetJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -35043,7 +35039,7 @@ func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPlugi
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -35244,8 +35240,8 @@ func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPlugi
 
 }
 
-// UpdateJqPlugin - Update a Jq plugin
-// Update a Jq plugin
+// UpdateJqPlugin - Update a Jq plugin in a workspace
+// Update a Jq plugin in a workspace
 func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJqPluginRequest, opts ...operations.Option) (*operations.UpdateJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -35265,7 +35261,7 @@ func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -35471,8 +35467,8 @@ func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJ
 
 }
 
-// DeleteJsonthreatprotectionPlugin - Delete a JsonThreatProtection plugin
-// Delete a JsonThreatProtection plugin
+// DeleteJsonthreatprotectionPlugin - Delete a JsonThreatProtection plugin in a workspace
+// Delete a JsonThreatProtection plugin in a workspace
 func (s *Plugins) DeleteJsonthreatprotectionPlugin(ctx context.Context, request operations.DeleteJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -35492,7 +35488,7 @@ func (s *Plugins) DeleteJsonthreatprotectionPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -35674,8 +35670,8 @@ func (s *Plugins) DeleteJsonthreatprotectionPlugin(ctx context.Context, request 
 
 }
 
-// GetJsonthreatprotectionPlugin - Get a JsonThreatProtection plugin
-// Get a JsonThreatProtection plugin
+// GetJsonthreatprotectionPlugin - Get a JsonThreatProtection plugin in a workspace
+// Get a JsonThreatProtection plugin in a workspace
 func (s *Plugins) GetJsonthreatprotectionPlugin(ctx context.Context, request operations.GetJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.GetJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -35695,7 +35691,7 @@ func (s *Plugins) GetJsonthreatprotectionPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -35896,8 +35892,8 @@ func (s *Plugins) GetJsonthreatprotectionPlugin(ctx context.Context, request ope
 
 }
 
-// UpdateJsonthreatprotectionPlugin - Update a JsonThreatProtection plugin
-// Update a JsonThreatProtection plugin
+// UpdateJsonthreatprotectionPlugin - Update a JsonThreatProtection plugin in a workspace
+// Update a JsonThreatProtection plugin in a workspace
 func (s *Plugins) UpdateJsonthreatprotectionPlugin(ctx context.Context, request operations.UpdateJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -35917,7 +35913,7 @@ func (s *Plugins) UpdateJsonthreatprotectionPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -36123,8 +36119,8 @@ func (s *Plugins) UpdateJsonthreatprotectionPlugin(ctx context.Context, request 
 
 }
 
-// DeleteJwedecryptPlugin - Delete a JweDecrypt plugin
-// Delete a JweDecrypt plugin
+// DeleteJwedecryptPlugin - Delete a JweDecrypt plugin in a workspace
+// Delete a JweDecrypt plugin in a workspace
 func (s *Plugins) DeleteJwedecryptPlugin(ctx context.Context, request operations.DeleteJwedecryptPluginRequest, opts ...operations.Option) (*operations.DeleteJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -36144,7 +36140,7 @@ func (s *Plugins) DeleteJwedecryptPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -36326,8 +36322,8 @@ func (s *Plugins) DeleteJwedecryptPlugin(ctx context.Context, request operations
 
 }
 
-// GetJwedecryptPlugin - Get a JweDecrypt plugin
-// Get a JweDecrypt plugin
+// GetJwedecryptPlugin - Get a JweDecrypt plugin in a workspace
+// Get a JweDecrypt plugin in a workspace
 func (s *Plugins) GetJwedecryptPlugin(ctx context.Context, request operations.GetJwedecryptPluginRequest, opts ...operations.Option) (*operations.GetJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -36347,7 +36343,7 @@ func (s *Plugins) GetJwedecryptPlugin(ctx context.Context, request operations.Ge
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -36548,8 +36544,8 @@ func (s *Plugins) GetJwedecryptPlugin(ctx context.Context, request operations.Ge
 
 }
 
-// UpdateJwedecryptPlugin - Update a JweDecrypt plugin
-// Update a JweDecrypt plugin
+// UpdateJwedecryptPlugin - Update a JweDecrypt plugin in a workspace
+// Update a JweDecrypt plugin in a workspace
 func (s *Plugins) UpdateJwedecryptPlugin(ctx context.Context, request operations.UpdateJwedecryptPluginRequest, opts ...operations.Option) (*operations.UpdateJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -36569,7 +36565,7 @@ func (s *Plugins) UpdateJwedecryptPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -36775,8 +36771,8 @@ func (s *Plugins) UpdateJwedecryptPlugin(ctx context.Context, request operations
 
 }
 
-// DeleteJwtPlugin - Delete a Jwt plugin
-// Delete a Jwt plugin
+// DeleteJwtPlugin - Delete a Jwt plugin in a workspace
+// Delete a Jwt plugin in a workspace
 func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.DeleteJwtPluginRequest, opts ...operations.Option) (*operations.DeleteJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -36796,7 +36792,7 @@ func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.Delete
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -36978,8 +36974,8 @@ func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.Delete
 
 }
 
-// GetJwtPlugin - Get a Jwt plugin
-// Get a Jwt plugin
+// GetJwtPlugin - Get a Jwt plugin in a workspace
+// Get a Jwt plugin in a workspace
 func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPluginRequest, opts ...operations.Option) (*operations.GetJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -36999,7 +36995,7 @@ func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPlu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -37200,8 +37196,8 @@ func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPlu
 
 }
 
-// UpdateJwtPlugin - Update a Jwt plugin
-// Update a Jwt plugin
+// UpdateJwtPlugin - Update a Jwt plugin in a workspace
+// Update a Jwt plugin in a workspace
 func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.UpdateJwtPluginRequest, opts ...operations.Option) (*operations.UpdateJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -37221,7 +37217,7 @@ func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.Update
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -37427,8 +37423,8 @@ func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.Update
 
 }
 
-// DeleteJwtsignerPlugin - Delete a JwtSigner plugin
-// Delete a JwtSigner plugin
+// DeleteJwtsignerPlugin - Delete a JwtSigner plugin in a workspace
+// Delete a JwtSigner plugin in a workspace
 func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.DeleteJwtsignerPluginRequest, opts ...operations.Option) (*operations.DeleteJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -37448,7 +37444,7 @@ func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -37630,8 +37626,8 @@ func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.
 
 }
 
-// GetJwtsignerPlugin - Get a JwtSigner plugin
-// Get a JwtSigner plugin
+// GetJwtsignerPlugin - Get a JwtSigner plugin in a workspace
+// Get a JwtSigner plugin in a workspace
 func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.GetJwtsignerPluginRequest, opts ...operations.Option) (*operations.GetJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -37651,7 +37647,7 @@ func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.Get
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -37852,8 +37848,8 @@ func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.Get
 
 }
 
-// UpdateJwtsignerPlugin - Update a JwtSigner plugin
-// Update a JwtSigner plugin
+// UpdateJwtsignerPlugin - Update a JwtSigner plugin in a workspace
+// Update a JwtSigner plugin in a workspace
 func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.UpdateJwtsignerPluginRequest, opts ...operations.Option) (*operations.UpdateJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -37873,7 +37869,7 @@ func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -38079,8 +38075,8 @@ func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteKafkaconsumePlugin - Delete a KafkaConsume plugin
-// Delete a KafkaConsume plugin
+// DeleteKafkaconsumePlugin - Delete a KafkaConsume plugin in a workspace
+// Delete a KafkaConsume plugin in a workspace
 func (s *Plugins) DeleteKafkaconsumePlugin(ctx context.Context, request operations.DeleteKafkaconsumePluginRequest, opts ...operations.Option) (*operations.DeleteKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -38100,7 +38096,7 @@ func (s *Plugins) DeleteKafkaconsumePlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -38282,8 +38278,8 @@ func (s *Plugins) DeleteKafkaconsumePlugin(ctx context.Context, request operatio
 
 }
 
-// GetKafkaconsumePlugin - Get a KafkaConsume plugin
-// Get a KafkaConsume plugin
+// GetKafkaconsumePlugin - Get a KafkaConsume plugin in a workspace
+// Get a KafkaConsume plugin in a workspace
 func (s *Plugins) GetKafkaconsumePlugin(ctx context.Context, request operations.GetKafkaconsumePluginRequest, opts ...operations.Option) (*operations.GetKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -38303,7 +38299,7 @@ func (s *Plugins) GetKafkaconsumePlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -38504,8 +38500,8 @@ func (s *Plugins) GetKafkaconsumePlugin(ctx context.Context, request operations.
 
 }
 
-// UpdateKafkaconsumePlugin - Update a KafkaConsume plugin
-// Update a KafkaConsume plugin
+// UpdateKafkaconsumePlugin - Update a KafkaConsume plugin in a workspace
+// Update a KafkaConsume plugin in a workspace
 func (s *Plugins) UpdateKafkaconsumePlugin(ctx context.Context, request operations.UpdateKafkaconsumePluginRequest, opts ...operations.Option) (*operations.UpdateKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -38525,7 +38521,7 @@ func (s *Plugins) UpdateKafkaconsumePlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -38731,8 +38727,8 @@ func (s *Plugins) UpdateKafkaconsumePlugin(ctx context.Context, request operatio
 
 }
 
-// DeleteKafkalogPlugin - Delete a KafkaLog plugin
-// Delete a KafkaLog plugin
+// DeleteKafkalogPlugin - Delete a KafkaLog plugin in a workspace
+// Delete a KafkaLog plugin in a workspace
 func (s *Plugins) DeleteKafkalogPlugin(ctx context.Context, request operations.DeleteKafkalogPluginRequest, opts ...operations.Option) (*operations.DeleteKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -38752,7 +38748,7 @@ func (s *Plugins) DeleteKafkalogPlugin(ctx context.Context, request operations.D
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -38934,8 +38930,8 @@ func (s *Plugins) DeleteKafkalogPlugin(ctx context.Context, request operations.D
 
 }
 
-// GetKafkalogPlugin - Get a KafkaLog plugin
-// Get a KafkaLog plugin
+// GetKafkalogPlugin - Get a KafkaLog plugin in a workspace
+// Get a KafkaLog plugin in a workspace
 func (s *Plugins) GetKafkalogPlugin(ctx context.Context, request operations.GetKafkalogPluginRequest, opts ...operations.Option) (*operations.GetKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -38955,7 +38951,7 @@ func (s *Plugins) GetKafkalogPlugin(ctx context.Context, request operations.GetK
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -39156,8 +39152,8 @@ func (s *Plugins) GetKafkalogPlugin(ctx context.Context, request operations.GetK
 
 }
 
-// UpdateKafkalogPlugin - Update a KafkaLog plugin
-// Update a KafkaLog plugin
+// UpdateKafkalogPlugin - Update a KafkaLog plugin in a workspace
+// Update a KafkaLog plugin in a workspace
 func (s *Plugins) UpdateKafkalogPlugin(ctx context.Context, request operations.UpdateKafkalogPluginRequest, opts ...operations.Option) (*operations.UpdateKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -39177,7 +39173,7 @@ func (s *Plugins) UpdateKafkalogPlugin(ctx context.Context, request operations.U
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -39383,8 +39379,8 @@ func (s *Plugins) UpdateKafkalogPlugin(ctx context.Context, request operations.U
 
 }
 
-// DeleteKafkaupstreamPlugin - Delete a KafkaUpstream plugin
-// Delete a KafkaUpstream plugin
+// DeleteKafkaupstreamPlugin - Delete a KafkaUpstream plugin in a workspace
+// Delete a KafkaUpstream plugin in a workspace
 func (s *Plugins) DeleteKafkaupstreamPlugin(ctx context.Context, request operations.DeleteKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.DeleteKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -39404,7 +39400,7 @@ func (s *Plugins) DeleteKafkaupstreamPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -39586,8 +39582,8 @@ func (s *Plugins) DeleteKafkaupstreamPlugin(ctx context.Context, request operati
 
 }
 
-// GetKafkaupstreamPlugin - Get a KafkaUpstream plugin
-// Get a KafkaUpstream plugin
+// GetKafkaupstreamPlugin - Get a KafkaUpstream plugin in a workspace
+// Get a KafkaUpstream plugin in a workspace
 func (s *Plugins) GetKafkaupstreamPlugin(ctx context.Context, request operations.GetKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.GetKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -39607,7 +39603,7 @@ func (s *Plugins) GetKafkaupstreamPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -39808,8 +39804,8 @@ func (s *Plugins) GetKafkaupstreamPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateKafkaupstreamPlugin - Update a KafkaUpstream plugin
-// Update a KafkaUpstream plugin
+// UpdateKafkaupstreamPlugin - Update a KafkaUpstream plugin in a workspace
+// Update a KafkaUpstream plugin in a workspace
 func (s *Plugins) UpdateKafkaupstreamPlugin(ctx context.Context, request operations.UpdateKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.UpdateKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -39829,7 +39825,7 @@ func (s *Plugins) UpdateKafkaupstreamPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -40035,8 +40031,8 @@ func (s *Plugins) UpdateKafkaupstreamPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteKeyauthPlugin - Delete a KeyAuth plugin
-// Delete a KeyAuth plugin
+// DeleteKeyauthPlugin - Delete a KeyAuth plugin in a workspace
+// Delete a KeyAuth plugin in a workspace
 func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.DeleteKeyauthPluginRequest, opts ...operations.Option) (*operations.DeleteKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -40056,7 +40052,7 @@ func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -40238,8 +40234,8 @@ func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetKeyauthPlugin - Get a KeyAuth plugin
-// Get a KeyAuth plugin
+// GetKeyauthPlugin - Get a KeyAuth plugin in a workspace
+// Get a KeyAuth plugin in a workspace
 func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKeyauthPluginRequest, opts ...operations.Option) (*operations.GetKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -40259,7 +40255,7 @@ func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKe
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -40460,8 +40456,8 @@ func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKe
 
 }
 
-// UpdateKeyauthPlugin - Update a KeyAuth plugin
-// Update a KeyAuth plugin
+// UpdateKeyauthPlugin - Update a KeyAuth plugin in a workspace
+// Update a KeyAuth plugin in a workspace
 func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.UpdateKeyauthPluginRequest, opts ...operations.Option) (*operations.UpdateKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -40481,7 +40477,7 @@ func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -40687,8 +40683,8 @@ func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteLdapauthPlugin - Delete a LdapAuth plugin
-// Delete a LdapAuth plugin
+// DeleteLdapauthPlugin - Delete a LdapAuth plugin in a workspace
+// Delete a LdapAuth plugin in a workspace
 func (s *Plugins) DeleteLdapauthPlugin(ctx context.Context, request operations.DeleteLdapauthPluginRequest, opts ...operations.Option) (*operations.DeleteLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -40708,7 +40704,7 @@ func (s *Plugins) DeleteLdapauthPlugin(ctx context.Context, request operations.D
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -40890,8 +40886,8 @@ func (s *Plugins) DeleteLdapauthPlugin(ctx context.Context, request operations.D
 
 }
 
-// GetLdapauthPlugin - Get a LdapAuth plugin
-// Get a LdapAuth plugin
+// GetLdapauthPlugin - Get a LdapAuth plugin in a workspace
+// Get a LdapAuth plugin in a workspace
 func (s *Plugins) GetLdapauthPlugin(ctx context.Context, request operations.GetLdapauthPluginRequest, opts ...operations.Option) (*operations.GetLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -40911,7 +40907,7 @@ func (s *Plugins) GetLdapauthPlugin(ctx context.Context, request operations.GetL
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -41112,8 +41108,8 @@ func (s *Plugins) GetLdapauthPlugin(ctx context.Context, request operations.GetL
 
 }
 
-// UpdateLdapauthPlugin - Update a LdapAuth plugin
-// Update a LdapAuth plugin
+// UpdateLdapauthPlugin - Update a LdapAuth plugin in a workspace
+// Update a LdapAuth plugin in a workspace
 func (s *Plugins) UpdateLdapauthPlugin(ctx context.Context, request operations.UpdateLdapauthPluginRequest, opts ...operations.Option) (*operations.UpdateLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -41133,7 +41129,7 @@ func (s *Plugins) UpdateLdapauthPlugin(ctx context.Context, request operations.U
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -41339,8 +41335,8 @@ func (s *Plugins) UpdateLdapauthPlugin(ctx context.Context, request operations.U
 
 }
 
-// DeleteLdapauthadvancedPlugin - Delete a LdapAuthAdvanced plugin
-// Delete a LdapAuthAdvanced plugin
+// DeleteLdapauthadvancedPlugin - Delete a LdapAuthAdvanced plugin in a workspace
+// Delete a LdapAuthAdvanced plugin in a workspace
 func (s *Plugins) DeleteLdapauthadvancedPlugin(ctx context.Context, request operations.DeleteLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -41360,7 +41356,7 @@ func (s *Plugins) DeleteLdapauthadvancedPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -41542,8 +41538,8 @@ func (s *Plugins) DeleteLdapauthadvancedPlugin(ctx context.Context, request oper
 
 }
 
-// GetLdapauthadvancedPlugin - Get a LdapAuthAdvanced plugin
-// Get a LdapAuthAdvanced plugin
+// GetLdapauthadvancedPlugin - Get a LdapAuthAdvanced plugin in a workspace
+// Get a LdapAuthAdvanced plugin in a workspace
 func (s *Plugins) GetLdapauthadvancedPlugin(ctx context.Context, request operations.GetLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.GetLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -41563,7 +41559,7 @@ func (s *Plugins) GetLdapauthadvancedPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -41764,8 +41760,8 @@ func (s *Plugins) GetLdapauthadvancedPlugin(ctx context.Context, request operati
 
 }
 
-// UpdateLdapauthadvancedPlugin - Update a LdapAuthAdvanced plugin
-// Update a LdapAuthAdvanced plugin
+// UpdateLdapauthadvancedPlugin - Update a LdapAuthAdvanced plugin in a workspace
+// Update a LdapAuthAdvanced plugin in a workspace
 func (s *Plugins) UpdateLdapauthadvancedPlugin(ctx context.Context, request operations.UpdateLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -41785,7 +41781,7 @@ func (s *Plugins) UpdateLdapauthadvancedPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -41991,8 +41987,8 @@ func (s *Plugins) UpdateLdapauthadvancedPlugin(ctx context.Context, request oper
 
 }
 
-// DeleteLogglyPlugin - Delete a Loggly plugin
-// Delete a Loggly plugin
+// DeleteLogglyPlugin - Delete a Loggly plugin in a workspace
+// Delete a Loggly plugin in a workspace
 func (s *Plugins) DeleteLogglyPlugin(ctx context.Context, request operations.DeleteLogglyPluginRequest, opts ...operations.Option) (*operations.DeleteLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -42012,7 +42008,7 @@ func (s *Plugins) DeleteLogglyPlugin(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -42194,8 +42190,8 @@ func (s *Plugins) DeleteLogglyPlugin(ctx context.Context, request operations.Del
 
 }
 
-// GetLogglyPlugin - Get a Loggly plugin
-// Get a Loggly plugin
+// GetLogglyPlugin - Get a Loggly plugin in a workspace
+// Get a Loggly plugin in a workspace
 func (s *Plugins) GetLogglyPlugin(ctx context.Context, request operations.GetLogglyPluginRequest, opts ...operations.Option) (*operations.GetLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -42215,7 +42211,7 @@ func (s *Plugins) GetLogglyPlugin(ctx context.Context, request operations.GetLog
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -42416,8 +42412,8 @@ func (s *Plugins) GetLogglyPlugin(ctx context.Context, request operations.GetLog
 
 }
 
-// UpdateLogglyPlugin - Update a Loggly plugin
-// Update a Loggly plugin
+// UpdateLogglyPlugin - Update a Loggly plugin in a workspace
+// Update a Loggly plugin in a workspace
 func (s *Plugins) UpdateLogglyPlugin(ctx context.Context, request operations.UpdateLogglyPluginRequest, opts ...operations.Option) (*operations.UpdateLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -42437,7 +42433,7 @@ func (s *Plugins) UpdateLogglyPlugin(ctx context.Context, request operations.Upd
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -42643,8 +42639,8 @@ func (s *Plugins) UpdateLogglyPlugin(ctx context.Context, request operations.Upd
 
 }
 
-// DeleteMeteringandbillingPlugin - Delete a MeteringAndBilling plugin
-// Delete a MeteringAndBilling plugin
+// DeleteMeteringandbillingPlugin - Delete a MeteringAndBilling plugin in a workspace
+// Delete a MeteringAndBilling plugin in a workspace
 func (s *Plugins) DeleteMeteringandbillingPlugin(ctx context.Context, request operations.DeleteMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.DeleteMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -42664,7 +42660,7 @@ func (s *Plugins) DeleteMeteringandbillingPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -42846,8 +42842,8 @@ func (s *Plugins) DeleteMeteringandbillingPlugin(ctx context.Context, request op
 
 }
 
-// GetMeteringandbillingPlugin - Get a MeteringAndBilling plugin
-// Get a MeteringAndBilling plugin
+// GetMeteringandbillingPlugin - Get a MeteringAndBilling plugin in a workspace
+// Get a MeteringAndBilling plugin in a workspace
 func (s *Plugins) GetMeteringandbillingPlugin(ctx context.Context, request operations.GetMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.GetMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -42867,7 +42863,7 @@ func (s *Plugins) GetMeteringandbillingPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -43068,8 +43064,8 @@ func (s *Plugins) GetMeteringandbillingPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateMeteringandbillingPlugin - Update a MeteringAndBilling plugin
-// Update a MeteringAndBilling plugin
+// UpdateMeteringandbillingPlugin - Update a MeteringAndBilling plugin in a workspace
+// Update a MeteringAndBilling plugin in a workspace
 func (s *Plugins) UpdateMeteringandbillingPlugin(ctx context.Context, request operations.UpdateMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.UpdateMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -43089,7 +43085,7 @@ func (s *Plugins) UpdateMeteringandbillingPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -43295,8 +43291,8 @@ func (s *Plugins) UpdateMeteringandbillingPlugin(ctx context.Context, request op
 
 }
 
-// DeleteMockingPlugin - Delete a Mocking plugin
-// Delete a Mocking plugin
+// DeleteMockingPlugin - Delete a Mocking plugin in a workspace
+// Delete a Mocking plugin in a workspace
 func (s *Plugins) DeleteMockingPlugin(ctx context.Context, request operations.DeleteMockingPluginRequest, opts ...operations.Option) (*operations.DeleteMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -43316,7 +43312,7 @@ func (s *Plugins) DeleteMockingPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -43498,8 +43494,8 @@ func (s *Plugins) DeleteMockingPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetMockingPlugin - Get a Mocking plugin
-// Get a Mocking plugin
+// GetMockingPlugin - Get a Mocking plugin in a workspace
+// Get a Mocking plugin in a workspace
 func (s *Plugins) GetMockingPlugin(ctx context.Context, request operations.GetMockingPluginRequest, opts ...operations.Option) (*operations.GetMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -43519,7 +43515,7 @@ func (s *Plugins) GetMockingPlugin(ctx context.Context, request operations.GetMo
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -43720,8 +43716,8 @@ func (s *Plugins) GetMockingPlugin(ctx context.Context, request operations.GetMo
 
 }
 
-// UpdateMockingPlugin - Update a Mocking plugin
-// Update a Mocking plugin
+// UpdateMockingPlugin - Update a Mocking plugin in a workspace
+// Update a Mocking plugin in a workspace
 func (s *Plugins) UpdateMockingPlugin(ctx context.Context, request operations.UpdateMockingPluginRequest, opts ...operations.Option) (*operations.UpdateMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -43741,7 +43737,7 @@ func (s *Plugins) UpdateMockingPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -43947,8 +43943,8 @@ func (s *Plugins) UpdateMockingPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteMtlsauthPlugin - Delete a MtlsAuth plugin
-// Delete a MtlsAuth plugin
+// DeleteMtlsauthPlugin - Delete a MtlsAuth plugin in a workspace
+// Delete a MtlsAuth plugin in a workspace
 func (s *Plugins) DeleteMtlsauthPlugin(ctx context.Context, request operations.DeleteMtlsauthPluginRequest, opts ...operations.Option) (*operations.DeleteMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -43968,7 +43964,7 @@ func (s *Plugins) DeleteMtlsauthPlugin(ctx context.Context, request operations.D
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -44150,8 +44146,8 @@ func (s *Plugins) DeleteMtlsauthPlugin(ctx context.Context, request operations.D
 
 }
 
-// GetMtlsauthPlugin - Get a MtlsAuth plugin
-// Get a MtlsAuth plugin
+// GetMtlsauthPlugin - Get a MtlsAuth plugin in a workspace
+// Get a MtlsAuth plugin in a workspace
 func (s *Plugins) GetMtlsauthPlugin(ctx context.Context, request operations.GetMtlsauthPluginRequest, opts ...operations.Option) (*operations.GetMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -44171,7 +44167,7 @@ func (s *Plugins) GetMtlsauthPlugin(ctx context.Context, request operations.GetM
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -44372,8 +44368,8 @@ func (s *Plugins) GetMtlsauthPlugin(ctx context.Context, request operations.GetM
 
 }
 
-// UpdateMtlsauthPlugin - Update a MtlsAuth plugin
-// Update a MtlsAuth plugin
+// UpdateMtlsauthPlugin - Update a MtlsAuth plugin in a workspace
+// Update a MtlsAuth plugin in a workspace
 func (s *Plugins) UpdateMtlsauthPlugin(ctx context.Context, request operations.UpdateMtlsauthPluginRequest, opts ...operations.Option) (*operations.UpdateMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -44393,7 +44389,7 @@ func (s *Plugins) UpdateMtlsauthPlugin(ctx context.Context, request operations.U
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -44599,8 +44595,8 @@ func (s *Plugins) UpdateMtlsauthPlugin(ctx context.Context, request operations.U
 
 }
 
-// DeleteOasvalidationPlugin - Delete a OasValidation plugin
-// Delete a OasValidation plugin
+// DeleteOasvalidationPlugin - Delete a OasValidation plugin in a workspace
+// Delete a OasValidation plugin in a workspace
 func (s *Plugins) DeleteOasvalidationPlugin(ctx context.Context, request operations.DeleteOasvalidationPluginRequest, opts ...operations.Option) (*operations.DeleteOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -44620,7 +44616,7 @@ func (s *Plugins) DeleteOasvalidationPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -44802,8 +44798,8 @@ func (s *Plugins) DeleteOasvalidationPlugin(ctx context.Context, request operati
 
 }
 
-// GetOasvalidationPlugin - Get a OasValidation plugin
-// Get a OasValidation plugin
+// GetOasvalidationPlugin - Get a OasValidation plugin in a workspace
+// Get a OasValidation plugin in a workspace
 func (s *Plugins) GetOasvalidationPlugin(ctx context.Context, request operations.GetOasvalidationPluginRequest, opts ...operations.Option) (*operations.GetOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -44823,7 +44819,7 @@ func (s *Plugins) GetOasvalidationPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -45024,8 +45020,8 @@ func (s *Plugins) GetOasvalidationPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateOasvalidationPlugin - Update a OasValidation plugin
-// Update a OasValidation plugin
+// UpdateOasvalidationPlugin - Update a OasValidation plugin in a workspace
+// Update a OasValidation plugin in a workspace
 func (s *Plugins) UpdateOasvalidationPlugin(ctx context.Context, request operations.UpdateOasvalidationPluginRequest, opts ...operations.Option) (*operations.UpdateOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -45045,7 +45041,7 @@ func (s *Plugins) UpdateOasvalidationPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -45251,8 +45247,8 @@ func (s *Plugins) UpdateOasvalidationPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteOauth2introspectionPlugin - Delete a Oauth2Introspection plugin
-// Delete a Oauth2Introspection plugin
+// DeleteOauth2introspectionPlugin - Delete a Oauth2Introspection plugin in a workspace
+// Delete a Oauth2Introspection plugin in a workspace
 func (s *Plugins) DeleteOauth2introspectionPlugin(ctx context.Context, request operations.DeleteOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.DeleteOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -45272,7 +45268,7 @@ func (s *Plugins) DeleteOauth2introspectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -45454,8 +45450,8 @@ func (s *Plugins) DeleteOauth2introspectionPlugin(ctx context.Context, request o
 
 }
 
-// GetOauth2introspectionPlugin - Get a Oauth2Introspection plugin
-// Get a Oauth2Introspection plugin
+// GetOauth2introspectionPlugin - Get a Oauth2Introspection plugin in a workspace
+// Get a Oauth2Introspection plugin in a workspace
 func (s *Plugins) GetOauth2introspectionPlugin(ctx context.Context, request operations.GetOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.GetOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -45475,7 +45471,7 @@ func (s *Plugins) GetOauth2introspectionPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -45676,8 +45672,8 @@ func (s *Plugins) GetOauth2introspectionPlugin(ctx context.Context, request oper
 
 }
 
-// UpdateOauth2introspectionPlugin - Update a Oauth2Introspection plugin
-// Update a Oauth2Introspection plugin
+// UpdateOauth2introspectionPlugin - Update a Oauth2Introspection plugin in a workspace
+// Update a Oauth2Introspection plugin in a workspace
 func (s *Plugins) UpdateOauth2introspectionPlugin(ctx context.Context, request operations.UpdateOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.UpdateOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -45697,7 +45693,7 @@ func (s *Plugins) UpdateOauth2introspectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -45903,8 +45899,8 @@ func (s *Plugins) UpdateOauth2introspectionPlugin(ctx context.Context, request o
 
 }
 
-// DeleteOpaPlugin - Delete a Opa plugin
-// Delete a Opa plugin
+// DeleteOpaPlugin - Delete a Opa plugin in a workspace
+// Delete a Opa plugin in a workspace
 func (s *Plugins) DeleteOpaPlugin(ctx context.Context, request operations.DeleteOpaPluginRequest, opts ...operations.Option) (*operations.DeleteOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -45924,7 +45920,7 @@ func (s *Plugins) DeleteOpaPlugin(ctx context.Context, request operations.Delete
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -46106,8 +46102,8 @@ func (s *Plugins) DeleteOpaPlugin(ctx context.Context, request operations.Delete
 
 }
 
-// GetOpaPlugin - Get a Opa plugin
-// Get a Opa plugin
+// GetOpaPlugin - Get a Opa plugin in a workspace
+// Get a Opa plugin in a workspace
 func (s *Plugins) GetOpaPlugin(ctx context.Context, request operations.GetOpaPluginRequest, opts ...operations.Option) (*operations.GetOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -46127,7 +46123,7 @@ func (s *Plugins) GetOpaPlugin(ctx context.Context, request operations.GetOpaPlu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -46328,8 +46324,8 @@ func (s *Plugins) GetOpaPlugin(ctx context.Context, request operations.GetOpaPlu
 
 }
 
-// UpdateOpaPlugin - Update a Opa plugin
-// Update a Opa plugin
+// UpdateOpaPlugin - Update a Opa plugin in a workspace
+// Update a Opa plugin in a workspace
 func (s *Plugins) UpdateOpaPlugin(ctx context.Context, request operations.UpdateOpaPluginRequest, opts ...operations.Option) (*operations.UpdateOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -46349,7 +46345,7 @@ func (s *Plugins) UpdateOpaPlugin(ctx context.Context, request operations.Update
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -46555,8 +46551,8 @@ func (s *Plugins) UpdateOpaPlugin(ctx context.Context, request operations.Update
 
 }
 
-// DeleteOpenidconnectPlugin - Delete a OpenidConnect plugin
-// Delete a OpenidConnect plugin
+// DeleteOpenidconnectPlugin - Delete a OpenidConnect plugin in a workspace
+// Delete a OpenidConnect plugin in a workspace
 func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operations.DeleteOpenidconnectPluginRequest, opts ...operations.Option) (*operations.DeleteOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -46576,7 +46572,7 @@ func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -46758,8 +46754,8 @@ func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operati
 
 }
 
-// GetOpenidconnectPlugin - Get a OpenidConnect plugin
-// Get a OpenidConnect plugin
+// GetOpenidconnectPlugin - Get a OpenidConnect plugin in a workspace
+// Get a OpenidConnect plugin in a workspace
 func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations.GetOpenidconnectPluginRequest, opts ...operations.Option) (*operations.GetOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -46779,7 +46775,7 @@ func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -46980,8 +46976,8 @@ func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateOpenidconnectPlugin - Update a OpenidConnect plugin
-// Update a OpenidConnect plugin
+// UpdateOpenidconnectPlugin - Update a OpenidConnect plugin in a workspace
+// Update a OpenidConnect plugin in a workspace
 func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operations.UpdateOpenidconnectPluginRequest, opts ...operations.Option) (*operations.UpdateOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -47001,7 +46997,7 @@ func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -47207,8 +47203,8 @@ func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteOpentelemetryPlugin - Delete a Opentelemetry plugin
-// Delete a Opentelemetry plugin
+// DeleteOpentelemetryPlugin - Delete a Opentelemetry plugin in a workspace
+// Delete a Opentelemetry plugin in a workspace
 func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operations.DeleteOpentelemetryPluginRequest, opts ...operations.Option) (*operations.DeleteOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -47228,7 +47224,7 @@ func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -47410,8 +47406,8 @@ func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operati
 
 }
 
-// GetOpentelemetryPlugin - Get a Opentelemetry plugin
-// Get a Opentelemetry plugin
+// GetOpentelemetryPlugin - Get a Opentelemetry plugin in a workspace
+// Get a Opentelemetry plugin in a workspace
 func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations.GetOpentelemetryPluginRequest, opts ...operations.Option) (*operations.GetOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -47431,7 +47427,7 @@ func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -47632,8 +47628,8 @@ func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateOpentelemetryPlugin - Update a Opentelemetry plugin
-// Update a Opentelemetry plugin
+// UpdateOpentelemetryPlugin - Update a Opentelemetry plugin in a workspace
+// Update a Opentelemetry plugin in a workspace
 func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operations.UpdateOpentelemetryPluginRequest, opts ...operations.Option) (*operations.UpdateOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -47653,7 +47649,7 @@ func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -47859,8 +47855,8 @@ func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operati
 
 }
 
-// DeletePostfunctionPlugin - Delete a PostFunction plugin
-// Delete a PostFunction plugin
+// DeletePostfunctionPlugin - Delete a PostFunction plugin in a workspace
+// Delete a PostFunction plugin in a workspace
 func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operations.DeletePostfunctionPluginRequest, opts ...operations.Option) (*operations.DeletePostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -47880,7 +47876,7 @@ func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -48062,8 +48058,8 @@ func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operatio
 
 }
 
-// GetPostfunctionPlugin - Get a PostFunction plugin
-// Get a PostFunction plugin
+// GetPostfunctionPlugin - Get a PostFunction plugin in a workspace
+// Get a PostFunction plugin in a workspace
 func (s *Plugins) GetPostfunctionPlugin(ctx context.Context, request operations.GetPostfunctionPluginRequest, opts ...operations.Option) (*operations.GetPostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -48083,7 +48079,7 @@ func (s *Plugins) GetPostfunctionPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -48284,8 +48280,8 @@ func (s *Plugins) GetPostfunctionPlugin(ctx context.Context, request operations.
 
 }
 
-// UpdatePostfunctionPlugin - Update a PostFunction plugin
-// Update a PostFunction plugin
+// UpdatePostfunctionPlugin - Update a PostFunction plugin in a workspace
+// Update a PostFunction plugin in a workspace
 func (s *Plugins) UpdatePostfunctionPlugin(ctx context.Context, request operations.UpdatePostfunctionPluginRequest, opts ...operations.Option) (*operations.UpdatePostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -48305,7 +48301,7 @@ func (s *Plugins) UpdatePostfunctionPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -48511,8 +48507,8 @@ func (s *Plugins) UpdatePostfunctionPlugin(ctx context.Context, request operatio
 
 }
 
-// DeletePrefunctionPlugin - Delete a PreFunction plugin
-// Delete a PreFunction plugin
+// DeletePrefunctionPlugin - Delete a PreFunction plugin in a workspace
+// Delete a PreFunction plugin in a workspace
 func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operations.DeletePrefunctionPluginRequest, opts ...operations.Option) (*operations.DeletePrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -48532,7 +48528,7 @@ func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -48714,8 +48710,8 @@ func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operation
 
 }
 
-// GetPrefunctionPlugin - Get a PreFunction plugin
-// Get a PreFunction plugin
+// GetPrefunctionPlugin - Get a PreFunction plugin in a workspace
+// Get a PreFunction plugin in a workspace
 func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.GetPrefunctionPluginRequest, opts ...operations.Option) (*operations.GetPrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -48735,7 +48731,7 @@ func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.G
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -48936,8 +48932,8 @@ func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.G
 
 }
 
-// UpdatePrefunctionPlugin - Update a PreFunction plugin
-// Update a PreFunction plugin
+// UpdatePrefunctionPlugin - Update a PreFunction plugin in a workspace
+// Update a PreFunction plugin in a workspace
 func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operations.UpdatePrefunctionPluginRequest, opts ...operations.Option) (*operations.UpdatePrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -48957,7 +48953,7 @@ func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -49163,8 +49159,8 @@ func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operation
 
 }
 
-// DeletePrometheusPlugin - Delete a Prometheus plugin
-// Delete a Prometheus plugin
+// DeletePrometheusPlugin - Delete a Prometheus plugin in a workspace
+// Delete a Prometheus plugin in a workspace
 func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations.DeletePrometheusPluginRequest, opts ...operations.Option) (*operations.DeletePrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -49184,7 +49180,7 @@ func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -49366,8 +49362,8 @@ func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations
 
 }
 
-// GetPrometheusPlugin - Get a Prometheus plugin
-// Get a Prometheus plugin
+// GetPrometheusPlugin - Get a Prometheus plugin in a workspace
+// Get a Prometheus plugin in a workspace
 func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.GetPrometheusPluginRequest, opts ...operations.Option) (*operations.GetPrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -49387,7 +49383,7 @@ func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.Ge
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -49588,8 +49584,8 @@ func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.Ge
 
 }
 
-// UpdatePrometheusPlugin - Update a Prometheus plugin
-// Update a Prometheus plugin
+// UpdatePrometheusPlugin - Update a Prometheus plugin in a workspace
+// Update a Prometheus plugin in a workspace
 func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations.UpdatePrometheusPluginRequest, opts ...operations.Option) (*operations.UpdatePrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -49609,7 +49605,7 @@ func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -49815,8 +49811,8 @@ func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations
 
 }
 
-// DeleteProxycachePlugin - Delete a ProxyCache plugin
-// Delete a ProxyCache plugin
+// DeleteProxycachePlugin - Delete a ProxyCache plugin in a workspace
+// Delete a ProxyCache plugin in a workspace
 func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations.DeleteProxycachePluginRequest, opts ...operations.Option) (*operations.DeleteProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -49836,7 +49832,7 @@ func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -50018,8 +50014,8 @@ func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations
 
 }
 
-// GetProxycachePlugin - Get a ProxyCache plugin
-// Get a ProxyCache plugin
+// GetProxycachePlugin - Get a ProxyCache plugin in a workspace
+// Get a ProxyCache plugin in a workspace
 func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.GetProxycachePluginRequest, opts ...operations.Option) (*operations.GetProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -50039,7 +50035,7 @@ func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.Ge
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -50240,8 +50236,8 @@ func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.Ge
 
 }
 
-// UpdateProxycachePlugin - Update a ProxyCache plugin
-// Update a ProxyCache plugin
+// UpdateProxycachePlugin - Update a ProxyCache plugin in a workspace
+// Update a ProxyCache plugin in a workspace
 func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations.UpdateProxycachePluginRequest, opts ...operations.Option) (*operations.UpdateProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -50261,7 +50257,7 @@ func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -50467,8 +50463,8 @@ func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations
 
 }
 
-// DeleteProxycacheadvancedPlugin - Delete a ProxyCacheAdvanced plugin
-// Delete a ProxyCacheAdvanced plugin
+// DeleteProxycacheadvancedPlugin - Delete a ProxyCacheAdvanced plugin in a workspace
+// Delete a ProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) DeleteProxycacheadvancedPlugin(ctx context.Context, request operations.DeleteProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -50488,7 +50484,7 @@ func (s *Plugins) DeleteProxycacheadvancedPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -50670,8 +50666,8 @@ func (s *Plugins) DeleteProxycacheadvancedPlugin(ctx context.Context, request op
 
 }
 
-// GetProxycacheadvancedPlugin - Get a ProxyCacheAdvanced plugin
-// Get a ProxyCacheAdvanced plugin
+// GetProxycacheadvancedPlugin - Get a ProxyCacheAdvanced plugin in a workspace
+// Get a ProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) GetProxycacheadvancedPlugin(ctx context.Context, request operations.GetProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.GetProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -50691,7 +50687,7 @@ func (s *Plugins) GetProxycacheadvancedPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -50892,8 +50888,8 @@ func (s *Plugins) GetProxycacheadvancedPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateProxycacheadvancedPlugin - Update a ProxyCacheAdvanced plugin
-// Update a ProxyCacheAdvanced plugin
+// UpdateProxycacheadvancedPlugin - Update a ProxyCacheAdvanced plugin in a workspace
+// Update a ProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) UpdateProxycacheadvancedPlugin(ctx context.Context, request operations.UpdateProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -50913,7 +50909,7 @@ func (s *Plugins) UpdateProxycacheadvancedPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -51119,8 +51115,8 @@ func (s *Plugins) UpdateProxycacheadvancedPlugin(ctx context.Context, request op
 
 }
 
-// DeleteRatelimitingPlugin - Delete a RateLimiting plugin
-// Delete a RateLimiting plugin
+// DeleteRatelimitingPlugin - Delete a RateLimiting plugin in a workspace
+// Delete a RateLimiting plugin in a workspace
 func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operations.DeleteRatelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -51140,7 +51136,7 @@ func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -51322,8 +51318,8 @@ func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operatio
 
 }
 
-// GetRatelimitingPlugin - Get a RateLimiting plugin
-// Get a RateLimiting plugin
+// GetRatelimitingPlugin - Get a RateLimiting plugin in a workspace
+// Get a RateLimiting plugin in a workspace
 func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.GetRatelimitingPluginRequest, opts ...operations.Option) (*operations.GetRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -51343,7 +51339,7 @@ func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -51544,8 +51540,8 @@ func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.
 
 }
 
-// UpdateRatelimitingPlugin - Update a RateLimiting plugin
-// Update a RateLimiting plugin
+// UpdateRatelimitingPlugin - Update a RateLimiting plugin in a workspace
+// Update a RateLimiting plugin in a workspace
 func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operations.UpdateRatelimitingPluginRequest, opts ...operations.Option) (*operations.UpdateRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -51565,7 +51561,7 @@ func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -51771,8 +51767,8 @@ func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operatio
 
 }
 
-// DeleteRatelimitingadvancedPlugin - Delete a RateLimitingAdvanced plugin
-// Delete a RateLimitingAdvanced plugin
+// DeleteRatelimitingadvancedPlugin - Delete a RateLimitingAdvanced plugin in a workspace
+// Delete a RateLimitingAdvanced plugin in a workspace
 func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request operations.DeleteRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -51792,7 +51788,7 @@ func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -51974,8 +51970,8 @@ func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request 
 
 }
 
-// GetRatelimitingadvancedPlugin - Get a RateLimitingAdvanced plugin
-// Get a RateLimitingAdvanced plugin
+// GetRatelimitingadvancedPlugin - Get a RateLimitingAdvanced plugin in a workspace
+// Get a RateLimitingAdvanced plugin in a workspace
 func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request operations.GetRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.GetRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -51995,7 +51991,7 @@ func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -52196,8 +52192,8 @@ func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request ope
 
 }
 
-// UpdateRatelimitingadvancedPlugin - Update a RateLimitingAdvanced plugin
-// Update a RateLimitingAdvanced plugin
+// UpdateRatelimitingadvancedPlugin - Update a RateLimitingAdvanced plugin in a workspace
+// Update a RateLimitingAdvanced plugin in a workspace
 func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request operations.UpdateRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -52217,7 +52213,7 @@ func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -52423,8 +52419,8 @@ func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request 
 
 }
 
-// DeleteRedirectPlugin - Delete a Redirect plugin
-// Delete a Redirect plugin
+// DeleteRedirectPlugin - Delete a Redirect plugin in a workspace
+// Delete a Redirect plugin in a workspace
 func (s *Plugins) DeleteRedirectPlugin(ctx context.Context, request operations.DeleteRedirectPluginRequest, opts ...operations.Option) (*operations.DeleteRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -52444,7 +52440,7 @@ func (s *Plugins) DeleteRedirectPlugin(ctx context.Context, request operations.D
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -52626,8 +52622,8 @@ func (s *Plugins) DeleteRedirectPlugin(ctx context.Context, request operations.D
 
 }
 
-// GetRedirectPlugin - Get a Redirect plugin
-// Get a Redirect plugin
+// GetRedirectPlugin - Get a Redirect plugin in a workspace
+// Get a Redirect plugin in a workspace
 func (s *Plugins) GetRedirectPlugin(ctx context.Context, request operations.GetRedirectPluginRequest, opts ...operations.Option) (*operations.GetRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -52647,7 +52643,7 @@ func (s *Plugins) GetRedirectPlugin(ctx context.Context, request operations.GetR
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -52848,8 +52844,8 @@ func (s *Plugins) GetRedirectPlugin(ctx context.Context, request operations.GetR
 
 }
 
-// UpdateRedirectPlugin - Update a Redirect plugin
-// Update a Redirect plugin
+// UpdateRedirectPlugin - Update a Redirect plugin in a workspace
+// Update a Redirect plugin in a workspace
 func (s *Plugins) UpdateRedirectPlugin(ctx context.Context, request operations.UpdateRedirectPluginRequest, opts ...operations.Option) (*operations.UpdateRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -52869,7 +52865,7 @@ func (s *Plugins) UpdateRedirectPlugin(ctx context.Context, request operations.U
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -53075,8 +53071,8 @@ func (s *Plugins) UpdateRedirectPlugin(ctx context.Context, request operations.U
 
 }
 
-// DeleteRequestcalloutPlugin - Delete a RequestCallout plugin
-// Delete a RequestCallout plugin
+// DeleteRequestcalloutPlugin - Delete a RequestCallout plugin in a workspace
+// Delete a RequestCallout plugin in a workspace
 func (s *Plugins) DeleteRequestcalloutPlugin(ctx context.Context, request operations.DeleteRequestcalloutPluginRequest, opts ...operations.Option) (*operations.DeleteRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -53096,7 +53092,7 @@ func (s *Plugins) DeleteRequestcalloutPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -53278,8 +53274,8 @@ func (s *Plugins) DeleteRequestcalloutPlugin(ctx context.Context, request operat
 
 }
 
-// GetRequestcalloutPlugin - Get a RequestCallout plugin
-// Get a RequestCallout plugin
+// GetRequestcalloutPlugin - Get a RequestCallout plugin in a workspace
+// Get a RequestCallout plugin in a workspace
 func (s *Plugins) GetRequestcalloutPlugin(ctx context.Context, request operations.GetRequestcalloutPluginRequest, opts ...operations.Option) (*operations.GetRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -53299,7 +53295,7 @@ func (s *Plugins) GetRequestcalloutPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -53500,8 +53496,8 @@ func (s *Plugins) GetRequestcalloutPlugin(ctx context.Context, request operation
 
 }
 
-// UpdateRequestcalloutPlugin - Update a RequestCallout plugin
-// Update a RequestCallout plugin
+// UpdateRequestcalloutPlugin - Update a RequestCallout plugin in a workspace
+// Update a RequestCallout plugin in a workspace
 func (s *Plugins) UpdateRequestcalloutPlugin(ctx context.Context, request operations.UpdateRequestcalloutPluginRequest, opts ...operations.Option) (*operations.UpdateRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -53521,7 +53517,7 @@ func (s *Plugins) UpdateRequestcalloutPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -53727,8 +53723,8 @@ func (s *Plugins) UpdateRequestcalloutPlugin(ctx context.Context, request operat
 
 }
 
-// DeleteRequestsizelimitingPlugin - Delete a RequestSizeLimiting plugin
-// Delete a RequestSizeLimiting plugin
+// DeleteRequestsizelimitingPlugin - Delete a RequestSizeLimiting plugin in a workspace
+// Delete a RequestSizeLimiting plugin in a workspace
 func (s *Plugins) DeleteRequestsizelimitingPlugin(ctx context.Context, request operations.DeleteRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -53748,7 +53744,7 @@ func (s *Plugins) DeleteRequestsizelimitingPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -53930,8 +53926,8 @@ func (s *Plugins) DeleteRequestsizelimitingPlugin(ctx context.Context, request o
 
 }
 
-// GetRequestsizelimitingPlugin - Get a RequestSizeLimiting plugin
-// Get a RequestSizeLimiting plugin
+// GetRequestsizelimitingPlugin - Get a RequestSizeLimiting plugin in a workspace
+// Get a RequestSizeLimiting plugin in a workspace
 func (s *Plugins) GetRequestsizelimitingPlugin(ctx context.Context, request operations.GetRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.GetRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -53951,7 +53947,7 @@ func (s *Plugins) GetRequestsizelimitingPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -54152,8 +54148,8 @@ func (s *Plugins) GetRequestsizelimitingPlugin(ctx context.Context, request oper
 
 }
 
-// UpdateRequestsizelimitingPlugin - Update a RequestSizeLimiting plugin
-// Update a RequestSizeLimiting plugin
+// UpdateRequestsizelimitingPlugin - Update a RequestSizeLimiting plugin in a workspace
+// Update a RequestSizeLimiting plugin in a workspace
 func (s *Plugins) UpdateRequestsizelimitingPlugin(ctx context.Context, request operations.UpdateRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.UpdateRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -54173,7 +54169,7 @@ func (s *Plugins) UpdateRequestsizelimitingPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -54379,8 +54375,8 @@ func (s *Plugins) UpdateRequestsizelimitingPlugin(ctx context.Context, request o
 
 }
 
-// DeleteRequestterminationPlugin - Delete a RequestTermination plugin
-// Delete a RequestTermination plugin
+// DeleteRequestterminationPlugin - Delete a RequestTermination plugin in a workspace
+// Delete a RequestTermination plugin in a workspace
 func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request operations.DeleteRequestterminationPluginRequest, opts ...operations.Option) (*operations.DeleteRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -54400,7 +54396,7 @@ func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -54582,8 +54578,8 @@ func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request op
 
 }
 
-// GetRequestterminationPlugin - Get a RequestTermination plugin
-// Get a RequestTermination plugin
+// GetRequestterminationPlugin - Get a RequestTermination plugin in a workspace
+// Get a RequestTermination plugin in a workspace
 func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request operations.GetRequestterminationPluginRequest, opts ...operations.Option) (*operations.GetRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -54603,7 +54599,7 @@ func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -54804,8 +54800,8 @@ func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateRequestterminationPlugin - Update a RequestTermination plugin
-// Update a RequestTermination plugin
+// UpdateRequestterminationPlugin - Update a RequestTermination plugin in a workspace
+// Update a RequestTermination plugin in a workspace
 func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request operations.UpdateRequestterminationPluginRequest, opts ...operations.Option) (*operations.UpdateRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -54825,7 +54821,7 @@ func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -55031,8 +55027,8 @@ func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request op
 
 }
 
-// DeleteRequesttransformerPlugin - Delete a RequestTransformer plugin
-// Delete a RequestTransformer plugin
+// DeleteRequesttransformerPlugin - Delete a RequestTransformer plugin in a workspace
+// Delete a RequestTransformer plugin in a workspace
 func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request operations.DeleteRequesttransformerPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -55052,7 +55048,7 @@ func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -55234,8 +55230,8 @@ func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request op
 
 }
 
-// GetRequesttransformerPlugin - Get a RequestTransformer plugin
-// Get a RequestTransformer plugin
+// GetRequesttransformerPlugin - Get a RequestTransformer plugin in a workspace
+// Get a RequestTransformer plugin in a workspace
 func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request operations.GetRequesttransformerPluginRequest, opts ...operations.Option) (*operations.GetRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -55255,7 +55251,7 @@ func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -55456,8 +55452,8 @@ func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateRequesttransformerPlugin - Update a RequestTransformer plugin
-// Update a RequestTransformer plugin
+// UpdateRequesttransformerPlugin - Update a RequestTransformer plugin in a workspace
+// Update a RequestTransformer plugin in a workspace
 func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request operations.UpdateRequesttransformerPluginRequest, opts ...operations.Option) (*operations.UpdateRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -55477,7 +55473,7 @@ func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -55683,8 +55679,8 @@ func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request op
 
 }
 
-// DeleteRequesttransformeradvancedPlugin - Delete a RequestTransformerAdvanced plugin
-// Delete a RequestTransformerAdvanced plugin
+// DeleteRequesttransformeradvancedPlugin - Delete a RequestTransformerAdvanced plugin in a workspace
+// Delete a RequestTransformerAdvanced plugin in a workspace
 func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, request operations.DeleteRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -55704,7 +55700,7 @@ func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, re
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -55886,8 +55882,8 @@ func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, re
 
 }
 
-// GetRequesttransformeradvancedPlugin - Get a RequestTransformerAdvanced plugin
-// Get a RequestTransformerAdvanced plugin
+// GetRequesttransformeradvancedPlugin - Get a RequestTransformerAdvanced plugin in a workspace
+// Get a RequestTransformerAdvanced plugin in a workspace
 func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, request operations.GetRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -55907,7 +55903,7 @@ func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, reque
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -56108,8 +56104,8 @@ func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, reque
 
 }
 
-// UpdateRequesttransformeradvancedPlugin - Update a RequestTransformerAdvanced plugin
-// Update a RequestTransformerAdvanced plugin
+// UpdateRequesttransformeradvancedPlugin - Update a RequestTransformerAdvanced plugin in a workspace
+// Update a RequestTransformerAdvanced plugin in a workspace
 func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, request operations.UpdateRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -56129,7 +56125,7 @@ func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, re
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -56335,8 +56331,8 @@ func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, re
 
 }
 
-// DeleteRequestvalidatorPlugin - Delete a RequestValidator plugin
-// Delete a RequestValidator plugin
+// DeleteRequestvalidatorPlugin - Delete a RequestValidator plugin in a workspace
+// Delete a RequestValidator plugin in a workspace
 func (s *Plugins) DeleteRequestvalidatorPlugin(ctx context.Context, request operations.DeleteRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.DeleteRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -56356,7 +56352,7 @@ func (s *Plugins) DeleteRequestvalidatorPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -56538,8 +56534,8 @@ func (s *Plugins) DeleteRequestvalidatorPlugin(ctx context.Context, request oper
 
 }
 
-// GetRequestvalidatorPlugin - Get a RequestValidator plugin
-// Get a RequestValidator plugin
+// GetRequestvalidatorPlugin - Get a RequestValidator plugin in a workspace
+// Get a RequestValidator plugin in a workspace
 func (s *Plugins) GetRequestvalidatorPlugin(ctx context.Context, request operations.GetRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.GetRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -56559,7 +56555,7 @@ func (s *Plugins) GetRequestvalidatorPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -56760,8 +56756,8 @@ func (s *Plugins) GetRequestvalidatorPlugin(ctx context.Context, request operati
 
 }
 
-// UpdateRequestvalidatorPlugin - Update a RequestValidator plugin
-// Update a RequestValidator plugin
+// UpdateRequestvalidatorPlugin - Update a RequestValidator plugin in a workspace
+// Update a RequestValidator plugin in a workspace
 func (s *Plugins) UpdateRequestvalidatorPlugin(ctx context.Context, request operations.UpdateRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.UpdateRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -56781,7 +56777,7 @@ func (s *Plugins) UpdateRequestvalidatorPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -56987,8 +56983,8 @@ func (s *Plugins) UpdateRequestvalidatorPlugin(ctx context.Context, request oper
 
 }
 
-// DeleteResponseratelimitingPlugin - Delete a ResponseRatelimiting plugin
-// Delete a ResponseRatelimiting plugin
+// DeleteResponseratelimitingPlugin - Delete a ResponseRatelimiting plugin in a workspace
+// Delete a ResponseRatelimiting plugin in a workspace
 func (s *Plugins) DeleteResponseratelimitingPlugin(ctx context.Context, request operations.DeleteResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.DeleteResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -57008,7 +57004,7 @@ func (s *Plugins) DeleteResponseratelimitingPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -57190,8 +57186,8 @@ func (s *Plugins) DeleteResponseratelimitingPlugin(ctx context.Context, request 
 
 }
 
-// GetResponseratelimitingPlugin - Get a ResponseRatelimiting plugin
-// Get a ResponseRatelimiting plugin
+// GetResponseratelimitingPlugin - Get a ResponseRatelimiting plugin in a workspace
+// Get a ResponseRatelimiting plugin in a workspace
 func (s *Plugins) GetResponseratelimitingPlugin(ctx context.Context, request operations.GetResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.GetResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -57211,7 +57207,7 @@ func (s *Plugins) GetResponseratelimitingPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -57412,8 +57408,8 @@ func (s *Plugins) GetResponseratelimitingPlugin(ctx context.Context, request ope
 
 }
 
-// UpdateResponseratelimitingPlugin - Update a ResponseRatelimiting plugin
-// Update a ResponseRatelimiting plugin
+// UpdateResponseratelimitingPlugin - Update a ResponseRatelimiting plugin in a workspace
+// Update a ResponseRatelimiting plugin in a workspace
 func (s *Plugins) UpdateResponseratelimitingPlugin(ctx context.Context, request operations.UpdateResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.UpdateResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -57433,7 +57429,7 @@ func (s *Plugins) UpdateResponseratelimitingPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -57639,8 +57635,8 @@ func (s *Plugins) UpdateResponseratelimitingPlugin(ctx context.Context, request 
 
 }
 
-// DeleteResponsetransformerPlugin - Delete a ResponseTransformer plugin
-// Delete a ResponseTransformer plugin
+// DeleteResponsetransformerPlugin - Delete a ResponseTransformer plugin in a workspace
+// Delete a ResponseTransformer plugin in a workspace
 func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request operations.DeleteResponsetransformerPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -57660,7 +57656,7 @@ func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -57842,8 +57838,8 @@ func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request o
 
 }
 
-// GetResponsetransformerPlugin - Get a ResponseTransformer plugin
-// Get a ResponseTransformer plugin
+// GetResponsetransformerPlugin - Get a ResponseTransformer plugin in a workspace
+// Get a ResponseTransformer plugin in a workspace
 func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request operations.GetResponsetransformerPluginRequest, opts ...operations.Option) (*operations.GetResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -57863,7 +57859,7 @@ func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -58064,8 +58060,8 @@ func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request oper
 
 }
 
-// UpdateResponsetransformerPlugin - Update a ResponseTransformer plugin
-// Update a ResponseTransformer plugin
+// UpdateResponsetransformerPlugin - Update a ResponseTransformer plugin in a workspace
+// Update a ResponseTransformer plugin in a workspace
 func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request operations.UpdateResponsetransformerPluginRequest, opts ...operations.Option) (*operations.UpdateResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -58085,7 +58081,7 @@ func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -58291,8 +58287,8 @@ func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request o
 
 }
 
-// DeleteResponsetransformeradvancedPlugin - Delete a ResponseTransformerAdvanced plugin
-// Delete a ResponseTransformerAdvanced plugin
+// DeleteResponsetransformeradvancedPlugin - Delete a ResponseTransformerAdvanced plugin in a workspace
+// Delete a ResponseTransformerAdvanced plugin in a workspace
 func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, request operations.DeleteResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -58312,7 +58308,7 @@ func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, r
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -58494,8 +58490,8 @@ func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, r
 
 }
 
-// GetResponsetransformeradvancedPlugin - Get a ResponseTransformerAdvanced plugin
-// Get a ResponseTransformerAdvanced plugin
+// GetResponsetransformeradvancedPlugin - Get a ResponseTransformerAdvanced plugin in a workspace
+// Get a ResponseTransformerAdvanced plugin in a workspace
 func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, request operations.GetResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -58515,7 +58511,7 @@ func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, requ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -58716,8 +58712,8 @@ func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, requ
 
 }
 
-// UpdateResponsetransformeradvancedPlugin - Update a ResponseTransformerAdvanced plugin
-// Update a ResponseTransformerAdvanced plugin
+// UpdateResponsetransformeradvancedPlugin - Update a ResponseTransformerAdvanced plugin in a workspace
+// Update a ResponseTransformerAdvanced plugin in a workspace
 func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, request operations.UpdateResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -58737,7 +58733,7 @@ func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, r
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -58943,8 +58939,8 @@ func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, r
 
 }
 
-// DeleteRoutebyheaderPlugin - Delete a RouteByHeader plugin
-// Delete a RouteByHeader plugin
+// DeleteRoutebyheaderPlugin - Delete a RouteByHeader plugin in a workspace
+// Delete a RouteByHeader plugin in a workspace
 func (s *Plugins) DeleteRoutebyheaderPlugin(ctx context.Context, request operations.DeleteRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.DeleteRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -58964,7 +58960,7 @@ func (s *Plugins) DeleteRoutebyheaderPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -59146,8 +59142,8 @@ func (s *Plugins) DeleteRoutebyheaderPlugin(ctx context.Context, request operati
 
 }
 
-// GetRoutebyheaderPlugin - Get a RouteByHeader plugin
-// Get a RouteByHeader plugin
+// GetRoutebyheaderPlugin - Get a RouteByHeader plugin in a workspace
+// Get a RouteByHeader plugin in a workspace
 func (s *Plugins) GetRoutebyheaderPlugin(ctx context.Context, request operations.GetRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.GetRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -59167,7 +59163,7 @@ func (s *Plugins) GetRoutebyheaderPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -59368,8 +59364,8 @@ func (s *Plugins) GetRoutebyheaderPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateRoutebyheaderPlugin - Update a RouteByHeader plugin
-// Update a RouteByHeader plugin
+// UpdateRoutebyheaderPlugin - Update a RouteByHeader plugin in a workspace
+// Update a RouteByHeader plugin in a workspace
 func (s *Plugins) UpdateRoutebyheaderPlugin(ctx context.Context, request operations.UpdateRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.UpdateRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -59389,7 +59385,7 @@ func (s *Plugins) UpdateRoutebyheaderPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -59595,8 +59591,8 @@ func (s *Plugins) UpdateRoutebyheaderPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteRoutetransformeradvancedPlugin - Delete a RouteTransformerAdvanced plugin
-// Delete a RouteTransformerAdvanced plugin
+// DeleteRoutetransformeradvancedPlugin - Delete a RouteTransformerAdvanced plugin in a workspace
+// Delete a RouteTransformerAdvanced plugin in a workspace
 func (s *Plugins) DeleteRoutetransformeradvancedPlugin(ctx context.Context, request operations.DeleteRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.DeleteRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -59616,7 +59612,7 @@ func (s *Plugins) DeleteRoutetransformeradvancedPlugin(ctx context.Context, requ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -59798,8 +59794,8 @@ func (s *Plugins) DeleteRoutetransformeradvancedPlugin(ctx context.Context, requ
 
 }
 
-// GetRoutetransformeradvancedPlugin - Get a RouteTransformerAdvanced plugin
-// Get a RouteTransformerAdvanced plugin
+// GetRoutetransformeradvancedPlugin - Get a RouteTransformerAdvanced plugin in a workspace
+// Get a RouteTransformerAdvanced plugin in a workspace
 func (s *Plugins) GetRoutetransformeradvancedPlugin(ctx context.Context, request operations.GetRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.GetRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -59819,7 +59815,7 @@ func (s *Plugins) GetRoutetransformeradvancedPlugin(ctx context.Context, request
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -60020,8 +60016,8 @@ func (s *Plugins) GetRoutetransformeradvancedPlugin(ctx context.Context, request
 
 }
 
-// UpdateRoutetransformeradvancedPlugin - Update a RouteTransformerAdvanced plugin
-// Update a RouteTransformerAdvanced plugin
+// UpdateRoutetransformeradvancedPlugin - Update a RouteTransformerAdvanced plugin in a workspace
+// Update a RouteTransformerAdvanced plugin in a workspace
 func (s *Plugins) UpdateRoutetransformeradvancedPlugin(ctx context.Context, request operations.UpdateRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.UpdateRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -60041,7 +60037,7 @@ func (s *Plugins) UpdateRoutetransformeradvancedPlugin(ctx context.Context, requ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -60247,8 +60243,8 @@ func (s *Plugins) UpdateRoutetransformeradvancedPlugin(ctx context.Context, requ
 
 }
 
-// DeleteSamlPlugin - Delete a Saml plugin
-// Delete a Saml plugin
+// DeleteSamlPlugin - Delete a Saml plugin in a workspace
+// Delete a Saml plugin in a workspace
 func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.DeleteSamlPluginRequest, opts ...operations.Option) (*operations.DeleteSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -60268,7 +60264,7 @@ func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.Delet
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -60450,8 +60446,8 @@ func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.Delet
 
 }
 
-// GetSamlPlugin - Get a Saml plugin
-// Get a Saml plugin
+// GetSamlPlugin - Get a Saml plugin in a workspace
+// Get a Saml plugin in a workspace
 func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlPluginRequest, opts ...operations.Option) (*operations.GetSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -60471,7 +60467,7 @@ func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -60672,8 +60668,8 @@ func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlP
 
 }
 
-// UpdateSamlPlugin - Update a Saml plugin
-// Update a Saml plugin
+// UpdateSamlPlugin - Update a Saml plugin in a workspace
+// Update a Saml plugin in a workspace
 func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.UpdateSamlPluginRequest, opts ...operations.Option) (*operations.UpdateSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -60693,7 +60689,7 @@ func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.Updat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -60899,8 +60895,8 @@ func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.Updat
 
 }
 
-// DeleteServiceprotectionPlugin - Delete a ServiceProtection plugin
-// Delete a ServiceProtection plugin
+// DeleteServiceprotectionPlugin - Delete a ServiceProtection plugin in a workspace
+// Delete a ServiceProtection plugin in a workspace
 func (s *Plugins) DeleteServiceprotectionPlugin(ctx context.Context, request operations.DeleteServiceprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -60920,7 +60916,7 @@ func (s *Plugins) DeleteServiceprotectionPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61102,8 +61098,8 @@ func (s *Plugins) DeleteServiceprotectionPlugin(ctx context.Context, request ope
 
 }
 
-// GetServiceprotectionPlugin - Get a ServiceProtection plugin
-// Get a ServiceProtection plugin
+// GetServiceprotectionPlugin - Get a ServiceProtection plugin in a workspace
+// Get a ServiceProtection plugin in a workspace
 func (s *Plugins) GetServiceprotectionPlugin(ctx context.Context, request operations.GetServiceprotectionPluginRequest, opts ...operations.Option) (*operations.GetServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -61123,7 +61119,7 @@ func (s *Plugins) GetServiceprotectionPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61324,8 +61320,8 @@ func (s *Plugins) GetServiceprotectionPlugin(ctx context.Context, request operat
 
 }
 
-// UpdateServiceprotectionPlugin - Update a ServiceProtection plugin
-// Update a ServiceProtection plugin
+// UpdateServiceprotectionPlugin - Update a ServiceProtection plugin in a workspace
+// Update a ServiceProtection plugin in a workspace
 func (s *Plugins) UpdateServiceprotectionPlugin(ctx context.Context, request operations.UpdateServiceprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -61345,7 +61341,7 @@ func (s *Plugins) UpdateServiceprotectionPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61551,8 +61547,8 @@ func (s *Plugins) UpdateServiceprotectionPlugin(ctx context.Context, request ope
 
 }
 
-// DeleteSessionPlugin - Delete a Session plugin
-// Delete a Session plugin
+// DeleteSessionPlugin - Delete a Session plugin in a workspace
+// Delete a Session plugin in a workspace
 func (s *Plugins) DeleteSessionPlugin(ctx context.Context, request operations.DeleteSessionPluginRequest, opts ...operations.Option) (*operations.DeleteSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -61572,7 +61568,7 @@ func (s *Plugins) DeleteSessionPlugin(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61754,8 +61750,8 @@ func (s *Plugins) DeleteSessionPlugin(ctx context.Context, request operations.De
 
 }
 
-// GetSessionPlugin - Get a Session plugin
-// Get a Session plugin
+// GetSessionPlugin - Get a Session plugin in a workspace
+// Get a Session plugin in a workspace
 func (s *Plugins) GetSessionPlugin(ctx context.Context, request operations.GetSessionPluginRequest, opts ...operations.Option) (*operations.GetSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -61775,7 +61771,7 @@ func (s *Plugins) GetSessionPlugin(ctx context.Context, request operations.GetSe
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61976,8 +61972,8 @@ func (s *Plugins) GetSessionPlugin(ctx context.Context, request operations.GetSe
 
 }
 
-// UpdateSessionPlugin - Update a Session plugin
-// Update a Session plugin
+// UpdateSessionPlugin - Update a Session plugin in a workspace
+// Update a Session plugin in a workspace
 func (s *Plugins) UpdateSessionPlugin(ctx context.Context, request operations.UpdateSessionPluginRequest, opts ...operations.Option) (*operations.UpdateSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -61997,7 +61993,7 @@ func (s *Plugins) UpdateSessionPlugin(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -62203,8 +62199,8 @@ func (s *Plugins) UpdateSessionPlugin(ctx context.Context, request operations.Up
 
 }
 
-// DeleteSolaceconsumePlugin - Delete a SolaceConsume plugin
-// Delete a SolaceConsume plugin
+// DeleteSolaceconsumePlugin - Delete a SolaceConsume plugin in a workspace
+// Delete a SolaceConsume plugin in a workspace
 func (s *Plugins) DeleteSolaceconsumePlugin(ctx context.Context, request operations.DeleteSolaceconsumePluginRequest, opts ...operations.Option) (*operations.DeleteSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -62224,7 +62220,7 @@ func (s *Plugins) DeleteSolaceconsumePlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -62406,8 +62402,8 @@ func (s *Plugins) DeleteSolaceconsumePlugin(ctx context.Context, request operati
 
 }
 
-// GetSolaceconsumePlugin - Get a SolaceConsume plugin
-// Get a SolaceConsume plugin
+// GetSolaceconsumePlugin - Get a SolaceConsume plugin in a workspace
+// Get a SolaceConsume plugin in a workspace
 func (s *Plugins) GetSolaceconsumePlugin(ctx context.Context, request operations.GetSolaceconsumePluginRequest, opts ...operations.Option) (*operations.GetSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -62427,7 +62423,7 @@ func (s *Plugins) GetSolaceconsumePlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -62628,8 +62624,8 @@ func (s *Plugins) GetSolaceconsumePlugin(ctx context.Context, request operations
 
 }
 
-// UpdateSolaceconsumePlugin - Update a SolaceConsume plugin
-// Update a SolaceConsume plugin
+// UpdateSolaceconsumePlugin - Update a SolaceConsume plugin in a workspace
+// Update a SolaceConsume plugin in a workspace
 func (s *Plugins) UpdateSolaceconsumePlugin(ctx context.Context, request operations.UpdateSolaceconsumePluginRequest, opts ...operations.Option) (*operations.UpdateSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -62649,7 +62645,7 @@ func (s *Plugins) UpdateSolaceconsumePlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -62855,8 +62851,8 @@ func (s *Plugins) UpdateSolaceconsumePlugin(ctx context.Context, request operati
 
 }
 
-// DeleteSolacelogPlugin - Delete a SolaceLog plugin
-// Delete a SolaceLog plugin
+// DeleteSolacelogPlugin - Delete a SolaceLog plugin in a workspace
+// Delete a SolaceLog plugin in a workspace
 func (s *Plugins) DeleteSolacelogPlugin(ctx context.Context, request operations.DeleteSolacelogPluginRequest, opts ...operations.Option) (*operations.DeleteSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -62876,7 +62872,7 @@ func (s *Plugins) DeleteSolacelogPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63058,8 +63054,8 @@ func (s *Plugins) DeleteSolacelogPlugin(ctx context.Context, request operations.
 
 }
 
-// GetSolacelogPlugin - Get a SolaceLog plugin
-// Get a SolaceLog plugin
+// GetSolacelogPlugin - Get a SolaceLog plugin in a workspace
+// Get a SolaceLog plugin in a workspace
 func (s *Plugins) GetSolacelogPlugin(ctx context.Context, request operations.GetSolacelogPluginRequest, opts ...operations.Option) (*operations.GetSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -63079,7 +63075,7 @@ func (s *Plugins) GetSolacelogPlugin(ctx context.Context, request operations.Get
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63280,8 +63276,8 @@ func (s *Plugins) GetSolacelogPlugin(ctx context.Context, request operations.Get
 
 }
 
-// UpdateSolacelogPlugin - Update a SolaceLog plugin
-// Update a SolaceLog plugin
+// UpdateSolacelogPlugin - Update a SolaceLog plugin in a workspace
+// Update a SolaceLog plugin in a workspace
 func (s *Plugins) UpdateSolacelogPlugin(ctx context.Context, request operations.UpdateSolacelogPluginRequest, opts ...operations.Option) (*operations.UpdateSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -63301,7 +63297,7 @@ func (s *Plugins) UpdateSolacelogPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63507,8 +63503,8 @@ func (s *Plugins) UpdateSolacelogPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteSolaceupstreamPlugin - Delete a SolaceUpstream plugin
-// Delete a SolaceUpstream plugin
+// DeleteSolaceupstreamPlugin - Delete a SolaceUpstream plugin in a workspace
+// Delete a SolaceUpstream plugin in a workspace
 func (s *Plugins) DeleteSolaceupstreamPlugin(ctx context.Context, request operations.DeleteSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.DeleteSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -63528,7 +63524,7 @@ func (s *Plugins) DeleteSolaceupstreamPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63710,8 +63706,8 @@ func (s *Plugins) DeleteSolaceupstreamPlugin(ctx context.Context, request operat
 
 }
 
-// GetSolaceupstreamPlugin - Get a SolaceUpstream plugin
-// Get a SolaceUpstream plugin
+// GetSolaceupstreamPlugin - Get a SolaceUpstream plugin in a workspace
+// Get a SolaceUpstream plugin in a workspace
 func (s *Plugins) GetSolaceupstreamPlugin(ctx context.Context, request operations.GetSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.GetSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -63731,7 +63727,7 @@ func (s *Plugins) GetSolaceupstreamPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -63932,8 +63928,8 @@ func (s *Plugins) GetSolaceupstreamPlugin(ctx context.Context, request operation
 
 }
 
-// UpdateSolaceupstreamPlugin - Update a SolaceUpstream plugin
-// Update a SolaceUpstream plugin
+// UpdateSolaceupstreamPlugin - Update a SolaceUpstream plugin in a workspace
+// Update a SolaceUpstream plugin in a workspace
 func (s *Plugins) UpdateSolaceupstreamPlugin(ctx context.Context, request operations.UpdateSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.UpdateSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -63953,7 +63949,7 @@ func (s *Plugins) UpdateSolaceupstreamPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -64159,8 +64155,8 @@ func (s *Plugins) UpdateSolaceupstreamPlugin(ctx context.Context, request operat
 
 }
 
-// DeleteStandardwebhooksPlugin - Delete a StandardWebhooks plugin
-// Delete a StandardWebhooks plugin
+// DeleteStandardwebhooksPlugin - Delete a StandardWebhooks plugin in a workspace
+// Delete a StandardWebhooks plugin in a workspace
 func (s *Plugins) DeleteStandardwebhooksPlugin(ctx context.Context, request operations.DeleteStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.DeleteStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -64180,7 +64176,7 @@ func (s *Plugins) DeleteStandardwebhooksPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -64362,8 +64358,8 @@ func (s *Plugins) DeleteStandardwebhooksPlugin(ctx context.Context, request oper
 
 }
 
-// GetStandardwebhooksPlugin - Get a StandardWebhooks plugin
-// Get a StandardWebhooks plugin
+// GetStandardwebhooksPlugin - Get a StandardWebhooks plugin in a workspace
+// Get a StandardWebhooks plugin in a workspace
 func (s *Plugins) GetStandardwebhooksPlugin(ctx context.Context, request operations.GetStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.GetStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -64383,7 +64379,7 @@ func (s *Plugins) GetStandardwebhooksPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -64584,8 +64580,8 @@ func (s *Plugins) GetStandardwebhooksPlugin(ctx context.Context, request operati
 
 }
 
-// UpdateStandardwebhooksPlugin - Update a StandardWebhooks plugin
-// Update a StandardWebhooks plugin
+// UpdateStandardwebhooksPlugin - Update a StandardWebhooks plugin in a workspace
+// Update a StandardWebhooks plugin in a workspace
 func (s *Plugins) UpdateStandardwebhooksPlugin(ctx context.Context, request operations.UpdateStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.UpdateStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -64605,7 +64601,7 @@ func (s *Plugins) UpdateStandardwebhooksPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -64811,8 +64807,8 @@ func (s *Plugins) UpdateStandardwebhooksPlugin(ctx context.Context, request oper
 
 }
 
-// DeleteStatsdPlugin - Delete a Statsd plugin
-// Delete a Statsd plugin
+// DeleteStatsdPlugin - Delete a Statsd plugin in a workspace
+// Delete a Statsd plugin in a workspace
 func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.DeleteStatsdPluginRequest, opts ...operations.Option) (*operations.DeleteStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -64832,7 +64828,7 @@ func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -65014,8 +65010,8 @@ func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.Del
 
 }
 
-// GetStatsdPlugin - Get a Statsd plugin
-// Get a Statsd plugin
+// GetStatsdPlugin - Get a Statsd plugin in a workspace
+// Get a Statsd plugin in a workspace
 func (s *Plugins) GetStatsdPlugin(ctx context.Context, request operations.GetStatsdPluginRequest, opts ...operations.Option) (*operations.GetStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -65035,7 +65031,7 @@ func (s *Plugins) GetStatsdPlugin(ctx context.Context, request operations.GetSta
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -65236,8 +65232,8 @@ func (s *Plugins) GetStatsdPlugin(ctx context.Context, request operations.GetSta
 
 }
 
-// UpdateStatsdPlugin - Update a Statsd plugin
-// Update a Statsd plugin
+// UpdateStatsdPlugin - Update a Statsd plugin in a workspace
+// Update a Statsd plugin in a workspace
 func (s *Plugins) UpdateStatsdPlugin(ctx context.Context, request operations.UpdateStatsdPluginRequest, opts ...operations.Option) (*operations.UpdateStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -65257,7 +65253,7 @@ func (s *Plugins) UpdateStatsdPlugin(ctx context.Context, request operations.Upd
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -65463,8 +65459,8 @@ func (s *Plugins) UpdateStatsdPlugin(ctx context.Context, request operations.Upd
 
 }
 
-// DeleteStatsdadvancedPlugin - Delete a StatsdAdvanced plugin
-// Delete a StatsdAdvanced plugin
+// DeleteStatsdadvancedPlugin - Delete a StatsdAdvanced plugin in a workspace
+// Delete a StatsdAdvanced plugin in a workspace
 func (s *Plugins) DeleteStatsdadvancedPlugin(ctx context.Context, request operations.DeleteStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.DeleteStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -65484,7 +65480,7 @@ func (s *Plugins) DeleteStatsdadvancedPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -65666,8 +65662,8 @@ func (s *Plugins) DeleteStatsdadvancedPlugin(ctx context.Context, request operat
 
 }
 
-// GetStatsdadvancedPlugin - Get a StatsdAdvanced plugin
-// Get a StatsdAdvanced plugin
+// GetStatsdadvancedPlugin - Get a StatsdAdvanced plugin in a workspace
+// Get a StatsdAdvanced plugin in a workspace
 func (s *Plugins) GetStatsdadvancedPlugin(ctx context.Context, request operations.GetStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.GetStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -65687,7 +65683,7 @@ func (s *Plugins) GetStatsdadvancedPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -65888,8 +65884,8 @@ func (s *Plugins) GetStatsdadvancedPlugin(ctx context.Context, request operation
 
 }
 
-// UpdateStatsdadvancedPlugin - Update a StatsdAdvanced plugin
-// Update a StatsdAdvanced plugin
+// UpdateStatsdadvancedPlugin - Update a StatsdAdvanced plugin in a workspace
+// Update a StatsdAdvanced plugin in a workspace
 func (s *Plugins) UpdateStatsdadvancedPlugin(ctx context.Context, request operations.UpdateStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.UpdateStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -65909,7 +65905,7 @@ func (s *Plugins) UpdateStatsdadvancedPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -66115,8 +66111,8 @@ func (s *Plugins) UpdateStatsdadvancedPlugin(ctx context.Context, request operat
 
 }
 
-// DeleteSyslogPlugin - Delete a Syslog plugin
-// Delete a Syslog plugin
+// DeleteSyslogPlugin - Delete a Syslog plugin in a workspace
+// Delete a Syslog plugin in a workspace
 func (s *Plugins) DeleteSyslogPlugin(ctx context.Context, request operations.DeleteSyslogPluginRequest, opts ...operations.Option) (*operations.DeleteSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -66136,7 +66132,7 @@ func (s *Plugins) DeleteSyslogPlugin(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -66318,8 +66314,8 @@ func (s *Plugins) DeleteSyslogPlugin(ctx context.Context, request operations.Del
 
 }
 
-// GetSyslogPlugin - Get a Syslog plugin
-// Get a Syslog plugin
+// GetSyslogPlugin - Get a Syslog plugin in a workspace
+// Get a Syslog plugin in a workspace
 func (s *Plugins) GetSyslogPlugin(ctx context.Context, request operations.GetSyslogPluginRequest, opts ...operations.Option) (*operations.GetSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -66339,7 +66335,7 @@ func (s *Plugins) GetSyslogPlugin(ctx context.Context, request operations.GetSys
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -66540,8 +66536,8 @@ func (s *Plugins) GetSyslogPlugin(ctx context.Context, request operations.GetSys
 
 }
 
-// UpdateSyslogPlugin - Update a Syslog plugin
-// Update a Syslog plugin
+// UpdateSyslogPlugin - Update a Syslog plugin in a workspace
+// Update a Syslog plugin in a workspace
 func (s *Plugins) UpdateSyslogPlugin(ctx context.Context, request operations.UpdateSyslogPluginRequest, opts ...operations.Option) (*operations.UpdateSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -66561,7 +66557,7 @@ func (s *Plugins) UpdateSyslogPlugin(ctx context.Context, request operations.Upd
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -66767,8 +66763,8 @@ func (s *Plugins) UpdateSyslogPlugin(ctx context.Context, request operations.Upd
 
 }
 
-// DeleteTcplogPlugin - Delete a TcpLog plugin
-// Delete a TcpLog plugin
+// DeleteTcplogPlugin - Delete a TcpLog plugin in a workspace
+// Delete a TcpLog plugin in a workspace
 func (s *Plugins) DeleteTcplogPlugin(ctx context.Context, request operations.DeleteTcplogPluginRequest, opts ...operations.Option) (*operations.DeleteTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -66788,7 +66784,7 @@ func (s *Plugins) DeleteTcplogPlugin(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -66970,8 +66966,8 @@ func (s *Plugins) DeleteTcplogPlugin(ctx context.Context, request operations.Del
 
 }
 
-// GetTcplogPlugin - Get a TcpLog plugin
-// Get a TcpLog plugin
+// GetTcplogPlugin - Get a TcpLog plugin in a workspace
+// Get a TcpLog plugin in a workspace
 func (s *Plugins) GetTcplogPlugin(ctx context.Context, request operations.GetTcplogPluginRequest, opts ...operations.Option) (*operations.GetTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -66991,7 +66987,7 @@ func (s *Plugins) GetTcplogPlugin(ctx context.Context, request operations.GetTcp
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -67192,8 +67188,8 @@ func (s *Plugins) GetTcplogPlugin(ctx context.Context, request operations.GetTcp
 
 }
 
-// UpdateTcplogPlugin - Update a TcpLog plugin
-// Update a TcpLog plugin
+// UpdateTcplogPlugin - Update a TcpLog plugin in a workspace
+// Update a TcpLog plugin in a workspace
 func (s *Plugins) UpdateTcplogPlugin(ctx context.Context, request operations.UpdateTcplogPluginRequest, opts ...operations.Option) (*operations.UpdateTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -67213,7 +67209,7 @@ func (s *Plugins) UpdateTcplogPlugin(ctx context.Context, request operations.Upd
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -67419,8 +67415,8 @@ func (s *Plugins) UpdateTcplogPlugin(ctx context.Context, request operations.Upd
 
 }
 
-// DeleteTlshandshakemodifierPlugin - Delete a TlsHandshakeModifier plugin
-// Delete a TlsHandshakeModifier plugin
+// DeleteTlshandshakemodifierPlugin - Delete a TlsHandshakeModifier plugin in a workspace
+// Delete a TlsHandshakeModifier plugin in a workspace
 func (s *Plugins) DeleteTlshandshakemodifierPlugin(ctx context.Context, request operations.DeleteTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.DeleteTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -67440,7 +67436,7 @@ func (s *Plugins) DeleteTlshandshakemodifierPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -67622,8 +67618,8 @@ func (s *Plugins) DeleteTlshandshakemodifierPlugin(ctx context.Context, request 
 
 }
 
-// GetTlshandshakemodifierPlugin - Get a TlsHandshakeModifier plugin
-// Get a TlsHandshakeModifier plugin
+// GetTlshandshakemodifierPlugin - Get a TlsHandshakeModifier plugin in a workspace
+// Get a TlsHandshakeModifier plugin in a workspace
 func (s *Plugins) GetTlshandshakemodifierPlugin(ctx context.Context, request operations.GetTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.GetTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -67643,7 +67639,7 @@ func (s *Plugins) GetTlshandshakemodifierPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -67844,8 +67840,8 @@ func (s *Plugins) GetTlshandshakemodifierPlugin(ctx context.Context, request ope
 
 }
 
-// UpdateTlshandshakemodifierPlugin - Update a TlsHandshakeModifier plugin
-// Update a TlsHandshakeModifier plugin
+// UpdateTlshandshakemodifierPlugin - Update a TlsHandshakeModifier plugin in a workspace
+// Update a TlsHandshakeModifier plugin in a workspace
 func (s *Plugins) UpdateTlshandshakemodifierPlugin(ctx context.Context, request operations.UpdateTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.UpdateTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -67865,7 +67861,7 @@ func (s *Plugins) UpdateTlshandshakemodifierPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -68071,8 +68067,8 @@ func (s *Plugins) UpdateTlshandshakemodifierPlugin(ctx context.Context, request 
 
 }
 
-// DeleteTlsmetadataheadersPlugin - Delete a TlsMetadataHeaders plugin
-// Delete a TlsMetadataHeaders plugin
+// DeleteTlsmetadataheadersPlugin - Delete a TlsMetadataHeaders plugin in a workspace
+// Delete a TlsMetadataHeaders plugin in a workspace
 func (s *Plugins) DeleteTlsmetadataheadersPlugin(ctx context.Context, request operations.DeleteTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.DeleteTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -68092,7 +68088,7 @@ func (s *Plugins) DeleteTlsmetadataheadersPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -68274,8 +68270,8 @@ func (s *Plugins) DeleteTlsmetadataheadersPlugin(ctx context.Context, request op
 
 }
 
-// GetTlsmetadataheadersPlugin - Get a TlsMetadataHeaders plugin
-// Get a TlsMetadataHeaders plugin
+// GetTlsmetadataheadersPlugin - Get a TlsMetadataHeaders plugin in a workspace
+// Get a TlsMetadataHeaders plugin in a workspace
 func (s *Plugins) GetTlsmetadataheadersPlugin(ctx context.Context, request operations.GetTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.GetTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -68295,7 +68291,7 @@ func (s *Plugins) GetTlsmetadataheadersPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -68496,8 +68492,8 @@ func (s *Plugins) GetTlsmetadataheadersPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateTlsmetadataheadersPlugin - Update a TlsMetadataHeaders plugin
-// Update a TlsMetadataHeaders plugin
+// UpdateTlsmetadataheadersPlugin - Update a TlsMetadataHeaders plugin in a workspace
+// Update a TlsMetadataHeaders plugin in a workspace
 func (s *Plugins) UpdateTlsmetadataheadersPlugin(ctx context.Context, request operations.UpdateTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.UpdateTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -68517,7 +68513,7 @@ func (s *Plugins) UpdateTlsmetadataheadersPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -68723,8 +68719,8 @@ func (s *Plugins) UpdateTlsmetadataheadersPlugin(ctx context.Context, request op
 
 }
 
-// DeleteUdplogPlugin - Delete a UdpLog plugin
-// Delete a UdpLog plugin
+// DeleteUdplogPlugin - Delete a UdpLog plugin in a workspace
+// Delete a UdpLog plugin in a workspace
 func (s *Plugins) DeleteUdplogPlugin(ctx context.Context, request operations.DeleteUdplogPluginRequest, opts ...operations.Option) (*operations.DeleteUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -68744,7 +68740,7 @@ func (s *Plugins) DeleteUdplogPlugin(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -68926,8 +68922,8 @@ func (s *Plugins) DeleteUdplogPlugin(ctx context.Context, request operations.Del
 
 }
 
-// GetUdplogPlugin - Get a UdpLog plugin
-// Get a UdpLog plugin
+// GetUdplogPlugin - Get a UdpLog plugin in a workspace
+// Get a UdpLog plugin in a workspace
 func (s *Plugins) GetUdplogPlugin(ctx context.Context, request operations.GetUdplogPluginRequest, opts ...operations.Option) (*operations.GetUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -68947,7 +68943,7 @@ func (s *Plugins) GetUdplogPlugin(ctx context.Context, request operations.GetUdp
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -69148,8 +69144,8 @@ func (s *Plugins) GetUdplogPlugin(ctx context.Context, request operations.GetUdp
 
 }
 
-// UpdateUdplogPlugin - Update a UdpLog plugin
-// Update a UdpLog plugin
+// UpdateUdplogPlugin - Update a UdpLog plugin in a workspace
+// Update a UdpLog plugin in a workspace
 func (s *Plugins) UpdateUdplogPlugin(ctx context.Context, request operations.UpdateUdplogPluginRequest, opts ...operations.Option) (*operations.UpdateUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -69169,7 +69165,7 @@ func (s *Plugins) UpdateUdplogPlugin(ctx context.Context, request operations.Upd
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -69375,8 +69371,8 @@ func (s *Plugins) UpdateUdplogPlugin(ctx context.Context, request operations.Upd
 
 }
 
-// DeleteUpstreamoauthPlugin - Delete a UpstreamOauth plugin
-// Delete a UpstreamOauth plugin
+// DeleteUpstreamoauthPlugin - Delete a UpstreamOauth plugin in a workspace
+// Delete a UpstreamOauth plugin in a workspace
 func (s *Plugins) DeleteUpstreamoauthPlugin(ctx context.Context, request operations.DeleteUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.DeleteUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -69396,7 +69392,7 @@ func (s *Plugins) DeleteUpstreamoauthPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -69578,8 +69574,8 @@ func (s *Plugins) DeleteUpstreamoauthPlugin(ctx context.Context, request operati
 
 }
 
-// GetUpstreamoauthPlugin - Get a UpstreamOauth plugin
-// Get a UpstreamOauth plugin
+// GetUpstreamoauthPlugin - Get a UpstreamOauth plugin in a workspace
+// Get a UpstreamOauth plugin in a workspace
 func (s *Plugins) GetUpstreamoauthPlugin(ctx context.Context, request operations.GetUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.GetUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -69599,7 +69595,7 @@ func (s *Plugins) GetUpstreamoauthPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -69800,8 +69796,8 @@ func (s *Plugins) GetUpstreamoauthPlugin(ctx context.Context, request operations
 
 }
 
-// UpdateUpstreamoauthPlugin - Update a UpstreamOauth plugin
-// Update a UpstreamOauth plugin
+// UpdateUpstreamoauthPlugin - Update a UpstreamOauth plugin in a workspace
+// Update a UpstreamOauth plugin in a workspace
 func (s *Plugins) UpdateUpstreamoauthPlugin(ctx context.Context, request operations.UpdateUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.UpdateUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -69821,7 +69817,7 @@ func (s *Plugins) UpdateUpstreamoauthPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -70027,8 +70023,8 @@ func (s *Plugins) UpdateUpstreamoauthPlugin(ctx context.Context, request operati
 
 }
 
-// DeleteUpstreamtimeoutPlugin - Delete a UpstreamTimeout plugin
-// Delete a UpstreamTimeout plugin
+// DeleteUpstreamtimeoutPlugin - Delete a UpstreamTimeout plugin in a workspace
+// Delete a UpstreamTimeout plugin in a workspace
 func (s *Plugins) DeleteUpstreamtimeoutPlugin(ctx context.Context, request operations.DeleteUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.DeleteUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -70048,7 +70044,7 @@ func (s *Plugins) DeleteUpstreamtimeoutPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -70230,8 +70226,8 @@ func (s *Plugins) DeleteUpstreamtimeoutPlugin(ctx context.Context, request opera
 
 }
 
-// GetUpstreamtimeoutPlugin - Get a UpstreamTimeout plugin
-// Get a UpstreamTimeout plugin
+// GetUpstreamtimeoutPlugin - Get a UpstreamTimeout plugin in a workspace
+// Get a UpstreamTimeout plugin in a workspace
 func (s *Plugins) GetUpstreamtimeoutPlugin(ctx context.Context, request operations.GetUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.GetUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -70251,7 +70247,7 @@ func (s *Plugins) GetUpstreamtimeoutPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -70452,8 +70448,8 @@ func (s *Plugins) GetUpstreamtimeoutPlugin(ctx context.Context, request operatio
 
 }
 
-// UpdateUpstreamtimeoutPlugin - Update a UpstreamTimeout plugin
-// Update a UpstreamTimeout plugin
+// UpdateUpstreamtimeoutPlugin - Update a UpstreamTimeout plugin in a workspace
+// Update a UpstreamTimeout plugin in a workspace
 func (s *Plugins) UpdateUpstreamtimeoutPlugin(ctx context.Context, request operations.UpdateUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.UpdateUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -70473,7 +70469,7 @@ func (s *Plugins) UpdateUpstreamtimeoutPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -70679,8 +70675,8 @@ func (s *Plugins) UpdateUpstreamtimeoutPlugin(ctx context.Context, request opera
 
 }
 
-// DeleteVaultauthPlugin - Delete a VaultAuth plugin
-// Delete a VaultAuth plugin
+// DeleteVaultauthPlugin - Delete a VaultAuth plugin in a workspace
+// Delete a VaultAuth plugin in a workspace
 func (s *Plugins) DeleteVaultauthPlugin(ctx context.Context, request operations.DeleteVaultauthPluginRequest, opts ...operations.Option) (*operations.DeleteVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -70700,7 +70696,7 @@ func (s *Plugins) DeleteVaultauthPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -70882,8 +70878,8 @@ func (s *Plugins) DeleteVaultauthPlugin(ctx context.Context, request operations.
 
 }
 
-// GetVaultauthPlugin - Get a VaultAuth plugin
-// Get a VaultAuth plugin
+// GetVaultauthPlugin - Get a VaultAuth plugin in a workspace
+// Get a VaultAuth plugin in a workspace
 func (s *Plugins) GetVaultauthPlugin(ctx context.Context, request operations.GetVaultauthPluginRequest, opts ...operations.Option) (*operations.GetVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -70903,7 +70899,7 @@ func (s *Plugins) GetVaultauthPlugin(ctx context.Context, request operations.Get
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -71104,8 +71100,8 @@ func (s *Plugins) GetVaultauthPlugin(ctx context.Context, request operations.Get
 
 }
 
-// UpdateVaultauthPlugin - Update a VaultAuth plugin
-// Update a VaultAuth plugin
+// UpdateVaultauthPlugin - Update a VaultAuth plugin in a workspace
+// Update a VaultAuth plugin in a workspace
 func (s *Plugins) UpdateVaultauthPlugin(ctx context.Context, request operations.UpdateVaultauthPluginRequest, opts ...operations.Option) (*operations.UpdateVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -71125,7 +71121,7 @@ func (s *Plugins) UpdateVaultauthPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -71331,8 +71327,8 @@ func (s *Plugins) UpdateVaultauthPlugin(ctx context.Context, request operations.
 
 }
 
-// DeleteWebsocketsizelimitPlugin - Delete a WebsocketSizeLimit plugin
-// Delete a WebsocketSizeLimit plugin
+// DeleteWebsocketsizelimitPlugin - Delete a WebsocketSizeLimit plugin in a workspace
+// Delete a WebsocketSizeLimit plugin in a workspace
 func (s *Plugins) DeleteWebsocketsizelimitPlugin(ctx context.Context, request operations.DeleteWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.DeleteWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -71352,7 +71348,7 @@ func (s *Plugins) DeleteWebsocketsizelimitPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -71534,8 +71530,8 @@ func (s *Plugins) DeleteWebsocketsizelimitPlugin(ctx context.Context, request op
 
 }
 
-// GetWebsocketsizelimitPlugin - Get a WebsocketSizeLimit plugin
-// Get a WebsocketSizeLimit plugin
+// GetWebsocketsizelimitPlugin - Get a WebsocketSizeLimit plugin in a workspace
+// Get a WebsocketSizeLimit plugin in a workspace
 func (s *Plugins) GetWebsocketsizelimitPlugin(ctx context.Context, request operations.GetWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.GetWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -71555,7 +71551,7 @@ func (s *Plugins) GetWebsocketsizelimitPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -71756,8 +71752,8 @@ func (s *Plugins) GetWebsocketsizelimitPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateWebsocketsizelimitPlugin - Update a WebsocketSizeLimit plugin
-// Update a WebsocketSizeLimit plugin
+// UpdateWebsocketsizelimitPlugin - Update a WebsocketSizeLimit plugin in a workspace
+// Update a WebsocketSizeLimit plugin in a workspace
 func (s *Plugins) UpdateWebsocketsizelimitPlugin(ctx context.Context, request operations.UpdateWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.UpdateWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -71777,7 +71773,7 @@ func (s *Plugins) UpdateWebsocketsizelimitPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -71983,8 +71979,8 @@ func (s *Plugins) UpdateWebsocketsizelimitPlugin(ctx context.Context, request op
 
 }
 
-// DeleteWebsocketvalidatorPlugin - Delete a WebsocketValidator plugin
-// Delete a WebsocketValidator plugin
+// DeleteWebsocketvalidatorPlugin - Delete a WebsocketValidator plugin in a workspace
+// Delete a WebsocketValidator plugin in a workspace
 func (s *Plugins) DeleteWebsocketvalidatorPlugin(ctx context.Context, request operations.DeleteWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.DeleteWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -72004,7 +72000,7 @@ func (s *Plugins) DeleteWebsocketvalidatorPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -72186,8 +72182,8 @@ func (s *Plugins) DeleteWebsocketvalidatorPlugin(ctx context.Context, request op
 
 }
 
-// GetWebsocketvalidatorPlugin - Get a WebsocketValidator plugin
-// Get a WebsocketValidator plugin
+// GetWebsocketvalidatorPlugin - Get a WebsocketValidator plugin in a workspace
+// Get a WebsocketValidator plugin in a workspace
 func (s *Plugins) GetWebsocketvalidatorPlugin(ctx context.Context, request operations.GetWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.GetWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -72207,7 +72203,7 @@ func (s *Plugins) GetWebsocketvalidatorPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -72408,8 +72404,8 @@ func (s *Plugins) GetWebsocketvalidatorPlugin(ctx context.Context, request opera
 
 }
 
-// UpdateWebsocketvalidatorPlugin - Update a WebsocketValidator plugin
-// Update a WebsocketValidator plugin
+// UpdateWebsocketvalidatorPlugin - Update a WebsocketValidator plugin in a workspace
+// Update a WebsocketValidator plugin in a workspace
 func (s *Plugins) UpdateWebsocketvalidatorPlugin(ctx context.Context, request operations.UpdateWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.UpdateWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -72429,7 +72425,7 @@ func (s *Plugins) UpdateWebsocketvalidatorPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -72635,8 +72631,8 @@ func (s *Plugins) UpdateWebsocketvalidatorPlugin(ctx context.Context, request op
 
 }
 
-// DeleteXmlthreatprotectionPlugin - Delete a XmlThreatProtection plugin
-// Delete a XmlThreatProtection plugin
+// DeleteXmlthreatprotectionPlugin - Delete a XmlThreatProtection plugin in a workspace
+// Delete a XmlThreatProtection plugin in a workspace
 func (s *Plugins) DeleteXmlthreatprotectionPlugin(ctx context.Context, request operations.DeleteXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.DeleteXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -72656,7 +72652,7 @@ func (s *Plugins) DeleteXmlthreatprotectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -72838,8 +72834,8 @@ func (s *Plugins) DeleteXmlthreatprotectionPlugin(ctx context.Context, request o
 
 }
 
-// GetXmlthreatprotectionPlugin - Get a XmlThreatProtection plugin
-// Get a XmlThreatProtection plugin
+// GetXmlthreatprotectionPlugin - Get a XmlThreatProtection plugin in a workspace
+// Get a XmlThreatProtection plugin in a workspace
 func (s *Plugins) GetXmlthreatprotectionPlugin(ctx context.Context, request operations.GetXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.GetXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -72859,7 +72855,7 @@ func (s *Plugins) GetXmlthreatprotectionPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -73060,8 +73056,8 @@ func (s *Plugins) GetXmlthreatprotectionPlugin(ctx context.Context, request oper
 
 }
 
-// UpdateXmlthreatprotectionPlugin - Update a XmlThreatProtection plugin
-// Update a XmlThreatProtection plugin
+// UpdateXmlthreatprotectionPlugin - Update a XmlThreatProtection plugin in a workspace
+// Update a XmlThreatProtection plugin in a workspace
 func (s *Plugins) UpdateXmlthreatprotectionPlugin(ctx context.Context, request operations.UpdateXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.UpdateXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -73081,7 +73077,7 @@ func (s *Plugins) UpdateXmlthreatprotectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -73287,8 +73283,8 @@ func (s *Plugins) UpdateXmlthreatprotectionPlugin(ctx context.Context, request o
 
 }
 
-// DeleteZipkinPlugin - Delete a Zipkin plugin
-// Delete a Zipkin plugin
+// DeleteZipkinPlugin - Delete a Zipkin plugin in a workspace
+// Delete a Zipkin plugin in a workspace
 func (s *Plugins) DeleteZipkinPlugin(ctx context.Context, request operations.DeleteZipkinPluginRequest, opts ...operations.Option) (*operations.DeleteZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -73308,7 +73304,7 @@ func (s *Plugins) DeleteZipkinPlugin(ctx context.Context, request operations.Del
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -73490,8 +73486,8 @@ func (s *Plugins) DeleteZipkinPlugin(ctx context.Context, request operations.Del
 
 }
 
-// GetZipkinPlugin - Get a Zipkin plugin
-// Get a Zipkin plugin
+// GetZipkinPlugin - Get a Zipkin plugin in a workspace
+// Get a Zipkin plugin in a workspace
 func (s *Plugins) GetZipkinPlugin(ctx context.Context, request operations.GetZipkinPluginRequest, opts ...operations.Option) (*operations.GetZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -73511,7 +73507,7 @@ func (s *Plugins) GetZipkinPlugin(ctx context.Context, request operations.GetZip
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -73712,8 +73708,8 @@ func (s *Plugins) GetZipkinPlugin(ctx context.Context, request operations.GetZip
 
 }
 
-// UpdateZipkinPlugin - Update a Zipkin plugin
-// Update a Zipkin plugin
+// UpdateZipkinPlugin - Update a Zipkin plugin in a workspace
+// Update a Zipkin plugin in a workspace
 func (s *Plugins) UpdateZipkinPlugin(ctx context.Context, request operations.UpdateZipkinPluginRequest, opts ...operations.Option) (*operations.UpdateZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -73733,7 +73729,7 @@ func (s *Plugins) UpdateZipkinPlugin(ctx context.Context, request operations.Upd
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins/{PluginId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -73939,8 +73935,8 @@ func (s *Plugins) UpdateZipkinPlugin(ctx context.Context, request operations.Upd
 
 }
 
-// CreateAcePlugin - Create a Ace plugin
-// Create a Ace plugin
+// CreateAcePlugin - Create a Ace plugin in a workspace
+// Create a Ace plugin in a workspace
 func (s *Plugins) CreateAcePlugin(ctx context.Context, request operations.CreateAcePluginRequest, opts ...operations.Option) (*operations.CreateAcePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -73960,7 +73956,7 @@ func (s *Plugins) CreateAcePlugin(ctx context.Context, request operations.Create
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -74166,8 +74162,8 @@ func (s *Plugins) CreateAcePlugin(ctx context.Context, request operations.Create
 
 }
 
-// CreateACLPlugin - Create a ACL plugin
-// Create a ACL plugin
+// CreateACLPlugin - Create a ACL plugin in a workspace
+// Create a ACL plugin in a workspace
 func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.CreateACLPluginRequest, opts ...operations.Option) (*operations.CreateACLPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -74187,7 +74183,7 @@ func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.Create
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -74393,8 +74389,8 @@ func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.Create
 
 }
 
-// CreateAcmePlugin - Create a Acme plugin
-// Create a Acme plugin
+// CreateAcmePlugin - Create a Acme plugin in a workspace
+// Create a Acme plugin in a workspace
 func (s *Plugins) CreateAcmePlugin(ctx context.Context, request operations.CreateAcmePluginRequest, opts ...operations.Option) (*operations.CreateAcmePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -74414,7 +74410,7 @@ func (s *Plugins) CreateAcmePlugin(ctx context.Context, request operations.Creat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -74620,8 +74616,8 @@ func (s *Plugins) CreateAcmePlugin(ctx context.Context, request operations.Creat
 
 }
 
-// CreateAia2aproxyPlugin - Create a AiA2aProxy plugin
-// Create a AiA2aProxy plugin
+// CreateAia2aproxyPlugin - Create a AiA2aProxy plugin in a workspace
+// Create a AiA2aProxy plugin in a workspace
 func (s *Plugins) CreateAia2aproxyPlugin(ctx context.Context, request operations.CreateAia2aproxyPluginRequest, opts ...operations.Option) (*operations.CreateAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -74641,7 +74637,7 @@ func (s *Plugins) CreateAia2aproxyPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -74847,8 +74843,8 @@ func (s *Plugins) CreateAia2aproxyPlugin(ctx context.Context, request operations
 
 }
 
-// CreateAiawsguardrailsPlugin - Create a AiAwsGuardrails plugin
-// Create a AiAwsGuardrails plugin
+// CreateAiawsguardrailsPlugin - Create a AiAwsGuardrails plugin in a workspace
+// Create a AiAwsGuardrails plugin in a workspace
 func (s *Plugins) CreateAiawsguardrailsPlugin(ctx context.Context, request operations.CreateAiawsguardrailsPluginRequest, opts ...operations.Option) (*operations.CreateAiawsguardrailsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -74868,7 +74864,7 @@ func (s *Plugins) CreateAiawsguardrailsPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -75074,8 +75070,8 @@ func (s *Plugins) CreateAiawsguardrailsPlugin(ctx context.Context, request opera
 
 }
 
-// CreateAiazurecontentsafetyPlugin - Create a AiAzureContentSafety plugin
-// Create a AiAzureContentSafety plugin
+// CreateAiazurecontentsafetyPlugin - Create a AiAzureContentSafety plugin in a workspace
+// Create a AiAzureContentSafety plugin in a workspace
 func (s *Plugins) CreateAiazurecontentsafetyPlugin(ctx context.Context, request operations.CreateAiazurecontentsafetyPluginRequest, opts ...operations.Option) (*operations.CreateAiazurecontentsafetyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -75095,7 +75091,7 @@ func (s *Plugins) CreateAiazurecontentsafetyPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -75301,8 +75297,8 @@ func (s *Plugins) CreateAiazurecontentsafetyPlugin(ctx context.Context, request 
 
 }
 
-// CreateAicustomguardrailPlugin - Create a AiCustomGuardrail plugin
-// Create a AiCustomGuardrail plugin
+// CreateAicustomguardrailPlugin - Create a AiCustomGuardrail plugin in a workspace
+// Create a AiCustomGuardrail plugin in a workspace
 func (s *Plugins) CreateAicustomguardrailPlugin(ctx context.Context, request operations.CreateAicustomguardrailPluginRequest, opts ...operations.Option) (*operations.CreateAicustomguardrailPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -75322,7 +75318,7 @@ func (s *Plugins) CreateAicustomguardrailPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -75528,8 +75524,8 @@ func (s *Plugins) CreateAicustomguardrailPlugin(ctx context.Context, request ope
 
 }
 
-// CreateAigcpmodelarmorPlugin - Create a AiGcpModelArmor plugin
-// Create a AiGcpModelArmor plugin
+// CreateAigcpmodelarmorPlugin - Create a AiGcpModelArmor plugin in a workspace
+// Create a AiGcpModelArmor plugin in a workspace
 func (s *Plugins) CreateAigcpmodelarmorPlugin(ctx context.Context, request operations.CreateAigcpmodelarmorPluginRequest, opts ...operations.Option) (*operations.CreateAigcpmodelarmorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -75549,7 +75545,7 @@ func (s *Plugins) CreateAigcpmodelarmorPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -75755,8 +75751,8 @@ func (s *Plugins) CreateAigcpmodelarmorPlugin(ctx context.Context, request opera
 
 }
 
-// CreateAilakeraguardPlugin - Create a AiLakeraGuard plugin
-// Create a AiLakeraGuard plugin
+// CreateAilakeraguardPlugin - Create a AiLakeraGuard plugin in a workspace
+// Create a AiLakeraGuard plugin in a workspace
 func (s *Plugins) CreateAilakeraguardPlugin(ctx context.Context, request operations.CreateAilakeraguardPluginRequest, opts ...operations.Option) (*operations.CreateAilakeraguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -75776,7 +75772,7 @@ func (s *Plugins) CreateAilakeraguardPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -75982,8 +75978,8 @@ func (s *Plugins) CreateAilakeraguardPlugin(ctx context.Context, request operati
 
 }
 
-// CreateAillmasjudgePlugin - Create a AiLlmAsJudge plugin
-// Create a AiLlmAsJudge plugin
+// CreateAillmasjudgePlugin - Create a AiLlmAsJudge plugin in a workspace
+// Create a AiLlmAsJudge plugin in a workspace
 func (s *Plugins) CreateAillmasjudgePlugin(ctx context.Context, request operations.CreateAillmasjudgePluginRequest, opts ...operations.Option) (*operations.CreateAillmasjudgePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -76003,7 +75999,7 @@ func (s *Plugins) CreateAillmasjudgePlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -76209,8 +76205,8 @@ func (s *Plugins) CreateAillmasjudgePlugin(ctx context.Context, request operatio
 
 }
 
-// CreateAimcpoauth2Plugin - Create a AiMcpOauth2 plugin
-// Create a AiMcpOauth2 plugin
+// CreateAimcpoauth2Plugin - Create a AiMcpOauth2 plugin in a workspace
+// Create a AiMcpOauth2 plugin in a workspace
 func (s *Plugins) CreateAimcpoauth2Plugin(ctx context.Context, request operations.CreateAimcpoauth2PluginRequest, opts ...operations.Option) (*operations.CreateAimcpoauth2PluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -76230,7 +76226,7 @@ func (s *Plugins) CreateAimcpoauth2Plugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -76436,8 +76432,8 @@ func (s *Plugins) CreateAimcpoauth2Plugin(ctx context.Context, request operation
 
 }
 
-// CreateAimcpproxyPlugin - Create a AiMcpProxy plugin
-// Create a AiMcpProxy plugin
+// CreateAimcpproxyPlugin - Create a AiMcpProxy plugin in a workspace
+// Create a AiMcpProxy plugin in a workspace
 func (s *Plugins) CreateAimcpproxyPlugin(ctx context.Context, request operations.CreateAimcpproxyPluginRequest, opts ...operations.Option) (*operations.CreateAimcpproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -76457,7 +76453,7 @@ func (s *Plugins) CreateAimcpproxyPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -76663,8 +76659,8 @@ func (s *Plugins) CreateAimcpproxyPlugin(ctx context.Context, request operations
 
 }
 
-// CreateAipromptcompressorPlugin - Create a AiPromptCompressor plugin
-// Create a AiPromptCompressor plugin
+// CreateAipromptcompressorPlugin - Create a AiPromptCompressor plugin in a workspace
+// Create a AiPromptCompressor plugin in a workspace
 func (s *Plugins) CreateAipromptcompressorPlugin(ctx context.Context, request operations.CreateAipromptcompressorPluginRequest, opts ...operations.Option) (*operations.CreateAipromptcompressorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -76684,7 +76680,7 @@ func (s *Plugins) CreateAipromptcompressorPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -76890,8 +76886,8 @@ func (s *Plugins) CreateAipromptcompressorPlugin(ctx context.Context, request op
 
 }
 
-// CreateAipromptdecoratorPlugin - Create a AiPromptDecorator plugin
-// Create a AiPromptDecorator plugin
+// CreateAipromptdecoratorPlugin - Create a AiPromptDecorator plugin in a workspace
+// Create a AiPromptDecorator plugin in a workspace
 func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request operations.CreateAipromptdecoratorPluginRequest, opts ...operations.Option) (*operations.CreateAipromptdecoratorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -76911,7 +76907,7 @@ func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -77117,8 +77113,8 @@ func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request ope
 
 }
 
-// CreateAipromptguardPlugin - Create a AiPromptGuard plugin
-// Create a AiPromptGuard plugin
+// CreateAipromptguardPlugin - Create a AiPromptGuard plugin in a workspace
+// Create a AiPromptGuard plugin in a workspace
 func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operations.CreateAipromptguardPluginRequest, opts ...operations.Option) (*operations.CreateAipromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -77138,7 +77134,7 @@ func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -77344,8 +77340,8 @@ func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operati
 
 }
 
-// CreateAiprompttemplatePlugin - Create a AiPromptTemplate plugin
-// Create a AiPromptTemplate plugin
+// CreateAiprompttemplatePlugin - Create a AiPromptTemplate plugin in a workspace
+// Create a AiPromptTemplate plugin in a workspace
 func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request operations.CreateAiprompttemplatePluginRequest, opts ...operations.Option) (*operations.CreateAiprompttemplatePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -77365,7 +77361,7 @@ func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -77571,8 +77567,8 @@ func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request oper
 
 }
 
-// CreateAiproxyPlugin - Create a AiProxy plugin
-// Create a AiProxy plugin
+// CreateAiproxyPlugin - Create a AiProxy plugin in a workspace
+// Create a AiProxy plugin in a workspace
 func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.CreateAiproxyPluginRequest, opts ...operations.Option) (*operations.CreateAiproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -77592,7 +77588,7 @@ func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -77798,8 +77794,8 @@ func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateAiproxyadvancedPlugin - Create a AiProxyAdvanced plugin
-// Create a AiProxyAdvanced plugin
+// CreateAiproxyadvancedPlugin - Create a AiProxyAdvanced plugin in a workspace
+// Create a AiProxyAdvanced plugin in a workspace
 func (s *Plugins) CreateAiproxyadvancedPlugin(ctx context.Context, request operations.CreateAiproxyadvancedPluginRequest, opts ...operations.Option) (*operations.CreateAiproxyadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -77819,7 +77815,7 @@ func (s *Plugins) CreateAiproxyadvancedPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -78025,8 +78021,8 @@ func (s *Plugins) CreateAiproxyadvancedPlugin(ctx context.Context, request opera
 
 }
 
-// CreateAiraginjectorPlugin - Create a AiRagInjector plugin
-// Create a AiRagInjector plugin
+// CreateAiraginjectorPlugin - Create a AiRagInjector plugin in a workspace
+// Create a AiRagInjector plugin in a workspace
 func (s *Plugins) CreateAiraginjectorPlugin(ctx context.Context, request operations.CreateAiraginjectorPluginRequest, opts ...operations.Option) (*operations.CreateAiraginjectorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -78046,7 +78042,7 @@ func (s *Plugins) CreateAiraginjectorPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -78252,8 +78248,8 @@ func (s *Plugins) CreateAiraginjectorPlugin(ctx context.Context, request operati
 
 }
 
-// CreateAiratelimitingadvancedPlugin - Create a AiRateLimitingAdvanced plugin
-// Create a AiRateLimitingAdvanced plugin
+// CreateAiratelimitingadvancedPlugin - Create a AiRateLimitingAdvanced plugin in a workspace
+// Create a AiRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) CreateAiratelimitingadvancedPlugin(ctx context.Context, request operations.CreateAiratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.CreateAiratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -78273,7 +78269,7 @@ func (s *Plugins) CreateAiratelimitingadvancedPlugin(ctx context.Context, reques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -78479,8 +78475,8 @@ func (s *Plugins) CreateAiratelimitingadvancedPlugin(ctx context.Context, reques
 
 }
 
-// CreateAirequesttransformerPlugin - Create a AiRequestTransformer plugin
-// Create a AiRequestTransformer plugin
+// CreateAirequesttransformerPlugin - Create a AiRequestTransformer plugin in a workspace
+// Create a AiRequestTransformer plugin in a workspace
 func (s *Plugins) CreateAirequesttransformerPlugin(ctx context.Context, request operations.CreateAirequesttransformerPluginRequest, opts ...operations.Option) (*operations.CreateAirequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -78500,7 +78496,7 @@ func (s *Plugins) CreateAirequesttransformerPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -78706,8 +78702,8 @@ func (s *Plugins) CreateAirequesttransformerPlugin(ctx context.Context, request 
 
 }
 
-// CreateAiresponsetransformerPlugin - Create a AiResponseTransformer plugin
-// Create a AiResponseTransformer plugin
+// CreateAiresponsetransformerPlugin - Create a AiResponseTransformer plugin in a workspace
+// Create a AiResponseTransformer plugin in a workspace
 func (s *Plugins) CreateAiresponsetransformerPlugin(ctx context.Context, request operations.CreateAiresponsetransformerPluginRequest, opts ...operations.Option) (*operations.CreateAiresponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -78727,7 +78723,7 @@ func (s *Plugins) CreateAiresponsetransformerPlugin(ctx context.Context, request
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -78933,8 +78929,8 @@ func (s *Plugins) CreateAiresponsetransformerPlugin(ctx context.Context, request
 
 }
 
-// CreateAisanitizerPlugin - Create a AiSanitizer plugin
-// Create a AiSanitizer plugin
+// CreateAisanitizerPlugin - Create a AiSanitizer plugin in a workspace
+// Create a AiSanitizer plugin in a workspace
 func (s *Plugins) CreateAisanitizerPlugin(ctx context.Context, request operations.CreateAisanitizerPluginRequest, opts ...operations.Option) (*operations.CreateAisanitizerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -78954,7 +78950,7 @@ func (s *Plugins) CreateAisanitizerPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -79160,8 +79156,8 @@ func (s *Plugins) CreateAisanitizerPlugin(ctx context.Context, request operation
 
 }
 
-// CreateAisemanticcachePlugin - Create a AiSemanticCache plugin
-// Create a AiSemanticCache plugin
+// CreateAisemanticcachePlugin - Create a AiSemanticCache plugin in a workspace
+// Create a AiSemanticCache plugin in a workspace
 func (s *Plugins) CreateAisemanticcachePlugin(ctx context.Context, request operations.CreateAisemanticcachePluginRequest, opts ...operations.Option) (*operations.CreateAisemanticcachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -79181,7 +79177,7 @@ func (s *Plugins) CreateAisemanticcachePlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -79387,8 +79383,8 @@ func (s *Plugins) CreateAisemanticcachePlugin(ctx context.Context, request opera
 
 }
 
-// CreateAisemanticpromptguardPlugin - Create a AiSemanticPromptGuard plugin
-// Create a AiSemanticPromptGuard plugin
+// CreateAisemanticpromptguardPlugin - Create a AiSemanticPromptGuard plugin in a workspace
+// Create a AiSemanticPromptGuard plugin in a workspace
 func (s *Plugins) CreateAisemanticpromptguardPlugin(ctx context.Context, request operations.CreateAisemanticpromptguardPluginRequest, opts ...operations.Option) (*operations.CreateAisemanticpromptguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -79408,7 +79404,7 @@ func (s *Plugins) CreateAisemanticpromptguardPlugin(ctx context.Context, request
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -79614,8 +79610,8 @@ func (s *Plugins) CreateAisemanticpromptguardPlugin(ctx context.Context, request
 
 }
 
-// CreateAisemanticresponseguardPlugin - Create a AiSemanticResponseGuard plugin
-// Create a AiSemanticResponseGuard plugin
+// CreateAisemanticresponseguardPlugin - Create a AiSemanticResponseGuard plugin in a workspace
+// Create a AiSemanticResponseGuard plugin in a workspace
 func (s *Plugins) CreateAisemanticresponseguardPlugin(ctx context.Context, request operations.CreateAisemanticresponseguardPluginRequest, opts ...operations.Option) (*operations.CreateAisemanticresponseguardPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -79635,7 +79631,7 @@ func (s *Plugins) CreateAisemanticresponseguardPlugin(ctx context.Context, reque
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -79841,8 +79837,8 @@ func (s *Plugins) CreateAisemanticresponseguardPlugin(ctx context.Context, reque
 
 }
 
-// CreateAppdynamicsPlugin - Create a AppDynamics plugin
-// Create a AppDynamics plugin
+// CreateAppdynamicsPlugin - Create a AppDynamics plugin in a workspace
+// Create a AppDynamics plugin in a workspace
 func (s *Plugins) CreateAppdynamicsPlugin(ctx context.Context, request operations.CreateAppdynamicsPluginRequest, opts ...operations.Option) (*operations.CreateAppdynamicsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -79862,7 +79858,7 @@ func (s *Plugins) CreateAppdynamicsPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -80068,8 +80064,8 @@ func (s *Plugins) CreateAppdynamicsPlugin(ctx context.Context, request operation
 
 }
 
-// CreateAwslambdaPlugin - Create a AwsLambda plugin
-// Create a AwsLambda plugin
+// CreateAwslambdaPlugin - Create a AwsLambda plugin in a workspace
+// Create a AwsLambda plugin in a workspace
 func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.CreateAwslambdaPluginRequest, opts ...operations.Option) (*operations.CreateAwslambdaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -80089,7 +80085,7 @@ func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -80295,8 +80291,8 @@ func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.
 
 }
 
-// CreateAzurefunctionsPlugin - Create a AzureFunctions plugin
-// Create a AzureFunctions plugin
+// CreateAzurefunctionsPlugin - Create a AzureFunctions plugin in a workspace
+// Create a AzureFunctions plugin in a workspace
 func (s *Plugins) CreateAzurefunctionsPlugin(ctx context.Context, request operations.CreateAzurefunctionsPluginRequest, opts ...operations.Option) (*operations.CreateAzurefunctionsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -80316,7 +80312,7 @@ func (s *Plugins) CreateAzurefunctionsPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -80522,8 +80518,8 @@ func (s *Plugins) CreateAzurefunctionsPlugin(ctx context.Context, request operat
 
 }
 
-// CreateBasicauthPlugin - Create a BasicAuth plugin
-// Create a BasicAuth plugin
+// CreateBasicauthPlugin - Create a BasicAuth plugin in a workspace
+// Create a BasicAuth plugin in a workspace
 func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.CreateBasicauthPluginRequest, opts ...operations.Option) (*operations.CreateBasicauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -80543,7 +80539,7 @@ func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -80749,8 +80745,8 @@ func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.
 
 }
 
-// CreateBotdetectionPlugin - Create a BotDetection plugin
-// Create a BotDetection plugin
+// CreateBotdetectionPlugin - Create a BotDetection plugin in a workspace
+// Create a BotDetection plugin in a workspace
 func (s *Plugins) CreateBotdetectionPlugin(ctx context.Context, request operations.CreateBotdetectionPluginRequest, opts ...operations.Option) (*operations.CreateBotdetectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -80770,7 +80766,7 @@ func (s *Plugins) CreateBotdetectionPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -80976,8 +80972,8 @@ func (s *Plugins) CreateBotdetectionPlugin(ctx context.Context, request operatio
 
 }
 
-// CreateCanaryPlugin - Create a Canary plugin
-// Create a Canary plugin
+// CreateCanaryPlugin - Create a Canary plugin in a workspace
+// Create a Canary plugin in a workspace
 func (s *Plugins) CreateCanaryPlugin(ctx context.Context, request operations.CreateCanaryPluginRequest, opts ...operations.Option) (*operations.CreateCanaryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -80997,7 +80993,7 @@ func (s *Plugins) CreateCanaryPlugin(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -81203,8 +81199,8 @@ func (s *Plugins) CreateCanaryPlugin(ctx context.Context, request operations.Cre
 
 }
 
-// CreateConfluentPlugin - Create a Confluent plugin
-// Create a Confluent plugin
+// CreateConfluentPlugin - Create a Confluent plugin in a workspace
+// Create a Confluent plugin in a workspace
 func (s *Plugins) CreateConfluentPlugin(ctx context.Context, request operations.CreateConfluentPluginRequest, opts ...operations.Option) (*operations.CreateConfluentPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -81224,7 +81220,7 @@ func (s *Plugins) CreateConfluentPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -81430,8 +81426,8 @@ func (s *Plugins) CreateConfluentPlugin(ctx context.Context, request operations.
 
 }
 
-// CreateConfluentconsumePlugin - Create a ConfluentConsume plugin
-// Create a ConfluentConsume plugin
+// CreateConfluentconsumePlugin - Create a ConfluentConsume plugin in a workspace
+// Create a ConfluentConsume plugin in a workspace
 func (s *Plugins) CreateConfluentconsumePlugin(ctx context.Context, request operations.CreateConfluentconsumePluginRequest, opts ...operations.Option) (*operations.CreateConfluentconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -81451,7 +81447,7 @@ func (s *Plugins) CreateConfluentconsumePlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -81657,8 +81653,8 @@ func (s *Plugins) CreateConfluentconsumePlugin(ctx context.Context, request oper
 
 }
 
-// CreateCorrelationidPlugin - Create a CorrelationId plugin
-// Create a CorrelationId plugin
+// CreateCorrelationidPlugin - Create a CorrelationId plugin in a workspace
+// Create a CorrelationId plugin in a workspace
 func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operations.CreateCorrelationidPluginRequest, opts ...operations.Option) (*operations.CreateCorrelationidPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -81678,7 +81674,7 @@ func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -81884,8 +81880,8 @@ func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operati
 
 }
 
-// CreateCorsPlugin - Create a Cors plugin
-// Create a Cors plugin
+// CreateCorsPlugin - Create a Cors plugin in a workspace
+// Create a Cors plugin in a workspace
 func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.CreateCorsPluginRequest, opts ...operations.Option) (*operations.CreateCorsPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -81905,7 +81901,7 @@ func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.Creat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -82111,8 +82107,8 @@ func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.Creat
 
 }
 
-// CreateDatadogPlugin - Create a Datadog plugin
-// Create a Datadog plugin
+// CreateDatadogPlugin - Create a Datadog plugin in a workspace
+// Create a Datadog plugin in a workspace
 func (s *Plugins) CreateDatadogPlugin(ctx context.Context, request operations.CreateDatadogPluginRequest, opts ...operations.Option) (*operations.CreateDatadogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -82132,7 +82128,7 @@ func (s *Plugins) CreateDatadogPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -82338,8 +82334,8 @@ func (s *Plugins) CreateDatadogPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateDatakitPlugin - Create a Datakit plugin
-// Create a Datakit plugin
+// CreateDatakitPlugin - Create a Datakit plugin in a workspace
+// Create a Datakit plugin in a workspace
 func (s *Plugins) CreateDatakitPlugin(ctx context.Context, request operations.CreateDatakitPluginRequest, opts ...operations.Option) (*operations.CreateDatakitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -82359,7 +82355,7 @@ func (s *Plugins) CreateDatakitPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -82565,8 +82561,8 @@ func (s *Plugins) CreateDatakitPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateDegraphqlPlugin - Create a Degraphql plugin
-// Create a Degraphql plugin
+// CreateDegraphqlPlugin - Create a Degraphql plugin in a workspace
+// Create a Degraphql plugin in a workspace
 func (s *Plugins) CreateDegraphqlPlugin(ctx context.Context, request operations.CreateDegraphqlPluginRequest, opts ...operations.Option) (*operations.CreateDegraphqlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -82586,7 +82582,7 @@ func (s *Plugins) CreateDegraphqlPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -82792,8 +82788,8 @@ func (s *Plugins) CreateDegraphqlPlugin(ctx context.Context, request operations.
 
 }
 
-// CreateEntitlementenforcementPlugin - Create a EntitlementEnforcement plugin
-// Create a EntitlementEnforcement plugin
+// CreateEntitlementenforcementPlugin - Create a EntitlementEnforcement plugin in a workspace
+// Create a EntitlementEnforcement plugin in a workspace
 func (s *Plugins) CreateEntitlementenforcementPlugin(ctx context.Context, request operations.CreateEntitlementenforcementPluginRequest, opts ...operations.Option) (*operations.CreateEntitlementenforcementPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -82813,7 +82809,7 @@ func (s *Plugins) CreateEntitlementenforcementPlugin(ctx context.Context, reques
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -83019,8 +83015,8 @@ func (s *Plugins) CreateEntitlementenforcementPlugin(ctx context.Context, reques
 
 }
 
-// CreateExittransformerPlugin - Create a ExitTransformer plugin
-// Create a ExitTransformer plugin
+// CreateExittransformerPlugin - Create a ExitTransformer plugin in a workspace
+// Create a ExitTransformer plugin in a workspace
 func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request operations.CreateExittransformerPluginRequest, opts ...operations.Option) (*operations.CreateExittransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -83040,7 +83036,7 @@ func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -83246,8 +83242,8 @@ func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request opera
 
 }
 
-// CreateFilelogPlugin - Create a FileLog plugin
-// Create a FileLog plugin
+// CreateFilelogPlugin - Create a FileLog plugin in a workspace
+// Create a FileLog plugin in a workspace
 func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.CreateFilelogPluginRequest, opts ...operations.Option) (*operations.CreateFilelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -83267,7 +83263,7 @@ func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -83473,8 +83469,8 @@ func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateForwardproxyPlugin - Create a ForwardProxy plugin
-// Create a ForwardProxy plugin
+// CreateForwardproxyPlugin - Create a ForwardProxy plugin in a workspace
+// Create a ForwardProxy plugin in a workspace
 func (s *Plugins) CreateForwardproxyPlugin(ctx context.Context, request operations.CreateForwardproxyPluginRequest, opts ...operations.Option) (*operations.CreateForwardproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -83494,7 +83490,7 @@ func (s *Plugins) CreateForwardproxyPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -83700,8 +83696,8 @@ func (s *Plugins) CreateForwardproxyPlugin(ctx context.Context, request operatio
 
 }
 
-// CreateGraphqlproxycacheadvancedPlugin - Create a GraphqlProxyCacheAdvanced plugin
-// Create a GraphqlProxyCacheAdvanced plugin
+// CreateGraphqlproxycacheadvancedPlugin - Create a GraphqlProxyCacheAdvanced plugin in a workspace
+// Create a GraphqlProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) CreateGraphqlproxycacheadvancedPlugin(ctx context.Context, request operations.CreateGraphqlproxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.CreateGraphqlproxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -83721,7 +83717,7 @@ func (s *Plugins) CreateGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -83927,8 +83923,8 @@ func (s *Plugins) CreateGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 
 }
 
-// CreateGraphqlratelimitingadvancedPlugin - Create a GraphqlRateLimitingAdvanced plugin
-// Create a GraphqlRateLimitingAdvanced plugin
+// CreateGraphqlratelimitingadvancedPlugin - Create a GraphqlRateLimitingAdvanced plugin in a workspace
+// Create a GraphqlRateLimitingAdvanced plugin in a workspace
 func (s *Plugins) CreateGraphqlratelimitingadvancedPlugin(ctx context.Context, request operations.CreateGraphqlratelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.CreateGraphqlratelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -83948,7 +83944,7 @@ func (s *Plugins) CreateGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -84154,8 +84150,8 @@ func (s *Plugins) CreateGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 
 }
 
-// CreateGrpcgatewayPlugin - Create a GrpcGateway plugin
-// Create a GrpcGateway plugin
+// CreateGrpcgatewayPlugin - Create a GrpcGateway plugin in a workspace
+// Create a GrpcGateway plugin in a workspace
 func (s *Plugins) CreateGrpcgatewayPlugin(ctx context.Context, request operations.CreateGrpcgatewayPluginRequest, opts ...operations.Option) (*operations.CreateGrpcgatewayPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -84175,7 +84171,7 @@ func (s *Plugins) CreateGrpcgatewayPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -84381,8 +84377,8 @@ func (s *Plugins) CreateGrpcgatewayPlugin(ctx context.Context, request operation
 
 }
 
-// CreateGrpcwebPlugin - Create a GrpcWeb plugin
-// Create a GrpcWeb plugin
+// CreateGrpcwebPlugin - Create a GrpcWeb plugin in a workspace
+// Create a GrpcWeb plugin in a workspace
 func (s *Plugins) CreateGrpcwebPlugin(ctx context.Context, request operations.CreateGrpcwebPluginRequest, opts ...operations.Option) (*operations.CreateGrpcwebPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -84402,7 +84398,7 @@ func (s *Plugins) CreateGrpcwebPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -84608,8 +84604,8 @@ func (s *Plugins) CreateGrpcwebPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateHeadercertauthPlugin - Create a HeaderCertAuth plugin
-// Create a HeaderCertAuth plugin
+// CreateHeadercertauthPlugin - Create a HeaderCertAuth plugin in a workspace
+// Create a HeaderCertAuth plugin in a workspace
 func (s *Plugins) CreateHeadercertauthPlugin(ctx context.Context, request operations.CreateHeadercertauthPluginRequest, opts ...operations.Option) (*operations.CreateHeadercertauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -84629,7 +84625,7 @@ func (s *Plugins) CreateHeadercertauthPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -84835,8 +84831,8 @@ func (s *Plugins) CreateHeadercertauthPlugin(ctx context.Context, request operat
 
 }
 
-// CreateHmacauthPlugin - Create a HmacAuth plugin
-// Create a HmacAuth plugin
+// CreateHmacauthPlugin - Create a HmacAuth plugin in a workspace
+// Create a HmacAuth plugin in a workspace
 func (s *Plugins) CreateHmacauthPlugin(ctx context.Context, request operations.CreateHmacauthPluginRequest, opts ...operations.Option) (*operations.CreateHmacauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -84856,7 +84852,7 @@ func (s *Plugins) CreateHmacauthPlugin(ctx context.Context, request operations.C
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -85062,8 +85058,8 @@ func (s *Plugins) CreateHmacauthPlugin(ctx context.Context, request operations.C
 
 }
 
-// CreateHttplogPlugin - Create a HttpLog plugin
-// Create a HttpLog plugin
+// CreateHttplogPlugin - Create a HttpLog plugin in a workspace
+// Create a HttpLog plugin in a workspace
 func (s *Plugins) CreateHttplogPlugin(ctx context.Context, request operations.CreateHttplogPluginRequest, opts ...operations.Option) (*operations.CreateHttplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -85083,7 +85079,7 @@ func (s *Plugins) CreateHttplogPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -85289,8 +85285,8 @@ func (s *Plugins) CreateHttplogPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateInjectionprotectionPlugin - Create a InjectionProtection plugin
-// Create a InjectionProtection plugin
+// CreateInjectionprotectionPlugin - Create a InjectionProtection plugin in a workspace
+// Create a InjectionProtection plugin in a workspace
 func (s *Plugins) CreateInjectionprotectionPlugin(ctx context.Context, request operations.CreateInjectionprotectionPluginRequest, opts ...operations.Option) (*operations.CreateInjectionprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -85310,7 +85306,7 @@ func (s *Plugins) CreateInjectionprotectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -85516,8 +85512,8 @@ func (s *Plugins) CreateInjectionprotectionPlugin(ctx context.Context, request o
 
 }
 
-// CreateIprestrictionPlugin - Create a IpRestriction plugin
-// Create a IpRestriction plugin
+// CreateIprestrictionPlugin - Create a IpRestriction plugin in a workspace
+// Create a IpRestriction plugin in a workspace
 func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operations.CreateIprestrictionPluginRequest, opts ...operations.Option) (*operations.CreateIprestrictionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -85537,7 +85533,7 @@ func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -85743,8 +85739,8 @@ func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operati
 
 }
 
-// CreateJqPlugin - Create a Jq plugin
-// Create a Jq plugin
+// CreateJqPlugin - Create a Jq plugin in a workspace
+// Create a Jq plugin in a workspace
 func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJqPluginRequest, opts ...operations.Option) (*operations.CreateJqPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -85764,7 +85760,7 @@ func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -85970,8 +85966,8 @@ func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJ
 
 }
 
-// CreateJsonthreatprotectionPlugin - Create a JsonThreatProtection plugin
-// Create a JsonThreatProtection plugin
+// CreateJsonthreatprotectionPlugin - Create a JsonThreatProtection plugin in a workspace
+// Create a JsonThreatProtection plugin in a workspace
 func (s *Plugins) CreateJsonthreatprotectionPlugin(ctx context.Context, request operations.CreateJsonthreatprotectionPluginRequest, opts ...operations.Option) (*operations.CreateJsonthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -85991,7 +85987,7 @@ func (s *Plugins) CreateJsonthreatprotectionPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -86197,8 +86193,8 @@ func (s *Plugins) CreateJsonthreatprotectionPlugin(ctx context.Context, request 
 
 }
 
-// CreateJwedecryptPlugin - Create a JweDecrypt plugin
-// Create a JweDecrypt plugin
+// CreateJwedecryptPlugin - Create a JweDecrypt plugin in a workspace
+// Create a JweDecrypt plugin in a workspace
 func (s *Plugins) CreateJwedecryptPlugin(ctx context.Context, request operations.CreateJwedecryptPluginRequest, opts ...operations.Option) (*operations.CreateJwedecryptPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -86218,7 +86214,7 @@ func (s *Plugins) CreateJwedecryptPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -86424,8 +86420,8 @@ func (s *Plugins) CreateJwedecryptPlugin(ctx context.Context, request operations
 
 }
 
-// CreateJwtPlugin - Create a Jwt plugin
-// Create a Jwt plugin
+// CreateJwtPlugin - Create a Jwt plugin in a workspace
+// Create a Jwt plugin in a workspace
 func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.CreateJwtPluginRequest, opts ...operations.Option) (*operations.CreateJwtPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -86445,7 +86441,7 @@ func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.Create
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -86651,8 +86647,8 @@ func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.Create
 
 }
 
-// CreateJwtsignerPlugin - Create a JwtSigner plugin
-// Create a JwtSigner plugin
+// CreateJwtsignerPlugin - Create a JwtSigner plugin in a workspace
+// Create a JwtSigner plugin in a workspace
 func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.CreateJwtsignerPluginRequest, opts ...operations.Option) (*operations.CreateJwtsignerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -86672,7 +86668,7 @@ func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -86878,8 +86874,8 @@ func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.
 
 }
 
-// CreateKafkaconsumePlugin - Create a KafkaConsume plugin
-// Create a KafkaConsume plugin
+// CreateKafkaconsumePlugin - Create a KafkaConsume plugin in a workspace
+// Create a KafkaConsume plugin in a workspace
 func (s *Plugins) CreateKafkaconsumePlugin(ctx context.Context, request operations.CreateKafkaconsumePluginRequest, opts ...operations.Option) (*operations.CreateKafkaconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -86899,7 +86895,7 @@ func (s *Plugins) CreateKafkaconsumePlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -87105,8 +87101,8 @@ func (s *Plugins) CreateKafkaconsumePlugin(ctx context.Context, request operatio
 
 }
 
-// CreateKafkalogPlugin - Create a KafkaLog plugin
-// Create a KafkaLog plugin
+// CreateKafkalogPlugin - Create a KafkaLog plugin in a workspace
+// Create a KafkaLog plugin in a workspace
 func (s *Plugins) CreateKafkalogPlugin(ctx context.Context, request operations.CreateKafkalogPluginRequest, opts ...operations.Option) (*operations.CreateKafkalogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -87126,7 +87122,7 @@ func (s *Plugins) CreateKafkalogPlugin(ctx context.Context, request operations.C
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -87332,8 +87328,8 @@ func (s *Plugins) CreateKafkalogPlugin(ctx context.Context, request operations.C
 
 }
 
-// CreateKafkaupstreamPlugin - Create a KafkaUpstream plugin
-// Create a KafkaUpstream plugin
+// CreateKafkaupstreamPlugin - Create a KafkaUpstream plugin in a workspace
+// Create a KafkaUpstream plugin in a workspace
 func (s *Plugins) CreateKafkaupstreamPlugin(ctx context.Context, request operations.CreateKafkaupstreamPluginRequest, opts ...operations.Option) (*operations.CreateKafkaupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -87353,7 +87349,7 @@ func (s *Plugins) CreateKafkaupstreamPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -87559,8 +87555,8 @@ func (s *Plugins) CreateKafkaupstreamPlugin(ctx context.Context, request operati
 
 }
 
-// CreateKeyauthPlugin - Create a KeyAuth plugin
-// Create a KeyAuth plugin
+// CreateKeyauthPlugin - Create a KeyAuth plugin in a workspace
+// Create a KeyAuth plugin in a workspace
 func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.CreateKeyauthPluginRequest, opts ...operations.Option) (*operations.CreateKeyauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -87580,7 +87576,7 @@ func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -87786,8 +87782,8 @@ func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateLdapauthPlugin - Create a LdapAuth plugin
-// Create a LdapAuth plugin
+// CreateLdapauthPlugin - Create a LdapAuth plugin in a workspace
+// Create a LdapAuth plugin in a workspace
 func (s *Plugins) CreateLdapauthPlugin(ctx context.Context, request operations.CreateLdapauthPluginRequest, opts ...operations.Option) (*operations.CreateLdapauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -87807,7 +87803,7 @@ func (s *Plugins) CreateLdapauthPlugin(ctx context.Context, request operations.C
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -88013,8 +88009,8 @@ func (s *Plugins) CreateLdapauthPlugin(ctx context.Context, request operations.C
 
 }
 
-// CreateLdapauthadvancedPlugin - Create a LdapAuthAdvanced plugin
-// Create a LdapAuthAdvanced plugin
+// CreateLdapauthadvancedPlugin - Create a LdapAuthAdvanced plugin in a workspace
+// Create a LdapAuthAdvanced plugin in a workspace
 func (s *Plugins) CreateLdapauthadvancedPlugin(ctx context.Context, request operations.CreateLdapauthadvancedPluginRequest, opts ...operations.Option) (*operations.CreateLdapauthadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -88034,7 +88030,7 @@ func (s *Plugins) CreateLdapauthadvancedPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -88240,8 +88236,8 @@ func (s *Plugins) CreateLdapauthadvancedPlugin(ctx context.Context, request oper
 
 }
 
-// CreateLogglyPlugin - Create a Loggly plugin
-// Create a Loggly plugin
+// CreateLogglyPlugin - Create a Loggly plugin in a workspace
+// Create a Loggly plugin in a workspace
 func (s *Plugins) CreateLogglyPlugin(ctx context.Context, request operations.CreateLogglyPluginRequest, opts ...operations.Option) (*operations.CreateLogglyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -88261,7 +88257,7 @@ func (s *Plugins) CreateLogglyPlugin(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -88467,8 +88463,8 @@ func (s *Plugins) CreateLogglyPlugin(ctx context.Context, request operations.Cre
 
 }
 
-// CreateMeteringandbillingPlugin - Create a MeteringAndBilling plugin
-// Create a MeteringAndBilling plugin
+// CreateMeteringandbillingPlugin - Create a MeteringAndBilling plugin in a workspace
+// Create a MeteringAndBilling plugin in a workspace
 func (s *Plugins) CreateMeteringandbillingPlugin(ctx context.Context, request operations.CreateMeteringandbillingPluginRequest, opts ...operations.Option) (*operations.CreateMeteringandbillingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -88488,7 +88484,7 @@ func (s *Plugins) CreateMeteringandbillingPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -88694,8 +88690,8 @@ func (s *Plugins) CreateMeteringandbillingPlugin(ctx context.Context, request op
 
 }
 
-// CreateMockingPlugin - Create a Mocking plugin
-// Create a Mocking plugin
+// CreateMockingPlugin - Create a Mocking plugin in a workspace
+// Create a Mocking plugin in a workspace
 func (s *Plugins) CreateMockingPlugin(ctx context.Context, request operations.CreateMockingPluginRequest, opts ...operations.Option) (*operations.CreateMockingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -88715,7 +88711,7 @@ func (s *Plugins) CreateMockingPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -88921,8 +88917,8 @@ func (s *Plugins) CreateMockingPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateMtlsauthPlugin - Create a MtlsAuth plugin
-// Create a MtlsAuth plugin
+// CreateMtlsauthPlugin - Create a MtlsAuth plugin in a workspace
+// Create a MtlsAuth plugin in a workspace
 func (s *Plugins) CreateMtlsauthPlugin(ctx context.Context, request operations.CreateMtlsauthPluginRequest, opts ...operations.Option) (*operations.CreateMtlsauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -88942,7 +88938,7 @@ func (s *Plugins) CreateMtlsauthPlugin(ctx context.Context, request operations.C
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -89148,8 +89144,8 @@ func (s *Plugins) CreateMtlsauthPlugin(ctx context.Context, request operations.C
 
 }
 
-// CreateOasvalidationPlugin - Create a OasValidation plugin
-// Create a OasValidation plugin
+// CreateOasvalidationPlugin - Create a OasValidation plugin in a workspace
+// Create a OasValidation plugin in a workspace
 func (s *Plugins) CreateOasvalidationPlugin(ctx context.Context, request operations.CreateOasvalidationPluginRequest, opts ...operations.Option) (*operations.CreateOasvalidationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -89169,7 +89165,7 @@ func (s *Plugins) CreateOasvalidationPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -89375,8 +89371,8 @@ func (s *Plugins) CreateOasvalidationPlugin(ctx context.Context, request operati
 
 }
 
-// CreateOauth2introspectionPlugin - Create a Oauth2Introspection plugin
-// Create a Oauth2Introspection plugin
+// CreateOauth2introspectionPlugin - Create a Oauth2Introspection plugin in a workspace
+// Create a Oauth2Introspection plugin in a workspace
 func (s *Plugins) CreateOauth2introspectionPlugin(ctx context.Context, request operations.CreateOauth2introspectionPluginRequest, opts ...operations.Option) (*operations.CreateOauth2introspectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -89396,7 +89392,7 @@ func (s *Plugins) CreateOauth2introspectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -89602,8 +89598,8 @@ func (s *Plugins) CreateOauth2introspectionPlugin(ctx context.Context, request o
 
 }
 
-// CreateOpaPlugin - Create a Opa plugin
-// Create a Opa plugin
+// CreateOpaPlugin - Create a Opa plugin in a workspace
+// Create a Opa plugin in a workspace
 func (s *Plugins) CreateOpaPlugin(ctx context.Context, request operations.CreateOpaPluginRequest, opts ...operations.Option) (*operations.CreateOpaPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -89623,7 +89619,7 @@ func (s *Plugins) CreateOpaPlugin(ctx context.Context, request operations.Create
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -89829,8 +89825,8 @@ func (s *Plugins) CreateOpaPlugin(ctx context.Context, request operations.Create
 
 }
 
-// CreateOpenidconnectPlugin - Create a OpenidConnect plugin
-// Create a OpenidConnect plugin
+// CreateOpenidconnectPlugin - Create a OpenidConnect plugin in a workspace
+// Create a OpenidConnect plugin in a workspace
 func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operations.CreateOpenidconnectPluginRequest, opts ...operations.Option) (*operations.CreateOpenidconnectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -89850,7 +89846,7 @@ func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -90056,8 +90052,8 @@ func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operati
 
 }
 
-// CreateOpentelemetryPlugin - Create a Opentelemetry plugin
-// Create a Opentelemetry plugin
+// CreateOpentelemetryPlugin - Create a Opentelemetry plugin in a workspace
+// Create a Opentelemetry plugin in a workspace
 func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operations.CreateOpentelemetryPluginRequest, opts ...operations.Option) (*operations.CreateOpentelemetryPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -90077,7 +90073,7 @@ func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -90283,8 +90279,8 @@ func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operati
 
 }
 
-// CreatePostfunctionPlugin - Create a PostFunction plugin
-// Create a PostFunction plugin
+// CreatePostfunctionPlugin - Create a PostFunction plugin in a workspace
+// Create a PostFunction plugin in a workspace
 func (s *Plugins) CreatePostfunctionPlugin(ctx context.Context, request operations.CreatePostfunctionPluginRequest, opts ...operations.Option) (*operations.CreatePostfunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -90304,7 +90300,7 @@ func (s *Plugins) CreatePostfunctionPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -90510,8 +90506,8 @@ func (s *Plugins) CreatePostfunctionPlugin(ctx context.Context, request operatio
 
 }
 
-// CreatePrefunctionPlugin - Create a PreFunction plugin
-// Create a PreFunction plugin
+// CreatePrefunctionPlugin - Create a PreFunction plugin in a workspace
+// Create a PreFunction plugin in a workspace
 func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operations.CreatePrefunctionPluginRequest, opts ...operations.Option) (*operations.CreatePrefunctionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -90531,7 +90527,7 @@ func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operation
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -90737,8 +90733,8 @@ func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operation
 
 }
 
-// CreatePrometheusPlugin - Create a Prometheus plugin
-// Create a Prometheus plugin
+// CreatePrometheusPlugin - Create a Prometheus plugin in a workspace
+// Create a Prometheus plugin in a workspace
 func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations.CreatePrometheusPluginRequest, opts ...operations.Option) (*operations.CreatePrometheusPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -90758,7 +90754,7 @@ func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -90964,8 +90960,8 @@ func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations
 
 }
 
-// CreateProxycachePlugin - Create a ProxyCache plugin
-// Create a ProxyCache plugin
+// CreateProxycachePlugin - Create a ProxyCache plugin in a workspace
+// Create a ProxyCache plugin in a workspace
 func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations.CreateProxycachePluginRequest, opts ...operations.Option) (*operations.CreateProxycachePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -90985,7 +90981,7 @@ func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -91191,8 +91187,8 @@ func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations
 
 }
 
-// CreateProxycacheadvancedPlugin - Create a ProxyCacheAdvanced plugin
-// Create a ProxyCacheAdvanced plugin
+// CreateProxycacheadvancedPlugin - Create a ProxyCacheAdvanced plugin in a workspace
+// Create a ProxyCacheAdvanced plugin in a workspace
 func (s *Plugins) CreateProxycacheadvancedPlugin(ctx context.Context, request operations.CreateProxycacheadvancedPluginRequest, opts ...operations.Option) (*operations.CreateProxycacheadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -91212,7 +91208,7 @@ func (s *Plugins) CreateProxycacheadvancedPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -91418,8 +91414,8 @@ func (s *Plugins) CreateProxycacheadvancedPlugin(ctx context.Context, request op
 
 }
 
-// CreateRatelimitingPlugin - Create a RateLimiting plugin
-// Create a RateLimiting plugin
+// CreateRatelimitingPlugin - Create a RateLimiting plugin in a workspace
+// Create a RateLimiting plugin in a workspace
 func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operations.CreateRatelimitingPluginRequest, opts ...operations.Option) (*operations.CreateRatelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -91439,7 +91435,7 @@ func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operatio
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -91645,8 +91641,8 @@ func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operatio
 
 }
 
-// CreateRatelimitingadvancedPlugin - Create a RateLimitingAdvanced plugin
-// Create a RateLimitingAdvanced plugin
+// CreateRatelimitingadvancedPlugin - Create a RateLimitingAdvanced plugin in a workspace
+// Create a RateLimitingAdvanced plugin in a workspace
 func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request operations.CreateRatelimitingadvancedPluginRequest, opts ...operations.Option) (*operations.CreateRatelimitingadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -91666,7 +91662,7 @@ func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -91872,8 +91868,8 @@ func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request 
 
 }
 
-// CreateRedirectPlugin - Create a Redirect plugin
-// Create a Redirect plugin
+// CreateRedirectPlugin - Create a Redirect plugin in a workspace
+// Create a Redirect plugin in a workspace
 func (s *Plugins) CreateRedirectPlugin(ctx context.Context, request operations.CreateRedirectPluginRequest, opts ...operations.Option) (*operations.CreateRedirectPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -91893,7 +91889,7 @@ func (s *Plugins) CreateRedirectPlugin(ctx context.Context, request operations.C
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -92099,8 +92095,8 @@ func (s *Plugins) CreateRedirectPlugin(ctx context.Context, request operations.C
 
 }
 
-// CreateRequestcalloutPlugin - Create a RequestCallout plugin
-// Create a RequestCallout plugin
+// CreateRequestcalloutPlugin - Create a RequestCallout plugin in a workspace
+// Create a RequestCallout plugin in a workspace
 func (s *Plugins) CreateRequestcalloutPlugin(ctx context.Context, request operations.CreateRequestcalloutPluginRequest, opts ...operations.Option) (*operations.CreateRequestcalloutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -92120,7 +92116,7 @@ func (s *Plugins) CreateRequestcalloutPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -92326,8 +92322,8 @@ func (s *Plugins) CreateRequestcalloutPlugin(ctx context.Context, request operat
 
 }
 
-// CreateRequestsizelimitingPlugin - Create a RequestSizeLimiting plugin
-// Create a RequestSizeLimiting plugin
+// CreateRequestsizelimitingPlugin - Create a RequestSizeLimiting plugin in a workspace
+// Create a RequestSizeLimiting plugin in a workspace
 func (s *Plugins) CreateRequestsizelimitingPlugin(ctx context.Context, request operations.CreateRequestsizelimitingPluginRequest, opts ...operations.Option) (*operations.CreateRequestsizelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -92347,7 +92343,7 @@ func (s *Plugins) CreateRequestsizelimitingPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -92553,8 +92549,8 @@ func (s *Plugins) CreateRequestsizelimitingPlugin(ctx context.Context, request o
 
 }
 
-// CreateRequestterminationPlugin - Create a RequestTermination plugin
-// Create a RequestTermination plugin
+// CreateRequestterminationPlugin - Create a RequestTermination plugin in a workspace
+// Create a RequestTermination plugin in a workspace
 func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request operations.CreateRequestterminationPluginRequest, opts ...operations.Option) (*operations.CreateRequestterminationPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -92574,7 +92570,7 @@ func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -92780,8 +92776,8 @@ func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request op
 
 }
 
-// CreateRequesttransformerPlugin - Create a RequestTransformer plugin
-// Create a RequestTransformer plugin
+// CreateRequesttransformerPlugin - Create a RequestTransformer plugin in a workspace
+// Create a RequestTransformer plugin in a workspace
 func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request operations.CreateRequesttransformerPluginRequest, opts ...operations.Option) (*operations.CreateRequesttransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -92801,7 +92797,7 @@ func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -93007,8 +93003,8 @@ func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request op
 
 }
 
-// CreateRequesttransformeradvancedPlugin - Create a RequestTransformerAdvanced plugin
-// Create a RequestTransformerAdvanced plugin
+// CreateRequesttransformeradvancedPlugin - Create a RequestTransformerAdvanced plugin in a workspace
+// Create a RequestTransformerAdvanced plugin in a workspace
 func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, request operations.CreateRequesttransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateRequesttransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -93028,7 +93024,7 @@ func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, re
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -93234,8 +93230,8 @@ func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, re
 
 }
 
-// CreateRequestvalidatorPlugin - Create a RequestValidator plugin
-// Create a RequestValidator plugin
+// CreateRequestvalidatorPlugin - Create a RequestValidator plugin in a workspace
+// Create a RequestValidator plugin in a workspace
 func (s *Plugins) CreateRequestvalidatorPlugin(ctx context.Context, request operations.CreateRequestvalidatorPluginRequest, opts ...operations.Option) (*operations.CreateRequestvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -93255,7 +93251,7 @@ func (s *Plugins) CreateRequestvalidatorPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -93461,8 +93457,8 @@ func (s *Plugins) CreateRequestvalidatorPlugin(ctx context.Context, request oper
 
 }
 
-// CreateResponseratelimitingPlugin - Create a ResponseRatelimiting plugin
-// Create a ResponseRatelimiting plugin
+// CreateResponseratelimitingPlugin - Create a ResponseRatelimiting plugin in a workspace
+// Create a ResponseRatelimiting plugin in a workspace
 func (s *Plugins) CreateResponseratelimitingPlugin(ctx context.Context, request operations.CreateResponseratelimitingPluginRequest, opts ...operations.Option) (*operations.CreateResponseratelimitingPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -93482,7 +93478,7 @@ func (s *Plugins) CreateResponseratelimitingPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -93688,8 +93684,8 @@ func (s *Plugins) CreateResponseratelimitingPlugin(ctx context.Context, request 
 
 }
 
-// CreateResponsetransformerPlugin - Create a ResponseTransformer plugin
-// Create a ResponseTransformer plugin
+// CreateResponsetransformerPlugin - Create a ResponseTransformer plugin in a workspace
+// Create a ResponseTransformer plugin in a workspace
 func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request operations.CreateResponsetransformerPluginRequest, opts ...operations.Option) (*operations.CreateResponsetransformerPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -93709,7 +93705,7 @@ func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -93915,8 +93911,8 @@ func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request o
 
 }
 
-// CreateResponsetransformeradvancedPlugin - Create a ResponseTransformerAdvanced plugin
-// Create a ResponseTransformerAdvanced plugin
+// CreateResponsetransformeradvancedPlugin - Create a ResponseTransformerAdvanced plugin in a workspace
+// Create a ResponseTransformerAdvanced plugin in a workspace
 func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, request operations.CreateResponsetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateResponsetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -93936,7 +93932,7 @@ func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, r
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -94142,8 +94138,8 @@ func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, r
 
 }
 
-// CreateRoutebyheaderPlugin - Create a RouteByHeader plugin
-// Create a RouteByHeader plugin
+// CreateRoutebyheaderPlugin - Create a RouteByHeader plugin in a workspace
+// Create a RouteByHeader plugin in a workspace
 func (s *Plugins) CreateRoutebyheaderPlugin(ctx context.Context, request operations.CreateRoutebyheaderPluginRequest, opts ...operations.Option) (*operations.CreateRoutebyheaderPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -94163,7 +94159,7 @@ func (s *Plugins) CreateRoutebyheaderPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -94369,8 +94365,8 @@ func (s *Plugins) CreateRoutebyheaderPlugin(ctx context.Context, request operati
 
 }
 
-// CreateRoutetransformeradvancedPlugin - Create a RouteTransformerAdvanced plugin
-// Create a RouteTransformerAdvanced plugin
+// CreateRoutetransformeradvancedPlugin - Create a RouteTransformerAdvanced plugin in a workspace
+// Create a RouteTransformerAdvanced plugin in a workspace
 func (s *Plugins) CreateRoutetransformeradvancedPlugin(ctx context.Context, request operations.CreateRoutetransformeradvancedPluginRequest, opts ...operations.Option) (*operations.CreateRoutetransformeradvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -94390,7 +94386,7 @@ func (s *Plugins) CreateRoutetransformeradvancedPlugin(ctx context.Context, requ
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -94596,8 +94592,8 @@ func (s *Plugins) CreateRoutetransformeradvancedPlugin(ctx context.Context, requ
 
 }
 
-// CreateSamlPlugin - Create a Saml plugin
-// Create a Saml plugin
+// CreateSamlPlugin - Create a Saml plugin in a workspace
+// Create a Saml plugin in a workspace
 func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.CreateSamlPluginRequest, opts ...operations.Option) (*operations.CreateSamlPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -94617,7 +94613,7 @@ func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.Creat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -94823,8 +94819,8 @@ func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.Creat
 
 }
 
-// CreateServiceprotectionPlugin - Create a ServiceProtection plugin
-// Create a ServiceProtection plugin
+// CreateServiceprotectionPlugin - Create a ServiceProtection plugin in a workspace
+// Create a ServiceProtection plugin in a workspace
 func (s *Plugins) CreateServiceprotectionPlugin(ctx context.Context, request operations.CreateServiceprotectionPluginRequest, opts ...operations.Option) (*operations.CreateServiceprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -94844,7 +94840,7 @@ func (s *Plugins) CreateServiceprotectionPlugin(ctx context.Context, request ope
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -95050,8 +95046,8 @@ func (s *Plugins) CreateServiceprotectionPlugin(ctx context.Context, request ope
 
 }
 
-// CreateSessionPlugin - Create a Session plugin
-// Create a Session plugin
+// CreateSessionPlugin - Create a Session plugin in a workspace
+// Create a Session plugin in a workspace
 func (s *Plugins) CreateSessionPlugin(ctx context.Context, request operations.CreateSessionPluginRequest, opts ...operations.Option) (*operations.CreateSessionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -95071,7 +95067,7 @@ func (s *Plugins) CreateSessionPlugin(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -95277,8 +95273,8 @@ func (s *Plugins) CreateSessionPlugin(ctx context.Context, request operations.Cr
 
 }
 
-// CreateSolaceconsumePlugin - Create a SolaceConsume plugin
-// Create a SolaceConsume plugin
+// CreateSolaceconsumePlugin - Create a SolaceConsume plugin in a workspace
+// Create a SolaceConsume plugin in a workspace
 func (s *Plugins) CreateSolaceconsumePlugin(ctx context.Context, request operations.CreateSolaceconsumePluginRequest, opts ...operations.Option) (*operations.CreateSolaceconsumePluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -95298,7 +95294,7 @@ func (s *Plugins) CreateSolaceconsumePlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -95504,8 +95500,8 @@ func (s *Plugins) CreateSolaceconsumePlugin(ctx context.Context, request operati
 
 }
 
-// CreateSolacelogPlugin - Create a SolaceLog plugin
-// Create a SolaceLog plugin
+// CreateSolacelogPlugin - Create a SolaceLog plugin in a workspace
+// Create a SolaceLog plugin in a workspace
 func (s *Plugins) CreateSolacelogPlugin(ctx context.Context, request operations.CreateSolacelogPluginRequest, opts ...operations.Option) (*operations.CreateSolacelogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -95525,7 +95521,7 @@ func (s *Plugins) CreateSolacelogPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -95731,8 +95727,8 @@ func (s *Plugins) CreateSolacelogPlugin(ctx context.Context, request operations.
 
 }
 
-// CreateSolaceupstreamPlugin - Create a SolaceUpstream plugin
-// Create a SolaceUpstream plugin
+// CreateSolaceupstreamPlugin - Create a SolaceUpstream plugin in a workspace
+// Create a SolaceUpstream plugin in a workspace
 func (s *Plugins) CreateSolaceupstreamPlugin(ctx context.Context, request operations.CreateSolaceupstreamPluginRequest, opts ...operations.Option) (*operations.CreateSolaceupstreamPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -95752,7 +95748,7 @@ func (s *Plugins) CreateSolaceupstreamPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -95958,8 +95954,8 @@ func (s *Plugins) CreateSolaceupstreamPlugin(ctx context.Context, request operat
 
 }
 
-// CreateStandardwebhooksPlugin - Create a StandardWebhooks plugin
-// Create a StandardWebhooks plugin
+// CreateStandardwebhooksPlugin - Create a StandardWebhooks plugin in a workspace
+// Create a StandardWebhooks plugin in a workspace
 func (s *Plugins) CreateStandardwebhooksPlugin(ctx context.Context, request operations.CreateStandardwebhooksPluginRequest, opts ...operations.Option) (*operations.CreateStandardwebhooksPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -95979,7 +95975,7 @@ func (s *Plugins) CreateStandardwebhooksPlugin(ctx context.Context, request oper
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -96185,8 +96181,8 @@ func (s *Plugins) CreateStandardwebhooksPlugin(ctx context.Context, request oper
 
 }
 
-// CreateStatsdPlugin - Create a Statsd plugin
-// Create a Statsd plugin
+// CreateStatsdPlugin - Create a Statsd plugin in a workspace
+// Create a Statsd plugin in a workspace
 func (s *Plugins) CreateStatsdPlugin(ctx context.Context, request operations.CreateStatsdPluginRequest, opts ...operations.Option) (*operations.CreateStatsdPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -96206,7 +96202,7 @@ func (s *Plugins) CreateStatsdPlugin(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -96412,8 +96408,8 @@ func (s *Plugins) CreateStatsdPlugin(ctx context.Context, request operations.Cre
 
 }
 
-// CreateStatsdadvancedPlugin - Create a StatsdAdvanced plugin
-// Create a StatsdAdvanced plugin
+// CreateStatsdadvancedPlugin - Create a StatsdAdvanced plugin in a workspace
+// Create a StatsdAdvanced plugin in a workspace
 func (s *Plugins) CreateStatsdadvancedPlugin(ctx context.Context, request operations.CreateStatsdadvancedPluginRequest, opts ...operations.Option) (*operations.CreateStatsdadvancedPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -96433,7 +96429,7 @@ func (s *Plugins) CreateStatsdadvancedPlugin(ctx context.Context, request operat
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -96639,8 +96635,8 @@ func (s *Plugins) CreateStatsdadvancedPlugin(ctx context.Context, request operat
 
 }
 
-// CreateSyslogPlugin - Create a Syslog plugin
-// Create a Syslog plugin
+// CreateSyslogPlugin - Create a Syslog plugin in a workspace
+// Create a Syslog plugin in a workspace
 func (s *Plugins) CreateSyslogPlugin(ctx context.Context, request operations.CreateSyslogPluginRequest, opts ...operations.Option) (*operations.CreateSyslogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -96660,7 +96656,7 @@ func (s *Plugins) CreateSyslogPlugin(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -96866,8 +96862,8 @@ func (s *Plugins) CreateSyslogPlugin(ctx context.Context, request operations.Cre
 
 }
 
-// CreateTcplogPlugin - Create a TcpLog plugin
-// Create a TcpLog plugin
+// CreateTcplogPlugin - Create a TcpLog plugin in a workspace
+// Create a TcpLog plugin in a workspace
 func (s *Plugins) CreateTcplogPlugin(ctx context.Context, request operations.CreateTcplogPluginRequest, opts ...operations.Option) (*operations.CreateTcplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -96887,7 +96883,7 @@ func (s *Plugins) CreateTcplogPlugin(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -97093,8 +97089,8 @@ func (s *Plugins) CreateTcplogPlugin(ctx context.Context, request operations.Cre
 
 }
 
-// CreateTlshandshakemodifierPlugin - Create a TlsHandshakeModifier plugin
-// Create a TlsHandshakeModifier plugin
+// CreateTlshandshakemodifierPlugin - Create a TlsHandshakeModifier plugin in a workspace
+// Create a TlsHandshakeModifier plugin in a workspace
 func (s *Plugins) CreateTlshandshakemodifierPlugin(ctx context.Context, request operations.CreateTlshandshakemodifierPluginRequest, opts ...operations.Option) (*operations.CreateTlshandshakemodifierPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -97114,7 +97110,7 @@ func (s *Plugins) CreateTlshandshakemodifierPlugin(ctx context.Context, request 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -97320,8 +97316,8 @@ func (s *Plugins) CreateTlshandshakemodifierPlugin(ctx context.Context, request 
 
 }
 
-// CreateTlsmetadataheadersPlugin - Create a TlsMetadataHeaders plugin
-// Create a TlsMetadataHeaders plugin
+// CreateTlsmetadataheadersPlugin - Create a TlsMetadataHeaders plugin in a workspace
+// Create a TlsMetadataHeaders plugin in a workspace
 func (s *Plugins) CreateTlsmetadataheadersPlugin(ctx context.Context, request operations.CreateTlsmetadataheadersPluginRequest, opts ...operations.Option) (*operations.CreateTlsmetadataheadersPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -97341,7 +97337,7 @@ func (s *Plugins) CreateTlsmetadataheadersPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -97547,8 +97543,8 @@ func (s *Plugins) CreateTlsmetadataheadersPlugin(ctx context.Context, request op
 
 }
 
-// CreateUdplogPlugin - Create a UdpLog plugin
-// Create a UdpLog plugin
+// CreateUdplogPlugin - Create a UdpLog plugin in a workspace
+// Create a UdpLog plugin in a workspace
 func (s *Plugins) CreateUdplogPlugin(ctx context.Context, request operations.CreateUdplogPluginRequest, opts ...operations.Option) (*operations.CreateUdplogPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -97568,7 +97564,7 @@ func (s *Plugins) CreateUdplogPlugin(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -97774,8 +97770,8 @@ func (s *Plugins) CreateUdplogPlugin(ctx context.Context, request operations.Cre
 
 }
 
-// CreateUpstreamoauthPlugin - Create a UpstreamOauth plugin
-// Create a UpstreamOauth plugin
+// CreateUpstreamoauthPlugin - Create a UpstreamOauth plugin in a workspace
+// Create a UpstreamOauth plugin in a workspace
 func (s *Plugins) CreateUpstreamoauthPlugin(ctx context.Context, request operations.CreateUpstreamoauthPluginRequest, opts ...operations.Option) (*operations.CreateUpstreamoauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -97795,7 +97791,7 @@ func (s *Plugins) CreateUpstreamoauthPlugin(ctx context.Context, request operati
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -98001,8 +97997,8 @@ func (s *Plugins) CreateUpstreamoauthPlugin(ctx context.Context, request operati
 
 }
 
-// CreateUpstreamtimeoutPlugin - Create a UpstreamTimeout plugin
-// Create a UpstreamTimeout plugin
+// CreateUpstreamtimeoutPlugin - Create a UpstreamTimeout plugin in a workspace
+// Create a UpstreamTimeout plugin in a workspace
 func (s *Plugins) CreateUpstreamtimeoutPlugin(ctx context.Context, request operations.CreateUpstreamtimeoutPluginRequest, opts ...operations.Option) (*operations.CreateUpstreamtimeoutPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -98022,7 +98018,7 @@ func (s *Plugins) CreateUpstreamtimeoutPlugin(ctx context.Context, request opera
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -98228,8 +98224,8 @@ func (s *Plugins) CreateUpstreamtimeoutPlugin(ctx context.Context, request opera
 
 }
 
-// CreateVaultauthPlugin - Create a VaultAuth plugin
-// Create a VaultAuth plugin
+// CreateVaultauthPlugin - Create a VaultAuth plugin in a workspace
+// Create a VaultAuth plugin in a workspace
 func (s *Plugins) CreateVaultauthPlugin(ctx context.Context, request operations.CreateVaultauthPluginRequest, opts ...operations.Option) (*operations.CreateVaultauthPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -98249,7 +98245,7 @@ func (s *Plugins) CreateVaultauthPlugin(ctx context.Context, request operations.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -98455,8 +98451,8 @@ func (s *Plugins) CreateVaultauthPlugin(ctx context.Context, request operations.
 
 }
 
-// CreateWebsocketsizelimitPlugin - Create a WebsocketSizeLimit plugin
-// Create a WebsocketSizeLimit plugin
+// CreateWebsocketsizelimitPlugin - Create a WebsocketSizeLimit plugin in a workspace
+// Create a WebsocketSizeLimit plugin in a workspace
 func (s *Plugins) CreateWebsocketsizelimitPlugin(ctx context.Context, request operations.CreateWebsocketsizelimitPluginRequest, opts ...operations.Option) (*operations.CreateWebsocketsizelimitPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -98476,7 +98472,7 @@ func (s *Plugins) CreateWebsocketsizelimitPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -98682,8 +98678,8 @@ func (s *Plugins) CreateWebsocketsizelimitPlugin(ctx context.Context, request op
 
 }
 
-// CreateWebsocketvalidatorPlugin - Create a WebsocketValidator plugin
-// Create a WebsocketValidator plugin
+// CreateWebsocketvalidatorPlugin - Create a WebsocketValidator plugin in a workspace
+// Create a WebsocketValidator plugin in a workspace
 func (s *Plugins) CreateWebsocketvalidatorPlugin(ctx context.Context, request operations.CreateWebsocketvalidatorPluginRequest, opts ...operations.Option) (*operations.CreateWebsocketvalidatorPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -98703,7 +98699,7 @@ func (s *Plugins) CreateWebsocketvalidatorPlugin(ctx context.Context, request op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -98909,8 +98905,8 @@ func (s *Plugins) CreateWebsocketvalidatorPlugin(ctx context.Context, request op
 
 }
 
-// CreateXmlthreatprotectionPlugin - Create a XmlThreatProtection plugin
-// Create a XmlThreatProtection plugin
+// CreateXmlthreatprotectionPlugin - Create a XmlThreatProtection plugin in a workspace
+// Create a XmlThreatProtection plugin in a workspace
 func (s *Plugins) CreateXmlthreatprotectionPlugin(ctx context.Context, request operations.CreateXmlthreatprotectionPluginRequest, opts ...operations.Option) (*operations.CreateXmlthreatprotectionPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -98930,7 +98926,7 @@ func (s *Plugins) CreateXmlthreatprotectionPlugin(ctx context.Context, request o
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -99136,8 +99132,8 @@ func (s *Plugins) CreateXmlthreatprotectionPlugin(ctx context.Context, request o
 
 }
 
-// CreateZipkinPlugin - Create a Zipkin plugin
-// Create a Zipkin plugin
+// CreateZipkinPlugin - Create a Zipkin plugin in a workspace
+// Create a Zipkin plugin in a workspace
 func (s *Plugins) CreateZipkinPlugin(ctx context.Context, request operations.CreateZipkinPluginRequest, opts ...operations.Option) (*operations.CreateZipkinPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -99157,7 +99153,7 @@ func (s *Plugins) CreateZipkinPlugin(ctx context.Context, request operations.Cre
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/plugins", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/{workspace}/plugins", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

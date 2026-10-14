@@ -361,6 +361,9 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstrea
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaUpstreamPlugin, kafkaUpstreamPluginDiags := r.ToSharedKafkaUpstreamPlugin(ctx)
 	diags.Append(kafkaUpstreamPluginDiags...)
 
@@ -370,6 +373,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstrea
 
 	out := operations.CreateKafkaupstreamPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		KafkaUpstreamPlugin: *kafkaUpstreamPlugin,
 	}
 
@@ -385,9 +389,13 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsDeleteKafkaupstrea
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteKafkaupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -402,9 +410,13 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsGetKafkaupstreamPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetKafkaupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -419,6 +431,9 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstrea
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	kafkaUpstreamPlugin, kafkaUpstreamPluginDiags := r.ToSharedKafkaUpstreamPlugin(ctx)
 	diags.Append(kafkaUpstreamPluginDiags...)
 
@@ -429,6 +444,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstrea
 	out := operations.UpdateKafkaupstreamPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		KafkaUpstreamPlugin: *kafkaUpstreamPlugin,
 	}
 

@@ -346,6 +346,9 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsCreateConfluentPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
 	diags.Append(confluentPluginDiags...)
 
@@ -355,6 +358,7 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsCreateConfluentPluginR
 
 	out := operations.CreateConfluentPluginRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		ConfluentPlugin: *confluentPlugin,
 	}
 
@@ -370,9 +374,13 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsDeleteConfluentPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteConfluentPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -387,9 +395,13 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsGetConfluentPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetConfluentPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -404,6 +416,9 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
 	diags.Append(confluentPluginDiags...)
 
@@ -414,6 +429,7 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginR
 	out := operations.UpdateConfluentPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		ConfluentPlugin: *confluentPlugin,
 	}
 

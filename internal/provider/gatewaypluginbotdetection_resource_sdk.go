@@ -107,6 +107,9 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	botDetectionPlugin, botDetectionPluginDiags := r.ToSharedBotDetectionPlugin(ctx)
 	diags.Append(botDetectionPluginDiags...)
 
@@ -116,6 +119,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionP
 
 	out := operations.CreateBotdetectionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		BotDetectionPlugin: *botDetectionPlugin,
 	}
 
@@ -131,9 +135,13 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteBotdetectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -148,9 +156,13 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPlug
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetBotdetectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -165,6 +177,9 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionP
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	botDetectionPlugin, botDetectionPluginDiags := r.ToSharedBotDetectionPlugin(ctx)
 	diags.Append(botDetectionPluginDiags...)
 
@@ -175,6 +190,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionP
 	out := operations.UpdateBotdetectionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
+		Workspace:          workspace,
 		BotDetectionPlugin: *botDetectionPlugin,
 	}
 

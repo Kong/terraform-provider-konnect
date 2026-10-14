@@ -112,6 +112,9 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsCreateHmacauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	hmacAuthPlugin, hmacAuthPluginDiags := r.ToSharedHmacAuthPlugin(ctx)
 	diags.Append(hmacAuthPluginDiags...)
 
@@ -121,6 +124,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsCreateHmacauthPluginReq
 
 	out := operations.CreateHmacauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		HmacAuthPlugin: *hmacAuthPlugin,
 	}
 
@@ -136,9 +140,13 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsDeleteHmacauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -153,9 +161,13 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsGetHmacauthPluginReques
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -170,6 +182,9 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsUpdateHmacauthPluginReq
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	hmacAuthPlugin, hmacAuthPluginDiags := r.ToSharedHmacAuthPlugin(ctx)
 	diags.Append(hmacAuthPluginDiags...)
 
@@ -180,6 +195,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToOperationsUpdateHmacauthPluginReq
 	out := operations.UpdateHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		HmacAuthPlugin: *hmacAuthPlugin,
 	}
 

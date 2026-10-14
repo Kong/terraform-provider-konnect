@@ -120,6 +120,9 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsCreateAipromptt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptTemplatePlugin, aiPromptTemplatePluginDiags := r.ToSharedAiPromptTemplatePlugin(ctx)
 	diags.Append(aiPromptTemplatePluginDiags...)
 
@@ -129,6 +132,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsCreateAipromptt
 
 	out := operations.CreateAiprompttemplatePluginRequest{
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		AiPromptTemplatePlugin: *aiPromptTemplatePlugin,
 	}
 
@@ -144,9 +148,13 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsDeleteAipromptt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAiprompttemplatePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -161,9 +169,13 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsGetAiprompttemp
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAiprompttemplatePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -178,6 +190,9 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsUpdateAipromptt
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiPromptTemplatePlugin, aiPromptTemplatePluginDiags := r.ToSharedAiPromptTemplatePlugin(ctx)
 	diags.Append(aiPromptTemplatePluginDiags...)
 
@@ -188,6 +203,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsUpdateAipromptt
 	out := operations.UpdateAiprompttemplatePluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,
+		Workspace:              workspace,
 		AiPromptTemplatePlugin: *aiPromptTemplatePlugin,
 	}
 

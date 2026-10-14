@@ -120,6 +120,9 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsCreateOasvalidatio
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	oasValidationPlugin, oasValidationPluginDiags := r.ToSharedOasValidationPlugin(ctx)
 	diags.Append(oasValidationPluginDiags...)
 
@@ -129,6 +132,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsCreateOasvalidatio
 
 	out := operations.CreateOasvalidationPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OasValidationPlugin: *oasValidationPlugin,
 	}
 
@@ -144,9 +148,13 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsDeleteOasvalidatio
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteOasvalidationPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -161,9 +169,13 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsGetOasvalidationPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetOasvalidationPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -178,6 +190,9 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsUpdateOasvalidatio
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	oasValidationPlugin, oasValidationPluginDiags := r.ToSharedOasValidationPlugin(ctx)
 	diags.Append(oasValidationPluginDiags...)
 
@@ -188,6 +203,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsUpdateOasvalidatio
 	out := operations.UpdateOasvalidationPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OasValidationPlugin: *oasValidationPlugin,
 	}
 

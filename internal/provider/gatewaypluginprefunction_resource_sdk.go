@@ -139,6 +139,9 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	preFunctionPlugin, preFunctionPluginDiags := r.ToSharedPreFunctionPlugin(ctx)
 	diags.Append(preFunctionPluginDiags...)
 
@@ -148,6 +151,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPlu
 
 	out := operations.CreatePrefunctionPluginRequest{
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		PreFunctionPlugin: *preFunctionPlugin,
 	}
 
@@ -163,9 +167,13 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeletePrefunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -180,9 +188,13 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPlugin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetPrefunctionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -197,6 +209,9 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPlu
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	preFunctionPlugin, preFunctionPluginDiags := r.ToSharedPreFunctionPlugin(ctx)
 	diags.Append(preFunctionPluginDiags...)
 
@@ -207,6 +222,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPlu
 	out := operations.UpdatePrefunctionPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,
+		Workspace:         workspace,
 		PreFunctionPlugin: *preFunctionPlugin,
 	}
 

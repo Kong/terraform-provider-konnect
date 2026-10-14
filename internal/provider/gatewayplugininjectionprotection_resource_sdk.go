@@ -128,6 +128,9 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInject
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
 	diags.Append(injectionProtectionPluginDiags...)
 
@@ -137,6 +140,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInject
 
 	out := operations.CreateInjectionprotectionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		InjectionProtectionPlugin: *injectionProtectionPlugin,
 	}
 
@@ -152,9 +156,13 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInject
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteInjectionprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -169,9 +177,13 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjection
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetInjectionprotectionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -186,6 +198,9 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInject
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
 	diags.Append(injectionProtectionPluginDiags...)
 
@@ -196,6 +211,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInject
 	out := operations.UpdateInjectionprotectionPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		InjectionProtectionPlugin: *injectionProtectionPlugin,
 	}
 

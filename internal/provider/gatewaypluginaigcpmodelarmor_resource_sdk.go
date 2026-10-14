@@ -133,6 +133,9 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsCreateAigcpmodel
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiGcpModelArmorPlugin, aiGcpModelArmorPluginDiags := r.ToSharedAiGcpModelArmorPlugin(ctx)
 	diags.Append(aiGcpModelArmorPluginDiags...)
 
@@ -142,6 +145,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsCreateAigcpmodel
 
 	out := operations.CreateAigcpmodelarmorPluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiGcpModelArmorPlugin: *aiGcpModelArmorPlugin,
 	}
 
@@ -157,9 +161,13 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsDeleteAigcpmodel
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAigcpmodelarmorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -174,9 +182,13 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsGetAigcpmodelarm
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAigcpmodelarmorPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -191,6 +203,9 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsUpdateAigcpmodel
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiGcpModelArmorPlugin, aiGcpModelArmorPluginDiags := r.ToSharedAiGcpModelArmorPlugin(ctx)
 	diags.Append(aiGcpModelArmorPluginDiags...)
 
@@ -201,6 +216,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) ToOperationsUpdateAigcpmodel
 	out := operations.UpdateAigcpmodelarmorPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiGcpModelArmorPlugin: *aiGcpModelArmorPlugin,
 	}
 

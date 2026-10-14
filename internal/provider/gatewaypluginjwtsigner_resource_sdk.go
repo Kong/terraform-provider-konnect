@@ -650,6 +650,9 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jwtSignerPlugin, jwtSignerPluginDiags := r.ToSharedJwtSignerPlugin(ctx)
 	diags.Append(jwtSignerPluginDiags...)
 
@@ -659,6 +662,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsCreateJwtsignerPluginR
 
 	out := operations.CreateJwtsignerPluginRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		JwtSignerPlugin: *jwtSignerPlugin,
 	}
 
@@ -674,9 +678,13 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsDeleteJwtsignerPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteJwtsignerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -691,9 +699,13 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsGetJwtsignerPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetJwtsignerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -708,6 +720,9 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	jwtSignerPlugin, jwtSignerPluginDiags := r.ToSharedJwtSignerPlugin(ctx)
 	diags.Append(jwtSignerPluginDiags...)
 
@@ -718,6 +733,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToOperationsUpdateJwtsignerPluginR
 	out := operations.UpdateJwtsignerPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		JwtSignerPlugin: *jwtSignerPlugin,
 	}
 

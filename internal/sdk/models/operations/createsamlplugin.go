@@ -10,8 +10,10 @@ import (
 
 type CreateSamlPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	SamlPlugin     shared.SamlPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace  string            `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	SamlPlugin shared.SamlPlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateSamlPluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateSamlPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateSamlPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "SamlPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "SamlPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateSamlPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateSamlPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateSamlPluginRequest) GetSamlPlugin() shared.SamlPlugin {

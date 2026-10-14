@@ -139,6 +139,9 @@ func (r *GatewayRouteResourceModel) ToOperationsCreateRouteRequest(ctx context.C
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
 	diags.Append(routeJSONDiags...)
 
@@ -148,6 +151,7 @@ func (r *GatewayRouteResourceModel) ToOperationsCreateRouteRequest(ctx context.C
 
 	out := operations.CreateRouteRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RouteJSON:      *routeJSON,
 	}
 
@@ -163,9 +167,13 @@ func (r *GatewayRouteResourceModel) ToOperationsDeleteRouteRequest(ctx context.C
 	var routeID string
 	routeID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteRouteRequest{
 		ControlPlaneID: controlPlaneID,
 		RouteID:        routeID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -180,9 +188,13 @@ func (r *GatewayRouteResourceModel) ToOperationsGetRouteRequest(ctx context.Cont
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetRouteRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -197,6 +209,9 @@ func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.C
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
 	diags.Append(routeJSONDiags...)
 
@@ -207,6 +222,7 @@ func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.C
 	out := operations.UpsertRouteRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		RouteJSON:      *routeJSON,
 	}
 
@@ -306,11 +322,11 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	} else {
 		preserveHost = nil
 	}
-	var protocols []shared.RouteJSONProtocols
+	var protocols []shared.Protocols
 	if r.Protocols != nil {
-		protocols = make([]shared.RouteJSONProtocols, 0, len(r.Protocols))
+		protocols = make([]shared.Protocols, 0, len(r.Protocols))
 		for _, protocolsItem := range r.Protocols {
-			protocols = append(protocols, shared.RouteJSONProtocols(protocolsItem.ValueString()))
+			protocols = append(protocols, shared.Protocols(protocolsItem.ValueString()))
 		}
 	}
 	regexPriority := new(int64)

@@ -104,6 +104,9 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsCreateTlsha
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	tlsHandshakeModifierPlugin, tlsHandshakeModifierPluginDiags := r.ToSharedTLSHandshakeModifierPlugin(ctx)
 	diags.Append(tlsHandshakeModifierPluginDiags...)
 
@@ -113,6 +116,7 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsCreateTlsha
 
 	out := operations.CreateTlshandshakemodifierPluginRequest{
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		TLSHandshakeModifierPlugin: *tlsHandshakeModifierPlugin,
 	}
 
@@ -128,9 +132,13 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsDeleteTlsha
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteTlshandshakemodifierPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -145,9 +153,13 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsGetTlshands
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetTlshandshakemodifierPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -162,6 +174,9 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsUpdateTlsha
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	tlsHandshakeModifierPlugin, tlsHandshakeModifierPluginDiags := r.ToSharedTLSHandshakeModifierPlugin(ctx)
 	diags.Append(tlsHandshakeModifierPluginDiags...)
 
@@ -172,6 +187,7 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsUpdateTlsha
 	out := operations.UpdateTlshandshakemodifierPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
+		Workspace:                  workspace,
 		TLSHandshakeModifierPlugin: *tlsHandshakeModifierPlugin,
 	}
 

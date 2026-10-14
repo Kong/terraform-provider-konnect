@@ -11,8 +11,10 @@ import (
 type CreateServiceRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the new Service for creation
-	Service shared.Service `request:"mediaType=application/json"`
+	ServiceRequest shared.ServiceRequest `request:"mediaType=application/json"`
 }
 
 func (c CreateServiceRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (c CreateServiceRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateServiceRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "Service"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "ServiceRequest"}); err != nil {
 		return err
 	}
 	return nil
@@ -33,11 +35,18 @@ func (c *CreateServiceRequest) GetControlPlaneID() string {
 	return c.ControlPlaneID
 }
 
-func (c *CreateServiceRequest) GetService() shared.Service {
+func (c *CreateServiceRequest) GetWorkspace() string {
 	if c == nil {
-		return shared.Service{}
+		return ""
 	}
-	return c.Service
+	return c.Workspace
+}
+
+func (c *CreateServiceRequest) GetServiceRequest() shared.ServiceRequest {
+	if c == nil {
+		return shared.ServiceRequest{}
+	}
+	return c.ServiceRequest
 }
 
 type CreateServiceResponse struct {
