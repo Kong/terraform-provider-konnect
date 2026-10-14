@@ -207,6 +207,9 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsCreateZipkinPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	zipkinPlugin, zipkinPluginDiags := r.ToSharedZipkinPlugin(ctx)
 	diags.Append(zipkinPluginDiags...)
 
@@ -216,6 +219,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsCreateZipkinPluginRequest
 
 	out := operations.CreateZipkinPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		ZipkinPlugin:   *zipkinPlugin,
 	}
 
@@ -231,9 +235,13 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsDeleteZipkinPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -248,9 +256,13 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsGetZipkinPluginRequest(ct
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -265,6 +277,9 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsUpdateZipkinPluginRequest
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	zipkinPlugin, zipkinPluginDiags := r.ToSharedZipkinPlugin(ctx)
 	diags.Append(zipkinPluginDiags...)
 
@@ -275,6 +290,7 @@ func (r *GatewayPluginZipkinResourceModel) ToOperationsUpdateZipkinPluginRequest
 	out := operations.UpdateZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		ZipkinPlugin:   *zipkinPlugin,
 	}
 

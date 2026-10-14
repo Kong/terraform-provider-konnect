@@ -1386,6 +1386,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsCreateOpenidconnec
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	openidConnectPlugin, openidConnectPluginDiags := r.ToSharedOpenidConnectPlugin(ctx)
 	diags.Append(openidConnectPluginDiags...)
 
@@ -1395,6 +1398,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsCreateOpenidconnec
 
 	out := operations.CreateOpenidconnectPluginRequest{
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpenidConnectPlugin: *openidConnectPlugin,
 	}
 
@@ -1410,9 +1414,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsDeleteOpenidconnec
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteOpenidconnectPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -1427,9 +1435,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsGetOpenidconnectPl
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetOpenidconnectPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -1444,6 +1456,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsUpdateOpenidconnec
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	openidConnectPlugin, openidConnectPluginDiags := r.ToSharedOpenidConnectPlugin(ctx)
 	diags.Append(openidConnectPluginDiags...)
 
@@ -1454,6 +1469,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsUpdateOpenidconnec
 	out := operations.UpdateOpenidconnectPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
+		Workspace:           workspace,
 		OpenidConnectPlugin: *openidConnectPlugin,
 	}
 

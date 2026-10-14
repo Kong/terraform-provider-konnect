@@ -10,7 +10,9 @@ import (
 
 type CreateAiresponsetransformerPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID              string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                   string                             `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	AiResponseTransformerPlugin shared.AiResponseTransformerPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateAiresponsetransformerPluginRequest) MarshalJSON() ([]byte, error) 
 }
 
 func (c *CreateAiresponsetransformerPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiResponseTransformerPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "AiResponseTransformerPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateAiresponsetransformerPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateAiresponsetransformerPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateAiresponsetransformerPluginRequest) GetAiResponseTransformerPlugin() shared.AiResponseTransformerPlugin {

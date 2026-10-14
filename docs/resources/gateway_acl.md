@@ -22,6 +22,7 @@ resource "konnect_gateway_acl" "my_gatewayacl" {
   tags = [
     "..."
   ]
+  workspace = "team-payments"
 }
 ```
 
@@ -39,6 +40,7 @@ resource "konnect_gateway_acl" "my_gatewayacl" {
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `tags` (List of String) A set of strings representing tags. Requires replacement if changed.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 ## Import
 
@@ -53,6 +55,7 @@ import {
     consumer_id      = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "f28acbfa-c866-4587-b688-0208ac24df21"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -60,5 +63,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_acl.my_konnect_gateway_acl '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21"}'
+terraform import konnect_gateway_acl.my_konnect_gateway_acl '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21", "workspace": "team-payments"}'
 ```

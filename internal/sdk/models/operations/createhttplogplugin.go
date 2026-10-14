@@ -10,8 +10,10 @@ import (
 
 type CreateHttplogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	HTTPLogPlugin  shared.HTTPLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace     string               `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	HTTPLogPlugin shared.HTTPLogPlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateHttplogPluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateHttplogPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateHttplogPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "HttpLogPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "HttpLogPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateHttplogPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateHttplogPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateHttplogPluginRequest) GetHTTPLogPlugin() shared.HTTPLogPlugin {

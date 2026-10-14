@@ -301,6 +301,9 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsCreateSamlPluginRequest(ctx
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	samlPlugin, samlPluginDiags := r.ToSharedSamlPlugin(ctx)
 	diags.Append(samlPluginDiags...)
 
@@ -310,6 +313,7 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsCreateSamlPluginRequest(ctx
 
 	out := operations.CreateSamlPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SamlPlugin:     *samlPlugin,
 	}
 
@@ -325,9 +329,13 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsDeleteSamlPluginRequest(ctx
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteSamlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -342,9 +350,13 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsGetSamlPluginRequest(ctx co
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetSamlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -359,6 +371,9 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsUpdateSamlPluginRequest(ctx
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	samlPlugin, samlPluginDiags := r.ToSharedSamlPlugin(ctx)
 	diags.Append(samlPluginDiags...)
 
@@ -369,6 +384,7 @@ func (r *GatewayPluginSamlResourceModel) ToOperationsUpdateSamlPluginRequest(ctx
 	out := operations.UpdateSamlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		SamlPlugin:     *samlPlugin,
 	}
 

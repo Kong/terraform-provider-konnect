@@ -13,6 +13,8 @@ type DeleteRatelimitingadvancedPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteRatelimitingadvancedPluginRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (d DeleteRatelimitingadvancedPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteRatelimitingadvancedPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"PluginId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"PluginId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (d *DeleteRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return d.ControlPlaneID
+}
+
+func (d *DeleteRatelimitingadvancedPluginRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteRatelimitingadvancedPluginResponse struct {

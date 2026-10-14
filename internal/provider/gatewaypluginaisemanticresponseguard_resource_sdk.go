@@ -373,6 +373,9 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticResponseGuardPlugin, aiSemanticResponseGuardPluginDiags := r.ToSharedAiSemanticResponseGuardPlugin(ctx)
 	diags.Append(aiSemanticResponseGuardPluginDiags...)
 
@@ -382,6 +385,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsCreateAi
 
 	out := operations.CreateAisemanticresponseguardPluginRequest{
 		ControlPlaneID:                controlPlaneID,
+		Workspace:                     workspace,
 		AiSemanticResponseGuardPlugin: *aiSemanticResponseGuardPlugin,
 	}
 
@@ -397,9 +401,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsDeleteAi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAisemanticresponseguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -414,9 +422,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsGetAisem
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAisemanticresponseguardPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -431,6 +443,9 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticResponseGuardPlugin, aiSemanticResponseGuardPluginDiags := r.ToSharedAiSemanticResponseGuardPlugin(ctx)
 	diags.Append(aiSemanticResponseGuardPluginDiags...)
 
@@ -441,6 +456,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToOperationsUpdateAi
 	out := operations.UpdateAisemanticresponseguardPluginRequest{
 		PluginID:                      pluginID,
 		ControlPlaneID:                controlPlaneID,
+		Workspace:                     workspace,
 		AiSemanticResponseGuardPlugin: *aiSemanticResponseGuardPlugin,
 	}
 

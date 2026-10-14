@@ -38,6 +38,9 @@ func (r *GatewayConsumerResourceModel) ToOperationsCreateConsumerRequest(ctx con
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	consumer, consumerDiags := r.ToSharedConsumer(ctx)
 	diags.Append(consumerDiags...)
 
@@ -47,6 +50,7 @@ func (r *GatewayConsumerResourceModel) ToOperationsCreateConsumerRequest(ctx con
 
 	out := operations.CreateConsumerRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Consumer:       *consumer,
 	}
 
@@ -62,9 +66,13 @@ func (r *GatewayConsumerResourceModel) ToOperationsDeleteConsumerRequest(ctx con
 	var consumerID string
 	consumerID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -79,9 +87,13 @@ func (r *GatewayConsumerResourceModel) ToOperationsGetConsumerRequest(ctx contex
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetConsumerRequest{
 		ConsumerID:     consumerID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -96,6 +108,9 @@ func (r *GatewayConsumerResourceModel) ToOperationsUpsertConsumerRequest(ctx con
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	consumer, consumerDiags := r.ToSharedConsumer(ctx)
 	diags.Append(consumerDiags...)
 
@@ -106,6 +121,7 @@ func (r *GatewayConsumerResourceModel) ToOperationsUpsertConsumerRequest(ctx con
 	out := operations.UpsertConsumerRequest{
 		ConsumerID:     consumerID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		Consumer:       *consumer,
 	}
 

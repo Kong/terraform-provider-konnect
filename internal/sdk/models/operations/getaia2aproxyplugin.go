@@ -13,6 +13,8 @@ type GetAia2aproxyPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetAia2aproxyPluginRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (g GetAia2aproxyPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetAia2aproxyPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"PluginId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"PluginId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (g *GetAia2aproxyPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return g.ControlPlaneID
+}
+
+func (g *GetAia2aproxyPluginRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 // #region class-body-getaia2aproxypluginrequest

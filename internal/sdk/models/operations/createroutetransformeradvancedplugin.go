@@ -10,7 +10,9 @@ import (
 
 type CreateRoutetransformeradvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                 string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                      string                                `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	RouteTransformerAdvancedPlugin shared.RouteTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateRoutetransformeradvancedPluginRequest) MarshalJSON() ([]byte, erro
 }
 
 func (c *CreateRoutetransformeradvancedPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "RouteTransformerAdvancedPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "RouteTransformerAdvancedPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateRoutetransformeradvancedPluginRequest) GetControlPlaneID() string
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateRoutetransformeradvancedPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateRoutetransformeradvancedPluginRequest) GetRouteTransformerAdvancedPlugin() shared.RouteTransformerAdvancedPlugin {

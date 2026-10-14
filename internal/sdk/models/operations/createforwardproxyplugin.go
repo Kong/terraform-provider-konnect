@@ -10,7 +10,9 @@ import (
 
 type CreateForwardproxyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace          string                    `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	ForwardProxyPlugin shared.ForwardProxyPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateForwardproxyPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateForwardproxyPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ForwardProxyPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "ForwardProxyPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateForwardproxyPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateForwardproxyPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateForwardproxyPluginRequest) GetForwardProxyPlugin() shared.ForwardProxyPlugin {

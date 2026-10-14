@@ -28,6 +28,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
   }
   upstream_id = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
   weight      = 100
+  workspace   = "team-payments"
 }
 ```
 
@@ -49,6 +50,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 - `updated_at` (Number) Unix epoch when the resource was last updated. Requires replacement if changed.
 - `upstream` (Attributes) The unique identifier or the name of the upstream for which to update the target. Requires replacement if changed. (see [below for nested schema](#nestedatt--upstream))
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100; Requires replacement if changed.
+- `workspace` (String) The name of the workspace. Default: "default"; Requires replacement if changed.
 
 <a id="nestedatt--upstream"></a>
 ### Nested Schema for `upstream`
@@ -70,6 +72,7 @@ import {
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id               = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
     upstream_id      = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
+    workspace        = "team-payments"
   })
 }
 ```
@@ -77,5 +80,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_target.my_konnect_gateway_target '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "5a078780-5d4c-4aae-984a-bdc6f52113d8", "upstream_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8"}'
+terraform import konnect_gateway_target.my_konnect_gateway_target '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "5a078780-5d4c-4aae-984a-bdc6f52113d8", "upstream_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8", "workspace": "team-payments"}'
 ```

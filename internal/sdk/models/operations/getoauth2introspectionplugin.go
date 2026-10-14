@@ -13,6 +13,8 @@ type GetOauth2introspectionPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetOauth2introspectionPluginRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (g GetOauth2introspectionPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetOauth2introspectionPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"PluginId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"PluginId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (g *GetOauth2introspectionPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return g.ControlPlaneID
+}
+
+func (g *GetOauth2introspectionPluginRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 // #region class-body-getoauth2introspectionpluginrequest

@@ -10,7 +10,9 @@ import (
 
 type CreateUpstreamoauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace           string                     `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	UpstreamOauthPlugin shared.UpstreamOauthPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateUpstreamoauthPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateUpstreamoauthPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "UpstreamOauthPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "UpstreamOauthPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateUpstreamoauthPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateUpstreamoauthPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateUpstreamoauthPluginRequest) GetUpstreamOauthPlugin() shared.UpstreamOauthPlugin {

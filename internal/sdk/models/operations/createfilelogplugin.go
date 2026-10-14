@@ -10,8 +10,10 @@ import (
 
 type CreateFilelogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	FileLogPlugin  shared.FileLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace     string               `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	FileLogPlugin shared.FileLogPlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateFilelogPluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateFilelogPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateFilelogPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "FileLogPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "FileLogPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateFilelogPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateFilelogPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateFilelogPluginRequest) GetFileLogPlugin() shared.FileLogPlugin {

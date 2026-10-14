@@ -10,8 +10,10 @@ import (
 
 type CreateTcplogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	TCPLogPlugin   shared.TCPLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace    string              `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
+	TCPLogPlugin shared.TCPLogPlugin `request:"mediaType=application/json"`
 }
 
 func (c CreateTcplogPluginRequest) MarshalJSON() ([]byte, error) {
@@ -19,7 +21,7 @@ func (c CreateTcplogPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateTcplogPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "TcpLogPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "TcpLogPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateTcplogPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateTcplogPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateTcplogPluginRequest) GetTCPLogPlugin() shared.TCPLogPlugin {

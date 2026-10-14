@@ -188,6 +188,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsCreateRespon
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	responseTransformerPlugin, responseTransformerPluginDiags := r.ToSharedResponseTransformerPlugin(ctx)
 	diags.Append(responseTransformerPluginDiags...)
 
@@ -197,6 +200,7 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsCreateRespon
 
 	out := operations.CreateResponsetransformerPluginRequest{
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		ResponseTransformerPlugin: *responseTransformerPlugin,
 	}
 
@@ -212,9 +216,13 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsDeleteRespon
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteResponsetransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -229,9 +237,13 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsGetResponset
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetResponsetransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -246,6 +258,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsUpdateRespon
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	responseTransformerPlugin, responseTransformerPluginDiags := r.ToSharedResponseTransformerPlugin(ctx)
 	diags.Append(responseTransformerPluginDiags...)
 
@@ -256,6 +271,7 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToOperationsUpdateRespon
 	out := operations.UpdateResponsetransformerPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
+		Workspace:                 workspace,
 		ResponseTransformerPlugin: *responseTransformerPlugin,
 	}
 

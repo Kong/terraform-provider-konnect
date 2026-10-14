@@ -100,6 +100,9 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	degraphqlPlugin, degraphqlPluginDiags := r.ToSharedDegraphqlPlugin(ctx)
 	diags.Append(degraphqlPluginDiags...)
 
@@ -109,6 +112,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsCreateDegraphqlPluginR
 
 	out := operations.CreateDegraphqlPluginRequest{
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		DegraphqlPlugin: *degraphqlPlugin,
 	}
 
@@ -124,9 +128,13 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsDeleteDegraphqlPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteDegraphqlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -141,9 +149,13 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsGetDegraphqlPluginRequ
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetDegraphqlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -158,6 +170,9 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginR
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	degraphqlPlugin, degraphqlPluginDiags := r.ToSharedDegraphqlPlugin(ctx)
 	diags.Append(degraphqlPluginDiags...)
 
@@ -168,6 +183,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginR
 	out := operations.UpdateDegraphqlPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		DegraphqlPlugin: *degraphqlPlugin,
 	}
 
