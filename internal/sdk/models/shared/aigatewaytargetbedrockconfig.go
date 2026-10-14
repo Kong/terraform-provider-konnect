@@ -51,15 +51,15 @@ type AIGatewayTargetBedrockConfig struct {
 	// The AWS region for the model.
 	// Setting this option overrides the AWS_REGION environment variable.
 	//
-	Region *string `default:"null" json:"region"`
+	Region *string `json:"region,omitempty"`
 	// S3 bucket prefix for batch inference jobs.
-	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	BatchBucketPrefix *string `json:"batch_bucket_prefix,omitempty"`
 	// Whether to normalize embedding vectors in the response.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Latency performance configuration for the model invocation.
-	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 	// S3 URI for storing video generation outputs.
-	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
+	VideoOutputS3URI *string `json:"video_output_s3_uri,omitempty"`
 }
 
 func (a AIGatewayTargetBedrockConfig) MarshalJSON() ([]byte, error) {

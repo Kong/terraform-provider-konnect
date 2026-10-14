@@ -33,7 +33,7 @@ func (e *AIGatewayMistralEmbeddingsModelConfigType) UnmarshalJSON(data []byte) e
 
 type AIGatewayMistralEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string                                   `default:"null" json:"upstream_url"`
+	UpstreamURL *string                                   `json:"upstream_url,omitempty"`
 	Type        AIGatewayMistralEmbeddingsModelConfigType `json:"type"`
 }
 
