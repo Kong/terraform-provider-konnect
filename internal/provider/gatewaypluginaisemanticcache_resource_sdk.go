@@ -348,6 +348,9 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemantic
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
 	diags.Append(aiSemanticCachePluginDiags...)
 
@@ -357,6 +360,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemantic
 
 	out := operations.CreateAisemanticcachePluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiSemanticCachePlugin: *aiSemanticCachePlugin,
 	}
 
@@ -372,9 +376,13 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsDeleteAisemantic
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAisemanticcachePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -389,9 +397,13 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsGetAisemanticcac
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAisemanticcachePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -406,6 +418,9 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemantic
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
 	diags.Append(aiSemanticCachePluginDiags...)
 
@@ -416,6 +431,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemantic
 	out := operations.UpdateAisemanticcachePluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		AiSemanticCachePlugin: *aiSemanticCachePlugin,
 	}
 

@@ -49,6 +49,9 @@ func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest
 	var upstreamID string
 	upstreamID = r.UpstreamID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	targetWithoutParents, targetWithoutParentsDiags := r.ToSharedTargetWithoutParents(ctx)
 	diags.Append(targetWithoutParentsDiags...)
 
@@ -59,6 +62,7 @@ func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest
 	out := operations.CreateTargetWithUpstreamRequest{
 		ControlPlaneID:       controlPlaneID,
 		UpstreamID:           upstreamID,
+		Workspace:            workspace,
 		TargetWithoutParents: *targetWithoutParents,
 	}
 
@@ -77,10 +81,14 @@ func (r *GatewayTargetResourceModel) ToOperationsDeleteTargetWithUpstreamRequest
 	var targetID string
 	targetID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteTargetWithUpstreamRequest{
 		ControlPlaneID: controlPlaneID,
 		UpstreamID:     upstreamID,
 		TargetID:       targetID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -98,10 +106,14 @@ func (r *GatewayTargetResourceModel) ToOperationsGetTargetWithUpstreamRequest(ct
 	var targetID string
 	targetID = r.ID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetTargetWithUpstreamRequest{
 		ControlPlaneID: controlPlaneID,
 		UpstreamID:     upstreamID,
 		TargetID:       targetID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags

@@ -5,8 +5,61 @@ package provider
 import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 )
+
+func (r *GatewayConsumerGroupMemberResourceModel) RefreshFromOperationsAddConsumerToGroupResponseBody(ctx context.Context, resp *operations.AddConsumerToGroupResponseBody) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.ConsumerGroup{}
+			r.ConsumerGroup.CreatedAt = types.Int64PointerValue(resp.ConsumerGroup.CreatedAt)
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+			r.ConsumerGroup.Name = types.StringValue(resp.ConsumerGroup.Name)
+			if resp.ConsumerGroup.Tags != nil {
+				r.ConsumerGroup.Tags = make([]types.String, 0, len(resp.ConsumerGroup.Tags))
+				for _, v := range resp.ConsumerGroup.Tags {
+					r.ConsumerGroup.Tags = append(r.ConsumerGroup.Tags, types.StringValue(v))
+				}
+			} else {
+				r.ConsumerGroup.Tags = nil
+			}
+			r.ConsumerGroup.UpdatedAt = types.Int64PointerValue(resp.ConsumerGroup.UpdatedAt)
+		}
+		if resp.Consumers != nil {
+			r.Consumers = []tfTypes.Consumer{}
+
+			for _, consumersItem := range resp.Consumers {
+				var consumers tfTypes.Consumer
+
+				consumers.CreatedAt = types.Int64PointerValue(consumersItem.CreatedAt)
+				consumers.CustomID = types.StringPointerValue(consumersItem.CustomID)
+				consumers.ID = types.StringPointerValue(consumersItem.ID)
+				if consumersItem.Tags != nil {
+					consumers.Tags = make([]types.String, 0, len(consumersItem.Tags))
+					for _, v := range consumersItem.Tags {
+						consumers.Tags = append(consumers.Tags, types.StringValue(v))
+					}
+				} else {
+					consumers.Tags = nil
+				}
+				consumers.UpdatedAt = types.Int64PointerValue(consumersItem.UpdatedAt)
+				consumers.Username = types.StringPointerValue(consumersItem.Username)
+
+				r.Consumers = append(r.Consumers, consumers)
+			}
+		} else {
+			r.Consumers = nil
+		}
+	}
+
+	return diags
+}
 
 func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequest(ctx context.Context) (*operations.AddConsumerToGroupRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
@@ -16,6 +69,9 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var workspace string
+	workspace = r.Workspace.ValueString()
 
 	requestBody, requestBodyDiags := r.ToOperationsAddConsumerToGroupRequestBody(ctx)
 	diags.Append(requestBodyDiags...)
@@ -27,6 +83,7 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	out := operations.AddConsumerToGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 		RequestBody:     requestBody,
 	}
 
@@ -61,10 +118,14 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFrom
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.RemoveConsumerFromGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ConsumerID:      consumerID,
 		ControlPlaneID:  controlPlaneID,
+		Workspace:       workspace,
 	}
 
 	return &out, diags

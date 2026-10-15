@@ -161,6 +161,9 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsCreateMeterin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	meteringAndBillingPlugin, meteringAndBillingPluginDiags := r.ToSharedMeteringAndBillingPlugin(ctx)
 	diags.Append(meteringAndBillingPluginDiags...)
 
@@ -170,6 +173,7 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsCreateMeterin
 
 	out := operations.CreateMeteringandbillingPluginRequest{
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		MeteringAndBillingPlugin: *meteringAndBillingPlugin,
 	}
 
@@ -185,9 +189,13 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsDeleteMeterin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteMeteringandbillingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -202,9 +210,13 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsGetMeteringan
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetMeteringandbillingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -219,6 +231,9 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsUpdateMeterin
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	meteringAndBillingPlugin, meteringAndBillingPluginDiags := r.ToSharedMeteringAndBillingPlugin(ctx)
 	diags.Append(meteringAndBillingPluginDiags...)
 
@@ -229,6 +244,7 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) ToOperationsUpdateMeterin
 	out := operations.UpdateMeteringandbillingPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
+		Workspace:                workspace,
 		MeteringAndBillingPlugin: *meteringAndBillingPlugin,
 	}
 

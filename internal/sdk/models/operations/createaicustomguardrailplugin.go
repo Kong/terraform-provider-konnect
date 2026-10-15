@@ -10,7 +10,9 @@ import (
 
 type CreateAicustomguardrailPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID          string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace               string                         `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	AiCustomGuardrailPlugin shared.AiCustomGuardrailPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateAicustomguardrailPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAicustomguardrailPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiCustomGuardrailPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "AiCustomGuardrailPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateAicustomguardrailPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateAicustomguardrailPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateAicustomguardrailPluginRequest) GetAiCustomGuardrailPlugin() shared.AiCustomGuardrailPlugin {

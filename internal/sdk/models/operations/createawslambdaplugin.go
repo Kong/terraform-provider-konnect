@@ -10,7 +10,9 @@ import (
 
 type CreateAwslambdaPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace       string                 `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	AwsLambdaPlugin shared.AwsLambdaPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateAwslambdaPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAwslambdaPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AwsLambdaPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "AwsLambdaPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateAwslambdaPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateAwslambdaPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateAwslambdaPluginRequest) GetAwsLambdaPlugin() shared.AwsLambdaPlugin {

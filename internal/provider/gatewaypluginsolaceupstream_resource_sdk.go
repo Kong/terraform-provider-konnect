@@ -227,6 +227,9 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	solaceUpstreamPlugin, solaceUpstreamPluginDiags := r.ToSharedSolaceUpstreamPlugin(ctx)
 	diags.Append(solaceUpstreamPluginDiags...)
 
@@ -236,6 +239,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsCreateSolaceupstr
 
 	out := operations.CreateSolaceupstreamPluginRequest{
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		SolaceUpstreamPlugin: *solaceUpstreamPlugin,
 	}
 
@@ -251,9 +255,13 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsDeleteSolaceupstr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteSolaceupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -268,9 +276,13 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsGetSolaceupstream
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetSolaceupstreamPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -285,6 +297,9 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstr
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	solaceUpstreamPlugin, solaceUpstreamPluginDiags := r.ToSharedSolaceUpstreamPlugin(ctx)
 	diags.Append(solaceUpstreamPluginDiags...)
 
@@ -295,6 +310,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToOperationsUpdateSolaceupstr
 	out := operations.UpdateSolaceupstreamPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
+		Workspace:            workspace,
 		SolaceUpstreamPlugin: *solaceUpstreamPlugin,
 	}
 

@@ -13,6 +13,8 @@ type UpsertConsumerGroupRequest struct {
 	ConsumerGroupID string `pathParam:"style=simple,explode=false,name=ConsumerGroupId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	// Description of the Consumer Group
 	ConsumerGroup shared.ConsumerGroup `request:"mediaType=application/json"`
 }
@@ -22,7 +24,7 @@ func (u UpsertConsumerGroupRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpsertConsumerGroupRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ConsumerGroupId", "controlPlaneId", "ConsumerGroup"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ConsumerGroupId", "controlPlaneId", "workspace", "ConsumerGroup"}); err != nil {
 		return err
 	}
 	return nil
@@ -40,6 +42,13 @@ func (u *UpsertConsumerGroupRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpsertConsumerGroupRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpsertConsumerGroupRequest) GetConsumerGroup() shared.ConsumerGroup {

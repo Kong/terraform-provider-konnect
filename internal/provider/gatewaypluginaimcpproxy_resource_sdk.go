@@ -418,6 +418,9 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiMcpProxyPlugin, aiMcpProxyPluginDiags := r.ToSharedAiMcpProxyPlugin(ctx)
 	diags.Append(aiMcpProxyPluginDiags...)
 
@@ -427,6 +430,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsCreateAimcpproxyPlugi
 
 	out := operations.CreateAimcpproxyPluginRequest{
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiMcpProxyPlugin: *aiMcpProxyPlugin,
 	}
 
@@ -442,9 +446,13 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsDeleteAimcpproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteAimcpproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -459,9 +467,13 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsGetAimcpproxyPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetAimcpproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -476,6 +488,9 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	aiMcpProxyPlugin, aiMcpProxyPluginDiags := r.ToSharedAiMcpProxyPlugin(ctx)
 	diags.Append(aiMcpProxyPluginDiags...)
 
@@ -486,6 +501,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPlugi
 	out := operations.UpdateAimcpproxyPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
+		Workspace:        workspace,
 		AiMcpProxyPlugin: *aiMcpProxyPlugin,
 	}
 

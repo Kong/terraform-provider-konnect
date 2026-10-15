@@ -108,6 +108,9 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsCreateUpstreamti
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	upstreamTimeoutPlugin, upstreamTimeoutPluginDiags := r.ToSharedUpstreamTimeoutPlugin(ctx)
 	diags.Append(upstreamTimeoutPluginDiags...)
 
@@ -117,6 +120,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsCreateUpstreamti
 
 	out := operations.CreateUpstreamtimeoutPluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		UpstreamTimeoutPlugin: *upstreamTimeoutPlugin,
 	}
 
@@ -132,9 +136,13 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsDeleteUpstreamti
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteUpstreamtimeoutPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -149,9 +157,13 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsGetUpstreamtimeo
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetUpstreamtimeoutPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -166,6 +178,9 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsUpdateUpstreamti
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	upstreamTimeoutPlugin, upstreamTimeoutPluginDiags := r.ToSharedUpstreamTimeoutPlugin(ctx)
 	diags.Append(upstreamTimeoutPluginDiags...)
 
@@ -176,6 +191,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsUpdateUpstreamti
 	out := operations.UpdateUpstreamtimeoutPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		UpstreamTimeoutPlugin: *upstreamTimeoutPlugin,
 	}
 

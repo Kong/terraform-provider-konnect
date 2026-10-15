@@ -10,7 +10,9 @@ import (
 
 type CreateStandardwebhooksPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace              string                        `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	StandardWebhooksPlugin shared.StandardWebhooksPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateStandardwebhooksPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateStandardwebhooksPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "StandardWebhooksPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "StandardWebhooksPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateStandardwebhooksPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateStandardwebhooksPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateStandardwebhooksPluginRequest) GetStandardWebhooksPlugin() shared.StandardWebhooksPlugin {

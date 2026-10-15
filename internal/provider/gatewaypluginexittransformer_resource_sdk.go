@@ -107,6 +107,9 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsCreateExittransf
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	exitTransformerPlugin, exitTransformerPluginDiags := r.ToSharedExitTransformerPlugin(ctx)
 	diags.Append(exitTransformerPluginDiags...)
 
@@ -116,6 +119,7 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsCreateExittransf
 
 	out := operations.CreateExittransformerPluginRequest{
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		ExitTransformerPlugin: *exitTransformerPlugin,
 	}
 
@@ -131,9 +135,13 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsDeleteExittransf
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteExittransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -148,9 +156,13 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsGetExittransform
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetExittransformerPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -165,6 +177,9 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsUpdateExittransf
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	exitTransformerPlugin, exitTransformerPluginDiags := r.ToSharedExitTransformerPlugin(ctx)
 	diags.Append(exitTransformerPluginDiags...)
 
@@ -175,6 +190,7 @@ func (r *GatewayPluginExitTransformerResourceModel) ToOperationsUpdateExittransf
 	out := operations.UpdateExittransformerPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
+		Workspace:             workspace,
 		ExitTransformerPlugin: *exitTransformerPlugin,
 	}
 

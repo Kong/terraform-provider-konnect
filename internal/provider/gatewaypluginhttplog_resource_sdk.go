@@ -155,6 +155,9 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsCreateHttplogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	httpLogPlugin, httpLogPluginDiags := r.ToSharedHTTPLogPlugin(ctx)
 	diags.Append(httpLogPluginDiags...)
 
@@ -164,6 +167,7 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsCreateHttplogPluginReque
 
 	out := operations.CreateHttplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		HTTPLogPlugin:  *httpLogPlugin,
 	}
 
@@ -179,9 +183,13 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsDeleteHttplogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.DeleteHttplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -196,9 +204,13 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsGetHttplogPluginRequest(
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	out := operations.GetHttplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 	}
 
 	return &out, diags
@@ -213,6 +225,9 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsUpdateHttplogPluginReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
+	var workspace string
+	workspace = r.Workspace.ValueString()
+
 	httpLogPlugin, httpLogPluginDiags := r.ToSharedHTTPLogPlugin(ctx)
 	diags.Append(httpLogPluginDiags...)
 
@@ -223,6 +238,7 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsUpdateHttplogPluginReque
 	out := operations.UpdateHttplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
+		Workspace:      workspace,
 		HTTPLogPlugin:  *httpLogPlugin,
 	}
 

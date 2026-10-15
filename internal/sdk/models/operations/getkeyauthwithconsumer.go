@@ -15,6 +15,8 @@ type GetKeyAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the API-key to lookup
 	KeyAuthID string `pathParam:"style=simple,explode=false,name=KeyAuthId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetKeyAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (g GetKeyAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetKeyAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "KeyAuthId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "KeyAuthId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -47,6 +49,13 @@ func (g *GetKeyAuthWithConsumerRequest) GetKeyAuthID() string {
 		return ""
 	}
 	return g.KeyAuthID
+}
+
+func (g *GetKeyAuthWithConsumerRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetKeyAuthWithConsumerResponse struct {

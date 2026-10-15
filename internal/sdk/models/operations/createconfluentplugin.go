@@ -10,7 +10,9 @@ import (
 
 type CreateConfluentPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace       string                 `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	ConfluentPlugin shared.ConfluentPlugin `request:"mediaType=application/json"`
 }
 
@@ -19,7 +21,7 @@ func (c CreateConfluentPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateConfluentPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConfluentPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "workspace", "ConfluentPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -30,6 +32,13 @@ func (c *CreateConfluentPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return c.ControlPlaneID
+}
+
+func (c *CreateConfluentPluginRequest) GetWorkspace() string {
+	if c == nil {
+		return ""
+	}
+	return c.Workspace
 }
 
 func (c *CreateConfluentPluginRequest) GetConfluentPlugin() shared.ConfluentPlugin {

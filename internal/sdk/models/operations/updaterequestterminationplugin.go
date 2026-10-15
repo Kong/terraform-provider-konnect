@@ -12,7 +12,9 @@ type UpdateRequestterminationPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                string                          `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	RequestTerminationPlugin shared.RequestTerminationPlugin `request:"mediaType=application/json"`
 }
 
@@ -21,7 +23,7 @@ func (u UpdateRequestterminationPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateRequestterminationPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "RequestTerminationPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "RequestTerminationPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateRequestterminationPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateRequestterminationPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateRequestterminationPluginRequest) GetRequestTerminationPlugin() shared.RequestTerminationPlugin {

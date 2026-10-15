@@ -13,6 +13,8 @@ type DeleteAppdynamicsPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (d DeleteAppdynamicsPluginRequest) MarshalJSON() ([]byte, error) {
@@ -20,7 +22,7 @@ func (d DeleteAppdynamicsPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteAppdynamicsPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"PluginId", "controlPlaneId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"PluginId", "controlPlaneId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,6 +40,13 @@ func (d *DeleteAppdynamicsPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return d.ControlPlaneID
+}
+
+func (d *DeleteAppdynamicsPluginRequest) GetWorkspace() string {
+	if d == nil {
+		return ""
+	}
+	return d.Workspace
 }
 
 type DeleteAppdynamicsPluginResponse struct {

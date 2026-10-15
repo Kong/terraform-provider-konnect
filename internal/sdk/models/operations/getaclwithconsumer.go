@@ -15,6 +15,8 @@ type GetACLWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the ACL to lookup
 	ACLID string `pathParam:"style=simple,explode=false,name=ACLId"`
+	// The name of the workspace
+	Workspace string `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 }
 
 func (g GetACLWithConsumerRequest) MarshalJSON() ([]byte, error) {
@@ -22,7 +24,7 @@ func (g GetACLWithConsumerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetACLWithConsumerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "ACLId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "ACLId", "workspace"}); err != nil {
 		return err
 	}
 	return nil
@@ -47,6 +49,13 @@ func (g *GetACLWithConsumerRequest) GetACLID() string {
 		return ""
 	}
 	return g.ACLID
+}
+
+func (g *GetACLWithConsumerRequest) GetWorkspace() string {
+	if g == nil {
+		return ""
+	}
+	return g.Workspace
 }
 
 type GetACLWithConsumerResponse struct {

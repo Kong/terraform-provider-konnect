@@ -12,7 +12,9 @@ type UpdateWebsocketvalidatorPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// The name of the workspace
+	Workspace                string                          `default:"default" pathParam:"style=simple,explode=false,name=workspace"`
 	WebsocketValidatorPlugin shared.WebsocketValidatorPlugin `request:"mediaType=application/json"`
 }
 
@@ -21,7 +23,7 @@ func (u UpdateWebsocketvalidatorPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateWebsocketvalidatorPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "WebsocketValidatorPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "workspace", "WebsocketValidatorPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -39,6 +41,13 @@ func (u *UpdateWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return u.ControlPlaneID
+}
+
+func (u *UpdateWebsocketvalidatorPluginRequest) GetWorkspace() string {
+	if u == nil {
+		return ""
+	}
+	return u.Workspace
 }
 
 func (u *UpdateWebsocketvalidatorPluginRequest) GetWebsocketValidatorPlugin() shared.WebsocketValidatorPlugin {
