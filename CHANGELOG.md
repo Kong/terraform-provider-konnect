@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.27.0
+> Released 2026/10/??
+
+# Bug Fixes
+* Fixed drift in `konnect_ai_gateway_model` resource
+
+# BREAKING CHANGES
+* NA
+
 ## 3.26.0
 > Released 2026/10/09
 
