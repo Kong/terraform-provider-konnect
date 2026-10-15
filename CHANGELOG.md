@@ -4,7 +4,7 @@
 > Released 2026/10/??
 
 # Bug Fixes
-* Fixed drift in `konnect_ai_gateway_model` resource
+* Fixed error while running `terraform apply` for `konnect_ai_gateway_model` resource when certain optional fields were left unset
 
 # BREAKING CHANGES
 * NA
