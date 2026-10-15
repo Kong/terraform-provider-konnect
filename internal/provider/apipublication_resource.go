@@ -8,11 +8,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -97,25 +95,23 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The Portal identifier`,
 			},
 			"spec_renderer": schema.SingleNestedAttribute{
-				Computed: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"try_it_ui":          types.BoolType,
-					"try_it_ui_audience": types.StringType,
-				})),
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"try_it_ui": schema.BoolAttribute{
-						Computed:    true,
+						Optional:    true,
 						Description: `Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.`,
 					},
 					"try_it_ui_audience": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						MarkdownDescription: `The audience for the Try It UI feature.` + "\n" +
 							`` + "\n" +
 							`` + "`" + `all` + "`" + ` means that the Try It UI will be available to all users, including unauthenticated users.` + "\n" +
 							`` + "\n" +
 							`` + "`" + `authenticated` + "`" + ` means that the Try It UI will only be available to authenticated users.` + "\n" +
 							`` + "\n" +
-							`` + "`" + `registered` + "`" + ` means that the Try It UI will only be available to users who have registered for the API.`,
+							`` + "`" + `registered` + "`" + ` means that the Try It UI will only be available to users who have registered for the API.` + "\n" +
+							`possible known values include one of ["all", "authenticated", "registered"]`,
 					},
 				},
 				Description: `Customization settings for the API spec renderer in the portal.`,
@@ -194,7 +190,7 @@ func (r *APIPublicationResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.APIPublication.PublishAPIToPortal(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -254,7 +250,7 @@ func (r *APIPublicationResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.APIPublication.FetchPublication(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -308,7 +304,7 @@ func (r *APIPublicationResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.APIPublication.PublishAPIToPortal(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -368,7 +364,7 @@ func (r *APIPublicationResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.APIPublication.DeletePublication(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

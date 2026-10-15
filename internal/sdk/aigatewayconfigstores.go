@@ -1295,6 +1295,7 @@ func (s *AIGatewayConfigStores) CreateAiGatewayConfigStoreSecret(ctx context.Con
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "create-ai-gateway-config-store-secret")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
@@ -1943,6 +1944,7 @@ func (s *AIGatewayConfigStores) UpdateAiGatewayConfigStoreSecret(ctx context.Con
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "update-ai-gateway-config-store-secret")
 	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

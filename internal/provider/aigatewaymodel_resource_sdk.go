@@ -33,9 +33,25 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.Allow {
 						r.API.Access.Acls.Allow = append(r.API.Access.Acls.Allow, types.StringValue(v))
 					}
+					if resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.AllowWhen != nil {
+						r.API.Access.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.AllowWhen))
+						for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.AllowWhen {
+							r.API.Access.Acls.AllowWhen = append(r.API.Access.Acls.AllowWhen, types.StringValue(v))
+						}
+					} else {
+						r.API.Access.Acls.AllowWhen = nil
+					}
 					r.API.Access.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.Deny))
 					for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.Deny {
 						r.API.Access.Acls.Deny = append(r.API.Access.Acls.Deny, types.StringValue(v))
+					}
+					if resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.DenyWhen != nil {
+						r.API.Access.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.DenyWhen))
+						for _, v := range resp.AIGatewayModelAIGatewayModelAPI.Access.Acls.DenyWhen {
+							r.API.Access.Acls.DenyWhen = append(r.API.Access.Acls.DenyWhen, types.StringValue(v))
+						}
+					} else {
+						r.API.Access.Acls.DenyWhen = nil
 					}
 				}
 				r.API.Access.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelAPI.Access.AuthStrategies))
@@ -2251,9 +2267,25 @@ func (r *AIGatewayModelResourceModel) RefreshFromSharedAIGatewayModel(ctx contex
 					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Access.Acls.Allow {
 						r.Model.Access.Acls.Allow = append(r.Model.Access.Acls.Allow, types.StringValue(v))
 					}
+					if resp.AIGatewayModelAIGatewayModelModel.Access.Acls.AllowWhen != nil {
+						r.Model.Access.Acls.AllowWhen = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Access.Acls.AllowWhen))
+						for _, v := range resp.AIGatewayModelAIGatewayModelModel.Access.Acls.AllowWhen {
+							r.Model.Access.Acls.AllowWhen = append(r.Model.Access.Acls.AllowWhen, types.StringValue(v))
+						}
+					} else {
+						r.Model.Access.Acls.AllowWhen = nil
+					}
 					r.Model.Access.Acls.Deny = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Access.Acls.Deny))
 					for _, v := range resp.AIGatewayModelAIGatewayModelModel.Access.Acls.Deny {
 						r.Model.Access.Acls.Deny = append(r.Model.Access.Acls.Deny, types.StringValue(v))
+					}
+					if resp.AIGatewayModelAIGatewayModelModel.Access.Acls.DenyWhen != nil {
+						r.Model.Access.Acls.DenyWhen = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Access.Acls.DenyWhen))
+						for _, v := range resp.AIGatewayModelAIGatewayModelModel.Access.Acls.DenyWhen {
+							r.Model.Access.Acls.DenyWhen = append(r.Model.Access.Acls.DenyWhen, types.StringValue(v))
+						}
+					} else {
+						r.Model.Access.Acls.DenyWhen = nil
 					}
 				}
 				r.Model.Access.AuthStrategies = make([]types.String, 0, len(resp.AIGatewayModelAIGatewayModelModel.Access.AuthStrategies))
@@ -4575,9 +4607,25 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				for denyIndex := range r.API.Access.Acls.Deny {
 					deny = append(deny, r.API.Access.Acls.Deny[denyIndex].ValueString())
 				}
+				var allowWhen []string
+				if r.API.Access.Acls.AllowWhen != nil {
+					allowWhen = make([]string, 0, len(r.API.Access.Acls.AllowWhen))
+					for allowWhenIndex := range r.API.Access.Acls.AllowWhen {
+						allowWhen = append(allowWhen, r.API.Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+					}
+				}
+				var denyWhen []string
+				if r.API.Access.Acls.DenyWhen != nil {
+					denyWhen = make([]string, 0, len(r.API.Access.Acls.DenyWhen))
+					for denyWhenIndex := range r.API.Access.Acls.DenyWhen {
+						denyWhen = append(denyWhen, r.API.Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+					}
+				}
 				acls = &shared.AIGatewayACLS{
-					Allow: allow,
-					Deny:  deny,
+					Allow:     allow,
+					Deny:      deny,
+					AllowWhen: allowWhen,
+					DenyWhen:  denyWhen,
 				}
 			}
 			identityProviders := make([]string, 0, len(r.API.Access.IdentityProviders))
@@ -9540,9 +9588,25 @@ func (r *AIGatewayModelResourceModel) ToSharedCreateAIGatewayModelRequest(ctx co
 				for denyIndex1 := range r.Model.Access.Acls.Deny {
 					deny1 = append(deny1, r.Model.Access.Acls.Deny[denyIndex1].ValueString())
 				}
+				var allowWhen1 []string
+				if r.Model.Access.Acls.AllowWhen != nil {
+					allowWhen1 = make([]string, 0, len(r.Model.Access.Acls.AllowWhen))
+					for allowWhenIndex1 := range r.Model.Access.Acls.AllowWhen {
+						allowWhen1 = append(allowWhen1, r.Model.Access.Acls.AllowWhen[allowWhenIndex1].ValueString())
+					}
+				}
+				var denyWhen1 []string
+				if r.Model.Access.Acls.DenyWhen != nil {
+					denyWhen1 = make([]string, 0, len(r.Model.Access.Acls.DenyWhen))
+					for denyWhenIndex1 := range r.Model.Access.Acls.DenyWhen {
+						denyWhen1 = append(denyWhen1, r.Model.Access.Acls.DenyWhen[denyWhenIndex1].ValueString())
+					}
+				}
 				acls1 = &shared.AIGatewayACLS{
-					Allow: allow1,
-					Deny:  deny1,
+					Allow:     allow1,
+					Deny:      deny1,
+					AllowWhen: allowWhen1,
+					DenyWhen:  denyWhen1,
 				}
 			}
 			identityProviders1 := make([]string, 0, len(r.Model.Access.IdentityProviders))
@@ -14526,9 +14590,25 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				for denyIndex := range r.API.Access.Acls.Deny {
 					deny = append(deny, r.API.Access.Acls.Deny[denyIndex].ValueString())
 				}
+				var allowWhen []string
+				if r.API.Access.Acls.AllowWhen != nil {
+					allowWhen = make([]string, 0, len(r.API.Access.Acls.AllowWhen))
+					for allowWhenIndex := range r.API.Access.Acls.AllowWhen {
+						allowWhen = append(allowWhen, r.API.Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+					}
+				}
+				var denyWhen []string
+				if r.API.Access.Acls.DenyWhen != nil {
+					denyWhen = make([]string, 0, len(r.API.Access.Acls.DenyWhen))
+					for denyWhenIndex := range r.API.Access.Acls.DenyWhen {
+						denyWhen = append(denyWhen, r.API.Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+					}
+				}
 				acls = &shared.AIGatewayACLS{
-					Allow: allow,
-					Deny:  deny,
+					Allow:     allow,
+					Deny:      deny,
+					AllowWhen: allowWhen,
+					DenyWhen:  denyWhen,
 				}
 			}
 			identityProviders := make([]string, 0, len(r.API.Access.IdentityProviders))
@@ -19491,9 +19571,25 @@ func (r *AIGatewayModelResourceModel) ToSharedUpdateAIGatewayModelRequest(ctx co
 				for denyIndex1 := range r.Model.Access.Acls.Deny {
 					deny1 = append(deny1, r.Model.Access.Acls.Deny[denyIndex1].ValueString())
 				}
+				var allowWhen1 []string
+				if r.Model.Access.Acls.AllowWhen != nil {
+					allowWhen1 = make([]string, 0, len(r.Model.Access.Acls.AllowWhen))
+					for allowWhenIndex1 := range r.Model.Access.Acls.AllowWhen {
+						allowWhen1 = append(allowWhen1, r.Model.Access.Acls.AllowWhen[allowWhenIndex1].ValueString())
+					}
+				}
+				var denyWhen1 []string
+				if r.Model.Access.Acls.DenyWhen != nil {
+					denyWhen1 = make([]string, 0, len(r.Model.Access.Acls.DenyWhen))
+					for denyWhenIndex1 := range r.Model.Access.Acls.DenyWhen {
+						denyWhen1 = append(denyWhen1, r.Model.Access.Acls.DenyWhen[denyWhenIndex1].ValueString())
+					}
+				}
 				acls1 = &shared.AIGatewayACLS{
-					Allow: allow1,
-					Deny:  deny1,
+					Allow:     allow1,
+					Deny:      deny1,
+					AllowWhen: allowWhen1,
+					DenyWhen:  denyWhen1,
 				}
 			}
 			identityProviders1 := make([]string, 0, len(r.Model.Access.IdentityProviders))

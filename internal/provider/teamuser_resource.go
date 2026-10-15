@@ -106,7 +106,7 @@ func (r *TeamUserResource) Create(ctx context.Context, req resource.CreateReques
 	}
 	res, err := r.client.TeamMembership.AddUserToTeam(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -208,7 +208,7 @@ func (r *TeamUserResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 	res, err := r.client.TeamMembership.RemoveUserFromTeam(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

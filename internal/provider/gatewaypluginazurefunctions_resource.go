@@ -353,7 +353,7 @@ func (r *GatewayPluginAzureFunctionsResource) Create(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.CreateAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -413,7 +413,7 @@ func (r *GatewayPluginAzureFunctionsResource) Read(ctx context.Context, req reso
 	}
 	res, err := r.client.Plugins.GetAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -467,7 +467,7 @@ func (r *GatewayPluginAzureFunctionsResource) Update(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.UpdateAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -527,7 +527,7 @@ func (r *GatewayPluginAzureFunctionsResource) Delete(ctx context.Context, req re
 	}
 	res, err := r.client.Plugins.DeleteAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

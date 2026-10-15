@@ -690,7 +690,7 @@ func (r *PortalAppearanceResource) Create(ctx context.Context, req resource.Crea
 	}
 	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -750,7 +750,7 @@ func (r *PortalAppearanceResource) Read(ctx context.Context, req resource.ReadRe
 	}
 	res, err := r.client.PortalAppearance.GetPortalAppearance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -804,7 +804,7 @@ func (r *PortalAppearanceResource) Update(ctx context.Context, req resource.Upda
 	}
 	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

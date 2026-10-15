@@ -408,7 +408,7 @@ func (r *GatewayPluginOasValidationResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.CreateOasvalidationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -468,7 +468,7 @@ func (r *GatewayPluginOasValidationResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.Plugins.GetOasvalidationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -522,7 +522,7 @@ func (r *GatewayPluginOasValidationResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.UpdateOasvalidationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -582,7 +582,7 @@ func (r *GatewayPluginOasValidationResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.Plugins.DeleteOasvalidationPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

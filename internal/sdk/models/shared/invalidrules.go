@@ -7,6 +7,7 @@ type InvalidRules string
 
 const (
 	InvalidRulesRequired                               InvalidRules = "required"
+	InvalidRulesUnique                                 InvalidRules = "unique"
 	InvalidRulesIsArray                                InvalidRules = "is_array"
 	InvalidRulesIsBase64                               InvalidRules = "is_base64"
 	InvalidRulesIsBoolean                              InvalidRules = "is_boolean"
@@ -22,6 +23,7 @@ const (
 	InvalidRulesUnknownProperty                        InvalidRules = "unknown_property"
 	InvalidRulesMissingReference                       InvalidRules = "missing_reference"
 	InvalidRulesIsLabel                                InvalidRules = "is_label"
+	InvalidRulesKeyInvalid                             InvalidRules = "key_invalid"
 	InvalidRulesMatchesRegex                           InvalidRules = "matches_regex"
 	InvalidRulesInvalid                                InvalidRules = "invalid"
 	InvalidRulesIsSupportedNetworkAvailabilityZoneList InvalidRules = "is_supported_network_availability_zone_list"
@@ -38,7 +40,7 @@ func (e InvalidRules) ToPointer() *InvalidRules {
 func (e *InvalidRules) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "required", "is_array", "is_base64", "is_boolean", "is_date_time", "is_integer", "is_null", "is_number", "is_object", "is_string", "is_uuid", "is_fqdn", "is_arn", "unknown_property", "missing_reference", "is_label", "matches_regex", "invalid", "is_supported_network_availability_zone_list", "is_supported_network_cidr_block", "is_supported_provider_region", "type":
+		case "required", "unique", "is_array", "is_base64", "is_boolean", "is_date_time", "is_integer", "is_null", "is_number", "is_object", "is_string", "is_uuid", "is_fqdn", "is_arn", "unknown_property", "missing_reference", "is_label", "key_invalid", "matches_regex", "invalid", "is_supported_network_availability_zone_list", "is_supported_network_cidr_block", "is_supported_provider_region", "type":
 			return true
 		}
 	}

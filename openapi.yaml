@@ -25345,6 +25345,7 @@ components:
       type: string
       enum:
         - required
+        - unique
         - is_array
         - is_base64
         - is_boolean
@@ -25360,6 +25361,7 @@ components:
         - unknown_property
         - missing_reference
         - is_label
+        - key_invalid
         - matches_regex
         - invalid
         - is_supported_network_availability_zone_list
@@ -25477,6 +25479,80 @@ components:
         - reason
         - rule
         - maximum
+    InvalidParameterMinimumTime:
+      type: object
+      properties:
+        field:
+          type: string
+          example: to
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_time
+          nullable: false
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        minimum:
+          type: string
+          format: date-time
+          example: '2026-10-01T00:00:00Z'
+        source:
+          type: string
+          example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        reason:
+          type: string
+          example: 'must be no earlier than 2026-10-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterMaximumTime:
+      type: object
+      properties:
+        field:
+          type: string
+          example: to
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - max_time
+          nullable: false
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        maximum:
+          type: string
+          format: date-time
+          example: '2026-10-31T23:59:59Z'
+        source:
+          type: string
+          example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        reason:
+          type: string
+          example: 'must be no later than 2026-10-31T23:59:59Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - maximum
     InvalidParameterChoiceItem:
       type: object
       properties:
@@ -25570,6 +25646,8 @@ components:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
           - $ref: '#/components/schemas/InvalidParameterMaximumLength'
+          - $ref: '#/components/schemas/InvalidParameterMinimumTime'
+          - $ref: '#/components/schemas/InvalidParameterMaximumTime'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
       minItems: 1
@@ -34751,6 +34829,21 @@ components:
         - entity_type_name
         - entity_region
       title: PortalAssignedRoleResponse
+    TryItUIAudience:
+      description: |
+        The audience for the Try It UI feature.
+
+        `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+        `authenticated` means that the Try It UI will only be available to authenticated users.
+
+        `registered` means that the Try It UI will only be available to users who have registered for the API.
+      type: string
+      enum:
+        - all
+        - authenticated
+        - registered
+      x-speakeasy-unknown-values: allow
     SnippetName:
       description: The unique name of a snippet in a portal.
       type: string
@@ -34768,7 +34861,7 @@ components:
           nullable: false
           properties:
             name:
-              description: 'The theme name to apply to this portal. Supported names are ''ocean'' and ''glacier''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
+              description: 'The theme name to apply to this portal. Supported names are ''ocean'', ''mesa'', and ''grove''. If another name is provided or this property is omitted, the portal uses the default ''ocean'' theme.'
               type: string
               default: ocean
               nullable: false
@@ -34864,6 +34957,10 @@ components:
               description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
               type: boolean
               default: true
+            try_it_ui_audience:
+              allOf:
+                - $ref: '#/components/schemas/TryItUIAudience'
+                - default: all
           title: PortalCustomizationSpecRenderer
           x-speakeasy-param-computed: false
         robots:
@@ -35469,6 +35566,34 @@ components:
       nullable: true
       title: API Publication Auth Strategy IDs
       x-speakeasy-param-computed: false
+    ApiPublicationSpecRenderer:
+      description: Customization settings for the API spec renderer in the portal.
+      type: object
+      properties:
+        try_it_ui:
+          description: Enable in-browser testing for your API. All linked gateways must have the CORS plugin configured.
+          type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        try_it_ui_audience:
+          description: |
+            The audience for the Try It UI feature.
+
+            `all` means that the Try It UI will be available to all users, including unauthenticated users.
+
+            `authenticated` means that the Try It UI will only be available to authenticated users.
+
+            `registered` means that the Try It UI will only be available to users who have registered for the API.
+          type: string
+          enum:
+            - all
+            - authenticated
+            - registered
+          nullable: true
+          x-speakeasy-unknown-values: allow
+      additionalProperties: false
+      title: ApiPublicationSpecRenderer
     AutoApproveRegistrations:
       description: 'Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal''s auto_approve_applications value.'
       type: boolean
@@ -35483,6 +35608,8 @@ components:
           $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
         visibility:
           $ref: '#/components/schemas/ApiPublicationVisibility'
+        spec_renderer:
+          $ref: '#/components/schemas/ApiPublicationSpecRenderer'
         form_id:
           description: |
             UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
@@ -46435,7 +46562,7 @@ components:
         - location_id
         - project_id
     AIGatewayACLS:
-      description: Access control rules. Configure exactly one of `allow` or `deny`.
+      description: 'Access control rules. Configure exactly one of `allow`, `deny`, `allow_when`, or `deny_when`.'
       properties:
         allow:
           description: 'List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.'
@@ -46449,6 +46576,30 @@ components:
           items:
             type: string
           x-speakeasy-param-computed: true
+        allow_when:
+          description: 'Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.'
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.2'
+          x-speakeasy-param-computed: false
+        deny_when:
+          description: 'Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.'
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.2'
+          x-speakeasy-param-computed: false
     AIGatewayAgentAccess:
       description: Access control configuration for an agent.
       type: object
@@ -96126,7 +96277,6 @@ components:
         anonymous:
           description: 'An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.'
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         hide_credentials:
@@ -96143,7 +96293,6 @@ components:
                 type: string
               region:
                 type: string
-                default: null
                 nullable: true
                 x-speakeasy-param-computed: false
               scope:
@@ -96154,7 +96303,6 @@ components:
                   - realm
                 x-speakeasy-unknown-values: allow
             type: object
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         key_in_body:
@@ -96196,13 +96344,13 @@ components:
         realm:
           description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         run_on_preflight:
           description: 'A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.'
           type: boolean
           default: true
+      x-terraform-no-default-null: true
     AIGWOpenIDConnectGeneratedConfig:
       type: object
       properties:
@@ -102641,24 +102789,6 @@ components:
                 $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
               visibility:
                 $ref: '#/components/schemas/ApiPublicationVisibility'
-              form_id:
-                description: |
-                  UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
-                type: string
-                format: uuid
-                nullable: true
-                x-speakeasy-param-computed: true
-              warnings:
-                description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
-                type: array
-                items:
-                  type: string
-                readOnly: true
-                x-speakeasy-param-suppress-computed-diff: true
-              created_at:
-                $ref: '#/components/schemas/CreatedAt'
-              updated_at:
-                $ref: '#/components/schemas/UpdatedAt'
               spec_renderer:
                 description: Customization settings for the API spec renderer in the portal.
                 type: object
@@ -102693,6 +102823,24 @@ components:
                   - try_it_ui_audience
                 title: ApiPublicationSpecRenderer
                 x-speakeasy-param-computed: false
+              form_id:
+                description: |
+                  UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
+                type: string
+                format: uuid
+                nullable: true
+                x-speakeasy-param-computed: true
+              warnings:
+                description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
+                type: array
+                items:
+                  type: string
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
             required:
               - visibility
@@ -102700,6 +102848,7 @@ components:
               - updated_at
               - auth_strategy_ids
               - form_id
+              - spec_renderer
             title: API Publication
     ApiImplementationResponse:
       description: An API implementation

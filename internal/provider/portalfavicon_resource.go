@@ -105,7 +105,7 @@ func (r *PortalFaviconResource) Create(ctx context.Context, req resource.CreateR
 	}
 	res, err := r.client.Assets.ReplacePortalAssetFavicon(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -165,7 +165,7 @@ func (r *PortalFaviconResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	res, err := r.client.Assets.GetPortalAssetFavicon(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -219,7 +219,7 @@ func (r *PortalFaviconResource) Update(ctx context.Context, req resource.UpdateR
 	}
 	res, err := r.client.Assets.ReplacePortalAssetFavicon(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

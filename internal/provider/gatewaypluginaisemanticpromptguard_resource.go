@@ -1265,7 +1265,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Create(ctx context.Context,
 	}
 	res, err := r.client.Plugins.CreateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1325,7 +1325,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Read(ctx context.Context, r
 	}
 	res, err := r.client.Plugins.GetAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1379,7 +1379,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Update(ctx context.Context,
 	}
 	res, err := r.client.Plugins.UpdateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1439,7 +1439,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Delete(ctx context.Context,
 	}
 	res, err := r.client.Plugins.DeleteAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
