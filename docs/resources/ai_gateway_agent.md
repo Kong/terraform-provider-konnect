@@ -19,7 +19,13 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       allow = [
         "..."
       ]
+      allow_when = [
+        "..."
+      ]
       deny = [
+        "..."
+      ]
+      deny_when = [
         "..."
       ]
     }
@@ -282,7 +288,9 @@ Deprecated: use `auth_strategies` instead. The two are mutually exclusive.
 Optional:
 
 - `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.
+- `allow_when` (List of String) Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.
 - `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access.
+- `deny_when` (List of String) Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.
 
 ## Import
 

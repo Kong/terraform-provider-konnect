@@ -84,11 +84,21 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								ElementType: types.StringType,
 								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 							},
+							"allow_when": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
+							},
 							"deny": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
+							},
+							"deny_when": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
 							},
 						},
 						Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
