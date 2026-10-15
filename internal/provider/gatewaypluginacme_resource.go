@@ -940,7 +940,7 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.Plugins.CreateAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1000,7 +1000,7 @@ func (r *GatewayPluginAcmeResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.Plugins.GetAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1054,7 +1054,7 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.Plugins.UpdateAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1114,7 +1114,7 @@ func (r *GatewayPluginAcmeResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.Plugins.DeleteAcmePlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -236,7 +236,7 @@ func (r *EventGatewaySchemaRegistryResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.CreateEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -296,7 +296,7 @@ func (r *EventGatewaySchemaRegistryResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.GetEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -350,7 +350,7 @@ func (r *EventGatewaySchemaRegistryResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.UpdateEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -410,7 +410,7 @@ func (r *EventGatewaySchemaRegistryResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.DeleteEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

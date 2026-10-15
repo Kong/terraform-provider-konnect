@@ -18,9 +18,9 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiRagInjectorPluginConfig{}
 		if resp.Config.CollectionACLConfig != nil {
-			r.Config.CollectionACLConfig = make(map[string]tfTypes.AIGatewayACLS, len(resp.Config.CollectionACLConfig))
+			r.Config.CollectionACLConfig = make(map[string]tfTypes.AIGatewayMCPACLs, len(resp.Config.CollectionACLConfig))
 			for collectionACLConfigKey, collectionACLConfigValue := range resp.Config.CollectionACLConfig {
-				var collectionACLConfigResult tfTypes.AIGatewayACLS
+				var collectionACLConfigResult tfTypes.AIGatewayMCPACLs
 				collectionACLConfigResult.Allow = make([]types.String, 0, len(collectionACLConfigValue.Allow))
 				for _, v := range collectionACLConfigValue.Allow {
 					collectionACLConfigResult.Allow = append(collectionACLConfigResult.Allow, types.StringValue(v))
@@ -123,7 +123,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		if resp.Config.GlobalACLConfig == nil {
 			r.Config.GlobalACLConfig = nil
 		} else {
-			r.Config.GlobalACLConfig = &tfTypes.AIGatewayACLS{}
+			r.Config.GlobalACLConfig = &tfTypes.AIGatewayMCPACLs{}
 			r.Config.GlobalACLConfig.Allow = make([]types.String, 0, len(resp.Config.GlobalACLConfig.Allow))
 			for _, v := range resp.Config.GlobalACLConfig.Allow {
 				r.Config.GlobalACLConfig.Allow = append(r.Config.GlobalACLConfig.Allow, types.StringValue(v))

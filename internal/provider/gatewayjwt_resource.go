@@ -182,7 +182,7 @@ func (r *GatewayJWTResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	res, err := r.client.JWTs.CreateJwtWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -242,7 +242,7 @@ func (r *GatewayJWTResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 	res, err := r.client.JWTs.GetJwtWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -320,7 +320,7 @@ func (r *GatewayJWTResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 	res, err := r.client.JWTs.DeleteJwtWithConsumer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

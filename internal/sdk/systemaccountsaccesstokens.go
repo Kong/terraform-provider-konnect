@@ -81,6 +81,7 @@ func (s *SystemAccountsAccessTokens) PostSystemAccountsIDAccessTokens(ctx contex
 		defer cancel()
 	}
 
+	ctx = utils.WithOperation(ctx, "post-system-accounts-id-access-tokens")
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)

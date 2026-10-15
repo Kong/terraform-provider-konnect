@@ -315,7 +315,7 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Create(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.CreateWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -375,7 +375,7 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Read(ctx context.Context, req 
 	}
 	res, err := r.client.Plugins.GetWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -429,7 +429,7 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Update(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.UpdateWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -489,7 +489,7 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Delete(ctx context.Context, re
 	}
 	res, err := r.client.Plugins.DeleteWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
