@@ -1266,19 +1266,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 															},
 															"cluster": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"max_redirections": types.Int64Type,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`ip`:   types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"max_redirections": schema.Int64Attribute{
 																		Computed:    true,
@@ -1370,12 +1358,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`Default: "127.0.0.1"`,
 															},
 															"keepalive": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"backlog":   types.Int64Type,
-																	"pool_size": types.Int64Type,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"backlog": schema.Int64Attribute{
 																		Optional:    true,
@@ -1428,22 +1411,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"sentinel": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"master": types.StringType,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`host`: types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																	"password": types.StringType,
-																	"role":     types.StringType,
-																	"username": types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"master": schema.StringAttribute{
 																		Optional:    true,
@@ -8858,19 +8826,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 															},
 															"cluster": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"max_redirections": types.Int64Type,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`ip`:   types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"max_redirections": schema.Int64Attribute{
 																		Computed:    true,
@@ -8962,12 +8918,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																	`Default: "127.0.0.1"`,
 															},
 															"keepalive": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"backlog":   types.Int64Type,
-																	"pool_size": types.Int64Type,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"backlog": schema.Int64Attribute{
 																		Optional:    true,
@@ -9020,22 +8971,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"sentinel": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"master": types.StringType,
-																	"nodes": types.ListType{
-																		ElemType: types.ObjectType{
-																			AttrTypes: map[string]attr.Type{
-																				`host`: types.StringType,
-																				`port`: types.Int64Type,
-																			},
-																		},
-																	},
-																	"password": types.StringType,
-																	"role":     types.StringType,
-																	"username": types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"master": schema.StringAttribute{
 																		Optional:    true,
