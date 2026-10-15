@@ -46576,6 +46576,30 @@ components:
           items:
             type: string
           x-speakeasy-param-computed: true
+        allow_when:
+          description: 'Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.'
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.2'
+          x-speakeasy-param-computed: false
+        deny_when:
+          description: 'Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of `allow`, `deny`, `allow_when`, or `deny_when` must be specified.'
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            x-expression:
+              type: boolean
+          nullable: true
+          x-min-runtime-version: '2.2'
+          x-speakeasy-param-computed: false
     AIGatewayAgentAccess:
       description: Access control configuration for an agent.
       type: object
