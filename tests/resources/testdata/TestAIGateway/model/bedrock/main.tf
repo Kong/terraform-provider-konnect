@@ -39,17 +39,13 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel_bedrock" {
     name = "my-bedrock-model"
     targets = [
       {
-        # region/max_tokens only: batch_bucket_prefix, performance_config_latency
-        # and video_output_s3_uri are intentionally left unset here, regression-testing
-        # the AIGW overlay fix for BedrockModelConfig (these previously had to be sent
-        # as explicit null and were rejected by the API as "not nullable").
         config = {
           bedrock = {
             max_tokens = 1024
-            region     = "us-west-2"
+            region     = "us-east-1"
           }
         }
-        name     = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+        name     = "my-sample-bedrock-target"
         provider = konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_bedrock.name
       }
     ]

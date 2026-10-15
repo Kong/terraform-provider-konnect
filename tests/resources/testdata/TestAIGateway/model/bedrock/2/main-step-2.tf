@@ -11,7 +11,7 @@ resource "konnect_ai_gateway_model_provider" "my_aigatewaymodelprovider_bedrock"
         aws = {}
       }
     }
-    display_name = "TF Test Bedrock AI Provider"
+    display_name = "TF Test Bedrock AI Provider Updated"
     name         = "tf-test-bedrock-provider"
   }
 }
@@ -42,10 +42,10 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel_bedrock" {
         config = {
           bedrock = {
             max_tokens = 1024
-            region     = "us-west-2"
+            region     = "us-east-1"
           }
         }
-        name     = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+        name     = "my-sample-bedrock-target"
         provider = konnect_ai_gateway_model_provider.my_aigatewaymodelprovider_bedrock.name
       }
     ]
