@@ -80,6 +80,10 @@ func TestGatewayWorkspaceSmoke(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_gateway_config_store.smoke", "id"),
 						resource.TestCheckResourceAttr("konnect_gateway_config_store_secret.smoke", "key", "smoke-key"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_ca_certificate.smoke", "cert_digest"),
+						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin_streaming.smoke", "name", "setheader-streaming"),
+						resource.TestCheckResourceAttr("konnect_gateway_cloned_plugin.smoke", "name", "smoke-custom-acl"),
+						resource.TestCheckResourceAttr("konnect_gateway_cloned_plugin.smoke", "ref", "acl"),
 					),
 				},
 			},
