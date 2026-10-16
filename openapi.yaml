@@ -579,6 +579,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
       tags:
@@ -684,6 +686,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
       tags:
@@ -20153,7 +20157,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayRouteExpression#delete
-      operationId: delete-route-in-workspace-RouteExpression
+      operationId: delete-route-RouteExpression
       summary: Delete a Route in a workspace
       description: Delete a Route in a workspace
       parameters:
@@ -20170,7 +20174,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayRouteExpression#read
-      operationId: get-route-in-workspace-RouteExpression
+      operationId: get-route-RouteExpression
       summary: Get a Route in a workspace
       description: Get a Route using ID or name in a workspace.
       parameters:
@@ -20195,7 +20199,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayRouteExpression#update
-      operationId: upsert-route-in-workspace-RouteExpression
+      operationId: upsert-route-RouteExpression
       summary: Upsert a Route in a workspace
       description: Create or Update Route using ID or name in a workspace.
       parameters:
@@ -20225,7 +20229,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayRouteExpression#create
-      operationId: create-route-in-workspace-RouteExpression
+      operationId: create-route-RouteExpression
       summary: Create a new Route in a workspace
       description: Create a new Route in a workspace
       parameters:

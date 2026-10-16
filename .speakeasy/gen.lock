@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: efdd3e7cfb67f57e0c7aeaceff90a90d
+  docChecksum: fefae31dc6d85c1ada420b9d8caf1bea
   docVersion: 2.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
   releaseVersion: 3.26.0
   configChecksum: 1c744f0afd800f08d89944ddf1724967
 persistentEdits:
-  generation_id: 9d8d6fe7-aa7c-4cd7-90b6-e6215cee6265
-  pristine_commit_hash: 6143e5bcec400d361b5f54e1166cb75916a22ff4
-  pristine_tree_hash: f05e8e835a4bdf7109556b7614e62e99f464f267
+  generation_id: 1f525221-ca2d-410c-af3b-b4eff1a7bc4a
+  pristine_commit_hash: 51388f71619f66bcea274cd4ee5c99fff4302277
+  pristine_tree_hash: 369b155555d1e72e2f2ff1e131bbf0987a0a1925
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4933,12 +4933,12 @@ trackedFiles:
     pristine_git_object: 1ea63efaa8217d3d486247bd97ec84a6261bd22d
   internal/provider/gatewayrouteexpression_resource.go:
     id: fdb1783f82e7
-    last_write_checksum: sha1:1d0217000386911298538ce1c87ed26e7570f4d3
-    pristine_git_object: 5e16880857649c02f0effe4675c47662a57ef23c
+    last_write_checksum: sha1:2b933baf721e38394b8225516858fa6dbcc373cb
+    pristine_git_object: c10b50ba5ddf8f8764616288f1266c57b18db356
   internal/provider/gatewayrouteexpression_resource_sdk.go:
     id: 442ccc00b3c3
-    last_write_checksum: sha1:2588d71632afc9ea1b39fcc0d93c52bcf38c0a64
-    pristine_git_object: f93fd33453d534790dc817fbeddf74412c6f5239
+    last_write_checksum: sha1:b7f62f1f732c259cd033533e5e45978b8023b3b8
+    pristine_git_object: f5b1bdc4aad9952fee1e92a5c86e9c9d144de853
   internal/provider/gatewayservice_resource.go:
     id: 201b8b0d4e05
     last_write_checksum: sha1:3d3e4b0e0657cf5e396fc554421ecf067e5f9d61
@@ -8437,12 +8437,12 @@ trackedFiles:
     pristine_git_object: df6f4ccaccbb3621c87c48a1f24cc68770984de2
   internal/sdk/aigatewaycacertificates.go:
     id: e506fac712cb
-    last_write_checksum: sha1:85613e84f1a60349009bdc6b468811361e17802a
-    pristine_git_object: 0486a96588951c63c3bb647705ce37b139b31767
+    last_write_checksum: sha1:8ed3b2f663589d164719125cd71052f84c9a54ac
+    pristine_git_object: dac14ee89d1021c596b6220c5a34d472d278d1e8
   internal/sdk/aigatewaycertificates.go:
     id: fa73c307ba15
-    last_write_checksum: sha1:7c8d0fa9a839af7b34c02e1cc891b6d6070c9326
-    pristine_git_object: 979c6173feab72ad0bd47638bb2971abcda0ce49
+    last_write_checksum: sha1:55b4ce0ef9e96cfca023ee2c6f69b87324e0adf1
+    pristine_git_object: 670c8f37b7e27b0aeb89e426d684745666e97848
   internal/sdk/aigatewayconfigstores.go:
     id: 3eda4e7cfd67
     last_write_checksum: sha1:1771693f2b2c961259daa99e4cbd138ee17a7732
@@ -9659,10 +9659,10 @@ trackedFiles:
     id: d41575f68a46
     last_write_checksum: sha1:aa5944cd1b58a635c19c37198a85a601116a773c
     pristine_git_object: 163a41dfc6d3ce19cd918a9852fe4ec1f3299a36
-  internal/sdk/models/operations/createrouteinworkspacerouteexpression.go:
-    id: 1d09c255f388
-    last_write_checksum: sha1:34422ddb8adbe0b6b95cf9500c05d7c8eb8ebf42
-    pristine_git_object: 94fdaccbe990998e9ab07d89e3e701991487d466
+  internal/sdk/models/operations/createrouterouteexpression.go:
+    id: 362c8e0dd19a
+    last_write_checksum: sha1:75dc2995e2d14dfd703dd1c9aeca51e22af76257
+    pristine_git_object: 0cb48eea5b357b2b0b9572de83cc307e3de3c97b
   internal/sdk/models/operations/createroutetransformeradvancedplugin.go:
     id: ab55204af268
     last_write_checksum: sha1:3f38380da46c655b9fd13bff05e3ceb973bb4173
@@ -9837,12 +9837,12 @@ trackedFiles:
     pristine_git_object: 999eb6cd044ad06caa057530298158ab857facd0
   internal/sdk/models/operations/deleteaigatewaycacertificate.go:
     id: d0d9eef1a5d5
-    last_write_checksum: sha1:7202ab3b2339ae6aad219f89e4fb86f22d22e1e6
-    pristine_git_object: b96d9c28e8732fe42ace10aa6d1b395a92ca3e2c
+    last_write_checksum: sha1:5e865127347cc3a7ba22b866eb6d5ee94133e519
+    pristine_git_object: a64afb56164e39ba5f02299ec245b06827b5d4e7
   internal/sdk/models/operations/deleteaigatewaycertificate.go:
     id: 287bbf2530a5
-    last_write_checksum: sha1:b2706b2ccacc14692936c19c96cdb1057ec6c9d8
-    pristine_git_object: 3ed08197501703aca721d056e94b9d52807afe42
+    last_write_checksum: sha1:33966ecd33872e9de02f67f64c5c16f51424c4b6
+    pristine_git_object: ba846002300ceeed5f56ce051e6c96c2edada789
   internal/sdk/models/operations/deleteaigatewayconfigstore.go:
     id: 2c5ea9d532ff
     last_write_checksum: sha1:83e3e68680ec91911c3f2bb41d698cf09ec7e0ff
@@ -10607,10 +10607,10 @@ trackedFiles:
     id: 3b12f570bfb1
     last_write_checksum: sha1:cc63b51eb61623b02f6fa4b20d9f661f489718df
     pristine_git_object: d45303225dce131cab49fb3abadda12d26d08d1b
-  internal/sdk/models/operations/deleterouteinworkspacerouteexpression.go:
-    id: f7a40b8a32c8
-    last_write_checksum: sha1:465609959b8cd03b02e30ff23d5a879215cd7eaa
-    pristine_git_object: e423493b2b7115821961964c7290e6b4805bc383
+  internal/sdk/models/operations/deleterouterouteexpression.go:
+    id: dd163834c63e
+    last_write_checksum: sha1:5e1fe354bbff0c9046b2f3ec98390e00db8662b8
+    pristine_git_object: e51debc703eb3bcec0b8be34711225c554f4acb8
   internal/sdk/models/operations/deleteroutetransformeradvancedplugin.go:
     id: 8907abbf3826
     last_write_checksum: sha1:55f47b63e622813b59dd42291f51966e0928fcf2
@@ -11615,10 +11615,10 @@ trackedFiles:
     id: 1020b16c71c0
     last_write_checksum: sha1:c74c3571d73c2fc6fe1ffd2fed53ad8f501488e3
     pristine_git_object: bb183c968ae488594828dfba213e12c68d43bb14
-  internal/sdk/models/operations/getrouteinworkspacerouteexpression.go:
-    id: 5135d456f255
-    last_write_checksum: sha1:982ec3781c0b688d6d879a4a8297ec4e9f4eba69
-    pristine_git_object: 4cfa3f7d78478e80bfbaa8e7f1e6e9e95941cb70
+  internal/sdk/models/operations/getrouterouteexpression.go:
+    id: a7beb10dbbe3
+    last_write_checksum: sha1:be82122c4ca103ece05caab78ee68c5b7530390c
+    pristine_git_object: 8c4473ec1e209a078234f383f98b2ec670074bb5
   internal/sdk/models/operations/getroutetransformeradvancedplugin.go:
     id: 00570246dfa0
     last_write_checksum: sha1:1343b5635acc4cb88cb7eff9b4226b9700543af0
@@ -12747,10 +12747,10 @@ trackedFiles:
     id: bf28ee677c59
     last_write_checksum: sha1:1da859c7cc23c4d4b74c3790f65fb7a77247964f
     pristine_git_object: b7356da2aef60998ab99e8e2d84e48cc0ed51296
-  internal/sdk/models/operations/upsertrouteinworkspacerouteexpression.go:
-    id: 121f27ffc8ef
-    last_write_checksum: sha1:ad0611d18fdad949613854e85643de78bc1f355b
-    pristine_git_object: a2321723ee45175b224f9074b1eaa71a151133fc
+  internal/sdk/models/operations/upsertrouterouteexpression.go:
+    id: 2b071f9f8cb8
+    last_write_checksum: sha1:9e329d42cb967cfd89abd0faa6cccc58df5165bb
+    pristine_git_object: 0cb4a244fc57995600f8ea2118a4a958135a11f0
   internal/sdk/models/operations/upsertservice.go:
     id: dac2227bac17
     last_write_checksum: sha1:0b2c0f9fe962e2debed0c8e8233d00bd75126f85
@@ -16769,8 +16769,8 @@ trackedFiles:
     pristine_git_object: e640d8a5d7a5a7f433c433030cc656bff87b8f10
   internal/sdk/routes.go:
     id: d87401733f23
-    last_write_checksum: sha1:14ed3d0d2abdf83bc85fb9752323e470c5c85f5f
-    pristine_git_object: d9a1e1fc92944b14d4a37af3155b65438fdb2cf4
+    last_write_checksum: sha1:7f61ebd2ead20bf11efbeafb74fe0cc07ba8f274
+    pristine_git_object: c62ded0ee9265c98d82990b025eee00f0bdd4a11
   internal/sdk/serverlesscloudgateways.go:
     id: 47f831aadfca
     last_write_checksum: sha1:7e6a0372ea3dae7772552c94ecae73d82b9dd65d
@@ -26785,6 +26785,7 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+          workspace: "team-payments"
       responses:
         "401":
           application/json: {"message": "<value>", "status": 475086}
@@ -26804,6 +26805,7 @@ examples:
         path:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          workspace: "team-payments"
       responses:
         "200":
           application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true, "tags": null}
@@ -26827,6 +26829,7 @@ examples:
         path:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          workspace: "team-payments"
       requestBody:
         application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true, "tags": null}
       responses:
@@ -26839,6 +26842,7 @@ examples:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          workspace: "team-payments"
       requestBody:
         application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true, "tags": null}
       responses:
@@ -33342,6 +33346,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "429":
           application/problem+json: {"status": 429, "title": "Too Many Requests", "type": "https://httpstatuses.com/429", "instance": "kong:trace:1234567890", "detail": "Too Many Requests"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
   create-ai-gateway-certificate:
     speakeasy-default-create-ai-gateway-certificate:
       parameters:
@@ -33417,6 +33423,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "429":
           application/problem+json: {"status": 429, "title": "Too Many Requests", "type": "https://httpstatuses.com/429", "instance": "kong:trace:1234567890", "detail": "Too Many Requests"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
   create-ai-gateway-config-store:
     speakeasy-default-create-ai-gateway-config-store:
       parameters:
