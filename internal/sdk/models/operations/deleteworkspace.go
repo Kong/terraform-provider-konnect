@@ -47,14 +47,14 @@ type DeleteWorkspaceResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Bad Request
-	BadRequestError *shared.BadRequestError
-	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
-	ForbiddenError *shared.ForbiddenError
-	// Not Found
-	NotFoundError *shared.NotFoundError
+	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
+	// Unauthorized
+	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
+	// Forbidden
+	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
+	// Forbidden
+	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 	// Internal
 	InternalError *shared.InternalError
 	// Not Implemented
@@ -95,32 +95,32 @@ func (d *DeleteWorkspaceResponse) GetRawResponse() *http.Response {
 	return d.RawResponse
 }
 
-func (d *DeleteWorkspaceResponse) GetBadRequestError() *shared.BadRequestError {
+func (d *DeleteWorkspaceResponse) GetKonnectCPLegacyBadRequestError() *shared.KonnectCPLegacyBadRequestError {
 	if d == nil {
 		return nil
 	}
-	return d.BadRequestError
+	return d.KonnectCPLegacyBadRequestError
 }
 
-func (d *DeleteWorkspaceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (d *DeleteWorkspaceResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
 	if d == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return d.KonnectCPLegacyUnauthorizedError
 }
 
-func (d *DeleteWorkspaceResponse) GetForbiddenError() *shared.ForbiddenError {
+func (d *DeleteWorkspaceResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
 	if d == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return d.KonnectCPLegacyForbiddenError
 }
 
-func (d *DeleteWorkspaceResponse) GetNotFoundError() *shared.NotFoundError {
+func (d *DeleteWorkspaceResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
 	if d == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return d.KonnectCPLegacyNotFoundError
 }
 
 func (d *DeleteWorkspaceResponse) GetInternalError() *shared.InternalError {

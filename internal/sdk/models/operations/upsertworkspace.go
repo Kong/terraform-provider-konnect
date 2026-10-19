@@ -58,14 +58,16 @@ type UpsertWorkspaceResponse struct {
 	RawResponse *http.Response
 	// Successfully upserted Workspace
 	Workspace *shared.Workspace
-	// Bad Request
-	BadRequestError *shared.BadRequestError
-	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
-	ForbiddenError *shared.ForbiddenError
-	// Not Found
-	NotFoundError *shared.NotFoundError
+	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
+	// Unauthorized
+	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
+	// Forbidden
+	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
+	// Forbidden
+	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
+	// Forbidden
+	KonnectCPLegacyConflictError *shared.KonnectCPLegacyConflictError
 	// Internal
 	InternalError *shared.InternalError
 	// Not Implemented
@@ -113,32 +115,39 @@ func (u *UpsertWorkspaceResponse) GetWorkspace() *shared.Workspace {
 	return u.Workspace
 }
 
-func (u *UpsertWorkspaceResponse) GetBadRequestError() *shared.BadRequestError {
+func (u *UpsertWorkspaceResponse) GetKonnectCPLegacyBadRequestError() *shared.KonnectCPLegacyBadRequestError {
 	if u == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return u.KonnectCPLegacyBadRequestError
 }
 
-func (u *UpsertWorkspaceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (u *UpsertWorkspaceResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
 	if u == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return u.KonnectCPLegacyUnauthorizedError
 }
 
-func (u *UpsertWorkspaceResponse) GetForbiddenError() *shared.ForbiddenError {
+func (u *UpsertWorkspaceResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
 	if u == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return u.KonnectCPLegacyForbiddenError
 }
 
-func (u *UpsertWorkspaceResponse) GetNotFoundError() *shared.NotFoundError {
+func (u *UpsertWorkspaceResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
 	if u == nil {
 		return nil
 	}
-	return u.NotFoundError
+	return u.KonnectCPLegacyNotFoundError
+}
+
+func (u *UpsertWorkspaceResponse) GetKonnectCPLegacyConflictError() *shared.KonnectCPLegacyConflictError {
+	if u == nil {
+		return nil
+	}
+	return u.KonnectCPLegacyConflictError
 }
 
 func (u *UpsertWorkspaceResponse) GetInternalError() *shared.InternalError {

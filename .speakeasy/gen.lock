@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: fefae31dc6d85c1ada420b9d8caf1bea
+  docChecksum: 1cef8f7ca5f3ae146f9e354491b683cd
   docVersion: 2.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
   releaseVersion: 3.26.0
   configChecksum: 1c744f0afd800f08d89944ddf1724967
 persistentEdits:
-  generation_id: 1f525221-ca2d-410c-af3b-b4eff1a7bc4a
-  pristine_commit_hash: 51388f71619f66bcea274cd4ee5c99fff4302277
-  pristine_tree_hash: 369b155555d1e72e2f2ff1e131bbf0987a0a1925
+  generation_id: 87881c10-2c18-49c4-8f11-bf4307d0aab1
+  pristine_commit_hash: a2c047ec3b31079a496e2b2d20936ff5e6a3c2a4
+  pristine_tree_hash: a627218f19b6f6186af82ea23a9ccb5c9ac3f8f2
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -59,6 +59,10 @@ trackedFiles:
     id: 61fb88e3f73d
     last_write_checksum: sha1:b6732de4e3e191aad2459ed5e56ea08516af0d40
     pristine_git_object: 22772e5be26067e9a7f0a8bba305611e45735273
+  examples/data-sources/konnect_gateway_workspace/data-source.tf:
+    id: 39d94b00bfd0
+    last_write_checksum: sha1:f02ace4fb68aaf1aea045c062f224d47ec586f4f
+    pristine_git_object: 51d28b05fd6c8a06199143b4c3e152c2431e4dba
   examples/data-sources/konnect_identity_provider/data-source.tf:
     id: 71eed51374fa
     last_write_checksum: sha1:e04b1113fac89576588e5d0cfab2010607394b27
@@ -4979,10 +4983,18 @@ trackedFiles:
     id: e31dd9baf501
     last_write_checksum: sha1:44f477c1d280f5b7e8bf3aee15a8246f0b57b590
     pristine_git_object: 33d93bc9c3666fb9382cad5f6e474d1dc4255f18
+  internal/provider/gatewayworkspace_data_source.go:
+    id: 8c7bc9a73614
+    last_write_checksum: sha1:6fa371293a4fcb39a3102bc0115b907fb46e631b
+    pristine_git_object: af9adabc4bc5d4778127dad07898045d134733c1
+  internal/provider/gatewayworkspace_data_source_sdk.go:
+    id: 98c9d854a31d
+    last_write_checksum: sha1:19907ef85b8a8e1b4080578663cfd6638c1ddf7a
+    pristine_git_object: d73d8580b2564fedeb7d391db692ad4286e54965
   internal/provider/gatewayworkspace_resource.go:
     id: a6dfce243d8c
-    last_write_checksum: sha1:ea1f20feaeebc41eb78c1660387c324ee9cb80a0
-    pristine_git_object: d606af579b81a3b5474e7918192ce6cce0ea0a52
+    last_write_checksum: sha1:5c5ff3f4f44db8c8de05b8f5e6b22271af7a35f2
+    pristine_git_object: 114a1d6e1dcf4dc4633856cf76ca2b86df25d3e8
   internal/provider/gatewayworkspace_resource_sdk.go:
     id: 4eac45d79b68
     last_write_checksum: sha1:0099aa863d1245a5e5ebaa0c2411f1bd1cd8bef7
@@ -5309,8 +5321,8 @@ trackedFiles:
     pristine_git_object: 47ecfc7393d52fb98a5bac2c40c6c49e8d4b4d1e
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:e5ff70a27ff5742d8c416dd90484a71d69e2aa6e
-    pristine_git_object: 978c139722e4dbf469e5ba7007338706e0bf3669
+    last_write_checksum: sha1:16f94acc8ef7d088b9024bae50748147fc58d0a6
+    pristine_git_object: 3e6e2d422cf82607879313149fe4d38d67e83184
   internal/provider/realm_resource.go:
     id: 288745fe66d4
     last_write_checksum: sha1:20e10f9a3284cbd18bcd21d5252dd7568a50cc01
@@ -9777,8 +9789,8 @@ trackedFiles:
     pristine_git_object: e929022978094be0ee6240084d704087a67478fe
   internal/sdk/models/operations/createworkspace.go:
     id: 0dfb68c3ac15
-    last_write_checksum: sha1:997060f0067d8c8df8893848aea9e40a8f6b5265
-    pristine_git_object: 805737b763f66f10b12b853275b693a166f26018
+    last_write_checksum: sha1:85e11492b34d497500c04ed7c0e8269465a5cd09
+    pristine_git_object: aec90d2ec505da03352cc970b2af69a7650fd56f
   internal/sdk/models/operations/createxmlthreatprotectionplugin.go:
     id: 9f9210992ebb
     last_write_checksum: sha1:d304a3d1b2b0796b0dfb312631524ebf8d158a22
@@ -10741,8 +10753,8 @@ trackedFiles:
     pristine_git_object: 8c0b0989b28889c3ff0c6c5fe99e536309464288
   internal/sdk/models/operations/deleteworkspace.go:
     id: 1193e004e5cc
-    last_write_checksum: sha1:271cd3ec4a16305ab72ae7580afde2cabf5d73e4
-    pristine_git_object: 1f3e617c18fff970665e1fdbb3a358c0be418790
+    last_write_checksum: sha1:048dffe189c09cfa72f2430a9cb0e026bee06f53
+    pristine_git_object: 5800a7d4e641f5ec0483f75741fa15be679ffb73
   internal/sdk/models/operations/deletexmlthreatprotectionplugin.go:
     id: 0465fb617852
     last_write_checksum: sha1:549c004d17f0f5a8392fdfe810e31fb5c23fa38f
@@ -11757,8 +11769,8 @@ trackedFiles:
     pristine_git_object: 1f4f330fdd7fa26dd1a7e6eede5a01e118b4bc59
   internal/sdk/models/operations/getworkspace.go:
     id: 265dc9ac3ec6
-    last_write_checksum: sha1:d98c3484ed6e596029e5194d0b7573f4c37828bd
-    pristine_git_object: b46c09df028e2c4d428a291073422ef2e1e3b178
+    last_write_checksum: sha1:61d1d1593e15aa8383196ee4d9b1be48ba898bdc
+    pristine_git_object: d41a620956721bf9790b9be4b1ad963087bf9f38
   internal/sdk/models/operations/getxmlthreatprotectionplugin.go:
     id: b2368f94f68e
     last_write_checksum: sha1:a1618790cf0be860a1e41b139827af48893b98ac
@@ -11807,6 +11819,10 @@ trackedFiles:
     id: 50ebce9871bb
     last_write_checksum: sha1:196ddb986a8c5bb535da3c1aed310e209f0c0ce9
     pristine_git_object: 5f867420cd8775130057d07ffc13b5e0ff877a84
+  internal/sdk/models/operations/listworkspacessingleresource.go:
+    id: 81b3037a2bfe
+    last_write_checksum: sha1:fc40d53e83d26aefc47aa63979d0f70334e0dd44
+    pristine_git_object: b0634a885ab511b9eebe3a03794bcd92dfb1b5a6
   internal/sdk/models/operations/options.go:
     id: 6d0d29414e00
     last_write_checksum: sha1:5cf06b91b8d864667a34e1d1472134cc9b335242
@@ -12769,8 +12785,8 @@ trackedFiles:
     pristine_git_object: 40b00e1ac50718f388df5920638b21ec8b980583
   internal/sdk/models/operations/upsertworkspace.go:
     id: c42b541c5ffa
-    last_write_checksum: sha1:8e5c67d3d40cddcba68a5e77bc1a6be269a7e11e
-    pristine_git_object: 9fe4867ff65743176846383d5d0e20407d692916
+    last_write_checksum: sha1:e112281589153c4edf096fc9c0dcdc33eb009c6f
+    pristine_git_object: fd253130525c9b03ec877634bce14598d2a8cece
   internal/sdk/models/operations/usersassignrole.go:
     id: d9d838da84e7
     last_write_checksum: sha1:2ce8be2b27ebd933f8e89b6715af1048079a1607
@@ -15395,6 +15411,10 @@ trackedFiles:
     id: 4e1613af1aa0
     last_write_checksum: sha1:a284a7234fa5ab2785b739a0ae5d9226f9d072df
     pristine_git_object: 2774e7d318d17b162f6271f0682d5e1e2fc694e5
+  internal/sdk/models/shared/listworkspacesresponse.go:
+    id: f9de274aae98
+    last_write_checksum: sha1:812ff5586fee7581d4871e073524f51589fc60d9
+    pristine_git_object: d53ea6e3209a2cffd6d5289462e944f455c77318
   internal/sdk/models/shared/logformat.go:
     id: db496035b18c
     last_write_checksum: sha1:0b48dcdf249b8d4f25dee9e0d7e761081631f6bf
@@ -16841,8 +16861,8 @@ trackedFiles:
     pristine_git_object: b0ae18a82942499cf3813e46b710a6f33c32eb63
   internal/sdk/workspaces.go:
     id: 436a1d832809
-    last_write_checksum: sha1:b946910d2bf43d9f3c5d1431672a216c16a456e5
-    pristine_git_object: 2cf9769961c3095988be062c165bf4b453cc22a4
+    last_write_checksum: sha1:b98d40a035e43c1623e10b844a89c2562bc321f2
+    pristine_git_object: c4cc128a59c94ae722871be5e4c1d963fae6ba15
   internal/validators/DateValidator.go:
     id: 4fdfa187ab97
     last_write_checksum: sha1:07eb24309e4e97a448f5dd3536989535de4fd85d
@@ -34564,16 +34584,22 @@ examples:
           application/json: {"name": "<value>", "managed_by": {"owner": "terraform"}, "created_at": 1667592606, "updated_at": 1667592606}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "to", "rule": "min_time", "minimum": "2026-10-01T00:00:00Z", "source": "body", "reason": "must be no earlier than 2026-10-01T00:00:00Z"}]}
+          application/json: {"message": "Bad Request"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+          application/json: {"message": "Not Found"}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
           application/problem+json: {"status": 501, "title": "Not Implemented", "type": "https://httpstatuses.com/501", "instance": "kong:trace:1234567890", "detail": "Not Implemented"}
+        "409":
+          application/json: {"message": "Conflict"}
   get-workspace:
     speakeasy-default-get-workspace:
       parameters:
@@ -34585,12 +34611,16 @@ examples:
           application/json: {"name": "<value>", "managed_by": {"owner": "terraform"}, "created_at": 1667592606, "updated_at": 1667592606}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+          application/json: {"message": "Bad Request"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+          application/json: {"message": "Not Found"}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
@@ -34606,12 +34636,16 @@ examples:
       responses:
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+          application/json: {"message": "Bad Request"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+          application/json: {"message": "Not Found"}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
@@ -34631,18 +34665,40 @@ examples:
           application/json: {"name": "<value>", "managed_by": {"owner": "terraform"}, "created_at": 1667592606, "updated_at": 1667592606}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+          application/json: {"message": "Bad Request"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+          application/json: {"message": "Not Found"}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
           application/problem+json: {"status": 501, "title": "Not Implemented", "type": "https://httpstatuses.com/501", "instance": "kong:trace:1234567890", "detail": "Not Implemented"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+        "409":
+          application/json: {"message": "Conflict"}
+  list-workspaces-single-resource:
+    speakeasy-default-list-workspaces-single-resource:
+      parameters:
+        path:
+          controlPlaneId: "3e7d974a-848d-4aba-b130-934ae76c914b"
+      responses:
+        "200":
+          application/json: {"data": []}
+        "400":
+          application/json: {"message": "Bad Request"}
+        "401":
+          application/json: {"message": "Unauthorized"}
+        "403":
+          application/json: {"message": "Forbidden"}
+        "404":
+          application/json: {"message": "Not Found"}
 examplesVersion: 1.0.2
 generatedTests: {}
 generatedFiles:
