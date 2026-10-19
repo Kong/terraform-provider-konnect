@@ -11,9 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
@@ -57,8 +59,11 @@ func (r *GatewayWorkspaceResource) Schema(ctx context.Context, req resource.Sche
 				Description: `The description of the workspace.`,
 			},
 			"control_plane_id": schema.StringAttribute{
-				Required:    true,
-				Description: `ID of a control plane`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `ID of a control plane. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed: true,
@@ -85,8 +90,12 @@ func (r *GatewayWorkspaceResource) Schema(ctx context.Context, req resource.Sche
 					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
-				Description: `The name of the workspace.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The name of the workspace. Requires replacement if changed.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed: true,
@@ -153,6 +162,13 @@ func (r *GatewayWorkspaceResource) Create(ctx context.Context, req resource.Crea
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
