@@ -29,8 +29,8 @@ resource "konnect_gateway_workspace" "my_gatewayworkspace" {
 
 ### Required
 
-- `control_plane_id` (String) ID of a control plane
-- `name` (String) The name of the workspace.
+- `control_plane_id` (String) ID of a control plane. Requires replacement if changed.
+- `name` (String) The name of the workspace. Requires replacement if changed.
 
 ### Optional
 
