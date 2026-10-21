@@ -25329,21 +25329,6 @@ components:
         - page
       title: PaginatedMeta
       x-speakeasy-terraform-ignore: true
-    ManagedBy:
-      description: |
-        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
-
-        Keys must be 1–63 characters long and start with an alphanumeric character.
-      type: object
-      example:
-        owner: terraform
-      additionalProperties:
-        type: string
-        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
-        minLength: 1
-        maxLength: 63
-      maxProperties: 5
-      title: ManagedBy
     InvalidRules:
       description: invalid parameters rules
       type: string
@@ -25624,11 +25609,9 @@ components:
           type: array
           items:
             type: string
-          default: null
           nullable: true
           readOnly: true
           uniqueItems: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         source:
           type: string
@@ -26039,6 +26022,21 @@ components:
         - instance
         - detail
       title: Error
+    ManagedBy:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 5
+      title: ManagedBy
     ControlPlaneId:
       description: ID of the Konnect control plane. Can be retrieved from the Control Planes API or the Konnect UI.
       type: string
@@ -28196,10 +28194,8 @@ components:
           type: string
           format: uuid
           example: 3b7cbeee-fbec-440e-a5ef-89e7dec3b9d0
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         sni_id:
           description: |
@@ -28208,10 +28204,8 @@ components:
           type: string
           format: uuid
           example: a8f11ea8-af09-4422-9735-5d4f8910aba1
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         state:
           $ref: '#/components/schemas/CustomDomainState'
@@ -30779,7 +30773,7 @@ components:
       type: object
       properties:
         enabled:
-          $ref: '#/components/schemas/IdentityProviderEnabled'
+          $ref: '#/components/schemas/UpdateIdentityProviderEnabled'
         login_path:
           $ref: '#/components/schemas/IdentityProviderLoginPath'
         config:
@@ -31121,6 +31115,14 @@ components:
       type: boolean
       example: true
       default: false
+      title: Identity Provider Enabled Property
+    UpdateIdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+        When omitted, the current value is left unchanged.
+      type: boolean
+      example: true
       title: Identity Provider Enabled Property
     LegacyStringFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `contains`'
@@ -33942,10 +33944,8 @@ components:
           type: array
           items:
             type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         owner:
           $ref: '#/components/schemas/ApplicationOwner'
@@ -35119,6 +35119,26 @@ components:
             items:
               type: string
       x-speakeasy-terraform-ignore: true
+    PortalOIDCIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the OIDC authentication integration.
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/OIDCIdentityProviderIssuer'
+        client_id:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientId'
+        client_secret:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientSecret'
+        scopes:
+          $ref: '#/components/schemas/OIDCIdentityProviderScopes'
+        claim_mappings:
+          $ref: '#/components/schemas/OIDCIdentityProviderClaimMappings'
+      additionalProperties: false
+      required:
+        - issuer_url
+        - client_id
+      title: OIDC Identity Provider Config
+      x-speakeasy-name-override: OIDCIdentityProviderConfig
     PortalSAMLIdentityProviderConfig:
       description: The identity provider that contains configuration data for the SAML authentication integration.
       type: object
@@ -35162,7 +35182,7 @@ components:
         config:
           type: object
           oneOf:
-            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalOIDCIdentityProviderConfig'
             - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
@@ -35180,20 +35200,144 @@ components:
         config:
           type: object
           oneOf:
-            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/PortalOIDCIdentityProviderConfig'
             - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
       title: Portal Identity Provider
+    UpdateOIDCIdentityProviderClaimMappings:
+      description: |
+        Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for
+        authentication. Only the provided mappings are updated and provided values cannot be empty.
+      type: object
+      properties:
+        name:
+          description: The claim mapping for the user's name.
+          type: string
+          example: name
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+        email:
+          description: The claim mapping for the user's email address.
+          type: string
+          example: email
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+        groups:
+          description: The claim mapping for the user's group membership information.
+          type: string
+          example: groups
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: Update OIDC Claim Mappings
+    UpdateOIDCIdentityProviderConfig:
+      description: |
+        The properties of an OIDC identity provider to update. Only the provided properties are updated. When
+        provided, `scopes` must include `openid`.
+      type: object
+      properties:
+        issuer_url:
+          description: The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
+          type: string
+          example: 'https://konghq.okta.com/oauth2/default'
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: '^https?://\S+$'
+          x-speakeasy-param-computed: false
+        client_id:
+          description: The client ID assigned to your application by the identity provider.
+          type: string
+          example: YOUR_CLIENT_ID
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          x-speakeasy-param-computed: false
+        client_secret:
+          description: The Client Secret assigned to your application by the identity provider.
+          type: string
+          example: YOUR_CLIENT_SECRET
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: \S
+          writeOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
+          x-speakeasy-terraform-plan-only: true
+        scopes:
+          description: The scopes requested by your application when authenticating with the identity provider. Must include `openid`.
+          type: array
+          items:
+            description: A scope. Cannot be empty or contain whitespace.
+            type: string
+            minLength: 1
+            pattern: ^\S+$
+          example:
+            - openid
+            - email
+            - profile
+          default: null
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        claim_mappings:
+          $ref: '#/components/schemas/UpdateOIDCIdentityProviderClaimMappings'
+      additionalProperties: false
+      minProperties: 1
+      title: Update OIDC Identity Provider Config
+      x-speakeasy-name-override: OIDCIdentityProviderConfig
+    UpdateSAMLIdentityProviderConfig:
+      description: |
+        The properties of a SAML identity provider to update. Exactly one of `idp_metadata_url` or
+        `idp_metadata_xml` must be provided.
+      type: object
+      properties:
+        idp_metadata_url:
+          description: The identity provider's metadata URL where the identity provider's metadata can be obtained.
+          type: string
+          example: 'https://mocksaml.com/api/saml/metadata'
+          default: null
+          minLength: 1
+          nullable: true
+          pattern: '^https?://\S+$'
+          x-speakeasy-param-computed: false
+        idp_metadata_xml:
+          description: |
+            The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
+          type: string
+          default: null
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      maxProperties: 1
+      minProperties: 1
+      title: Update SAML Identity Provider Config
+      x-speakeasy-name-override: SAMLIdentityProviderConfig
     PortalUpdateIdentityProvider:
       description: The identity provider that contains configuration data for updating an authentication integration.
       type: object
       properties:
         enabled:
-          $ref: '#/components/schemas/IdentityProviderEnabled'
+          $ref: '#/components/schemas/UpdateIdentityProviderEnabled'
         config:
           type: object
+          minProperties: 1
           oneOf:
-            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
-            - $ref: '#/components/schemas/PortalSAMLIdentityProviderConfig'
+            - $ref: '#/components/schemas/UpdateOIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/UpdateSAMLIdentityProviderConfig'
+      additionalProperties: false
+      minProperties: 1
       title: Portal Identity Provider
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
@@ -35308,10 +35452,8 @@ components:
         implementation_mode:
           description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
@@ -41973,10 +42115,8 @@ components:
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -42006,10 +42146,8 @@ components:
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -42039,10 +42177,8 @@ components:
         cert_digest:
           description: SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/PublicLabels'
@@ -66808,10 +66944,8 @@ components:
         cert_digest:
           description: 'SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.'
           type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         created_at:
           description: Unix epoch when the resource was created.
@@ -67030,10 +67164,8 @@ components:
           items:
             description: 'A string representing a wildcard host name, such as *.example.com.'
             type: string
-          default: null
           nullable: true
           readOnly: true
-          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
@@ -100288,10 +100420,8 @@ components:
               implementation_mode:
                 description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
                 type: string
-                default: null
                 nullable: true
                 readOnly: true
-                x-speakeasy-param-computed: false
                 x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
@@ -100508,10 +100638,8 @@ components:
               implementation_mode:
                 description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
                 type: string
-                default: null
                 nullable: true
                 readOnly: true
-                x-speakeasy-param-computed: false
                 x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
