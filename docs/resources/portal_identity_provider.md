@@ -61,8 +61,8 @@ Default: false
 
 Optional:
 
-- `oidc_identity_provider_config` (Attributes) The identity provider that contains configuration data for the OIDC authentication integration. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config))
-- `saml_identity_provider_config` (Attributes) The identity provider that contains configuration data for the SAML authentication integration. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
+- `oidc_identity_provider_config` (Attributes) The identity provider that contains configuration data for the OIDC authentication integration. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config))
+- `saml_identity_provider_config` (Attributes) The identity provider that contains configuration data for the SAML authentication integration. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--saml_identity_provider_config))
 
 <a id="nestedatt--config--oidc_identity_provider_config"></a>
 ### Nested Schema for `config.oidc_identity_provider_config`
@@ -70,20 +70,21 @@ Optional:
 Optional:
 
 - `claim_mappings` (Attributes) Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for 
-authentication. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config--claim_mappings))
-- `client_id` (String) The client ID assigned to your application by the identity provider. Not Null
-- `client_secret` (String, Sensitive) The Client Secret assigned to your application by the identity provider.
-- `issuer_url` (String) The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained. Not Null
-- `scopes` (List of String) The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]
+authentication.
+Requires replacement if changed. (see [below for nested schema](#nestedatt--config--oidc_identity_provider_config--claim_mappings))
+- `client_id` (String) The client ID assigned to your application by the identity provider. Not Null; Requires replacement if changed.
+- `client_secret` (String, Sensitive) The Client Secret assigned to your application by the identity provider. Requires replacement if changed.
+- `issuer_url` (String) The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained. Not Null; Requires replacement if changed.
+- `scopes` (List of String) The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]; Requires replacement if changed.
 
 <a id="nestedatt--config--oidc_identity_provider_config--claim_mappings"></a>
 ### Nested Schema for `config.oidc_identity_provider_config.claim_mappings`
 
 Optional:
 
-- `email` (String) The claim mapping for the user's email address. Default: "email"
-- `groups` (String) The claim mapping for the user's group membership information. Default: "groups"
-- `name` (String) The claim mapping for the user's name. Default: "name"
+- `email` (String) The claim mapping for the user's email address. Default: "email"; Requires replacement if changed.
+- `groups` (String) The claim mapping for the user's group membership information. Default: "groups"; Requires replacement if changed.
+- `name` (String) The claim mapping for the user's name. Default: "name"; Requires replacement if changed.
 
 
 
@@ -92,8 +93,8 @@ Optional:
 
 Optional:
 
-- `idp_metadata_url` (String) The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""
-- `idp_metadata_xml` (String) The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead. Default: ""
+- `idp_metadata_url` (String) The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""; Requires replacement if changed.
+- `idp_metadata_xml` (String) The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead. Default: ""; Requires replacement if changed.
 
 Read-Only:
 

@@ -14,6 +14,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -65,37 +67,56 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 				Attributes: map[string]schema.Attribute{
 					"oidc_identity_provider_config": schema.SingleNestedAttribute{
 						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
 						Attributes: map[string]schema.Attribute{
 							"claim_mappings": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.Object{
+									objectplanmodifier.RequiresReplaceIfConfigured(),
+								},
 								Attributes: map[string]schema.Attribute{
 									"email": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     stringdefault.StaticString(`email`),
-										Description: `The claim mapping for the user's email address. Default: "email"`,
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`email`),
+										PlanModifiers: []planmodifier.String{
+											stringplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `The claim mapping for the user's email address. Default: "email"; Requires replacement if changed.`,
 									},
 									"groups": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     stringdefault.StaticString(`groups`),
-										Description: `The claim mapping for the user's group membership information. Default: "groups"`,
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`groups`),
+										PlanModifiers: []planmodifier.String{
+											stringplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `The claim mapping for the user's group membership information. Default: "groups"; Requires replacement if changed.`,
 									},
 									"name": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Default:     stringdefault.StaticString(`name`),
-										Description: `The claim mapping for the user's name. Default: "name"`,
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`name`),
+										PlanModifiers: []planmodifier.String{
+											stringplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `The claim mapping for the user's name. Default: "name"; Requires replacement if changed.`,
 									},
 								},
 								MarkdownDescription: `Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for ` + "\n" +
-									`authentication.`,
+									`authentication.` + "\n" +
+									`Requires replacement if changed.`,
 							},
 							"client_id": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The client ID assigned to your application by the identity provider. Not Null`,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The client ID assigned to your application by the identity provider. Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
@@ -104,14 +125,18 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Optional:  true,
 								Sensitive: true,
 								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
 									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
-								Description: `The Client Secret assigned to your application by the identity provider.`,
+								Description: `The Client Secret assigned to your application by the identity provider. Requires replacement if changed.`,
 							},
 							"issuer_url": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained. Not Null`,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained. Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
@@ -124,11 +149,14 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 									types.StringValue("openid"),
 									types.StringValue("profile"),
 								})),
+								PlanModifiers: []planmodifier.List{
+									listplanmodifier.RequiresReplaceIfConfigured(),
+								},
 								ElementType: types.StringType,
-								Description: `The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]`,
+								Description: `The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]; Requires replacement if changed.`,
 							},
 						},
-						Description: `The identity provider that contains configuration data for the OIDC authentication integration.`,
+						Description: `The identity provider that contains configuration data for the OIDC authentication integration. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("saml_identity_provider_config"),
@@ -137,6 +165,9 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 					},
 					"saml_identity_provider_config": schema.SingleNestedAttribute{
 						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
 						Attributes: map[string]schema.Attribute{
 							"callback_url": schema.StringAttribute{
 								Computed: true,
@@ -146,16 +177,22 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Description: `The path URL where the SAML identity provider sends authentication responses after successful login attempts.`,
 							},
 							"idp_metadata_url": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     stringdefault.StaticString(``),
-								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""`,
+								Computed: true,
+								Optional: true,
+								Default:  stringdefault.StaticString(``),
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""; Requires replacement if changed.`,
 							},
 							"idp_metadata_xml": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Default:     stringdefault.StaticString(``),
-								Description: `The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the ` + "`" + `idp_metadata_url` + "`" + ` field instead. Default: ""`,
+								Computed: true,
+								Optional: true,
+								Default:  stringdefault.StaticString(``),
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the ` + "`" + `idp_metadata_url` + "`" + ` field instead. Default: ""; Requires replacement if changed.`,
 							},
 							"sp_entity_id": schema.StringAttribute{
 								Computed: true,
@@ -171,7 +208,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								},
 							},
 						},
-						Description: `The identity provider that contains configuration data for the SAML authentication integration.`,
+						Description: `The identity provider that contains configuration data for the SAML authentication integration. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("oidc_identity_provider_config"),

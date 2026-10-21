@@ -35,7 +35,7 @@ func (e *AIGatewayAzureEmbeddingsModelConfigType) UnmarshalJSON(data []byte) err
 // embeddings are not supported.
 type AIGatewayAzureEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string                                 `default:"null" json:"upstream_url"`
+	UpstreamURL *string                                 `json:"upstream_url,omitempty"`
 	Type        AIGatewayAzureEmbeddingsModelConfigType `json:"type"`
 	// The Azure OpenAI deployment ID for the embeddings model.
 	DeploymentID string `json:"deployment_id"`
