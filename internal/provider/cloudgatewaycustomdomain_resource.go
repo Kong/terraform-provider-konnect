@@ -61,6 +61,9 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 		Attributes: map[string]schema.Attribute{
 			"certificate_id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `Certificate ID for the certificate representing this domain and stored on data-planes for this` + "\n" +
 					`control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.`,
 			},
@@ -132,6 +135,9 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 			},
 			"sni_id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved` + "\n" +
 					`via the control-planes API for this custom domain's control-plane.`,
 			},

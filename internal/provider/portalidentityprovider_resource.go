@@ -7,7 +7,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -24,6 +26,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -75,18 +78,30 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 										Optional:    true,
 										Default:     stringdefault.StaticString(`email`),
 										Description: `The claim mapping for the user's email address. Default: "email"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+											stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+										},
 									},
 									"groups": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`groups`),
 										Description: `The claim mapping for the user's group membership information. Default: "groups"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+											stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+										},
 									},
 									"name": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`name`),
 										Description: `The claim mapping for the user's name. Default: "name"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+											stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+										},
 									},
 								},
 								MarkdownDescription: `Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for ` + "\n" +
@@ -98,6 +113,8 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Description: `The client ID assigned to your application by the identity provider. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+									stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
 								},
 							},
 							"client_secret": schema.StringAttribute{
@@ -107,6 +124,10 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
 								Description: `The Client Secret assigned to your application by the identity provider.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+									stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+								},
 							},
 							"issuer_url": schema.StringAttribute{
 								Computed:    true,
@@ -114,6 +135,8 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Description: `The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^https?://\S+$`), "must match pattern "+regexp.MustCompile(`^https?://\S+$`).String()),
 								},
 							},
 							"scopes": schema.ListAttribute{
@@ -126,9 +149,13 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								})),
 								ElementType: types.StringType,
 								Description: `The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 						},
-						Description: `The identity provider that contains configuration data for the OIDC authentication integration.`,
+						MarkdownDescription: `The properties of an OIDC identity provider to update. Only the provided properties are updated. When` + "\n" +
+							`provided, ` + "`" + `scopes` + "`" + ` must include ` + "`" + `openid` + "`" + `.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("saml_identity_provider_config"),
@@ -150,12 +177,19 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Optional:    true,
 								Default:     stringdefault.StaticString(``),
 								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained. Default: ""`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^https?://\S+$`), "must match pattern "+regexp.MustCompile(`^https?://\S+$`).String()),
+								},
 							},
 							"idp_metadata_xml": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(``),
 								Description: `The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the ` + "`" + `idp_metadata_url` + "`" + ` field instead. Default: ""`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
 							},
 							"sp_entity_id": schema.StringAttribute{
 								Computed: true,
@@ -171,7 +205,8 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								},
 							},
 						},
-						Description: `The identity provider that contains configuration data for the SAML authentication integration.`,
+						MarkdownDescription: `The properties of a SAML identity provider to update. Exactly one of ` + "`" + `idp_metadata_url` + "`" + ` or` + "\n" +
+							`` + "`" + `idp_metadata_xml` + "`" + ` must be provided.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("oidc_identity_provider_config"),

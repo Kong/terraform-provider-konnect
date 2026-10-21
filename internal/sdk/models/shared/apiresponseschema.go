@@ -77,7 +77,7 @@ type APIResponseSchema struct {
 	//
 	Labels map[string]*string `json:"labels"`
 	// the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-	ImplementationMode *string `default:"null" json:"implementation_mode"`
+	ImplementationMode *string `json:"implementation_mode,omitempty"`
 	// A set of attributes that describe the API
 	Attributes any `json:"attributes,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.

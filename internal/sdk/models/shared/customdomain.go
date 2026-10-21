@@ -60,11 +60,11 @@ type CustomDomain struct {
 	// Certificate ID for the certificate representing this domain and stored on data-planes for this
 	// control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.
 	//
-	CertificateID *string `default:"null" json:"certificate_id"`
+	CertificateID *string `json:"certificate_id,omitempty"`
 	// Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved
 	// via the control-planes API for this custom domain's control-plane.
 	//
-	SniID *string `default:"null" json:"sni_id"`
+	SniID *string `json:"sni_id,omitempty"`
 	// The current state of the custom domain. Possible values:
 	// - `created` — The domain has been registered but TLS provisioning has not yet started.
 	// - `initializing` — Konnect is provisioning the TLS certificate and configuring SNI routing.
