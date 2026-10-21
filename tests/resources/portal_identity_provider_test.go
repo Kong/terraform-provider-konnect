@@ -47,7 +47,7 @@ const (
 			config = {
 				saml_identity_provider_config = {
 					idp_metadata_url = "https://mocksaml.com/api/saml/metadata"
-					idp_metadata_xml = ""
+
 				}
 			}
 		}
