@@ -274,6 +274,19 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Default:     booldefault.StaticBool(true),
 						Description: `Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true`,
 					},
+					"try_it_ui_audience": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						Default:  stringdefault.StaticString(`all`),
+						MarkdownDescription: `The audience for the Try It UI feature.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `all` + "`" + ` means that the Try It UI will be available to all users, including unauthenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `authenticated` + "`" + ` means that the Try It UI will only be available to authenticated users.` + "\n" +
+							`` + "\n" +
+							`` + "`" + `registered` + "`" + ` means that the Try It UI will only be available to users who have registered for the API.` + "\n" +
+							`possible known values include one of ["all", "authenticated", "registered"]; Default: "all"`,
+					},
 				},
 				Description: `The spec renderer settings of this portal`,
 			},
@@ -302,7 +315,7 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`ocean`),
-						Description: `The theme name to apply to this portal. Supported names are 'ocean' and 'glacier'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"`,
+						Description: `The theme name to apply to this portal. Supported names are 'ocean', 'mesa', and 'grove'. If another name is provided or this property is omitted, the portal uses the default 'ocean' theme. Default: "ocean"`,
 					},
 				},
 				Description: `The theme settings for this portal.`,

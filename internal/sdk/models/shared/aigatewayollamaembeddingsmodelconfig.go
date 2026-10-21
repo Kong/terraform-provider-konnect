@@ -9,7 +9,7 @@ import (
 // AIGatewayOllamaEmbeddingsModelConfig - Ollama-specific configuration for a model.
 type AIGatewayOllamaEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string `default:"null" json:"upstream_url"`
+	UpstreamURL *string `json:"upstream_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"ollama" json:"type"`
 }

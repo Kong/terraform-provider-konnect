@@ -556,13 +556,13 @@ func (r *CloudGatewayConfigurationResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteConfigurationRequestBody(ctx)
+	request, requestDiags := data.ToOperationsDeleteCloudGatewayConfigurationRequestBody(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.CloudGateways.DeleteConfiguration(ctx, *request)
+	res, err := r.client.CloudGateways.DeleteCloudGatewayConfiguration(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

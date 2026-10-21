@@ -6390,10 +6390,10 @@ func (s *CloudGateways) ListProviderAccounts(ctx context.Context, request operat
 
 }
 
-// DeleteConfiguration - Delete Configuration
+// DeleteCloudGatewayConfiguration - Delete Configuration
 // Deletes a control plane's Cloud Gateway configuration by replacing it with an empty
 // data-plane group set, which tears down all deployed data planes for that control plane.
-func (s *CloudGateways) DeleteConfiguration(ctx context.Context, request operations.DeleteConfigurationRequestBody, opts ...operations.Option) (*operations.DeleteConfigurationResponse, error) {
+func (s *CloudGateways) DeleteCloudGatewayConfiguration(ctx context.Context, request operations.DeleteCloudGatewayConfigurationRequestBody, opts ...operations.Option) (*operations.DeleteCloudGatewayConfigurationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -6407,12 +6407,11 @@ func (s *CloudGateways) DeleteConfiguration(ctx context.Context, request operati
 		}
 	}
 
-	var baseURL string
-	if o.ServerURL == nil {
-		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	} else {
+	baseURL := utils.ReplaceParameters(operations.DeleteCloudGatewayConfigurationServerList[0], map[string]string{})
+	if o.ServerURL != nil {
 		baseURL = *o.ServerURL
 	}
+
 	opURL, err := url.JoinPath(baseURL, "/v2/cloud-gateways/configurations")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -6423,7 +6422,7 @@ func (s *CloudGateways) DeleteConfiguration(ctx context.Context, request operati
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-configuration",
+		OperationID:      "delete-cloud-gateway-configuration",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -6563,7 +6562,7 @@ func (s *CloudGateways) DeleteConfiguration(ctx context.Context, request operati
 		}
 	}
 
-	res := &operations.DeleteConfigurationResponse{
+	res := &operations.DeleteCloudGatewayConfigurationResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -6668,6 +6667,27 @@ func (s *CloudGateways) DeleteConfiguration(ctx context.Context, request operati
 			}
 
 			res.NotFoundError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 409:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.ConflictError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.ConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

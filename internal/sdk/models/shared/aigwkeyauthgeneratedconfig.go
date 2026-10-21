@@ -31,7 +31,7 @@ func (e *AIGWKeyAuthGeneratedConfigScope) IsExact() bool {
 type IdentityRealms struct {
 	// A string representing a UUID (universally unique identifier).
 	ID     *string                          `json:"id,omitempty"`
-	Region *string                          `default:"null" json:"region"`
+	Region *string                          `json:"region,omitempty"`
 	Scope  *AIGWKeyAuthGeneratedConfigScope `default:"cp" json:"scope"`
 }
 
@@ -110,11 +110,11 @@ func (p *Principals) GetErrorOnMiss() *bool {
 
 type AIGWKeyAuthGeneratedConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
-	Anonymous *string `default:"null" json:"anonymous"`
+	Anonymous *string `json:"anonymous,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
 	HideCredentials *bool `default:"true" json:"hide_credentials"`
 	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
-	IdentityRealms []IdentityRealms `json:"identity_realms"`
+	IdentityRealms []IdentityRealms `json:"identity_realms,omitempty"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	KeyInBody *bool `default:"false" json:"key_in_body"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
@@ -125,7 +125,7 @@ type AIGWKeyAuthGeneratedConfig struct {
 	KeyNames   []string    `json:"key_names,omitempty"`
 	Principals *Principals `json:"principals,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `default:"null" json:"realm"`
+	Realm *string `json:"realm,omitempty"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
 	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 }
