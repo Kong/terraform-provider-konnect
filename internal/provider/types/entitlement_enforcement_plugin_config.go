@@ -9,7 +9,7 @@ import (
 type EntitlementEnforcementPluginConfig struct {
 	APIToken                  types.String                          `tfsdk:"api_token"`
 	CreditBalanceRequired     types.Bool                            `tfsdk:"credit_balance_required"`
-	Customer                  *Customer                             `tfsdk:"customer"`
+	Customer                  *EntitlementEnforcementPluginCustomer `tfsdk:"customer"`
 	DenyUnknownCustomers      types.Bool                            `tfsdk:"deny_unknown_customers"`
 	EntitlementAccessEndpoint types.String                          `tfsdk:"entitlement_access_endpoint"`
 	FailPolicy                types.String                          `tfsdk:"fail_policy"`

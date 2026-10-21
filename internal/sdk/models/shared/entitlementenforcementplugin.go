@@ -145,37 +145,37 @@ func (e *LookUpValueIn) IsExact() bool {
 	return false
 }
 
-// Customer - The customer identifies who gets billed for each request. Choose where the plugin should look for the customer identifier.
-type Customer struct {
+// EntitlementEnforcementPluginCustomer - The customer identifies who gets billed for each request. Choose where the plugin should look for the customer identifier.
+type EntitlementEnforcementPluginCustomer struct {
 	// The header name, query parameter, consumer field, or application field that contains the customer identifier, e.g. 'x-customer-id'
 	Field *string `default:"null" json:"field"`
 	// Where to find the customer identifier in the request.
 	LookUpValueIn *LookUpValueIn `default:"consumer" json:"look_up_value_in"`
 }
 
-func (c Customer) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (e EntitlementEnforcementPluginCustomer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
 }
 
-func (c *Customer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (e *EntitlementEnforcementPluginCustomer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Customer) GetField() *string {
-	if c == nil {
+func (e *EntitlementEnforcementPluginCustomer) GetField() *string {
+	if e == nil {
 		return nil
 	}
-	return c.Field
+	return e.Field
 }
 
-func (c *Customer) GetLookUpValueIn() *LookUpValueIn {
-	if c == nil {
+func (e *EntitlementEnforcementPluginCustomer) GetLookUpValueIn() *LookUpValueIn {
+	if e == nil {
 		return nil
 	}
-	return c.LookUpValueIn
+	return e.LookUpValueIn
 }
 
 // FailPolicy - Policy to apply when enforcement state cannot be retrieved.
@@ -201,28 +201,28 @@ func (e *FailPolicy) IsExact() bool {
 	return false
 }
 
-// Feature - The feature identifies what capability is being accessed and enforced.
-type Feature struct {
+// EntitlementEnforcementPluginFeature - The feature identifies what capability is being accessed and enforced.
+type EntitlementEnforcementPluginFeature struct {
 	// The feature key
 	Key string `json:"key"`
 }
 
-func (f Feature) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(f, "", false)
+func (e EntitlementEnforcementPluginFeature) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
 }
 
-func (f *Feature) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"key"}); err != nil {
+func (e *EntitlementEnforcementPluginFeature) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"key"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *Feature) GetKey() string {
-	if f == nil {
+func (e *EntitlementEnforcementPluginFeature) GetKey() string {
+	if e == nil {
 		return ""
 	}
-	return f.Key
+	return e.Key
 }
 
 // EntitlementEnforcementPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
@@ -1135,7 +1135,7 @@ type EntitlementEnforcementPluginConfig struct {
 	// If set to true, gateway will fetch credit balance for subject.
 	CreditBalanceRequired *bool `default:"true" json:"credit_balance_required"`
 	// The customer identifies who gets billed for each request. Choose where the plugin should look for the customer identifier.
-	Customer *Customer `json:"customer,omitempty"`
+	Customer *EntitlementEnforcementPluginCustomer `json:"customer,omitempty"`
 	// If set to true, gateway will deny access to any unknown subjects.
 	DenyUnknownCustomers *bool `default:"true" json:"deny_unknown_customers"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
@@ -1143,7 +1143,7 @@ type EntitlementEnforcementPluginConfig struct {
 	// Policy to apply when enforcement state cannot be retrieved.
 	FailPolicy *FailPolicy `default:"allow" json:"fail_policy"`
 	// The feature identifies what capability is being accessed and enforced.
-	Feature Feature `json:"feature"`
+	Feature EntitlementEnforcementPluginFeature `json:"feature"`
 	// How long in milliseconds an idle connection to the entitlement access endpoint is kept open before being closed.
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// Time in seconds to keep enforcement state in Kong's local L1 cache
@@ -1189,7 +1189,7 @@ func (e *EntitlementEnforcementPluginConfig) GetCreditBalanceRequired() *bool {
 	return e.CreditBalanceRequired
 }
 
-func (e *EntitlementEnforcementPluginConfig) GetCustomer() *Customer {
+func (e *EntitlementEnforcementPluginConfig) GetCustomer() *EntitlementEnforcementPluginCustomer {
 	if e == nil {
 		return nil
 	}
@@ -1217,9 +1217,9 @@ func (e *EntitlementEnforcementPluginConfig) GetFailPolicy() *FailPolicy {
 	return e.FailPolicy
 }
 
-func (e *EntitlementEnforcementPluginConfig) GetFeature() Feature {
+func (e *EntitlementEnforcementPluginConfig) GetFeature() EntitlementEnforcementPluginFeature {
 	if e == nil {
-		return Feature{}
+		return EntitlementEnforcementPluginFeature{}
 	}
 	return e.Feature
 }

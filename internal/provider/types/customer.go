@@ -7,6 +7,6 @@ import (
 )
 
 type Customer struct {
-	Field         types.String `tfsdk:"field"`
-	LookUpValueIn types.String `tfsdk:"look_up_value_in"`
+	ID  types.String `tfsdk:"id"`
+	Key types.String `tfsdk:"key"`
 }

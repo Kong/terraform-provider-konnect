@@ -68,7 +68,7 @@ func (r *GatewayPluginMeteringAndBillingResourceModel) RefreshFromSharedMetering
 		if resp.Config.Subject == nil {
 			r.Config.Subject = nil
 		} else {
-			r.Config.Subject = &tfTypes.Customer{}
+			r.Config.Subject = &tfTypes.EntitlementEnforcementPluginCustomer{}
 			r.Config.Subject.Field = types.StringPointerValue(resp.Config.Subject.Field)
 			if resp.Config.Subject.LookUpValueIn != nil {
 				r.Config.Subject.LookUpValueIn = types.StringValue(string(*resp.Config.Subject.LookUpValueIn))

@@ -22,7 +22,7 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) RefreshFromSharedEnti
 		if resp.Config.Customer == nil {
 			r.Config.Customer = nil
 		} else {
-			r.Config.Customer = &tfTypes.Customer{}
+			r.Config.Customer = &tfTypes.EntitlementEnforcementPluginCustomer{}
 			r.Config.Customer.Field = types.StringPointerValue(resp.Config.Customer.Field)
 			if resp.Config.Customer.LookUpValueIn != nil {
 				r.Config.Customer.LookUpValueIn = types.StringValue(string(*resp.Config.Customer.LookUpValueIn))
@@ -475,7 +475,7 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToSharedEntitlementEn
 	} else {
 		creditBalanceRequired = nil
 	}
-	var customer *shared.Customer
+	var customer *shared.EntitlementEnforcementPluginCustomer
 	if r.Config.Customer != nil {
 		field := new(string)
 		if !r.Config.Customer.Field.IsUnknown() && !r.Config.Customer.Field.IsNull() {
@@ -489,7 +489,7 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToSharedEntitlementEn
 		} else {
 			lookUpValueIn = nil
 		}
-		customer = &shared.Customer{
+		customer = &shared.EntitlementEnforcementPluginCustomer{
 			Field:         field,
 			LookUpValueIn: lookUpValueIn,
 		}
@@ -512,7 +512,7 @@ func (r *GatewayPluginEntitlementEnforcementResourceModel) ToSharedEntitlementEn
 	var key string
 	key = r.Config.Feature.Key.ValueString()
 
-	feature := shared.Feature{
+	feature := shared.EntitlementEnforcementPluginFeature{
 		Key: key,
 	}
 	keepalive := new(float64)

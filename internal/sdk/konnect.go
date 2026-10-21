@@ -354,15 +354,27 @@ type Konnect struct {
 	//
 	PortalProductVersions *PortalProductVersions
 	// APIs related to configuration of Konnect Developer Portals.
-	Portals              *Portals
-	API                  *API
-	APIDocumentation     *APIDocumentation
-	APIImplementation    *APIImplementation
-	APIPublication       *APIPublication
-	APISpecification     *APISpecification
-	APIVersion           *APIVersion
-	AuthSettings         *AuthSettings
-	PersonalAccessTokens *PersonalAccessTokens
+	Portals           *Portals
+	API               *API
+	APIDocumentation  *APIDocumentation
+	APIImplementation *APIImplementation
+	APIPublication    *APIPublication
+	APISpecification  *APISpecification
+	APIVersion        *APIVersion
+	AuthSettings      *AuthSettings
+	// Customers are used to track usage of your product or service. Customers can be individuals or organizations that can subscribe to plans and have access to features.
+	OpenMeterCustomers *OpenMeterCustomers
+	// Features represent product capabilities backed by meters, with optional per-unit cost configuration.
+	OpenMeterFeatures *OpenMeterFeatures
+	// Meters specify how to aggregate events for billing and analytics purposes. Meters can be configured with multiple aggregation methods and groupings. Multiple meters can be created for the same event type, enabling flexible metering scenarios.
+	Meters *Meters
+	// Product catalog manages plans, add-ons, and their associations for subscription-based billing.
+	OpenMeterProductCatalog *OpenMeterProductCatalog
+	// Billing settings manages the billing profiles and invoices for customers.
+	OpenMeterBillingSettings *OpenMeterBillingSettings
+	// Subscriptions are used to track usage of your product or service. Subscriptions can be individuals or organizations that can subscribe to plans and have access to features.
+	OpenMeterSubscriptions *OpenMeterSubscriptions
+	PersonalAccessTokens   *PersonalAccessTokens
 	// APIs related to Konnect Developer Portal Applications.
 	Applications *Applications
 	// APIs related to Konnect Developer Portal Application Registrations.
@@ -595,6 +607,12 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthSettings = newAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OpenMeterCustomers = newOpenMeterCustomers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OpenMeterFeatures = newOpenMeterFeatures(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Meters = newMeters(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OpenMeterProductCatalog = newOpenMeterProductCatalog(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OpenMeterBillingSettings = newOpenMeterBillingSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OpenMeterSubscriptions = newOpenMeterSubscriptions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Applications = newApplications(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ApplicationRegistrations = newApplicationRegistrations(sdk, sdk.sdkConfiguration, sdk.hooks)
