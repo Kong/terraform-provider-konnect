@@ -23819,6 +23819,63 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
+  /v2/cloud-gateways/configurations#delete:
+    put:
+      x-speakeasy-entity-operation: CloudGatewayConfiguration#delete
+      operationId: delete-cloud-gateway-configuration
+      summary: Delete Configuration
+      description: |
+        Deletes a control plane's Cloud Gateway configuration by replacing it with an empty
+        data-plane group set, which tears down all deployed data planes for that control plane.
+      requestBody:
+        description: Replaces the configuration's data-plane groups with an empty set.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                control_plane_id:
+                  $ref: '#/components/schemas/ControlPlaneId'
+                control_plane_geo:
+                  $ref: '#/components/schemas/ControlPlaneGeo'
+                version:
+                  $ref: '#/components/schemas/GatewayVersion'
+                kind:
+                  $ref: '#/components/schemas/ConfigurationKind'
+                type:
+                  $ref: '#/components/schemas/ConfigurationType'
+                dataplane_groups:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'
+                  format: set
+                  const: []
+              additionalProperties: false
+              required:
+                - control_plane_id
+                - control_plane_geo
+                - dataplane_groups
+              x-speakeasy-transform-to-api:
+                jq: '.dataplane_groups = []'
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateConfigurationResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/CloudGatewaysForbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/CloudGatewaysConflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Data-Plane Group Configurations
+      x-speakeasy-group: CloudGateways
   /v2/audit-log-webhook#delete:
     patch:
       x-speakeasy-entity-operation:
@@ -44603,6 +44660,7 @@ components:
           description: S3 URI for storing video generation outputs.
           type: string
           x-speakeasy-param-computed: false
+      additionalProperties: false
       required:
         - type
     AIGatewayTargetCerebrasConfig:
@@ -52321,6 +52379,7 @@ components:
             additionalProperties: false
             required:
               - name
+              - location
             properties:
               name:
                 description: |
@@ -52445,6 +52504,7 @@ components:
           description: AWS role arn to use when calling the batch API.
           type: string
           x-speakeasy-param-computed: false
+      additionalProperties: false
       required:
         - type
       title: AIGatewayModelProviderConfigAuthAWS
@@ -52861,6 +52921,10 @@ components:
           example: my-config-store
           allOf:
             - $ref: '#/components/schemas/AIGatewayConfigStoreName'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
       additionalProperties: false
       required:
         - name
@@ -52892,6 +52956,10 @@ components:
           example: my-config-store
           allOf:
             - $ref: '#/components/schemas/AIGatewayConfigStoreName'
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
