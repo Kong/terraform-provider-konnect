@@ -135,7 +135,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -341,7 +344,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														"location": schema.StringAttribute{
 															Computed:    true,
 															Optional:    true,
-															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+															},
 														},
 														"name": schema.StringAttribute{
 															Computed:    true,
@@ -603,7 +609,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														"location": schema.StringAttribute{
 															Computed:    true,
 															Optional:    true,
-															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+															},
 														},
 														"name": schema.StringAttribute{
 															Computed:    true,
@@ -784,7 +793,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -957,7 +969,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -1137,7 +1152,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -1310,7 +1328,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -1483,7 +1504,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -1670,7 +1694,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														"location": schema.StringAttribute{
 															Computed:    true,
 															Optional:    true,
-															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+															},
 														},
 														"name": schema.StringAttribute{
 															Computed:    true,
@@ -1953,7 +1980,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -2133,7 +2163,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -2306,7 +2339,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -2479,7 +2515,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -2659,7 +2698,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -2832,7 +2874,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -3008,7 +3053,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 														"location": schema.StringAttribute{
 															Computed:    true,
 															Optional:    true,
-															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+															Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+															},
 														},
 														"name": schema.StringAttribute{
 															Computed:    true,
@@ -3232,7 +3280,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -3402,7 +3453,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -3575,7 +3629,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -3748,7 +3805,10 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 												"location": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
+													Description: `Specify whether the param name and value options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]; Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
