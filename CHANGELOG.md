@@ -5,6 +5,7 @@
 
 # Bug Fixes
 * Fixed error while running `terraform apply` for `konnect_ai_gateway_model` resource when certain optional fields were left unset
+* Fixed delete operation for `konnect_cloud_gateway_configuration` resource
 
 # BREAKING CHANGES
 * NA

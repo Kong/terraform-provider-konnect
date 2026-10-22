@@ -60,7 +60,10 @@ func (r *AIGatewayCACertificateResource) Schema(ctx context.Context, req resourc
 				Description: `PEM-encoded public certificate of the CA.`,
 			},
 			"cert_digest": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.`,
 			},
 			"created_at": schema.StringAttribute{

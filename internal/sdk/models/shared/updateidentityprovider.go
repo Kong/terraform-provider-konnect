@@ -108,8 +108,9 @@ func (u UpdateIdentityProviderConfig) MarshalJSON() ([]byte, error) {
 type UpdateIdentityProvider struct {
 	// Indicates whether the identity provider is enabled.
 	// Only one identity provider can be active at a time, such as SAML or OIDC.
+	// When omitted, the current value is left unchanged.
 	//
-	Enabled *bool `default:"false" json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// The path used for initiating login requests with the identity provider.
 	LoginPath *string                       `json:"login_path,omitempty"`
 	Config    *UpdateIdentityProviderConfig `json:"config,omitempty"`

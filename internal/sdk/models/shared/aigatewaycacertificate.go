@@ -14,7 +14,7 @@ type AIGatewayCACertificate struct {
 	// PEM-encoded public certificate of the CA.
 	Cert string `json:"cert"`
 	// SHA256 hex digest of the public certificate. This field is read-only and is automatically computed; it cannot be set by the caller.
-	CertDigest *string `default:"null" json:"cert_digest"`
+	CertDigest *string `json:"cert_digest,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.

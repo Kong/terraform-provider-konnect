@@ -64,11 +64,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem = &paramsPriorSlice[paramsIdx]
 				}
 
-				if paramsItem.Location != nil {
-					params.Location = types.StringValue(string(*paramsItem.Location))
-				} else {
-					params.Location = types.StringNull()
-				}
+				params.Location = types.StringValue(string(paramsItem.Location))
 				params.Name = types.StringValue(paramsItem.Name)
 				if paramsPriorItem != nil {
 					params.Value = paramsPriorItem.Value
@@ -165,11 +161,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 						paramsPriorItem1 = &paramsPriorSlice1[paramsIdx1]
 					}
 
-					if paramsItem1.Location != nil {
-						params1.Location = types.StringValue(string(*paramsItem1.Location))
-					} else {
-						params1.Location = types.StringNull()
-					}
+					params1.Location = types.StringValue(string(paramsItem1.Location))
 					params1.Name = types.StringValue(paramsItem1.Name)
 					if paramsPriorItem1 != nil {
 						params1.Value = paramsPriorItem1.Value
@@ -283,11 +275,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 						paramsPriorItem2 = &paramsPriorSlice2[paramsIdx2]
 					}
 
-					if paramsItem2.Location != nil {
-						params2.Location = types.StringValue(string(*paramsItem2.Location))
-					} else {
-						params2.Location = types.StringNull()
-					}
+					params2.Location = types.StringValue(string(paramsItem2.Location))
 					params2.Name = types.StringValue(paramsItem2.Name)
 					if paramsPriorItem2 != nil {
 						params2.Value = paramsPriorItem2.Value
@@ -367,11 +355,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem3 = &paramsPriorSlice3[paramsIdx3]
 				}
 
-				if paramsItem3.Location != nil {
-					params3.Location = types.StringValue(string(*paramsItem3.Location))
-				} else {
-					params3.Location = types.StringNull()
-				}
+				params3.Location = types.StringValue(string(paramsItem3.Location))
 				params3.Name = types.StringValue(paramsItem3.Name)
 				if paramsPriorItem3 != nil {
 					params3.Value = paramsPriorItem3.Value
@@ -450,11 +434,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem4 = &paramsPriorSlice4[paramsIdx4]
 				}
 
-				if paramsItem4.Location != nil {
-					params4.Location = types.StringValue(string(*paramsItem4.Location))
-				} else {
-					params4.Location = types.StringNull()
-				}
+				params4.Location = types.StringValue(string(paramsItem4.Location))
 				params4.Name = types.StringValue(paramsItem4.Name)
 				if paramsPriorItem4 != nil {
 					params4.Value = paramsPriorItem4.Value
@@ -533,11 +513,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem5 = &paramsPriorSlice5[paramsIdx5]
 				}
 
-				if paramsItem5.Location != nil {
-					params5.Location = types.StringValue(string(*paramsItem5.Location))
-				} else {
-					params5.Location = types.StringNull()
-				}
+				params5.Location = types.StringValue(string(paramsItem5.Location))
 				params5.Name = types.StringValue(paramsItem5.Name)
 				if paramsPriorItem5 != nil {
 					params5.Value = paramsPriorItem5.Value
@@ -616,11 +592,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem6 = &paramsPriorSlice6[paramsIdx6]
 				}
 
-				if paramsItem6.Location != nil {
-					params6.Location = types.StringValue(string(*paramsItem6.Location))
-				} else {
-					params6.Location = types.StringNull()
-				}
+				params6.Location = types.StringValue(string(paramsItem6.Location))
 				params6.Name = types.StringValue(paramsItem6.Name)
 				if paramsPriorItem6 != nil {
 					params6.Value = paramsPriorItem6.Value
@@ -699,11 +671,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem7 = &paramsPriorSlice7[paramsIdx7]
 				}
 
-				if paramsItem7.Location != nil {
-					params7.Location = types.StringValue(string(*paramsItem7.Location))
-				} else {
-					params7.Location = types.StringNull()
-				}
+				params7.Location = types.StringValue(string(paramsItem7.Location))
 				params7.Name = types.StringValue(paramsItem7.Name)
 				if paramsPriorItem7 != nil {
 					params7.Value = paramsPriorItem7.Value
@@ -787,11 +755,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 						paramsPriorItem8 = &paramsPriorSlice8[paramsIdx8]
 					}
 
-					if paramsItem8.Location != nil {
-						params8.Location = types.StringValue(string(*paramsItem8.Location))
-					} else {
-						params8.Location = types.StringNull()
-					}
+					params8.Location = types.StringValue(string(paramsItem8.Location))
 					params8.Name = types.StringValue(paramsItem8.Name)
 					if paramsPriorItem8 != nil {
 						params8.Value = paramsPriorItem8.Value
@@ -917,11 +881,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem9 = &paramsPriorSlice9[paramsIdx9]
 				}
 
-				if paramsItem9.Location != nil {
-					params9.Location = types.StringValue(string(*paramsItem9.Location))
-				} else {
-					params9.Location = types.StringNull()
-				}
+				params9.Location = types.StringValue(string(paramsItem9.Location))
 				params9.Name = types.StringValue(paramsItem9.Name)
 				if paramsPriorItem9 != nil {
 					params9.Value = paramsPriorItem9.Value
@@ -1000,11 +960,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem10 = &paramsPriorSlice10[paramsIdx10]
 				}
 
-				if paramsItem10.Location != nil {
-					params10.Location = types.StringValue(string(*paramsItem10.Location))
-				} else {
-					params10.Location = types.StringNull()
-				}
+				params10.Location = types.StringValue(string(paramsItem10.Location))
 				params10.Name = types.StringValue(paramsItem10.Name)
 				if paramsPriorItem10 != nil {
 					params10.Value = paramsPriorItem10.Value
@@ -1083,11 +1039,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem11 = &paramsPriorSlice11[paramsIdx11]
 				}
 
-				if paramsItem11.Location != nil {
-					params11.Location = types.StringValue(string(*paramsItem11.Location))
-				} else {
-					params11.Location = types.StringNull()
-				}
+				params11.Location = types.StringValue(string(paramsItem11.Location))
 				params11.Name = types.StringValue(paramsItem11.Name)
 				if paramsPriorItem11 != nil {
 					params11.Value = paramsPriorItem11.Value
@@ -1166,11 +1118,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem12 = &paramsPriorSlice12[paramsIdx12]
 				}
 
-				if paramsItem12.Location != nil {
-					params12.Location = types.StringValue(string(*paramsItem12.Location))
-				} else {
-					params12.Location = types.StringNull()
-				}
+				params12.Location = types.StringValue(string(paramsItem12.Location))
 				params12.Name = types.StringValue(paramsItem12.Name)
 				if paramsPriorItem12 != nil {
 					params12.Value = paramsPriorItem12.Value
@@ -1249,11 +1197,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem13 = &paramsPriorSlice13[paramsIdx13]
 				}
 
-				if paramsItem13.Location != nil {
-					params13.Location = types.StringValue(string(*paramsItem13.Location))
-				} else {
-					params13.Location = types.StringNull()
-				}
+				params13.Location = types.StringValue(string(paramsItem13.Location))
 				params13.Name = types.StringValue(paramsItem13.Name)
 				if paramsPriorItem13 != nil {
 					params13.Value = paramsPriorItem13.Value
@@ -1332,11 +1276,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem14 = &paramsPriorSlice14[paramsIdx14]
 				}
 
-				if paramsItem14.Location != nil {
-					params14.Location = types.StringValue(string(*paramsItem14.Location))
-				} else {
-					params14.Location = types.StringNull()
-				}
+				params14.Location = types.StringValue(string(paramsItem14.Location))
 				params14.Name = types.StringValue(paramsItem14.Name)
 				if paramsPriorItem14 != nil {
 					params14.Value = paramsPriorItem14.Value
@@ -1420,11 +1360,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 						paramsPriorItem15 = &paramsPriorSlice15[paramsIdx15]
 					}
 
-					if paramsItem15.Location != nil {
-						params15.Location = types.StringValue(string(*paramsItem15.Location))
-					} else {
-						params15.Location = types.StringNull()
-					}
+					params15.Location = types.StringValue(string(paramsItem15.Location))
 					params15.Name = types.StringValue(paramsItem15.Name)
 					if paramsPriorItem15 != nil {
 						params15.Value = paramsPriorItem15.Value
@@ -1526,11 +1462,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem16 = &paramsPriorSlice16[paramsIdx16]
 				}
 
-				if paramsItem16.Location != nil {
-					params16.Location = types.StringValue(string(*paramsItem16.Location))
-				} else {
-					params16.Location = types.StringNull()
-				}
+				params16.Location = types.StringValue(string(paramsItem16.Location))
 				params16.Name = types.StringValue(paramsItem16.Name)
 				if paramsPriorItem16 != nil {
 					params16.Value = paramsPriorItem16.Value
@@ -1609,11 +1541,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem17 = &paramsPriorSlice17[paramsIdx17]
 				}
 
-				if paramsItem17.Location != nil {
-					params17.Location = types.StringValue(string(*paramsItem17.Location))
-				} else {
-					params17.Location = types.StringNull()
-				}
+				params17.Location = types.StringValue(string(paramsItem17.Location))
 				params17.Name = types.StringValue(paramsItem17.Name)
 				if paramsPriorItem17 != nil {
 					params17.Value = paramsPriorItem17.Value
@@ -1692,11 +1620,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem18 = &paramsPriorSlice18[paramsIdx18]
 				}
 
-				if paramsItem18.Location != nil {
-					params18.Location = types.StringValue(string(*paramsItem18.Location))
-				} else {
-					params18.Location = types.StringNull()
-				}
+				params18.Location = types.StringValue(string(paramsItem18.Location))
 				params18.Name = types.StringValue(paramsItem18.Name)
 				if paramsPriorItem18 != nil {
 					params18.Value = paramsPriorItem18.Value
@@ -1775,11 +1699,7 @@ func (r *AIGatewayModelProviderResourceModel) RefreshFromSharedAIGatewayModelPro
 					paramsPriorItem19 = &paramsPriorSlice19[paramsIdx19]
 				}
 
-				if paramsItem19.Location != nil {
-					params19.Location = types.StringValue(string(*paramsItem19.Location))
-				} else {
-					params19.Location = types.StringNull()
-				}
+				params19.Location = types.StringValue(string(paramsItem19.Location))
 				params19.Name = types.StringValue(paramsItem19.Name)
 				if paramsPriorItem19 != nil {
 					params19.Value = paramsPriorItem19.Value
@@ -1948,12 +1868,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value1 = nil
 			}
-			location := new(shared.Location)
-			if !r.Anthropic.Config.Auth.Params[paramsIndex].Location.IsUnknown() && !r.Anthropic.Config.Auth.Params[paramsIndex].Location.IsNull() {
-				*location = shared.Location(r.Anthropic.Config.Auth.Params[paramsIndex].Location.ValueString())
-			} else {
-				location = nil
-			}
+			location := shared.Location(r.Anthropic.Config.Auth.Params[paramsIndex].Location.ValueString())
 			params = append(params, shared.Params{
 				Name:     name2,
 				Value:    value1,
@@ -2032,12 +1947,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				} else {
 					value3 = nil
 				}
-				location1 := new(shared.Location)
-				if !r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.IsUnknown() && !r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.IsNull() {
-					*location1 = shared.Location(r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.ValueString())
-				} else {
-					location1 = nil
-				}
+				location1 := shared.Location(r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.ValueString())
 				params1 = append(params1, shared.Params{
 					Name:     name5,
 					Value:    value3,
@@ -2191,12 +2101,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				} else {
 					value5 = nil
 				}
-				location2 := new(shared.Location)
-				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsNull() {
-					*location2 = shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.ValueString())
-				} else {
-					location2 = nil
-				}
+				location2 := shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.ValueString())
 				params2 = append(params2, shared.Params{
 					Name:     name8,
 					Value:    value5,
@@ -2337,12 +2242,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value7 = nil
 			}
-			location3 := new(shared.Location)
-			if !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsNull() {
-				*location3 = shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex3].Location.ValueString())
-			} else {
-				location3 = nil
-			}
+			location3 := shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex3].Location.ValueString())
 			params3 = append(params3, shared.Params{
 				Name:     name11,
 				Value:    value7,
@@ -2418,12 +2318,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value9 = nil
 			}
-			location4 := new(shared.Location)
-			if !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsNull() {
-				*location4 = shared.Location(r.Cohere.Config.Auth.Params[paramsIndex4].Location.ValueString())
-			} else {
-				location4 = nil
-			}
+			location4 := shared.Location(r.Cohere.Config.Auth.Params[paramsIndex4].Location.ValueString())
 			params4 = append(params4, shared.Params{
 				Name:     name14,
 				Value:    value9,
@@ -2499,12 +2394,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value11 = nil
 			}
-			location5 := new(shared.Location)
-			if !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsNull() {
-				*location5 = shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex5].Location.ValueString())
-			} else {
-				location5 = nil
-			}
+			location5 := shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex5].Location.ValueString())
 			params5 = append(params5, shared.Params{
 				Name:     name17,
 				Value:    value11,
@@ -2580,12 +2470,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value13 = nil
 			}
-			location6 := new(shared.Location)
-			if !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsNull() {
-				*location6 = shared.Location(r.Databricks.Config.Auth.Params[paramsIndex6].Location.ValueString())
-			} else {
-				location6 = nil
-			}
+			location6 := shared.Location(r.Databricks.Config.Auth.Params[paramsIndex6].Location.ValueString())
 			params6 = append(params6, shared.Params{
 				Name:     name20,
 				Value:    value13,
@@ -2661,12 +2546,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value15 = nil
 			}
-			location7 := new(shared.Location)
-			if !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsNull() {
-				*location7 = shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex7].Location.ValueString())
-			} else {
-				location7 = nil
-			}
+			location7 := shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex7].Location.ValueString())
 			params7 = append(params7, shared.Params{
 				Name:     name23,
 				Value:    value15,
@@ -2745,12 +2625,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				} else {
 					value17 = nil
 				}
-				location8 := new(shared.Location)
-				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsNull() {
-					*location8 = shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.ValueString())
-				} else {
-					location8 = nil
-				}
+				location8 := shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.ValueString())
 				params8 = append(params8, shared.Params{
 					Name:     name26,
 					Value:    value17,
@@ -2948,12 +2823,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value19 = nil
 			}
-			location9 := new(shared.Location)
-			if !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsNull() {
-				*location9 = shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex9].Location.ValueString())
-			} else {
-				location9 = nil
-			}
+			location9 := shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex9].Location.ValueString())
 			params9 = append(params9, shared.Params{
 				Name:     name29,
 				Value:    value19,
@@ -3029,12 +2899,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value21 = nil
 			}
-			location10 := new(shared.Location)
-			if !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsNull() {
-				*location10 = shared.Location(r.Kimi.Config.Auth.Params[paramsIndex10].Location.ValueString())
-			} else {
-				location10 = nil
-			}
+			location10 := shared.Location(r.Kimi.Config.Auth.Params[paramsIndex10].Location.ValueString())
 			params10 = append(params10, shared.Params{
 				Name:     name32,
 				Value:    value21,
@@ -3110,12 +2975,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value23 = nil
 			}
-			location11 := new(shared.Location)
-			if !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsNull() {
-				*location11 = shared.Location(r.Llama2.Config.Auth.Params[paramsIndex11].Location.ValueString())
-			} else {
-				location11 = nil
-			}
+			location11 := shared.Location(r.Llama2.Config.Auth.Params[paramsIndex11].Location.ValueString())
 			params11 = append(params11, shared.Params{
 				Name:     name35,
 				Value:    value23,
@@ -3191,12 +3051,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value25 = nil
 			}
-			location12 := new(shared.Location)
-			if !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsNull() {
-				*location12 = shared.Location(r.Mistral.Config.Auth.Params[paramsIndex12].Location.ValueString())
-			} else {
-				location12 = nil
-			}
+			location12 := shared.Location(r.Mistral.Config.Auth.Params[paramsIndex12].Location.ValueString())
 			params12 = append(params12, shared.Params{
 				Name:     name38,
 				Value:    value25,
@@ -3272,12 +3127,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value27 = nil
 			}
-			location13 := new(shared.Location)
-			if !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsNull() {
-				*location13 = shared.Location(r.Ollama.Config.Auth.Params[paramsIndex13].Location.ValueString())
-			} else {
-				location13 = nil
-			}
+			location13 := shared.Location(r.Ollama.Config.Auth.Params[paramsIndex13].Location.ValueString())
 			params13 = append(params13, shared.Params{
 				Name:     name41,
 				Value:    value27,
@@ -3353,12 +3203,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value29 = nil
 			}
-			location14 := new(shared.Location)
-			if !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsNull() {
-				*location14 = shared.Location(r.Openai.Config.Auth.Params[paramsIndex14].Location.ValueString())
-			} else {
-				location14 = nil
-			}
+			location14 := shared.Location(r.Openai.Config.Auth.Params[paramsIndex14].Location.ValueString())
 			params14 = append(params14, shared.Params{
 				Name:     name44,
 				Value:    value29,
@@ -3434,12 +3279,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value31 = nil
 			}
-			location15 := new(shared.Location)
-			if !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsNull() {
-				*location15 = shared.Location(r.Vercel.Config.Auth.Params[paramsIndex15].Location.ValueString())
-			} else {
-				location15 = nil
-			}
+			location15 := shared.Location(r.Vercel.Config.Auth.Params[paramsIndex15].Location.ValueString())
 			params15 = append(params15, shared.Params{
 				Name:     name47,
 				Value:    value31,
@@ -3515,12 +3355,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value33 = nil
 			}
-			location16 := new(shared.Location)
-			if !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsNull() {
-				*location16 = shared.Location(r.Vllm.Config.Auth.Params[paramsIndex16].Location.ValueString())
-			} else {
-				location16 = nil
-			}
+			location16 := shared.Location(r.Vllm.Config.Auth.Params[paramsIndex16].Location.ValueString())
 			params16 = append(params16, shared.Params{
 				Name:     name50,
 				Value:    value33,
@@ -3596,12 +3431,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value35 = nil
 			}
-			location17 := new(shared.Location)
-			if !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsNull() {
-				*location17 = shared.Location(r.Xai.Config.Auth.Params[paramsIndex17].Location.ValueString())
-			} else {
-				location17 = nil
-			}
+			location17 := shared.Location(r.Xai.Config.Auth.Params[paramsIndex17].Location.ValueString())
 			params17 = append(params17, shared.Params{
 				Name:     name53,
 				Value:    value35,
@@ -3680,12 +3510,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 				} else {
 					value37 = nil
 				}
-				location18 := new(shared.Location)
-				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsNull() {
-					*location18 = shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.ValueString())
-				} else {
-					location18 = nil
-				}
+				location18 := shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.ValueString())
 				params18 = append(params18, shared.Params{
 					Name:     name56,
 					Value:    value37,
@@ -3806,12 +3631,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedCreateAIGatewayModelProvid
 			} else {
 				value39 = nil
 			}
-			location19 := new(shared.Location)
-			if !r.Typesafe.Config.Auth.Params[paramsIndex19].Location.IsUnknown() && !r.Typesafe.Config.Auth.Params[paramsIndex19].Location.IsNull() {
-				*location19 = shared.Location(r.Typesafe.Config.Auth.Params[paramsIndex19].Location.ValueString())
-			} else {
-				location19 = nil
-			}
+			location19 := shared.Location(r.Typesafe.Config.Auth.Params[paramsIndex19].Location.ValueString())
 			params19 = append(params19, shared.Params{
 				Name:     name59,
 				Value:    value39,
@@ -3895,12 +3715,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value1 = nil
 			}
-			location := new(shared.Location)
-			if !r.Anthropic.Config.Auth.Params[paramsIndex].Location.IsUnknown() && !r.Anthropic.Config.Auth.Params[paramsIndex].Location.IsNull() {
-				*location = shared.Location(r.Anthropic.Config.Auth.Params[paramsIndex].Location.ValueString())
-			} else {
-				location = nil
-			}
+			location := shared.Location(r.Anthropic.Config.Auth.Params[paramsIndex].Location.ValueString())
 			params = append(params, shared.Params{
 				Name:     name2,
 				Value:    value1,
@@ -3979,12 +3794,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				} else {
 					value3 = nil
 				}
-				location1 := new(shared.Location)
-				if !r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.IsUnknown() && !r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.IsNull() {
-					*location1 = shared.Location(r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.ValueString())
-				} else {
-					location1 = nil
-				}
+				location1 := shared.Location(r.Azure.Config.Auth.Basic.Params[paramsIndex1].Location.ValueString())
 				params1 = append(params1, shared.Params{
 					Name:     name5,
 					Value:    value3,
@@ -4138,12 +3948,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				} else {
 					value5 = nil
 				}
-				location2 := new(shared.Location)
-				if !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsUnknown() && !r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.IsNull() {
-					*location2 = shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.ValueString())
-				} else {
-					location2 = nil
-				}
+				location2 := shared.Location(r.Bedrock.Config.Auth.Basic.Params[paramsIndex2].Location.ValueString())
 				params2 = append(params2, shared.Params{
 					Name:     name8,
 					Value:    value5,
@@ -4284,12 +4089,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value7 = nil
 			}
-			location3 := new(shared.Location)
-			if !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsUnknown() && !r.Cerebras.Config.Auth.Params[paramsIndex3].Location.IsNull() {
-				*location3 = shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex3].Location.ValueString())
-			} else {
-				location3 = nil
-			}
+			location3 := shared.Location(r.Cerebras.Config.Auth.Params[paramsIndex3].Location.ValueString())
 			params3 = append(params3, shared.Params{
 				Name:     name11,
 				Value:    value7,
@@ -4365,12 +4165,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value9 = nil
 			}
-			location4 := new(shared.Location)
-			if !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsUnknown() && !r.Cohere.Config.Auth.Params[paramsIndex4].Location.IsNull() {
-				*location4 = shared.Location(r.Cohere.Config.Auth.Params[paramsIndex4].Location.ValueString())
-			} else {
-				location4 = nil
-			}
+			location4 := shared.Location(r.Cohere.Config.Auth.Params[paramsIndex4].Location.ValueString())
 			params4 = append(params4, shared.Params{
 				Name:     name14,
 				Value:    value9,
@@ -4446,12 +4241,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value11 = nil
 			}
-			location5 := new(shared.Location)
-			if !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsUnknown() && !r.Dashscope.Config.Auth.Params[paramsIndex5].Location.IsNull() {
-				*location5 = shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex5].Location.ValueString())
-			} else {
-				location5 = nil
-			}
+			location5 := shared.Location(r.Dashscope.Config.Auth.Params[paramsIndex5].Location.ValueString())
 			params5 = append(params5, shared.Params{
 				Name:     name17,
 				Value:    value11,
@@ -4527,12 +4317,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value13 = nil
 			}
-			location6 := new(shared.Location)
-			if !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsUnknown() && !r.Databricks.Config.Auth.Params[paramsIndex6].Location.IsNull() {
-				*location6 = shared.Location(r.Databricks.Config.Auth.Params[paramsIndex6].Location.ValueString())
-			} else {
-				location6 = nil
-			}
+			location6 := shared.Location(r.Databricks.Config.Auth.Params[paramsIndex6].Location.ValueString())
 			params6 = append(params6, shared.Params{
 				Name:     name20,
 				Value:    value13,
@@ -4608,12 +4393,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value15 = nil
 			}
-			location7 := new(shared.Location)
-			if !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsUnknown() && !r.Deepseek.Config.Auth.Params[paramsIndex7].Location.IsNull() {
-				*location7 = shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex7].Location.ValueString())
-			} else {
-				location7 = nil
-			}
+			location7 := shared.Location(r.Deepseek.Config.Auth.Params[paramsIndex7].Location.ValueString())
 			params7 = append(params7, shared.Params{
 				Name:     name23,
 				Value:    value15,
@@ -4692,12 +4472,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				} else {
 					value17 = nil
 				}
-				location8 := new(shared.Location)
-				if !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsUnknown() && !r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.IsNull() {
-					*location8 = shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.ValueString())
-				} else {
-					location8 = nil
-				}
+				location8 := shared.Location(r.Gemini.Config.Auth.Basic.Params[paramsIndex8].Location.ValueString())
 				params8 = append(params8, shared.Params{
 					Name:     name26,
 					Value:    value17,
@@ -4895,12 +4670,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value19 = nil
 			}
-			location9 := new(shared.Location)
-			if !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsUnknown() && !r.Huggingface.Config.Auth.Params[paramsIndex9].Location.IsNull() {
-				*location9 = shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex9].Location.ValueString())
-			} else {
-				location9 = nil
-			}
+			location9 := shared.Location(r.Huggingface.Config.Auth.Params[paramsIndex9].Location.ValueString())
 			params9 = append(params9, shared.Params{
 				Name:     name29,
 				Value:    value19,
@@ -4976,12 +4746,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value21 = nil
 			}
-			location10 := new(shared.Location)
-			if !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsUnknown() && !r.Kimi.Config.Auth.Params[paramsIndex10].Location.IsNull() {
-				*location10 = shared.Location(r.Kimi.Config.Auth.Params[paramsIndex10].Location.ValueString())
-			} else {
-				location10 = nil
-			}
+			location10 := shared.Location(r.Kimi.Config.Auth.Params[paramsIndex10].Location.ValueString())
 			params10 = append(params10, shared.Params{
 				Name:     name32,
 				Value:    value21,
@@ -5057,12 +4822,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value23 = nil
 			}
-			location11 := new(shared.Location)
-			if !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsUnknown() && !r.Llama2.Config.Auth.Params[paramsIndex11].Location.IsNull() {
-				*location11 = shared.Location(r.Llama2.Config.Auth.Params[paramsIndex11].Location.ValueString())
-			} else {
-				location11 = nil
-			}
+			location11 := shared.Location(r.Llama2.Config.Auth.Params[paramsIndex11].Location.ValueString())
 			params11 = append(params11, shared.Params{
 				Name:     name35,
 				Value:    value23,
@@ -5138,12 +4898,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value25 = nil
 			}
-			location12 := new(shared.Location)
-			if !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsUnknown() && !r.Mistral.Config.Auth.Params[paramsIndex12].Location.IsNull() {
-				*location12 = shared.Location(r.Mistral.Config.Auth.Params[paramsIndex12].Location.ValueString())
-			} else {
-				location12 = nil
-			}
+			location12 := shared.Location(r.Mistral.Config.Auth.Params[paramsIndex12].Location.ValueString())
 			params12 = append(params12, shared.Params{
 				Name:     name38,
 				Value:    value25,
@@ -5219,12 +4974,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value27 = nil
 			}
-			location13 := new(shared.Location)
-			if !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsUnknown() && !r.Ollama.Config.Auth.Params[paramsIndex13].Location.IsNull() {
-				*location13 = shared.Location(r.Ollama.Config.Auth.Params[paramsIndex13].Location.ValueString())
-			} else {
-				location13 = nil
-			}
+			location13 := shared.Location(r.Ollama.Config.Auth.Params[paramsIndex13].Location.ValueString())
 			params13 = append(params13, shared.Params{
 				Name:     name41,
 				Value:    value27,
@@ -5300,12 +5050,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value29 = nil
 			}
-			location14 := new(shared.Location)
-			if !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsUnknown() && !r.Openai.Config.Auth.Params[paramsIndex14].Location.IsNull() {
-				*location14 = shared.Location(r.Openai.Config.Auth.Params[paramsIndex14].Location.ValueString())
-			} else {
-				location14 = nil
-			}
+			location14 := shared.Location(r.Openai.Config.Auth.Params[paramsIndex14].Location.ValueString())
 			params14 = append(params14, shared.Params{
 				Name:     name44,
 				Value:    value29,
@@ -5381,12 +5126,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value31 = nil
 			}
-			location15 := new(shared.Location)
-			if !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsUnknown() && !r.Vercel.Config.Auth.Params[paramsIndex15].Location.IsNull() {
-				*location15 = shared.Location(r.Vercel.Config.Auth.Params[paramsIndex15].Location.ValueString())
-			} else {
-				location15 = nil
-			}
+			location15 := shared.Location(r.Vercel.Config.Auth.Params[paramsIndex15].Location.ValueString())
 			params15 = append(params15, shared.Params{
 				Name:     name47,
 				Value:    value31,
@@ -5462,12 +5202,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value33 = nil
 			}
-			location16 := new(shared.Location)
-			if !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsUnknown() && !r.Vllm.Config.Auth.Params[paramsIndex16].Location.IsNull() {
-				*location16 = shared.Location(r.Vllm.Config.Auth.Params[paramsIndex16].Location.ValueString())
-			} else {
-				location16 = nil
-			}
+			location16 := shared.Location(r.Vllm.Config.Auth.Params[paramsIndex16].Location.ValueString())
 			params16 = append(params16, shared.Params{
 				Name:     name50,
 				Value:    value33,
@@ -5543,12 +5278,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value35 = nil
 			}
-			location17 := new(shared.Location)
-			if !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsUnknown() && !r.Xai.Config.Auth.Params[paramsIndex17].Location.IsNull() {
-				*location17 = shared.Location(r.Xai.Config.Auth.Params[paramsIndex17].Location.ValueString())
-			} else {
-				location17 = nil
-			}
+			location17 := shared.Location(r.Xai.Config.Auth.Params[paramsIndex17].Location.ValueString())
 			params17 = append(params17, shared.Params{
 				Name:     name53,
 				Value:    value35,
@@ -5627,12 +5357,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 				} else {
 					value37 = nil
 				}
-				location18 := new(shared.Location)
-				if !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsUnknown() && !r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.IsNull() {
-					*location18 = shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.ValueString())
-				} else {
-					location18 = nil
-				}
+				location18 := shared.Location(r.Sagemaker.Config.Auth.Basic.Params[paramsIndex18].Location.ValueString())
 				params18 = append(params18, shared.Params{
 					Name:     name56,
 					Value:    value37,
@@ -5753,12 +5478,7 @@ func (r *AIGatewayModelProviderResourceModel) ToSharedUpdateAIGatewayModelProvid
 			} else {
 				value39 = nil
 			}
-			location19 := new(shared.Location)
-			if !r.Typesafe.Config.Auth.Params[paramsIndex19].Location.IsUnknown() && !r.Typesafe.Config.Auth.Params[paramsIndex19].Location.IsNull() {
-				*location19 = shared.Location(r.Typesafe.Config.Auth.Params[paramsIndex19].Location.ValueString())
-			} else {
-				location19 = nil
-			}
+			location19 := shared.Location(r.Typesafe.Config.Auth.Params[paramsIndex19].Location.ValueString())
 			params19 = append(params19, shared.Params{
 				Name:     name59,
 				Value:    value39,

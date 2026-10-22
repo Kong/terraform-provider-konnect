@@ -96,7 +96,10 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Description: `The API identifier.`,
 			},
 			"implementation_mode": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement`,
 			},
 			"labels": schema.MapAttribute{

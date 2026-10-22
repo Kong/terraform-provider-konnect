@@ -227,7 +227,7 @@ type GetApplicationResponse struct {
 	Portal       Portal                             `json:"portal"`
 	AuthStrategy GetApplicationResponseAuthStrategy `json:"auth_strategy"`
 	// List of granted scopes for the application. Null if application type does not support returning granted scopes.
-	GrantedScopes []string          `json:"granted_scopes"`
+	GrantedScopes []string          `json:"granted_scopes,omitempty"`
 	Owner         *ApplicationOwner `json:"owner,omitempty"`
 }
 
