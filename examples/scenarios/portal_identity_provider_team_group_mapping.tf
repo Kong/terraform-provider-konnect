@@ -15,7 +15,6 @@ resource "konnect_portal_identity_provider" "saml_provider" {
   config = {
     saml_identity_provider_config = {
       idp_metadata_url = "https://mocksaml.com/api/saml/metadata" // //file("./saml-metadata.xml")
-      idp_metadata_xml = ""
     }
   }
 }
