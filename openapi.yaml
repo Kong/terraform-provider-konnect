@@ -43785,6 +43785,7 @@ components:
           description: Cluster configuration for the Redis connection.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             max_redirections:
               description: Maximum retry attempts for redirection.
@@ -43808,7 +43809,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -43840,11 +43840,11 @@ components:
           description: Keepalive configuration for the Redis connection.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             backlog:
               description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.'
               type: integer
-              default: null
               maximum: 2147483646
               minimum: 0
               nullable: true
@@ -43861,6 +43861,7 @@ components:
             Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
+          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         port:
@@ -43893,11 +43894,11 @@ components:
           description: Configuration for Redis Sentinel.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             master:
               description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             nodes:
@@ -43916,7 +43917,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -43925,7 +43925,6 @@ components:
                 Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -43942,7 +43941,6 @@ components:
                 Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -43952,6 +43950,7 @@ components:
             A string representing an SNI (server name indication) value for TLS.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
+          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         ssl:
@@ -43967,6 +43966,7 @@ components:
             Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
+          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
@@ -43980,6 +43980,7 @@ components:
       x-speakeasy-transform-to-api:
         jq: |
           if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
+      x-terraform-no-default-null: true
     AIGatewayModelVectorDBConfigPgVector:
       type: object
       properties:
@@ -49568,6 +49569,7 @@ components:
           required:
             - url
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         tools:
           description: |
             List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
@@ -49679,6 +49681,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         sources:
           description: |
             The explicit list of source MCP Servers whose tools this listener exposes.
@@ -49861,7 +49864,6 @@ components:
         host:
           description: 'The host used when forwarding the request to the upstream API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         method:
@@ -49883,7 +49885,6 @@ components:
             no URL path from a different host to append to. By default, Kong will extract the
             path from API configuration.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         query:
@@ -49906,6 +49907,7 @@ components:
         - name
         - description
         - method
+      x-terraform-no-default-null: true
     AIGatewayMCPServerListenerAccess:
       default:
         acl_attribute_type: consumer
@@ -50081,7 +50083,6 @@ components:
             AWS Access Key ID to be used for authentication.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50090,7 +50091,6 @@ components:
             The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50099,7 +50099,6 @@ components:
             The name of the AWS Elasticache cluster.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50112,7 +50111,6 @@ components:
             The region of the AWS ElastiCache cluster.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50121,7 +50119,6 @@ components:
             The session name for the temporary credentials when assuming the IAM role.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50130,7 +50127,6 @@ components:
             AWS Secret Access Key.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -50139,6 +50135,7 @@ components:
       required:
         - type
       title: AIGatewayRedisAWSAuthentication
+      x-terraform-no-default-null: true
     AIGatewayRedisAzureAuthentication:
       description: Azure specific configs for connecting to a Cloud Provider's redis instance.
       type: object
@@ -50151,7 +50148,6 @@ components:
             Azure Client ID.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50160,7 +50156,6 @@ components:
             Azure Client Secret.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -50170,7 +50165,6 @@ components:
             Azure Tenant ID.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50178,6 +50172,7 @@ components:
       required:
         - type
       title: AIGatewayRedisAzureAuthentication
+      x-terraform-no-default-null: true
     AIGatewayRedisGCPAuthentication:
       description: GCP specific configs for connecting to a Cloud Provider's redis instance.
       type: object
@@ -50190,7 +50185,6 @@ components:
             GCP Service Account JSON.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -50199,6 +50193,7 @@ components:
       required:
         - type
       title: AIGatewayRedisGCPAuthentication
+      x-terraform-no-default-null: true
     AIGatewayRedisCloudConfiguration:
       description: Config for connecting to a Cloud Provider's Redis instance.
       type: object
@@ -50219,6 +50214,7 @@ components:
           description: Cluster configuration for the Redis connection.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             max_redirections:
               description: Maximum retry attempts for redirection.
@@ -50242,7 +50238,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -50274,11 +50269,11 @@ components:
           description: Keepalive configuration for the Redis connection.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             backlog:
               description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.'
               type: integer
-              default: null
               maximum: 2147483646
               minimum: 0
               nullable: true
@@ -50295,6 +50290,7 @@ components:
             Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
+          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         port:
@@ -50327,11 +50323,11 @@ components:
           description: Configuration for Redis Sentinel.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             master:
               description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             nodes:
@@ -50350,7 +50346,6 @@ components:
                     default: 6379
                     maximum: 65535
                     minimum: 0
-              default: null
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -50359,7 +50354,6 @@ components:
                 Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -50376,7 +50370,6 @@ components:
                 Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -50386,6 +50379,7 @@ components:
             A string representing an SNI (server name indication) value for TLS.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
+          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
         ssl:
@@ -50401,6 +50395,7 @@ components:
             Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
+          nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
@@ -50410,6 +50405,7 @@ components:
       x-speakeasy-transform-to-api:
         jq: |
           if has("port") then if (.port | type) == "string" and (.port | test("^[0-9]+$")) then .port |= tonumber else . end else . end
+      x-terraform-no-default-null: true
     AIGatewayProxyConfig:
       description: HTTP/HTTPS proxy configuration for outbound requests to the upstream AI provider.
       type: object
@@ -50418,17 +50414,16 @@ components:
           description: HTTP proxy server to route plaintext outbound requests through.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             host:
               description: 'A string representing a host name, such as example.com.'
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
-              default: null
               maximum: 65535
               minimum: 0
               nullable: true
@@ -50438,17 +50433,16 @@ components:
           description: HTTPS proxy server to route TLS outbound requests through.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             host:
               description: 'A string representing a host name, such as example.com.'
               type: string
-              default: null
               nullable: true
               x-speakeasy-param-computed: false
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
-              default: null
               maximum: 65535
               minimum: 0
               nullable: true
@@ -50464,13 +50458,13 @@ components:
           description: Credentials used to authenticate to the proxy server.
           type: object
           additionalProperties: false
+          nullable: true
           properties:
             username:
               description: |
                 The username to use for proxy authentication.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               x-referenceable: true
               x-speakeasy-param-computed: false
@@ -50479,7 +50473,6 @@ components:
                 The password to use for proxy authentication.
                 This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
               type: string
-              default: null
               nullable: true
               writeOnly: true
               x-referenceable: true
@@ -50488,9 +50481,10 @@ components:
         no_proxy:
           description: Comma-separated list of hosts that should not be proxied.
           type: string
+          nullable: true
           x-speakeasy-param-computed: false
       additionalProperties: false
-      x-speakeasy-param-computed: false
+      x-terraform-no-default-null: true
     AIGatewayRouteConfig:
       description: Configuration for an AI Gateway route.
       type: object
@@ -50636,7 +50630,6 @@ components:
         server:
           description: Server-side configuration for the MCP Server.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -50649,14 +50642,12 @@ components:
                 Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
                 This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
               type: object
-              default: null
               additionalProperties: false
               nullable: true
               properties:
                 client:
                   description: The configuration for client-side session storage.
                   type: object
-                  default: null
                   additionalProperties: false
                   nullable: true
                   properties:
@@ -50671,7 +50662,6 @@ components:
                         x-referenceable: true
                         description: |
                           This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-                      default: null
                       minItems: 1
                       nullable: true
                       x-speakeasy-param-computed: false
@@ -50703,6 +50693,7 @@ components:
               maximum: 2147483646
               minimum: 0
           x-speakeasy-param-computed: false
+          x-terraform-no-default-null: true
         url:
           description: |
             Helper field to set protocol, host, port and path of the upstream service using a URL.
@@ -50783,14 +50774,12 @@ components:
             Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
             This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             client:
               description: The configuration for client-side session storage.
               type: object
-              default: null
               additionalProperties: false
               nullable: true
               properties:
@@ -50805,7 +50794,6 @@ components:
                     x-referenceable: true
                     description: |
                       This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-                  default: null
                   minItems: 1
                   nullable: true
                   x-speakeasy-param-computed: false
@@ -50837,6 +50825,7 @@ components:
           maximum: 2147483646
           minimum: 0
       additionalProperties: false
+      x-terraform-no-default-null: true
     AIGatewayMCPServerCacheHint:
       description: A cache hint Kong emits on a cacheable operation it serves.
       type: object
@@ -50844,7 +50833,6 @@ components:
         ttl_ms:
           description: 'How long a client may treat the result as fresh, in milliseconds.'
           type: integer
-          default: null
           minimum: 0
           nullable: true
           x-speakeasy-param-computed: false
@@ -50860,6 +50848,7 @@ components:
             - private
           x-speakeasy-unknown-values: allow
       additionalProperties: false
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServerServerConfig:
       description: Server-side configuration specific to `upstream-server` mode.
       type: object
@@ -50873,14 +50862,12 @@ components:
             Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
             This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
           type: object
-          default: null
           additionalProperties: false
           nullable: true
           properties:
             client:
               description: The configuration for client-side session storage.
               type: object
-              default: null
               additionalProperties: false
               nullable: true
               properties:
@@ -50895,7 +50882,6 @@ components:
                     x-referenceable: true
                     description: |
                       This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-                  default: null
                   minItems: 1
                   nullable: true
                   x-speakeasy-param-computed: false
@@ -50952,6 +50938,7 @@ components:
           x-speakeasy-param-computed: false
           x-speakeasy-unknown-values: allow
       additionalProperties: false
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServerServerToolAuthConfig:
       description: Configuration for an Upstream Server's MCP Server Tools' Authentication.
       discriminator:
@@ -50970,7 +50957,6 @@ components:
             The scopes for the OAuth 2.0 client-credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -50986,7 +50972,6 @@ components:
             include the header name and the token prefix if needed. Leave empty to omit the ID token
             when fetching the tools list.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         type:
@@ -50995,6 +50980,7 @@ components:
       additionalProperties: false
       required:
         - type
+      x-terraform-no-default-null: true
     AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentials:
       type: object
       properties:
@@ -51003,7 +50989,6 @@ components:
             The scopes for the OAuth 2.0 client-credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           x-referenceable: true
           x-speakeasy-param-computed: false
@@ -51019,7 +51004,6 @@ components:
             include the header name and the token prefix if needed. Leave empty to omit the ID token
             when fetching the tools list.
           type: string
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         type:
@@ -51043,7 +51027,6 @@ components:
             The client secret for the OAuth 2.0 client-credentials.
             This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
           type: string
-          default: null
           nullable: true
           writeOnly: true
           x-referenceable: true
@@ -51053,6 +51036,7 @@ components:
         - type
         - token_endpoint
         - client_id
+      x-terraform-no-default-null: true
     CreateAIGatewayMCPServerRequest:
       discriminator:
         propertyName: type
@@ -51245,6 +51229,7 @@ components:
           required:
             - url
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         tools:
           description: |
             List of tools exposed by this MCP Server. Each tool's `path`, `method`, and `host`
@@ -51366,6 +51351,7 @@ components:
               x-min-runtime-version: '2.1'
               x-speakeasy-param-computed: false
           title: AIGatewayMCPServerKongListenerConfig
+          x-terraform-no-default-null: true
         sources:
           description: |
             The explicit list of source MCP Servers whose tools this listener exposes.
@@ -51545,7 +51531,6 @@ components:
           description: A description of what the tool does.
           type: string
           example: Search for available flights
-          default: null
           nullable: true
           x-speakeasy-param-computed: false
         name:
@@ -51559,7 +51544,6 @@ components:
             The entire `inputSchema` section for the tool. Overrides the upstream server's `inputSchema`
             for the same tool name, if present.
           type: object
-          default: null
           additionalProperties: true
           nullable: true
           x-speakeasy-param-computed: false
@@ -51569,7 +51553,6 @@ components:
             The entire `outputSchema` section for the tool. Overrides the upstream server's `outputSchema`
             for the same tool name, if present.
           type: object
-          default: null
           additionalProperties: true
           nullable: true
           x-speakeasy-param-computed: false
@@ -51577,6 +51560,7 @@ components:
       additionalProperties: false
       required:
         - name
+      x-terraform-no-default-null: true
     AIGatewayMCPToolAnnotations:
       type: object
       properties:
@@ -52866,7 +52850,6 @@ components:
         aws:
           type: object
           additionalProperties: false
-          nullable: true
           properties:
             access_key_id:
               description: static IAM user credential; overrides AWS_ACCESS_KEY_ID env var
@@ -52885,7 +52868,7 @@ components:
               nullable: true
               writeOnly: true
               x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - type
