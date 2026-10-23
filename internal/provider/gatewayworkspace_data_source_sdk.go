@@ -57,15 +57,34 @@ func (r *GatewayWorkspaceDataSourceModel) ToOperationsListWorkspacesSingleResour
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	filterNameEq := new(string)
-	if !r.FilterNameEq.IsUnknown() && !r.FilterNameEq.IsNull() {
-		*filterNameEq = r.FilterNameEq.ValueString()
-	} else {
-		filterNameEq = nil
+	var filter *shared.WorkspaceFilterParameters
+	if r.Filter != nil {
+		var name *shared.WorkspaceFilterParametersName
+		if r.Filter.Name != nil {
+			eq := new(string)
+			if !r.Filter.Name.Eq.IsUnknown() && !r.Filter.Name.Eq.IsNull() {
+				*eq = r.Filter.Name.Eq.ValueString()
+			} else {
+				eq = nil
+			}
+			contains := new(string)
+			if !r.Filter.Name.Contains.IsUnknown() && !r.Filter.Name.Contains.IsNull() {
+				*contains = r.Filter.Name.Contains.ValueString()
+			} else {
+				contains = nil
+			}
+			name = &shared.WorkspaceFilterParametersName{
+				Eq:       eq,
+				Contains: contains,
+			}
+		}
+		filter = &shared.WorkspaceFilterParameters{
+			Name: name,
+		}
 	}
 	out := operations.ListWorkspacesSingleResourceRequest{
 		ControlPlaneID: controlPlaneID,
-		FilterNameEq:   filterNameEq,
+		Filter:         filter,
 	}
 
 	return &out, diags

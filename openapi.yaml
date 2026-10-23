@@ -25638,12 +25638,7 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: 'filter[name][eq]'
-          in: query
-          description: Filter by direct equality comparison of the name property with a supplied value.
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/WorkspaceFilter'
       responses:
         '200':
           $ref: '#/components/responses/ListWorkspacesResponse'
@@ -26778,6 +26773,14 @@ components:
         example: team-payments
         default: default
       x-speakeasy-param-force-new: true
+    WorkspaceFilter:
+      name: filter
+      description: Filters a collection of workspaces.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/WorkspaceFilterParameters'
+      style: deepObject
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -103947,6 +103950,22 @@ components:
         - issuer
         - cache_tokens_salt
       x-terraform-no-default-null: true
+    WorkspaceFilterParameters:
+      type: object
+      properties:
+        name:
+          description: 'Filter using **one** of the following operators: `eq`, `contains`'
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              description: The field exactly matches the provided value.
+              type: string
+            contains:
+              description: The field contains the provided value.
+              type: string
+      additionalProperties: false
+      title: WorkspaceFilterParameters
     Protocols:
       description: 'A string representing a protocol, such as HTTP or HTTPS.'
       type: string

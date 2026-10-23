@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type MeshControlPlaneFilterParametersName struct {
+type WorkspaceFilterParametersName struct {
 	Contains types.String `queryParam:"name=contains" tfsdk:"contains"`
 	Eq       types.String `queryParam:"name=eq" tfsdk:"eq"`
 }
