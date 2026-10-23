@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 1cef8f7ca5f3ae146f9e354491b683cd
+  docChecksum: 97bfbd7d7988a1d8c8192061aca2a10b
   docVersion: 2.0.0
   speakeasyVersion: 1.802.0
   generationVersion: 2.948.4
   releaseVersion: 3.26.0
   configChecksum: 1c744f0afd800f08d89944ddf1724967
 persistentEdits:
-  generation_id: 87881c10-2c18-49c4-8f11-bf4307d0aab1
-  pristine_commit_hash: a2c047ec3b31079a496e2b2d20936ff5e6a3c2a4
-  pristine_tree_hash: a627218f19b6f6186af82ea23a9ccb5c9ac3f8f2
+  generation_id: 106d5b61-1f6c-4a22-8767-0a89754be3fb
+  pristine_commit_hash: 817330b5c5c20cf0fca7edf32c1caf80fc6f0dbf
+  pristine_tree_hash: 84e171fcb12c8412a99e2fd75b11c850b3ec3df6
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -9257,8 +9257,8 @@ trackedFiles:
     pristine_git_object: 768bb09ef854836ace7f2c306de38dc05cd1905a
   internal/sdk/models/operations/createdataplanecertificate.go:
     id: 6cec31575234
-    last_write_checksum: sha1:5fe792d172e46cc65aada8cc5cbd9239a9f28282
-    pristine_git_object: 151ba73dc55aeddb3852a0861c045c82fb0cf0c4
+    last_write_checksum: sha1:2c46ff982cb19a200076265ae59ce1a42e033739
+    pristine_git_object: 1306ca5c62799d9db0b007772844ca3961aba6a6
   internal/sdk/models/operations/createdcrprovider.go:
     id: c455e6acbfcc
     last_write_checksum: sha1:7d6b5b5171c06e1da94042efb741bc6c33e7473a
@@ -9549,8 +9549,8 @@ trackedFiles:
     pristine_git_object: ed474ac47e084d44a3feab570151dd51d9eba721
   internal/sdk/models/operations/createpluginschemas.go:
     id: f6df0d42f079
-    last_write_checksum: sha1:6095427dfcbcb49d223dbd67029b21970c8c7962
-    pristine_git_object: 417a6ea169fb1fa4117bcf490db4c65d65717037
+    last_write_checksum: sha1:fa7b1215f485c9bf1032a9916100695c1091c514
+    pristine_git_object: 24874cd8d4c395546118b8da7705ddbed53b734b
   internal/sdk/models/operations/createportal.go:
     id: 6357c0699927
     last_write_checksum: sha1:4bafe6ba7adf05ebdc30fb994f46b321776a570f
@@ -9789,8 +9789,8 @@ trackedFiles:
     pristine_git_object: e929022978094be0ee6240084d704087a67478fe
   internal/sdk/models/operations/createworkspace.go:
     id: 0dfb68c3ac15
-    last_write_checksum: sha1:85e11492b34d497500c04ed7c0e8269465a5cd09
-    pristine_git_object: aec90d2ec505da03352cc970b2af69a7650fd56f
+    last_write_checksum: sha1:5f6ec6eef02e383e0c8ee0bcf5f9127716d9160b
+    pristine_git_object: de925de86da90136c81be0f6b726d41ae4ba1110
   internal/sdk/models/operations/createxmlthreatprotectionplugin.go:
     id: 9f9210992ebb
     last_write_checksum: sha1:d304a3d1b2b0796b0dfb312631524ebf8d158a22
@@ -10181,8 +10181,8 @@ trackedFiles:
     pristine_git_object: 51cbb4cc96fc68311eada469bfc08305304717da
   internal/sdk/models/operations/deletedataplanecertificate.go:
     id: 919f068b489a
-    last_write_checksum: sha1:f431270a1544278e5dffdcc4d222b3058dd297ff
-    pristine_git_object: 8fb1d4ccc39309d54a0f45e240a58f90d5703e54
+    last_write_checksum: sha1:b91df7331a2df103d7dbe8c994be15d5c55257dd
+    pristine_git_object: 2a09c5f0a0565de42796f4cd878f36106ab782d1
   internal/sdk/models/operations/deletedcrprovider.go:
     id: b7b800ba2e62
     last_write_checksum: sha1:5c31bbceb027fe7e1064179423949581c4735f50
@@ -10485,8 +10485,8 @@ trackedFiles:
     pristine_git_object: 1238e1e49b753ab9dde47a0f947073a239d6dce8
   internal/sdk/models/operations/deletepluginschemas.go:
     id: 8903422ad03d
-    last_write_checksum: sha1:19f29339488e7084eb5d889a7769de9c25808a11
-    pristine_git_object: 3451954e6f25f0565dd63bb67c01e492d67c3017
+    last_write_checksum: sha1:8ed3d34e3bea5b0132d3ce02cf439d5bd4f0c267
+    pristine_git_object: b56f63814b63aafd7afec833abb9fb609cde6c51
   internal/sdk/models/operations/deleteportal.go:
     id: 53a9afa45806
     last_write_checksum: sha1:7a547836c15b0ab7c2bcddf2c7e055ba51c94381
@@ -10753,8 +10753,8 @@ trackedFiles:
     pristine_git_object: 8c0b0989b28889c3ff0c6c5fe99e536309464288
   internal/sdk/models/operations/deleteworkspace.go:
     id: 1193e004e5cc
-    last_write_checksum: sha1:048dffe189c09cfa72f2430a9cb0e026bee06f53
-    pristine_git_object: 5800a7d4e641f5ec0483f75741fa15be679ffb73
+    last_write_checksum: sha1:d86218cd225d7a91eee9ca53b00dd1f9beea090c
+    pristine_git_object: 8f1d480c3137a619910f7a9ea12737f0bb5d2046
   internal/sdk/models/operations/deletexmlthreatprotectionplugin.go:
     id: 0465fb617852
     last_write_checksum: sha1:549c004d17f0f5a8392fdfe810e31fb5c23fa38f
@@ -11165,8 +11165,8 @@ trackedFiles:
     pristine_git_object: 7058ae9bd04bea90113f143594da292411451d0f
   internal/sdk/models/operations/getdataplanecertificate.go:
     id: 61f8f91efe37
-    last_write_checksum: sha1:eb48dbf204d25bdb3ac6fb0d160d5035c144c775
-    pristine_git_object: dc549631d4e41b9d2c368b9c6e6f56f9c2ba77bf
+    last_write_checksum: sha1:a868cb5ac2b6633a8b6eef2a6fd723d89385e2b4
+    pristine_git_object: bf6ec6f92432177914d32a622d9ca41314a4c3d3
   internal/sdk/models/operations/getdcrprovider.go:
     id: e6eade2ae330
     last_write_checksum: sha1:b63d4895cf94baf816a43bf595ea819d92870ae7
@@ -11477,8 +11477,8 @@ trackedFiles:
     pristine_git_object: debdd358fb2518bc54d0d5f0349069bf3f1ce9b0
   internal/sdk/models/operations/getpluginschema.go:
     id: 7e8f35a690ee
-    last_write_checksum: sha1:7884b1809ca069b03e232da89c2db6d82d9fc657
-    pristine_git_object: 37a12f8686637945f09e56061e06b1d4a0770a53
+    last_write_checksum: sha1:8477d1f2b7f0b9bf8af868efda4757f480abf90a
+    pristine_git_object: 1a0dac1340cd03fa10a2a6f190ce7a0154d4dd93
   internal/sdk/models/operations/getportal.go:
     id: bbb7cc19a811
     last_write_checksum: sha1:c33d6e1a742b167b88cfd64059beba629b0b9ce0
@@ -11769,8 +11769,8 @@ trackedFiles:
     pristine_git_object: 1f4f330fdd7fa26dd1a7e6eede5a01e118b4bc59
   internal/sdk/models/operations/getworkspace.go:
     id: 265dc9ac3ec6
-    last_write_checksum: sha1:61d1d1593e15aa8383196ee4d9b1be48ba898bdc
-    pristine_git_object: d41a620956721bf9790b9be4b1ad963087bf9f38
+    last_write_checksum: sha1:8fe541d45177fe321ee83d68b0ac6e2fe1f439ff
+    pristine_git_object: b3c6f1a1dc7aa9100883cd88e4f9bdc788bf0c9e
   internal/sdk/models/operations/getxmlthreatprotectionplugin.go:
     id: b2368f94f68e
     last_write_checksum: sha1:a1618790cf0be860a1e41b139827af48893b98ac
@@ -11821,8 +11821,8 @@ trackedFiles:
     pristine_git_object: 5f867420cd8775130057d07ffc13b5e0ff877a84
   internal/sdk/models/operations/listworkspacessingleresource.go:
     id: 81b3037a2bfe
-    last_write_checksum: sha1:fc40d53e83d26aefc47aa63979d0f70334e0dd44
-    pristine_git_object: b0634a885ab511b9eebe3a03794bcd92dfb1b5a6
+    last_write_checksum: sha1:fb9f5476a22a784a5d2d033bbbb6e0f265db2b8a
+    pristine_git_object: 0e223b18dd8327527fa65c336f09eb91721b5672
   internal/sdk/models/operations/options.go:
     id: 6d0d29414e00
     last_write_checksum: sha1:5cf06b91b8d864667a34e1d1472134cc9b335242
@@ -12241,8 +12241,8 @@ trackedFiles:
     pristine_git_object: 2c5e9fe142dc027533da305996a94e41518c0e07
   internal/sdk/models/operations/updatedataplanecertificate.go:
     id: 6811d61d8463
-    last_write_checksum: sha1:c8d5b52307d876b7800b14c613f2551464d409f9
-    pristine_git_object: c4e61fa9ac90656ac86ee89fed8f790322113180
+    last_write_checksum: sha1:252b258f78115e57782b264463b74b429ddf1167
+    pristine_git_object: ed76a7e07551c60801a03392ea1b6e71688294e6
   internal/sdk/models/operations/updatedcrprovider.go:
     id: 08927d605ead
     last_write_checksum: sha1:4a28c5381be1979fb5a66c4d72b614914e0dfc6b
@@ -12481,8 +12481,8 @@ trackedFiles:
     pristine_git_object: a77d6e54f2c8fce6bde427b6c45a0a3b2492986b
   internal/sdk/models/operations/updatepluginschemas.go:
     id: 53c901cad529
-    last_write_checksum: sha1:0ed690bffade4faf32ade7b912f3c04743b4aa5e
-    pristine_git_object: 8d676570584560806f565a670f8b89da991edce6
+    last_write_checksum: sha1:8deb4f414180fd0d67632d9506b7e88de296c60d
+    pristine_git_object: 8ae03fd4d04124525936b829c22bf8fd56a72f03
   internal/sdk/models/operations/updateportal.go:
     id: 1aa1add9306e
     last_write_checksum: sha1:bda85826b2b27db75fdd4ce8e50065c31f9c6b44
@@ -12785,8 +12785,8 @@ trackedFiles:
     pristine_git_object: 40b00e1ac50718f388df5920638b21ec8b980583
   internal/sdk/models/operations/upsertworkspace.go:
     id: c42b541c5ffa
-    last_write_checksum: sha1:e112281589153c4edf096fc9c0dcdc33eb009c6f
-    pristine_git_object: fd253130525c9b03ec877634bce14598d2a8cece
+    last_write_checksum: sha1:6bcddf0a927e72e115887e2341eb8000da5bfcf9
+    pristine_git_object: 4a5a709db467f8694b68660608fe884a1bbd295c
   internal/sdk/models/operations/usersassignrole.go:
     id: d9d838da84e7
     last_write_checksum: sha1:2ce8be2b27ebd933f8e89b6715af1048079a1607
@@ -15353,24 +15353,28 @@ trackedFiles:
     pristine_git_object: 1a9863abd7005b771b73189644d07f7cc1bd9b40
   internal/sdk/models/shared/konnectcplegacybadrequesterror.go:
     id: cfdaa5a127cc
-    last_write_checksum: sha1:e30c0841f365588e2ab0e5e888004178d9678d10
-    pristine_git_object: c6500e5df783c4e99b4d8c6accccf1051171d770
+    last_write_checksum: sha1:7f00d08b8215f9aa87ab9bdc0d24b021d1f7d5e8
+    pristine_git_object: ae4138720b574a8577191e18b2a55517d81a8bf7
   internal/sdk/models/shared/konnectcplegacyconflicterror.go:
     id: 331b15776278
-    last_write_checksum: sha1:5db5e67ea229fcb9c95c8b717b7c5fdb226f959f
-    pristine_git_object: a4fae3f998c004f4274e9f32e5344b38d2142455
+    last_write_checksum: sha1:bab352b83b0b0de56c867ab1f737aa6712f2de7c
+    pristine_git_object: e2bffb3a3ac33a623095ed98d1c7db8d24c5db11
+  internal/sdk/models/shared/konnectcplegacyerrordetail.go:
+    id: bcf7ef76b143
+    last_write_checksum: sha1:bc2dbfa2e524e0eda65243b435d8c456c386bc33
+    pristine_git_object: 147ec59ad4be5d7b6e61c761095e24c42c9b8cbe
   internal/sdk/models/shared/konnectcplegacyforbiddenerror.go:
     id: f406fe5062b6
-    last_write_checksum: sha1:2fa141869ba570204ab56de9017aa7b07ca49baa
-    pristine_git_object: 78072be174b727ef4cd03525d8056021e06c9c8f
+    last_write_checksum: sha1:919346928a4a8b94b265b8670726abde7533a7a9
+    pristine_git_object: 4ae980ae7070b6fcfeaa9053cd2b70b617fdcb30
   internal/sdk/models/shared/konnectcplegacynotfounderror.go:
     id: 353e5ef62913
-    last_write_checksum: sha1:393d9d9196126e7498a9efe5791352ddb02bfde9
-    pristine_git_object: 387006d5b288a3db7da024027341dd7cf1e0594c
+    last_write_checksum: sha1:3ea46796dc8880fa9fc411ff92bc1794dc70b16e
+    pristine_git_object: 706fb742bd9a81ed2fff2eae7fe8997c65b3b173
   internal/sdk/models/shared/konnectcplegacyunauthorizederror.go:
     id: 4da757954489
-    last_write_checksum: sha1:0b3353f2b600f50ae117d1edb750d563f5bbb16c
-    pristine_git_object: 8a578d558ba71d3d3c295dedd25002fc5c759b36
+    last_write_checksum: sha1:a9348cf2c57b51c22fb3df92d6010ad4afe46be4
+    pristine_git_object: f8d839a6b2b83c9ce0b672119a75882c862c87cb
   internal/sdk/models/shared/labelsfieldfilter.go:
     id: 890fb56188db
     last_write_checksum: sha1:03997132d598e0445b1d02b00cefb2a6b5bb569d
@@ -18905,16 +18909,16 @@ examples:
           application/json: {"item": null}
         "400":
           application/problem+json: {"status": 625309, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "409":
           application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
-          application/json: {"message": "Conflict"}
+          application/json: {"code": 3, "message": "Conflict", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   get-plugin-schema:
     speakeasy-default-get-plugin-schema:
       parameters:
@@ -18926,13 +18930,13 @@ examples:
           application/json: {"item": null}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   delete-plugin-schemas:
     speakeasy-default-delete-plugin-schemas:
       parameters:
@@ -18942,13 +18946,13 @@ examples:
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   update-plugin-schemas:
     speakeasy-default-update-plugin-schemas:
       parameters:
@@ -18962,15 +18966,15 @@ examples:
           application/json: {"item": null}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "400":
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   create-plugin:
     speakeasy-default-create-plugin:
       parameters:
@@ -26725,6 +26729,8 @@ examples:
           application/json: {"destinations": null, "hosts": ["foo.example.com", "foo.example.us"], "https_redirect_status_code": 426, "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "methods": null, "name": "example-route", "path_handling": "v0", "paths": ["/v1", "/v2"], "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}, "snis": null, "sources": null, "strip_path": true, "tags": null}
         "401":
           application/json: {"message": "<value>", "status": 624141}
+        "409":
+          application/json: {"code": 3, "message": "Conflict", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   delete-route:
     "":
       parameters:
@@ -26791,6 +26797,8 @@ examples:
           application/json: {"destinations": null, "hosts": ["foo.example.com", "foo.example.us"], "https_redirect_status_code": 426, "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "methods": null, "name": "example-route", "path_handling": "v0", "paths": ["/v1", "/v2"], "preserve_host": false, "protocols": ["http", "https"], "regex_priority": 0, "request_buffering": true, "response_buffering": true, "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}, "snis": null, "sources": null, "strip_path": true, "tags": null}
         "401":
           application/json: {"message": "<value>", "status": 535322}
+        "409":
+          application/json: {"code": 3, "message": "Conflict", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   delete-route-RouteExpression:
     "":
       parameters:
@@ -26857,6 +26865,8 @@ examples:
           application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true, "tags": null}
         "401":
           application/json: {"message": "<value>", "status": 67918}
+        "409":
+          application/json: {"code": 3, "message": "Conflict", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   create-route-RouteExpression:
     speakeasy-default-create-route-route-expression:
       parameters:
@@ -26870,6 +26880,8 @@ examples:
           application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true, "tags": null}
         "401":
           application/json: {"message": "<value>", "status": 585160}
+        "409":
+          application/json: {"code": 3, "message": "Conflict", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   create-service:
     speakeasy-default-create-service:
       parameters:
@@ -27251,13 +27263,13 @@ examples:
         "201":
           application/json: {}
         "401":
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "400":
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   get-dataplane-certificate:
     speakeasy-default-get-dataplane-certificate:
       parameters:
@@ -27268,11 +27280,11 @@ examples:
         "200":
           application/json: {}
         "401":
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   delete-dataplane-certificate:
     speakeasy-default-delete-dataplane-certificate:
       parameters:
@@ -27281,11 +27293,11 @@ examples:
           certificateId: "<id>"
       responses:
         "401":
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   post-control-planes-id-group-memberships-add:
     speakeasy-default-post-control-planes-id-group-memberships-add:
       parameters:
@@ -31918,13 +31930,13 @@ examples:
         "200":
           application/json: {}
         "400":
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "401":
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   create-portal-ip-allow-list:
     speakeasy-default-create-portal-ip-allow-list:
       parameters:
@@ -34584,22 +34596,22 @@ examples:
           application/json: {"name": "<value>", "managed_by": {"owner": "terraform"}, "created_at": 1667592606, "updated_at": 1667592606}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "to", "rule": "min_time", "minimum": "2026-10-01T00:00:00Z", "source": "body", "reason": "must be no earlier than 2026-10-01T00:00:00Z"}]}
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
           application/problem+json: {"status": 501, "title": "Not Implemented", "type": "https://httpstatuses.com/501", "instance": "kong:trace:1234567890", "detail": "Not Implemented"}
         "409":
-          application/json: {"message": "Conflict"}
+          application/json: {"code": 3, "message": "Conflict", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   get-workspace:
     speakeasy-default-get-workspace:
       parameters:
@@ -34611,16 +34623,16 @@ examples:
           application/json: {"name": "<value>", "managed_by": {"owner": "terraform"}, "created_at": 1667592606, "updated_at": 1667592606}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
@@ -34636,16 +34648,16 @@ examples:
       responses:
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
@@ -34665,16 +34677,16 @@ examples:
           application/json: {"name": "<value>", "managed_by": {"owner": "terraform"}, "created_at": 1667592606, "updated_at": 1667592606}
         "400":
           application/problem+json: {"status": 400, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "500":
           application/problem+json: {"status": 500, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "501":
@@ -34682,7 +34694,7 @@ examples:
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
         "409":
-          application/json: {"message": "Conflict"}
+          application/json: {"code": 3, "message": "Conflict", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
   list-workspaces-single-resource:
     speakeasy-default-list-workspaces-single-resource:
       parameters:
@@ -34692,13 +34704,13 @@ examples:
         "200":
           application/json: {"data": []}
         "400":
-          application/json: {"message": "Bad Request"}
+          application/json: {"code": 3, "message": "Bad Request", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "401":
-          application/json: {"message": "Unauthorized"}
+          application/json: {"code": 3, "message": "Unauthorized", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "403":
-          application/json: {"message": "Forbidden"}
+          application/json: {"code": 3, "message": "Forbidden", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
         "404":
-          application/json: {"message": "Not Found"}
+          application/json: {"code": 3, "message": "Not Found", "details": [{"field": "name", "messages": ["name (type: unique) constraint failed"], "type": "ERROR_TYPE_FIELD"}]}
 examplesVersion: 1.0.2
 generatedTests: {}
 generatedFiles:

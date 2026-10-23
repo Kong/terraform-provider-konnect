@@ -8,9 +8,17 @@ import (
 
 // KonnectCPLegacyNotFoundError - standard error
 type KonnectCPLegacyNotFoundError struct {
+	// The Kong error code for this failure. `3` indicates a validation
+	// error and `5` a missing resource.
+	//
+	Code *int64 `json:"code,omitempty"`
 	// A short summary of the problem.
 	//
 	Message *string `json:"message,omitempty"`
+	// The fields that caused the request to be rejected, when the failure
+	// is attributable to values in the request.
+	//
+	Details []KonnectCPLegacyErrorDetail `json:"details,omitempty"`
 }
 
 func (k KonnectCPLegacyNotFoundError) MarshalJSON() ([]byte, error) {
@@ -24,9 +32,23 @@ func (k *KonnectCPLegacyNotFoundError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (k *KonnectCPLegacyNotFoundError) GetCode() *int64 {
+	if k == nil {
+		return nil
+	}
+	return k.Code
+}
+
 func (k *KonnectCPLegacyNotFoundError) GetMessage() *string {
 	if k == nil {
 		return nil
 	}
 	return k.Message
+}
+
+func (k *KonnectCPLegacyNotFoundError) GetDetails() []KonnectCPLegacyErrorDetail {
+	if k == nil {
+		return nil
+	}
+	return k.Details
 }
