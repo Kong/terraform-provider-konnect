@@ -47,13 +47,13 @@ type DeleteWorkspaceResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Forbidden
+	// Bad Request
 	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
 	// Unauthorized
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
-	// Forbidden
+	// Not Found
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 	// Internal
 	InternalError *shared.InternalError

@@ -27423,10 +27423,49 @@ components:
     PaginationOffsetResponse:
       description: Offset is used to paginate through the API. Provide this value to the next list operation to fetch the next page
       type: string
+    KonnectCPLegacyErrorDetail:
+      description: A field level failure on a rejected request.
+      type: object
+      properties:
+        field:
+          description: |
+            The field the failure applies to.
+          type: string
+          example: name
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        messages:
+          description: |
+            The reasons the field was rejected.
+          type: array
+          items:
+            type: string
+          example:
+            - 'name (type: unique) constraint failed'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        type:
+          description: |
+            The kind of failure. `ERROR_TYPE_FIELD` for a field that failed
+            validation, `ERROR_TYPE_REFERENCE` for a value that is already in
+            use or that points at a missing resource.
+          type: string
+          example: ERROR_TYPE_FIELD
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      title: Error Detail
     KonnectCPLegacyBadRequestError:
       description: standard error
       type: object
       properties:
+        code:
+          description: |
+            The Kong error code for this failure. `3` indicates a validation
+            error and `5` a missing resource.
+          type: integer
+          example: 3
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         message:
           description: |
             A short summary of the problem.
@@ -27434,11 +27473,28 @@ components:
           example: Bad Request
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        details:
+          description: |
+            The fields that caused the request to be rejected, when the failure
+            is attributable to values in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       title: Error
     KonnectCPLegacyUnauthorizedError:
       description: standard error
       type: object
       properties:
+        code:
+          description: |
+            The Kong error code for this failure. `3` indicates a validation
+            error and `5` a missing resource.
+          type: integer
+          example: 3
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         message:
           description: |
             A short summary of the problem.
@@ -27446,11 +27502,28 @@ components:
           example: Unauthorized
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        details:
+          description: |
+            The fields that caused the request to be rejected, when the failure
+            is attributable to values in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       title: Error
     KonnectCPLegacyForbiddenError:
       description: standard error
       type: object
       properties:
+        code:
+          description: |
+            The Kong error code for this failure. `3` indicates a validation
+            error and `5` a missing resource.
+          type: integer
+          example: 3
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         message:
           description: |
             A short summary of the problem.
@@ -27458,11 +27531,28 @@ components:
           example: Forbidden
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        details:
+          description: |
+            The fields that caused the request to be rejected, when the failure
+            is attributable to values in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       title: Error
     KonnectCPLegacyNotFoundError:
       description: standard error
       type: object
       properties:
+        code:
+          description: |
+            The Kong error code for this failure. `3` indicates a validation
+            error and `5` a missing resource.
+          type: integer
+          example: 3
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         message:
           description: |
             A short summary of the problem.
@@ -27470,16 +27560,42 @@ components:
           example: Not Found
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        details:
+          description: |
+            The fields that caused the request to be rejected, when the failure
+            is attributable to values in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       title: Error
     KonnectCPLegacyConflictError:
       description: standard error
       type: object
       properties:
+        code:
+          description: |
+            The Kong error code for this failure. `3` indicates a validation
+            error and `5` a missing resource.
+          type: integer
+          example: 3
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         message:
           description: |
             A short summary of the problem.
           type: string
           example: Conflict
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        details:
+          description: |
+            The fields that caused the request to be rejected, when the failure
+            is attributable to values in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/KonnectCPLegacyErrorDetail'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
       title: Error
@@ -103074,6 +103190,36 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    KonnectCPLegacyBadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyBadRequestError'
+    KonnectCPLegacyUnauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyUnauthorizedError'
+    KonnectCPLegacyForbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyForbiddenError'
+    KonnectCPLegacyNotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyNotFoundError'
+    KonnectCPLegacyConflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyConflictError'
     InternalServerError:
       description: Internal Server Error
       content:
@@ -103248,36 +103394,6 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotAvailableError'
-    KonnectCPLegacyBadRequest:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KonnectCPLegacyBadRequestError'
-    KonnectCPLegacyUnauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KonnectCPLegacyUnauthorizedError'
-    KonnectCPLegacyForbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KonnectCPLegacyForbiddenError'
-    KonnectCPLegacyNotFound:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KonnectCPLegacyNotFoundError'
-    KonnectCPLegacyConflict:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KonnectCPLegacyConflictError'
     RetrieveConfigurationResponse:
       description: Response format for retrieving a configuration by ID.
       content:

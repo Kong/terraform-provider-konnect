@@ -49,13 +49,13 @@ type ListWorkspacesSingleResourceResponse struct {
 	RawResponse *http.Response
 	// A paginated list response for a collection of workspaces.
 	ListWorkspacesResponse *shared.ListWorkspacesResponse
-	// Forbidden
+	// Bad Request
 	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
 	// Unauthorized
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
-	// Forbidden
+	// Not Found
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
