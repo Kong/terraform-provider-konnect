@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.27.0
-> Released 2026/10/??
+> Released 2026/10/23
 
 # Bug Fixes
 * Fixed error while running `terraform apply` for `konnect_ai_gateway_model`,`konnect_ai_gateway_model_provider` and `konnect_ai_gateway_mcp_server` resource when certain optional fields were left unset
