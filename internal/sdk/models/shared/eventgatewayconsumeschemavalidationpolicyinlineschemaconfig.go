@@ -10,7 +10,6 @@ import (
 //
 // **Requires a minimum runtime version of `1.3`**.
 type EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig struct {
-	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
 	// Describes how to handle a failure in a policy applied to consumed records.
 	// * `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
 	// * `skip` - the record is not delivered to the client.
@@ -60,13 +59,6 @@ func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) UnmarshalJ
 		return err
 	}
 	return nil
-}
-
-func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetSchemaRegistry() *SchemaRegistryReference {
-	if e == nil {
-		return nil
-	}
-	return e.SchemaRegistry
 }
 
 func (e *EventGatewayConsumeSchemaValidationPolicyInlineSchemaConfig) GetFailureMode() *ConsumeFailureMode {

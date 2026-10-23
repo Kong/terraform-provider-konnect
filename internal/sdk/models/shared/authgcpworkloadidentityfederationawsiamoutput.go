@@ -80,7 +80,7 @@ type AuthGCPWorkloadIdentityFederationAwsIam struct {
 	// path in the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	AuthJSON *string `default:"null" json:"auth_json"`
+	AuthJSON *string `json:"auth_json,omitempty"`
 	// AWS IAM (SigV4) authentication for the upstream service.
 	//
 	Aws *AIGatewayUpstreamAuthAWS `json:"aws,omitempty"`

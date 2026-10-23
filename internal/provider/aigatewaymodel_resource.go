@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -1093,16 +1092,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"ssl": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"cert":     types.StringType,
-																	"cert_key": types.StringType,
-																	"enabled":  types.BoolType,
-																	"required": types.BoolType,
-																	"verify":   types.BoolType,
-																	"version":  types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"cert": schema.StringAttribute{
 																		Optional:    true,
@@ -6307,14 +6297,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aws": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"assume_role_arn":   types.StringType,
-														"region":            types.StringType,
-														"role_session_name": types.StringType,
-														"sts_endpoint_url":  types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"assume_role_arn": schema.StringAttribute{
 															Optional:    true,
@@ -6566,13 +6549,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"container_hostname": types.StringType,
-														"model":              types.StringType,
-														"variant":            types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"container_hostname": schema.StringAttribute{
 															Optional:    true,
@@ -8653,16 +8630,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"ssl": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
-																Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-																	"cert":     types.StringType,
-																	"cert_key": types.StringType,
-																	"enabled":  types.BoolType,
-																	"required": types.BoolType,
-																	"verify":   types.BoolType,
-																	"version":  types.StringType,
-																})),
 																Attributes: map[string]schema.Attribute{
 																	"cert": schema.StringAttribute{
 																		Optional:    true,
@@ -13879,14 +13847,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aws": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"assume_role_arn":   types.StringType,
-														"region":            types.StringType,
-														"role_session_name": types.StringType,
-														"sts_endpoint_url":  types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"assume_role_arn": schema.StringAttribute{
 															Optional:    true,
@@ -14138,13 +14099,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Multiplier applied to the whole request for a service tier. The default factor is 1.0 when no tier matches.`,
 												},
 												"target": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
-													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-														"container_hostname": types.StringType,
-														"model":              types.StringType,
-														"variant":            types.StringType,
-													})),
 													Attributes: map[string]schema.Attribute{
 														"container_hostname": schema.StringAttribute{
 															Optional:    true,
