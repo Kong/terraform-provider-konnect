@@ -15,7 +15,12 @@ GatewayWorkspace DataSource
 ```terraform
 data "konnect_gateway_workspace" "my_gatewayworkspace" {
   control_plane_id = "cb4ca5b5-c0ad-4659-ac3b-9b4f1a9cb687"
-  filter_name_eq   = "...my_filter_name_eq..."
+  filter = {
+    name = {
+      contains = "...my_contains..."
+      eq       = "...my_eq..."
+    }
+  }
 }
 ```
 
@@ -28,7 +33,7 @@ data "konnect_gateway_workspace" "my_gatewayworkspace" {
 
 ### Optional
 
-- `filter_name_eq` (String) Filter by direct equality comparison of the name property with a supplied value.
+- `filter` (Attributes) Filters a collection of workspaces. (see [below for nested schema](#nestedatt--filter))
 
 ### Read-Only
 
@@ -43,3 +48,18 @@ Keys must be 1–63 characters long and start with an alphanumeric character.
 - `next` (String) URI to the next page (may be null)
 - `offset` (String) Offset is used to paginate through the API. Provide this value to the next list operation to fetch the next page
 - `updated_at` (Number) Unix epoch when the resource was last updated.
+
+<a id="nestedatt--filter"></a>
+### Nested Schema for `filter`
+
+Optional:
+
+- `name` (Attributes) Filter using **one** of the following operators: `eq`, `contains` (see [below for nested schema](#nestedatt--filter--name))
+
+<a id="nestedatt--filter--name"></a>
+### Nested Schema for `filter.name`
+
+Optional:
+
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.

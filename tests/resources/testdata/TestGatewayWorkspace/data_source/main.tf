@@ -14,7 +14,11 @@ resource "konnect_gateway_workspace" "ds" {
 
 data "konnect_gateway_workspace" "by_name" {
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
-  filter_name_eq   = konnect_gateway_workspace.ds.name
+  filter = {
+    name = {
+      eq = konnect_gateway_workspace.ds.name
+    }
+  }
 
   depends_on = [konnect_gateway_workspace.ds]
 }

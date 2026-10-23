@@ -4,5 +4,5 @@ package types
 
 type ListTeamsQueryParamFilter struct {
 	Labels map[string]LegacyStringFieldFilterWithExists `queryParam:"name=labels" tfsdk:"labels"`
-	Name   *MeshControlPlaneFilterParametersName        `queryParam:"name=name" tfsdk:"name"`
+	Name   *WorkspaceFilterParametersName               `queryParam:"name=name" tfsdk:"name"`
 }
