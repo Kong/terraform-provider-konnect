@@ -11,9 +11,9 @@ import (
 // HTTPProxy - HTTP proxy server to route plaintext outbound requests through.
 type HTTPProxy struct {
 	// A string representing a host name, such as example.com.
-	Host *string `default:"null" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"null" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (h HTTPProxy) MarshalJSON() ([]byte, error) {
@@ -44,9 +44,9 @@ func (h *HTTPProxy) GetPort() *int64 {
 // HTTPSProxy - HTTPS proxy server to route TLS outbound requests through.
 type HTTPSProxy struct {
 	// A string representing a host name, such as example.com.
-	Host *string `default:"null" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"null" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (h HTTPSProxy) MarshalJSON() ([]byte, error) {
@@ -103,7 +103,7 @@ type AIGatewayProxyConfigAuthOutput struct {
 	// The username to use for proxy authentication.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (a AIGatewayProxyConfigAuthOutput) MarshalJSON() ([]byte, error) {
@@ -189,11 +189,11 @@ type AIGatewayProxyConfigAuth struct {
 	// The username to use for proxy authentication.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 	// The password to use for proxy authentication.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 }
 
 func (a AIGatewayProxyConfigAuth) MarshalJSON() ([]byte, error) {

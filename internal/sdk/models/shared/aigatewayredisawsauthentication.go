@@ -13,29 +13,29 @@ type AIGatewayRedisAWSAuthentication struct {
 	// AWS Access Key ID to be used for authentication.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	AccessKeyID *string `default:"null" json:"access_key_id"`
+	AccessKeyID *string `json:"access_key_id,omitempty"`
 	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	AssumeRoleArn *string `default:"null" json:"assume_role_arn"`
+	AssumeRoleArn *string `json:"assume_role_arn,omitempty"`
 	// The name of the AWS Elasticache cluster.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	CacheName *string `default:"null" json:"cache_name"`
+	CacheName *string `json:"cache_name,omitempty"`
 	// This flag specifies whether the cluster is serverless.
 	IsServerless *bool `default:"true" json:"is_serverless"`
 	// The region of the AWS ElastiCache cluster.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Region *string `default:"null" json:"region"`
+	Region *string `json:"region,omitempty"`
 	// The session name for the temporary credentials when assuming the IAM role.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	RoleSessionName *string `default:"null" json:"role_session_name"`
+	RoleSessionName *string `json:"role_session_name,omitempty"`
 	// AWS Secret Access Key.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	SecretAccessKey *string `default:"null" json:"secret_access_key"`
+	SecretAccessKey *string `json:"secret_access_key,omitempty"`
 }
 
 func (a AIGatewayRedisAWSAuthentication) MarshalJSON() ([]byte, error) {

@@ -11,7 +11,7 @@ type AIGatewayMCPServerUpstreamServerServerConfigClient struct {
 	// The secrets that are used in session encryption. Required when the strategy is 'client'.
 	// The first secret is used for encryption, while all secrets are used for decryption to support key rotation.
 	//
-	Secrets []string `json:"secrets"`
+	Secrets []string `json:"secrets,omitempty"`
 }
 
 func (a AIGatewayMCPServerUpstreamServerServerConfigClient) MarshalJSON() ([]byte, error) {
@@ -59,7 +59,7 @@ func (e *AIGatewayMCPServerUpstreamServerServerConfigStrategy) IsExact() bool {
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type AIGatewayMCPServerUpstreamServerServerConfigSessionOutput struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerUpstreamServerServerConfigClient `json:"client"`
+	Client *AIGatewayMCPServerUpstreamServerServerConfigClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
 	// Config for connecting to a Cloud Provider's Redis instance.
@@ -152,7 +152,7 @@ type AIGatewayMCPServerUpstreamServerServerConfigOutput struct {
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *AIGatewayMCPServerUpstreamServerServerConfigSessionOutput `json:"session"`
+	Session *AIGatewayMCPServerUpstreamServerServerConfigSessionOutput `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// If enabled, the original upstream tool names are preserved as-is when Kong acts as an MCP server.
@@ -241,7 +241,7 @@ func (a *AIGatewayMCPServerUpstreamServerServerConfigOutput) GetUpstreamProtocol
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type AIGatewayMCPServerUpstreamServerServerConfigSession struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerUpstreamServerServerConfigClient `json:"client"`
+	Client *AIGatewayMCPServerUpstreamServerServerConfigClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
 	// Config for connecting to a Cloud Provider's Redis instance.
@@ -305,7 +305,7 @@ type AIGatewayMCPServerUpstreamServerServerConfig struct {
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *AIGatewayMCPServerUpstreamServerServerConfigSession `json:"session"`
+	Session *AIGatewayMCPServerUpstreamServerServerConfigSession `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// If enabled, the original upstream tool names are preserved as-is when Kong acts as an MCP server.

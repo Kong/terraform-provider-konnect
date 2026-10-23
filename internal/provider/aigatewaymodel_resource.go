@@ -1541,6 +1541,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -9091,6 +9092,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{

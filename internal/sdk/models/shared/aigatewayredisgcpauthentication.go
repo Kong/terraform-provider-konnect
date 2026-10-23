@@ -13,7 +13,7 @@ type AIGatewayRedisGCPAuthentication struct {
 	// GCP Service Account JSON.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ServiceAccountJSON *string `default:"null" json:"service_account_json"`
+	ServiceAccountJSON *string `json:"service_account_json,omitempty"`
 }
 
 func (a AIGatewayRedisGCPAuthentication) MarshalJSON() ([]byte, error) {

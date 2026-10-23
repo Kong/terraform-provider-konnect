@@ -157,7 +157,7 @@ type Cluster struct {
 	// Maximum retry attempts for redirection.
 	MaxRedirections *int64 `default:"5" json:"max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	Nodes []Nodes `json:"nodes"`
+	Nodes []Nodes `json:"nodes,omitempty"`
 }
 
 func (c Cluster) MarshalJSON() ([]byte, error) {
@@ -188,7 +188,7 @@ func (c *Cluster) GetNodes() []Nodes {
 // Keepalive configuration for the Redis connection.
 type Keepalive struct {
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `pool_size`.
-	Backlog *int64 `default:"null" json:"backlog"`
+	Backlog *int64 `json:"backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `pool_size` nor `backlog` is specified, no pool is created. If `pool_size` isn't specified but `backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	PoolSize *int64 `default:"256" json:"pool_size"`
 }
@@ -277,19 +277,19 @@ func (e *Role) IsExact() bool {
 // Sentinel - Configuration for Redis Sentinel.
 type Sentinel struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	Master *string `default:"null" json:"master"`
+	Master *string `json:"master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	Nodes []AIGatewayRedisCloudConfigurationNodes `json:"nodes"`
+	Nodes []AIGatewayRedisCloudConfigurationNodes `json:"nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	Role *Role `json:"role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (s Sentinel) MarshalJSON() ([]byte, error) {

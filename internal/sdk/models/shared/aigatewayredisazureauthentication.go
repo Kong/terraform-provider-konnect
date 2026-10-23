@@ -13,15 +13,15 @@ type AIGatewayRedisAzureAuthentication struct {
 	// Azure Client ID.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ClientID *string `default:"null" json:"client_id"`
+	ClientID *string `json:"client_id,omitempty"`
 	// Azure Client Secret.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ClientSecret *string `default:"null" json:"client_secret"`
+	ClientSecret *string `json:"client_secret,omitempty"`
 	// Azure Tenant ID.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	TenantID *string `default:"null" json:"tenant_id"`
+	TenantID *string `json:"tenant_id,omitempty"`
 }
 
 func (a AIGatewayRedisAzureAuthentication) MarshalJSON() ([]byte, error) {

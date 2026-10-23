@@ -3089,6 +3089,7 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"aws": schema.SingleNestedAttribute{
+												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"access_key_id": schema.StringAttribute{
