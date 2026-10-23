@@ -4,7 +4,7 @@
 > Released 2026/10/??
 
 # Bug Fixes
-* Fixed error while running `terraform apply` for `konnect_ai_gateway_model` resource when certain optional fields were left unset
+* Fixed error while running `terraform apply` for `konnect_ai_gateway_model`,`konnect_ai_gateway_model_provider` and `konnect_ai_gateway_mcp_server` resource when certain optional fields were left unset
 * Fixed delete operation for `konnect_cloud_gateway_configuration` resource
 
 # BREAKING CHANGES

@@ -8,13 +8,13 @@ import (
 
 type AIGatewayTargetSagemakerConfigAws struct {
 	// Overrides the AWS_REGION environment variable for SageMaker requests.
-	Region *string `default:"null" json:"region"`
+	Region *string `json:"region,omitempty"`
 	// Assume a different IAM role after authenticating; mutually required with role_session_name.
-	AssumeRoleArn *string `default:"null" json:"assume_role_arn"`
+	AssumeRoleArn *string `json:"assume_role_arn,omitempty"`
 	// Session identifier for the assumed role; mutually required with assume_role_arn.
-	RoleSessionName *string `default:"null" json:"role_session_name"`
+	RoleSessionName *string `json:"role_session_name,omitempty"`
 	// Overrides the STS endpoint when assuming a role.
-	StsEndpointURL *string `default:"null" json:"sts_endpoint_url"`
+	StsEndpointURL *string `json:"sts_endpoint_url,omitempty"`
 }
 
 func (a AIGatewayTargetSagemakerConfigAws) MarshalJSON() ([]byte, error) {
@@ -58,11 +58,11 @@ func (a *AIGatewayTargetSagemakerConfigAws) GetStsEndpointURL() *string {
 
 type AIGatewayTargetSagemakerConfigTarget struct {
 	// Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
-	Model *string `default:"null" json:"model"`
+	Model *string `json:"model,omitempty"`
 	// Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
-	Variant *string `default:"null" json:"variant"`
+	Variant *string `json:"variant,omitempty"`
 	// Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).
-	ContainerHostname *string `default:"null" json:"container_hostname"`
+	ContainerHostname *string `json:"container_hostname,omitempty"`
 }
 
 func (a AIGatewayTargetSagemakerConfigTarget) MarshalJSON() ([]byte, error) {
@@ -139,8 +139,8 @@ type AIGatewayTargetSagemakerConfig struct {
 	UpstreamURL *string `json:"upstream_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_  string                                `const:"sagemaker" json:"type"`
-	Aws    *AIGatewayTargetSagemakerConfigAws    `json:"aws"`
-	Target *AIGatewayTargetSagemakerConfigTarget `json:"target"`
+	Aws    *AIGatewayTargetSagemakerConfigAws    `json:"aws,omitempty"`
+	Target *AIGatewayTargetSagemakerConfigTarget `json:"target,omitempty"`
 }
 
 func (a AIGatewayTargetSagemakerConfig) MarshalJSON() ([]byte, error) {

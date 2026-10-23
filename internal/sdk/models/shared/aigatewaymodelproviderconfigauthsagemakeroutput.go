@@ -33,7 +33,7 @@ func (e *AIGatewayModelProviderConfigAuthSagemakerType) UnmarshalJSON(data []byt
 
 type AIGatewayModelProviderConfigAuthSagemakerAws struct {
 	// static IAM user credential; overrides AWS_ACCESS_KEY_ID env var
-	AccessKeyID *string `default:"null" json:"access_key_id"`
+	AccessKeyID *string `json:"access_key_id,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthSagemakerAws) MarshalJSON() ([]byte, error) {
@@ -57,7 +57,7 @@ func (a *AIGatewayModelProviderConfigAuthSagemakerAws) GetAccessKeyID() *string 
 // AIGatewayModelProviderConfigAuthSagemakerOutput - Auth configuration for Sagemaker model provider.
 type AIGatewayModelProviderConfigAuthSagemakerOutput struct {
 	Type AIGatewayModelProviderConfigAuthSagemakerType `json:"type"`
-	Aws  *AIGatewayModelProviderConfigAuthSagemakerAws `json:"aws"`
+	Aws  *AIGatewayModelProviderConfigAuthSagemakerAws `json:"aws,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthSagemakerOutput) MarshalJSON() ([]byte, error) {
@@ -87,11 +87,11 @@ func (a *AIGatewayModelProviderConfigAuthSagemakerOutput) GetAws() *AIGatewayMod
 
 type Aws struct {
 	// static IAM user credential; overrides AWS_ACCESS_KEY_ID env var
-	AccessKeyID *string `default:"null" json:"access_key_id"`
+	AccessKeyID *string `json:"access_key_id,omitempty"`
 	// static IAM user credential; overrides AWS_SECRET_ACCESS_KEY env var
-	SecretAccessKey *string `default:"null" json:"secret_access_key"`
+	SecretAccessKey *string `json:"secret_access_key,omitempty"`
 	// static IAM user credential; overrides AWS_SESSION_TOKEN env var
-	SessionToken *string `default:"null" json:"session_token"`
+	SessionToken *string `json:"session_token,omitempty"`
 }
 
 func (a Aws) MarshalJSON() ([]byte, error) {
@@ -129,7 +129,7 @@ func (a *Aws) GetSessionToken() *string {
 // AIGatewayModelProviderConfigAuthSagemaker - Auth configuration for Sagemaker model provider.
 type AIGatewayModelProviderConfigAuthSagemaker struct {
 	Type AIGatewayModelProviderConfigAuthSagemakerType `json:"type"`
-	Aws  *Aws                                          `json:"aws"`
+	Aws  *Aws                                          `json:"aws,omitempty"`
 }
 
 func (a AIGatewayModelProviderConfigAuthSagemaker) MarshalJSON() ([]byte, error) {

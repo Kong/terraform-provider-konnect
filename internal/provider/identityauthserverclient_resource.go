@@ -128,7 +128,7 @@ func (r *IdentityAuthServerClientResource) Schema(ctx context.Context, req resou
 				},
 				Description: `The OAuth 2.0 client ID. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 36),
+					stringvalidator.UTF8LengthBetween(1, 48),
 					stringvalidator.RegexMatches(regexp.MustCompile(`[-_\w]+`), "must match pattern "+regexp.MustCompile(`[-_\w]+`).String()),
 				},
 			},

@@ -136,7 +136,7 @@ type AIGatewayModelVectorDBConfigPgVectorOutput struct {
 	Host *string `default:"127.0.0.1" json:"host"`
 	// the port of the pgvector database
 	Port *int64 `default:"5432" json:"port"`
-	Ssl  *Ssl   `json:"ssl"`
+	Ssl  *Ssl   `json:"ssl,omitempty"`
 	// the timeout of the pgvector database
 	Timeout *float64 `default:"5000" json:"timeout"`
 	// the user of the pgvector database
@@ -242,7 +242,7 @@ type AIGatewayModelVectorDBConfigPgVector struct {
 	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
 	Port *int64 `default:"5432" json:"port"`
-	Ssl  *Ssl   `json:"ssl"`
+	Ssl  *Ssl   `json:"ssl,omitempty"`
 	// the timeout of the pgvector database
 	Timeout *float64 `default:"5000" json:"timeout"`
 	// the user of the pgvector database

@@ -34,7 +34,7 @@ func (e *CacheScope) IsExact() bool {
 // AIGatewayMCPServerCacheHint - A cache hint Kong emits on a cacheable operation it serves.
 type AIGatewayMCPServerCacheHint struct {
 	// How long a client may treat the result as fresh, in milliseconds.
-	TTLMs *int64 `default:"null" json:"ttl_ms"`
+	TTLMs *int64 `json:"ttl_ms,omitempty"`
 	// Whether the result may be cached across authorization contexts. `public` is rejected when
 	// the server's tool list is filtered per subject by `default_tool_acls` or a tool's own
 	// `access.acls`.

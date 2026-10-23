@@ -42,7 +42,7 @@ type AIGatewayMCPServerWithUpstreamConfigClient struct {
 	// The secrets that are used in session encryption. Required when the strategy is 'client'.
 	// The first secret is used for encryption, while all secrets are used for decryption to support key rotation.
 	//
-	Secrets []string `json:"secrets"`
+	Secrets []string `json:"secrets,omitempty"`
 }
 
 func (a AIGatewayMCPServerWithUpstreamConfigClient) MarshalJSON() ([]byte, error) {
@@ -90,7 +90,7 @@ func (e *AIGatewayMCPServerWithUpstreamConfigStrategy) IsExact() bool {
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type AIGatewayMCPServerWithUpstreamConfigSessionOutput struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerWithUpstreamConfigClient `json:"client"`
+	Client *AIGatewayMCPServerWithUpstreamConfigClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
 	// Config for connecting to a Cloud Provider's Redis instance.
@@ -154,7 +154,7 @@ type AIGatewayMCPServerWithUpstreamConfigServer struct {
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *AIGatewayMCPServerWithUpstreamConfigSessionOutput `json:"session"`
+	Session *AIGatewayMCPServerWithUpstreamConfigSessionOutput `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
@@ -203,7 +203,7 @@ type AIGatewayMCPServerWithUpstreamConfigOutput struct {
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// Server-side configuration for the MCP Server.
-	Server *AIGatewayMCPServerWithUpstreamConfigServer `json:"server"`
+	Server *AIGatewayMCPServerWithUpstreamConfigServer `json:"server,omitempty"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
@@ -278,7 +278,7 @@ func (a *AIGatewayMCPServerWithUpstreamConfigOutput) GetProxy() *AIGatewayProxyC
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type AIGatewayMCPServerWithUpstreamConfigSession struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerWithUpstreamConfigClient `json:"client"`
+	Client *AIGatewayMCPServerWithUpstreamConfigClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
 	// Config for connecting to a Cloud Provider's Redis instance.
@@ -342,7 +342,7 @@ type Server struct {
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *AIGatewayMCPServerWithUpstreamConfigSession `json:"session"`
+	Session *AIGatewayMCPServerWithUpstreamConfigSession `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
@@ -391,7 +391,7 @@ type AIGatewayMCPServerWithUpstreamConfig struct {
 	// Maximum size of request body to parse. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"8388608" json:"max_request_body_size"`
 	// Server-side configuration for the MCP Server.
-	Server *Server `json:"server"`
+	Server *Server `json:"server,omitempty"`
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//

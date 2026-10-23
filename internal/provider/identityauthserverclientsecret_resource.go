@@ -63,7 +63,7 @@ func (r *IdentityAuthServerClientSecretResource) Schema(ctx context.Context, req
 				Required:    true,
 				Description: `The OAuth 2.0 client ID`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 36),
+					stringvalidator.UTF8LengthBetween(1, 48),
 					stringvalidator.RegexMatches(regexp.MustCompile(`[-_\w]+`), "must match pattern "+regexp.MustCompile(`[-_\w]+`).String()),
 				},
 			},

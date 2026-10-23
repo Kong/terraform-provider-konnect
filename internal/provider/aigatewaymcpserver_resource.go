@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -520,107 +519,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -2245,107 +2147,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -3084,6 +2889,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -3247,104 +3053,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									`incoming requests.`,
 							},
 							"server": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"forward_client_headers": types.BoolType,
-									"session": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`client`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											`managed`: types.BoolType,
-											`redis`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											`session_ttl`: types.Int64Type,
-											`strategy`:    types.StringType,
-										},
-									},
-									"timeout": types.Int64Type,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"forward_client_headers": schema.BoolAttribute{
 										Computed:    true,
@@ -3353,107 +3062,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -4171,107 +3783,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default: false`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,

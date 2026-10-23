@@ -10,7 +10,7 @@ type AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentialsOutput struct {
 	// The scopes for the OAuth 2.0 client-credentials.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Scope *string `default:"null" json:"scope"`
+	Scope *string `json:"scope,omitempty"`
 	// Header name used to send the fetched access token to the upstream MCP server. The value should
 	// include the header name and the token prefix if needed.
 	//
@@ -19,7 +19,7 @@ type AIGatewayMCPServerUpstreamServerToolOauth2ConfigCredentialsOutput struct {
 	// include the header name and the token prefix if needed. Leave empty to omit the ID token
 	// when fetching the tools list.
 	//
-	IDTokenHeader *string `default:"null" json:"id_token_header"`
+	IDTokenHeader *string `json:"id_token_header,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"credentials" json:"type"`
 	// The token endpoint URL for fetching the OAuth 2.0 access token using client-credentials.

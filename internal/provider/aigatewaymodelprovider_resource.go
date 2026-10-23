@@ -10,11 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -3093,11 +3091,6 @@ func (r *AIGatewayModelProviderResource) Schema(ctx context.Context, req resourc
 											"aws": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"access_key_id":     types.StringType,
-													"secret_access_key": types.StringType,
-													"session_token":     types.StringType,
-												})),
 												Attributes: map[string]schema.Attribute{
 													"access_key_id": schema.StringAttribute{
 														Optional:    true,
