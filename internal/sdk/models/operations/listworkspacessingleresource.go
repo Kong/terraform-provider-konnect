@@ -11,8 +11,8 @@ import (
 type ListWorkspacesSingleResourceRequest struct {
 	// ID of a control plane
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	// Filter by direct equality comparison of the name property with a supplied value.
-	FilterNameEq *string `queryParam:"style=form,explode=true,name=filter[name][eq]"`
+	// Filters a collection of workspaces.
+	Filter *shared.WorkspaceFilterParameters `queryParam:"style=deepObject,explode=true,name=filter"`
 }
 
 func (l ListWorkspacesSingleResourceRequest) MarshalJSON() ([]byte, error) {
@@ -33,11 +33,11 @@ func (l *ListWorkspacesSingleResourceRequest) GetControlPlaneID() string {
 	return l.ControlPlaneID
 }
 
-func (l *ListWorkspacesSingleResourceRequest) GetFilterNameEq() *string {
+func (l *ListWorkspacesSingleResourceRequest) GetFilter() *shared.WorkspaceFilterParameters {
 	if l == nil {
 		return nil
 	}
-	return l.FilterNameEq
+	return l.Filter
 }
 
 type ListWorkspacesSingleResourceResponse struct {

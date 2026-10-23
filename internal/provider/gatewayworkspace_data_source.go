@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
@@ -28,17 +29,17 @@ type GatewayWorkspaceDataSource struct {
 
 // GatewayWorkspaceDataSourceModel describes the data model.
 type GatewayWorkspaceDataSourceModel struct {
-	Comment        types.String            `tfsdk:"comment"`
-	ControlPlaneID types.String            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64             `tfsdk:"created_at"`
-	Description    types.String            `tfsdk:"description"`
-	FilterNameEq   types.String            `queryParam:"style=form,explode=true,name=filter[name][eq]" tfsdk:"filter_name_eq"`
-	ID             types.String            `tfsdk:"id"`
-	ManagedBy      map[string]types.String `tfsdk:"managed_by"`
-	Name           types.String            `tfsdk:"name"`
-	Next           types.String            `tfsdk:"next"`
-	Offset         types.String            `tfsdk:"offset"`
-	UpdatedAt      types.Int64             `tfsdk:"updated_at"`
+	Comment        types.String                       `tfsdk:"comment"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Description    types.String                       `tfsdk:"description"`
+	Filter         *tfTypes.WorkspaceFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
+	ID             types.String                       `tfsdk:"id"`
+	ManagedBy      map[string]types.String            `tfsdk:"managed_by"`
+	Name           types.String                       `tfsdk:"name"`
+	Next           types.String                       `tfsdk:"next"`
+	Offset         types.String                       `tfsdk:"offset"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -66,9 +67,25 @@ func (r *GatewayWorkspaceDataSource) Schema(ctx context.Context, req datasource.
 			"description": schema.StringAttribute{
 				Computed: true,
 			},
-			"filter_name_eq": schema.StringAttribute{
-				Optional:    true,
-				Description: `Filter by direct equality comparison of the name property with a supplied value.`,
+			"filter": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"name": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"contains": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field contains the provided value.`,
+							},
+							"eq": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
+							},
+						},
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `contains` + "`" + ``,
+					},
+				},
+				Description: `Filters a collection of workspaces.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,

@@ -7,7 +7,7 @@ import (
 )
 
 type QueryParamFilter struct {
-	Description    *MeshControlPlaneFilterParametersName `queryParam:"name=description" tfsdk:"description"`
-	KonnectManaged types.Bool                            `queryParam:"name=konnect_managed" tfsdk:"konnect_managed"`
-	Name           *MeshControlPlaneFilterParametersName `queryParam:"name=name" tfsdk:"name"`
+	Description    *WorkspaceFilterParametersName `queryParam:"name=description" tfsdk:"description"`
+	KonnectManaged types.Bool                     `queryParam:"name=konnect_managed" tfsdk:"konnect_managed"`
+	Name           *WorkspaceFilterParametersName `queryParam:"name=name" tfsdk:"name"`
 }
